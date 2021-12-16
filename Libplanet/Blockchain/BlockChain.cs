@@ -907,21 +907,33 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitWriteLock();
                 }
 
-                _logger.Debug(
-                    "Unstaging {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
-                    block.Transactions.Count(),
-                    block.Index,
-                    block.Hash);
-                foreach (Transaction<T> tx in block.Transactions)
+                if (IsCanonical)
                 {
-                    UnstageTransaction(tx);
-                }
+                    _logger.Debug(
+                        "Unstaging {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
+                        block.Transactions.Count(),
+                        block.Index,
+                        block.Hash);
+                    foreach (Transaction<T> tx in block.Transactions)
+                    {
+                        UnstageTransaction(tx);
+                    }
 
-                _logger.Debug(
-                    "Unstaged {TxCount} transactions, from block #{BlockIndex} {BlockHash}...",
-                    block.Transactions.Count(),
-                    block.Index,
-                    block.Hash);
+                    _logger.Debug(
+                        "Unstaged {TxCount} transactions from block #{BlockIndex} {BlockHash}...",
+                        block.Transactions.Count(),
+                        block.Index,
+                        block.Hash);
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Skipping unstaging transactions from block #{BlockIndex} {BlockHash} " +
+                        "for non-canonical chain {ChainID}.",
+                        block.Index,
+                        block.Hash,
+                        Id);
+                }
 
                 TipChanged?.Invoke(this, (prevTip, block));
                 _logger.Debug(
