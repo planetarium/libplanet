@@ -16,6 +16,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `KeyBytes` readonly struct.  [[#1678]]
+
 ### Behavioral changes
 
   -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
@@ -27,6 +29,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1678]: https://github.com/planetarium/libplanet/pull/1678
 
 
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
