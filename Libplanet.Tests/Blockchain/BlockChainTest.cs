@@ -537,6 +537,20 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void ForkAndSwapCanonicity()
+        {
+            // Fork is not canonical.
+            var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
+            Assert.True(_blockChain.IsCanonical);
+            Assert.False(workspace.IsCanonical);
+
+            // Both are canonical after swap.
+            _blockChain.Swap(workspace, false, null);
+            Assert.True(_blockChain.IsCanonical);
+            Assert.True(workspace.IsCanonical);
+        }
+
+        [Fact]
         public async Task ForkWithBlockNotExistInChain()
         {
             var key = new PrivateKey();

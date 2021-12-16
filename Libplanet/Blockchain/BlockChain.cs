@@ -254,6 +254,11 @@ namespace Libplanet.Blockchain
         public Guid Id { get; private set; }
 
         /// <summary>
+        /// Whether the instance is canonical or not.
+        /// </summary>
+        public bool IsCanonical => Store.GetCanonicalChainId() is Guid guid && Id == guid;
+
+        /// <summary>
         /// All <see cref="Block{T}.Hash"/>es in the current index.  The genesis block's hash goes
         /// first, and the tip goes last.
         /// Returns a <see cref="long"/> integer that represents the number of elements in the
