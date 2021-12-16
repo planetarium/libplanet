@@ -85,7 +85,7 @@ namespace Libplanet
         /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
         /// the same to the <see cref="Size"/> the hash algorithm
         /// (i.e., <typeparamref name="T"/>) requires.</exception>
-        public HashDigest(ImmutableArray<byte> hashDigest)
+        public HashDigest(in ImmutableArray<byte> hashDigest)
         {
             if (hashDigest.Length != Size)
             {

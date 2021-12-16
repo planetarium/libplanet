@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Store.Trie
 
         protected Random Random { get; } = new Random();
 
-        private byte[][] PreStoredDataKeys { get; set; }
+        private KeyBytes[] PreStoredDataKeys { get; set; }
 
         private byte[][] PreStoredDataValues { get; set; }
 
@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Store.Trie
         [SkippableFact]
         public void Set()
         {
-            byte[] key = Random.NextBytes(PreStoredDataKeySize);
+            var key = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
             byte[] value = Random.NextBytes(PreStoredDataValueSize);
             KeyValueStore.Set(key, value);
 
@@ -50,16 +50,16 @@ namespace Libplanet.Tests.Store.Trie
         [SkippableFact]
         public void SetMany()
         {
-            var values = new Dictionary<byte[], byte[]>();
+            var values = new Dictionary<KeyBytes, byte[]>();
             foreach (int i in Enumerable.Range(0, 10))
             {
-                values[Random.NextBytes(PreStoredDataKeySize)] =
+                values[new KeyBytes(Random.NextBytes(PreStoredDataKeySize))] =
                     Random.NextBytes(PreStoredDataValueSize);
             }
 
             KeyValueStore.Set(values);
 
-            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
                 Assert.Equal(kv.Value, KeyValueStore.Get(kv.Key));
             }
@@ -109,18 +109,17 @@ namespace Libplanet.Tests.Store.Trie
         [SkippableFact]
         public void ListKeys()
         {
-            ImmutableHashSet<byte[]> keys = KeyValueStore.ListKeys().ToImmutableHashSet();
+            ImmutableHashSet<KeyBytes> keys = KeyValueStore.ListKeys().ToImmutableHashSet();
             Assert.Equal(PreStoredDataCount, keys.Count);
-            var equalityComparer = new BytesEqualityComparer();
-            Assert.True(PreStoredDataKeys.ToImmutableHashSet(equalityComparer).SetEquals(keys));
+            Assert.True(PreStoredDataKeys.ToImmutableHashSet().SetEquals(keys));
         }
 
-        public byte[] NewRandomKey()
+        public KeyBytes NewRandomKey()
         {
-            byte[] randomKey;
+            KeyBytes randomKey;
             do
             {
-                randomKey = Random.NextBytes(PreStoredDataKeySize);
+                randomKey = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
             }
             while (KeyValueStore.Exists(randomKey));
 
@@ -129,12 +128,12 @@ namespace Libplanet.Tests.Store.Trie
 
         protected void InitializePreStoredData()
         {
-            PreStoredDataKeys = new byte[PreStoredDataCount][];
+            PreStoredDataKeys = new KeyBytes[PreStoredDataCount];
             PreStoredDataValues = new byte[PreStoredDataCount][];
 
             for (int i = 0; i < PreStoredDataCount; ++i)
             {
-                PreStoredDataKeys[i] = Random.NextBytes(PreStoredDataKeySize);
+                PreStoredDataKeys[i] = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
                 PreStoredDataValues[i] = Random.NextBytes(PreStoredDataValueSize);
                 KeyValueStore.Set(PreStoredDataKeys[i], PreStoredDataValues[i]);
             }

@@ -27,34 +27,35 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public byte[] Get(byte[] key) => _keyValueDb.Get(key) ?? throw new KeyNotFoundException(
-            $"There were no elements that correspond to the key (hex: {ByteUtil.Hex(key)}).");
+        public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
+            ?? throw new KeyNotFoundException($"No such key: ${key}.");
 
         /// <inheritdoc/>
-        public void Set(byte[] key, byte[] value)
+        public void Set(in KeyBytes key, byte[] value)
         {
-            _keyValueDb.Put(key, value);
+            _keyValueDb.Put(key.ToByteArray(), value);
         }
 
         /// <inheritdoc/>
-        public void Set(IDictionary<byte[], byte[]> values)
+        public void Set(IDictionary<KeyBytes, byte[]> values)
         {
             using var writeBatch = new WriteBatch();
 
-            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
-                writeBatch.Put(kv.Key, kv.Value);
+                writeBatch.Put(kv.Key.ToByteArray(), kv.Value);
             }
 
             _keyValueDb.Write(writeBatch);
         }
 
         /// <inheritdoc/>
-        public void Delete(byte[] key)
+        public void Delete(in KeyBytes key)
         {
-            _keyValueDb.Remove(key);
+            _keyValueDb.Remove(key.ToByteArray());
         }
 
+        /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()
         {
             if (!_disposed)
@@ -65,15 +66,16 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public bool Exists(byte[] key) => !(_keyValueDb.Get(key) is null);
+        public bool Exists(in KeyBytes key) =>
+            _keyValueDb.Get(key.ToByteArray()) is { };
 
         /// <inheritdoc/>
-        public IEnumerable<byte[]> ListKeys()
+        public IEnumerable<KeyBytes> ListKeys()
         {
             using Iterator it = _keyValueDb.NewIterator();
             for (it.SeekToFirst(); it.Valid(); it.Next())
             {
-                yield return it.Key();
+                yield return new KeyBytes(it.Key());
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Libplanet.Store.Trie
     public class CacheableKeyValueStore : IKeyValueStore
     {
         private readonly IKeyValueStore _keyValueStore;
-        private readonly LruCache<byte[], byte[]> _cache;
+        private readonly LruCache<KeyBytes, byte[]> _cache;
 
         /// <summary>
         /// Creates a new <see cref="CacheableKeyValueStore"/>.
@@ -22,55 +22,55 @@ namespace Libplanet.Store.Trie
         public CacheableKeyValueStore(IKeyValueStore keyValueStore, int cacheSize = 100)
         {
             _keyValueStore = keyValueStore;
-            _cache = new LruCache<byte[], byte[]>(cacheSize);
+            _cache = new LruCache<KeyBytes, byte[]>(cacheSize);
         }
 
         /// <inheritdoc/>
-        public byte[] Get(byte[] key)
+        public byte[] Get(in KeyBytes key)
         {
             if (_cache.ContainsKey(key))
             {
                 return _cache[key];
             }
 
-            if (_keyValueStore.Get(key) is byte[] bytes)
+            if (_keyValueStore.Get(key) is { } bytes)
             {
                 _cache[key] = bytes;
                 return bytes;
             }
 
-            throw new KeyNotFoundException("There were no elements that correspond to the key" +
-                                           $" (hex: {ByteUtil.Hex(key)}).");
+            throw new KeyNotFoundException($"No such key: ${key}.");
         }
 
         /// <inheritdoc/>
-        public void Set(byte[] key, byte[] value)
+        public void Set(in KeyBytes key, byte[] value)
         {
             _keyValueStore.Set(key, value);
             _cache[key] = value;
         }
 
-        public void Set(IDictionary<byte[], byte[]> values)
+        public void Set(IDictionary<KeyBytes, byte[]> values)
         {
             _keyValueStore.Set(values);
         }
 
         /// <inheritdoc/>
-        public void Delete(byte[] key)
+        public void Delete(in KeyBytes key)
         {
             _keyValueStore.Delete(key);
             _cache.Remove(key);
         }
 
         /// <inheritdoc/>
-        public bool Exists(byte[] key)
+        public bool Exists(in KeyBytes key)
         {
             return _cache.ContainsKey(key) || _keyValueStore.Exists(key);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<byte[]> ListKeys() => _keyValueStore.ListKeys();
+        public IEnumerable<KeyBytes> ListKeys() => _keyValueStore.ListKeys();
 
+        /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
             _keyValueStore?.Dispose();

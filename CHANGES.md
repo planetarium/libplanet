@@ -10,6 +10,22 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Replaced `HashDigest<T>(ImmutableArray<byte>)` constructor with
+    `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
+ -  `IKeyValueStore`'s key type became `KeyBytes` (was `byte[]`).  [[#1678]]
+     -  Replaced `IKeyValueStore.Get(byte[])` method with `Get(in KeyBytes)`
+        method.
+     -  Replaced `IKeyValueStore.Set(byte[], byte[])` method with
+        `Set(in KeyBytes, byte[])` method.
+     -  Replaced `IKeyValueStore.Set(IDictionary<byte[], byte[]>)` method with
+        `Set(IDictionary<KeyBytes, byte[]>)` method.
+     -  Replaced `IKeyValueStore.Delete(byte[])` method with
+        `Delete(in KeyBytes)` method.
+     -  Replaced `IKeyValueStore.Exists(byte[])` method with
+        `Exists(in KeyBytes)` method.
+     -  `IKeyValueStore.ListKeys()` method's return type became
+        `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -17,6 +33,7 @@ To be released.
 ### Added APIs
 
  -  Added `KeyBytes` readonly struct.  [[#1678]]
+ -  Added `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
 
 ### Behavioral changes
 

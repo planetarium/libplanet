@@ -12,27 +12,27 @@ namespace Libplanet.Store.Trie
     /// </summary>
     public sealed class MemoryKeyValueStore : IKeyValueStore
     {
-        private readonly ConcurrentDictionary<byte[], byte[]> _dictionary =
-            new ConcurrentDictionary<byte[], byte[]>(new BytesEqualityComparer());
+        private readonly ConcurrentDictionary<KeyBytes, byte[]> _dictionary =
+            new ConcurrentDictionary<KeyBytes, byte[]>();
 
-        byte[] IKeyValueStore.Get(byte[] key) =>
+        byte[] IKeyValueStore.Get(in KeyBytes key) =>
             _dictionary[key];
 
-        void IKeyValueStore.Set(byte[] key, byte[] value) =>
+        void IKeyValueStore.Set(in KeyBytes key, byte[] value) =>
             _dictionary[key] = value;
 
-        void IKeyValueStore.Set(IDictionary<byte[], byte[]> values)
+        void IKeyValueStore.Set(IDictionary<KeyBytes, byte[]> values)
         {
-            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
                 _dictionary[kv.Key] = kv.Value;
             }
         }
 
-        void IKeyValueStore.Delete(byte[] key) =>
+        void IKeyValueStore.Delete(in KeyBytes key) =>
             _dictionary.TryRemove(key, out _);
 
-        bool IKeyValueStore.Exists(byte[] key) =>
+        bool IKeyValueStore.Exists(in KeyBytes key) =>
             _dictionary.ContainsKey(key);
 
         void IDisposable.Dispose()
@@ -40,38 +40,7 @@ namespace Libplanet.Store.Trie
             // Method intentionally left empty.
         }
 
-        IEnumerable<byte[]> IKeyValueStore.ListKeys() =>
+        IEnumerable<KeyBytes> IKeyValueStore.ListKeys() =>
             _dictionary.Keys;
-
-        private class BytesEqualityComparer : EqualityComparer<byte[]>
-        {
-            public override bool Equals(byte[]? x, byte[]? y)
-            {
-                if (x is { } xa && y is { } ya)
-                {
-                    if (xa.Length != ya.Length)
-                    {
-                        return false;
-                    }
-
-                    for (int i = 0; i < xa.Length; i++)
-                    {
-                        if (xa[i] != ya[i])
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-
-                return ReferenceEquals(x, y);
-            }
-
-            public override int GetHashCode(byte[] obj)
-            {
-                return 0;
-            }
-        }
     }
 }
