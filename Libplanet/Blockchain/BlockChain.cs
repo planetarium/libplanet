@@ -1042,7 +1042,7 @@ namespace Libplanet.Blockchain
         {
             DateTimeOffset startTime = DateTimeOffset.Now;
 
-            // FIXME Theatrically, we don't accept empty chain. so `tip` can't be null on this
+            // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
             // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
             // it had been occurred.
             // We should find a reason for that and fix it before remote this early return.
