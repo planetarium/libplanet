@@ -6,6 +6,12 @@ Version 0.24.2
 
 To be released.
 
+ -  Log output compacted by removing duplicate exception messages.
+    [[#1632], [#1677]]
+
+[#1632]: https://github.com/planetarium/libplanet/issues/1632
+[#1677]: https://github.com/planetarium/libplanet/pull/1677
+
 
 Version 0.24.1
 --------------
