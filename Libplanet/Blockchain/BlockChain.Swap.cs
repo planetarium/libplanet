@@ -326,7 +326,7 @@ namespace Libplanet.Blockchain
             StateCompleterSet<T> stateCompleters)
         {
             _logger.Debug(
-                "Unender actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
+                "Unrender actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
 
             if (evaluations is null)
             {

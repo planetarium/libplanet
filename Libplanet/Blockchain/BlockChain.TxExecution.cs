@@ -92,7 +92,7 @@ namespace Libplanet.Blockchain
                         Store.PutTxExecution(s);  // IStore.PutTxExecution(TxSuccess)
                         _logger.Verbose(
                             "Updated " + nameof(TxSuccess) +
-                            " for tx {TxId} within block #{BlockIndex} {BlockHash}.",
+                            " for tx {TxId} within block {BlockHash}.",
                             s.TxId,
                             s.BlockHash
                         );
@@ -101,7 +101,7 @@ namespace Libplanet.Blockchain
                         Store.PutTxExecution(f);  // IStore.PutTxExecution(TxFailure)
                         _logger.Verbose(
                             "Updated " + nameof(TxFailure) +
-                            " for tx {TxId} within block #{BlockIndex} {BlockHash}.",
+                            " for tx {TxId} within block {BlockHash}.",
                             f.TxId,
                             f.BlockHash
                         );
