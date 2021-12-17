@@ -285,7 +285,8 @@ namespace Libplanet.Blockchain
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
         {
-            _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
+            _logger.Debug(
+                "Render actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
 
             if (evaluations is null)
             {
@@ -324,7 +325,8 @@ namespace Libplanet.Blockchain
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
         {
-            _logger.Debug("Unender actions in block {blockIndex}: {block}", block?.Index, block);
+            _logger.Debug(
+                "Unender actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
 
             if (evaluations is null)
             {

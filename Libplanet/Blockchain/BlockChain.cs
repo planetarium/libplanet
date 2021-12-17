@@ -811,7 +811,8 @@ namespace Libplanet.Blockchain
             // are incomplete they are complemented anyway:
             stateCompleters ??= StateCompleterSet<T>.Recalculate;
 
-            _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
+            _logger.Debug(
+                "Trying to append block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
 
             block.ValidateTimestamp();
 
