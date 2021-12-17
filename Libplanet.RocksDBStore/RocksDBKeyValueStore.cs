@@ -1,5 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Libplanet.Store.Trie;
 using RocksDbSharp;
 
@@ -29,6 +31,23 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
             ?? throw new KeyNotFoundException($"No such key: ${key}.");
+
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            byte[][] keyArray = keys.Select(k => k.ToByteArray()).ToArray();
+            KeyValuePair<byte[], byte[]?>[] pairs = _keyValueDb.MultiGet(keyArray);
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            foreach (KeyValuePair<byte[], byte[]?> pair in pairs)
+            {
+                if (pair.Value is { } b)
+                {
+                    dictBuilder[new KeyBytes(pair.Key)] = b;
+                }
+            }
+
+            return dictBuilder.ToImmutable();
+        }
 
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value)

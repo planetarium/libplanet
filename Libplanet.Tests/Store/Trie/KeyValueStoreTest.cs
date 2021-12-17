@@ -38,6 +38,22 @@ namespace Libplanet.Tests.Store.Trie
         }
 
         [SkippableFact]
+        public void GetMany()
+        {
+            KeyBytes[] nonExistentKeys = Enumerable.Range(0, 10)
+                .Select(_ => NewRandomKey())
+                .ToArray();
+            KeyBytes[] keys = PreStoredDataKeys
+                .Concat(PreStoredDataKeys.Take(PreStoredDataCount / 2))
+                .Concat(nonExistentKeys)
+                .ToArray();
+            IReadOnlyDictionary<KeyBytes, byte[]> result = KeyValueStore.Get(keys);
+            Assert.Equal(PreStoredDataCount, result.Count);
+            Assert.All(PreStoredDataKeys, k => Assert.Contains(k, result));
+            Assert.All(nonExistentKeys, k => Assert.DoesNotContain(k, result));
+        }
+
+        [SkippableFact]
         public void Set()
         {
             var key = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));

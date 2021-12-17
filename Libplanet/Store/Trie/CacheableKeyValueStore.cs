@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using LruCacheNet;
 
 namespace Libplanet.Store.Trie
@@ -28,9 +29,9 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key)
         {
-            if (_cache.ContainsKey(key))
+            if (_cache.TryGetValue(key, out byte[]? value) && value is { } v)
             {
-                return _cache[key];
+                return v;
             }
 
             if (_keyValueStore.Get(key) is { } bytes)
@@ -40,6 +41,27 @@ namespace Libplanet.Store.Trie
             }
 
             throw new KeyNotFoundException($"No such key: ${key}.");
+        }
+
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            var uncached = new HashSet<KeyBytes>();
+            foreach (KeyBytes key in keys)
+            {
+                if (_cache.TryGetValue(key, out byte[]? value) && value is { } v)
+                {
+                    dictBuilder[key] = v;
+                }
+                else
+                {
+                    uncached.Add(key);
+                }
+            }
+
+            dictBuilder.AddRange(_keyValueStore.Get(uncached));
+            return dictBuilder.ToImmutable();
         }
 
         /// <inheritdoc/>

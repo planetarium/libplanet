@@ -25,6 +25,7 @@ To be released.
         `Exists(in KeyBytes)` method.
      -  `IKeyValueStore.ListKeys()` method's return type became
         `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
+ -  Added `IKeyValueStore.Get(IEnumerable<KeyBytes>)` method.  [[#1678]]
 
 ### Backward-incompatible network protocol changes
 

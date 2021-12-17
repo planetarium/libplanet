@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Libplanet.Store.Trie
 {
@@ -15,12 +16,30 @@ namespace Libplanet.Store.Trie
         private readonly ConcurrentDictionary<KeyBytes, byte[]> _dictionary =
             new ConcurrentDictionary<KeyBytes, byte[]>();
 
+        /// <inheritdoc/>
         byte[] IKeyValueStore.Get(in KeyBytes key) =>
             _dictionary[key];
 
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            foreach (KeyBytes key in keys)
+            {
+                if (_dictionary.TryGetValue(key, out byte[]? value) && value is { } v)
+                {
+                    dictBuilder[key] = v;
+                }
+            }
+
+            return dictBuilder.ToImmutable();
+        }
+
+        /// <inheritdoc/>
         void IKeyValueStore.Set(in KeyBytes key, byte[] value) =>
             _dictionary[key] = value;
 
+        /// <inheritdoc cref="IKeyValueStore.Set(IDictionary{KeyBytes, byte[]})"/>
         void IKeyValueStore.Set(IDictionary<KeyBytes, byte[]> values)
         {
             foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
@@ -29,12 +48,15 @@ namespace Libplanet.Store.Trie
             }
         }
 
+        /// <inheritdoc/>
         void IKeyValueStore.Delete(in KeyBytes key) =>
             _dictionary.TryRemove(key, out _);
 
+        /// <inheritdoc/>
         bool IKeyValueStore.Exists(in KeyBytes key) =>
             _dictionary.ContainsKey(key);
 
+        /// <inheritdoc cref="IDisposable.Dispose()"/>
         void IDisposable.Dispose()
         {
             // Method intentionally left empty.

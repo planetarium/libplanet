@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Zio;
@@ -50,6 +51,23 @@ namespace Libplanet.Store.Trie
             return _root.FileExists(path)
                 ? _root.ReadAllBytes(path)
                 : throw new KeyNotFoundException($"No such key: {key}.");
+        }
+
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            // We don't optimize this method because it is not used in production.
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            foreach (KeyBytes key in keys)
+            {
+                var path = DataPath(key);
+                if (_root.FileExists(path))
+                {
+                    dictBuilder[key] = _root.ReadAllBytes(path);
+                }
+            }
+
+            return dictBuilder.ToImmutable();
         }
 
         /// <inheritdoc/>

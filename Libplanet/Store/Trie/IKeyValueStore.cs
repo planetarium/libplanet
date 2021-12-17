@@ -18,6 +18,16 @@ namespace Libplanet.Store.Trie
         public byte[] Get(in KeyBytes key);
 
         /// <summary>
+        /// Gets multiple values associated with the specified keys at once.
+        /// </summary>
+        /// <param name="keys">Keys whose values to get.  The order of keys does not matter.
+        /// Duplicate keys after their first occurrence are ignored.</param>
+        /// <returns>Values associated the specified <paramref name="keys"/>.  Non-existent
+        /// <paramref name="keys"/> are omitted (rather than being filled with
+        /// <see langword="null"/>).</returns>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys);
+
+        /// <summary>
         /// Sets the value to the key.  If the key already exists, the value is overwritten.
         /// </summary>
         /// <param name="key">The key of the value to set.</param>
