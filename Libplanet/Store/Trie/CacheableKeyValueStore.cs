@@ -83,6 +83,16 @@ namespace Libplanet.Store.Trie
             _cache.Remove(key);
         }
 
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            _keyValueStore.Delete(keys);
+            foreach (KeyBytes key in keys)
+            {
+                _cache.Remove(key);
+            }
+        }
+
         /// <inheritdoc/>
         public bool Exists(in KeyBytes key)
         {

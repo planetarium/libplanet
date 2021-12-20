@@ -26,6 +26,7 @@ To be released.
      -  `IKeyValueStore.ListKeys()` method's return type became
         `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
  -  Added `IKeyValueStore.Get(IEnumerable<KeyBytes>)` method.  [[#1678]]
+ -  Added `IKeyValueStore.Delete(IEnumerable<KeyBytes>)` method.  [[#1678]]
 
 ### Backward-incompatible network protocol changes
 

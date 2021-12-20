@@ -52,6 +52,15 @@ namespace Libplanet.Store.Trie
         void IKeyValueStore.Delete(in KeyBytes key) =>
             _dictionary.TryRemove(key, out _);
 
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            foreach (KeyBytes key in keys)
+            {
+                _dictionary.TryRemove(key, out _);
+            }
+        }
+
         /// <inheritdoc/>
         bool IKeyValueStore.Exists(in KeyBytes key) =>
             _dictionary.ContainsKey(key);

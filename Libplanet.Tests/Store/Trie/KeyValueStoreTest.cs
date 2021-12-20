@@ -102,12 +102,29 @@ namespace Libplanet.Tests.Store.Trie
         [SkippableFact]
         public void Delete()
         {
-            foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
-                PreStoredDataValues, ValueTuple.Create))
+            foreach (KeyBytes key in PreStoredDataKeys)
             {
-                var actual = KeyValueStore.Get(key);
-                Assert.Equal(expectedValue, actual);
+                KeyValueStore.Delete(key);
+                Assert.False(KeyValueStore.Exists(key));
             }
+
+            KeyBytes nonExistent = NewRandomKey();
+            KeyValueStore.Delete(nonExistent);
+            Assert.False(KeyValueStore.Exists(nonExistent));
+        }
+
+        [SkippableFact]
+        public void DeleteMany()
+        {
+            KeyBytes[] nonExistentKeys = Enumerable.Range(0, 10)
+                .Select(_ => NewRandomKey())
+                .ToArray();
+            KeyBytes[] keys = PreStoredDataKeys
+                .Concat(PreStoredDataKeys.Take(PreStoredDataCount / 2))
+                .Concat(nonExistentKeys)
+                .ToArray();
+            KeyValueStore.Delete(keys);
+            Assert.All(keys, k => Assert.False(KeyValueStore.Exists(k)));
         }
 
         [SkippableFact]

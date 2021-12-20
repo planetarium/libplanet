@@ -47,6 +47,13 @@ namespace Libplanet.Store.Trie
         public void Delete(in KeyBytes key);
 
         /// <summary>
+        /// Delete multiple <paramref name="keys"/> at once.
+        /// </summary>
+        /// <param name="keys">Keys to delete.  The order of keys does not matter.
+        /// Non-existent keys are ignored.</param>
+        public void Delete(IEnumerable<KeyBytes> keys);
+
+        /// <summary>
         /// Checks whether the given key exists in the store.
         /// </summary>
         /// <param name="key">A key to check.</param>

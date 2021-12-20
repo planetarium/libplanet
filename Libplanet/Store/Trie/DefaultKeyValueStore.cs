@@ -95,6 +95,15 @@ namespace Libplanet.Store.Trie
             }
         }
 
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            foreach (KeyBytes key in keys)
+            {
+                Delete(key);
+            }
+        }
+
         public void Dispose()
         {
             _root.Dispose();

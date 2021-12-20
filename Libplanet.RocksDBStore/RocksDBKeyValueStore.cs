@@ -74,6 +74,15 @@ namespace Libplanet.RocksDBStore
             _keyValueDb.Remove(key.ToByteArray());
         }
 
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            foreach (KeyBytes key in keys)
+            {
+                _keyValueDb.Remove(key.ToByteArray());
+            }
+        }
+
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
         public void Dispose()
         {
