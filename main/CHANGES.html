@@ -66,9 +66,35 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Replaced <code>HashDigest&lt;T&gt;(ImmutableArray&lt;byte&gt;)</code> constructor with
+<code>HashDigest&lt;T&gt;(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li><code>IKeyValueStore</code>'s key type became <code>KeyBytes</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]
+<ul>
+<li>Replaced <code>IKeyValueStore.Get(byte[])</code> method with <code>Get(in KeyBytes)</code>
+method.</li>
+<li>Replaced <code>IKeyValueStore.Set(byte[], byte[])</code> method with
+<code>Set(in KeyBytes, byte[])</code> method.</li>
+<li>Replaced <code>IKeyValueStore.Set(IDictionary&lt;byte[], byte[]&gt;)</code> method with
+<code>Set(IDictionary&lt;KeyBytes, byte[]&gt;)</code> method.</li>
+<li>Replaced <code>IKeyValueStore.Delete(byte[])</code> method with
+<code>Delete(in KeyBytes)</code> method.</li>
+<li>Replaced <code>IKeyValueStore.Exists(byte[])</code> method with
+<code>Exists(in KeyBytes)</code> method.</li>
+<li><code>IKeyValueStore.ListKeys()</code> method's return type became
+<code>IEnumerable&lt;KeyBytes&gt;</code> (was <code>IEnumerable&lt;byte[]&gt;</code>).</li>
+</ul>
+</li>
+<li>Added <code>IKeyValueStore.Get(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li>Added <code>IKeyValueStore.Delete(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>KeyBytes</code> readonly struct.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li>Added <code>HashDigest&lt;T&gt;(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>Swarm&lt;T&gt;</code>'s block propagation.  [<a href="https://github.com/planetarium/libplanet/pull/1676">#1676</a>]</li>

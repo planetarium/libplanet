@@ -10123,15 +10123,15 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T)
   nameWithType: HashDigest<T>
   nameWithType.vb: HashDigest(Of T)
-- uid: Libplanet.HashDigest`1.#ctor(ImmutableArray{System.Byte})
-  name: HashDigest(ImmutableArray<Byte>)
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1__ctor_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.HashDigest`1.#ctor(ImmutableArray{System.Byte})
-  name.vb: HashDigest(ImmutableArray(Of Byte))
-  fullName: Libplanet.HashDigest<T>.HashDigest(ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.HashDigest(Of T).HashDigest(ImmutableArray(Of System.Byte))
-  nameWithType: HashDigest<T>.HashDigest(ImmutableArray<Byte>)
-  nameWithType.vb: HashDigest(Of T).HashDigest(ImmutableArray(Of Byte))
+- uid: Libplanet.HashDigest`1.#ctor(ImmutableArray{System.Byte}@)
+  name: HashDigest(in ImmutableArray<Byte>)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.HashDigest`1.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: HashDigest(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.HashDigest<T>.HashDigest(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.HashDigest(Of T).HashDigest(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: HashDigest<T>.HashDigest(in ImmutableArray<Byte>)
+  nameWithType.vb: HashDigest(Of T).HashDigest(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.HashDigest`1.#ctor(System.Byte[])
   name: HashDigest(Byte[])
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1__ctor_System_Byte___
@@ -15591,15 +15591,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Byte[])
-  name: Delete(Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Byte[])
-  name.vb: Delete(Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Byte())
-  nameWithType: RocksDBKeyValueStore.Delete(Byte[])
-  nameWithType.vb: RocksDBKeyValueStore.Delete(Byte())
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name: Delete(in KeyBytes)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Delete(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: RocksDBKeyValueStore.Delete(in KeyBytes)
+  nameWithType.vb: RocksDBKeyValueStore.Delete(ByRef KeyBytes)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: RocksDBKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: RocksDBKeyValueStore.Delete(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*
   name: Delete
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_
@@ -15620,15 +15629,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Dispose
   nameWithType: RocksDBKeyValueStore.Dispose
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(System.Byte[])
-  name: Exists(Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(System.Byte[])
-  name.vb: Exists(Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(System.Byte())
-  nameWithType: RocksDBKeyValueStore.Exists(Byte[])
-  nameWithType.vb: RocksDBKeyValueStore.Exists(Byte())
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name: Exists(in KeyBytes)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Exists(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: RocksDBKeyValueStore.Exists(in KeyBytes)
+  nameWithType.vb: RocksDBKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists*
   name: Exists
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Exists_
@@ -15636,15 +15645,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists
   nameWithType: RocksDBKeyValueStore.Exists
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Byte[])
-  name: Get(Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Byte[])
-  name.vb: Get(Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Byte())
-  nameWithType: RocksDBKeyValueStore.Get(Byte[])
-  nameWithType.vb: RocksDBKeyValueStore.Get(Byte())
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name: Get(in KeyBytes)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Get(ByRef KeyBytes)
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: RocksDBKeyValueStore.Get(in KeyBytes)
+  nameWithType.vb: RocksDBKeyValueStore.Get(ByRef KeyBytes)
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: RocksDBKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: RocksDBKeyValueStore.Get(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get*
   name: Get
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_
@@ -15665,24 +15683,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys
   nameWithType: RocksDBKeyValueStore.ListKeys
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Byte[],System.Byte[])
-  name: Set(Byte[], Byte[])
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Byte___System_Byte___
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Byte[],System.Byte[])
-  name.vb: Set(Byte(), Byte())
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Byte(), System.Byte())
-  nameWithType: RocksDBKeyValueStore.Set(Byte[], Byte[])
-  nameWithType.vb: RocksDBKeyValueStore.Set(Byte(), Byte())
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{System.Byte[],System.Byte[]})
-  name: Set(IDictionary<Byte[], Byte[]>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_System_Byte___System_Byte____
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{System.Byte[],System.Byte[]})
-  name.vb: Set(IDictionary(Of Byte(), Byte()))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<System.Byte[], System.Byte[]>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of System.Byte(), System.Byte()))
-  nameWithType: RocksDBKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name: Set(in KeyBytes, Byte[])
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name.vb: Set(ByRef KeyBytes, Byte())
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  nameWithType: RocksDBKeyValueStore.Set(in KeyBytes, Byte[])
+  nameWithType.vb: RocksDBKeyValueStore.Set(ByRef KeyBytes, Byte())
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: RocksDBKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*
   name: Set
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_
@@ -19196,15 +19214,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.CacheableKeyValueStore
   nameWithType: CacheableKeyValueStore.CacheableKeyValueStore
-- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
-  name: Delete(Byte[])
-  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_System_Byte___
-  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
-  name.vb: Delete(Byte())
-  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(System.Byte())
-  nameWithType: CacheableKeyValueStore.Delete(Byte[])
-  nameWithType.vb: CacheableKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: CacheableKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: CacheableKeyValueStore.Delete(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name: Delete(in KeyBytes)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Delete(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: CacheableKeyValueStore.Delete(in KeyBytes)
+  nameWithType.vb: CacheableKeyValueStore.Delete(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Delete*
   name: Delete
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Delete_
@@ -19225,15 +19252,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Dispose
   nameWithType: CacheableKeyValueStore.Dispose
-- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
-  name: Exists(Byte[])
-  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Exists_System_Byte___
-  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
-  name.vb: Exists(Byte())
-  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(System.Byte())
-  nameWithType: CacheableKeyValueStore.Exists(Byte[])
-  nameWithType.vb: CacheableKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name: Exists(in KeyBytes)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Exists(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: CacheableKeyValueStore.Exists(in KeyBytes)
+  nameWithType.vb: CacheableKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Exists*
   name: Exists
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Exists_
@@ -19241,15 +19268,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Exists
   nameWithType: CacheableKeyValueStore.Exists
-- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
-  name: Get(Byte[])
-  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_System_Byte___
-  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
-  name.vb: Get(Byte())
-  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Get(System.Byte())
-  nameWithType: CacheableKeyValueStore.Get(Byte[])
-  nameWithType.vb: CacheableKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Get(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: CacheableKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: CacheableKeyValueStore.Get(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name: Get(in KeyBytes)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Get(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: CacheableKeyValueStore.Get(in KeyBytes)
+  nameWithType.vb: CacheableKeyValueStore.Get(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Get*
   name: Get
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Get_
@@ -19270,24 +19306,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.CacheableKeyValueStore.ListKeys
   nameWithType: CacheableKeyValueStore.ListKeys
-- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name: Set(IDictionary<Byte[], Byte[]>)
-  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
-  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name.vb: Set(IDictionary(Of Byte(), Byte()))
-  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
-  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
-  nameWithType: CacheableKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  nameWithType.vb: CacheableKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
-- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
-  name: Set(Byte[], Byte[])
-  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_System_Byte___System_Byte___
-  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[],System.Byte[])
-  name.vb: Set(Byte(), Byte())
-  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(System.Byte(), System.Byte())
-  nameWithType: CacheableKeyValueStore.Set(Byte[], Byte[])
-  nameWithType.vb: CacheableKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: CacheableKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: CacheableKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
+- uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name: Set(in KeyBytes, Byte[])
+  href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.Store.Trie.CacheableKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name.vb: Set(ByRef KeyBytes, Byte())
+  fullName: Libplanet.Store.Trie.CacheableKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.CacheableKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  nameWithType: CacheableKeyValueStore.Set(in KeyBytes, Byte[])
+  nameWithType.vb: CacheableKeyValueStore.Set(ByRef KeyBytes, Byte())
 - uid: Libplanet.Store.Trie.CacheableKeyValueStore.Set*
   name: Set
   href: api/Libplanet.Store.Trie.CacheableKeyValueStore.html#Libplanet_Store_Trie_CacheableKeyValueStore_Set_
@@ -19317,15 +19353,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.DefaultKeyValueStore
   nameWithType: DefaultKeyValueStore.DefaultKeyValueStore
-- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
-  name: Delete(Byte[])
-  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_System_Byte___
-  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
-  name.vb: Delete(Byte())
-  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(System.Byte())
-  nameWithType: DefaultKeyValueStore.Delete(Byte[])
-  nameWithType.vb: DefaultKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: DefaultKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: DefaultKeyValueStore.Delete(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name: Delete(in KeyBytes)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Delete(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: DefaultKeyValueStore.Delete(in KeyBytes)
+  nameWithType.vb: DefaultKeyValueStore.Delete(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Delete*
   name: Delete
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Delete_
@@ -19346,15 +19391,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Dispose
   nameWithType: DefaultKeyValueStore.Dispose
-- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
-  name: Exists(Byte[])
-  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Exists_System_Byte___
-  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
-  name.vb: Exists(Byte())
-  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(System.Byte())
-  nameWithType: DefaultKeyValueStore.Exists(Byte[])
-  nameWithType.vb: DefaultKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name: Exists(in KeyBytes)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Exists(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: DefaultKeyValueStore.Exists(in KeyBytes)
+  nameWithType.vb: DefaultKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Exists*
   name: Exists
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Exists_
@@ -19362,15 +19407,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Exists
   nameWithType: DefaultKeyValueStore.Exists
-- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
-  name: Get(Byte[])
-  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_System_Byte___
-  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
-  name.vb: Get(Byte())
-  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Get(System.Byte())
-  nameWithType: DefaultKeyValueStore.Get(Byte[])
-  nameWithType.vb: DefaultKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Get(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: DefaultKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: DefaultKeyValueStore.Get(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name: Get(in KeyBytes)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Get(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: DefaultKeyValueStore.Get(in KeyBytes)
+  nameWithType.vb: DefaultKeyValueStore.Get(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Get*
   name: Get
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Get_
@@ -19391,24 +19445,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.DefaultKeyValueStore.ListKeys
   nameWithType: DefaultKeyValueStore.ListKeys
-- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name: Set(IDictionary<Byte[], Byte[]>)
-  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
-  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name.vb: Set(IDictionary(Of Byte(), Byte()))
-  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
-  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
-  nameWithType: DefaultKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  nameWithType.vb: DefaultKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
-- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
-  name: Set(Byte[], Byte[])
-  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_System_Byte___System_Byte___
-  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[],System.Byte[])
-  name.vb: Set(Byte(), Byte())
-  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(System.Byte(), System.Byte())
-  nameWithType: DefaultKeyValueStore.Set(Byte[], Byte[])
-  nameWithType.vb: DefaultKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: DefaultKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: DefaultKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
+- uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name: Set(in KeyBytes, Byte[])
+  href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.Store.Trie.DefaultKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name.vb: Set(ByRef KeyBytes, Byte())
+  fullName: Libplanet.Store.Trie.DefaultKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.DefaultKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  nameWithType: DefaultKeyValueStore.Set(in KeyBytes, Byte[])
+  nameWithType.vb: DefaultKeyValueStore.Set(ByRef KeyBytes, Byte())
 - uid: Libplanet.Store.Trie.DefaultKeyValueStore.Set*
   name: Set
   href: api/Libplanet.Store.Trie.DefaultKeyValueStore.html#Libplanet_Store_Trie_DefaultKeyValueStore_Set_
@@ -19422,15 +19476,24 @@ references:
   commentId: T:Libplanet.Store.Trie.IKeyValueStore
   fullName: Libplanet.Store.Trie.IKeyValueStore
   nameWithType: IKeyValueStore
-- uid: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
-  name: Delete(Byte[])
-  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_System_Byte___
-  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
-  name.vb: Delete(Byte())
-  fullName: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte())
-  nameWithType: IKeyValueStore.Delete(Byte[])
-  nameWithType.vb: IKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Delete(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: IKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: IKeyValueStore.Delete(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.IKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name: Delete(in KeyBytes)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Delete(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: IKeyValueStore.Delete(in KeyBytes)
+  nameWithType.vb: IKeyValueStore.Delete(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.IKeyValueStore.Delete*
   name: Delete
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Delete_
@@ -19438,15 +19501,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.IKeyValueStore.Delete
   nameWithType: IKeyValueStore.Delete
-- uid: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
-  name: Exists(Byte[])
-  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Exists_System_Byte___
-  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
-  name.vb: Exists(Byte())
-  fullName: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte())
-  nameWithType: IKeyValueStore.Exists(Byte[])
-  nameWithType.vb: IKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name: Exists(in KeyBytes)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Exists(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Exists(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: IKeyValueStore.Exists(in KeyBytes)
+  nameWithType.vb: IKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.IKeyValueStore.Exists*
   name: Exists
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Exists_
@@ -19454,15 +19517,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.IKeyValueStore.Exists
   nameWithType: IKeyValueStore.Exists
-- uid: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
-  name: Get(Byte[])
-  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_System_Byte___
-  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
-  name.vb: Get(Byte())
-  fullName: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte())
-  nameWithType: IKeyValueStore.Get(Byte[])
-  nameWithType.vb: IKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Get(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Get(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: IKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: IKeyValueStore.Get(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.IKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name: Get(in KeyBytes)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Get(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: IKeyValueStore.Get(in KeyBytes)
+  nameWithType.vb: IKeyValueStore.Get(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.IKeyValueStore.Get*
   name: Get
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Get_
@@ -19483,24 +19555,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.IKeyValueStore.ListKeys
   nameWithType: IKeyValueStore.ListKeys
-- uid: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name: Set(IDictionary<Byte[], Byte[]>)
-  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
-  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{System.Byte[],System.Byte[]})
-  name.vb: Set(IDictionary(Of Byte(), Byte()))
-  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
-  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
-  nameWithType: IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  nameWithType.vb: IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
-- uid: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
-  name: Set(Byte[], Byte[])
-  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
-  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[],System.Byte[])
-  name.vb: Set(Byte(), Byte())
-  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte(), System.Byte())
-  nameWithType: IKeyValueStore.Set(Byte[], Byte[])
-  nameWithType.vb: IKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: IKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: IKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
+- uid: Libplanet.Store.Trie.IKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name: Set(in KeyBytes, Byte[])
+  href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.Store.Trie.IKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name.vb: Set(ByRef KeyBytes, Byte())
+  fullName: Libplanet.Store.Trie.IKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.IKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  nameWithType: IKeyValueStore.Set(in KeyBytes, Byte[])
+  nameWithType.vb: IKeyValueStore.Set(ByRef KeyBytes, Byte())
 - uid: Libplanet.Store.Trie.IKeyValueStore.Set*
   name: Set
   href: api/Libplanet.Store.Trie.IKeyValueStore.html#Libplanet_Store_Trie_IKeyValueStore_Set_
@@ -19616,21 +19688,241 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.TryGet
   nameWithType: ITrie.TryGet
+- uid: Libplanet.Store.Trie.KeyBytes
+  name: KeyBytes
+  href: api/Libplanet.Store.Trie.KeyBytes.html
+  commentId: T:Libplanet.Store.Trie.KeyBytes
+  fullName: Libplanet.Store.Trie.KeyBytes
+  nameWithType: KeyBytes
+- uid: Libplanet.Store.Trie.KeyBytes.#ctor(ImmutableArray{System.Byte}@)
+  name: KeyBytes(in ImmutableArray<Byte>)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Store.Trie.KeyBytes.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: KeyBytes(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes(in ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Store.Trie.KeyBytes.KeyBytes(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: KeyBytes.KeyBytes(in ImmutableArray<Byte>)
+  nameWithType.vb: KeyBytes.KeyBytes(ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.Store.Trie.KeyBytes.#ctor(System.Byte[])
+  name: KeyBytes(Byte[])
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_System_Byte___
+  commentId: M:Libplanet.Store.Trie.KeyBytes.#ctor(System.Byte[])
+  name.vb: KeyBytes(Byte())
+  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.Byte())
+  nameWithType: KeyBytes.KeyBytes(Byte[])
+  nameWithType.vb: KeyBytes.KeyBytes(Byte())
+- uid: Libplanet.Store.Trie.KeyBytes.#ctor*
+  name: KeyBytes
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes
+  nameWithType: KeyBytes.KeyBytes
+- uid: Libplanet.Store.Trie.KeyBytes.ByteArray
+  name: ByteArray
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ByteArray
+  commentId: P:Libplanet.Store.Trie.KeyBytes.ByteArray
+  fullName: Libplanet.Store.Trie.KeyBytes.ByteArray
+  nameWithType: KeyBytes.ByteArray
+- uid: Libplanet.Store.Trie.KeyBytes.ByteArray*
+  name: ByteArray
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ByteArray_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.ByteArray
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.ByteArray
+  nameWithType: KeyBytes.ByteArray
+- uid: Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray{System.Byte})
+  name: Equals(ImmutableArray<Byte>)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray{System.Byte})
+  name.vb: Equals(ImmutableArray(Of Byte))
+  fullName: Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray(Of System.Byte))
+  nameWithType: KeyBytes.Equals(ImmutableArray<Byte>)
+  nameWithType.vb: KeyBytes.Equals(ImmutableArray(Of Byte))
+- uid: Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)
+  name: Equals(KeyBytes)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)
+  nameWithType: KeyBytes.Equals(KeyBytes)
+- uid: Libplanet.Store.Trie.KeyBytes.Equals(System.Byte[])
+  name: Equals(Byte[])
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_System_Byte___
+  commentId: M:Libplanet.Store.Trie.KeyBytes.Equals(System.Byte[])
+  name.vb: Equals(Byte())
+  fullName: Libplanet.Store.Trie.KeyBytes.Equals(System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.KeyBytes.Equals(System.Byte())
+  nameWithType: KeyBytes.Equals(Byte[])
+  nameWithType.vb: KeyBytes.Equals(Byte())
+- uid: Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable(Of System.Object))
+  nameWithType: KeyBytes.Equals(Nullable<Object>)
+  nameWithType.vb: KeyBytes.Equals(Nullable(Of Object))
+- uid: Libplanet.Store.Trie.KeyBytes.Equals*
+  name: Equals
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Equals_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.Equals
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.Equals
+  nameWithType: KeyBytes.Equals
+- uid: Libplanet.Store.Trie.KeyBytes.FromHex(System.String)
+  name: FromHex(String)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_FromHex_System_String_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.FromHex(System.String)
+  fullName: Libplanet.Store.Trie.KeyBytes.FromHex(System.String)
+  nameWithType: KeyBytes.FromHex(String)
+- uid: Libplanet.Store.Trie.KeyBytes.FromHex*
+  name: FromHex
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_FromHex_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.FromHex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.FromHex
+  nameWithType: KeyBytes.FromHex
+- uid: Libplanet.Store.Trie.KeyBytes.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_GetHashCode
+  commentId: M:Libplanet.Store.Trie.KeyBytes.GetHashCode
+  fullName: Libplanet.Store.Trie.KeyBytes.GetHashCode()
+  nameWithType: KeyBytes.GetHashCode()
+- uid: Libplanet.Store.Trie.KeyBytes.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_GetHashCode_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.GetHashCode
+  nameWithType: KeyBytes.GetHashCode
+- uid: Libplanet.Store.Trie.KeyBytes.Hex
+  name: Hex
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Hex
+  commentId: P:Libplanet.Store.Trie.KeyBytes.Hex
+  fullName: Libplanet.Store.Trie.KeyBytes.Hex
+  nameWithType: KeyBytes.Hex
+- uid: Libplanet.Store.Trie.KeyBytes.Hex*
+  name: Hex
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Hex_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.Hex
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.Hex
+  nameWithType: KeyBytes.Hex
+- uid: Libplanet.Store.Trie.KeyBytes.Length
+  name: Length
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Length
+  commentId: P:Libplanet.Store.Trie.KeyBytes.Length
+  fullName: Libplanet.Store.Trie.KeyBytes.Length
+  nameWithType: KeyBytes.Length
+- uid: Libplanet.Store.Trie.KeyBytes.Length*
+  name: Length
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_Length_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.Length
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.Length
+  nameWithType: KeyBytes.Length
+- uid: Libplanet.Store.Trie.KeyBytes.op_Equality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)
+  name: Equality(KeyBytes, KeyBytes)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_op_Equality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.op_Equality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.KeyBytes.Equality(Libplanet.Store.Trie.KeyBytes, Libplanet.Store.Trie.KeyBytes)
+  nameWithType: KeyBytes.Equality(KeyBytes, KeyBytes)
+- uid: Libplanet.Store.Trie.KeyBytes.op_Equality*
+  name: Equality
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_op_Equality_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.Equality
+  nameWithType: KeyBytes.Equality
+- uid: Libplanet.Store.Trie.KeyBytes.op_Inequality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)
+  name: Inequality(KeyBytes, KeyBytes)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_op_Inequality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.op_Inequality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)
+  fullName: Libplanet.Store.Trie.KeyBytes.Inequality(Libplanet.Store.Trie.KeyBytes, Libplanet.Store.Trie.KeyBytes)
+  nameWithType: KeyBytes.Inequality(KeyBytes, KeyBytes)
+- uid: Libplanet.Store.Trie.KeyBytes.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_op_Inequality_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.Inequality
+  nameWithType: KeyBytes.Inequality
+- uid: Libplanet.Store.Trie.KeyBytes.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ToByteArray
+  commentId: M:Libplanet.Store.Trie.KeyBytes.ToByteArray
+  fullName: Libplanet.Store.Trie.KeyBytes.ToByteArray()
+  nameWithType: KeyBytes.ToByteArray()
+- uid: Libplanet.Store.Trie.KeyBytes.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ToByteArray_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.ToByteArray
+  nameWithType: KeyBytes.ToByteArray
+- uid: Libplanet.Store.Trie.KeyBytes.ToString
+  name: ToString()
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ToString
+  commentId: M:Libplanet.Store.Trie.KeyBytes.ToString
+  fullName: Libplanet.Store.Trie.KeyBytes.ToString()
+  nameWithType: KeyBytes.ToString()
+- uid: Libplanet.Store.Trie.KeyBytes.ToString*
+  name: ToString
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes_ToString_
+  commentId: Overload:Libplanet.Store.Trie.KeyBytes.ToString
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.KeyBytes.ToString
+  nameWithType: KeyBytes.ToString
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore
   name: MemoryKeyValueStore
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html
   commentId: T:Libplanet.Store.Trie.MemoryKeyValueStore
   fullName: Libplanet.Store.Trie.MemoryKeyValueStore
   nameWithType: MemoryKeyValueStore
-- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(System.Byte[])
-  name: IKeyValueStore.Delete(Byte[])
-  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Delete_System_Byte___
-  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(System.Byte[])
-  name.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(Byte())
-  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(System.Byte())
-  nameWithType: MemoryKeyValueStore.IKeyValueStore.Delete(Byte[])
-  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Delete(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Delete(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: MemoryKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: MemoryKeyValueStore.Delete(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Delete*
+  name: Delete
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Delete_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Delete
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Delete
+  nameWithType: MemoryKeyValueStore.Delete
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Get_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Get(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Get(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: MemoryKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: MemoryKeyValueStore.Get(IEnumerable(Of KeyBytes))
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Get_
+  commentId: Overload:Libplanet.Store.Trie.MemoryKeyValueStore.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Get
+  nameWithType: MemoryKeyValueStore.Get
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(Libplanet.Store.Trie.KeyBytes@)
+  name: IKeyValueStore.Delete(in KeyBytes)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Delete(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Delete(in KeyBytes)
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Delete*
   name: IKeyValueStore.Delete
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Delete_
@@ -19640,15 +19932,15 @@ references:
   fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete
   nameWithType: MemoryKeyValueStore.IKeyValueStore.Delete
   nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Delete
-- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(System.Byte[])
-  name: IKeyValueStore.Exists(Byte[])
-  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Exists_System_Byte___
-  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(System.Byte[])
-  name.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(Byte())
-  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(System.Byte())
-  nameWithType: MemoryKeyValueStore.IKeyValueStore.Exists(Byte[])
-  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(Libplanet.Store.Trie.KeyBytes@)
+  name: IKeyValueStore.Exists(in KeyBytes)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Exists_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Exists(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Exists(in KeyBytes)
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Exists*
   name: IKeyValueStore.Exists
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Exists_
@@ -19658,15 +19950,15 @@ references:
   fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists
   nameWithType: MemoryKeyValueStore.IKeyValueStore.Exists
   nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Exists
-- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(System.Byte[])
-  name: IKeyValueStore.Get(Byte[])
-  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Get_System_Byte___
-  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(System.Byte[])
-  name.vb: Libplanet.Store.Trie.IKeyValueStore.Get(Byte())
-  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(System.Byte())
-  nameWithType: MemoryKeyValueStore.IKeyValueStore.Get(Byte[])
-  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(Libplanet.Store.Trie.KeyBytes@)
+  name: IKeyValueStore.Get(in KeyBytes)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Get(ByRef KeyBytes)
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Get(in KeyBytes)
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Get(ByRef KeyBytes)
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Get*
   name: IKeyValueStore.Get
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Get_
@@ -19693,24 +19985,24 @@ references:
   fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
   nameWithType: MemoryKeyValueStore.IKeyValueStore.ListKeys
   nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.ListKeys
-- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{System.Byte[],System.Byte[]})
-  name: IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_System_Byte___System_Byte____
-  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{System.Byte[],System.Byte[]})
-  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
-  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<System.Byte[], System.Byte[]>)
-  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of System.Byte(), System.Byte()))
-  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(IDictionary<Byte[], Byte[]>)
-  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Byte(), Byte()))
-- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(System.Byte[],System.Byte[])
-  name: IKeyValueStore.Set(Byte[], Byte[])
-  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_System_Byte___System_Byte___
-  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(System.Byte[],System.Byte[])
-  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(Byte(), Byte())
-  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(System.Byte(), System.Byte())
-  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(Byte[], Byte[])
-  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(Byte(), Byte())
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: IKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
+- uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name: IKeyValueStore.Set(in KeyBytes, Byte[])
+  href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
+  commentId: M:Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
+  name.vb: Libplanet.Store.Trie.IKeyValueStore.Set(ByRef KeyBytes, Byte())
+  fullName: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(in Libplanet.Store.Trie.KeyBytes, System.Byte[])
+  fullName.vb: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
+  nameWithType: MemoryKeyValueStore.IKeyValueStore.Set(in KeyBytes, Byte[])
+  nameWithType.vb: MemoryKeyValueStore.Libplanet.Store.Trie.IKeyValueStore.Set(ByRef KeyBytes, Byte())
 - uid: Libplanet.Store.Trie.MemoryKeyValueStore.Libplanet#Store#Trie#IKeyValueStore#Set*
   name: IKeyValueStore.Set
   href: api/Libplanet.Store.Trie.MemoryKeyValueStore.html#Libplanet_Store_Trie_MemoryKeyValueStore_Libplanet_Store_Trie_IKeyValueStore_Set_
