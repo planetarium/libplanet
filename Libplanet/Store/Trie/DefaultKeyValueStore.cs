@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Zio;
@@ -44,37 +45,62 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public byte[] Get(byte[] key)
+        public byte[] Get(in KeyBytes key)
         {
             var path = DataPath(key);
             return _root.FileExists(path)
                 ? _root.ReadAllBytes(path)
-                : throw new KeyNotFoundException("There were no elements that correspond to the" +
-                                                 $" key (hex: {ByteUtil.Hex(key)}).");
+                : throw new KeyNotFoundException($"No such key: {key}.");
+        }
+
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            // We don't optimize this method because it is not used in production.
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            foreach (KeyBytes key in keys)
+            {
+                var path = DataPath(key);
+                if (_root.FileExists(path))
+                {
+                    dictBuilder[key] = _root.ReadAllBytes(path);
+                }
+            }
+
+            return dictBuilder.ToImmutable();
         }
 
         /// <inheritdoc/>
-        public void Set(byte[] key, byte[] value)
+        public void Set(in KeyBytes key, byte[] value)
         {
             var path = DataPath(key);
             _root.WriteAllBytes(path, value);
         }
 
-        public void Set(IDictionary<byte[], byte[]> values)
+        public void Set(IDictionary<KeyBytes, byte[]> values)
         {
-            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
                 Set(kv.Key, kv.Value);
             }
         }
 
         /// <inheritdoc/>
-        public void Delete(byte[] key)
+        public void Delete(in KeyBytes key)
         {
             var path = DataPath(key);
             if (_root.FileExists(path))
             {
                 _root.DeleteFile(path);
+            }
+        }
+
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            foreach (KeyBytes key in keys)
+            {
+                Delete(key);
             }
         }
 
@@ -84,17 +110,15 @@ namespace Libplanet.Store.Trie
         }
 
         /// <inheritdoc/>
-        public bool Exists(byte[] key)
+        public bool Exists(in KeyBytes key)
             => _root.FileExists(DataPath(key));
 
         /// <inheritdoc/>
-        public IEnumerable<byte[]> ListKeys() =>
+        public IEnumerable<KeyBytes> ListKeys() =>
             _root.EnumerateFiles(UPath.Root)
-                .Select(path => ByteUtil.ParseHex(path.GetName()));
+                .Select(path => KeyBytes.FromHex(path.GetName()));
 
-        private UPath DataPath(byte[] key)
-        {
-            return UPath.Root / ByteUtil.Hex(key);
-        }
+        private UPath DataPath(in KeyBytes key) =>
+            UPath.Root / key.Hex;
     }
 }

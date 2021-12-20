@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Libplanet.Store.Trie
 {
@@ -12,66 +13,65 @@ namespace Libplanet.Store.Trie
     /// </summary>
     public sealed class MemoryKeyValueStore : IKeyValueStore
     {
-        private readonly ConcurrentDictionary<byte[], byte[]> _dictionary =
-            new ConcurrentDictionary<byte[], byte[]>(new BytesEqualityComparer());
+        private readonly ConcurrentDictionary<KeyBytes, byte[]> _dictionary =
+            new ConcurrentDictionary<KeyBytes, byte[]>();
 
-        byte[] IKeyValueStore.Get(byte[] key) =>
+        /// <inheritdoc/>
+        byte[] IKeyValueStore.Get(in KeyBytes key) =>
             _dictionary[key];
 
-        void IKeyValueStore.Set(byte[] key, byte[] value) =>
+        /// <inheritdoc cref="IKeyValueStore.Get(IEnumerable{KeyBytes})"/>
+        public IReadOnlyDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys)
+        {
+            var dictBuilder = ImmutableDictionary.CreateBuilder<KeyBytes, byte[]>();
+            foreach (KeyBytes key in keys)
+            {
+                if (_dictionary.TryGetValue(key, out byte[]? value) && value is { } v)
+                {
+                    dictBuilder[key] = v;
+                }
+            }
+
+            return dictBuilder.ToImmutable();
+        }
+
+        /// <inheritdoc/>
+        void IKeyValueStore.Set(in KeyBytes key, byte[] value) =>
             _dictionary[key] = value;
 
-        void IKeyValueStore.Set(IDictionary<byte[], byte[]> values)
+        /// <inheritdoc cref="IKeyValueStore.Set(IDictionary{KeyBytes, byte[]})"/>
+        void IKeyValueStore.Set(IDictionary<KeyBytes, byte[]> values)
         {
-            foreach (KeyValuePair<byte[], byte[]> kv in values)
+            foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
                 _dictionary[kv.Key] = kv.Value;
             }
         }
 
-        void IKeyValueStore.Delete(byte[] key) =>
+        /// <inheritdoc/>
+        void IKeyValueStore.Delete(in KeyBytes key) =>
             _dictionary.TryRemove(key, out _);
 
-        bool IKeyValueStore.Exists(byte[] key) =>
+        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
+        public void Delete(IEnumerable<KeyBytes> keys)
+        {
+            foreach (KeyBytes key in keys)
+            {
+                _dictionary.TryRemove(key, out _);
+            }
+        }
+
+        /// <inheritdoc/>
+        bool IKeyValueStore.Exists(in KeyBytes key) =>
             _dictionary.ContainsKey(key);
 
+        /// <inheritdoc cref="IDisposable.Dispose()"/>
         void IDisposable.Dispose()
         {
             // Method intentionally left empty.
         }
 
-        IEnumerable<byte[]> IKeyValueStore.ListKeys() =>
+        IEnumerable<KeyBytes> IKeyValueStore.ListKeys() =>
             _dictionary.Keys;
-
-        private class BytesEqualityComparer : EqualityComparer<byte[]>
-        {
-            public override bool Equals(byte[]? x, byte[]? y)
-            {
-                if (x is { } xa && y is { } ya)
-                {
-                    if (xa.Length != ya.Length)
-                    {
-                        return false;
-                    }
-
-                    for (int i = 0; i < xa.Length; i++)
-                    {
-                        if (xa[i] != ya[i])
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-
-                return ReferenceEquals(x, y);
-            }
-
-            public override int GetHashCode(byte[] obj)
-            {
-                return 0;
-            }
-        }
     }
 }
