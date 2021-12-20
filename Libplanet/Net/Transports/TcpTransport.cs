@@ -365,10 +365,9 @@ namespace Libplanet.Net.Transports
                 // This exception is thrown on .NET framework when the given peer is invalid.
                 _logger.Error(
                     e,
-                    "ArgumentException occurred during {FName} to {RequestId}. {E}",
+                    "ArgumentException occurred during {FName} to {RequestId}.",
                     nameof(SendMessageWithReplyAsync),
-                    reqId,
-                    e);
+                    reqId);
 
                 // To match with previous implementation, throws TimeoutException when it failed to
                 // find peer to send message.
@@ -379,10 +378,9 @@ namespace Libplanet.Net.Transports
                 // This exception is thrown on .NET core when the given peer is invalid.
                 _logger.Error(
                     e,
-                    "SocketException occurred during {FName} to {Peer}. {E}",
+                    "SocketException occurred during {FName} to {Peer}.",
                     nameof(SendMessageWithReplyAsync),
-                    peer,
-                    e);
+                    peer);
 
                 // To match with previous implementation, throws TimeoutException when it failed to
                 // find peer to send message.
@@ -600,9 +598,8 @@ namespace Libplanet.Net.Transports
 
                     _logger.Error(
                         e,
-                        "Error occurred during {FName}() {E}",
-                        nameof(ReadMessageAsync),
-                        e);
+                        "Error occurred during {FName}().",
+                        nameof(ReadMessageAsync));
                     throw;
                 }
             }
@@ -749,9 +746,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     e,
-                    "Unexpected exception occurred during {FName}(). {E}",
-                    nameof(AcceptAsync),
-                    e);
+                    "Unexpected exception occurred during {FName}().",
+                    nameof(AcceptAsync));
                 throw;
             }
         }
