@@ -1,11 +1,12 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Threading;
@@ -22,6 +23,11 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
+    [SuppressMessage(
+        "ReSharper",
+        "StaticMemberInGenericType",
+        Justification = "Size & DefaultByteArray differ between HashAlgorithm types."
+    )]
     [Serializable]
     public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>
         where T : HashAlgorithm
@@ -36,8 +42,8 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
-        private static readonly ThreadLocal<T> _algorithm;
-        private static readonly byte[] _defaultByteArray;
+        private static readonly ThreadLocal<T> Algorithm;
+        private static readonly ImmutableArray<byte> DefaultByteArray;
 
         private readonly ImmutableArray<byte> _byteArray;
 
@@ -49,10 +55,10 @@ namespace Libplanet
             var exc = new InvalidCastException($"Failed to invoke {methodCall} static method.");
             Func<T> instantiateAlgorithm = Expression.Lambda<Func<T>>(
                 Expression.Coalesce(methodCall, Expression.Throw(Expression.Constant(exc), type))
-            ).Compile()!;
-            _algorithm = new ThreadLocal<T>(instantiateAlgorithm);
-            Size = _algorithm.Value!.HashSize / 8;
-            _defaultByteArray = new byte[Size];
+            ).Compile();
+            Algorithm = new ThreadLocal<T>(instantiateAlgorithm);
+            Size = Algorithm.Value!.HashSize / 8;
+            DefaultByteArray = ImmutableArray.CreateRange(Enumerable.Repeat(default(byte), Size));
         }
 
         /// <summary>
@@ -114,18 +120,8 @@ namespace Libplanet
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    return _defaultByteArray.ToImmutableArray();
-                }
-
-                return _byteArray;
-            }
-        }
+        public ImmutableArray<byte> ByteArray =>
+            _byteArray.IsDefault ? DefaultByteArray : _byteArray;
 
         /// <summary>
         /// Converts a given hexadecimal representation of a digest into
@@ -174,10 +170,55 @@ namespace Libplanet
         /// <param name="input">The bytes to compute its hash.</param>
         /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
         [Pure]
-        public static HashDigest<T> DeriveFrom(IReadOnlyList<byte> input)
+        public static HashDigest<T> DeriveFrom(byte[] input)
         {
-            byte[] hash = _algorithm.Value!.ComputeHash(input is byte[] ba ? ba : input.ToArray());
-            return new HashDigest<T>(hash);
+            byte[] hash = Algorithm.Value!.ComputeHash(input);
+            ImmutableArray<byte> movedImmutableArray =
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref hash);
+            return new HashDigest<T>(movedImmutableArray);
+        }
+
+        /// <summary>
+        /// Computes a hash digest of the algorithm <typeparamref name="T"/> from the given
+        /// <paramref name="input"/> bytes.
+        /// </summary>
+        /// <param name="input">The bytes to compute its hash.</param>
+        /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
+        [Pure]
+        public static HashDigest<T> DeriveFrom(ImmutableArray<byte> input)
+        {
+#if NETSTANDARD2_0
+            byte[] movedArray = Unsafe.As<ImmutableArray<byte>, byte[]>(ref input);
+            return DeriveFrom(movedArray);
+#else
+            return DeriveFrom(input.AsSpan());
+#endif
+        }
+
+        /// <summary>
+        /// Computes a hash digest of the algorithm <typeparamref name="T"/> from the given
+        /// <paramref name="input"/> bytes.
+        /// </summary>
+        /// <param name="input">The bytes to compute its hash.</param>
+        /// <returns>The hash digest derived from <paramref name="input"/>.</returns>
+        [Pure]
+        public static HashDigest<T> DeriveFrom(ReadOnlySpan<byte> input)
+        {
+#if NETSTANDARD2_0
+            var array = new byte[Size];
+            for (int i = 0; i < Size; i++)
+            {
+                array[i] = input[i];
+            }
+
+            return DeriveFrom(array);
+#else
+            var neverReusedBuffer = new byte[Size];
+            Algorithm.Value!.TryComputeHash(input, neverReusedBuffer.AsSpan(), out _);
+            ImmutableArray<byte> movedImmutable =
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref neverReusedBuffer);
+            return new HashDigest<T>(movedImmutable);
+#endif
         }
 
         /// <summary>
@@ -189,9 +230,8 @@ namespace Libplanet
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.IsDefault
-            ? _defaultByteArray
-            : ByteArray.ToArray();
+        public byte[] ToByteArray() =>
+            ByteArray.ToArray();
 
         /// <summary>
         /// Gets a hexadecimal representation of a digest.
