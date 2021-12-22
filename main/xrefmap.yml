@@ -10167,15 +10167,33 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).ByteArray
   nameWithType: HashDigest<T>.ByteArray
   nameWithType.vb: HashDigest(Of T).ByteArray
-- uid: Libplanet.HashDigest`1.DeriveFrom(IReadOnlyList{System.Byte})
-  name: DeriveFrom(IReadOnlyList<Byte>)
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_IReadOnlyList_System_Byte__
-  commentId: M:Libplanet.HashDigest`1.DeriveFrom(IReadOnlyList{System.Byte})
-  name.vb: DeriveFrom(IReadOnlyList(Of Byte))
-  fullName: Libplanet.HashDigest<T>.DeriveFrom(IReadOnlyList<System.Byte>)
-  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(IReadOnlyList(Of System.Byte))
-  nameWithType: HashDigest<T>.DeriveFrom(IReadOnlyList<Byte>)
-  nameWithType.vb: HashDigest(Of T).DeriveFrom(IReadOnlyList(Of Byte))
+- uid: Libplanet.HashDigest`1.DeriveFrom(ImmutableArray{System.Byte})
+  name: DeriveFrom(ImmutableArray<Byte>)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.HashDigest`1.DeriveFrom(ImmutableArray{System.Byte})
+  name.vb: DeriveFrom(ImmutableArray(Of Byte))
+  fullName: Libplanet.HashDigest<T>.DeriveFrom(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(ImmutableArray(Of System.Byte))
+  nameWithType: HashDigest<T>.DeriveFrom(ImmutableArray<Byte>)
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(ImmutableArray(Of Byte))
+- uid: Libplanet.HashDigest`1.DeriveFrom(ReadOnlySpan{System.Byte})
+  name: DeriveFrom(ReadOnlySpan<Byte>)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_ReadOnlySpan_System_Byte__
+  commentId: M:Libplanet.HashDigest`1.DeriveFrom(ReadOnlySpan{System.Byte})
+  name.vb: DeriveFrom(ReadOnlySpan(Of Byte))
+  fullName: Libplanet.HashDigest<T>.DeriveFrom(ReadOnlySpan<System.Byte>)
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(ReadOnlySpan(Of System.Byte))
+  nameWithType: HashDigest<T>.DeriveFrom(ReadOnlySpan<Byte>)
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(ReadOnlySpan(Of Byte))
+- uid: Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
+  name: DeriveFrom(Byte[])
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_System_Byte___
+  commentId: M:Libplanet.HashDigest`1.DeriveFrom(System.Byte[])
+  name.vb: DeriveFrom(Byte())
+  fullName: Libplanet.HashDigest<T>.DeriveFrom(System.Byte[])
+  fullName.vb: Libplanet.HashDigest(Of T).DeriveFrom(System.Byte())
+  nameWithType: HashDigest<T>.DeriveFrom(Byte[])
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(Byte())
 - uid: Libplanet.HashDigest`1.DeriveFrom*
   name: DeriveFrom
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_DeriveFrom_

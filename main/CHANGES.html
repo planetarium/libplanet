@@ -69,6 +69,8 @@
 <ul>
 <li>Replaced <code>HashDigest&lt;T&gt;(ImmutableArray&lt;byte&gt;)</code> constructor with
 <code>HashDigest&lt;T&gt;(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li>Replaced <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> overloaded static
+method with ohter new overloads.  [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
 <li><code>IKeyValueStore</code>'s key type became <code>KeyBytes</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]
 <ul>
 <li>Replaced <code>IKeyValueStore.Get(byte[])</code> method with <code>Get(in KeyBytes)</code>
@@ -94,6 +96,11 @@ method.</li>
 <ul>
 <li>Added <code>KeyBytes</code> readonly struct.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
 <li>Added <code>HashDigest&lt;T&gt;(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li>Added <code>HashDigest&lt;T&gt;.DeriveFrom(byte[])</code> overloaded static method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
+<li>Added <code>HashDigest&lt;T&gt;.DeriveFrom(ImmutableArray&lt;byte&gt;)</code> overloaded static
+method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
+<li>Added <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> overloaded static
+method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
