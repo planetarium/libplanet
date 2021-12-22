@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.Sec;
 using Org.BouncyCastle.Asn1.X9;
@@ -232,7 +233,8 @@ namespace Libplanet.Crypto
         public ImmutableArray<byte> Sign(ImmutableArray<byte> message)
         {
             HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
-            return CryptoConfig.CryptoBackend.Sign(hashed, this).ToImmutableArray();
+            byte[] sig = CryptoConfig.CryptoBackend.Sign(hashed, this);
+            return Unsafe.As<byte[], ImmutableArray<byte>>(ref sig);
         }
 
         /// <summary>

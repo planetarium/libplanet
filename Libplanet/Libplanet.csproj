@@ -105,6 +105,10 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
     <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

@@ -12,6 +12,8 @@ To be released.
 
  -  Replaced `HashDigest<T>(ImmutableArray<byte>)` constructor with
     `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
+ -  Replaced `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
+    method with ohter new overloads.  [[#1680]]
  -  `IKeyValueStore`'s key type became `KeyBytes` (was `byte[]`).  [[#1678]]
      -  Replaced `IKeyValueStore.Get(byte[])` method with `Get(in KeyBytes)`
         method.
@@ -36,6 +38,11 @@ To be released.
 
  -  Added `KeyBytes` readonly struct.  [[#1678]]
  -  Added `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
+ -  Added `HashDigest<T>.DeriveFrom(byte[])` overloaded static method. [[#1680]]
+ -  Added `HashDigest<T>.DeriveFrom(ImmutableArray<byte>)` overloaded static
+    method. [[#1680]]
+ -  Added `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
+    method. [[#1680]]
 
 ### Behavioral changes
 
@@ -49,10 +56,9 @@ To be released.
 
 ### CLI tools
 
-[#1678]: https://github.com/planetarium/libplanet/pull/1678
-
-
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
+[#1678]: https://github.com/planetarium/libplanet/pull/1678
+[#1680]: https://github.com/planetarium/libplanet/pull/1680
 
 
 Version 0.24.1
