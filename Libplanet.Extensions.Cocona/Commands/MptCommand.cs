@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
@@ -13,6 +12,7 @@ using global::Cocona.Help;
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
 using Libplanet.RocksDBStore;
+using Libplanet.Store;
 using Libplanet.Store.Trie;
 
 namespace Libplanet.Extensions.Cocona.Commands
@@ -106,7 +106,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             var codec = new Codec();
             ImmutableDictionary<string, byte[]> decoratedStates = trie.ListAllStates()
                 .ToImmutableDictionary(
-                    pair => Encoding.UTF8.GetString(pair.Key.ToArray()),
+                    pair => StateStoreExtensions.DecodeKey(pair.Key),
                     pair => codec.Encode(pair.Value));
 
             Console.WriteLine(JsonSerializer.Serialize(decoratedStates));
@@ -212,10 +212,8 @@ namespace Libplanet.Extensions.Cocona.Commands
             var trie = new MerkleTrie(
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex));
-            byte[] stateKeyBytes = Encoding.UTF8.GetBytes(stateKey);
-            if (trie.TryGet(
-                stateKeyBytes,
-                out IValue? value) && value is { })
+            KeyBytes stateKeyBytes = StateStoreExtensions.EncodeKey(stateKey);
+            if (trie.TryGet(stateKeyBytes, out IValue? value) && value is { })
             {
                 var codec = new Codec();
                 Console.WriteLine(ByteUtil.Hex(codec.Encode(value)));

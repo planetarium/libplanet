@@ -42,11 +42,11 @@ namespace Libplanet.Tests.Store
             .Add("foo", (Text)"ABC")
             .Add("baz", (Text)"ghi");
 
-        public static byte[] KeyFoo => StateStoreExtensions.KeyEncoding.GetBytes("foo");
+        public static KeyBytes KeyFoo => StateStoreExtensions.EncodeKey("foo");
 
-        public static byte[] KeyBar => StateStoreExtensions.KeyEncoding.GetBytes("bar");
+        public static KeyBytes KeyBar => StateStoreExtensions.EncodeKey("bar");
 
-        public static byte[] KeyBaz => StateStoreExtensions.KeyEncoding.GetBytes("baz");
+        public static KeyBytes KeyBaz => StateStoreExtensions.EncodeKey("baz");
 
         [Theory]
         [MemberData(nameof(StateStores))]

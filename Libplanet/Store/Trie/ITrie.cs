@@ -30,7 +30,7 @@ namespace Libplanet.Store.Trie
         /// <exception cref="System.ArgumentNullException">Thrown when the given
         /// <paramref name="value"/> is <c>null</c>.</exception>
         /// <returns>Returns new updated <see cref="ITrie"/>.</returns>
-        ITrie Set(byte[] key, IValue value);
+        ITrie Set(in KeyBytes key, IValue value);
 
         /// <summary>
         /// Gets the value stored with <paramref name="key"/> in <see cref="Set"/>.
@@ -40,7 +40,7 @@ namespace Libplanet.Store.Trie
         /// <returns>If there is a value corresponded to <paramref name="key"/>,
         /// set <paramref name="value"/> to it and return true. If not, set <paramref name="value"/>
         /// to null and return false.</returns>
-        bool TryGet(byte[] key, out IValue? value);
+        bool TryGet(in KeyBytes key, out IValue? value);
 
         /// <summary>
         /// Cleans up and stores the <see cref="ITrie"/> in storage.

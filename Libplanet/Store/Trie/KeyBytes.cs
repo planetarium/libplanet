@@ -1,6 +1,8 @@
 #nullable enable
 using System;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Libplanet.Store.Trie
 {
@@ -29,6 +31,20 @@ namespace Libplanet.Store.Trie
         public KeyBytes(in ImmutableArray<byte> bytes)
         {
             _byteArray = bytes;
+        }
+
+        /// <summary>
+        /// Creates a new <seealso cref="KeyBytes"/> instance from the given <paramref
+        /// name="string"/>.
+        /// </summary>
+        /// <param name="string">A key string.  This is encoded to bytes.</param>
+        /// <param name="encoding">The text encoding used for the key string.</param>
+        public KeyBytes(string @string, Encoding encoding)
+        {
+            byte[] neverReusedBuffer = encoding.GetBytes(@string);
+            ImmutableArray<byte> movedImmutable =
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref neverReusedBuffer);
+            _byteArray = movedImmutable;
         }
 
         /// <summary>

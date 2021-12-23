@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Store.Trie
             Assert.Empty(merkleTrie.IterateNodes());
 
             merkleTrie = (MerkleTrie)merkleTrie.Set(
-                new byte[] { 0xbe, 0xef, },
+                new KeyBytes(0xbe, 0xef),
                 Dictionary.Empty.Add(GetRandomBytes(32), Null.Value));
             // There are (ShortNode, ValueNode)
             Assert.Equal(2, merkleTrie.IterateNodes().Count());
@@ -62,64 +62,64 @@ namespace Libplanet.Tests.Store.Trie
                 FromString("1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"),
                 trie.Hash
             );
-            Assert.False(trie.TryGet(new byte[] { 0xbe, 0xef }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0x11, 0x22 }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0xaa, 0xbb }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0xbe, 0xef), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x11, 0x22), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0xaa, 0xbb), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
-            trie = trie.Set(new byte[] { 0xbe, 0xef, }, Null.Value);
+            trie = trie.Set(new KeyBytes(0xbe, 0xef), Null.Value);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString("16fc25f43edd0c2d2cb6e3cc3827576e57f4b9e04f8dc3a062c7fe59041f77bd"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out IValue got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out IValue got));
             AssertBencodexEqual(Null.Value, got);
-            Assert.False(trie.TryGet(new byte[] { 0x11, 0x22 }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0xaa, 0xbb }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x11, 0x22), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0xaa, 0xbb), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
-            trie = trie.Set(new byte[] { 0xbe, 0xef }, new Boolean(true));
+            trie = trie.Set(new KeyBytes(0xbe, 0xef), new Boolean(true));
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString("4458796f4092b5ebfc1ffb3989e72edee228501e438080a12dea45591dc66d58"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.False(trie.TryGet(new byte[] { 0x11, 0x22 }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0xaa, 0xbb }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x11, 0x22), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0xaa, 0xbb), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
-            trie = trie.Set(new byte[] { 0x11, 0x22 }, List.Empty);
+            trie = trie.Set(new KeyBytes(0x11, 0x22), List.Empty);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString("ab1359a2497453110a9c658dd3db45f282404fe68d8c8aca30856f395572284c"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(List.Empty, got);
-            Assert.False(trie.TryGet(new byte[] { 0xaa, 0xbb }, out _));
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0xaa, 0xbb), out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
-            trie = trie.Set(new byte[] { 0xaa, 0xbb }, new Text("hello world"));
+            trie = trie.Set(new KeyBytes(0xaa, 0xbb), new Text("hello world"));
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString("abb5759141f7af1c40f1b0993ba60073cf4227900617be9641373e5a097eaa3c"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(List.Empty, got);
-            Assert.True(trie.TryGet(new byte[] { 0xaa, 0xbb }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xaa, 0xbb), out got));
             AssertBencodexEqual(new Text("hello world"), got);
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
             var longText = new Text(string.Join("\n", Range(0, 1000).Select(i => $"long str {i}")));
-            trie = trie.Set(new byte[] { 0xaa, 0xbb }, longText);
+            trie = trie.Set(new KeyBytes(0xaa, 0xbb), longText);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString(commit
@@ -127,15 +127,15 @@ namespace Libplanet.Tests.Store.Trie
                     : "ad9fb53a8f643bd308d7afea57a5d1796d6031b1df95bdd415fa69b44177d155"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(List.Empty, got);
-            Assert.True(trie.TryGet(new byte[] { 0xaa, 0xbb }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xaa, 0xbb), out got));
             AssertBencodexEqual(longText, got);
-            Assert.False(trie.TryGet(new byte[] { 0x12, 0x34 }, out _));
+            Assert.False(trie.TryGet(new KeyBytes(0x12, 0x34), out _));
 
-            trie = trie.Set(new byte[] { 0x12, 0x34 }, Dictionary.Empty);
+            trie = trie.Set(new KeyBytes(0x12, 0x34), Dictionary.Empty);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString(commit
@@ -143,13 +143,13 @@ namespace Libplanet.Tests.Store.Trie
                     : "77d13e9d97033400ad31fcb0441819285b9165f6ea6ae599d85e7d7e24428feb"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(List.Empty, got);
-            Assert.True(trie.TryGet(new byte[] { 0xaa, 0xbb }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xaa, 0xbb), out got));
             AssertBencodexEqual(longText, got);
-            Assert.True(trie.TryGet(new byte[] { 0x12, 0x34 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x12, 0x34), out got));
             AssertBencodexEqual(Dictionary.Empty, got);
 
             List complexList = List.Empty
@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Store.Trie
                         "lst",
                         Range(0, 1000).Select(i => (IValue)new Text($"long str {i}"))))
                 .Add(new List(Range(0, 1000).Select(i => (IValue)new Text($"long str {i}"))));
-            trie = trie.Set(new byte[] { 0x11, 0x22 }, complexList);
+            trie = trie.Set(new KeyBytes(0x11, 0x22), complexList);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString(commit
@@ -169,13 +169,13 @@ namespace Libplanet.Tests.Store.Trie
                     : "586ba0ba5dfe07433b01fbf7611f95832bde07b8dc5669540ef8866f465bbb85"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(complexList, got);
-            Assert.True(trie.TryGet(new byte[] { 0xaa, 0xbb }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xaa, 0xbb), out got));
             AssertBencodexEqual(longText, got);
-            Assert.True(trie.TryGet(new byte[] { 0x12, 0x34 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x12, 0x34), out got));
             AssertBencodexEqual(Dictionary.Empty, got);
 
             Dictionary complexDict = Dictionary.Empty
@@ -192,7 +192,7 @@ namespace Libplanet.Tests.Store.Trie
                         .Add("mnop", (IValue)new Binary("hello world", Encoding.ASCII))
                         .Add("qrst", (IValue)complexList)
                         .Add("uvwx", Dictionary.Empty));
-            trie = trie.Set(new byte[] { 0x12, 0x34 }, complexDict);
+            trie = trie.Set(new KeyBytes(0x12, 0x34), complexDict);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
                 FromString(commit
@@ -200,13 +200,13 @@ namespace Libplanet.Tests.Store.Trie
                     : "4783d18dfc8a2d4d98f722a935e45bd7fc1d0197fb4d33e62f734bfde968af39"),
                 trie.Hash
             );
-            Assert.True(trie.TryGet(new byte[] { 0xbe, 0xef }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xbe, 0xef), out got));
             AssertBencodexEqual(new Boolean(true), got);
-            Assert.True(trie.TryGet(new byte[] { 0x11, 0x22 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x11, 0x22), out got));
             AssertBencodexEqual(complexList, got);
-            Assert.True(trie.TryGet(new byte[] { 0xaa, 0xbb }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0xaa, 0xbb), out got));
             AssertBencodexEqual(longText, got);
-            Assert.True(trie.TryGet(new byte[] { 0x12, 0x34 }, out got));
+            Assert.True(trie.TryGet(new KeyBytes(0x12, 0x34), out got));
             AssertBencodexEqual(complexDict, got);
         }
     }

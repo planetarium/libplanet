@@ -92,7 +92,7 @@ namespace Libplanet.Store.Trie
             Operator.Weave(left, right);
 
         /// <inheritdoc/>
-        public ITrie Set(byte[] key, IValue value)
+        public ITrie Set(in KeyBytes key, IValue value)
         {
             if (value is null)
             {
@@ -102,19 +102,19 @@ namespace Libplanet.Store.Trie
             INode newRootNode = Insert(
                 Root,
                 ImmutableArray<byte>.Empty,
-                ToKey(key).ToImmutableArray(),
+                ToKey(key),
                 new ValueNode(value));
 
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
 
         /// <inheritdoc/>
-        public bool TryGet(byte[] key, out IValue? value)
+        public bool TryGet(in KeyBytes key, out IValue? value)
         {
             return TryGet(
                 Root,
                 ImmutableArray<byte>.Empty,
-                ToKey(key).ToImmutableArray(),
+                ToKey(key),
                 out value);
         }
 
@@ -147,7 +147,7 @@ namespace Libplanet.Store.Trie
                 .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
-        internal IEnumerable<(INode Node, ImmutableArray<byte> Path)> IterateNodes()
+        internal IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
         {
             if (Root is null)
             {
@@ -160,7 +160,7 @@ namespace Libplanet.Store.Trie
             while (queue.Count > 0)
             {
                 (INode node, ImmutableArray<byte> path) = queue.Dequeue();
-                yield return (node, path);
+                yield return (node, new KeyBytes(path));
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -532,23 +532,23 @@ namespace Libplanet.Store.Trie
             return value;
         }
 
-        private byte[] ToKey(byte[] key)
+        private ImmutableArray<byte> ToKey(in KeyBytes key)
         {
-            if (_secure)
-            {
-                SHA256 hasher = SHA256.Create();
-                key = hasher.ComputeHash(key);
-            }
+            var bytes = _secure
+                ? HashDigest<SHA256>.DeriveFrom(key.ByteArray).ByteArray
+                : key.ByteArray;
 
-            var res = new byte[key.Length * 2];
+            ImmutableArray<byte>.Builder res =
+                ImmutableArray.CreateBuilder<byte>(bytes.Length * 2);
+            res.Count = bytes.Length * 2;
             const int lowerBytesMask = 0b00001111;
-            for (var i = 0; i < key.Length; ++i)
+            for (var i = 0; i < bytes.Length; ++i)
             {
-                res[i * 2] = (byte)(key[i] >> 4);
-                res[i * 2 + 1] = (byte)(key[i] & lowerBytesMask);
+                res[i * 2] = (byte)(bytes[i] >> 4);
+                res[i * 2 + 1] = (byte)(bytes[i] & lowerBytesMask);
             }
 
-            return res;
+            return res.MoveToImmutable();
         }
 
         private sealed class OffloadOptions : IOffloadOptions

@@ -25,6 +25,14 @@ To be released.
         `Exists(in KeyBytes)` method.
      -  `IKeyValueStore.ListKeys()` method's return type became
         `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
+ -  `ITrie`'s key type became `KeyBytes` (was `byte[]`).  [[#1689]]
+     -  Replaced `ITrie.Set(byte[], IValue)` method with
+        `Set(in KeyBytes, IValue)` method.
+     -  Replaced `ITrie.TryGet(byte[], out IValue?)` method with
+        `TryGet(in KeyBytes, out IValue?)` method.
+     -  The return type of `MerkleTrieExtensions.ListAllStates()` static method
+        became `IEnumerable<KeyValuePair<KeyBytes, IValue>>` (was
+        `IEnumerable<KeyValuePair<ImmutableArray<byte>, IValue>>`).  [[#1653]]
  -  Added `IKeyValueStore.Get(IEnumerable<KeyBytes>)` method.  [[#1678]]
  -  Added `IKeyValueStore.Delete(IEnumerable<KeyBytes>)` method.  [[#1678]]
  -  `nullable` context enabled for `Peer` and `BoundPeer` classes.  All public
@@ -50,6 +58,8 @@ To be released.
     method. [[#1680]]
  -  Added `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
     method. [[#1680]]
+ -  Added `StateStoreExtensions.EncodeKey()` static method.  [[#1689]]
+ -  Added `StateStoreExtensions.DecodeKey()` static method.  [[#1689]]
 
 ### Behavioral changes
 
@@ -68,6 +78,7 @@ To be released.
 [#1679]: https://github.com/planetarium/libplanet/pull/1679
 [#1680]: https://github.com/planetarium/libplanet/pull/1680
 [#1681]: https://github.com/planetarium/libplanet/pull/1681
+[#1689]: https://github.com/planetarium/libplanet/pull/1689
 
 
 Version 0.24.2

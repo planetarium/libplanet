@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -36,7 +35,7 @@ namespace Libplanet.Tests.Store.Trie
                 {
                     Assert.Equal(
                         states.ContainsKey(address),
-                        trie.TryGet(address.ToByteArray(), out IValue state));
+                        trie.TryGet(new KeyBytes(address.ByteArray), out IValue state));
                     IValue expectedState = states.ContainsKey(address) ? states[address] : null;
                     Assert.Equal(expectedState, state);
                 }
@@ -45,7 +44,7 @@ namespace Libplanet.Tests.Store.Trie
             foreach (var address in addresses)
             {
                 states[address] = (Text)address.ToHex();
-                trie = trie.Set(address.ToByteArray(), states[address]);
+                trie = trie.Set(new KeyBytes(address.ByteArray), states[address]);
                 CheckAddressStates();
             }
         }
@@ -71,12 +70,11 @@ namespace Libplanet.Tests.Store.Trie
                 addresses[i] = new PrivateKey().ToAddress();
                 states[i] = (Binary)TestUtils.GetRandomBytes(128);
 
-                trieA = trieA.Set(addresses[i].ToByteArray(), states[i]);
+                trieA = trieA.Set(new KeyBytes(addresses[i].ByteArray), states[i]);
             }
 
-            byte[] path = TestUtils.GetRandomBytes(32);
+            KeyBytes path = new KeyBytes(TestUtils.GetRandomBytes(32));
             trieA = trieA.Set(path, (Text)"foo");
-            HashDigest<SHA256> rootHash = trieA.Hash;
             Assert.True(trieA.TryGet(path, out IValue stateA));
             Assert.Equal((Text)"foo", stateA);
 
@@ -111,7 +109,7 @@ namespace Libplanet.Tests.Store.Trie
             var committedTrie = trie.Commit();
             Assert.Equal(MerkleTrie.EmptyRootHash, committedTrie.Hash);
 
-            trie = trie.Set(default(Address).ToByteArray(), Dictionary.Empty);
+            trie = trie.Set(new KeyBytes(default(Address).ByteArray), Dictionary.Empty);
             committedTrie = trie.Commit();
             Assert.NotEqual(MerkleTrie.EmptyRootHash, committedTrie.Hash);
         }
@@ -122,10 +120,9 @@ namespace Libplanet.Tests.Store.Trie
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             ITrie trie = new MerkleTrie(keyValueStore);
 
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                _ = trie.Set(new byte[] { 0xbe, 0xef }, null);
-            });
+            Assert.Throws<ArgumentNullException>(
+                () => trie.Set(new KeyBytes(0xbe, 0xef), null)
+            );
         }
     }
 }
