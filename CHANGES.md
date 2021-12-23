@@ -36,6 +36,8 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  Removed `Sender` property from `Messages.TxIds`.  [[#1681]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -64,6 +66,7 @@ To be released.
 [#1678]: https://github.com/planetarium/libplanet/pull/1678
 [#1679]: https://github.com/planetarium/libplanet/pull/1679
 [#1680]: https://github.com/planetarium/libplanet/pull/1680
+[#1681]: https://github.com/planetarium/libplanet/pull/1681
 
 
 Version 0.24.2
