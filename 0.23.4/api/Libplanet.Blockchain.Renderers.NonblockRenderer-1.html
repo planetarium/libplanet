@@ -1,0 +1,521 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class NonblockRenderer&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class NonblockRenderer&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1">
+  
+  
+  <h1 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1" class="text-break">Class NonblockRenderer&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Decorates a <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> instance and lets all rendering events be
+non-blocking.</p>
+<p>Every method call on the renderer will immediately return and the rendering
+will be performed in a background thread.  Note that the order of render events is
+still guaranteed.  In other words, a later event never arrives before events earlier
+than it.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">NonblockRenderer&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockActionRenderer-1.html">NonblockActionRenderer&lt;T&gt;</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</div>
+    <div><span class="xref">IDisposable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class NonblockRenderer&lt;T&gt; : object, IRenderer&lt;T&gt;, IDisposable where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match to
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>As rendering events become performed in a background thread instead of the main
+thread, some graphics/UI drawings might be disallowed.  In such case, communicate with the
+main thread through <a href="https://devblogs.microsoft.com/dotnet/an-introduction-to-system-threading-channels/">producer/consumer channels</a>.</p>
+</div>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_examples"><strong>Examples</strong></h5>
+  <pre><code>IRenderer&lt;ExampleAction> renderer = new SomeRenderer();
+// Wraps the renderer with NonblockRenderer; the SomeRenderer instance becomes to receive
+// event messages in NonblockRenderer&apos;s backround thread:
+renderer = new NonblockRenderer&lt;ExampleAction>(
+   renderer,
+   queue: 1024,
+   fullFallback: droppedEvent => ShowError(&quot;Too many rendering events in a short time.&quot;));
+/// ...
+// Should be disposed when no longer needed:
+renderer.Dispose();</code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Int32_Libplanet_Blockchain_Renderers_NonblockRenderer__0__FullFallback_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CSystem.Int32%2CLibplanet.Blockchain.Renderers.NonblockRenderer%7B%600%7D.FullFallback)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Int32_Libplanet_Blockchain_Renderers_NonblockRenderer__0__FullFallback_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Int32,Libplanet.Blockchain.Renderers.NonblockRenderer{`0}.FullFallback)">NonblockRenderer(IRenderer&lt;T&gt;, Int32, NonblockRenderer&lt;T&gt;.FullFallback)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.html">NonblockRenderer&lt;T&gt;</a> decorating the given
+<code data-dev-comment-type="paramref" class="paramref">renderer</code> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NonblockRenderer(IRenderer&lt;T&gt; renderer, int queueSize, NonblockRenderer&lt;T&gt;.FullFallback fullFallback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</td>
+        <td><span class="parametername">renderer</span></td>
+        <td><p>The renderer to decorate which has the <em>actual</em>
+implementations and receives events in a background thread.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">queueSize</span></td>
+        <td><p>The size of the internal event queue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullFallback.html">NonblockRenderer.FullFallback</a>&lt;&gt;</td>
+        <td><span class="parametername">fullFallback</span></td>
+        <td><p>Specifies the custom behavior when the internal event
+queue is full so that no more event can be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Int32_Libplanet_Blockchain_Renderers_NonblockRenderer__0__FullMode_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.%23ctor(Libplanet.Blockchain.Renderers.IRenderer%7B%600%7D%2CSystem.Int32%2CLibplanet.Blockchain.Renderers.NonblockRenderer%7B%600%7D.FullMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1__ctor_Libplanet_Blockchain_Renderers_IRenderer__0__System_Int32_Libplanet_Blockchain_Renderers_NonblockRenderer__0__FullMode_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.#ctor(Libplanet.Blockchain.Renderers.IRenderer{`0},System.Int32,Libplanet.Blockchain.Renderers.NonblockRenderer{`0}.FullMode)">NonblockRenderer(IRenderer&lt;T&gt;, Int32, NonblockRenderer&lt;T&gt;.FullMode)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.html">NonblockRenderer&lt;T&gt;</a> decorating the given
+<code data-dev-comment-type="paramref" class="paramref">renderer</code> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NonblockRenderer(IRenderer&lt;T&gt; renderer, int queueSize, NonblockRenderer&lt;T&gt;.FullMode fullMode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</td>
+        <td><span class="parametername">renderer</span></td>
+        <td><p>The renderer to decorate which has the <em>actual</em>
+implementations and receives events in a background thread.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">queueSize</span></td>
+        <td><p>The size of the internal event queue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullMode.html">NonblockRenderer.FullMode</a>&lt;&gt;</td>
+        <td><span class="parametername">fullMode</span></td>
+        <td><p>Specifies the behavior when the internal event queue is full so
+that no more event can be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_Renderer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.Renderer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L160">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Renderer_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Renderer*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Renderer" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Renderer">Renderer</h4>
+  <div class="markdown level1 summary"><p>The inner renderer which has the <em>actual</em> implementations and receives events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRenderer&lt;T&gt; Renderer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L163">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Dispose_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Dispose*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Dispose" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_Queue_System_Action_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.Queue(System.Action)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L202">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Queue_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Queue*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_Queue_System_Action_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.Queue(System.Action)">Queue(System.Action)</h4>
+  <div class="markdown level1 summary"><p>Queues the callback to be executed in the worker thread.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Queue(System.Action action)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">System.Action</a></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>The callback to be executed in the worker thread.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.RenderBlock(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L187">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderBlock_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderBlock(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right after a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> is appended to
+a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> (so that its <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a> has changed).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderBlock(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td><p>The previous <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td><p>The current <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is guaranteed to be called only once for a block, and only after applied to
+the blockchain, unless it has been stale due to reorg (for that case, <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</a> is called in advance).</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.RenderReorg(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L191">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorg(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right before reorg happens to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderReorg(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, Block&lt;T&gt; branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a> right before reorg.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a> after reorg.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td><p>The highest common <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> between
+<code data-dev-comment-type="paramref" class="paramref">oldTip</code> and <code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>For every call to this method, calls to
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> and
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderReorgEnd(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</a> methods with the same
+<code data-dev-comment-type="paramref" class="paramref">newTip</code> is made too.  Note that this method is guaranteed to be called
+before <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> method for the same
+<code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.RenderReorgEnd(Libplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L195">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd*"></a>
+  <h4 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.RenderReorgEnd(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})">RenderReorgEnd(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right after reorg happens to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RenderReorgEnd(Block&lt;T&gt; oldTip, Block&lt;T&gt; newTip, Block&lt;T&gt; branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">oldTip</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a> right before reorg.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">newTip</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip">Tip</a> after reorg.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td><p>The highest common <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> between
+<code data-dev-comment-type="paramref" class="paramref">oldTip</code> and <code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_RenderReorgEnd_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that this method is guaranteed to be called after
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderReorg_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderReorg(Block&lt;T&gt;, Block&lt;T&gt;, Block&lt;T&gt;)</a> and
+<a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html#Libplanet_Blockchain_Renderers_IRenderer_1_RenderBlock_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__">RenderBlock(Block&lt;T&gt;, Block&lt;T&gt;)</a> methods for the same
+<code data-dev-comment-type="paramref" class="paramref">newTip</code>.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/71c7eeeb6d480193897abfaf5f12d3594a6ed507/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/71c7eeeb6d480193897abfaf5f12d3594a6ed507/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L41" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
