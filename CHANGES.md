@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.23.4
 --------------
 
-To be released.
+Released on December 24, 2021.
 
  -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
     they had thrown `ThreadStateException` when any render events occured after
