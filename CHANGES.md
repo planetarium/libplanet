@@ -4,8 +4,11 @@ Libplanet changelog
 Version 0.24.2
 --------------
 
-To be released.
+Released on December 24, 2021.
 
+ -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
+    they had thrown `ThreadStateException` when any render events occured after
+    disposed.  [[#1682]]
  -  Log output compacted by removing duplicate exception messages.
     [[#1632], [#1677]]
 
@@ -61,6 +64,18 @@ Released on December 16, 2021.
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
 [#1661]: https://github.com/planetarium/libplanet/pull/1661
 [#1669]: https://github.com/planetarium/libplanet/pull/1669
+
+
+Version 0.23.4
+--------------
+
+Released on December 24, 2021.
+
+ -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
+    they had thrown `ThreadStateException` when any render events occured after
+    disposed.  [[#1682]]
+
+[#1682]: https://github.com/planetarium/libplanet/pull/1682
 
 
 Version 0.23.3
