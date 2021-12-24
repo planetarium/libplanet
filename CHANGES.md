@@ -6,6 +6,12 @@ Version 0.23.4
 
 To be released.
 
+ -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
+    they had thrown `ThreadStateException` when any render events occured after
+    disposed.  [[#1682]]
+
+[#1682]: https://github.com/planetarium/libplanet/pull/1682
+
 
 Version 0.23.3
 --------------
