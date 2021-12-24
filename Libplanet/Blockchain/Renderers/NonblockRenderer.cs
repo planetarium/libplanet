@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Channels;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Serilog;
 
 namespace Libplanet.Blockchain.Renderers
 {
@@ -40,12 +41,14 @@ namespace Libplanet.Blockchain.Renderers
     public class NonblockRenderer<T> : IRenderer<T>, IDisposable
         where T : IAction, new()
     {
+        private readonly ILogger _logger;
         private readonly Channel<System.Action> _channel;
         private readonly ChannelWriter<System.Action> _writer;
         private readonly ChannelReader<System.Action> _reader;
         private readonly FullFallback? _fullFallback;
         private readonly Thread _worker;
         private readonly object _workerLock = new object();
+        private (string StackTrace, DateTimeOffset Time)? _disposedContext;
 
         /// <summary>
         /// Creates a new instance of <see cref="NonblockRenderer{T}"/> decorating the given
@@ -99,6 +102,7 @@ namespace Libplanet.Blockchain.Renderers
             FullFallback? fullFallback = null
         )
         {
+            _logger = Log.ForContext(GetType());
             Renderer = renderer;
             _channel = Channel.CreateBounded<System.Action>(new BoundedChannelOptions(queue)
             {
@@ -123,6 +127,7 @@ namespace Libplanet.Blockchain.Renderers
             {
                 IsBackground = true,
             };
+            _disposedContext = null;
         }
 
         /// <summary>
@@ -157,6 +162,20 @@ namespace Libplanet.Blockchain.Renderers
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
+            if (_disposedContext is { } ctx)
+            {
+                _logger.Error(
+                    "Disposing more than once is disallowed.  It was already disposed at " +
+                    "{DisposedTime}.  See also the previously disposed stack trace:\n\n" +
+                    "{DisposedStackTrace}",
+                    ctx.Time,
+                    ctx.StackTrace
+                );
+                return;
+            }
+
+            _disposedContext = (Environment.StackTrace, DateTimeOffset.Now);
+
             _channel.Writer.Complete();
             if (_worker.IsAlive)
             {
@@ -187,13 +206,25 @@ namespace Libplanet.Blockchain.Renderers
                 _fullFallback?.Invoke(action);
             }
 
+            if (_disposedContext is { } ctx)
+            {
+                _logger.Error(
+                    "Render events are dropped as this renderer is already disposed at " +
+                    "{DisposedTime}.  See also the previously disposed stack trace:\n\n" +
+                    "{DisposedStackTrace}",
+                    ctx.Time,
+                    ctx.StackTrace
+                );
+                return;
+            }
+
             if (!_worker.IsAlive)
             {
                 // ↑ To avoid entering the below lock at all except of the first time,
                 // checks one more time if the worker is alive before we try to lock.
                 lock (_workerLock)
                 {
-                    if (!_worker.IsAlive)
+                    if (!_worker.IsAlive && _disposedContext is null)
                     {
                         _worker.Start();
                     }

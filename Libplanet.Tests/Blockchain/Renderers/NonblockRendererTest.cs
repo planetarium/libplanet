@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Blockchain.Renderers;
@@ -23,6 +24,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static Block<DumbAction> _blockB =
             TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
 
+        [SuppressMessage(
+            "SonarQube",
+            "S3966",
+            Justification = "Tests if it is fine with double disposing."
+        )]
         [RetryFact]
         public void Test()
         {
@@ -54,8 +60,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     log.Add($"ReorgEnd({oldTip.Index}, {newTip.Index}, {branchpoint.Index})");
                 },
             };
-            using (var renderer = new NonblockRenderer<DumbAction>(
-                innerRenderer, 3, NonblockRenderer<DumbAction>.FullMode.DropNewest))
+            var renderer = new NonblockRenderer<DumbAction>(
+                    innerRenderer, 3, NonblockRenderer<DumbAction>.FullMode.DropNewest);
+            using (renderer)
             {
                 DateTimeOffset start = DateTimeOffset.UtcNow;
                 renderer.RenderReorg(_blockA, _blockB, _genesis);
@@ -81,6 +88,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 },
                 log
             );
+
+            // Any render events after disposed are dropped.
+            log.Clear();
+            renderer.RenderReorg(_blockB, _blockA, _genesis);
+            Assert.Empty(log);
+
+            // Double disposing does nothing.
+            renderer.Dispose();
         }
     }
 }
