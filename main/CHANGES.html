@@ -111,6 +111,15 @@ method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0242">Version 0.24.2</h2>
+<p>Released on December 24, 2021.</p>
+<ul>
+<li>Fixed a bug of <code>NonblockRenderer&lt;T&gt;</code> and <code>NonblockActionRenderer&lt;T&gt;</code> where
+they had thrown <code>ThreadStateException</code> when any render events occured after
+disposed.  [<a href="https://github.com/planetarium/libplanet/pull/1682">#1682</a>]</li>
+<li>Log output compacted by removing duplicate exception messages.
+[<a href="https://github.com/planetarium/libplanet/issues/1632">#1632</a>, <a href="https://github.com/planetarium/libplanet/pull/1677">#1677</a>]</li>
+</ul>
 <h2 id="version-0241">Version 0.24.1</h2>
 <p>Released on December 16, 2021.</p>
 <ul>
@@ -153,6 +162,13 @@ it is expired or ignored.</li>
 <ul>
 <li>Fixed a bug where <code>TxCompletion</code> had broadcasted invalid transactions.
 [<a href="https://github.com/planetarium/libplanet/pull/1661">#1661</a>]</li>
+</ul>
+<h2 id="version-0234">Version 0.23.4</h2>
+<p>Released on December 24, 2021.</p>
+<ul>
+<li>Fixed a bug of <code>NonblockRenderer&lt;T&gt;</code> and <code>NonblockActionRenderer&lt;T&gt;</code> where
+they had thrown <code>ThreadStateException</code> when any render events occured after
+disposed.  [<a href="https://github.com/planetarium/libplanet/pull/1682">#1682</a>]</li>
 </ul>
 <h2 id="version-0233">Version 0.23.3</h2>
 <p>Released on December 13, 2021.</p>
