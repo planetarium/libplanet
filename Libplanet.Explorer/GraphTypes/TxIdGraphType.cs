@@ -5,9 +5,9 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class TxIdType : IdGraphType
+    public class TxIdGraphType : IdGraphType
     {
-        public TxIdType()
+        public TxIdGraphType()
         {
             Name = "Id";
         }

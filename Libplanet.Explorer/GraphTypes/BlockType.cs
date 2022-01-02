@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BlockType()
         {
-            Field(x => x.Hash, type: typeof(NonNullGraphType<BlockHashType>));
+            Field(x => x.Hash, type: typeof(NonNullGraphType<BlockHashIdGraphType>));
             Field(x => x.Index);
             Field(x => x.Difficulty);
             Field(x => x.TotalDifficulty);

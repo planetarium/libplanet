@@ -6,9 +6,9 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class BlockHashType : IdGraphType
+    public class BlockHashIdGraphType : IdGraphType
     {
-        public BlockHashType()
+        public BlockHashIdGraphType()
         {
             Name = "BlockHash";
         }
