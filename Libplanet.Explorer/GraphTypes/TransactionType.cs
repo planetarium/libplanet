@@ -15,7 +15,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType()
         {
-            Field(x => x.Id, type: typeof(NonNullGraphType<IdGraphType>));
+            Field(x => x.Id, type: typeof(NonNullGraphType<TxIdType>));
             Field(x => x.Nonce);
             Field(x => x.Signer, type: typeof(NonNullGraphType<AddressType>));
             Field<NonNullGraphType<ByteStringType>>(

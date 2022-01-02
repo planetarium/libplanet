@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using GraphQL;
+using GraphQL.Execution;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -53,28 +54,32 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
 
             ExecutionResult result =
                 await ExecuteQueryAsync<BlockType<NullAction>>(query, source: block);
-            Dictionary<string, object> resultData = (Dictionary<string, object>)result.Data;
+            Dictionary<string, object> resultData =
+                (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);
-            Assert.Equal(block.Index, resultData["index"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.Hash.ToByteArray()),
-                resultData["hash"]);
-            Assert.Equal(block.Difficulty, resultData["difficulty"]);
-            Assert.Equal(
-                block.TotalDifficulty,
-                resultData["totalDifficulty"]);
-            Assert.Equal(
-                block.Miner.ToString(),
-                resultData["miner"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.Nonce.ToByteArray()),
-                resultData["nonce"]);
-            Assert.Equal(
-                new DateTimeOffsetGraphType().Serialize(block.Timestamp),
-                resultData["timestamp"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.StateRootHash.ToByteArray()),
-                resultData["stateRootHash"]);
+            if (resultData != null)
+            {
+                Assert.Equal(block.Index, resultData["index"]);
+                Assert.Equal(
+                    ByteUtil.Hex(block.Hash.ToByteArray()),
+                    resultData["hash"]);
+                Assert.Equal(block.Difficulty, resultData["difficulty"]);
+                Assert.Equal(
+                    block.TotalDifficulty,
+                    resultData["totalDifficulty"]);
+                Assert.Equal(
+                    block.Miner.ToString(),
+                    resultData["miner"]);
+                Assert.Equal(
+                    ByteUtil.Hex(block.Nonce.ToByteArray()),
+                    resultData["nonce"]);
+                Assert.Equal(
+                    new DateTimeOffsetGraphType().Serialize(block.Timestamp),
+                    resultData["timestamp"]);
+                Assert.Equal(
+                    ByteUtil.Hex(block.StateRootHash.ToByteArray()),
+                    resultData["stateRootHash"]);
+            }
         }
     }
 }

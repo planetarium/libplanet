@@ -49,8 +49,8 @@
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="GraphQL" Version="3.0.0" />
-    <PackageReference Include="GraphQL.SystemTextJson" Version="3.0.0" />
+    <PackageReference Include="GraphQL" Version="4.7.0" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="4.7.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
