@@ -69,8 +69,6 @@
 <ul>
 <li>Replaced <code>HashDigest&lt;T&gt;(ImmutableArray&lt;byte&gt;)</code> constructor with
 <code>HashDigest&lt;T&gt;(in ImmutableArray&lt;byte&gt;)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
-<li>Replaced <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> overloaded static
-method with ohter new overloads.  [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
 <li><code>IKeyValueStore</code>'s key type became <code>KeyBytes</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]
 <ul>
 <li>Replaced <code>IKeyValueStore.Get(byte[])</code> method with <code>Get(in KeyBytes)</code>
@@ -89,6 +87,15 @@ method.</li>
 </li>
 <li>Added <code>IKeyValueStore.Get(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
 <li>Added <code>IKeyValueStore.Delete(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
+<li><code>nullable</code> context enabled for <code>Peer</code> and <code>BoundPeer</code> classes.  All public
+constructors now explicitly take non-nullable parameters.  [<a href="https://github.com/planetarium/libplanet/pull/1679">#1679</a>]
+<ul>
+<li>All publicly accessibe properties of <code>Peer</code> and <code>BoundPeer</code> are
+now non-nullable except for <code>Peer.PublicIPAddress</code>.</li>
+</ul>
+</li>
+<li>Replaced <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> overloaded static
+method with ohter new overloads.  [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
