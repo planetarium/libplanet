@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -41,10 +42,10 @@ namespace Libplanet.Net
         internal BoundPeer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            IPAddress publicIPAddress)
+            IPAddress? publicIPAddress)
         : base(publicKey, publicIPAddress)
         {
-            EndPoint = endPoint ?? throw new ArgumentNullException(nameof(endPoint));
+            EndPoint = endPoint;
         }
 
         private BoundPeer(SerializationInfo info, StreamingContext context)

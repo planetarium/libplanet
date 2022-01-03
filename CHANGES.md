@@ -12,8 +12,6 @@ To be released.
 
  -  Replaced `HashDigest<T>(ImmutableArray<byte>)` constructor with
     `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
- -  Replaced `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
-    method with ohter new overloads.  [[#1680]]
  -  `IKeyValueStore`'s key type became `KeyBytes` (was `byte[]`).  [[#1678]]
      -  Replaced `IKeyValueStore.Get(byte[])` method with `Get(in KeyBytes)`
         method.
@@ -29,6 +27,12 @@ To be released.
         `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
  -  Added `IKeyValueStore.Get(IEnumerable<KeyBytes>)` method.  [[#1678]]
  -  Added `IKeyValueStore.Delete(IEnumerable<KeyBytes>)` method.  [[#1678]]
+ -  `nullable` context enabled for `Peer` and `BoundPeer` classes.  All public
+    constructors now explicitly take non-nullable parameters.  [[#1679]]
+     -  All publicly accessibe properties of `Peer` and `BoundPeer` are
+        now non-nullable except for `Peer.PublicIPAddress`.
+ -  Replaced `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
+    method with ohter new overloads.  [[#1680]]
 
 ### Backward-incompatible network protocol changes
 
@@ -58,6 +62,7 @@ To be released.
 
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
 [#1678]: https://github.com/planetarium/libplanet/pull/1678
+[#1679]: https://github.com/planetarium/libplanet/pull/1679
 [#1680]: https://github.com/planetarium/libplanet/pull/1680
 
 
