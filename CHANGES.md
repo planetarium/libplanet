@@ -37,9 +37,13 @@ To be released.
 
 ### CLI tools
 
+  - Added `planet store migrate-index` for index database migration.
+    (from column families based to key-prefix)  [[#1838]]
+
 [#1828]: https://github.com/planetarium/libplanet/issues/1828
 [#1831]: https://github.com/planetarium/libplanet/pull/1831
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
+[#1838]: https://github.com/planetarium/libplanet/pull/1838
 
 
 Version 0.28.1
