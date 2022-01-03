@@ -36,7 +36,8 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  Removed `Sender` property from `Messages.TxIds`.  [[#1681]]
+ -  Removed `Sender` property from `Messages.TxIds` and `Messages.TxIds`'s
+    `MessageType` value bumped to `0x31`.  [[#1681]]
 
 ### Backward-incompatible storage format changes
 
