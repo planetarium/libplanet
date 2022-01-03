@@ -1305,7 +1305,7 @@ namespace Libplanet.Net
 
         private void BroadcastTxIds(Address? except, IEnumerable<TxId> txIds)
         {
-            var message = new TxIds(Address, txIds);
+            var message = new TxIds(txIds);
             BroadcastMessage(except, message);
         }
 
