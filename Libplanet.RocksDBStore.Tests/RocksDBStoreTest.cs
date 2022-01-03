@@ -103,6 +103,18 @@ namespace Libplanet.RocksDBStore.Tests
             }
         }
 
+        [Fact]
+        public void Test()
+        {
+            var store = new RocksDBStore("/home/longfin/data");
+            var cid = store.GetCanonicalChainId().Value;
+            var count = store.CountIndex(cid);
+            var firstTen = store.IterateIndexes(cid, 0, 10).ToList();
+            var lastTen = store.IterateIndexes(cid, (int)(count - 10L), 10).ToList();
+
+            Assert.True(count > 0);
+        }
+
         [SkippableFact]
         public void ParallelGetTransaction()
         {

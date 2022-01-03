@@ -183,6 +183,121 @@ namespace Libplanet.RocksDBStore
             });
         }
 
+        public static void MigrateChainDBFromColumnFamilies(string path)
+        {
+            var opt = new DbOptions();
+            opt.SetCreateIfMissing();
+            List<string> cfns = RocksDb.ListColumnFamilies(opt, path).ToList();
+            var cfs = new ColumnFamilies();
+            foreach (string name in cfns)
+            {
+                cfs.Add(name, opt);
+            }
+
+            if (cfs.Count() == 1)
+            {
+                // Already migrated.
+                return;
+            }
+
+            var tmpDbPath = Path.GetDirectoryName(path) + ".tmp";
+            RocksDb db = RocksDb.Open(opt, path, cfs);
+            RocksDb newDb = RocksDb.Open(opt, tmpDbPath);
+            var ccid = new Guid(db.Get(CanonicalChainIdIdKey));
+            newDb.Put(CanonicalChainIdIdKey, ccid.ToByteArray());
+            ColumnFamilyHandle ccf = db.GetColumnFamily(ccid.ToString());
+            var batch = new WriteBatch();
+
+            // Migrate chain indexes
+            (ColumnFamilyHandle, long)? PreviousColumnFamily(ColumnFamilyHandle cfh)
+            {
+                byte[] cid = db.Get(PreviousChainIdKeyPrefix, cfh);
+
+                if (cid is null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return (
+                        db.GetColumnFamily(new Guid(cid).ToString()),
+                        RocksDBStoreBitConverter.ToInt64(db.Get(PreviousChainIndexKeyPrefix, cfh))
+                    );
+                }
+            }
+
+            void CopyIndexes(ColumnFamilyHandle cfh, long? limit)
+            {
+                Iterator it = db.NewIterator(cfh);
+                for (
+                    it.Seek(IndexKeyPrefix);
+                    it.Valid() && it.Key().StartsWith(IndexKeyPrefix);
+                    it.Next()
+                )
+                {
+                    long index = RocksDBStoreBitConverter.ToInt64(it.Key().Skip(1).ToArray());
+                    if (index > limit)
+                    {
+                        continue;
+                    }
+
+                    batch.Put(IndexKey(ccid, it.Key()), it.Value());
+
+                    if (batch.Count() > 10000)
+                    {
+                        newDb.Write(batch);
+                        batch.Clear();
+                    }
+                }
+
+            }
+
+            CopyIndexes(ccf, null);
+            var cfInfo = PreviousColumnFamily(ccf);
+            while (cfInfo is { } cfInfoNotNull)
+            {
+                ColumnFamilyHandle cf = cfInfoNotNull.Item1;
+                long cfi = cfInfoNotNull.Item2;
+
+                CopyIndexes(cf, cfi);
+
+                cfInfo = PreviousColumnFamily(cf);
+            }
+
+            newDb.Write(batch);
+            batch.Clear();
+
+            // Migrate total count & chain ID
+            long prevCount = RocksDBStoreBitConverter.ToInt64(
+                db.Get(IndexCountKeyPrefix, ccf)
+            );
+            newDb.Put(
+                IndexCountKey(ccid),
+                RocksDBStoreBitConverter.GetBytes(prevCount)
+            );
+            newDb.Put(ChainIdKey(ccid), ccid.ToByteArray());
+
+            // Migrate tx nonces
+            Iterator it = db.NewIterator(ccf);
+            for (
+                it.Seek(TxNonceKeyPrefix);
+                it.Valid() && it.Key().StartsWith(TxNonceKeyPrefix);
+                it.Next()
+            )
+            {
+                batch.Put(TxNonceKey(ccid, it.Key().Skip(1).ToArray()), it.Value());
+            }
+
+            newDb.Write(batch);
+            batch.Dispose();
+
+            // Remove column families
+            db.Dispose();
+            newDb.Dispose();
+            Directory.Delete(path, true);
+            Directory.Move(tmpDbPath, path);
+        }
+
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
@@ -995,33 +1110,57 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        private byte[] BlockKey(in BlockHash blockHash) =>
+        private static byte[] DeletedChainKey(Guid chainId)
+            => DeletedKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] PreviousChainIndexKey(Guid chainId)
+            => PreviousChainIndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] PreviousChainIdKey(Guid chainId)
+            => PreviousChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] IndexKey(Guid chainId)
+            => IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] IndexKey(Guid chainId, byte[] indexBytes)
+            => IndexKey(chainId).Concat(indexBytes).ToArray();
+
+        private static byte[] IndexCountKey(Guid chainId)
+            => IndexCountKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] ChainIdKey(Guid chainId)
+            => ChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
+
+        private static byte[] BlockKey(in BlockHash blockHash) =>
             BlockKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
-        private byte[] TxKey(in TxId txId) =>
+        private static byte[] TxKey(in TxId txId) =>
             TxKeyPrefix.Concat(txId.ByteArray).ToArray();
 
-        private byte[] TxNonceKey(Guid chainId)
+        private static byte[] TxNonceKey(Guid chainId)
             => TxNonceKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
 
-        private byte[] TxNonceKey(Guid chainId, Address address)
-            => TxNonceKey(chainId).Concat(address.ToByteArray()).ToArray();
+        private static byte[] TxNonceKey(Guid chainId, Address address)
+            => TxNonceKey(chainId, address.ToByteArray());
 
-        private byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
+        private static byte[] TxNonceKey(Guid chainId, byte[] addressBytes)
+            => TxNonceKey(chainId).Concat(addressBytes).ToArray();
+
+        private static byte[] TxExecutionKey(in BlockHash blockHash, in TxId txId) =>
 
             // As BlockHash is not fixed size, place TxId first.
             TxExecutionKeyPrefix.Concat(txId.ByteArray).Concat(blockHash.ByteArray).ToArray();
 
-        private byte[] TxExecutionKey(TxExecution txExecution) =>
+        private static byte[] TxExecutionKey(TxExecution txExecution) =>
             TxExecutionKey(txExecution.BlockHash, txExecution.TxId);
 
-        private byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
+        private static byte[] TxIdBlockHashIndexKey(in TxId txId, in BlockHash blockHash) =>
             TxIdBlockHashIndexTxIdKey(txId).Concat(blockHash.ByteArray).ToArray();
 
-        private byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
+        private static byte[] TxIdBlockHashIndexTxIdKey(in TxId txId) =>
             TxIdBlockHashIndexPrefix.Concat(txId.ByteArray).ToArray();
 
-        private byte[] ForkedChainsKey(Guid chainId, Guid forkedChainId) =>
+        private static byte[] ForkedChainsKey(Guid chainId, Guid forkedChainId) =>
             ForkedChainsKeyPrefix
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
@@ -1192,26 +1331,5 @@ namespace Libplanet.RocksDBStore
 
         private bool IsDeletionMarked(Guid chainId)
             => _chainDb.Get(DeletedChainKey(chainId)) is { };
-
-        private byte[] DeletedChainKey(Guid chainId)
-            => DeletedKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] PreviousChainIndexKey(Guid chainId)
-            => PreviousChainIndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] PreviousChainIdKey(Guid chainId)
-            => PreviousChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] IndexKey(Guid chainId)
-            => IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] IndexKey(Guid chainId, byte[] indexBytes)
-            => IndexKey(chainId).Concat(indexBytes).ToArray();
-
-        private byte[] IndexCountKey(Guid chainId)
-            => IndexCountKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-
-        private byte[] ChainIdKey(Guid chainId)
-            => ChainIdKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
     }
 }
