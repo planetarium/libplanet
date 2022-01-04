@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Libplanet.Net.Protocols
@@ -17,7 +18,7 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// The number of buckets in the table.
         /// </summary>
-        public const int TableSize = Address.Size * sizeof(byte) * 8;
+        public const int TableSize = Address.Size * 8;
 
         /// <summary>
         /// The number of concurrency in peer discovery.
@@ -30,43 +31,44 @@ namespace Libplanet.Net.Protocols
         public const int MaxDepth = 3;
 
         /// <summary>
-        /// Calculates xor distance between two address.
+        /// Calculates the xor distance between two <see cref="Address"/>es.
         /// </summary>
-        /// <param name="left">First element to calculate distance.</param>
-        /// <param name="right">Second element to calculate distance.</param>
-        /// <returns>Distance between two addresses in <see cref="Address"/>.</returns>
+        /// <param name="left">The first element to calculate the distance.</param>
+        /// <param name="right">The second element to calculate the distance.</param>
+        /// <returns>The distance between two <see cref="Address"/>es.</returns>
         public static Address CalculateDistance(Address left, Address right)
         {
-            var dba = new byte[Address.Size];
-            var aba = left.ToByteArray();
-            var bba = right.ToByteArray();
+            ImmutableArray<byte> lba = left.ByteArray;
+            ImmutableArray<byte> rba = right.ByteArray;
+            byte[] dba = new byte[Address.Size];
 
-            for (var i = 0; i < Address.Size; i++)
+            for (int i = 0; i < Address.Size; i++)
             {
-                dba[i] = (byte)(aba[i] ^ bba[i]);
+                dba[i] = (byte)(lba[i] ^ rba[i]);
             }
 
             return new Address(dba);
         }
 
         /// <summary>
-        /// Calculates length of common prefix length
-        /// by finding the index of first bit of xor value.
+        /// Calculates the length of the common prefix between two <see cref="Address"/>es
+        /// by finding the index of the first non-zero bit of the xor between the two.
         /// </summary>
-        /// <param name="left">First element to calculate common prefix length.</param>
-        /// <param name="right">Second element to calculate common prefix length.</param>
-        /// <returns>Length of the common prefix length.</returns>
+        /// <param name="left">The first element to calculate the common prefix length.</param>
+        /// <param name="right">The second element to calculate the common prefix length.</param>
+        /// <returns>The length of the common prefix between <paramref name="left"/> and
+        /// <paramref name="right"/>.</returns>
         public static int CommonPrefixLength(Address left, Address right)
         {
-            Address distance = CalculateDistance(left, right);
-            var length = 0;
+            ImmutableArray<byte> bytes = CalculateDistance(left, right).ByteArray;
+            int length = 0;
 
-            foreach (var x in distance.ToByteArray())
+            foreach (byte b in bytes)
             {
-                var mask = 1 << 7;
-                while (length < 160 && mask != 0)
+                int mask = 1 << 7;
+                while (mask != 0)
                 {
-                    if ((mask & x) != 0)
+                    if ((mask & b) != 0)
                     {
                         return length;
                     }

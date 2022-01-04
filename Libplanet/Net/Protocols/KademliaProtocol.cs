@@ -20,11 +20,9 @@ namespace Libplanet.Net.Protocols
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
         private readonly Address _address;
-
         private readonly Random _random;
         private readonly RoutingTable _table;
         private readonly int _findConcurrency;
-
         private readonly ILogger _logger;
 
         /// <summary>
@@ -154,7 +152,7 @@ namespace Libplanet.Net.Protocols
                     }
                 }
 
-                _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
+                _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
                 await Task.WhenAll(tasks);
                 _logger.Verbose("Update complete.");
             }
@@ -655,21 +653,19 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            var findPeer = new FindNeighbors(target);
+            var findPeer = new Messages.FindNeighbors(target);
             try
             {
                 Message reply = await _transport.SendMessageWithReplyAsync(
                     addressee,
                     findPeer,
                     timeout,
-                    cancellationToken
-                );
-                if (!(reply is Neighbors neighbors))
+                    cancellationToken);
+                if (!(reply is Messages.Neighbors neighbors))
                 {
                     throw new InvalidMessageException(
-                        $"Reply to {nameof(FindNeighbors)} is invalid.",
-                        reply
-                    );
+                        $"Reply to {nameof(Messages.FindNeighbors)} is invalid.",
+                        reply);
                 }
 
                 return neighbors.Found;
@@ -790,14 +786,14 @@ namespace Libplanet.Net.Protocols
             }
 
             var findPeerTasks = new List<Task>();
-            Peer closestKnown = closestCandidate.FirstOrDefault();
+            BoundPeer closestKnownPeer = closestCandidate.FirstOrDefault();
             var count = 0;
             foreach (var peer in peers)
             {
-                if (!(closestKnown is null) &&
+                if (closestKnownPeer is { } ckp &&
                    string.CompareOrdinal(
                        Kademlia.CalculateDistance(peer.Address, target).ToHex(),
-                       Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
+                       Kademlia.CalculateDistance(ckp.Address, target).ToHex()
                    ) >= 1)
                 {
                     break;
@@ -836,12 +832,12 @@ namespace Libplanet.Net.Protocols
 
         // FIXME: this method is not safe from amplification attack
         // maybe ping/pong/ping/pong is required
-        private async Task ReceiveFindPeerAsync(FindNeighbors findNeighbors)
+        private async Task ReceiveFindPeerAsync(Messages.FindNeighbors findNeighbors)
         {
             IEnumerable<BoundPeer> found =
                 _table.Neighbors(findNeighbors.Target, _table.BucketSize, true);
 
-            Neighbors neighbors = new Neighbors(found)
+            Messages.Neighbors neighbors = new Messages.Neighbors(found)
             {
                 Identity = findNeighbors.Identity,
             };
