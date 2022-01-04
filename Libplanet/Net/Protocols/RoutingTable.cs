@@ -177,12 +177,12 @@ namespace Libplanet.Net.Protocols
         /// Returns <paramref name="k"/> nearest peers to given parameter peer from routing table.
         /// Return value is already sorted with respect to target.
         /// </summary>
-        /// <param name="target"><see cref="Peer"/> to look up.</param>
+        /// <param name="target"><see cref="BoundPeer"/> to look up.</param>
         /// <param name="k">Number of peers to return.</param>
         /// <param name="includeTarget">A boolean value indicates to include a peer with
         /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
         /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
-        public IReadOnlyList<BoundPeer> Neighbors(Peer target, int k, bool includeTarget)
+        public IReadOnlyList<BoundPeer> Neighbors(BoundPeer target, int k, bool includeTarget)
         {
             return Neighbors(target.Address, k, includeTarget);
         }

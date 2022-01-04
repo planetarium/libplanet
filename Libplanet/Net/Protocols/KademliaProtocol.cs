@@ -503,8 +503,12 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            // Should we update peer status for non-protocol related messages? (i.e. BlockHashes)
-            Update(message.Remote);
+            if (message.Remote is BoundPeer peer)
+            {
+                // Should we update peer status for non-protocol related messages?
+                // (i.e. BlockHashes)
+                Update(peer);
+            }
         }
 
         /// <summary>
@@ -540,24 +544,19 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Updates routing table when receiving a message. If corresponding bucket
-        /// for remote peer is not full, just adds given <paramref name="rawPeer"/>.
-        /// Otherwise, checks aliveness of the least recently used (LRU) peer
-        /// and determine evict LRU peer or discard given <paramref name="rawPeer"/>.
+        /// Updates routing table when receiving a message.
         /// </summary>
-        /// <param name="rawPeer"><see cref="Peer"/> to update.</param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when <paramref name="rawPeer"/> is <c>null</c>.
-        /// </exception>
-        private void Update(Peer rawPeer)
+        /// <param name="peer"><see cref="BoundPeer"/> to update.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/>
+        /// is <c>null</c>.</exception>
+        private void Update(BoundPeer peer)
         {
-            _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", rawPeer);
-            if (rawPeer is null)
+            _logger.Verbose($"Try to {nameof(Update)}() {{Peer}}.", peer);
+            if (peer is null)
             {
-                throw new ArgumentNullException(nameof(rawPeer));
+                throw new ArgumentNullException(nameof(peer));
             }
-
-            if (rawPeer is BoundPeer peer)
+            else
             {
                 // Don't update peer without endpoint or with different appProtocolVersion.
                 _table.AddPeer(peer);
