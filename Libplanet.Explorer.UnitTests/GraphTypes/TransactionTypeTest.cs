@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Execution;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -38,7 +39,8 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
 
             ExecutionResult result =
                 await ExecuteQueryAsync<TransactionType<NullAction>>(query, source: transaction);
-            Dictionary<string, object> resultData = (Dictionary<string, object>)result.Data;
+            Dictionary<string, object> resultData =
+                (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);
             Assert.Equal(transaction.Id.ToHex(), resultData["id"]);
             Assert.Equal(

@@ -30,7 +30,9 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         [InlineData("beef", new byte[] { 0xbe, 0xef })]
         public void ParseLiteral(string stringValue, object parsed)
         {
-            Assert.Equal(parsed, _type.ParseLiteral(new StringValue(stringValue)));
+            var actual =
+                stringValue is { } v ? _type.ParseLiteral(new StringValue(v)) : null;
+            Assert.Equal(parsed, actual);
         }
 
         [Fact]
