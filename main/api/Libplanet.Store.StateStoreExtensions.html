@@ -94,7 +94,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CIImmutableDictionary%7BSystem.String%2CIValue%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L56">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_Commit_" data-uid="Libplanet.Store.StateStoreExtensions.Commit*"></a>
   <h4 id="Libplanet_Store_StateStoreExtensions_Commit_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableDictionary_System_String_IValue__" data-uid="Libplanet.Store.StateStoreExtensions.Commit(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableDictionary{System.String,IValue})">Commit(IStateStore, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, IImmutableDictionary&lt;String, IValue&gt;)</h4>
@@ -159,7 +159,7 @@ the <code data-dev-comment-type="paramref" class="paramref">rawStatesDelta</code
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L100">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot*"></a>
   <h4 id="Libplanet_Store_StateStoreExtensions_ContainsStateRoot_Libplanet_Store_IStateStore_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.StateStoreExtensions.ContainsStateRoot(Libplanet.Store.IStateStore,Libplanet.HashDigest{SHA256})">ContainsStateRoot(IStateStore, HashDigest&lt;SHA256&gt;)</h4>
@@ -214,10 +214,110 @@ otherwise, <code>false</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_DecodeKey_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L34">View Source</a>
+  </span>
+  <a id="Libplanet_Store_StateStoreExtensions_DecodeKey_" data-uid="Libplanet.Store.StateStoreExtensions.DecodeKey*"></a>
+  <h4 id="Libplanet_Store_StateStoreExtensions_DecodeKey_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes@)">DecodeKey(in KeyBytes)</h4>
+  <div class="markdown level1 summary"><p>Decodes internal <code data-dev-comment-type="paramref" class="paramref">keyBytes</code> into a raw state key string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string DecodeKey(in KeyBytes keyBytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">keyBytes</span></td>
+        <td><p>The key bytes to decode.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A decoded raw state key string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_EncodeKey_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L26">View Source</a>
+  </span>
+  <a id="Libplanet_Store_StateStoreExtensions_EncodeKey_" data-uid="Libplanet.Store.StateStoreExtensions.EncodeKey*"></a>
+  <h4 id="Libplanet_Store_StateStoreExtensions_EncodeKey_System_String_" data-uid="Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)">EncodeKey(String)</h4>
+  <div class="markdown level1 summary"><p>Encodes a raw state key string to internal bytes representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static KeyBytes EncodeKey(string key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The raw state key to encode.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><p>An encoded key bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore%2CSystem.String%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StateStoreExtensions.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Store_StateStoreExtensions_GetState_" data-uid="Libplanet.Store.StateStoreExtensions.GetState*"></a>
   <h4 id="Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___" data-uid="Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})">GetState(IStateStore, String, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>

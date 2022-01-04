@@ -85,6 +85,17 @@ method.</li>
 <code>IEnumerable&lt;KeyBytes&gt;</code> (was <code>IEnumerable&lt;byte[]&gt;</code>).</li>
 </ul>
 </li>
+<li><code>ITrie</code>'s key type became <code>KeyBytes</code> (was <code>byte[]</code>).  [<a href="https://github.com/planetarium/libplanet/pull/1689">#1689</a>]
+<ul>
+<li>Replaced <code>ITrie.Set(byte[], IValue)</code> method with
+<code>Set(in KeyBytes, IValue)</code> method.</li>
+<li>Replaced <code>ITrie.TryGet(byte[], out IValue?)</code> method with
+<code>TryGet(in KeyBytes, out IValue?)</code> method.</li>
+<li>The return type of <code>MerkleTrieExtensions.ListAllStates()</code> static method
+became <code>IEnumerable&lt;KeyValuePair&lt;KeyBytes, IValue&gt;&gt;</code> (was
+<code>IEnumerable&lt;KeyValuePair&lt;ImmutableArray&lt;byte&gt;, IValue&gt;&gt;</code>).  [<a href="https://github.com/planetarium/libplanet/issues/1653">#1653</a>]</li>
+</ul>
+</li>
 <li>Added <code>IKeyValueStore.Get(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
 <li>Added <code>IKeyValueStore.Delete(IEnumerable&lt;KeyBytes&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1678">#1678</a>]</li>
 <li><code>nullable</code> context enabled for <code>Peer</code> and <code>BoundPeer</code> classes.  All public
@@ -112,6 +123,8 @@ method with ohter new overloads.  [<a href="https://github.com/planetarium/libpl
 method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
 <li>Added <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> overloaded static
 method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]</li>
+<li>Added <code>StateStoreExtensions.EncodeKey()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1689">#1689</a>]</li>
+<li>Added <code>StateStoreExtensions.DecodeKey()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1689">#1689</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

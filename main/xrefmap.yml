@@ -19156,6 +19156,35 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StateStoreExtensions.ContainsStateRoot
   nameWithType: StateStoreExtensions.ContainsStateRoot
+- uid: Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes@)
+  name: DecodeKey(in KeyBytes)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_DecodeKey_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.StateStoreExtensions.DecodeKey(Libplanet.Store.Trie.KeyBytes@)
+  name.vb: DecodeKey(ByRef KeyBytes)
+  fullName: Libplanet.Store.StateStoreExtensions.DecodeKey(in Libplanet.Store.Trie.KeyBytes)
+  fullName.vb: Libplanet.Store.StateStoreExtensions.DecodeKey(ByRef Libplanet.Store.Trie.KeyBytes)
+  nameWithType: StateStoreExtensions.DecodeKey(in KeyBytes)
+  nameWithType.vb: StateStoreExtensions.DecodeKey(ByRef KeyBytes)
+- uid: Libplanet.Store.StateStoreExtensions.DecodeKey*
+  name: DecodeKey
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_DecodeKey_
+  commentId: Overload:Libplanet.Store.StateStoreExtensions.DecodeKey
+  isSpec: "True"
+  fullName: Libplanet.Store.StateStoreExtensions.DecodeKey
+  nameWithType: StateStoreExtensions.DecodeKey
+- uid: Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
+  name: EncodeKey(String)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_EncodeKey_System_String_
+  commentId: M:Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
+  fullName: Libplanet.Store.StateStoreExtensions.EncodeKey(System.String)
+  nameWithType: StateStoreExtensions.EncodeKey(String)
+- uid: Libplanet.Store.StateStoreExtensions.EncodeKey*
+  name: EncodeKey
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_EncodeKey_
+  commentId: Overload:Libplanet.Store.StateStoreExtensions.EncodeKey
+  isSpec: "True"
+  fullName: Libplanet.Store.StateStoreExtensions.EncodeKey
+  nameWithType: StateStoreExtensions.EncodeKey
 - uid: Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})
   name: GetState(IStateStore, String, Nullable<HashDigest<SHA256>>)
   href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___
@@ -19674,15 +19703,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Recorded
   nameWithType: ITrie.Recorded
-- uid: Libplanet.Store.Trie.ITrie.Set(System.Byte[],IValue)
-  name: Set(Byte[], IValue)
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_System_Byte___IValue_
-  commentId: M:Libplanet.Store.Trie.ITrie.Set(System.Byte[],IValue)
-  name.vb: Set(Byte(), IValue)
-  fullName: Libplanet.Store.Trie.ITrie.Set(System.Byte[], IValue)
-  fullName.vb: Libplanet.Store.Trie.ITrie.Set(System.Byte(), IValue)
-  nameWithType: ITrie.Set(Byte[], IValue)
-  nameWithType.vb: ITrie.Set(Byte(), IValue)
+- uid: Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)
+  name: Set(in KeyBytes, IValue)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_
+  commentId: M:Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)
+  name.vb: Set(ByRef KeyBytes, IValue)
+  fullName: Libplanet.Store.Trie.ITrie.Set(in Libplanet.Store.Trie.KeyBytes, IValue)
+  fullName.vb: Libplanet.Store.Trie.ITrie.Set(ByRef Libplanet.Store.Trie.KeyBytes, IValue)
+  nameWithType: ITrie.Set(in KeyBytes, IValue)
+  nameWithType.vb: ITrie.Set(ByRef KeyBytes, IValue)
 - uid: Libplanet.Store.Trie.ITrie.Set*
   name: Set
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_
@@ -19690,15 +19719,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Set
   nameWithType: ITrie.Set
-- uid: Libplanet.Store.Trie.ITrie.TryGet(System.Byte[],System.Nullable{IValue}@)
-  name: TryGet(Byte[], out Nullable<IValue>)
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_System_Byte___System_Nullable_IValue___
-  commentId: M:Libplanet.Store.Trie.ITrie.TryGet(System.Byte[],System.Nullable{IValue}@)
-  name.vb: TryGet(Byte(), ByRef Nullable(Of IValue))
-  fullName: Libplanet.Store.Trie.ITrie.TryGet(System.Byte[], out System.Nullable<IValue>)
-  fullName.vb: Libplanet.Store.Trie.ITrie.TryGet(System.Byte(), ByRef System.Nullable(Of IValue))
-  nameWithType: ITrie.TryGet(Byte[], out Nullable<IValue>)
-  nameWithType.vb: ITrie.TryGet(Byte(), ByRef Nullable(Of IValue))
+- uid: Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
+  name: TryGet(in KeyBytes, out Nullable<IValue>)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___
+  commentId: M:Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
+  name.vb: TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
+  fullName: Libplanet.Store.Trie.ITrie.TryGet(in Libplanet.Store.Trie.KeyBytes, out System.Nullable<IValue>)
+  fullName.vb: Libplanet.Store.Trie.ITrie.TryGet(ByRef Libplanet.Store.Trie.KeyBytes, ByRef System.Nullable(Of IValue))
+  nameWithType: ITrie.TryGet(in KeyBytes, out Nullable<IValue>)
+  nameWithType.vb: ITrie.TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
 - uid: Libplanet.Store.Trie.ITrie.TryGet*
   name: TryGet
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_
@@ -19730,6 +19759,12 @@ references:
   fullName.vb: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.Byte())
   nameWithType: KeyBytes.KeyBytes(Byte[])
   nameWithType.vb: KeyBytes.KeyBytes(Byte())
+- uid: Libplanet.Store.Trie.KeyBytes.#ctor(System.String,Encoding)
+  name: KeyBytes(String, Encoding)
+  href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_System_String_Encoding_
+  commentId: M:Libplanet.Store.Trie.KeyBytes.#ctor(System.String,Encoding)
+  fullName: Libplanet.Store.Trie.KeyBytes.KeyBytes(System.String, Encoding)
+  nameWithType: KeyBytes.KeyBytes(String, Encoding)
 - uid: Libplanet.Store.Trie.KeyBytes.#ctor*
   name: KeyBytes
   href: api/Libplanet.Store.Trie.KeyBytes.html#Libplanet_Store_Trie_KeyBytes__ctor_
@@ -20123,15 +20158,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Recorded
   nameWithType: MerkleTrie.Recorded
-- uid: Libplanet.Store.Trie.MerkleTrie.Set(System.Byte[],IValue)
-  name: Set(Byte[], IValue)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_System_Byte___IValue_
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.Set(System.Byte[],IValue)
-  name.vb: Set(Byte(), IValue)
-  fullName: Libplanet.Store.Trie.MerkleTrie.Set(System.Byte[], IValue)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.Set(System.Byte(), IValue)
-  nameWithType: MerkleTrie.Set(Byte[], IValue)
-  nameWithType.vb: MerkleTrie.Set(Byte(), IValue)
+- uid: Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)
+  name: Set(in KeyBytes, IValue)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)
+  name.vb: Set(ByRef KeyBytes, IValue)
+  fullName: Libplanet.Store.Trie.MerkleTrie.Set(in Libplanet.Store.Trie.KeyBytes, IValue)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.Set(ByRef Libplanet.Store.Trie.KeyBytes, IValue)
+  nameWithType: MerkleTrie.Set(in KeyBytes, IValue)
+  nameWithType.vb: MerkleTrie.Set(ByRef KeyBytes, IValue)
 - uid: Libplanet.Store.Trie.MerkleTrie.Set*
   name: Set
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Set_
@@ -20139,15 +20174,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Set
   nameWithType: MerkleTrie.Set
-- uid: Libplanet.Store.Trie.MerkleTrie.TryGet(System.Byte[],System.Nullable{IValue}@)
-  name: TryGet(Byte[], out Nullable<IValue>)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_TryGet_System_Byte___System_Nullable_IValue___
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.TryGet(System.Byte[],System.Nullable{IValue}@)
-  name.vb: TryGet(Byte(), ByRef Nullable(Of IValue))
-  fullName: Libplanet.Store.Trie.MerkleTrie.TryGet(System.Byte[], out System.Nullable<IValue>)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.TryGet(System.Byte(), ByRef System.Nullable(Of IValue))
-  nameWithType: MerkleTrie.TryGet(Byte[], out Nullable<IValue>)
-  nameWithType.vb: MerkleTrie.TryGet(Byte(), ByRef Nullable(Of IValue))
+- uid: Libplanet.Store.Trie.MerkleTrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
+  name: TryGet(in KeyBytes, out Nullable<IValue>)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
+  name.vb: TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
+  fullName: Libplanet.Store.Trie.MerkleTrie.TryGet(in Libplanet.Store.Trie.KeyBytes, out System.Nullable<IValue>)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.TryGet(ByRef Libplanet.Store.Trie.KeyBytes, ByRef System.Nullable(Of IValue))
+  nameWithType: MerkleTrie.TryGet(in KeyBytes, out Nullable<IValue>)
+  nameWithType.vb: MerkleTrie.TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
 - uid: Libplanet.Store.Trie.MerkleTrie.TryGet*
   name: TryGet
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_TryGet_
