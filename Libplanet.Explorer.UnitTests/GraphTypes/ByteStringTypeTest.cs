@@ -31,7 +31,7 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
         public void ParseLiteral(string stringValue, object parsed)
         {
             var actual =
-                stringValue != null ? _type.ParseLiteral(new StringValue(stringValue)) : null;
+                stringValue is { } v ? _type.ParseLiteral(new StringValue(v)) : null;
             Assert.Equal(parsed, actual);
         }
 

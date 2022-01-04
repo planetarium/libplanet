@@ -42,19 +42,16 @@ namespace Libplanet.Explorer.UnitTests.GraphTypes
             Dictionary<string, object> resultData =
                 (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);
-            if (resultData != null)
-            {
-                Assert.Equal(transaction.Id.ToHex(), resultData["id"]);
-                Assert.Equal(
-                    ByteUtil.Hex(transaction.PublicKey.Format(true)),
-                    resultData["publicKey"]);
-                Assert.Equal(transaction.Signer.ToString(), resultData["signer"]);
-                Assert.Equal(ByteUtil.Hex(transaction.Signature), resultData["signature"]);
-                Assert.Equal(transaction.Nonce, resultData["nonce"]);
-                Assert.Equal(
-                    new DateTimeOffsetGraphType().Serialize(transaction.Timestamp),
-                    resultData["timestamp"]);
-            }
+            Assert.Equal(transaction.Id.ToHex(), resultData["id"]);
+            Assert.Equal(
+                ByteUtil.Hex(transaction.PublicKey.Format(true)),
+                resultData["publicKey"]);
+            Assert.Equal(transaction.Signer.ToString(), resultData["signer"]);
+            Assert.Equal(ByteUtil.Hex(transaction.Signature), resultData["signature"]);
+            Assert.Equal(transaction.Nonce, resultData["nonce"]);
+            Assert.Equal(
+                new DateTimeOffsetGraphType().Serialize(transaction.Timestamp),
+                resultData["timestamp"]);
         }
     }
 }
