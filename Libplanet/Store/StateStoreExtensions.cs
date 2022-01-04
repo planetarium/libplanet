@@ -19,6 +19,31 @@ namespace Libplanet.Store
         internal static readonly Encoding KeyEncoding = Encoding.UTF8;
 
         /// <summary>
+        /// Encodes a raw state key string to internal bytes representation.
+        /// </summary>
+        /// <param name="key">The raw state key to encode.</param>
+        /// <returns>An encoded key bytes.</returns>
+        public static KeyBytes EncodeKey(string key) =>
+            new KeyBytes(key, KeyEncoding);
+
+        /// <summary>
+        /// Decodes internal <paramref name="keyBytes"/> into a raw state key string.
+        /// </summary>
+        /// <param name="keyBytes">The key bytes to decode.</param>
+        /// <returns>A decoded raw state key string.</returns>
+        public static string DecodeKey(in KeyBytes keyBytes)
+        {
+            ImmutableArray<byte> immutableBytes = keyBytes.ByteArray;
+#if NETSTANDARD2_0
+            byte[] neverChangedBytes = System.Runtime.CompilerServices.Unsafe
+                .As<ImmutableArray<byte>, byte[]>(ref immutableBytes);
+            return KeyEncoding.GetString(neverChangedBytes);
+#else
+            return KeyEncoding.GetString(immutableBytes.AsSpan());
+#endif
+        }
+
+        /// <summary>
         /// Records <paramref name="rawStatesDelta"/> which is based on the previous state
         /// root, and returns the new state root.
         /// </summary>
@@ -37,8 +62,7 @@ namespace Libplanet.Store
             ITrie trie = stateStore.GetStateRoot(previousStateRootHash);
             foreach (KeyValuePair<string, IValue> pair in rawStatesDelta)
             {
-                byte[] keyBytes = KeyEncoding.GetBytes(pair.Key);
-                trie = trie.Set(keyBytes, pair.Value);
+                trie = trie.Set(EncodeKey(pair.Key), pair.Value);
             }
 
             ITrie stage = trie.Commit();
@@ -60,9 +84,8 @@ namespace Libplanet.Store
             HashDigest<SHA256>? stateRootHash
         )
         {
-            byte[] keyBytes = KeyEncoding.GetBytes(rawStateKey);
             ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            return trie.TryGet(keyBytes, out IValue? value) ? value : null;
+            return trie.TryGet(EncodeKey(rawStateKey), out IValue? value) ? value : null;
         }
 
         /// <summary>

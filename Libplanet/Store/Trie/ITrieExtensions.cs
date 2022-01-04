@@ -1,5 +1,7 @@
-using System.Collections.Immutable;
-using System.Text;
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie
@@ -7,21 +9,34 @@ namespace Libplanet.Store.Trie
     // FIXME: As it's not an interface, it should be renamed to TrieExtensions.
     internal static class ITrieExtensions
     {
-        public static ITrie Set(this ITrie trie, IImmutableDictionary<byte[], IValue> values)
+        public static ITrie Set(this ITrie trie, IEnumerable<KeyValuePair<KeyBytes, IValue?>> pairs)
         {
-            foreach (var pair in values)
+            foreach (var pair in pairs)
             {
-                trie = trie.Set(pair.Key, pair.Value);
+                if (pair.Value is { } v)
+                {
+                    trie = trie.Set(pair.Key, v);
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "Unsetting states is not supported yet.  " +
+                        "See also: https://github.com/planetarium/libplanet/issues/1383"
+                    );
+                }
             }
 
             return trie;
         }
 
-        public static ITrie Set(this ITrie trie, IImmutableDictionary<string, IValue> values)
-        {
-            return trie.Set(values.ToImmutableDictionary(
-                pair => Encoding.UTF8.GetBytes(pair.Key),
-                pair => pair.Value));
-        }
+        public static ITrie Set(this ITrie trie, IEnumerable<KeyValuePair<string, IValue?>> pairs)
+            => trie.Set(
+                pairs.Select(pair =>
+                    new KeyValuePair<KeyBytes, IValue?>(
+                        StateStoreExtensions.EncodeKey(pair.Key),
+                        pair.Value
+                    )
+                )
+            );
     }
 }

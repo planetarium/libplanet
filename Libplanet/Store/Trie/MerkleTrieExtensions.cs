@@ -34,7 +34,7 @@ namespace Libplanet.Store.Trie
                 .Select(pair => (other.Hash, ((ValueNode)pair.Node).Value, pair.Path));
             return originValueNodes.Concat(otherValueNodes)
                 .GroupBy(
-                    pair => ByteUtil.Hex(FromKey(pair.Path)),
+                    pair => FromKey(pair.Path).Hex,
                     pair => (pair.Hash, pair.Value))
                 .Where(group =>
                     group.Count() == 1 || !group.All(v => v.Value.Equals(group.First().Value)));
@@ -45,23 +45,25 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="merkleTrie">A trie to discover.</param>
         /// <returns>All state keys and the all states.</returns>
-        public static IEnumerable<KeyValuePair<ImmutableArray<byte>, IValue>> ListAllStates(
+        public static IEnumerable<KeyValuePair<KeyBytes, IValue>> ListAllStates(
             this MerkleTrie merkleTrie)
         {
             return merkleTrie.IterateNodes().Where(pair => pair.Node is ValueNode).Select(pair =>
-                new KeyValuePair<ImmutableArray<byte>, IValue>(
+                new KeyValuePair<KeyBytes, IValue>(
                     FromKey(pair.Path),
                     ((ValueNode)pair.Node).Value));
         }
 
-        private static ImmutableArray<byte> FromKey(ImmutableArray<byte> bytes)
+        private static KeyBytes FromKey(KeyBytes keyBytes)
         {
-            if (bytes.Length % 2 == 1)
+            if (keyBytes.Length % 2 == 1)
             {
-                throw new ArgumentException(nameof(bytes));
+                throw new ArgumentException(nameof(keyBytes));
             }
 
-            var arr = new byte[bytes.Length / 2];
+            ImmutableArray<byte> bytes = keyBytes.ByteArray;
+            var builder = ImmutableArray.CreateBuilder<byte>(bytes.Length / 2);
+            builder.Count = bytes.Length / 2;
             for (int i = 0; i < bytes.Length / 2; ++i)
             {
                 byte high = bytes[i * 2], low = bytes[i * 2 + 1];
@@ -75,10 +77,10 @@ namespace Libplanet.Store.Trie
                     throw new ArgumentOutOfRangeException(nameof(bytes));
                 }
 
-                arr[i] = (byte)((high << 4) | low);
+                builder[i] = (byte)((high << 4) | low);
             }
 
-            return arr.ToImmutableArray();
+            return new KeyBytes(builder.MoveToImmutable());
         }
     }
 }
