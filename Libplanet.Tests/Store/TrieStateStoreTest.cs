@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex.Types;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -92,6 +93,49 @@ namespace Libplanet.Tests.Store
             // FIXME: Bencodex fingerprints also should be tracked.
             //        https://github.com/planetarium/libplanet/issues/1653
             Assert.Equal(prevStatesCount, _stateKeyValueStore.ListKeys().Count());
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CopyStates(bool secure)
+        {
+            var values = ImmutableDictionary<string, IValue>.Empty
+                .Add("foo", (Binary)GetRandomBytes(4096))
+                .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(2048)))
+                .Add("baz", (Bencodex.Types.Boolean)false)
+                .Add("qux", Bencodex.Types.Dictionary.Empty)
+                .Add(
+                    "zzz",
+                    Bencodex.Types.Dictionary.Empty
+                        .Add("binary", GetRandomBytes(4096))
+                        .Add("text", ByteUtil.Hex(GetRandomBytes(2048))));
+
+            var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
+
+            IKeyValueStore targetStateKeyValueStore = new MemoryKeyValueStore();
+            var targetStateStore = new TrieStateStore(targetStateKeyValueStore, secure);
+            ITrie trie = stateStore.Commit(null, values);
+            int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
+
+            _stateKeyValueStore.Set(
+                new KeyBytes("alpha", Encoding.UTF8),
+                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore.Set(
+                new KeyBytes("beta", Encoding.UTF8),
+                ByteUtil.ParseHex("00"));
+
+            Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
+            Assert.Empty(targetStateKeyValueStore.ListKeys());
+
+            stateStore.CopyStates(
+                ImmutableHashSet<HashDigest<SHA256>>.Empty.Add(trie.Hash),
+                targetStateStore);
+
+            // It will stay at the same count of nodes.
+            // FIXME: Bencodex fingerprints also should be tracked.
+            //        https://github.com/planetarium/libplanet/issues/1653
+            Assert.Equal(prevStatesCount, targetStateKeyValueStore.ListKeys().Count());
         }
 
         [Fact]

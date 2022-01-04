@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using Bencodex;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
 using Serilog;
@@ -90,6 +91,59 @@ namespace Libplanet.Store
                 deleteCount,
                 stopwatch.ElapsedMilliseconds);
             stopwatch.Stop();
+        }
+
+        /// <summary>
+        /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
+        /// to <paramref name="targetStateStore"/>.
+        /// </summary>
+        /// <param name="stateRootHashes">The state root hashes of states to copy.</param>
+        /// <param name="targetStateStore">The target state store to copy state root hashes.</param>
+        public void CopyStates(
+            IImmutableSet<HashDigest<SHA256>> stateRootHashes, TrieStateStore targetStateStore)
+        {
+            IKeyValueStore targetKeyValueStore = targetStateStore._stateKeyValueStore;
+            var stopwatch = new Stopwatch();
+            _logger.Verbose($"Started {nameof(CopyStates)}()");
+            var codec = new Codec();
+            foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
+            {
+                var stateTrie = new MerkleTrie(
+                    _stateKeyValueStore,
+                    new HashNode(stateRootHash),
+                    _secure
+                );
+                _logger.Debug("Started to copy states.");
+                stopwatch.Start();
+
+                foreach (var (node, _) in stateTrie.IterateNodes())
+                {
+                    if (node is HashNode)
+                    {
+                        continue;
+                    }
+
+                    var encoded = node.ToBencodex();
+                    var serialized = codec.Encode(encoded);
+
+                    if (serialized.Length <= HashDigest<SHA256>.Size)
+                    {
+                        continue;
+                    }
+
+                    targetKeyValueStore.Set(new KeyBytes(node.Hash().ByteArray), serialized);
+                }
+
+                _logger.Debug(
+                    "Finished to copy states (elapsed: {ElapsedMilliseconds} ms).",
+                    stopwatch.ElapsedMilliseconds);
+                stopwatch.Stop();
+            }
+
+            _logger.Debug(
+                "Finished to copy all states {ElapsedMilliseconds} ms",
+                stopwatch.ElapsedMilliseconds);
+            _logger.Verbose($"Finished {nameof(CopyStates)}()");
         }
 
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?)"/>
