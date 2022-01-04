@@ -259,15 +259,14 @@ namespace Libplanet.Action
                     var message =
                         "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                         "pre-evaluation hash {PreEvaluationHash} threw an exception " +
-                        "during execution: {Exception}";
+                        "during execution.";
                     _logger.Error(
                         e,
                         message,
                         action,
                         txid,
                         blockIndex,
-                        ByteUtil.Hex(preEvaluationHash),
-                        e);
+                        ByteUtil.Hex(preEvaluationHash));
                     throw;
                 }
                 catch (Exception e)
@@ -293,7 +292,7 @@ namespace Libplanet.Action
                             "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                             "pre-evaluation hash {PreEvaluationHash} and previous " +
                             "state root hash {StateRootHash} threw an exception " +
-                            "during execution: {InnerException}";
+                            "during execution.";
                         _logger.Error(
                             e,
                             message,
@@ -301,8 +300,7 @@ namespace Libplanet.Action
                             txid,
                             blockIndex,
                             ByteUtil.Hex(preEvaluationHash),
-                            stateRootHash,
-                            e);
+                            stateRootHash);
                         var innerMessage =
                             $"The action {action} (block #{blockIndex}, " +
                             $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash)}, tx {txid}, " +

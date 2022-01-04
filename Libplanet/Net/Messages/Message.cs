@@ -38,7 +38,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Inventory to transfer transactions.
             /// </summary>
-            TxIds = 0x06,
+            TxIds = 0x31,
 
             /// <summary>
             /// Request to query blocks.

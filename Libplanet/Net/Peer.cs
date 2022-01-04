@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Diagnostics.Contracts;
 using System.Net;
@@ -34,7 +35,7 @@ namespace Libplanet.Net
 
         internal Peer(
             PublicKey publicKey,
-            IPAddress publicIPAddress)
+            IPAddress? publicIPAddress)
         {
             PublicKey = publicKey ??
                         throw new ArgumentNullException(nameof(publicKey));
@@ -43,11 +44,10 @@ namespace Libplanet.Net
 
         protected Peer(SerializationInfo info, StreamingContext context)
         {
-            PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
-            string addressStr = info.GetString("public_ip_address");
-            if (addressStr != null)
+            PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
+            if (info.GetString(nameof(PublicIPAddress)) is string address)
             {
-                PublicIPAddress = IPAddress.Parse(addressStr);
+                PublicIPAddress = IPAddress.Parse(address);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Libplanet.Net
 
         [LogAsScalar]
         [Pure]
-        public IPAddress PublicIPAddress { get; }
+        public IPAddress? PublicIPAddress { get; }
 
         public static bool operator ==(Peer left, Peer right) => Operator.Weave(left, right);
 
@@ -79,15 +79,15 @@ namespace Libplanet.Net
         /// <inheritdoc/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("public_key", PublicKey.Format(true));
-            info.AddValue("public_ip_address", PublicIPAddress?.ToString());
+            info.AddValue(nameof(PublicKey), PublicKey.Format(true));
+            info.AddValue(nameof(PublicIPAddress), PublicIPAddress?.ToString());
         }
 
         public virtual Bencodex.Types.Dictionary ToBencodex() => Bencodex.Types.Dictionary.Empty
             .Add(PublicKeyKey, PublicKey.Format(true))
             .Add(
                 PublicIpAddressKey,
-                !(PublicIPAddress is null) ? (IValue)(Text)PublicIPAddress.ToString() : Null.Value);
+                PublicIPAddress is IPAddress ip ? (IValue)(Text)ip.ToString() : Null.Value);
 
         /// <inheritdoc/>
         public override string ToString()

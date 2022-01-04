@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <VersionPrefix>0.24.1</VersionPrefix>
+    <VersionPrefix>0.25.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
       Version: 1.2.3-dev.456
@@ -103,6 +103,10 @@ https://docs.libplanet.io/</Description>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
                          '$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

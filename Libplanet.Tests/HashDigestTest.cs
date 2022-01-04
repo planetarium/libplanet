@@ -75,6 +75,14 @@ namespace Libplanet.Tests
                 HashDigest<SHA1>.DeriveFrom(foo)
             );
             Assert.Equal(
+                HashDigest<SHA1>.DeriveFrom(foo),
+                HashDigest<SHA1>.DeriveFrom(ImmutableArray.Create(foo))
+            );
+            Assert.Equal(
+                HashDigest<SHA1>.DeriveFrom(foo),
+                HashDigest<SHA1>.DeriveFrom(foo.AsSpan())
+            );
+            Assert.Equal(
                 HashDigest<SHA1>.FromString("62cdb7020ff920e5aa642c3d4066950dd1f01f4d"),
                 HashDigest<SHA1>.DeriveFrom(bar)
             );

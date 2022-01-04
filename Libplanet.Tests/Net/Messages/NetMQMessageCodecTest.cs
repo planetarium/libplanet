@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Net.Messages
                 case Message.MessageType.GetBlockHashes:
                     return new GetBlockHashes(chain.GetBlockLocator(), genesis.Hash);
                 case Message.MessageType.TxIds:
-                    return new TxIds(privateKey.ToAddress(), new[] { transaction.Id });
+                    return new TxIds(new[] { transaction.Id });
                 case Message.MessageType.GetBlocks:
                     return new GetBlocks(new[] { genesis.Hash }, 10);
                 case Message.MessageType.GetTxs:

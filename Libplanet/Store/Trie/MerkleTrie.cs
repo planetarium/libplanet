@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Misc;
 using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
@@ -80,7 +79,7 @@ namespace Libplanet.Store.Trie
         public HashDigest<SHA256> Hash => Root?.Hash() ?? EmptyRootHash;
 
         /// <inheritdoc cref="ITrie.Recorded"/>
-        public bool Recorded => Root is null || KeyValueStore.Exists(Hash.ToByteArray());
+        public bool Recorded => Root is null || KeyValueStore.Exists(new KeyBytes(Hash.ByteArray));
 
         internal INode? Root { get; }
 
@@ -93,7 +92,7 @@ namespace Libplanet.Store.Trie
             Operator.Weave(left, right);
 
         /// <inheritdoc/>
-        public ITrie Set(byte[] key, IValue value)
+        public ITrie Set(in KeyBytes key, IValue value)
         {
             if (value is null)
             {
@@ -103,19 +102,19 @@ namespace Libplanet.Store.Trie
             INode newRootNode = Insert(
                 Root,
                 ImmutableArray<byte>.Empty,
-                ToKey(key).ToImmutableArray(),
+                ToKey(key),
                 new ValueNode(value));
 
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
 
         /// <inheritdoc/>
-        public bool TryGet(byte[] key, out IValue? value)
+        public bool TryGet(in KeyBytes key, out IValue? value)
         {
             return TryGet(
                 Root,
                 ImmutableArray<byte>.Empty,
-                ToKey(key).ToImmutableArray(),
+                ToKey(key),
                 out value);
         }
 
@@ -127,15 +126,14 @@ namespace Libplanet.Store.Trie
                 return new MerkleTrie(KeyValueStore, new HashNode(EmptyRootHash));
             }
 
-            var values = new ConcurrentDictionary<byte[], byte[]>(
-                new ArrayEqualityComparer<byte>());
+            var values = new ConcurrentDictionary<KeyBytes, byte[]>();
             var newRoot = Commit(Root, values);
 
             // It assumes embedded node if it's not HashNode.
             if (!(newRoot is HashNode))
             {
                 byte[] serialized = _codec.Encode(newRoot.ToBencodex());
-                values[SHA256.Create().ComputeHash(serialized)] = serialized;
+                values[new KeyBytes(SHA256.Create().ComputeHash(serialized))] = serialized;
             }
 
             KeyValueStore.Set(values);
@@ -149,7 +147,7 @@ namespace Libplanet.Store.Trie
                 .Select(pair => ((HashNode)pair.Node).HashDigest);
         }
 
-        internal IEnumerable<(INode Node, ImmutableArray<byte> Path)> IterateNodes()
+        internal IEnumerable<(INode Node, KeyBytes Path)> IterateNodes()
         {
             if (Root is null)
             {
@@ -162,7 +160,7 @@ namespace Libplanet.Store.Trie
             while (queue.Count > 0)
             {
                 (INode node, ImmutableArray<byte> path) = queue.Dequeue();
-                yield return (node, path);
+                yield return (node, new KeyBytes(path));
                 switch (node)
                 {
                     case FullNode fullNode:
@@ -215,7 +213,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode Commit(INode node, IDictionary<byte[], byte[]> values)
+        private INode Commit(INode node, IDictionary<KeyBytes, byte[]> values)
         {
             switch (node)
             {
@@ -236,7 +234,7 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode CommitFullNode(FullNode fullNode, IDictionary<byte[], byte[]> values)
+        private INode CommitFullNode(FullNode fullNode, IDictionary<KeyBytes, byte[]> values)
         {
             var virtualChildren = fullNode.Children
                 .Select(c => c is null ? null : Commit(c, values))
@@ -253,7 +251,7 @@ namespace Libplanet.Store.Trie
             return Encode(fullNode.ToBencodex(), values);
         }
 
-        private INode CommitShortNode(ShortNode shortNode, IDictionary<byte[], byte[]> values)
+        private INode CommitShortNode(ShortNode shortNode, IDictionary<KeyBytes, byte[]> values)
         {
             var committedValueNode = Commit(shortNode.Value!, values);
             shortNode = new ShortNode(shortNode.Key, committedValueNode);
@@ -266,7 +264,7 @@ namespace Libplanet.Store.Trie
             return Encode(encoded, values);
         }
 
-        private INode CommitValueNode(ValueNode valueNode, IDictionary<byte[], byte[]> values)
+        private INode CommitValueNode(ValueNode valueNode, IDictionary<KeyBytes, byte[]> values)
         {
             IValue encoded = valueNode.ToBencodex();
             var nodeSize = encoded.EncodingLength;
@@ -278,16 +276,16 @@ namespace Libplanet.Store.Trie
             return Encode(encoded, values);
         }
 
-        private HashNode Encode(IValue intermediateEncoding, IDictionary<byte[], byte[]> values)
+        private HashNode Encode(IValue intermediateEncoding, IDictionary<KeyBytes, byte[]> values)
         {
             var offloadOptions = new OffloadOptions(OffloadThresholdBytes, values, KeyValueStore);
             byte[] serialized = _codec.Encode(intermediateEncoding, offloadOptions);
             byte[] fullEncoding = offloadOptions.Offloaded
                 ? _codec.Encode(intermediateEncoding)
                 : serialized;
-            byte[] nodeHash = SHA256.Create().ComputeHash(fullEncoding);
-            values[nodeHash] = serialized;
-            return new HashNode(new HashDigest<SHA256>(nodeHash));
+            var nodeHash = HashDigest<SHA256>.DeriveFrom(fullEncoding);
+            values[new KeyBytes(nodeHash.ByteArray)] = serialized;
+            return new HashNode(nodeHash);
         }
 
         private INode Insert(
@@ -451,7 +449,7 @@ namespace Libplanet.Store.Trie
         private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
             IValue intermediateEncoding = _codec.Decode(
-                KeyValueStore.Get(nodeHash.ToByteArray()),
+                KeyValueStore.Get(new KeyBytes(nodeHash.ByteArray)),
                 LoadIndirectValue
             );
             return NodeDecoder.Decode(intermediateEncoding);
@@ -471,10 +469,11 @@ namespace Libplanet.Store.Trie
                 _valueCache.TryRemove(fp, out _);
             }
 
+            var key = new KeyBytes(fp.Serialize());
             if (fp.Kind != ValueKind.Dictionary)
             {
                 FreeValueCache();
-                IValue v = _codec.Decode(KeyValueStore.Get(fp.Serialize()), LoadIndirectValue);
+                IValue v = _codec.Decode(KeyValueStore.Get(key), LoadIndirectValue);
                 if (fp != v.Fingerprint)
                 {
                     throw new InvalidOperationException(
@@ -490,7 +489,7 @@ namespace Libplanet.Store.Trie
                 return v;
             }
 
-            var pair = (List)_codec.Decode(KeyValueStore.Get(fp.Serialize()), LoadIndirectValue);
+            var pair = (List)_codec.Decode(KeyValueStore.Get(key), LoadIndirectValue);
             IEnumerable<IndirectValue> reprs =
                 pair.EnumerateIndirectValues(out IndirectValue.Loader? reprLoader);
             Dictionary value;
@@ -533,23 +532,23 @@ namespace Libplanet.Store.Trie
             return value;
         }
 
-        private byte[] ToKey(byte[] key)
+        private ImmutableArray<byte> ToKey(in KeyBytes key)
         {
-            if (_secure)
-            {
-                SHA256 hasher = SHA256.Create();
-                key = hasher.ComputeHash(key);
-            }
+            var bytes = _secure
+                ? HashDigest<SHA256>.DeriveFrom(key.ByteArray).ByteArray
+                : key.ByteArray;
 
-            var res = new byte[key.Length * 2];
+            ImmutableArray<byte>.Builder res =
+                ImmutableArray.CreateBuilder<byte>(bytes.Length * 2);
+            res.Count = bytes.Length * 2;
             const int lowerBytesMask = 0b00001111;
-            for (var i = 0; i < key.Length; ++i)
+            for (var i = 0; i < bytes.Length; ++i)
             {
-                res[i * 2] = (byte)(key[i] >> 4);
-                res[i * 2 + 1] = (byte)(key[i] & lowerBytesMask);
+                res[i * 2] = (byte)(bytes[i] >> 4);
+                res[i * 2 + 1] = (byte)(bytes[i] & lowerBytesMask);
             }
 
-            return res;
+            return res.MoveToImmutable();
         }
 
         private sealed class OffloadOptions : IOffloadOptions
@@ -561,12 +560,12 @@ namespace Libplanet.Store.Trie
             public bool Offloaded;
 
             private readonly long _thresholdBytes;
-            private readonly IDictionary<byte[], byte[]> _dirty;
+            private readonly IDictionary<KeyBytes, byte[]> _dirty;
             private readonly IKeyValueStore _store;
 
             public OffloadOptions(
                 long thresholdBytes,
-                IDictionary<byte[], byte[]> dirty,
+                IDictionary<KeyBytes, byte[]> dirty,
                 IKeyValueStore store
             )
             {
@@ -582,7 +581,7 @@ namespace Libplanet.Store.Trie
             public void Offload(in IndirectValue indirectValue, IndirectValue.Loader? loader)
             {
                 Offloaded = true;
-                byte[] fp = indirectValue.Fingerprint.Serialize();
+                var fp = new KeyBytes(indirectValue.Fingerprint.Serialize());
                 if (!_dirty.ContainsKey(fp) && !_store.Exists(fp))
                 {
                     IValue value = indirectValue.GetValue(loader);

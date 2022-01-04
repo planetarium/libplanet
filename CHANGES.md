@@ -1,6 +1,101 @@
 Libplanet changelog
 ===================
 
+Version 0.25.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  Replaced `HashDigest<T>(ImmutableArray<byte>)` constructor with
+    `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
+ -  `IKeyValueStore`'s key type became `KeyBytes` (was `byte[]`).  [[#1678]]
+     -  Replaced `IKeyValueStore.Get(byte[])` method with `Get(in KeyBytes)`
+        method.
+     -  Replaced `IKeyValueStore.Set(byte[], byte[])` method with
+        `Set(in KeyBytes, byte[])` method.
+     -  Replaced `IKeyValueStore.Set(IDictionary<byte[], byte[]>)` method with
+        `Set(IDictionary<KeyBytes, byte[]>)` method.
+     -  Replaced `IKeyValueStore.Delete(byte[])` method with
+        `Delete(in KeyBytes)` method.
+     -  Replaced `IKeyValueStore.Exists(byte[])` method with
+        `Exists(in KeyBytes)` method.
+     -  `IKeyValueStore.ListKeys()` method's return type became
+        `IEnumerable<KeyBytes>` (was `IEnumerable<byte[]>`).
+ -  `ITrie`'s key type became `KeyBytes` (was `byte[]`).  [[#1689]]
+     -  Replaced `ITrie.Set(byte[], IValue)` method with
+        `Set(in KeyBytes, IValue)` method.
+     -  Replaced `ITrie.TryGet(byte[], out IValue?)` method with
+        `TryGet(in KeyBytes, out IValue?)` method.
+     -  The return type of `MerkleTrieExtensions.ListAllStates()` static method
+        became `IEnumerable<KeyValuePair<KeyBytes, IValue>>` (was
+        `IEnumerable<KeyValuePair<ImmutableArray<byte>, IValue>>`).  [[#1653]]
+ -  Added `IKeyValueStore.Get(IEnumerable<KeyBytes>)` method.  [[#1678]]
+ -  Added `IKeyValueStore.Delete(IEnumerable<KeyBytes>)` method.  [[#1678]]
+ -  `nullable` context enabled for `Peer` and `BoundPeer` classes.  All public
+    constructors now explicitly take non-nullable parameters.  [[#1679]]
+     -  All publicly accessibe properties of `Peer` and `BoundPeer` are
+        now non-nullable except for `Peer.PublicIPAddress`.
+ -  Replaced `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
+    method with ohter new overloads.  [[#1680]]
+
+### Backward-incompatible network protocol changes
+
+ -  Removed `Sender` property from `Messages.TxIds` and `Messages.TxIds`'s
+    `MessageType` value bumped to `0x31`.  [[#1681]]
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `KeyBytes` readonly struct.  [[#1678]]
+ -  Added `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
+ -  Added `HashDigest<T>.DeriveFrom(byte[])` overloaded static method. [[#1680]]
+ -  Added `HashDigest<T>.DeriveFrom(ImmutableArray<byte>)` overloaded static
+    method. [[#1680]]
+ -  Added `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
+    method. [[#1680]]
+ -  Added `StateStoreExtensions.EncodeKey()` static method.  [[#1689]]
+ -  Added `StateStoreExtensions.DecodeKey()` static method.  [[#1689]]
+
+### Behavioral changes
+
+  -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
+  -  Improved performance of `RocksDBStore<T>.IterateIndexes()` method.
+     [[#1676]]
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#1676]: https://github.com/planetarium/libplanet/pull/1676
+[#1678]: https://github.com/planetarium/libplanet/pull/1678
+[#1679]: https://github.com/planetarium/libplanet/pull/1679
+[#1680]: https://github.com/planetarium/libplanet/pull/1680
+[#1681]: https://github.com/planetarium/libplanet/pull/1681
+[#1689]: https://github.com/planetarium/libplanet/pull/1689
+
+
+Version 0.24.2
+--------------
+
+Released on December 24, 2021.
+
+ -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
+    they had thrown `ThreadStateException` when any render events occured after
+    disposed.  [[#1682]]
+ -  Log output compacted by removing duplicate exception messages.
+    [[#1632], [#1677]]
+
+[#1632]: https://github.com/planetarium/libplanet/issues/1632
+[#1677]: https://github.com/planetarium/libplanet/pull/1677
+
+
 Version 0.24.1
 --------------
 
@@ -49,6 +144,18 @@ Released on December 16, 2021.
 [#1648]: https://github.com/planetarium/libplanet/pull/1648
 [#1661]: https://github.com/planetarium/libplanet/pull/1661
 [#1669]: https://github.com/planetarium/libplanet/pull/1669
+
+
+Version 0.23.4
+--------------
+
+Released on December 24, 2021.
+
+ -  Fixed a bug of `NonblockRenderer<T>` and `NonblockActionRenderer<T>` where
+    they had thrown `ThreadStateException` when any render events occured after
+    disposed.  [[#1682]]
+
+[#1682]: https://github.com/planetarium/libplanet/pull/1682
 
 
 Version 0.23.3

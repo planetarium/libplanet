@@ -399,7 +399,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    $"An unexpected exception occurred during {nameof(StartAsync)}(): {e}"
+                    $"An unexpected exception occurred during {nameof(StartAsync)}()."
                 );
                 throw;
             }
@@ -1256,7 +1256,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {fname}(): {e}"
+                        $"An unexpected exception occurred during {fname}()."
                     );
                 }
             }
@@ -1297,7 +1297,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occurred during {nameof(BroadcastTxAsync)}(): {e}"
+                        $"An unexpected exception occurred during {nameof(BroadcastTxAsync)}()."
                     );
                 }
             }
@@ -1305,7 +1305,7 @@ namespace Libplanet.Net
 
         private void BroadcastTxIds(Address? except, IEnumerable<TxId> txIds)
         {
-            var message = new TxIds(Address, txIds);
+            var message = new TxIds(txIds);
             BroadcastMessage(except, message);
         }
 

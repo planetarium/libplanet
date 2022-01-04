@@ -108,8 +108,7 @@ namespace Libplanet.Net.Protocols
                 {
                     _logger.Error(
                         e,
-                        "An unexpected exception occurred connecting to seed peer. {Exception}",
-                        e);
+                        "An unexpected exception occurred connecting to seed peer.");
                 }
             }
 
@@ -129,9 +128,8 @@ namespace Libplanet.Net.Protocols
             }
             catch (Exception e)
             {
-                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()." +
-                          " {Exception}";
-                _logger.Error(e, msg, e);
+                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}().";
+                _logger.Error(e, msg);
                 throw;
             }
         }
@@ -194,8 +192,8 @@ namespace Libplanet.Net.Protocols
             catch (Exception e)
             {
                 const string msg = "Unexpected exception occurred during " +
-                                   nameof(AddPeersAsync) + "(): {Exception}";
-                _logger.Error(e, msg, e);
+                                   nameof(AddPeersAsync) + "().";
+                _logger.Error(e, msg);
                 throw;
             }
         }
@@ -247,7 +245,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException e)
             {
-                _logger.Error(e, "Timeout occurred checking some peers: {e}", e);
+                _logger.Error(e, "Timeout occurred checking some peers.");
             }
         }
 
@@ -833,9 +831,7 @@ namespace Libplanet.Net.Protocols
             {
                 _logger.Error(
                     e,
-                    "Some FindPeer tasks were unexpectedly terminated: {Exception}",
-                    e
-                );
+                    "Some FindPeer tasks were unexpectedly terminated.");
             }
         }
 

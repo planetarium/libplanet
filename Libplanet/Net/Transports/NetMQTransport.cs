@@ -487,8 +487,8 @@ namespace Libplanet.Net.Transports
                 var msg =
                     $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() encountered " +
                     "an unexpected exception during sending a request {MessageType} " +
-                    "({RequestId}) to {PeerAddress} and waiting a reply to it: {Exception}.";
-                _logger.Error(e, msg, message.GetType().Name, reqId, peer.Address, e);
+                    "({RequestId}) to {PeerAddress} and waiting a reply to it.";
+                _logger.Error(e, msg, message.GetType().Name, reqId, peer.Address);
                 throw;
             }
         }
@@ -632,8 +632,7 @@ namespace Libplanet.Net.Transports
                     {
                         _logger.Error(
                             exc,
-                            "Something went wrong during message parsing: {0}",
-                            exc);
+                            "Something went wrong during message parsing.");
                         throw;
                     }
                 });
@@ -656,16 +655,13 @@ namespace Libplanet.Net.Transports
             }
             catch (InvalidMessageException ex)
             {
-                _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {{0}}", ex);
+                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
             }
             catch (Exception ex)
             {
-                const string mname = nameof(ReceiveMessage);
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occurred during {mname}(): {{0}}",
-                    ex
-                );
+                    $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "().");
             }
         }
 
@@ -731,8 +727,7 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     exc,
-                    $"Unexpected error occurred during {nameof(DoBroadcast)}(). {{error}}",
-                    exc);
+                    "Unexpected error occurred during " + nameof(DoBroadcast) + "().");
                 throw;
             }
         }
@@ -976,8 +971,7 @@ namespace Libplanet.Net.Transports
                     catch (Exception e)
                     {
                         _logger.Error(
-                            e, "An unexpected exception ocurred during poller.Run() {e}", e
-                        );
+                            e, "An unexpected exception ocurred during poller.Run().");
                     }
                 },
                 CancellationToken.None,

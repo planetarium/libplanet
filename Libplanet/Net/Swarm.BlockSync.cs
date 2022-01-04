@@ -92,8 +92,8 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}(). {{e}}";
-                _logger.Error(e, msg, e);
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}().";
+                _logger.Error(e, msg);
                 FillBlocksAsyncFailed.Set();
             }
             finally
@@ -456,9 +456,7 @@ namespace Libplanet.Net
                         {
                             _logger.Error(
                                 e,
-                                "An exception occurred during appending blocks: {Exception}",
-                                e
-                            );
+                                "An exception occurred during appending blocks: {Exception}");
                             throw;
                         }
 
@@ -689,8 +687,8 @@ namespace Libplanet.Net
             {
                 const string msg =
                     "{SessionId}: Unexpected exception occurred during " +
-                    nameof(ProcessBlockDemand) + "() from {Peer}: {Exception}";
-                _logger.Error(e, msg, sessionId, peer, e);
+                    nameof(ProcessBlockDemand) + "() from {Peer}.";
+                _logger.Error(e, msg, sessionId, peer);
             }
         }
 
@@ -987,8 +985,8 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 const string msg =
-                    "{SessionId}: Unexpected error occurred during " + fname + "(): {Exception}";
-                _logger.Error(e, msg, logSessionId, e);
+                    "{SessionId}: Unexpected error occurred during " + fname + "().";
+                _logger.Error(e, msg, logSessionId);
                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
                     _store.DeleteChainId(workspaceId);

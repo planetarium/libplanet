@@ -18,15 +18,15 @@ namespace Libplanet.Tests.Store
             _stateKeyValueStore = new DefaultKeyValueStore(null);
         }
 
-        public static byte[] KeyFoo => StateStoreExtensions.KeyEncoding.GetBytes("foo");
+        public static KeyBytes KeyFoo => StateStoreExtensions.EncodeKey("foo");
 
-        public static byte[] KeyBar => StateStoreExtensions.KeyEncoding.GetBytes("bar");
+        public static KeyBytes KeyBar => StateStoreExtensions.EncodeKey("bar");
 
-        public static byte[] KeyBaz => StateStoreExtensions.KeyEncoding.GetBytes("baz");
+        public static KeyBytes KeyBaz => StateStoreExtensions.EncodeKey("baz");
 
-        public static byte[] KeyQux => StateStoreExtensions.KeyEncoding.GetBytes("qux");
+        public static KeyBytes KeyQux => StateStoreExtensions.EncodeKey("qux");
 
-        public static byte[] KeyQuux => StateStoreExtensions.KeyEncoding.GetBytes("quux");
+        public static KeyBytes KeyQuux => StateStoreExtensions.EncodeKey("quux");
 
         [Theory]
         [InlineData(true)]
