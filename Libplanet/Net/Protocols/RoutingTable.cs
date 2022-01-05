@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -116,19 +117,12 @@ namespace Libplanet.Net.Protocols
         /// Adds the <paramref name="peer"/> to the table.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to add.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/> is
-        /// <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="peer"/>'s
         /// <see cref="Address"/> is equal to the <see cref="Address"/> of self.</exception>
         public void AddPeer(BoundPeer peer) => AddPeer(peer, DateTimeOffset.UtcNow);
 
         public bool RemovePeer(BoundPeer peer)
         {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
             if (peer.Address.Equals(_address))
             {
                 throw new ArgumentException(
@@ -159,7 +153,7 @@ namespace Libplanet.Net.Protocols
         /// <param name="addr">The <see cref="Address"/> to search.</param>
         /// <returns>A <see cref="BoundPeer"/> whose <see cref="Address"/> matches
         /// the given <paramref name="addr"/>.</returns>
-        public BoundPeer GetPeer(Address addr) =>
+        public BoundPeer? GetPeer(Address addr) =>
             Peers.FirstOrDefault(peer => peer.Address.Equals(addr));
 
         /// <summary>
@@ -183,9 +177,7 @@ namespace Libplanet.Net.Protocols
         /// <see cref="Address"/> of <paramref name="target"/> in return value or not.</param>
         /// <returns>An enumerable of <see cref="BoundPeer"/>.</returns>
         public IReadOnlyList<BoundPeer> Neighbors(BoundPeer target, int k, bool includeTarget)
-        {
-            return Neighbors(target.Address, k, includeTarget);
-        }
+            => Neighbors(target.Address, k, includeTarget);
 
         /// <summary>
         /// Returns at most 2 * <paramref name="k"/> (2 * <paramref name="k"/> + 1 if
@@ -228,28 +220,15 @@ namespace Libplanet.Net.Protocols
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="peer"/> is <see langword="null"/>.</exception>
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
-        {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
-            BucketOf(peer).Check(peer, start, end);
-        }
+            => BucketOf(peer).Check(peer, start, end);
 
         internal void AddPeer(BoundPeer peer, DateTimeOffset updated)
         {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
             if (peer.Address.Equals(_address))
             {
                 throw new ArgumentException(
                     "A node is disallowed to add itself to its routing table.",
-                    nameof(peer)
-                );
+                    nameof(peer));
             }
 
             _logger.Debug("Adding peer {Peer} to the routing table...", peer);
@@ -260,14 +239,15 @@ namespace Libplanet.Net.Protocols
         {
             List<BoundPeer> peers = NonEmptyBuckets
                 .Select(bucket => bucket.GetRandomPeer(except))
-                .Where(peer => !(peer is null)).ToList();
+                .OfType<BoundPeer>()
+                .ToList();
             int count = peers.Count;
             if (count < min)
             {
                 peers.AddRange(Peers
                     .Where(peer =>
                         !peers.Contains(peer) &&
-                        (except is null || !peer.Address.Equals(except.Value)))
+                            (!(except is Address e) || !peer.Address.Equals(e)))
                     .Take(min - count));
             }
 
@@ -275,14 +255,16 @@ namespace Libplanet.Net.Protocols
         }
 
         internal IReadOnlyList<BoundPeer> PeersToRefresh(TimeSpan maxAge) => NonEmptyBuckets
-            .Where(bucket => bucket.Tail.LastUpdated + maxAge < DateTimeOffset.UtcNow)
-            .Select(bucket => bucket.Tail.Peer)
-            .ToArray();
+            .Where(bucket =>
+                bucket.Tail is PeerState peerState &&
+                    peerState.LastUpdated + maxAge < DateTimeOffset.UtcNow)
+            .Select(bucket => bucket.Tail!.Peer)
+            .ToList();
 
         internal bool RemoveCache(BoundPeer peer)
         {
             KBucket bucket = BucketOf(peer);
-            return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
+            return bucket.ReplacementCache.TryRemove(peer, out var _);
         }
 
         internal KBucket BucketOf(BoundPeer peer)
