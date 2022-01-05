@@ -38,15 +38,8 @@ namespace Libplanet.Net.Protocols
         /// <returns>The distance between two <see cref="Address"/>es.</returns>
         public static Address CalculateDistance(Address left, Address right)
         {
-            ImmutableArray<byte> lba = left.ByteArray;
-            ImmutableArray<byte> rba = right.ByteArray;
-            byte[] dba = new byte[Address.Size];
-
-            for (int i = 0; i < Address.Size; i++)
-            {
-                dba[i] = (byte)(lba[i] ^ rba[i]);
-            }
-
+            byte[] dba = Enumerable.Zip(
+                left.ByteArray, right.ByteArray, (l, r) => (byte)(l ^ r)).ToArray();
             return new Address(dba);
         }
 
@@ -83,21 +76,18 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Sorts the element of the sequence from in ascending order of
-        /// the distance with <paramref name="targetAddr"/>.
+        /// the distance with <paramref name="target"/>.
         /// </summary>
         /// <param name="peers">A sequence of values to order.</param>
-        /// <param name="targetAddr">
+        /// <param name="target">
         /// <see cref="Address"/> to calculate distance of element.</param>
         /// <returns>>An <see cref="IEnumerable{T}"/> whose elements are sorted
-        /// according to the distance with <paramref name="targetAddr"/>.</returns>
+        /// according to the distance with <paramref name="target"/>.</returns>
         public static IEnumerable<BoundPeer> SortByDistance(
             IEnumerable<BoundPeer> peers,
-            Address targetAddr)
+            Address target)
         {
-            return peers.OrderBy(peer =>
-                CalculateDistance(
-                    peer.Address,
-                    targetAddr).ToHex());
+            return peers.OrderBy(peer => CalculateDistance(peer.Address, target).ToHex());
         }
     }
 }
