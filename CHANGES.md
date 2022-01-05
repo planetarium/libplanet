@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.25.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on January 5, 2022.
 
 ### Backward-incompatible API changes
 
@@ -47,8 +45,6 @@ To be released.
  -  Removed `Sender` property from `Messages.TxIds` and `Messages.TxIds`'s
     `MessageType` value bumped to `0x31`.  [[#1681]]
 
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `KeyBytes` readonly struct.  [[#1678]]
@@ -66,12 +62,6 @@ To be released.
   -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
   -  Improved performance of `RocksDBStore<T>.IterateIndexes()` method.
      [[#1676]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
 [#1678]: https://github.com/planetarium/libplanet/pull/1678
