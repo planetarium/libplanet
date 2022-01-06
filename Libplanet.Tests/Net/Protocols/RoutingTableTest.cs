@@ -41,14 +41,6 @@ namespace Libplanet.Tests.Net.Protocols
         }
 
         [Fact]
-        public void AddNull()
-        {
-            var pubKey = new PrivateKey().PublicKey;
-            var table = new RoutingTable(pubKey.ToAddress());
-            Assert.Throws<ArgumentNullException>(() => table.AddPeer(null));
-        }
-
-        [Fact]
         public void AddPeer()
         {
             var pubKey0 = new PrivateKey().PublicKey;
@@ -80,7 +72,6 @@ namespace Libplanet.Tests.Net.Protocols
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234));
 
             Assert.Throws<ArgumentException>(() => table.RemovePeer(peer1));
-            Assert.Throws<ArgumentNullException>(() => table.RemovePeer(null));
 
             bool ret = table.RemovePeer(peer2);
             Assert.False(ret);
