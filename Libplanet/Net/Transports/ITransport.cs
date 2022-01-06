@@ -73,7 +73,7 @@ namespace Libplanet.Net.Transports
         Task WaitForRunningAsync();
 
         /// <summary>
-        /// Sends the <paramref name="message"/> to given <paramref name="peer"/>.
+        /// Sends a <see cref="Message"/> to a given <see cref="BoundPeer"/>.
         /// </summary>
         /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
         /// <param name="message">A <see cref="Message"/> to send.</param>
@@ -86,11 +86,11 @@ namespace Libplanet.Net.Transports
         Task SendMessageAsync(BoundPeer peer, Message message, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sends the <paramref name="message"/>
-        /// to given <paramref name="peer"/> and waits for its single reply.
+        /// Sends a <see cref="Message"/> to a given <see cref="BoundPeer"/>
+        /// and waits for its single reply.
         /// </summary>
-        /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
-        /// <param name="message">A <see cref="Message"/> to send.</param>
+        /// <param name="peer">The <see cref="BoundPeer"/> to send message to.</param>
+        /// <param name="message">The <see cref="Message"/> to send.</param>
         /// <param name="timeout">A timeout of waiting for the reply of the message.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -106,11 +106,11 @@ namespace Libplanet.Net.Transports
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sends the <paramref name="message"/>
-        /// to given <paramref name="peer"/> and waits for its multiple replies.
+        /// Sends a <see cref="Message"/> to a given <see cref="BoundPeer"/>
+        /// and waits for its multiple replies.
         /// </summary>
-        /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
-        /// <param name="message">A <see cref="Message"/> to send.</param>
+        /// <param name="peer">The <see cref="BoundPeer"/> to send message to.</param>
+        /// <param name="message">The <see cref="Message"/> to send.</param>
         /// <param name="timeout">A timeout of waiting for the reply of the message.</param>
         /// <param name="expectedResponses">The number of expected replies for the message.</param>
         /// <param name="returnWhenTimeout">Determines the behavior when failed to receive
@@ -120,8 +120,8 @@ namespace Libplanet.Net.Transports
         /// operation should be canceled.</param>
         /// <returns>The replies of the <paramref name="message"/>
         /// sent by <paramref name="peer"/>.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
+        /// is already disposed.</exception>
         Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
@@ -131,24 +131,24 @@ namespace Libplanet.Net.Transports
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Broadcasts the <paramref name="message"/> to peers selected from the routing table.
+        /// Broadcasts a <see cref="Message"/> to peers selected from the routing table.
         /// </summary>
-        /// <param name="except">An <see cref="Address"/> to exclude from broadcasting.
-        /// If <c>null</c> is given, no peers will be excluded.</param>
-        /// <param name="message">A <see cref="Message"/> to broadcast.</param>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
+        /// <param name="except">The <see cref="Address"/> to exclude when broadcasting.
+        /// If <c>null</c>, no peers will be excluded.</param>
+        /// <param name="message">The <see cref="Message"/> to broadcast.</param>
+        /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
+        /// is already disposed.</exception>
         void BroadcastMessage(Address? except, Message message);
 
         /// <summary>
-        /// Replies message.
+        /// Sends a <see cref="Message"/> as a reply.
         /// </summary>
         /// <remarks>
-        /// The <see cref="Message.Identity"/> of the given <paramref name="message"/> must be
-        /// matched to <see cref="Message.Identity"/> of a message corresponding to the given
-        /// <paramref name="message"/>.
+        /// The <see cref="Message.Identity"/> of given <paramref name="message"/> must
+        /// match the <see cref="Message.Identity"/> of the request <see cref="Message"/>
+        /// corresponding to <paramref name="message"/>.
         /// </remarks>
-        /// <param name="message">A <see cref="Message"/> to reply.</param>
+        /// <param name="message">The <see cref="Message"/> to send as a reply.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
