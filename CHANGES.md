@@ -6,6 +6,14 @@ Version 0.25.1
 
 To be released.
 
+### Behavioral changes
+
+ -  `Swarm<T>` changed back, reverting the behavior implemented in [#1606]
+    to append blocks to the canonical chain instead of using a forked chain
+    while syncing recent blocks.  [[#1693]]
+
+[#1693]: https://github.com/planetarium/libplanet/pull/1693
+
 
 Version 0.25.0
 --------------
@@ -294,14 +302,11 @@ Released on November 30, 2021.
 
 ### Behavioral changes
 
-<<<<<<< HEAD
  -  `Swarm<T>` became to append blocks to forked chain to avoid locking
     the canonical chain while syncing recent blocks.  [[#1606]]
  -  More streamlined structured logging together with additional logs
     tagged as `Metric`.  [[#1627]]
 
-=======
->>>>>>> parent of 2eb1e95b9... Merge pull request #1606 from moreal/refactor/core/remove-lock
 ### Bug fixes
 
  -  `InvalidMagicCookieException` and `InvalidTimestampException` can now
@@ -312,7 +317,6 @@ Released on November 30, 2021.
 
 ### Dependencies
 
-<<<<<<< HEAD
  -  *Libplanet.Stun* assembly is now distributed as a seaprate NuGet package:
     [*Libplanet.Stun*][Libplanet.Stun].  [[#813], [#1279], [#1625]]
  -  Upgraded *Bencodex* from 0.3.0 to
@@ -358,8 +362,6 @@ Released on November 25, 2021.
 
 [#1614]: https://github.com/planetarium/libplanet/pull/1614
 
-=======
->>>>>>> parent of 2eb1e95b9... Merge pull request #1606 from moreal/refactor/core/remove-lock
 
 Version 0.21.0
 --------------
