@@ -38,6 +38,20 @@ To be released.
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
 
 
+Version 0.25.1
+--------------
+
+Released on January 6, 2022.
+
+### Behavioral changes
+
+ -  `Swarm<T>` changed back, reverting the behavior implemented in [#1606]
+    to append blocks to the canonical chain instead of using a forked chain
+    while syncing recent blocks.  [[#1693]]
+
+[#1693]: https://github.com/planetarium/libplanet/pull/1693
+
+
 Version 0.25.0
 --------------
 
