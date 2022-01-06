@@ -57,7 +57,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
-            bool forked = false;
             System.Action renderSwap = () => { };
             try
             {
@@ -66,7 +65,7 @@ namespace Libplanet.Net
                     "{MethodName} start append. Current tip: #{BlockIndex}",
                     nameof(BlockCandidateHandlerAsync),
                     BlockChain.Tip.Index);
-                (synced, forked) = AppendPreviousBlocks(
+                synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
                     timeout: timeout,
@@ -105,7 +104,7 @@ namespace Libplanet.Net
                 );
                 renderSwap = BlockChain.Swap(
                     synced,
-                    render: forked,
+                    render: true,
                     stateCompleters: null);
                 _logger.Debug(
                     "Swapped chain {ChainIdA} with chain {ChainIdB}.",
@@ -119,15 +118,14 @@ namespace Libplanet.Net
             return true;
         }
 
-        private (BlockChain<T>, bool) AppendPreviousBlocks(
+        private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
             SortedList<long, Block<T>> candidate,
             TimeSpan timeout,
             bool evaluateActions)
         {
-             bool forked = false;
-             BlockChain<T> workspace = blockChain.Fork(blockChain.Tip.Hash, inheritRenderers: true);
-             List<Guid> scope = new List<Guid> { workspace.Id };
+             BlockChain<T> workspace = blockChain;
+             List<Guid> scope = new List<Guid>();
              bool renderActions = evaluateActions;
              bool renderBlocks = true;
 
@@ -169,7 +167,6 @@ namespace Libplanet.Net
                  workspace = workspace.Fork(branchpoint.Hash);
                  renderActions = false;
                  renderBlocks = false;
-                 forked = true;
                  scope.Add(workspace.Id);
                  _logger.Debug(
                      "Fork finished. at {MethodName}",
@@ -200,30 +197,30 @@ namespace Libplanet.Net
                      workspace.Id
                  );
 
-                 foreach (var chainId in scope)
+                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                  {
-                     _store.DeleteChainId(chainId);
+                     _store.DeleteChainId(workspaceId);
                  }
-
-                 workspace = null;
 
                  throw;
              }
-
-             foreach (var id in scope.Where(guid => guid != workspace?.Id))
+             finally
              {
-                 _store.DeleteChainId(id);
+                 foreach (var id in scope.Where(guid => guid != workspace?.Id))
+                 {
+                     _store.DeleteChainId(id);
+                 }
+
+                 _logger.Debug(
+                     "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). at {MethodName}",
+                     workspace?.Id,
+                     workspace?.Tip?.Index,
+                     workspace?.Tip?.Hash,
+                     nameof(AppendPreviousBlocks)
+                 );
              }
 
-             _logger.Debug(
-                 "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). at {MethodName}",
-                 workspace?.Id,
-                 workspace?.Tip?.Index,
-                 workspace?.Tip?.Hash,
-                 nameof(AppendPreviousBlocks)
-             );
-
-             return (workspace, forked);
+             return workspace;
         }
 
         private Block<T> FindBranchpoint(Block<T> oldTip, Block<T> newTip, List<Block<T>> newBlocks)
