@@ -13792,12 +13792,12 @@ references:
   commentId: M:Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address,System.Int32,System.Boolean)
   fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address, System.Int32, System.Boolean)
   nameWithType: RoutingTable.Neighbors(Address, Int32, Boolean)
-- uid: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer,System.Int32,System.Boolean)
-  name: Neighbors(Peer, Int32, Boolean)
-  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Net_Peer_System_Int32_System_Boolean_
-  commentId: M:Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer,System.Int32,System.Boolean)
-  fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.Peer, System.Int32, System.Boolean)
-  nameWithType: RoutingTable.Neighbors(Peer, Int32, Boolean)
+- uid: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.BoundPeer,System.Int32,System.Boolean)
+  name: Neighbors(BoundPeer, Int32, Boolean)
+  href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Net_BoundPeer_System_Int32_System_Boolean_
+  commentId: M:Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.BoundPeer,System.Int32,System.Boolean)
+  fullName: Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.BoundPeer, System.Int32, System.Boolean)
+  nameWithType: RoutingTable.Neighbors(BoundPeer, Int32, Boolean)
 - uid: Libplanet.Net.Protocols.RoutingTable.Neighbors*
   name: Neighbors
   href: api/Libplanet.Net.Protocols.RoutingTable.html#Libplanet_Net_Protocols_RoutingTable_Neighbors_

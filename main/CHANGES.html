@@ -66,11 +66,24 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li><code>nullable</code> context enabled for <code>IProtocol</code> interface and <code>Kademlia</code>,
+<code>KademliaProtocol</code>, and <code>RoutingTable</code> classes.  [<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
+<li><code>RoutingTable.Neighbors(Peer, int, bool)</code> changed to
+<code>RoutingTable.Neighbors(BoundPeer, int, bool)</code>.  As a result,
+<code>RoutingTable</code> class now only explicitly deals with <code>BoundPeer</code>s.
+[<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where unnecessary additional attempts were made to
+unresponsive <code>Peer</code>s when discovering a <code>Peer</code> through <code>KademliaProtocol</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0250">Version 0.25.0</h2>
