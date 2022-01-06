@@ -10,6 +10,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `nullable` context enabled for `IProtocol` interface and `Kademlia`,
+    `KademliaProtocol`, and `RoutingTable` classes.  [[#1692]]
+ -  `RoutingTable.Neighbors(Peer, int, bool)` changed to
+    `RoutingTable.Neighbors(BoundPeer, int, bool)`.  As a result,
+    `RoutingTable` class now only explicitly deals with `BoundPeer`s.
+    [[#1692]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -20,9 +27,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where unnecessary additional attempts were made to
+    unresponsive `Peer`s when discovering a `Peer` through `KademliaProtocol`.
+    [[#1692]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#1692]: https://github.com/planetarium/libplanet/pull/1692
 
 
 Version 0.25.0
