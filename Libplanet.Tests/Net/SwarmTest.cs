@@ -849,6 +849,7 @@ namespace Libplanet.Tests.Net
             miner2.BroadcastBlock(latest);
 
             await miner1.BlockReceived.WaitAsync();
+            await miner1.BlockAppended.WaitAsync();
 
             Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
             Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
@@ -899,6 +900,7 @@ namespace Libplanet.Tests.Net
 
                 miner2.BroadcastBlock(block);
                 await miner1.BlockReceived.WaitAsync();
+                await miner1.BlockAppended.WaitAsync();
 
                 Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
                 Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
@@ -1253,7 +1255,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
-                    5_000,
+                    15_000,
                     conditionLabel:
                         $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
                 );
@@ -1264,7 +1266,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainB.Tip),
-                    5_000,
+                    15_000,
                     conditionLabel:
                         $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
                 );
@@ -1274,7 +1276,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
-                    5_000,
+                    15_000,
                     conditionLabel:
                         $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
                 );
@@ -1287,45 +1289,6 @@ namespace Libplanet.Tests.Net
                 minerSwarmA.Dispose();
                 minerSwarmB.Dispose();
                 receiverSwarm.Dispose();
-            }
-        }
-
-        [RetryFact(10, Timeout = Timeout)]
-        public async Task DoNotDeleteCanonicalChainWhenBlockDownloadFailed()
-        {
-            var keyA = new PrivateKey();
-            var swarmA = CreateSwarm(keyA);
-            var swarmB = CreateSwarm();
-            var chainA = swarmA.BlockChain;
-            var chainB = swarmB.BlockChain;
-
-            swarmB.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
-
-            var genesis = await chainA.MineBlock(keyA);
-            chainB.Append(genesis);
-
-            await chainA.MineBlock(keyA);
-            var block = await chainA.MineBlock(keyA);
-
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-                await BootstrapAsync(swarmA, swarmB.AsPeer);
-
-                Task task = swarmB.FillBlocksAsyncStarted.WaitAsync();
-                swarmA.BroadcastBlock(block);
-                await task;
-                task = swarmB.FillBlocksAsyncFailed.WaitAsync();
-                await StopAsync(swarmA);
-                await task;
-
-                Assert.NotNull(chainB.GetState(swarmA.Address));
-            }
-            finally
-            {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
             }
         }
 
@@ -1582,6 +1545,7 @@ namespace Libplanet.Tests.Net
                 sender.BroadcastBlock(sender.BlockChain.Tip);
 
                 await receiver.BlockReceived.WaitAsync();
+                await receiver.BlockAppended.WaitAsync();
                 Assert.Equal(
                     7,
                     receiver.BlockChain.Count);
@@ -1594,7 +1558,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task FillWhenGetAllBlocksFromSender()
+        public async Task FillWhenGetChunkBlocksFromSender()
         {
             Swarm<DumbAction> receiver = CreateSwarm();
             Swarm<DumbAction> sender = CreateSwarm();
@@ -1625,8 +1589,10 @@ namespace Libplanet.Tests.Net
                 sender.BroadcastBlock(sender.BlockChain.Tip);
 
                 await receiver.BlockReceived.WaitAsync();
+                await receiver.BlockAppended.WaitAsync();
+                Log.Debug("Count: {Count}", receiver.BlockChain.Count);
                 Assert.Equal(
-                    7,
+                    2,
                     receiver.BlockChain.Count);
             }
             finally
@@ -1717,138 +1683,6 @@ namespace Libplanet.Tests.Net
             {
                 await StopAsync(swarm1);
                 await StopAsync(swarm2);
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task GetBlockFromOtherPeersOnTimeout()
-        {
-            var policy = new NullPolicy<DumbAction>();
-            Block<DumbAction> genesis =
-                BlockChain<DumbAction>.MakeGenesisBlock(policy.GetHashAlgorithm(0));
-            EmulatingUnstableGetBlockStore upstreamStoreA =
-                new EmulatingUnstableGetBlockStore(new MemoryStore());
-            var upstreamChainA = new BlockChain<DumbAction>(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                upstreamStoreA,
-                new TrieStateStore(new MemoryKeyValueStore()),
-                genesis
-            );
-            Task<Block<DumbAction>> miningBlock1 = upstreamChainA.MineBlock(new PrivateKey());
-            Swarm<DumbAction> upstreamA = CreateSwarm(upstreamChainA);
-            Task<Task> startingUpstreamA = StartAsync(upstreamA);
-
-            var upstreamChainB = new BlockChain<DumbAction>(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()),
-                genesis
-            );
-            Swarm<DumbAction> upstreamB = CreateSwarm(upstreamChainB);
-            Task<Task> startingUpstreamB = StartAsync(upstreamB);
-
-            var downstreamChain = new BlockChain<DumbAction>(
-                policy,
-                new VolatileStagePolicy<DumbAction>(),
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()),
-                genesis
-            );
-            const int pollInterval = 5000;
-            Swarm<DumbAction> downstream = CreateSwarm(downstreamChain, options: new SwarmOptions
-            {
-                PollInterval = TimeSpan.FromMilliseconds(pollInterval),
-                MaxTimeout = TimeSpan.FromMilliseconds((double)pollInterval / 2),
-                TipLifespan = TimeSpan.FromMilliseconds(pollInterval),
-            });
-            Task<Task> startingDownstream = StartAsync(downstream);
-
-            _output.WriteLine("{0}: {1}", nameof(upstreamA), upstreamA.AsPeer);
-            _output.WriteLine("{0}: {1}", nameof(upstreamB), upstreamB.AsPeer);
-            _output.WriteLine("{0}: {1}", nameof(downstream), downstream.AsPeer);
-
-            try
-            {
-                await Task.WhenAll(
-                    startingUpstreamA,
-                    startingUpstreamB,
-                    startingDownstream
-                );
-                await Task.WhenAll(
-                    miningBlock1,
-                    upstreamA.AddPeersAsync(
-                        new[] { upstreamB.AsPeer, downstream.AsPeer },
-                        TimeSpan.FromMilliseconds(Timeout)
-                    ),
-                    upstreamB.AddPeersAsync(
-                        new[] { upstreamA.AsPeer, downstream.AsPeer },
-                        TimeSpan.FromMilliseconds(Timeout)
-                    ),
-                    downstream.AddPeersAsync(
-                        new[] { upstreamA.AsPeer, upstreamB.AsPeer },
-                        TimeSpan.FromMilliseconds(Timeout)
-                    )
-                );
-                Block<DumbAction> block1 = upstreamChainA.Tip;
-                Task<Block<DumbAction>> miningBlock2 =
-                    upstreamChainA.MineBlock(new PrivateKey(), append: false);
-
-                upstreamA.BroadcastBlock(block1);
-                await AssertThatEventually(
-                    () => downstreamChain.Tip.Equals(block1),
-                    pollInterval * 2,
-                    1_000,
-                    _output,
-                    $"the {nameof(downstream)} receiving the {nameof(block1)} ({block1})"
-                );
-
-                Assert.Equal(
-                    (block1.Index, block1.Hash),
-                    (downstreamChain.Tip.Index, downstreamChain.Tip.Hash)
-                );
-
-                Block<DumbAction> block2 = await miningBlock2;
-                upstreamStoreA.BlockGettable = false;
-                upstreamChainA.Append(block2);
-                upstreamA.BroadcastBlock(block2);
-                await AssertThatEventually(
-                    () => downstream.BlockDemandTable.Demands.Any(kv =>
-                        kv.Key.Address.Equals(upstreamA.Address) &&
-                        kv.Value.Header.Hash.Equals(block2.Header.Hash)
-                    ),
-                    pollInterval * 2,
-                    1_000,
-                    _output,
-                    $"the {nameof(downstream)} receiving the {nameof(block2)} header ({block2})"
-                );
-
-                Assert.Contains(
-                    downstream.BlockDemandTable.Demands,
-                    kv =>
-                        kv.Key.Address.Equals(upstreamA.Address) &&
-                        kv.Value.Header.Hash.Equals(block2.Header.Hash)
-                );
-
-                // Even if the downstream received the block2's header from the upstreamA,
-                // as the upstreamA became unreachable now (BlockGettable = false) and
-                // the upstreamB has the block2 too, the downstream should be possible to receive
-                // it from the upstreamB instead of the upstreamA:
-                upstreamChainB.Append(block2);
-                await AssertThatEventually(
-                    () => downstreamChain.Tip.Equals(block2),
-                    pollInterval * 4,
-                    1_000,
-                    _output,
-                    $"the {nameof(downstream)} receiving the {nameof(block2)} ({block2})"
-                );
-            }
-            finally
-            {
-                await StopAsync(upstreamA);
-                await StopAsync(upstreamB);
-                await StopAsync(downstream);
             }
         }
 
