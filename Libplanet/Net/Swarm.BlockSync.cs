@@ -192,8 +192,6 @@ namespace Libplanet.Net
             {
                 workspace.Id,
             };
-            workspace = workspace.Fork(workspace.Tip.Hash);
-            chainIds.Add(workspace.Id);
             bool renderActions = render;
             bool renderBlocks = true;
 
@@ -705,7 +703,6 @@ namespace Libplanet.Net
         {
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
             BlockChain<T> synced = null;
-            bool forked = false;
             System.Action renderSwap = () => { };
 
             try
@@ -717,7 +714,7 @@ namespace Libplanet.Net
                     "{SessionId}: Starting " + nameof(SyncPreviousBlocksAsync) + "()...";
                 _logger.Debug(startMsg, logSessionId);
                 FillBlocksAsyncStarted.Set();
-                (synced, forked) = await SyncBlocksAsync(
+                synced = await SyncBlocksAsync(
                     peer,
                     blockChain,
                     stop,
@@ -757,7 +754,7 @@ namespace Libplanet.Net
                     );
                     renderSwap = blockChain.Swap(
                         synced,
-                        render: forked,
+                        render: true,
                         stateCompleters: null);
                     _logger.Debug(
                         "{SessionId}: Swapped chain {ChainIdA} with chain {ChainIdB}.",
@@ -772,7 +769,7 @@ namespace Libplanet.Net
         }
 
 #pragma warning disable MEN003
-        private async Task<(BlockChain<T>, bool)> SyncBlocksAsync(
+        private async Task<BlockChain<T>> SyncBlocksAsync(
             BoundPeer peer,
             BlockChain<T> blockChain,
             BlockHash? stop,
@@ -787,9 +784,8 @@ namespace Libplanet.Net
         {
             var sessionRandom = new Random();
             const string fname = nameof(SyncBlocksAsync);
-            bool forked = false;
-            BlockChain<T> workspace = blockChain.Fork(blockChain.Tip.Hash, inheritRenderers: true);
-            var scope = new List<Guid> { workspace.Id };
+            BlockChain<T> workspace = blockChain;
+            var scope = new List<Guid>();
             bool renderActions = evaluateActions;
             bool renderBlocks = true;
 
@@ -830,7 +826,7 @@ namespace Libplanet.Net
                             subSessionId,
                             peer
                         );
-                        return (workspace, forked);
+                        return workspace;
                     }
 
                     hashes.First().Deconstruct(
@@ -883,7 +879,6 @@ namespace Libplanet.Net
                         scope.Add(workChainId);
                         renderActions = false;
                         renderBlocks = false;
-                        forked = true;
                         _logger.Debug(
                             "{SessionId}/{SubSessionId}: Fork finished.",
                             logSessionId,
@@ -990,7 +985,6 @@ namespace Libplanet.Net
                 if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
                     _store.DeleteChainId(workspaceId);
-                    workspace = null;
                 }
 
                 throw;
@@ -1013,7 +1007,7 @@ namespace Libplanet.Net
                 }
             }
 
-            return (workspace, forked);
+            return workspace;
         }
 #pragma warning restore MEN003
 
