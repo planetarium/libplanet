@@ -7,7 +7,7 @@ namespace Libplanet.Net
 {
     /// <summary>
     /// The exception that is thrown when the version of the
-    /// <see cref="Message" /> that <see cref="Swarm{T}" /> received
+    /// <see cref="Message"/> that <see cref="Swarm{T}"/> received
     /// is different.
     /// </summary>
     [Serializable]
@@ -17,15 +17,13 @@ namespace Libplanet.Net
         /// Initializes a new instance of the
         /// <see cref="DifferentAppProtocolVersionException"/> class.
         /// </summary>
-        /// <param name="identity">The identity of the message received. Will have empty
-        /// string if the message is a reply.</param>
+        /// <param name="identity">The <see cref="Message.Identity"/> of the <see cref="Message"/>
+        /// received.</param>
         /// <param name="expectedVersion">The protocol version of the current
         /// <see cref="Swarm{T}"/>.</param>
-        /// <param name="actualVersion">The protocol version of the
-        /// <see cref="Peer"/> that <see cref="Swarm{T}" /> is trying to connect
-        /// to.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.
-        /// </param>
+        /// <param name="actualVersion">The protocol version of the <see cref="Peer"/> that
+        /// <see cref="Swarm{T}"/> is trying to connect to.</param>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
         public DifferentAppProtocolVersionException(
             string message,
             byte[] identity,
@@ -44,7 +42,6 @@ namespace Libplanet.Net
 
         /// <summary>
         /// The identity of the message received.
-        /// Will have <c>null</c> if the message is a reply.
         /// </summary>
         public byte[] Identity { get; }
 
