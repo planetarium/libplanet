@@ -470,14 +470,48 @@ namespace Libplanet.Blockchain
             BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
         ) =>
-            GetRawState(
-                ToStateKey(address),
-                offset,
-                StateCompleters<T>.ToRawStateCompleter(
-                    stateCompleter ?? StateCompleters<T>.Reject,
-                    address
-                )
-            );
+            GetStates(new[] { address }, offset, stateCompleter)[0];
+
+        /// <summary>
+        /// Gets multiple states associated to the specified <paramref name="addresses"/>.
+        /// </summary>
+        /// <param name="addresses">Addresses of states to query.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
+        /// the states.  <see cref="Tip"/> by default.</param>
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states of the block, this delegate is called and its return values are used
+        /// instead.
+        /// <para><see cref="StateCompleters{T}.Recalculate"/> makes the incomplete states
+        /// recalculated and filled on the fly.</para>
+        /// <para><see cref="StateCompleters{T}.Reject"/> (which is default) makes the incomplete
+        /// states (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
+        /// </param>
+        /// <returns>The states associated to the specified <paramref name="addresses"/>.
+        /// Associated values are ordered in the same way to the corresponding
+        /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
+        /// </returns>
+        public IReadOnlyList<IValue> GetStates(
+            IReadOnlyList<Address> addresses,
+            BlockHash? offset = null,
+            StateCompleter<T> stateCompleter = null
+        )
+        {
+            if (offset is null && Count < 1)
+            {
+                return new IValue[addresses.Count];
+            }
+
+            BlockHash blockHash = offset ?? Tip.Hash;
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(blockHash);
+            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
+            {
+                string[] rawKeys = addresses.Select(ToStateKey).ToArray();
+                return StateStore.GetStates(stateRootHash, rawKeys);
+            }
+
+            stateCompleter ??= StateCompleters<T>.Reject;
+            return stateCompleter(this, blockHash, addresses);
+        }
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
@@ -506,20 +540,25 @@ namespace Libplanet.Blockchain
             FungibleAssetStateCompleter<T> stateCompleter = null
         )
         {
+            if (offset is null && Count < 1)
+            {
+                return currency * 0;
+            }
+
+            BlockHash blockHash = offset ?? Tip.Hash;
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(blockHash);
+            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
+            {
+                string rawKey = ToFungibleAssetKey(address, currency);
+                IReadOnlyList<IValue> values =
+                    StateStore.GetStates(stateRootHash, new[] { rawKey });
+                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
+            }
+
             stateCompleter ??= FungibleAssetStateCompleters<T>.Reject;
-            IValue v = GetRawState(
-                ToFungibleAssetKey(address, currency),
-                offset,
-                FungibleAssetStateCompleters<T>.ToRawStateCompleter(
-                    stateCompleter,
-                    address,
-                    currency
-                )
-            );
-            return FungibleAssetValue.FromRawValue(
-                currency,
-                v is Bencodex.Types.Integer i ? i.Value : 0
-            );
+            return stateCompleter(this, blockHash, address, currency);
         }
 
         /// <summary>
@@ -1357,25 +1396,6 @@ namespace Libplanet.Blockchain
             }
 
             return null;
-        }
-
-        private IValue GetRawState(
-            string key,
-            BlockHash? offset,
-            Func<BlockChain<T>, BlockHash, IValue> rawStateCompleter
-        )
-        {
-            if (offset is null && Count == 0)
-            {
-                return null;
-            }
-
-            BlockHash offsetHash = offset ?? Tip.Hash;
-
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
-            return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
-                ? StateStore.GetStates(new[] { key }, stateRootHash)[0]
-                : rawStateCompleter(this, offsetHash);
         }
     }
 }

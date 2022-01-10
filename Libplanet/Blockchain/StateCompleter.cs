@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -14,13 +15,16 @@ namespace Libplanet.Blockchain
     /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
     /// <param name="blockChain">The blockchain to query.</param>
     /// <param name="blockHash">The hash of a block to lacks its dirty states.</param>
-    /// <param name="address">The address to query its state value.</param>
-    /// <returns>A complement state.  This can be <c>null</c>.</returns>
+    /// <param name="addresses">The addresses of states to look up.</param>
+    /// <returns>Complement states associated to the specified <paramref name="addresses"/>.
+    /// The associated values are ordered in the same way to the corresponding
+    /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
+    /// </returns>
     /// <seealso cref="StateCompleters{T}"/>
-    public delegate IValue StateCompleter<T>(
+    public delegate IReadOnlyList<IValue?> StateCompleter<T>(
         BlockChain<T> blockChain,
         BlockHash blockHash,
-        Address address
+        IReadOnlyList<Address> addresses
     )
         where T : IAction, new();
 }

@@ -164,11 +164,12 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(block2.Hash, s.BlockHash);
                 Assert.Equal(tx.Id, s.TxId);
                 Assert.Equal(tx.UpdatedAddresses, s.UpdatedAddresses);
+                Address[] updatedAddrs = tx.UpdatedAddresses.ToArray();
                 Assert.Equal(
-                    tx.UpdatedAddresses.ToImmutableDictionary(
-                        address => address,
-                        address => _blockChain.GetState(address)
-                    ),
+                    addresses.Zip(
+                        _blockChain.GetStates(updatedAddrs),
+                        (k, v) => new KeyValuePair<Address, IValue>(k, v)
+                    ).ToImmutableDictionary(),
                     s.UpdatedStates
                 );
                 Assert.Empty(s.FungibleAssetsDelta);

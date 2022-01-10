@@ -1135,6 +1135,7 @@ namespace Libplanet.Tests.Blockchain
                 Math.Min(10, addresses.Length - testingDepth - 1)
             ).Select(i => addresses[i]).ToArray();
 
+            Assert.All(chain.GetStates(targetAddresses), Assert.Null);
             foreach (Address targetAddress in targetAddresses)
             {
                 Assert.NotNull(chain.GetState(targetAddress));
@@ -1211,10 +1212,18 @@ namespace Libplanet.Tests.Blockchain
                 new[] { new DumbAction(_fx.Address1, "item1.0"), }
             );
             await chain.MineBlock(new PrivateKey());
+            Assert.Equal(
+                new IValue[] { (Text)"item0.0,item1.0" },
+                chain.GetStates(new[] { _fx.Address1 })
+            );
             Assert.Equal("item0.0,item1.0", (Text)chain.GetState(_fx.Address1));
 
             var forked = chain.Fork(chain.Tip.Hash);
             Assert.Equal(2, forked.Count);
+            Assert.Equal(
+                new IValue[] { (Text)"item0.0,item1.0" },
+                forked.GetStates(new[] { _fx.Address1 })
+            );
             Assert.Equal("item0.0,item1.0", (Text)forked.GetState(_fx.Address1));
         }
 
@@ -1284,6 +1293,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.StateStore,
                 _fx.GenesisBlock);
 
+            Assert.All(chain.GetStates(addresses), Assert.Null);
             foreach (var address in addresses)
             {
                 Assert.Null(chain.GetState(address));
@@ -1297,6 +1307,7 @@ namespace Libplanet.Tests.Blockchain
 
             await chain.MineBlock(privateKeys[0]);
 
+            Assert.All(chain.GetStates(addresses), v => Assert.Equal((Text)"1", v));
             foreach (var address in addresses)
             {
                 Assert.Equal((Text)"1", chain.GetState(address));
@@ -1305,6 +1316,10 @@ namespace Libplanet.Tests.Blockchain
             chain.MakeTransaction(privateKeys[0], new[] { new DumbAction(addresses[0], "2") });
             await chain.MineBlock(privateKeys[0]);
             Assert.Equal((Text)"1,2", chain.GetState(addresses[0]));
+            Assert.All(
+                chain.GetStates(addresses.Skip(1).ToArray()),
+                v => Assert.Equal((Text)"1", v)
+            );
         }
 
         [Fact]

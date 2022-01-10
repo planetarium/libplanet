@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Replaced `IValue StateCompleter<T>(BlockChain<T>, BlockHash, Address)`
+    delegate with `IReadOnlyList<IValue?> StateCompleter<T>(BlockChain<T>,
+    BlockHash, IReadOnlyList<Address>)` delegate.  [[#1703]]
  -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
  -  Replaced `StateStoreExtensions.GetState()` static method with `GetStates()`
     static method.  [[#1703]]
@@ -29,6 +32,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockChain<T>.GetStates()` method.  [[#1703]]
  -  Added `StateStoreExtensions.GetStates()` static method.  [[#1703]]
 
 ### Behavioral changes

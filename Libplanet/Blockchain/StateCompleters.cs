@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -17,43 +18,44 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// See <see cref="StateCompleterSet{T}.Recalculate"/>.
         /// </summary>
-        public static readonly StateCompleter<T> Recalculate = (blockChain, blockHash, address) =>
-        {
-            blockChain.RecalculateBlockStates(blockHash);
-            return blockChain.GetState(address, blockHash);
-        };
+        public static readonly StateCompleter<T> Recalculate =
+            (blockChain, blockHash, addresses) =>
+            {
+                blockChain.RecalculateBlockStates(blockHash);
+                return blockChain.GetStates(addresses, blockHash);
+            };
 
         /// <summary>
         /// See <see cref="StateCompleterSet{T}.ComplementAll"/>.
         /// </summary>
         public static readonly StateCompleter<T> ComplementAll =
-            (blockChain, blockHash, address) =>
-        {
-            blockChain.ComplementAllBlockStates(blockHash);
-            return blockChain.GetState(address, blockHash);
-        };
+            (blockChain, blockHash, addresses) =>
+            {
+                blockChain.ComplementAllBlockStates(blockHash);
+                return blockChain.GetStates(addresses, blockHash);
+            };
 
         /// <summary>
         /// See <see cref="StateCompleterSet{T}.ComplementLatest"/>.
         /// </summary>
         public static readonly StateCompleter<T> ComplementLatest =
-            (blockChain, blockHash, address) =>
-        {
-            blockChain.ComplementLatestBlockStates(blockHash);
-            return blockChain.GetState(address, blockHash);
-        };
+            (blockChain, blockHash, addresses) =>
+            {
+                blockChain.ComplementLatestBlockStates(blockHash);
+                return blockChain.GetStates(addresses, blockHash);
+            };
 
         /// <summary>
-        /// Rejects to complement incomplete state and throws
+        /// Rejects to complement incomplete states and throws
         /// an <see cref="IncompleteBlockStatesException"/>.
         /// </summary>
-        public static readonly StateCompleter<T> Reject = (chain, blockHash, address) =>
+        public static readonly StateCompleter<T> Reject = (chain, blockHash, addresses) =>
             throw new IncompleteBlockStatesException(blockHash);
 
-        internal static Func<BlockChain<T>, BlockHash, IValue> ToRawStateCompleter(
+        internal static Func<BlockChain<T>, BlockHash, IReadOnlyList<IValue?>> ToRawStateCompleter(
             StateCompleter<T> stateCompleter,
-            Address address
+            IReadOnlyList<Address> addresses
         ) =>
-            (blockChain, hash) => stateCompleter(blockChain, hash, address);
+            (blockChain, hash) => stateCompleter(blockChain, hash, addresses);
     }
 }
