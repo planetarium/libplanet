@@ -24,21 +24,13 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        internal static readonly StateGetter<T> NullStateGetter =
-            (address, hashDigest, stateCompleter) => null;
-
-        internal static readonly BalanceGetter<T> NullBalanceGetter =
-            (address, currency, hashDigest, fungibleAssetStateCompleter)
-                => new FungibleAssetValue(currency);
-
         internal static readonly AccountStateGetter NullAccountStateGetter = address => null;
         internal static readonly AccountBalanceGetter NullAccountBalanceGetter =
             (address, currency) => new FungibleAssetValue(currency);
 
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
         private readonly IAction? _policyBlockAction;
-        private readonly StateGetter<T> _stateGetter;
-        private readonly BalanceGetter<T> _balanceGetter;
+        private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
 
         /// <summary>
@@ -47,21 +39,17 @@ namespace Libplanet.Action
         /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
         /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
         /// <see cref="Block{T}"/> that gets evaluated.</param>
-        /// <param name="stateGetter">The <see cref="StateGetter{T}"/> to use to retreive
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
-        /// <param name="balanceGetter">The <see cref="BalanceGetter{T}"/> to use to retreive
-        /// the balance for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
         public ActionEvaluator(
             IAction? policyBlockAction,
-            StateGetter<T> stateGetter,
-            BalanceGetter<T> balanceGetter,
+            IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter)
         {
             _policyBlockAction = policyBlockAction;
-            _stateGetter = stateGetter;
-            _balanceGetter = balanceGetter;
+            _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
         }
 
@@ -619,11 +607,11 @@ namespace Libplanet.Action
 
             if (block.PreviousHash is { } previousHash)
             {
-                accountStateGetter = address => _stateGetter(
-                    address,
+                accountStateGetter = address => _blockChainStates.GetStates(
+                    new[] { address },
                     previousHash,
-                    stateCompleterSet.StateCompleter);
-                accountBalanceGetter = (address, currency) => _balanceGetter(
+                    stateCompleterSet.StateCompleter)[0];
+                accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
                     address,
                     currency,
                     previousHash,

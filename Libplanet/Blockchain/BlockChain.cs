@@ -164,9 +164,8 @@ namespace Libplanet.Blockchain
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
-                GetState,
-                GetBalance,
-                hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
+                blockChainStates: this,
+                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
             );
 
             if (Count == 0)

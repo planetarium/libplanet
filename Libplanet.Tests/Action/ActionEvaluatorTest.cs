@@ -80,8 +80,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
-                    stateGetter: ActionEvaluator<RandomAction>.NullStateGetter,
-                    balanceGetter: ActionEvaluator<RandomAction>.NullBalanceGetter,
+                    blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null);
             var generatedRandomNumbers = new List<int>();
 
@@ -276,8 +275,7 @@ namespace Libplanet.Tests.Action
             );
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
-                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
-                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
+                blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null);
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
@@ -576,8 +574,7 @@ namespace Libplanet.Tests.Action
             }.Mine(HashAlgorithmType.Of<SHA256>());
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
-                stateGetter: ActionEvaluator<DumbAction>.NullStateGetter,
-                balanceGetter: ActionEvaluator<DumbAction>.NullBalanceGetter,
+                blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null);
 
             foreach (bool rehearsal in new[] { false, true })
@@ -704,8 +701,7 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
-                stateGetter: ActionEvaluator<ThrowException>.NullStateGetter,
-                balanceGetter: ActionEvaluator<ThrowException>.NullBalanceGetter,
+                blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null);
             var block = new BlockContent<ThrowException>
             {

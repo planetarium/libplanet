@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -312,9 +311,7 @@ namespace Libplanet.Blocks
 
             var actionEvaluator = new ActionEvaluator<T>(
                 blockAction,
-                stateGetter: (address, digest, stateCompleter) => null,
-                balanceGetter: (address, currency, hash, fungibleAssetStateCompleter)
-                    => new FungibleAssetValue(currency),
+                blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =

@@ -15,6 +15,12 @@ To be released.
     BlockHash, IReadOnlyList<Address>)` delegate.  [[#1703]]
  -  Added `IAccountStateDelta.GetStates(IReadOnlyList<Address>)` method.
     [[#1703]]
+ -  Removed `StateGetter<T>` delegate.  [[#1703]]
+ -  Removed `BalanceGetter<T>` delegate.  [[#1703]]
+ -  Removed `StateGetter<T> stateGetter` and `BalanceGetter<T> balanceGetter`
+    parameters from `ActionEvaluator<T>()` constructor.  [[#1703]]
+ -  Added `IBlockChainStates<T> blockChainStates` parameter to
+    `ActionEvaluator<T>()` constructor.  [[#1703]]
  -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
  -  Replaced `StateStoreExtensions.GetState()` static method with `GetStates()`
     static method.  [[#1703]]
