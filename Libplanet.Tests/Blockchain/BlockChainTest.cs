@@ -1722,11 +1722,11 @@ namespace Libplanet.Tests.Blockchain
                     ).Evaluate(GenesisMiner, chain);
                     previousStates = b.ProtocolVersion > 0
                         ? new AccountStateDeltaImpl(
-                            dirty.GetValueOrDefault,
+                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
                             b.Miner)
                         : new AccountStateDeltaImplV0(
-                            dirty.GetValueOrDefault,
+                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
                             b.Miner);
 

@@ -15,6 +15,9 @@ To be released.
     BlockHash, IReadOnlyList<Address>)` delegate.  [[#1703]]
  -  Added `IAccountStateDelta.GetStates(IReadOnlyList<Address>)` method.
     [[#1703]]
+ -  Replaced `IValue AccountStateGetter(Address)` delegate with
+    `IReadOnlyList<IValue?> AccountStateGetter(IReadOnlyList<Address>)`
+    delegate.  [[#1703]]
  -  Removed `StateGetter<T>` delegate.  [[#1703]]
  -  Removed `BalanceGetter<T>` delegate.  [[#1703]]
  -  Removed `StateGetter<T> stateGetter` and `BalanceGetter<T> balanceGetter`

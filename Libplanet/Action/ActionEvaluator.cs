@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -24,10 +25,6 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        internal static readonly AccountStateGetter NullAccountStateGetter = address => null;
-        internal static readonly AccountBalanceGetter NullAccountBalanceGetter =
-            (address, currency) => new FungibleAssetValue(currency);
-
         private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
         private readonly IAction? _policyBlockAction;
         private readonly IBlockChainStates<T> _blockChainStates;
@@ -99,6 +96,19 @@ namespace Libplanet.Action
                         previousBlockStatesTrie: previousBlockStatesTrie));
             }
         }
+
+        [Pure]
+        internal static IReadOnlyList<IValue?> NullAccountStateGetter(
+            IReadOnlyList<Address> addresses
+        ) =>
+            new IValue?[addresses.Count];
+
+        [Pure]
+        internal static FungibleAssetValue NullAccountBalanceGetter(
+            Address address,
+            Currency currency
+        ) =>
+            currency * 0;
 
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
@@ -413,8 +423,8 @@ namespace Libplanet.Action
             foreach (Transaction<T> tx in orderedTxs)
             {
                 delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(delta.GetState, delta.GetBalance, tx.Signer)
-                    : new AccountStateDeltaImplV0(delta.GetState, delta.GetBalance, tx.Signer);
+                    ? new AccountStateDeltaImpl(delta.GetStates, delta.GetBalance, tx.Signer)
+                    : new AccountStateDeltaImplV0(delta.GetStates, delta.GetBalance, tx.Signer);
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
                     tx: tx,
@@ -607,10 +617,10 @@ namespace Libplanet.Action
 
             if (block.PreviousHash is { } previousHash)
             {
-                accountStateGetter = address => _blockChainStates.GetStates(
-                    new[] { address },
+                accountStateGetter = addresses => _blockChainStates.GetStates(
+                    addresses,
                     previousHash,
-                    stateCompleterSet.StateCompleter)[0];
+                    stateCompleterSet.StateCompleter);
                 accountBalanceGetter = (address, currency) => _blockChainStates.GetBalance(
                     address,
                     currency,

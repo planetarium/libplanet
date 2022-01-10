@@ -71,11 +71,11 @@ namespace Libplanet.Tests.Action
                     GetBalance(a, _currencies[0]),
                     GetBalance(a, _currencies[1]),
                     GetBalance(a, _currencies[2]),
-                    GetState(a)
+                    GetStates(new[] { a })[0]
                 );
             }
 
-            _init = CreateInstance(GetState, GetBalance, _addr[0]);
+            _init = CreateInstance(GetStates, GetBalance, _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }
@@ -265,7 +265,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.MintAsset(_addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(GetState, GetBalance, _addr[1]);
+            IAccountStateDelta delta1 = CreateInstance(GetStates, GetBalance, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.MintAsset(_addr[1], Value(0, 10))
@@ -306,7 +306,7 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.BurnAsset(_addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(GetState, GetBalance, _addr[1]);
+            IAccountStateDelta delta1 = CreateInstance(GetStates, GetBalance, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.BurnAsset(_addr[0], Value(0, 5))
@@ -326,8 +326,9 @@ namespace Libplanet.Tests.Action
 
         protected FungibleAssetValue Zero(int currencyIndex) => Value(currencyIndex, 0);
 
-        protected IValue GetState(Address address) =>
-            _states.TryGetValue(address, out IValue v) ? v : null;
+        protected IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) => addresses
+            .Select(address => _states.TryGetValue(address, out IValue v) ? v : null)
+            .ToArray();
 
         protected FungibleAssetValue GetBalance(Address address, Currency currency) =>
             new FungibleAssetValue(

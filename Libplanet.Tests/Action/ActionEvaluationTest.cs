@@ -1,3 +1,4 @@
+using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -36,7 +37,7 @@ namespace Libplanet.Tests.Action
                     address,
                     1,
                     new AccountStateDeltaImpl(
-                        _ => null,
+                        addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
                         address
                     ),
@@ -44,7 +45,9 @@ namespace Libplanet.Tests.Action
                     false
                 ),
                 new AccountStateDeltaImpl(
-                    a => a.Equals(address) ? (Text)"item" : null,
+                    addrs => addrs
+                        .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
+                        .ToArray(),
                     (_, c) => new FungibleAssetValue(c),
                     address
                 )

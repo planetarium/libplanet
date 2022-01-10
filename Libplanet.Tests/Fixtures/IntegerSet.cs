@@ -153,7 +153,7 @@ namespace Libplanet.Tests.Fixtures
         {
             offset = offset ?? Tip.Hash;
             return new AccountStateDeltaImpl(
-                a => Chain.GetState(a, offset),
+                a => Chain.GetStates(a, offset),
                 (a, c) => Chain.GetBalance(a, c, offset),
                 signer
             );

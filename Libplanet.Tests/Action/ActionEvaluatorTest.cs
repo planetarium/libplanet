@@ -452,7 +452,8 @@ namespace Libplanet.Tests.Action
                 block2Txs,
                 new byte[] { }
             );
-            AccountStateGetter accountStateGetter = dirty1.GetValueOrDefault;
+            AccountStateGetter accountStateGetter = addrs =>
+                addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
@@ -502,7 +503,8 @@ namespace Libplanet.Tests.Action
                     (Integer)randomValue);
             }
 
-            accountStateGetter = dirty1.GetValueOrDefault;
+            accountStateGetter = addrs =>
+                addrs.Select(dirty1.GetValueOrDefault).ToArray();
             accountBalanceGetter = (address, currency) => balances1.TryGetValue(
                 (address, currency), out FungibleAssetValue value)
                     ? value
@@ -883,8 +885,8 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(genesis.Miner));
             Assert.True(evaluation.InputContext.BlockAction);
 
-            accountStateGetter = address => chain.GetState(
-                address,
+            accountStateGetter = addresses => chain.GetStates(
+                addresses,
                 block.PreviousHash,
                 stateCompleterSet.StateCompleter);
             accountBalanceGetter =
@@ -917,11 +919,11 @@ namespace Libplanet.Tests.Action
                 renderActions: false);
             previousStates = block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
-                    address => chain.GetState(address, block.PreviousHash),
+                    addresses => chain.GetStates(addresses, block.PreviousHash),
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block.Miner)
                 : new AccountStateDeltaImplV0(
-                    address => chain.GetState(address, block.PreviousHash),
+                    addresses => chain.GetStates(addresses, block.PreviousHash),
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
