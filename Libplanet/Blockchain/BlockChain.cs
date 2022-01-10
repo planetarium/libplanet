@@ -1374,7 +1374,7 @@ namespace Libplanet.Blockchain
 
             HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offsetHash);
             return stateRootHash is { } h && StateStore.ContainsStateRoot(h)
-                ? StateStore.GetState(key, stateRootHash)
+                ? StateStore.GetStates(new[] { key }, stateRootHash)[0]
                 : rawStateCompleter(this, offsetHash);
         }
     }

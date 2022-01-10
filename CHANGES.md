@@ -11,6 +11,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
+ -  Replaced `StateStoreExtensions.GetState()` static method with `GetStates()`
+    static method.  [[#1703]]
  -  `nullable` context enabled for `IProtocol` interface and `Kademlia`,
     `KademliaProtocol`, and `RoutingTable` classes.  [[#1692]]
  -  `RoutingTable.Neighbors(Peer, int, bool)` changed to
@@ -26,6 +28,8 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `StateStoreExtensions.GetStates()` static method.  [[#1703]]
 
 ### Behavioral changes
 
