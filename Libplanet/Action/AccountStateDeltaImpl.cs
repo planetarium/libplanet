@@ -77,6 +77,14 @@ namespace Libplanet.Action
                 ? value
                 : StateGetter(address);
 
+        /// <inheritdoc cref="IAccountStateDelta.GetStates(IReadOnlyList{Address})"/>
+        [Pure]
+        IReadOnlyList<IValue?> IAccountStateDelta.GetStates(IReadOnlyList<Address> addresses)
+        {
+            // FIXME: Utilize BlockChain<T>.GetStates() method.
+            return addresses.Select(((IAccountStateDelta)this).GetState).ToArray();
+        }
+
         /// <inheritdoc/>
         [Pure]
         IAccountStateDelta IAccountStateDelta.SetState(Address address, IValue state) =>

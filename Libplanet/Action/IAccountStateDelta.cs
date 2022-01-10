@@ -76,6 +76,19 @@ namespace Libplanet.Action
         IValue? GetState(Address address);
 
         /// <summary>
+        /// Gets multiple account states associated with the specified <paramref name="addresses"/>
+        /// at once.
+        /// </summary>
+        /// <param name="addresses">The <see cref="Address"/>es associated with states to get.
+        /// </param>
+        /// <returns>The states associated to the specified <paramref name="addresses"/>.
+        /// Associated values are ordered in the same way to the corresponding
+        /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
+        /// </returns>
+        [Pure]
+        IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses);
+
+        /// <summary>
         /// Gets a new instance that the account state of the given
         /// <paramref name="address"/> is set to the given
         /// <paramref name="state"/>.

@@ -1135,11 +1135,7 @@ namespace Libplanet.Tests.Blockchain
                 Math.Min(10, addresses.Length - testingDepth - 1)
             ).Select(i => addresses[i]).ToArray();
 
-            Assert.All(chain.GetStates(targetAddresses), Assert.Null);
-            foreach (Address targetAddress in targetAddresses)
-            {
-                Assert.NotNull(chain.GetState(targetAddress));
-            }
+            Assert.All(chain.GetStates(targetAddresses), Assert.NotNull);
 
             var callCount = tracker.Logs.Where(
                 trackLog => trackLog.Method == "GetBlockStates"

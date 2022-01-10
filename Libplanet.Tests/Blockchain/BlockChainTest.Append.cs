@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     (Text)"foo", (Text)"bar", (Text)"baz", (Text)"qux", (Integer)1,
                 },
-                addresses.Select(renders[3].NextStates.GetState)
+                renders[3].NextStates.GetStates(addresses)
             );
 
             Address minerAddress = addresses[4];
@@ -166,7 +166,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(tx.UpdatedAddresses, s.UpdatedAddresses);
                 Address[] updatedAddrs = tx.UpdatedAddresses.ToArray();
                 Assert.Equal(
-                    addresses.Zip(
+                    updatedAddrs.Zip(
                         _blockChain.GetStates(updatedAddrs),
                         (k, v) => new KeyValuePair<Address, IValue>(k, v)
                     ).ToImmutableDictionary(),

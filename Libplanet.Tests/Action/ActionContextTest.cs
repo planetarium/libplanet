@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
@@ -182,6 +183,9 @@ namespace Libplanet.Tests.Action
                 ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
 
             public IValue GetState(Address address) => null;
+
+            public IReadOnlyList<IValue> GetStates(IReadOnlyList<Address> addresses) =>
+                new IValue[addresses.Count];
 
             public IAccountStateDelta SetState(Address address, IValue state) => this;
 

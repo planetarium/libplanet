@@ -13,6 +13,8 @@ To be released.
  -  Replaced `IValue StateCompleter<T>(BlockChain<T>, BlockHash, Address)`
     delegate with `IReadOnlyList<IValue?> StateCompleter<T>(BlockChain<T>,
     BlockHash, IReadOnlyList<Address>)` delegate.  [[#1703]]
+ -  Added `IAccountStateDelta.GetStates(IReadOnlyList<Address>)` method.
+    [[#1703]]
  -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
  -  Replaced `StateStoreExtensions.GetState()` static method with `GetStates()`
     static method.  [[#1703]]
