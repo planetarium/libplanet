@@ -35,6 +35,8 @@ To be released.
 ### Added APIs
 
  -  Added `BlockChain<T>.GetStates()` method.  [[#1703]]
+ -  Added `IBlockChainStates<T>` interface.  [[#1703]]
+     -  `BlockChain<T>` now implements `IBlockChainStates<T>`.
  -  Added `StateStoreExtensions.GetStates()` static method.  [[#1703]]
 
 ### Behavioral changes

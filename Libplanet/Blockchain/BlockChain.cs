@@ -33,7 +33,7 @@ namespace Libplanet.Blockchain
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public partial class BlockChain<T>
+    public partial class BlockChain<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
         // FIXME: The _rwlock field should be private.
@@ -470,7 +470,11 @@ namespace Libplanet.Blockchain
             BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
         ) =>
-            GetStates(new[] { address }, offset, stateCompleter)[0];
+            GetStates(
+                new[] { address },
+                offset ?? Tip.Hash,
+                stateCompleter ?? StateCompleters<T>.Reject
+            )[0];
 
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
@@ -494,23 +498,32 @@ namespace Libplanet.Blockchain
             IReadOnlyList<Address> addresses,
             BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
+        ) =>
+            GetStates(
+                addresses,
+                offset ?? Tip.Hash,
+                stateCompleter ?? StateCompleters<T>.Reject
+            );
+
+        public IReadOnlyList<IValue> GetStates(
+            IReadOnlyList<Address> addresses,
+            BlockHash offset,
+            StateCompleter<T> stateCompleter
         )
         {
-            if (offset is null && Count < 1)
+            if (Count < 1)
             {
                 return new IValue[addresses.Count];
             }
 
-            BlockHash blockHash = offset ?? Tip.Hash;
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(blockHash);
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
             if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
             {
                 string[] rawKeys = addresses.Select(ToStateKey).ToArray();
                 return StateStore.GetStates(stateRootHash, rawKeys);
             }
 
-            stateCompleter ??= StateCompleters<T>.Reject;
-            return stateCompleter(this, blockHash, addresses);
+            return stateCompleter(this, offset, addresses);
         }
 
         /// <summary>
@@ -538,15 +551,28 @@ namespace Libplanet.Blockchain
             Currency currency,
             BlockHash? offset = null,
             FungibleAssetStateCompleter<T> stateCompleter = null
+        ) =>
+            GetBalance(
+                address,
+                currency,
+                offset ?? Tip.Hash,
+                stateCompleter ?? FungibleAssetStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetBalance"/>
+        public FungibleAssetValue GetBalance(
+            Address address,
+            Currency currency,
+            BlockHash offset,
+            FungibleAssetStateCompleter<T> stateCompleter
         )
         {
-            if (offset is null && Count < 1)
+            if (Count < 1)
             {
                 return currency * 0;
             }
 
-            BlockHash blockHash = offset ?? Tip.Hash;
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(blockHash);
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
             if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
             {
                 string rawKey = ToFungibleAssetKey(address, currency);
@@ -557,8 +583,7 @@ namespace Libplanet.Blockchain
                     : currency * 0;
             }
 
-            stateCompleter ??= FungibleAssetStateCompleters<T>.Reject;
-            return stateCompleter(this, blockHash, address, currency);
+            return stateCompleter(this, offset, address, currency);
         }
 
         /// <summary>
