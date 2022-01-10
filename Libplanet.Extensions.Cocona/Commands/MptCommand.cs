@@ -213,7 +213,8 @@ namespace Libplanet.Extensions.Cocona.Commands
                 keyValueStore,
                 HashDigest<SHA256>.FromString(stateRootHashHex));
             KeyBytes stateKeyBytes = StateStoreExtensions.EncodeKey(stateKey);
-            if (trie.TryGet(stateKeyBytes, out IValue? value) && value is { })
+            IReadOnlyList<IValue?> values = trie.Get(new[] { stateKeyBytes });
+            if (values.Count > 0 && values[0] is { } value)
             {
                 var codec = new Codec();
                 Console.WriteLine(ByteUtil.Hex(codec.Encode(value)));

@@ -85,7 +85,8 @@ namespace Libplanet.Store
         )
         {
             ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            return trie.TryGet(EncodeKey(rawStateKey), out IValue? value) ? value : null;
+            var keys = new KeyBytes[] { EncodeKey(rawStateKey) };
+            return trie.Get(keys)[0];
         }
 
         /// <summary>

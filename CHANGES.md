@@ -10,6 +10,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
  -  `nullable` context enabled for `IProtocol` interface and `Kademlia`,
     `KademliaProtocol`, and `RoutingTable` classes.  [[#1692]]
  -  `RoutingTable.Neighbors(Peer, int, bool)` changed to
@@ -39,6 +40,7 @@ To be released.
 ### CLI tools
 
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
+[#1703]: https://github.com/planetarium/libplanet/pull/1703
 [#1710]: https://github.com/planetarium/libplanet/pull/1710
 
 

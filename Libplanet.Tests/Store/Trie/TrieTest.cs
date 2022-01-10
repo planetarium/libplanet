@@ -33,11 +33,9 @@ namespace Libplanet.Tests.Store.Trie
             {
                 foreach (var address in addresses)
                 {
-                    Assert.Equal(
-                        states.ContainsKey(address),
-                        trie.TryGet(new KeyBytes(address.ByteArray), out IValue state));
+                    IValue v = trie.Get(new[] { new KeyBytes(address.ByteArray) })[0];
                     IValue expectedState = states.ContainsKey(address) ? states[address] : null;
-                    Assert.Equal(expectedState, state);
+                    Assert.Equal(expectedState, v);
                 }
             }
 
@@ -75,20 +73,14 @@ namespace Libplanet.Tests.Store.Trie
 
             KeyBytes path = new KeyBytes(TestUtils.GetRandomBytes(32));
             trieA = trieA.Set(path, (Text)"foo");
-            Assert.True(trieA.TryGet(path, out IValue stateA));
-            Assert.Equal((Text)"foo", stateA);
+            Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
 
             ITrie trieB = trieA.Commit();
-
-            Assert.True(trieB.TryGet(path, out IValue stateB));
-            Assert.Equal((Text)"foo", stateB);
+            Assert.Equal((Text)"foo", trieB.Get(new[] { path })[0]);
 
             trieB = trieB.Set(path, (Text)"bar");
-
-            Assert.True(trieA.TryGet(path, out stateA));
-            Assert.Equal((Text)"foo", stateA);
-            Assert.True(trieB.TryGet(path, out stateB));
-            Assert.Equal((Text)"bar", stateB);
+            Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
+            Assert.Equal((Text)"bar", trieB.Get(new[] { path })[0]);
 
             ITrie trieC = trieB.Commit();
             ITrie trieD = trieC.Commit();

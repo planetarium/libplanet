@@ -52,31 +52,23 @@ namespace Libplanet.Tests.Store
         [MemberData(nameof(StateStores))]
         public void Commit(string label, IStateStore stateStore)
         {
-            IValue value;
             ITrie a = stateStore.Commit(null, DeltaA);
             Assert.True(a.Recorded);
-            Assert.True(a.TryGet(KeyFoo, out value));
-            AssertBencodexEqual((Text)"abc", value);
-            Assert.True(a.TryGet(KeyBar, out value));
-            AssertBencodexEqual((Text)"def", value);
-            Assert.False(a.TryGet(KeyBaz, out _));
+            AssertBencodexEqual((Text)"abc", a.Get(new[] { KeyFoo })[0]);
+            AssertBencodexEqual((Text)"def", a.Get(new[] { KeyBar })[0]);
+            Assert.Null(a.Get(new[] { KeyBaz })[0]);
 
             ITrie recordA = stateStore.GetStateRoot(a.Hash);
             AssertBytesEqual(a.Hash, recordA.Hash);
-            Assert.True(recordA.TryGet(KeyFoo, out value));
-            AssertBencodexEqual((Text)"abc", value);
-            Assert.True(recordA.TryGet(KeyBar, out value));
-            AssertBencodexEqual((Text)"def", value);
-            Assert.False(recordA.TryGet(KeyBaz, out _));
+            AssertBencodexEqual((Text)"abc", recordA.Get(new[] { KeyFoo })[0]);
+            AssertBencodexEqual((Text)"def", recordA.Get(new[] { KeyBar })[0]);
+            Assert.Null(recordA.Get(new[] { KeyBaz })[0]);
 
             ITrie b = stateStore.Commit(a.Hash, DeltaB);
             Assert.True(b.Recorded);
-            Assert.True(b.TryGet(KeyFoo, out value));
-            AssertBencodexEqual((Text)"ABC", value);
-            Assert.True(b.TryGet(KeyBar, out value));
-            AssertBencodexEqual((Text)"def", value);
-            Assert.True(b.TryGet(KeyBaz, out value));
-            AssertBencodexEqual((Text)"ghi", value);
+            AssertBencodexEqual((Text)"ABC", b.Get(new[] { KeyFoo })[0]);
+            AssertBencodexEqual((Text)"def", b.Get(new[] { KeyBar })[0]);
+            AssertBencodexEqual((Text)"ghi", b.Get(new[] { KeyBaz })[0]);
         }
 
         [Theory]

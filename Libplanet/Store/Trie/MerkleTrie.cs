@@ -108,14 +108,18 @@ namespace Libplanet.Store.Trie
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
         }
 
-        /// <inheritdoc/>
-        public bool TryGet(in KeyBytes key, out IValue? value)
+        /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
+        public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
         {
-            return TryGet(
-                Root,
-                ImmutableArray<byte>.Empty,
-                ToKey(key),
-                out value);
+            var values = new IValue?[keys.Count];
+            for (int i = 0; i < keys.Count; i++)
+            {
+                values[i] = TryGet(Root, ImmutableArray<byte>.Empty, ToKey(keys[i]), out IValue? v)
+                    ? v
+                    : null;
+            }
+
+            return values;
         }
 
         /// <inheritdoc/>
@@ -446,6 +450,8 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="nodeHash">The hash of node to get.</param>
         /// <returns>The node corresponding to <paramref name="nodeHash"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when the <paramref name="nodeHash"/> is
+        /// not found.</exception>
         private INode? GetNode(HashDigest<SHA256> nodeHash)
         {
             IValue intermediateEncoding = _codec.Decode(
