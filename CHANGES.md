@@ -38,6 +38,21 @@ To be released.
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
 
 
+Version 0.25.2
+--------------
+
+Released on January 11, 2022.
+
+ -  Fixed a bug where `TxCompletion<TPeer, TAction>` failed to fetch
+    transactions from other peers.  [[#1704]]
+ -  In `TxCompletion<TPeer, TAction>`, instead of maintaining single
+    `RequestTxsFromPeerAsync()` task for each peer, a new
+    `RequestTxsFromPeerAsync()` task is spawned every time a new
+    demand is received.  [[#1704]]
+
+[#1704]: https://github.com/planetarium/libplanet/pull/1704
+
+
 Version 0.25.1
 --------------
 
