@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.25.2
 --------------
 
-To be released.
+Released on January 11, 2022.
 
  -  Fixed a bug where `TxCompletion<TPeer, TAction>` failed to fetch
     transactions from other peers.  [[#1704]]
