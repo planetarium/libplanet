@@ -578,9 +578,11 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="transaction"><see cref="Transaction{T}"/> to add to the pending list.
         /// </param>
-        /// <exception cref="InvalidTxException">Thrown when the given
-        /// <paramref name="transaction"/> is invalid.</exception>
-        public void StageTransaction(Transaction<T> transaction)
+        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
+        /// <exception cref="InvalidTxGenesisHashException">Thrown when given
+        /// <paramref name="transaction"/> has invalid <see cref="Transaction{T}.GenesisHash"/>.
+        /// </exception>
+        public bool StageTransaction(Transaction<T> transaction)
         {
             if (!transaction.GenesisHash.Equals(Genesis.Hash))
             {
@@ -593,7 +595,7 @@ namespace Libplanet.Blockchain
                     msg);
             }
 
-            StagePolicy.Stage(this, transaction);
+            return StagePolicy.Stage(this, transaction);
         }
 
         /// <summary>

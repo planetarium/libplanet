@@ -23,6 +23,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
+        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
         /// <remarks>
         /// <para>
         /// This does not throw any exception regardless of whether <paramref name="transaction"/>
@@ -33,7 +34,7 @@ namespace Libplanet.Blockchain.Policies
         /// as ignored, <paramref name="transaction"/> will not be staged.
         /// </para>
         /// </remarks>
-        public void Stage(BlockChain<T> blockChain, Transaction<T> transaction);
+        public bool Stage(BlockChain<T> blockChain, Transaction<T> transaction);
 
         /// <summary>
         /// Unstages a transaction <paramref name="id"/>.
@@ -41,11 +42,12 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to unstage.</param>
+        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
         /// <remarks>
         /// This does not throw any exception regardless of whether <paramref name="id"/> was
         /// successfully unstaged or not.
         /// </remarks>
-        public void Unstage(BlockChain<T> blockChain, TxId id);
+        public bool Unstage(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
         /// Marks given <paramref name="id"/> as ignored.
