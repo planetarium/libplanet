@@ -73,6 +73,9 @@
 <code>RoutingTable.Neighbors(BoundPeer, int, bool)</code>.  As a result,
 <code>RoutingTable</code> class now only explicitly deals with <code>BoundPeer</code>s.
 [<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
+<li><code>BlockChain&lt;T&gt;.StageTransaction()</code>, <code>IStagePolicy.Stage()</code>,
+and <code>IStagePolicy.Unstage()</code> now all return <code>bool</code> to indicate whether
+staging was successful or not.  [<a href="https://github.com/planetarium/libplanet/pull/1710">#1710</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
