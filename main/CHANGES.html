@@ -86,6 +86,16 @@ unresponsive <code>Peer</code>s when discovering a <code>Peer</code> through <co
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0252">Version 0.25.2</h2>
+<p>Released on January 11, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>TxCompletion&lt;TPeer, TAction&gt;</code> failed to fetch
+transactions from other peers.  [<a href="https://github.com/planetarium/libplanet/pull/1704">#1704</a>]</li>
+<li>In <code>TxCompletion&lt;TPeer, TAction&gt;</code>, instead of maintaining single
+<code>RequestTxsFromPeerAsync()</code> task for each peer, a new
+<code>RequestTxsFromPeerAsync()</code> task is spawned every time a new
+demand is received.  [<a href="https://github.com/planetarium/libplanet/pull/1704">#1704</a>]</li>
+</ul>
 <h2 id="version-0251">Version 0.25.1</h2>
 <p>Released on January 6, 2022.</p>
 <h3 id="behavioral-changes-1">Behavioral changes</h3>
