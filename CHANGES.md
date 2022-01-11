@@ -16,6 +16,9 @@ To be released.
     `RoutingTable.Neighbors(BoundPeer, int, bool)`.  As a result,
     `RoutingTable` class now only explicitly deals with `BoundPeer`s.
     [[#1692]]
+ -  `BlockChain<T>.StageTransaction()`, `IStagePolicy.Stage()`,
+    and `IStagePolicy.Unstage()` now all return `bool` to indicate whether
+    staging was successful or not.  [[#1710]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,6 +39,7 @@ To be released.
 ### CLI tools
 
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
+[#1710]: https://github.com/planetarium/libplanet/pull/1710
 
 
 Version 0.25.2

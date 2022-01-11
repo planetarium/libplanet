@@ -77,26 +77,28 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan Lifetime { get; }
 
         /// <inheritdoc/>
-        public void Stage(BlockChain<T> blockChain, Transaction<T> transaction)
+        public bool Stage(BlockChain<T> blockChain, Transaction<T> transaction)
         {
             if (Exipred(transaction))
             {
-                return;
+                return false;
             }
 
+            bool result;
             _lock.EnterUpgradeableReadLock();
             try
             {
                 if (_ignored.Contains(transaction.Id))
                 {
-                    return;
+                    return false;
                 }
                 else
                 {
                     _lock.EnterWriteLock();
                     try
                     {
-                        if (_staged.TryAdd(transaction.Id, transaction))
+                        result = _staged.TryAdd(transaction.Id, transaction);
+                        if (result)
                         {
                             const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                             _logger
@@ -122,20 +124,25 @@ namespace Libplanet.Blockchain.Policies
             {
                 _lock.ExitUpgradeableReadLock();
             }
+
+            return result;
         }
 
         /// <inheritdoc/>
-        public void Unstage(BlockChain<T> blockChain, TxId id)
+        public bool Unstage(BlockChain<T> blockChain, TxId id)
         {
+            bool result;
             _lock.EnterWriteLock();
             try
             {
-                _staged.TryRemove(id, out _);
+                result = _staged.TryRemove(id, out _);
             }
             finally
             {
                 _lock.ExitWriteLock();
             }
+
+            return result;
         }
 
         /// <inheritdoc/>

@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -155,16 +154,14 @@ namespace Libplanet.Net
                             return false;
                         }));
 
-                var validTxs = new List<Transaction<TAction>>();
-                IImmutableSet<TxId> stagedTxIds = _blockChain.GetStagedTransactionIds();
+                var stagedTxs = new List<Transaction<TAction>>();
                 foreach (var tx in txs)
                 {
                     try
                     {
-                        if (!stagedTxIds.Contains(tx.Id))
+                        if (_blockChain.StageTransaction(tx))
                         {
-                            _blockChain.StageTransaction(tx);
-                            validTxs.Add(tx);
+                            stagedTxs.Add(tx);
                         }
                     }
                     catch (InvalidTxException ite)
@@ -181,16 +178,15 @@ namespace Libplanet.Net
                     TxReceived.Set();
                 }
 
-                if (validTxs.Any())
+                if (stagedTxs.Any())
                 {
                     _logger.Debug(
-                        "{ValidTxCount} txs staged from {Peer} " +
-                        "successfully out of {TxCount}.",
-                        validTxs.Count,
-                        peer,
-                        txs.Count);
+                        "{StagedTxCount} out of {TxCount} txs from {Peer} staged successfully",
+                        stagedTxs.Count,
+                        txs.Count,
+                        peer);
 
-                    _txBroadcaster(peer, validTxs);
+                    _txBroadcaster(peer, stagedTxs);
                 }
                 else
                 {
