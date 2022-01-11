@@ -603,8 +603,9 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="transaction">A <see cref="Transaction{T}"/>
         /// to remove from the pending list.</param>
+        /// <returns><c>true</c> if unstaging was successful, <c>false</c> otherwise.</returns>
         /// <seealso cref="StageTransaction"/>
-        public void UnstageTransaction(Transaction<T> transaction) =>
+        public bool UnstageTransaction(Transaction<T> transaction) =>
             StagePolicy.Unstage(this, transaction.Id);
 
         /// <summary>

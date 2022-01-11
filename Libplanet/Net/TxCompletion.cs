@@ -181,11 +181,10 @@ namespace Libplanet.Net
                 if (stagedTxs.Any())
                 {
                     _logger.Debug(
-                        "{ValidTxCount} txs staged from {Peer} " +
-                        "successfully out of {TxCount}.",
+                        "{StagedTxCount} out of {TxCount} txs from {Peer} staged successfully",
                         stagedTxs.Count,
-                        peer,
-                        txs.Count);
+                        txs.Count,
+                        peer);
 
                     _txBroadcaster(peer, stagedTxs);
                 }

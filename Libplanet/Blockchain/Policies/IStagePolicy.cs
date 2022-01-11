@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to unstage.</param>
-        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if unstaging was successful, <c>false</c> otherwise.</returns>
         /// <remarks>
         /// This does not throw any exception regardless of whether <paramref name="id"/> was
         /// successfully unstaged or not.
