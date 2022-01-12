@@ -34,7 +34,7 @@ namespace Libplanet.Net.Transports
         private readonly int _minimumBroadcastTarget;
         private readonly NetMQMessageCodec _messageCodec;
 
-        private NetMQQueue<NetMQMessage> _replyQueue;
+        private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
 
         private RouterSocket _router;
@@ -248,7 +248,7 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            _replyQueue = new NetMQQueue<NetMQMessage>();
+            _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<(Address?, Message)>();
             _routerPoller = new NetMQPoller { _router, _replyQueue };
             _broadcastPoller = new NetMQPoller { _broadcastQueue };
@@ -522,13 +522,9 @@ namespace Libplanet.Net.Transports
             using CancellationTokenRegistration ctr =
                 cancellationToken.Register(() => tcs.TrySetCanceled());
             _replyCompletionSources.TryAdd(identityHex, tcs);
-            _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
-            _replyQueue.Enqueue(_messageCodec.Encode(
-                message,
-                _privateKey,
-                AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion));
+            _logger.Debug(
+                "Sending {Message} as a reply to {Identity}...", message, message.Identity);
+            _replyQueue.Enqueue(message);
 
             await tcs.Task;
             _replyCompletionSources.TryRemove(identityHex, out _);
@@ -718,25 +714,39 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void DoReply(object sender, NetMQQueueEventArgs<NetMQMessage> e)
+        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
         {
-            NetMQMessage message = e.Queue.Dequeue();
-            string identityHex = ByteUtil.Hex(message[0].Buffer);
-
-            _logger.Verbose("Dequeued message. ({identity})", identityHex);
+            Message message = e.Queue.Dequeue();
+            _logger.Verbose(
+                "Dequeued reply message {Message} {Identity}",
+                message,
+                message.Identity);
+            NetMQMessage netMqMessage = _messageCodec.Encode(
+                            message,
+                            _privateKey,
+                            AsPeer,
+                            DateTimeOffset.UtcNow,
+                            _appProtocolVersion);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMqMessage))
             {
-                _logger.Debug("A reply sent to {Identity}", identityHex);
+                _logger.Debug(
+                    "{Message} as a reply to {Identity} sent.",
+                    message,
+                    message.Identity);
             }
             else
             {
-                _logger.Debug("Failed to reply to {Identity}", identityHex);
+                _logger.Debug(
+                    "Failed to send {Message} as a reply to {Identity}.",
+                    message,
+                    message.Identity);
             }
 
-            _replyCompletionSources.TryGetValue(identityHex, out TaskCompletionSource<object> tcs);
+            _replyCompletionSources.TryGetValue(
+                ByteUtil.Hex(message.Identity), out TaskCompletionSource<object> tcs);
             tcs?.TrySetResult(null);
         }
 
