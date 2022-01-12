@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,16 @@ namespace Libplanet.Net
     {
         public IceServer(
             IEnumerable<string> urls,
-            string username = null,
-            string credential = null)
+            string? username = null,
+            string? credential = null)
             : this(urls.Select(u => new Uri(u)), username, credential)
         {
         }
 
         public IceServer(
             IEnumerable<Uri> urls,
-            string username = null,
-            string credential = null)
+            string? username = null,
+            string? credential = null)
         {
             Urls = urls;
             Username = username;
@@ -29,9 +30,9 @@ namespace Libplanet.Net
 
         public IEnumerable<Uri> Urls { get; }
 
-        public string Username { get; }
+        public string? Username { get; }
 
-        public string Credential { get; }
+        public string? Credential { get; }
 
         internal static async Task<TurnClient> CreateTurnClient(
             IEnumerable<IceServer> iceServers)
@@ -42,30 +43,27 @@ namespace Libplanet.Net
                 {
                     if (url.Scheme != "turn")
                     {
-                        throw new ArgumentException($"{url} isn't valid TURN url.");
+                        throw new ArgumentException($"{url} is not a valid TURN url.");
                     }
 
                     int port = url.IsDefaultPort
                         ? TurnClient.TurnDefaultPort
                         : url.Port;
-                    var turnClient = new TurnClient(
+                    TurnClient turnClient = new TurnClient(
                         url.Host,
                         server.Username,
                         server.Credential,
                         port);
 
-                    var isConnectable = await turnClient.IsConnectable();
-                    if (!isConnectable)
+                    if (await turnClient.IsConnectable())
                     {
-                        continue;
+                        Log.Debug("TURN client created: {Host}:{Port}", url.Host, url.Port);
+                        return turnClient;
                     }
-
-                    Log.Debug($"TURN client is created: {url.Host}:{url.Port}");
-                    return turnClient;
                 }
             }
 
-            throw new IceServerException("Can't find suitable server.");
+            throw new IceServerException("Could not find a suitable ICE server.");
         }
     }
 }
