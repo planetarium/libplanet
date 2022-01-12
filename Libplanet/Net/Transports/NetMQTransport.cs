@@ -689,19 +689,25 @@ namespace Libplanet.Net.Transports
                     .Select(peer =>
                         SendMessageAsync(peer, message, _runtimeCancellationTokenSource.Token))
                     .ToList();
-                Task aggregateTask = Task.WhenAll(tasks);
-                try
-                {
-                    aggregateTask.GetAwaiter().GetResult();
-                }
-                catch (Exception)
-                {
-                    AggregateException aggregateException = aggregateTask.Exception!;
-                    _logger.Warning(
-                        aggregateException,
-                        "Failed to send {MessageType} to some peers while broadcasting.",
-                        message.Type);
-                }
+                Task aggregateTask = Task
+                    .WhenAll(tasks)
+                    .ContinueWith(task =>
+                        {
+                            if (task.IsFaulted)
+                            {
+                                AggregateException aggregateException = task.Exception;
+                                _logger.Warning(
+                                    aggregateException,
+                                    "Failed to send {Message} to some peers while broadcasting.",
+                                    message);
+                            }
+                            else if (task.IsCanceled)
+                            {
+                                _logger.Debug(
+                                    "{FName}() was canceled during its operation.",
+                                    nameof(DoBroadcast));
+                            }
+                        });
             }
             catch (Exception exc)
             {
@@ -709,7 +715,6 @@ namespace Libplanet.Net.Transports
                     exc,
                     "Unexpected error occurred during {FName}().",
                     nameof(DoBroadcast));
-                throw;
             }
         }
 
