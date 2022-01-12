@@ -21,10 +21,8 @@ namespace Libplanet.Net.Transports
     /// <summary>
     /// Implementation of <see cref="ITransport"/> interface using NetMQ.
     /// </summary>
-    public partial class NetMQTransport : ITransport
+    public class NetMQTransport : ITransport
     {
-        private const int MessageHistoryCapacity = 30;
-
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
         private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
@@ -46,10 +44,10 @@ namespace Libplanet.Net.Transports
 
         private Channel<MessageRequest> _requests;
         private long _requestCount;
-        private CancellationTokenSource _runtimeProcessorCancellationTokenSource;
+        private CancellationTokenSource _requestProcessorCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
-        private Task _runtimeProcessor;
+        private Task _requestProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
         private ConcurrentDictionary<Address, DealerSocket> _dealers;
@@ -146,11 +144,11 @@ namespace Libplanet.Net.Transports
             _messageCodec = new NetMQMessageCodec(messageLifespan);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
-            _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
+            _requestProcessorCancellationTokenSource = new CancellationTokenSource();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
-            _runtimeProcessor = Task.Factory.StartNew(
+            _requestProcessor = Task.Factory.StartNew(
                 () =>
                 {
                     // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
@@ -158,29 +156,20 @@ namespace Libplanet.Net.Transports
                     try
                     {
                         using var runtime = new NetMQRuntime();
-                        Task[] workerTasks = new Task[workers];
-
-                        for (int i = 0; i < workers; i++)
-                        {
-                            workerTasks[i] = ProcessRequest(
-                                _runtimeProcessorCancellationTokenSource.Token
-                            );
-                        }
-
+                        Task[] workerTasks = Enumerable
+                            .Range(0, workers)
+                            .Select(i =>
+                                ProcessRequest(_requestProcessorCancellationTokenSource.Token))
+                            .ToArray();
                         runtime.Run(workerTasks);
                     }
-                    catch (NetMQException nme)
+                    catch (Exception e)
+                        when (e is NetMQException nme || e is ObjectDisposedException ode)
                     {
                         _logger.Error(
-                            nme,
-                            $"NetMQException occurred in {nameof(_runtimeProcessor)}."
-                        );
-                    }
-                    catch (ObjectDisposedException ode)
-                    {
-                        _logger.Error(
-                            ode,
-                            $"ObjectDisposedException occurred in {nameof(_runtimeProcessor)}."
+                            e,
+                            "An exception has occurred while running {TaskName}.",
+                            nameof(_requestProcessor)
                         );
                     }
                 },
@@ -322,12 +311,12 @@ namespace Libplanet.Net.Transports
             if (!_disposed)
             {
                 _requests.Writer.Complete();
-                _runtimeProcessorCancellationTokenSource.Cancel();
+                _requestProcessorCancellationTokenSource.Cancel();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
-                _runtimeProcessor.Wait();
+                _requestProcessor.Wait();
 
-                _runtimeProcessorCancellationTokenSource.Dispose();
+                _requestProcessorCancellationTokenSource.Dispose();
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
                 _disposed = true;
@@ -518,7 +507,7 @@ namespace Libplanet.Net.Transports
             }
 
             string identityHex = ByteUtil.Hex(message.Identity);
-            TaskCompletionSource<object> tcs = new TaskCompletionSource<object>();
+            var tcs = new TaskCompletionSource<object>();
             using CancellationTokenRegistration ctr =
                 cancellationToken.Register(() => tcs.TrySetCanceled());
             _replyCompletionSources.TryAdd(identityHex, tcs);
@@ -640,7 +629,7 @@ namespace Libplanet.Net.Transports
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
-                DifferentVersion differentVersion = new DifferentVersion()
+                var differentVersion = new DifferentVersion()
                 {
                     Identity = dapve.Identity,
                 };
@@ -883,7 +872,7 @@ namespace Libplanet.Net.Transports
                 AsPeer,
                 DateTimeOffset.UtcNow,
                 _appProtocolVersion);
-            List<Message> result = new List<Message>();
+            var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = request.TaskCompletionSource;
             try
             {
