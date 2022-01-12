@@ -750,7 +750,7 @@ namespace Libplanet.Net.Transports
                 MessageRequest req = await _requests.Reader.ReadAsync(cancellationToken);
 #endif
                 long left = Interlocked.Decrement(ref _requestCount);
-                _logger.Debug("Request taken. {Count} requests are left.", left);
+                _logger.Debug("Request taken; {Count} requests left.", left);
 
                 try
                 {
@@ -769,12 +769,12 @@ namespace Libplanet.Net.Transports
                     if (req.Retryable)
                     {
                         const int retryAfter = 100;
-                        const string msg =
+                        const string retryMsg =
                             "An unexpected exception occurred during {FName}(); " +
                             "retrying after {DelayMs}ms...";
                         _logger.Debug(
                             e,
-                            msg,
+                            retryMsg,
                             nameof(ProcessRequest),
                             retryAfter
                         );
@@ -804,26 +804,29 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow - request.RequestedTime
             );
 
-            DealerSocket dealer;
-            if (request.ExpectedResponses > 0)
-            {
-                dealer = new DealerSocket(request.Peer.ToNetMQAddress());
-            }
-            else
-            {
-                if (!_dealers.TryGetValue(request.Peer.Address, out dealer) ||
-                    dealer.IsDisposed)
-                {
-                    dealer = new DealerSocket(request.Peer.ToNetMQAddress());
-                    _dealers[request.Peer.Address] = dealer;
-                }
-                else if (dealer.Options.LastEndpoint != request.Peer.ToNetMQAddress())
-                {
-                    dealer.Dispose();
-                    dealer = new DealerSocket(request.Peer.ToNetMQAddress());
-                    _dealers[request.Peer.Address] = dealer;
-                }
-            }
+            bool disposableDealer = request.ExpectedResponses > 0;
+            DealerSocket dealer = disposableDealer
+                ? new DealerSocket(request.Peer.ToNetMQAddress())
+                : _dealers.AddOrUpdate(
+                    request.Peer.Address,
+                    address => new DealerSocket(request.Peer.ToNetMQAddress()),
+                    (address, dealerSocket) =>
+                        {
+                            if (dealerSocket.IsDisposed)
+                            {
+                                return new DealerSocket(request.Peer.ToNetMQAddress());
+                            }
+                            else if (
+                                dealerSocket.Options.LastEndpoint != request.Peer.ToNetMQAddress())
+                            {
+                                dealerSocket.Dispose();
+                                return new DealerSocket(request.Peer.ToNetMQAddress());
+                            }
+                            else
+                            {
+                                return dealerSocket;
+                            }
+                        });
 
             try
             {
@@ -831,7 +834,7 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
-                if (request.ExpectedResponses > 0)
+                if (disposableDealer)
                 {
                     dealer.Dispose();
                 }
@@ -969,7 +972,7 @@ namespace Libplanet.Net.Transports
                     foreach (Address address in _dealers.Keys)
                     {
                         if (!peerAddresses.Contains(address) &&
-                            _dealers.TryGetValue(address, out DealerSocket removed))
+                            _dealers.TryRemove(address, out DealerSocket removed))
                         {
                             removed.Dispose();
                         }
