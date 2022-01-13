@@ -49,7 +49,7 @@ namespace Libplanet.Net
                     int port = url.IsDefaultPort
                         ? TurnClient.TurnDefaultPort
                         : url.Port;
-                    TurnClient turnClient = new TurnClient(
+                    var turnClient = new TurnClient(
                         url.Host,
                         server.Username,
                         server.Credential,
