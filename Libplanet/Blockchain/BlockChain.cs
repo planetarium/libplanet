@@ -469,11 +469,13 @@ namespace Libplanet.Blockchain
             BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
         ) =>
-            GetStates(
-                new[] { address },
-                offset ?? Tip.Hash,
-                stateCompleter ?? StateCompleters<T>.Reject
-            )[0];
+            Count > 0
+            ? GetStates(
+                    new[] { address },
+                    offset ?? Tip.Hash,
+                    stateCompleter ?? StateCompleters<T>.Reject
+                )[0]
+            : null;
 
         /// <summary>
         /// Gets multiple states associated to the specified <paramref name="addresses"/>.
@@ -498,11 +500,13 @@ namespace Libplanet.Blockchain
             BlockHash? offset = null,
             StateCompleter<T> stateCompleter = null
         ) =>
-            GetStates(
-                addresses,
-                offset ?? Tip.Hash,
-                stateCompleter ?? StateCompleters<T>.Reject
-            );
+            Count > 0
+                ? GetStates(
+                    addresses,
+                    offset ?? Tip.Hash,
+                    stateCompleter ?? StateCompleters<T>.Reject
+                )
+                : new IValue[addresses.Count];
 
         public IReadOnlyList<IValue> GetStates(
             IReadOnlyList<Address> addresses,
