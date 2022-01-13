@@ -1088,6 +1088,51 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
+        [Fact]
+        public void GetStatesOnUninitializedBlockChain()
+        {
+            bool invoked = false;
+            IReadOnlyList<IValue> values = null;
+            IValue value = null;
+            var policy = new NullPolicyForGetStatesOnUninitializedBlockChain<DumbAction>(
+                c =>
+                {
+                    // ReSharper disable AccessToModifiedClosure
+                    // The following method calls should not throw any exceptions:
+                    values = c?.GetStates(new[] { default(Address) });
+                    value = c?.GetState(default);
+                    invoked = true;
+                    // ReSharper restore AccessToModifiedClosure
+                });
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            Block<DumbAction> genesisWithTx = MineGenesis(
+                policy.GetHashAlgorithm,
+                GenesisMiner.PublicKey,
+                new[]
+                {
+                    Transaction<DumbAction>.Create(
+                        0,
+                        new PrivateKey(),
+                        null,
+                        Array.Empty<DumbAction>()
+                    ),
+                }
+            ).Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+            var chain = new BlockChain<DumbAction>(
+                policy,
+                new VolatileStagePolicy<DumbAction>(),
+                store,
+                stateStore,
+                genesisWithTx
+            );
+            Assert.True(invoked);
+            Assert.NotNull(values);
+            Assert.Single(values);
+            Assert.Null(values[0]);
+            Assert.Null(value);
+        }
+
         // This is a regression test for:
         // https://github.com/planetarium/libplanet/issues/189#issuecomment-482443607.
         [Fact]
@@ -1958,6 +2003,43 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(_blockChain.GetStagedTransactionIds());
             Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
             Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
+        }
+
+        private class NullPolicyForGetStatesOnUninitializedBlockChain<T> : NullPolicy<T>
+            where T : IAction, new()
+        {
+            private readonly Action<BlockChain<T>> _hook;
+
+            public NullPolicyForGetStatesOnUninitializedBlockChain(
+                Action<BlockChain<T>> hook
+            )
+            {
+                _hook = hook;
+            }
+
+            public override long GetNextBlockDifficulty(BlockChain<T> blocks)
+            {
+                _hook(blocks);
+                return base.GetNextBlockDifficulty(blocks);
+            }
+
+            public override TxPolicyViolationException ValidateNextBlockTx(
+                BlockChain<T> blockChain,
+                Transaction<T> transaction
+            )
+            {
+                _hook(blockChain);
+                return base.ValidateNextBlockTx(blockChain, transaction);
+            }
+
+            public override BlockPolicyViolationException ValidateNextBlock(
+                BlockChain<T> blocks,
+                Block<T> nextBlock
+            )
+            {
+                _hook(blocks);
+                return base.ValidateNextBlock(blocks, nextBlock);
+            }
         }
     }
 }

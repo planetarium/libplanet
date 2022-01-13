@@ -32,13 +32,13 @@ namespace Libplanet.Tests.Blockchain
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;
 
-        public TxPolicyViolationException ValidateNextBlockTx(
+        public virtual TxPolicyViolationException ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction) => null;
 
-        public BlockPolicyViolationException ValidateNextBlock(
+        public virtual BlockPolicyViolationException ValidateNextBlock(
             BlockChain<T> blocks,
             Block<T> nextBlock
         )
