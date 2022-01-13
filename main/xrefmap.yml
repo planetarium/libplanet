@@ -12349,24 +12349,24 @@ references:
   commentId: T:Libplanet.Net.IceServer
   fullName: Libplanet.Net.IceServer
   nameWithType: IceServer
-- uid: Libplanet.Net.IceServer.#ctor(IEnumerable{System.String},System.String,System.String)
-  name: IceServer(IEnumerable<String>, String, String)
-  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_IEnumerable_System_String__System_String_System_String_
-  commentId: M:Libplanet.Net.IceServer.#ctor(IEnumerable{System.String},System.String,System.String)
-  name.vb: IceServer(IEnumerable(Of String), String, String)
-  fullName: Libplanet.Net.IceServer.IceServer(IEnumerable<System.String>, System.String, System.String)
-  fullName.vb: Libplanet.Net.IceServer.IceServer(IEnumerable(Of System.String), System.String, System.String)
-  nameWithType: IceServer.IceServer(IEnumerable<String>, String, String)
-  nameWithType.vb: IceServer.IceServer(IEnumerable(Of String), String, String)
-- uid: Libplanet.Net.IceServer.#ctor(IEnumerable{Uri},System.String,System.String)
-  name: IceServer(IEnumerable<Uri>, String, String)
-  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_IEnumerable_Uri__System_String_System_String_
-  commentId: M:Libplanet.Net.IceServer.#ctor(IEnumerable{Uri},System.String,System.String)
-  name.vb: IceServer(IEnumerable(Of Uri), String, String)
-  fullName: Libplanet.Net.IceServer.IceServer(IEnumerable<Uri>, System.String, System.String)
-  fullName.vb: Libplanet.Net.IceServer.IceServer(IEnumerable(Of Uri), System.String, System.String)
-  nameWithType: IceServer.IceServer(IEnumerable<Uri>, String, String)
-  nameWithType.vb: IceServer.IceServer(IEnumerable(Of Uri), String, String)
+- uid: Libplanet.Net.IceServer.#ctor(IEnumerable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name: IceServer(IEnumerable<String>, Nullable<String>, Nullable<String>)
+  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_IEnumerable_System_String__System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:Libplanet.Net.IceServer.#ctor(IEnumerable{System.String},System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: IceServer(IEnumerable(Of String), Nullable(Of String), Nullable(Of String))
+  fullName: Libplanet.Net.IceServer.IceServer(IEnumerable<System.String>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Net.IceServer.IceServer(IEnumerable(Of System.String), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: IceServer.IceServer(IEnumerable<String>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: IceServer.IceServer(IEnumerable(Of String), Nullable(Of String), Nullable(Of String))
+- uid: Libplanet.Net.IceServer.#ctor(IEnumerable{Uri},System.Nullable{System.String},System.Nullable{System.String})
+  name: IceServer(IEnumerable<Uri>, Nullable<String>, Nullable<String>)
+  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_IEnumerable_Uri__System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:Libplanet.Net.IceServer.#ctor(IEnumerable{Uri},System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: IceServer(IEnumerable(Of Uri), Nullable(Of String), Nullable(Of String))
+  fullName: Libplanet.Net.IceServer.IceServer(IEnumerable<Uri>, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Net.IceServer.IceServer(IEnumerable(Of Uri), System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: IceServer.IceServer(IEnumerable<Uri>, Nullable<String>, Nullable<String>)
+  nameWithType.vb: IceServer.IceServer(IEnumerable(Of Uri), Nullable(Of String), Nullable(Of String))
 - uid: Libplanet.Net.IceServer.#ctor*
   name: IceServer
   href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_
