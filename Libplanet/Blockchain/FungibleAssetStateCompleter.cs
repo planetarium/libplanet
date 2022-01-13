@@ -6,8 +6,8 @@ using Libplanet.Blocks;
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// A delegate to be called when <see cref="BlockChain{T}.GetBalance"/> method encounters
-    /// a block having incomplete dirty states. <see cref="BlockChain{T}.GetBalance"/> method
+    /// A delegate to be called when <see cref="IBlockChainStates{T}.GetBalance"/> method encounters
+    /// a block having incomplete dirty states. <see cref="IBlockChainStates{T}.GetBalance"/> method
     /// returns this delegate's return value instead for such case.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match

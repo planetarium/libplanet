@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Bencodex.Types;
@@ -70,22 +71,25 @@ namespace Libplanet.Store
         }
 
         /// <summary>
-        /// Gets the state of the <paramref name="rawStateKey"/> from
-        /// the <paramref name="stateRootHash"/>.
+        /// Gets multiple states at once.
         /// </summary>
-        /// <param name="stateStore">The <see cref="IStateStore"/> to get the state.</param>
-        /// <param name="rawStateKey">The key of the state to get.</param>
-        /// <param name="stateRootHash">The state root hash to get the state.</param>
-        /// <returns>The state of the <paramref name="rawStateKey"/> if any.  If there is no such
-        /// key, returns <c>null</c>.</returns>
-        public static IValue? GetState(
+        /// <param name="stateStore">The <see cref="IStateStore"/> to get states.</param>
+        /// <param name="stateRootHash">The root hash of the state trie to look up states from.
+        /// </param>
+        /// <param name="rawStateKeys">State keys to get.</param>
+        /// <returns>The state values associated to the specified <paramref name="rawStateKeys"/>.
+        /// The associated values are ordered in the same way to the corresponding
+        /// <paramref name="rawStateKeys"/>.  Absent values are represented as
+        /// <see langword="null"/>.</returns>
+        public static IReadOnlyList<IValue?> GetStates(
             this IStateStore stateStore,
-            string rawStateKey,
-            HashDigest<SHA256>? stateRootHash
+            HashDigest<SHA256>? stateRootHash,
+            IReadOnlyList<string> rawStateKeys
         )
         {
             ITrie trie = stateStore.GetStateRoot(stateRootHash);
-            return trie.TryGet(EncodeKey(rawStateKey), out IValue? value) ? value : null;
+            KeyBytes[] keys = rawStateKeys.Select(EncodeKey).ToArray();
+            return trie.Get(keys);
         }
 
         /// <summary>

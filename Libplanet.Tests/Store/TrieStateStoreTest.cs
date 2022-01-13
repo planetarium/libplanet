@@ -36,30 +36,25 @@ namespace Libplanet.Tests.Store
             var stateStore = new TrieStateStore(_stateKeyValueStore, secure);
             ITrie empty = stateStore.GetStateRoot(null);
             Assert.True(empty.Recorded);
-            Assert.False(empty.TryGet(KeyFoo, out _));
-            Assert.False(empty.TryGet(KeyBar, out _));
-            Assert.False(empty.TryGet(KeyBaz, out _));
-            Assert.False(empty.TryGet(KeyQux, out _));
-            Assert.False(empty.TryGet(KeyQuux, out _));
+            Assert.Null(empty.Get(new[] { KeyFoo })[0]);
+            Assert.Null(empty.Get(new[] { KeyBar })[0]);
+            Assert.Null(empty.Get(new[] { KeyBaz })[0]);
+            Assert.Null(empty.Get(new[] { KeyQux })[0]);
+            Assert.Null(empty.Get(new[] { KeyQuux })[0]);
 
             var values = ImmutableDictionary<string, IValue>.Empty
                 .Add("foo", (Binary)GetRandomBytes(32))
                 .Add("bar", (Text)ByteUtil.Hex(GetRandomBytes(32)))
                 .Add("baz", (Bencodex.Types.Boolean)false)
                 .Add("qux", Bencodex.Types.Dictionary.Empty);
-            IValue value;
             HashDigest<SHA256> hash = stateStore.Commit(null, values).Hash;
             ITrie found = stateStore.GetStateRoot(hash);
             Assert.True(found.Recorded);
-            Assert.True(found.TryGet(KeyFoo, out value));
-            AssertBencodexEqual(values["foo"], value);
-            Assert.True(found.TryGet(KeyBar, out value));
-            AssertBencodexEqual(values["bar"], value);
-            Assert.True(found.TryGet(KeyBaz, out value));
-            AssertBencodexEqual(values["baz"], value);
-            Assert.True(found.TryGet(KeyQux, out value));
-            AssertBencodexEqual(values["qux"], value);
-            Assert.False(empty.TryGet(KeyQuux, out _));
+            AssertBencodexEqual(values["foo"], found.Get(new[] { KeyFoo })[0]);
+            AssertBencodexEqual(values["bar"], found.Get(new[] { KeyBar })[0]);
+            AssertBencodexEqual(values["baz"], found.Get(new[] { KeyBaz })[0]);
+            AssertBencodexEqual(values["qux"], found.Get(new[] { KeyQux })[0]);
+            Assert.Null(found.Get(new[] { KeyQuux })[0]);
         }
 
         [Theory]

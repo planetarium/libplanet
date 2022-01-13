@@ -75,7 +75,39 @@ namespace Libplanet.Action
         IValue? IAccountStateDelta.GetState(Address address) =>
             UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
-                : StateGetter(address);
+                : StateGetter(new[] { address })[0];
+
+        /// <inheritdoc cref="IAccountStateDelta.GetStates(IReadOnlyList{Address})"/>
+        [Pure]
+        IReadOnlyList<IValue?> IAccountStateDelta.GetStates(IReadOnlyList<Address> addresses)
+        {
+            int length = addresses.Count;
+            IValue?[] values = new IValue?[length];
+            var notFound = new List<Address>(length);
+            for (int i = 0; i < length; i++)
+            {
+                Address address = addresses[i];
+                if (UpdatedStates.TryGetValue(address, out IValue? v))
+                {
+                    values[i] = v;
+                    continue;
+                }
+
+                notFound.Add(address);
+            }
+
+            IReadOnlyList<IValue?> restValues = StateGetter(notFound);
+            for (int i = 0, j = 0; i < length && j < notFound.Count; i++)
+            {
+                if (addresses[i].Equals(notFound[j]))
+                {
+                    values[i] = restValues[j];
+                    j++;
+                }
+            }
+
+            return values;
+        }
 
         /// <inheritdoc/>
         [Pure]

@@ -10,6 +10,23 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Replaced `IValue StateCompleter<T>(BlockChain<T>, BlockHash, Address)`
+    delegate with `IReadOnlyList<IValue?> StateCompleter<T>(BlockChain<T>,
+    BlockHash, IReadOnlyList<Address>)` delegate.  [[#1703]]
+ -  Added `IAccountStateDelta.GetStates(IReadOnlyList<Address>)` method.
+    [[#1703]]
+ -  Replaced `IValue AccountStateGetter(Address)` delegate with
+    `IReadOnlyList<IValue?> AccountStateGetter(IReadOnlyList<Address>)`
+    delegate.  [[#1703]]
+ -  Removed `StateGetter<T>` delegate.  [[#1703]]
+ -  Removed `BalanceGetter<T>` delegate.  [[#1703]]
+ -  Removed `StateGetter<T> stateGetter` and `BalanceGetter<T> balanceGetter`
+    parameters from `ActionEvaluator<T>()` constructor.  [[#1703]]
+ -  Added `IBlockChainStates<T> blockChainStates` parameter to
+    `ActionEvaluator<T>()` constructor.  [[#1703]]
+ -  Replaced `ITrie.TryGet()` with `ITrie.Get()` method.  [[#1703]]
+ -  Replaced `StateStoreExtensions.GetState()` static method with `GetStates()`
+    static method.  [[#1703]]
  -  `nullable` context enabled for `IProtocol` interface and `Kademlia`,
     `KademliaProtocol`, and `RoutingTable` classes.  [[#1692]]
  -  `RoutingTable.Neighbors(Peer, int, bool)` changed to
@@ -26,6 +43,11 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockChain<T>.GetStates()` method.  [[#1703]]
+ -  Added `IBlockChainStates<T>` interface.  [[#1703]]
+     -  `BlockChain<T>` now implements `IBlockChainStates<T>`.
+ -  Added `StateStoreExtensions.GetStates()` static method.  [[#1703]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -39,6 +61,7 @@ To be released.
 ### CLI tools
 
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
+[#1703]: https://github.com/planetarium/libplanet/pull/1703
 [#1710]: https://github.com/planetarium/libplanet/pull/1710
 
 
