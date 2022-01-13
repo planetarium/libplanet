@@ -74,18 +74,16 @@
   <h1 id="Libplanet_Action_AccountStateGetter" data-uid="Libplanet.Action.AccountStateGetter" class="text-break">Delegate AccountStateGetter
   </h1>
   <div class="markdown level0 summary"><p>An delegate to provide read-only view of account states.</p>
-<p>Gets an account state of the given
-<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
-its account status, returns <code>null</code> instead of throwing
-any exception.</p>
+<p>Gets states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code>.</p>
+<p>If some states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code> have
+never been set these absent states are represented as <span class="xref">null</span>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_AccountStateGetter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate IValue? AccountStateGetter(Address address);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate IReadOnlyList&lt;IValue?&gt; AccountStateGetter(IReadOnlyList&lt;Address&gt; addresses);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -98,10 +96,9 @@ any exception.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>An address of the account to read
-its state.</p>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p>Account addresses associated with the states to get.</p>
 </td>
       </tr>
     </tbody>
@@ -116,8 +113,10 @@ its state.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
-        <td><p>The account state if exists.  Otherwise <code>null</code>.</p>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;&gt;</td>
+        <td><p>The states associated to the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
+Associated values are ordered in the same way to the corresponding
+<code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>

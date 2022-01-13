@@ -82,7 +82,7 @@ delegate's return value instead for such case.</p>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_StateCompleter_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate IValue StateCompleter&lt;T&gt;(BlockChain&lt;T&gt; blockChain, BlockHash blockHash, Address address)
+    <pre><code class="lang-csharp hljs">public delegate IReadOnlyList&lt;IValue?&gt; StateCompleter&lt;T&gt;(BlockChain&lt;T&gt; blockChain, BlockHash blockHash, IReadOnlyList&lt;Address&gt; addresses)
     where T : IAction, new();</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -108,9 +108,9 @@ delegate's return value instead for such case.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">address</span></td>
-        <td><p>The address to query its state value.</p>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p>The addresses of states to look up.</p>
 </td>
       </tr>
     </tbody>
@@ -125,8 +125,10 @@ delegate's return value instead for such case.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IValue</span></td>
-        <td><p>A complement state.  This can be <code>null</code>.</p>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;&gt;</td>
+        <td><p>Complement states associated to the specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
+The associated values are ordered in the same way to the corresponding
+<code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -163,7 +165,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleter_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleter%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleter.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleter.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

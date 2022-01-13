@@ -108,15 +108,15 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
   nameWithType: ActionEvaluator<T>
   nameWithType.vb: ActionEvaluator(Of T)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Action.StateGetter{`0},Libplanet.Action.BalanceGetter{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
-  name: ActionEvaluator(IAction, StateGetter<T>, BalanceGetter<T>, Nullable<Func<BlockHash, ITrie>>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Action_StateGetter__0__Libplanet_Action_BalanceGetter__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Action.StateGetter{`0},Libplanet.Action.BalanceGetter{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
-  name.vb: ActionEvaluator(IAction, StateGetter(Of T), BalanceGetter(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Action.StateGetter<T>, Libplanet.Action.BalanceGetter<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Action.StateGetter(Of T), Libplanet.Action.BalanceGetter(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)))
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, StateGetter<T>, BalanceGetter<T>, Nullable<Func<BlockHash, ITrie>>)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, StateGetter(Of T), BalanceGetter(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
+  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
+  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)))
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
 - uid: Libplanet.Action.ActionEvaluator`1.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
@@ -189,15 +189,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.ValueOf
   nameWithType: ActionTypeAttribute.ValueOf
-- uid: Libplanet.Action.BalanceGetter`1
-  name: BalanceGetter<T>
-  href: api/Libplanet.Action.BalanceGetter-1.html
-  commentId: T:Libplanet.Action.BalanceGetter`1
-  name.vb: BalanceGetter(Of T)
-  fullName: Libplanet.Action.BalanceGetter<T>
-  fullName.vb: Libplanet.Action.BalanceGetter(Of T)
-  nameWithType: BalanceGetter<T>
-  nameWithType.vb: BalanceGetter(Of T)
 - uid: Libplanet.Action.CurrencyPermissionException
   name: CurrencyPermissionException
   href: api/Libplanet.Action.CurrencyPermissionException.html
@@ -310,6 +301,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.GetState
   nameWithType: IAccountStateDelta.GetState
+- uid: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList{Libplanet.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetStates_IReadOnlyList_Libplanet_Address__
+  commentId: M:Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList{Libplanet.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList<Libplanet.Address>)
+  fullName.vb: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList(Of Libplanet.Address))
+  nameWithType: IAccountStateDelta.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: IAccountStateDelta.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.Action.IAccountStateDelta.GetStates*
+  name: GetStates
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetStates_
+  commentId: Overload:Libplanet.Action.IAccountStateDelta.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateDelta.GetStates
+  nameWithType: IAccountStateDelta.GetStates
 - uid: Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
   name: MintAsset(Address, FungibleAssetValue)
   href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
@@ -964,15 +971,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
-- uid: Libplanet.Action.StateGetter`1
-  name: StateGetter<T>
-  href: api/Libplanet.Action.StateGetter-1.html
-  commentId: T:Libplanet.Action.StateGetter`1
-  name.vb: StateGetter(Of T)
-  fullName: Libplanet.Action.StateGetter<T>
-  fullName.vb: Libplanet.Action.StateGetter(Of T)
-  nameWithType: StateGetter<T>
-  nameWithType.vb: StateGetter(Of T)
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -1971,6 +1969,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Genesis
   nameWithType: BlockChain<T>.Genesis
   nameWithType.vb: BlockChain(Of T).Genesis
+- uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
   name: GetBalance(Address, Currency, Nullable<BlockHash>, FungibleAssetStateCompleter<T>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_FungibleAssetStateCompleter__0__
@@ -2041,6 +2048,33 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState
   nameWithType: BlockChain<T>.GetState
   nameWithType.vb: BlockChain(Of T).GetState
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates(IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
+  name: GetStates(IReadOnlyList<Address>, Nullable<BlockHash>, StateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_IReadOnlyList_Libplanet_Address__System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(IReadOnlyList{Libplanet.Address},System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.StateCompleter{`0})
+  name.vb: GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash), StateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(IReadOnlyList<Libplanet.Address>, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.StateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(IReadOnlyList(Of Libplanet.Address), System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.StateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetStates(IReadOnlyList<Address>, Nullable<BlockHash>, StateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetStates(IReadOnlyList(Of Address), Nullable(Of BlockHash), StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates*
+  name: GetStates
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates
+  nameWithType: BlockChain<T>.GetStates
+  nameWithType.vb: BlockChain(Of T).GetStates
 - uid: Libplanet.Blockchain.BlockChain`1.GetTransaction(Libplanet.Tx.TxId)
   name: GetTransaction(TxId)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTransaction_Libplanet_Tx_TxId_
@@ -2363,6 +2397,51 @@ references:
   fullName.vb: Libplanet.Blockchain.FungibleAssetStateCompleters(Of T).Reject
   nameWithType: FungibleAssetStateCompleters<T>.Reject
   nameWithType.vb: FungibleAssetStateCompleters(Of T).Reject
+- uid: Libplanet.Blockchain.IBlockChainStates`1
+  name: IBlockChainStates<T>
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html
+  commentId: T:Libplanet.Blockchain.IBlockChainStates`1
+  name.vb: IBlockChainStates(Of T)
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T)
+  nameWithType: IBlockChainStates<T>
+  nameWithType.vb: IBlockChainStates(Of T)
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
+  nameWithType: IBlockChainStates<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  nameWithType.vb: IBlockChainStates(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetBalance_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetBalance
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetBalance
+  nameWithType: IBlockChainStates<T>.GetBalance
+  nameWithType.vb: IBlockChainStates(Of T).GetBalance
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetStates_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetStates(IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetStates(IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
+  nameWithType: IBlockChainStates<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  nameWithType.vb: IBlockChainStates(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetStates*
+  name: GetStates
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetStates_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetStates
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetStates
+  nameWithType: IBlockChainStates<T>.GetStates
+  nameWithType.vb: IBlockChainStates(Of T).GetStates
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
@@ -19185,22 +19264,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StateStoreExtensions.EncodeKey
   nameWithType: StateStoreExtensions.EncodeKey
-- uid: Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})
-  name: GetState(IStateStore, String, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetState_Libplanet_Store_IStateStore_System_String_System_Nullable_Libplanet_HashDigest_SHA256___
-  commentId: M:Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore,System.String,System.Nullable{Libplanet.HashDigest{SHA256}})
-  name.vb: GetState(IStateStore, String, Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore, System.String, System.Nullable<Libplanet.HashDigest<SHA256>>)
-  fullName.vb: Libplanet.Store.StateStoreExtensions.GetState(Libplanet.Store.IStateStore, System.String, System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
-  nameWithType: StateStoreExtensions.GetState(IStateStore, String, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: StateStoreExtensions.GetState(IStateStore, String, Nullable(Of HashDigest(Of SHA256)))
-- uid: Libplanet.Store.StateStoreExtensions.GetState*
-  name: GetState
-  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetState_
-  commentId: Overload:Libplanet.Store.StateStoreExtensions.GetState
+- uid: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IReadOnlyList{System.String})
+  name: GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<String>)
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_Libplanet_Store_IStateStore_System_Nullable_Libplanet_HashDigest_SHA256___IReadOnlyList_System_String__
+  commentId: M:Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore,System.Nullable{Libplanet.HashDigest{SHA256}},IReadOnlyList{System.String})
+  name.vb: GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of String))
+  fullName: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable<Libplanet.HashDigest<SHA256>>, IReadOnlyList<System.String>)
+  fullName.vb: Libplanet.Store.StateStoreExtensions.GetStates(Libplanet.Store.IStateStore, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), IReadOnlyList(Of System.String))
+  nameWithType: StateStoreExtensions.GetStates(IStateStore, Nullable<HashDigest<SHA256>>, IReadOnlyList<String>)
+  nameWithType.vb: StateStoreExtensions.GetStates(IStateStore, Nullable(Of HashDigest(Of SHA256)), IReadOnlyList(Of String))
+- uid: Libplanet.Store.StateStoreExtensions.GetStates*
+  name: GetStates
+  href: api/Libplanet.Store.StateStoreExtensions.html#Libplanet_Store_StateStoreExtensions_GetStates_
+  commentId: Overload:Libplanet.Store.StateStoreExtensions.GetStates
   isSpec: "True"
-  fullName: Libplanet.Store.StateStoreExtensions.GetState
-  nameWithType: StateStoreExtensions.GetState
+  fullName: Libplanet.Store.StateStoreExtensions.GetStates
+  nameWithType: StateStoreExtensions.GetStates
 - uid: Libplanet.Store.StoreExtensions
   name: StoreExtensions
   href: api/Libplanet.Store.StoreExtensions.html
@@ -19677,6 +19756,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Commit
   nameWithType: ITrie.Commit
+- uid: Libplanet.Store.Trie.ITrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IReadOnlyList<KeyBytes>)
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.ITrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IReadOnlyList(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.ITrie.Get(IReadOnlyList<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.ITrie.Get(IReadOnlyList(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: ITrie.Get(IReadOnlyList<KeyBytes>)
+  nameWithType.vb: ITrie.Get(IReadOnlyList(Of KeyBytes))
+- uid: Libplanet.Store.Trie.ITrie.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Get_
+  commentId: Overload:Libplanet.Store.Trie.ITrie.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.ITrie.Get
+  nameWithType: ITrie.Get
 - uid: Libplanet.Store.Trie.ITrie.Hash
   name: Hash
   href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Hash
@@ -19719,22 +19814,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.ITrie.Set
   nameWithType: ITrie.Set
-- uid: Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
-  name: TryGet(in KeyBytes, out Nullable<IValue>)
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___
-  commentId: M:Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
-  name.vb: TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
-  fullName: Libplanet.Store.Trie.ITrie.TryGet(in Libplanet.Store.Trie.KeyBytes, out System.Nullable<IValue>)
-  fullName.vb: Libplanet.Store.Trie.ITrie.TryGet(ByRef Libplanet.Store.Trie.KeyBytes, ByRef System.Nullable(Of IValue))
-  nameWithType: ITrie.TryGet(in KeyBytes, out Nullable<IValue>)
-  nameWithType.vb: ITrie.TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
-- uid: Libplanet.Store.Trie.ITrie.TryGet*
-  name: TryGet
-  href: api/Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_
-  commentId: Overload:Libplanet.Store.Trie.ITrie.TryGet
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.ITrie.TryGet
-  nameWithType: ITrie.TryGet
 - uid: Libplanet.Store.Trie.KeyBytes
   name: KeyBytes
   href: api/Libplanet.Store.Trie.KeyBytes.html
@@ -20106,6 +20185,22 @@ references:
   commentId: F:Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   fullName: Libplanet.Store.Trie.MerkleTrie.EmptyRootHash
   nameWithType: MerkleTrie.EmptyRootHash
+- uid: Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IReadOnlyList<KeyBytes>)
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IReadOnlyList(Of KeyBytes))
+  fullName: Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.Store.Trie.MerkleTrie.Get(IReadOnlyList(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: MerkleTrie.Get(IReadOnlyList<KeyBytes>)
+  nameWithType.vb: MerkleTrie.Get(IReadOnlyList(Of KeyBytes))
+- uid: Libplanet.Store.Trie.MerkleTrie.Get*
+  name: Get
+  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Get_
+  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.Get
+  isSpec: "True"
+  fullName: Libplanet.Store.Trie.MerkleTrie.Get
+  nameWithType: MerkleTrie.Get
 - uid: Libplanet.Store.Trie.MerkleTrie.Hash
   name: Hash
   href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_Hash
@@ -20174,22 +20269,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.MerkleTrie.Set
   nameWithType: MerkleTrie.Set
-- uid: Libplanet.Store.Trie.MerkleTrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
-  name: TryGet(in KeyBytes, out Nullable<IValue>)
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___
-  commentId: M:Libplanet.Store.Trie.MerkleTrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)
-  name.vb: TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
-  fullName: Libplanet.Store.Trie.MerkleTrie.TryGet(in Libplanet.Store.Trie.KeyBytes, out System.Nullable<IValue>)
-  fullName.vb: Libplanet.Store.Trie.MerkleTrie.TryGet(ByRef Libplanet.Store.Trie.KeyBytes, ByRef System.Nullable(Of IValue))
-  nameWithType: MerkleTrie.TryGet(in KeyBytes, out Nullable<IValue>)
-  nameWithType.vb: MerkleTrie.TryGet(ByRef KeyBytes, ByRef Nullable(Of IValue))
-- uid: Libplanet.Store.Trie.MerkleTrie.TryGet*
-  name: TryGet
-  href: api/Libplanet.Store.Trie.MerkleTrie.html#Libplanet_Store_Trie_MerkleTrie_TryGet_
-  commentId: Overload:Libplanet.Store.Trie.MerkleTrie.TryGet
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.MerkleTrie.TryGet
-  nameWithType: MerkleTrie.TryGet
 - uid: Libplanet.Store.Trie.MerkleTrieExtensions
   name: MerkleTrieExtensions
   href: api/Libplanet.Store.Trie.MerkleTrieExtensions.html

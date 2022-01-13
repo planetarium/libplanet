@@ -204,7 +204,7 @@ been updated since then.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.BurnAsset(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L166">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Action_IAccountStateDelta_BurnAsset_" data-uid="Libplanet.Action.IAccountStateDelta.BurnAsset*"></a>
   <h4 id="Libplanet_Action_IAccountStateDelta_BurnAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.IAccountStateDelta.BurnAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">BurnAsset(Address, FungibleAssetValue)</h4>
@@ -284,7 +284,7 @@ has insufficient balance than <code data-dev-comment-type="paramref" class="para
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.GetBalance(Libplanet.Address%2CLibplanet.Assets.Currency)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L105">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L118">View Source</a>
   </span>
   <a id="Libplanet_Action_IAccountStateDelta_GetBalance_" data-uid="Libplanet.Action.IAccountStateDelta.GetBalance*"></a>
   <h4 id="Libplanet_Action_IAccountStateDelta_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_" data-uid="Libplanet.Action.IAccountStateDelta.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)">GetBalance(Address, Currency)</h4>
@@ -390,10 +390,63 @@ instead.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_GetStates_IReadOnlyList_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAccountStateDelta_GetStates_" data-uid="Libplanet.Action.IAccountStateDelta.GetStates*"></a>
+  <h4 id="Libplanet_Action_IAccountStateDelta_GetStates_IReadOnlyList_Libplanet_Address__" data-uid="Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList{Libplanet.Address})">GetStates(IReadOnlyList&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets multiple account states associated with the specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>
+at once.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IValue?&gt; GetStates(IReadOnlyList&lt;Address&gt; addresses)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a>es associated with states to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;&gt;</td>
+        <td><p>The states associated to the specified <code data-dev-comment-type="paramref" class="paramref">addresses</code>.
+Associated values are ordered in the same way to the corresponding
+<code data-dev-comment-type="paramref" class="paramref">addresses</code>.  Absent states are represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L121">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L134">View Source</a>
   </span>
   <a id="Libplanet_Action_IAccountStateDelta_MintAsset_" data-uid="Libplanet.Action.IAccountStateDelta.MintAsset*"></a>
   <h4 id="Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">MintAsset(Address, FungibleAssetValue)</h4>
@@ -467,7 +520,7 @@ and give it to the <code data-dev-comment-type="paramref" class="paramref">recip
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_SetState_Libplanet_Address_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.SetState(Libplanet.Address%2CIValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L94">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Action_IAccountStateDelta_SetState_" data-uid="Libplanet.Action.IAccountStateDelta.SetState*"></a>
   <h4 id="Libplanet_Action_IAccountStateDelta_SetState_Libplanet_Address_IValue_" data-uid="Libplanet.Action.IAccountStateDelta.SetState(Libplanet.Address,IValue)">SetState(Address, IValue)</h4>
@@ -533,7 +586,7 @@ with updated states instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address%2CLibplanet.Address%2CLibplanet.Assets.FungibleAssetValue%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L143">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/IAccountStateDelta.cs/#L156">View Source</a>
   </span>
   <a id="Libplanet_Action_IAccountStateDelta_TransferAsset_" data-uid="Libplanet.Action.IAccountStateDelta.TransferAsset*"></a>
   <h4 id="Libplanet_Action_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_" data-uid="Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)">TransferAsset(Address, Address, FungibleAssetValue, Boolean)</h4>

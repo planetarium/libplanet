@@ -67,6 +67,22 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Replaced <code>IValue StateCompleter&lt;T&gt;(BlockChain&lt;T&gt;, BlockHash, Address)</code>
+delegate with <code>IReadOnlyList&lt;IValue?&gt; StateCompleter&lt;T&gt;(BlockChain&lt;T&gt;, BlockHash, IReadOnlyList&lt;Address&gt;)</code> delegate.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Added <code>IAccountStateDelta.GetStates(IReadOnlyList&lt;Address&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Replaced <code>IValue AccountStateGetter(Address)</code> delegate with
+<code>IReadOnlyList&lt;IValue?&gt; AccountStateGetter(IReadOnlyList&lt;Address&gt;)</code>
+delegate.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Removed <code>StateGetter&lt;T&gt;</code> delegate.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Removed <code>BalanceGetter&lt;T&gt;</code> delegate.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Removed <code>StateGetter&lt;T&gt; stateGetter</code> and <code>BalanceGetter&lt;T&gt; balanceGetter</code>
+parameters from <code>ActionEvaluator&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Added <code>IBlockChainStates&lt;T&gt; blockChainStates</code> parameter to
+<code>ActionEvaluator&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Replaced <code>ITrie.TryGet()</code> with <code>ITrie.Get()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Replaced <code>StateStoreExtensions.GetState()</code> static method with <code>GetStates()</code>
+static method.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
 <li><code>nullable</code> context enabled for <code>IProtocol</code> interface and <code>Kademlia</code>,
 <code>KademliaProtocol</code>, and <code>RoutingTable</code> classes.  [<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
 <li><code>RoutingTable.Neighbors(Peer, int, bool)</code> changed to
@@ -80,6 +96,15 @@ staging was successful or not.  [<a href="https://github.com/planetarium/libplan
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockChain&lt;T&gt;.GetStates()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+<li>Added <code>IBlockChainStates&lt;T&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]
+<ul>
+<li><code>BlockChain&lt;T&gt;</code> now implements <code>IBlockChainStates&lt;T&gt;</code>.</li>
+</ul>
+</li>
+<li>Added <code>StateStoreExtensions.GetStates()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

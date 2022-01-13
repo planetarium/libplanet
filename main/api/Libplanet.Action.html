@@ -201,17 +201,9 @@ compatible (i.e., disallowed to be casted to each other).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></h4>
       <section><p>An delegate to provide read-only view of account states.</p>
-<p>Gets an account state of the given
-<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
-its account status, returns <code>null</code> instead of throwing
-any exception.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.BalanceGetter-1.html">BalanceGetter&lt;T&gt;</a></h4>
-      <section><p>An intermediary delegate for <a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a>.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Action.StateGetter-1.html">StateGetter&lt;T&gt;</a></h4>
-      <section><p>An intermediary delegate for <a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a>.</p>
+<p>Gets states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code>.</p>
+<p>If some states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code> have
+never been set these absent states are represented as <span class="xref">null</span>.</p>
 </section>
 </article>
           </div>

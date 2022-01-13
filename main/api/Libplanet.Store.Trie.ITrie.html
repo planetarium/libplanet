@@ -89,7 +89,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Hash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L16">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L17">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_ITrie_Hash_" data-uid="Libplanet.Store.Trie.ITrie.Hash*"></a>
   <h4 id="Libplanet_Store_Trie_ITrie_Hash" data-uid="Libplanet.Store.Trie.ITrie.Hash">Hash</h4>
@@ -120,7 +120,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Recorded.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Recorded%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L23">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_ITrie_Recorded_" data-uid="Libplanet.Store.Trie.ITrie.Recorded*"></a>
   <h4 id="Libplanet_Store_Trie_ITrie_Recorded" data-uid="Libplanet.Store.Trie.ITrie.Recorded">Recorded</h4>
@@ -185,10 +185,62 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Get(IReadOnlyList%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L43">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Get_" data-uid="Libplanet.Store.Trie.ITrie.Get*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.ITrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})">Get(IReadOnlyList&lt;KeyBytes&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the values stored with <code data-dev-comment-type="paramref" class="paramref">keys</code> in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IValue?&gt; Get(IReadOnlyList&lt;KeyBytes&gt; keys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
+        <td><span class="parametername">keys</span></td>
+        <td><p>The keys used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a> to store a value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;&gt;</td>
+        <td><p>The values associated to the specified <code data-dev-comment-type="paramref" class="paramref">keys</code>.  The associated
+values are ordered in the same way to the corresponding <code data-dev-comment-type="paramref" class="paramref">keys</code>.  Absent
+values are represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes%40%2CIValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Store_Trie_ITrie_Set_" data-uid="Libplanet.Store.Trie.ITrie.Set*"></a>
   <h4 id="Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_" data-uid="Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)">Set(in KeyBytes, IValue)</h4>
@@ -213,7 +265,7 @@ node corresponding to given <code data-dev-comment-type="paramref" class="paramr
       <tr>
         <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
         <td><span class="parametername">key</span></td>
-        <td><p>An index to look with <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___">TryGet(in KeyBytes, out Nullable&lt;IValue&gt;)</a> after.</p>
+        <td><p>The unique key to associate with the <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
 </td>
       </tr>
       <tr>
@@ -240,64 +292,6 @@ node corresponding to given <code data-dev-comment-type="paramref" class="paramr
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes%40%2CSystem.Nullable%7BIValue%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L43">View Source</a>
-  </span>
-  <a id="Libplanet_Store_Trie_ITrie_TryGet_" data-uid="Libplanet.Store.Trie.ITrie.TryGet*"></a>
-  <h4 id="Libplanet_Store_Trie_ITrie_TryGet_Libplanet_Store_Trie_KeyBytes__System_Nullable_IValue___" data-uid="Libplanet.Store.Trie.ITrie.TryGet(Libplanet.Store.Trie.KeyBytes@,System.Nullable{IValue}@)">TryGet(in KeyBytes, out Nullable&lt;IValue&gt;)</h4>
-  <div class="markdown level1 summary"><p>Gets the value stored with <code data-dev-comment-type="paramref" class="paramref">key</code> in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool TryGet(in KeyBytes key, out IValue? value)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a> to store a value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
-        <td><span class="parametername">value</span></td>
-        <td><p>The reference pointer to be set the value stored.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>If there is a value corresponded to <code data-dev-comment-type="paramref" class="paramref">key</code>,
-set <code data-dev-comment-type="paramref" class="paramref">value</code> to it and return true. If not, set <code data-dev-comment-type="paramref" class="paramref">value</code>
-to null and return false.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
@@ -313,7 +307,7 @@ to null and return false.</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_Trie_ITrie.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/Trie/ITrie.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
