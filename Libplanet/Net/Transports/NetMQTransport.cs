@@ -728,7 +728,6 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     exc,
                     "Unexpected error occurred during " + nameof(DoBroadcast) + "().");
-                throw;
             }
         }
 
