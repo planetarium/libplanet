@@ -140,7 +140,7 @@ namespace Libplanet.Net
                         {
                             if (_blockChain.Policy.ValidateNextBlockTx(
                                     _blockChain,
-                                    tx) is TxPolicyViolationException tpve)
+                                    tx) is { } tpve)
                             {
                                 const string message =
                                     "Received transaction {TxId} from {Peer} will not be " +
