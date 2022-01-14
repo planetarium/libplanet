@@ -140,19 +140,23 @@ namespace Libplanet.Net
                         {
                             if (_blockChain.Policy.ValidateNextBlockTx(
                                     _blockChain,
-                                    tx) is null)
+                                    tx) is TxPolicyViolationException tpve)
+                            {
+                                const string message =
+                                    "Received transaction {TxId} from {Peer} will not be " +
+                                    "staged since it does not follow policy.";
+                                _logger.Debug(
+                                    tpve,
+                                    message,
+                                    tx.Id,
+                                    peer);
+                                _blockChain.StagePolicy.Ignore(_blockChain, tx.Id);
+                                return false;
+                            }
+                            else
                             {
                                 return true;
                             }
-
-                            _logger.Debug(
-                                "Received transaction from {Peer} with id " +
-                                "{TxId} will not be staged " +
-                                "since it does not follow policy.",
-                                peer,
-                                tx.Id);
-                            _blockChain.StagePolicy.Ignore(_blockChain, tx.Id);
-                            return false;
                         }));
 
                 var validTxs = new List<Transaction<TAction>>();
