@@ -4,7 +4,12 @@ Libplanet changelog
 Version 0.25.3
 --------------
 
-To be released.
+Released on January 14, 2022.
+
+ -  Fixed a bug when message broadcasting on `Swarm<T>`
+    had been stopped suddenly.  [[#1715]]
+
+[#1715]: https://github.com/planetarium/libplanet/pull/1715
 
 
 Version 0.25.2
