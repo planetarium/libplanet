@@ -52,26 +52,38 @@ namespace Libplanet.Tests.Blockchain.Policies
                 Assert.Equal(setOne.OrderBy(tx => tx.Id), setTwo.OrderBy(tx => tx.Id));
             }
 
+            var duplicateNonceTx = Transaction<DumbAction>.Create(
+                2,
+                _key,
+                _fx.GenesisBlock.Hash,
+                Enumerable.Empty<DumbAction>()
+            );
+
             Assert.Empty(StagePolicy.Iterate(_chain));
 
-            StagePolicy.Stage(_chain, _txs[0]);
+            Assert.True(StagePolicy.Stage(_chain, _txs[0]));
             AssertTxSetEqual(_txs.Take(1), StagePolicy.Iterate(_chain));
 
-            StagePolicy.Stage(_chain, _txs[1]);
+            Assert.True(StagePolicy.Stage(_chain, _txs[1]));
             AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
 
             // If already staged, no exception is thrown.
-            StagePolicy.Stage(_chain, _txs[0]);
+            Assert.False(StagePolicy.Stage(_chain, _txs[0]));
             AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
 
-            StagePolicy.Stage(_chain, _txs[2]);
+            // Duplicate nonces can be staged.
+            Assert.True(StagePolicy.Stage(_chain, _txs[2]));
             AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate(_chain));
+            Assert.True(StagePolicy.Stage(_chain, duplicateNonceTx));
+            AssertTxSetEqual(_txs.Take(3).Append(duplicateNonceTx), StagePolicy.Iterate(_chain));
 
             // If a transaction had been unstaged, it can be staged again.
-            StagePolicy.Unstage(_chain, _txs[2].Id);
-            AssertTxSetEqual(_txs.Take(2), StagePolicy.Iterate(_chain));
-            StagePolicy.Stage(_chain, _txs[2]);
-            AssertTxSetEqual(_txs.Take(3), StagePolicy.Iterate(_chain));
+            Assert.True(StagePolicy.Unstage(_chain, _txs[2].Id));
+            AssertTxSetEqual(_txs.Take(2).Append(duplicateNonceTx), StagePolicy.Iterate(_chain));
+            Assert.True(StagePolicy.Stage(_chain, _txs[2]));
+            AssertTxSetEqual(
+                _txs.Take(2).Append(duplicateNonceTx).Append(_txs[2]),
+                StagePolicy.Iterate(_chain));
         }
 
         [Fact]
@@ -91,17 +103,17 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             AssertTxSetEqual(_txs, StagePolicy.Iterate(_chain));
 
-            StagePolicy.Unstage(_chain, _txs[0].Id);
+            Assert.True(StagePolicy.Unstage(_chain, _txs[0].Id));
             AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate(_chain));
 
             // If already unstaged, no exception is thrown.
-            StagePolicy.Unstage(_chain, _txs[0].Id);
+            Assert.False(StagePolicy.Unstage(_chain, _txs[0].Id));
             AssertTxSetEqual(_txs.Skip(1), StagePolicy.Iterate(_chain));
 
-            StagePolicy.Unstage(_chain, _txs.Last().Id);
+            Assert.True(StagePolicy.Unstage(_chain, _txs.Last().Id));
             AssertTxSetEqual(_txs.Skip(1).SkipLast(1), StagePolicy.Iterate(_chain));
 
-            StagePolicy.Unstage(_chain, _txs[2].Id);
+            Assert.True(StagePolicy.Unstage(_chain, _txs[2].Id));
             AssertTxSetEqual(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate(_chain));
         }
 
@@ -112,12 +124,12 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.False(StagePolicy.Ignores(_chain, _txs[0].Id));
             StagePolicy.Ignore(_chain, _txs[0].Id);
             Assert.True(StagePolicy.Ignores(_chain, _txs[0].Id));
-            StagePolicy.Stage(_chain, _txs[0]);
+            Assert.False(StagePolicy.Stage(_chain, _txs[0]));
             Assert.Null(StagePolicy.Get(_chain, _txs[0].Id));
 
             // Ignore unstages.
             Assert.False(StagePolicy.Ignores(_chain, _txs[1].Id));
-            StagePolicy.Stage(_chain, _txs[1]);
+            Assert.True(StagePolicy.Stage(_chain, _txs[1]));
             Assert.Equal(_txs[1], StagePolicy.Get(_chain, _txs[1].Id));
             StagePolicy.Ignore(_chain, _txs[1].Id);
             Assert.True(StagePolicy.Ignores(_chain, _txs[1].Id));
@@ -134,11 +146,11 @@ namespace Libplanet.Tests.Blockchain.Policies
             }
 
             // Staging has no effect on ignores.
-            StagePolicy.Stage(_chain, _txs[0]);
+            Assert.True(StagePolicy.Stage(_chain, _txs[0]));
             Assert.False(StagePolicy.Ignores(_chain, _txs[0].Id));
 
             // Unstaging has no effect on ignores.
-            StagePolicy.Unstage(_chain, _txs[0].Id);
+            Assert.True(StagePolicy.Unstage(_chain, _txs[0].Id));
             Assert.False(StagePolicy.Ignores(_chain, _txs[0].Id));
 
             // Only Ignore() ignores regardless of staged state.
