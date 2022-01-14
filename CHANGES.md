@@ -6,6 +6,11 @@ Version 0.25.4
 
 To be released.
 
+ -  Some additional logging to track down issues with staging `Transaction<T>`s.
+    [[#1718]]
+
+[#1718]: https://github.com/planetarium/libplanet/pull/1718
+
 
 Version 0.25.3
 --------------
