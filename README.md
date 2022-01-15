@@ -1,7 +1,7 @@
 Libplanet
 =========
 
-[![Discord](https://img.shields.io/discord/539405872346955788.svg?color=7289da&logo=discord&logoColor=white)][Discord]
+[![Discord](https://img.shields.io/discord/928926944937013338.svg?color=7289da&logo=discord&logoColor=white)][Discord]
 [![Build Status (CircleCI)](https://circleci.com/gh/planetarium/libplanet/tree/main.svg?style=shield)][CircleCI]
 [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg)][Codecov]
 [![NuGet](https://img.shields.io/nuget/v/Libplanet.svg?style=flat)][NuGet]
@@ -30,7 +30,7 @@ It has competitive advantages over other solutions for decentralized gaming:
 To learn more about why Planetarium is creating technology for fully
 decentralized games, please refer to our [blog post].
 
-[Discord]: https://discord.gg/planetarium
+[Discord]: https://planetarium.dev/discord
 [CircleCI]: https://app.circleci.com/pipelines/github/planetarium/libplanet
 [Codecov]: https://codecov.io/gh/planetarium/libplanet
 [NuGet]: https://www.nuget.org/packages/Libplanet/
