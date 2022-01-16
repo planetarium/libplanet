@@ -6,7 +6,7 @@ We should expand it so that it covers reporting bugs, filing issues,
 and writing docs.
 
 
-Questions & online chat  [![Discord](https://img.shields.io/discord/539405872346955788.svg?color=7289da&logo=discord&logoColor=white)][Discord server]
+Questions & online chat  [![Discord](https://img.shields.io/discord/928926944937013338.svg?color=7289da&logo=discord&logoColor=white)][Discord server]
 -----------------------
 
 We have a [Discord server] to discuss Libplanet.  There are some channels
@@ -23,7 +23,7 @@ for purposes in the *Libplanet* category:
  -  *#development-ko*: The same purpose to *#development*,
     except you can speak Korean instead English here.
 
-[Discord server]: https://discord.gg/planetarium
+[Discord server]: https://planetarium.dev/discord
 
 
 Prerequisites
