@@ -26,15 +26,14 @@ namespace Libplanet.Net
                     {
                         var latest = blocks.Last();
                         _logger.Debug(
-                            "{MethodName} has started. " +
-                            "expert : #{BlockIndex} {BlockHash} " +
+                            "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
                             nameof(BlockCandidateConsumer),
                             latest.Value.Index,
                             latest.Value.Header,
                             nameof(BlockCandidateTable),
                             BlockCandidateTable.Count);
-                        _ = BlockCandidateHandlerAsync(
+                        _ = BlockCandidateHandler(
                             blocks,
                             timeout,
                             cancellationToken);
@@ -51,7 +50,7 @@ namespace Libplanet.Net
             }
         }
 
-        private bool BlockCandidateHandlerAsync(
+        private bool BlockCandidateHandler(
             SortedList<long, Block<T>> candidate,
             TimeSpan timeout,
             CancellationToken cancellationToken)
@@ -63,7 +62,7 @@ namespace Libplanet.Net
                 FillBlocksAsyncStarted.Set();
                 _logger.Debug(
                     "{MethodName} start append. Current tip: #{BlockIndex}",
-                    nameof(BlockCandidateHandlerAsync),
+                    nameof(BlockCandidateHandler),
                     BlockChain.Tip.Index);
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
@@ -73,7 +72,7 @@ namespace Libplanet.Net
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
                     "{MethodName} finish append. Synced tip: #{BlockIndex}",
-                    nameof(BlockCandidateHandlerAsync),
+                    nameof(BlockCandidateHandler),
                     synced.Tip.Index);
             }
             catch (Exception e)
@@ -289,82 +288,82 @@ namespace Libplanet.Net
             TimeSpan timeout,
             CancellationToken cancellationToken)
         {
-             var sessionRandom = new Random();
-             IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
+            var sessionRandom = new Random();
+            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
 
-             int sessionId = sessionRandom.Next();
+            int sessionId = sessionRandom.Next();
 
-             BoundPeer peer = demand.Peer;
+            BoundPeer peer = demand.Peer;
 
-             if (canonComparer.Compare(
-                 BlockChain.PerceiveBlock(demand),
-                 BlockChain.PerceiveBlock(BlockChain.Tip)
-             ) <= 0)
-             {
-                 return false;
-             }
+            if (canonComparer.Compare(
+                BlockChain.PerceiveBlock(demand),
+                BlockChain.PerceiveBlock(BlockChain.Tip)
+            ) <= 0)
+            {
+                return false;
+            }
 
-             const string downloadStartLogMsg =
-                 "{SessionId}: Downloading blocks from {Peer}; started " +
-                 "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}.";
-             _logger.Debug(
-                 downloadStartLogMsg,
-                 sessionId,
-                 peer,
-                 demand.Header.Index,
-                 demand.Header.Hash,
-                 nameof(ProcessBlockDemandAsync));
+            const string downloadStartLogMsg =
+                "{SessionId}: Downloading blocks from {Peer}; started " +
+                "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}.";
+            _logger.Debug(
+                downloadStartLogMsg,
+                sessionId,
+                peer,
+                demand.Header.Index,
+                demand.Header.Hash,
+                nameof(ProcessBlockDemandAsync));
 
-             try
-             {
+            try
+            {
                 var result = await BlockCandidateDownload(
-                     peer: peer,
-                     blockChain: BlockChain,
-                     stop: demand.Header,
-                     timeout: timeout,
-                     logSessionId: sessionId,
-                     cancellationToken: cancellationToken);
+                    peer: peer,
+                    blockChain: BlockChain,
+                    stop: demand.Header,
+                    timeout: timeout,
+                    logSessionId: sessionId,
+                    cancellationToken: cancellationToken);
 
                 BlockReceived.Set();
                 return result;
-             }
-             catch (TimeoutException)
-             {
-                 const string msg =
-                     "{SessionId}: Timeout occurred during " + nameof(ProcessBlockDemandAsync) +
-                     "() from {Peer}.";
-                 _logger.Debug(msg, sessionId, peer);
-                 return false;
-             }
-             catch (InvalidBlockIndexException)
-             {
-                 const string msg =
-                     "{SessionId}: {Peer} sent an invalid block index.";
-                 _logger.Debug(msg, sessionId, peer);
-                 return false;
-             }
-             catch (InvalidBlockHashException)
-             {
-                 const string msg =
-                     "{SessionId}: {Peer} sent an invalid block hash.";
-                 _logger.Debug(msg, sessionId, peer);
-                 return false;
-             }
-             catch (InvalidBlockException)
-             {
-                 const string msg =
-                     "{SessionId}: {Peer} sent an invalid block.";
-                 _logger.Debug(msg, sessionId, peer);
-                 return false;
-             }
-             catch (Exception e)
-             {
+            }
+            catch (TimeoutException)
+            {
+                const string msg =
+                    "{SessionId}: Timeout occurred during " + nameof(ProcessBlockDemandAsync) +
+                    "() from {Peer}.";
+                _logger.Debug(msg, sessionId, peer);
+                return false;
+            }
+            catch (InvalidBlockIndexException)
+            {
+                const string msg =
+                    "{SessionId}: {Peer} sent an invalid block index.";
+                _logger.Debug(msg, sessionId, peer);
+                return false;
+            }
+            catch (InvalidBlockHashException)
+            {
+                const string msg =
+                    "{SessionId}: {Peer} sent an invalid block hash.";
+                _logger.Debug(msg, sessionId, peer);
+                return false;
+            }
+            catch (InvalidBlockException)
+            {
+                const string msg =
+                    "{SessionId}: {Peer} sent an invalid block.";
+                _logger.Debug(msg, sessionId, peer);
+                return false;
+            }
+            catch (Exception e)
+            {
                 const string msg =
                     "{SessionId}: Unexpected exception occurred during " +
                     nameof(ProcessBlockDemandAsync) + "() from {Peer}: {Exception}";
                 _logger.Error(e, msg, sessionId, peer, e);
                 return false;
-             }
+            }
         }
 
         private async Task<bool> BlockCandidateDownload(
