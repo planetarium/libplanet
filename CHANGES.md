@@ -50,11 +50,12 @@ To be released.
 
 ### Behavioral changes
 
- -  Improved performance of `Swarm<T>.FillBlocksAsync()`'s block sync.  [[#1663], [#1699]]
-     -  `Swarm<T>.FillBlocksAsync()` now download block from the multiple peers
-         in parallel.
-     -  `Swarm<T>.BlockCandidateConsumer()` is consumed and append its candidate blocks
-         in parallel.
+ -  Improved performance of `Swarm<T>.FillBlocksAsync()`'s block sync.
+    [[#1663], [#1699]]
+     -  The way `Swarm<T>` synchronizes the attached `BlockChain<T>`
+        with peers became more performant by splitting downloading
+        and appending blocks
+        into two parallel tasks.
 
 ### Bug fixes
 
