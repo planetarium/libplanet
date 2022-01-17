@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Libplanet.Net
             }
         }
 
-        public SortedList<long, Block<T>> GetCurrentRoundCandidate(
+        public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
             return _blocks.TryGetValue(thisRoundTip, out var blocks)
@@ -58,9 +59,9 @@ namespace Libplanet.Net
                 : null;
         }
 
-        public bool TryRemove(BlockHeader header, out SortedList<long, Block<T>> blocks)
+        public bool TryRemove(BlockHeader header)
         {
-            return _blocks.TryRemove(header, out blocks);
+            return _blocks.TryRemove(header, out _);
         }
 
         public void Cleanup(Func<IBlockExcerpt, bool> predicate)
