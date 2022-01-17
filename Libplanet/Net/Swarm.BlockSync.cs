@@ -20,6 +20,10 @@ namespace Libplanet.Net
         /// </summary>
         public BlockDemandTable<T> BlockDemandTable { get; private set; }
 
+        /// <summary>
+        /// This is a table of waiting <see cref="Block"/>s to enter the <see cref="BlockChain"/>.
+        /// <seealso cref="BlockCandidateTable{T}"/>
+        /// </summary>
         public BlockCandidateTable<T> BlockCandidateTable { get; private set; }
 
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
