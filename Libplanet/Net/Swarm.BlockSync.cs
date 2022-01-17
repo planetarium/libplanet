@@ -21,7 +21,8 @@ namespace Libplanet.Net
         public BlockDemandTable<T> BlockDemandTable { get; private set; }
 
         /// <summary>
-        /// This is a table of waiting <see cref="Block"/>s to enter the <see cref="BlockChain"/>.
+        /// This is a table of waiting <see cref="Block{T}"/>s
+        /// to enter the <see cref="BlockChain"/>.
         /// <seealso cref="BlockCandidateTable{T}"/>
         /// </summary>
         public BlockCandidateTable<T> BlockCandidateTable { get; private set; }
@@ -98,8 +99,8 @@ namespace Libplanet.Net
             catch (Exception e)
             {
                 var msg =
-                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}(). {{e}}";
-                _logger.Error(e, msg, e);
+                    $"Unexpected exception occured during {nameof(PullBlocksAsync)}().";
+                _logger.Error(e, msg);
                 FillBlocksAsyncFailed.Set();
             }
             finally
@@ -462,9 +463,7 @@ namespace Libplanet.Net
                         {
                             _logger.Error(
                                 e,
-                                "An exception occurred during appending blocks: {Exception}",
-                                e
-                            );
+                                "An exception occurred during appending blocks.");
                             throw;
                         }
 
