@@ -1558,7 +1558,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task FillWhenGetChunkBlocksFromSender()
+        public async Task FillWhenGetAChunkOfBlocksFromSender()
         {
             Swarm<DumbAction> receiver = CreateSwarm();
             Swarm<DumbAction> sender = CreateSwarm();
