@@ -1602,6 +1602,72 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task FillWhenGetAllBlocksFromSender()
+        {
+            Swarm<DumbAction> receiver = CreateSwarm();
+            Swarm<DumbAction> sender = CreateSwarm();
+            await StartAsync(receiver);
+            await StartAsync(sender);
+
+            receiver.FindNextHashesChunkSize = 2;
+            sender.FindNextHashesChunkSize = 2;
+            BlockChain<DumbAction> chain = sender.BlockChain;
+
+            for (int i = 0; i < 6; i++)
+            {
+                Block<DumbAction> block = TestUtils.MineNext(
+                    chain.Tip,
+                    chain.Policy.GetHashAlgorithm,
+                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    difficulty: 1024
+                ).Evaluate(TestUtils.ChainPrivateKey, chain);
+                chain.Append(block);
+            }
+
+            Log.Debug("Sender's BlockChain Tip index: #{index}", sender.BlockChain.Tip.Index);
+
+            try
+            {
+                await BootstrapAsync(sender, receiver.AsPeer);
+
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+
+                await receiver.BlockReceived.WaitAsync();
+                await receiver.BlockAppended.WaitAsync();
+                Log.Debug("Count: {Count}", receiver.BlockChain.Count);
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+                Assert.Equal(
+                    2,
+                    receiver.BlockChain.Count);
+
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+
+                await receiver.BlockReceived.WaitAsync();
+                await receiver.BlockAppended.WaitAsync();
+                Log.Debug("Count: {Count}", receiver.BlockChain.Count);
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+                Assert.Equal(
+                    4,
+                    receiver.BlockChain.Count);
+
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+
+                await receiver.BlockReceived.WaitAsync();
+                await receiver.BlockAppended.WaitAsync();
+                Log.Debug("Count: {Count}", receiver.BlockChain.Count);
+                sender.BroadcastBlock(sender.BlockChain.Tip);
+                Assert.Equal(
+                    6,
+                    receiver.BlockChain.Count);
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await StopAsync(sender);
+            }
+        }
+
         [RetryFact(10, Timeout = Timeout)]
         public async Task GetPeerChainStateAsync()
         {
