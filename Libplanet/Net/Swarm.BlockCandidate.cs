@@ -10,7 +10,7 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private async Task BlockCandidateConsumer(
+        private async Task BlockCandidateConsume(
             TimeSpan timeout,
             CancellationToken cancellationToken)
         {
@@ -28,12 +28,12 @@ namespace Libplanet.Net
                         _logger.Debug(
                             "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
-                            nameof(BlockCandidateConsumer),
+                            nameof(BlockCandidateConsume),
                             latest.Value.Index,
                             latest.Value.Header,
                             nameof(BlockCandidateTable),
                             BlockCandidateTable.Count);
-                        _ = BlockCandidateHandler(
+                        _ = BlockCandidateProcess(
                             blocks,
                             timeout,
                             cancellationToken);
@@ -50,7 +50,7 @@ namespace Libplanet.Net
             }
         }
 
-        private bool BlockCandidateHandler(
+        private bool BlockCandidateProcess(
             SortedList<long, Block<T>> candidate,
             TimeSpan timeout,
             CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ namespace Libplanet.Net
                 FillBlocksAsyncStarted.Set();
                 _logger.Debug(
                     "{MethodName} start append. Current tip: #{BlockIndex}",
-                    nameof(BlockCandidateHandler),
+                    nameof(BlockCandidateProcess),
                     BlockChain.Tip.Index);
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
@@ -72,7 +72,7 @@ namespace Libplanet.Net
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
                     "{MethodName} finish append. Synced tip: #{BlockIndex}",
-                    nameof(BlockCandidateHandler),
+                    nameof(BlockCandidateProcess),
                     synced.Tip.Index);
             }
             catch (Exception e)

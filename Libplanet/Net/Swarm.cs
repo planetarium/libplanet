@@ -372,7 +372,7 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
-                tasks.Add(BlockCandidateConsumer(
+                tasks.Add(BlockCandidateConsume(
                     dialTimeout,
                     _cancellationToken));
                 tasks.Add(
