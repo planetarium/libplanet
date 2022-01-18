@@ -74,13 +74,23 @@ namespace Libplanet.Extensions.Cocona.Commands
                 HashDigest<SHA256>.FromString(otherStateRootHashHex));
 
             var codec = new Codec();
-            Dictionary<string, Dictionary<string, string>> dictionary =
-                trie.DifferentNodes(otherTrie).ToDictionary(
-                    group => group.Key,
-                    group => group.ToDictionary(
-                        pair => ByteUtil.Hex(pair.Root.ByteArray),
-                        pair => ByteUtil.Hex(codec.Encode(pair.Value))));
-            Console.Write(JsonSerializer.Serialize(dictionary));
+            HashDigest<SHA256> originRootHash = trie.Hash;
+            HashDigest<SHA256> otherRootHash = otherTrie.Hash;
+
+            string originRootHashHex = ByteUtil.Hex(originRootHash.ByteArray);
+            string otherRootHashHex = ByteUtil.Hex(otherRootHash.ByteArray);
+            foreach (var (key, originValue, otherValue) in trie.DifferentNodes(otherTrie))
+            {
+                var data = new DiffData(ByteUtil.Hex(key.ByteArray), new Dictionary<string, string>
+                {
+                    [originRootHashHex] = ByteUtil.Hex(codec.Encode(originValue)),
+                    [otherRootHashHex] = otherValue is null
+                        ? "null"
+                        : ByteUtil.Hex(codec.Encode(otherValue)),
+                });
+
+                Console.WriteLine(JsonSerializer.Serialize(data));
+            }
         }
 
         [Command(Description = "Export all states of the state root hash as JSON.")]
@@ -285,6 +295,19 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
 
             return kvStoreUri;
+        }
+
+        private class DiffData
+        {
+            public DiffData(string key, Dictionary<string, string> stateRootHashToValue)
+            {
+                Key = key;
+                StateRootHashToValue = stateRootHashToValue;
+            }
+
+            public string Key { get; }
+
+            public Dictionary<string, string> StateRootHashToValue { get; }
         }
     }
 }

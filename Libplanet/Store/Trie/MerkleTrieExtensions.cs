@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Store.Trie.Nodes;
 
@@ -18,25 +17,25 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="origin">A trie to compare.</param>
         /// <param name="other">An other trie to compare.</param>
-        /// <returns><see cref="IGrouping{TKey,TElement}"/>s,
-        /// mapping path to tuple having the hash of the value is contained and the value.</returns>
-        public static IEnumerable<IGrouping<string, (HashDigest<SHA256> Root, IValue Value)>>
+        /// <returns><see cref="Tuple{KeyBytes,IValue,IValue}"/>s consists of different nodes.
+        /// The first element is different values' key.
+        /// The second element is the value at the given <paramref name="origin"/> trie.
+        /// And the third element is the value at the given <paramref name="other"/> trie but
+        /// it is <see langword="null"/> if it doesn't exist in <paramref name="other"/> trie.
+        /// </returns>
+        public static IEnumerable<(KeyBytes Key, IValue OriginValue, IValue? OtherValue)>
             DifferentNodes(
             this MerkleTrie origin,
             MerkleTrie other)
         {
-            var originValueNodes = origin.IterateNodes()
-                .Where(pair => pair.Node is ValueNode)
-                .Select(pair => (origin.Hash, ((ValueNode)pair.Node).Value, pair.Path));
-            var otherValueNodes = other.IterateNodes()
-                .Where(pair => pair.Node is ValueNode)
-                .Select(pair => (other.Hash, ((ValueNode)pair.Node).Value, pair.Path));
-            return originValueNodes.Concat(otherValueNodes)
-                .GroupBy(
-                    pair => FromKey(pair.Path).Hex,
-                    pair => (pair.Hash, pair.Value))
-                .Where(group =>
-                    group.Count() == 1 || !group.All(v => v.Value.Equals(group.First().Value)));
+            foreach (var pair in origin.ListAllStates())
+            {
+                IValue? otherValue = other.Get(new[] { pair.Key })[0];
+                if (otherValue is null || !pair.Value.Equals(otherValue))
+                {
+                    yield return (pair.Key, pair.Value, otherValue);
+                }
+            }
         }
 
         /// <summary>
