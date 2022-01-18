@@ -118,6 +118,7 @@ namespace Libplanet.Tests.Net
                 miner2.BroadcastBlock(bestBlock);
                 _output.WriteLine("miner1 is waiting for a new block...");
                 await miner1.BlockReceived.WaitAsync();
+                await miner1.BlockAppended.WaitAsync();
 
                 Assert.Equal(miner1.BlockChain.Tip, bestBlock);
                 Assert.Equal(miner2.BlockChain.Tip, bestBlock);

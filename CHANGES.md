@@ -50,6 +50,13 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of `Swarm<T>.FillBlocksAsync()`'s block sync.
+    [[#1663], [#1699]]
+     -  The way `Swarm<T>` synchronizes the attached `BlockChain<T>`
+        with peers became more performant by splitting downloading
+        and appending blocks
+        into two parallel tasks.
+
 ### Bug fixes
 
  -  Fixed a bug where unnecessary additional attempts were made to
@@ -60,7 +67,9 @@ To be released.
 
 ### CLI tools
 
+[#1663]: https://github.com/planetarium/libplanet/issues/1663
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
+[#1699]: https://github.com/planetarium/libplanet/pull/1699
 [#1703]: https://github.com/planetarium/libplanet/pull/1703
 [#1710]: https://github.com/planetarium/libplanet/pull/1710
 

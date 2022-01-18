@@ -259,6 +259,7 @@ namespace Libplanet.Net
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockCandidateTable = new BlockCandidateTable<T>();
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
@@ -342,6 +343,7 @@ namespace Libplanet.Net
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
+            BlockCandidateTable = new BlockCandidateTable<T>();
             if (Transport.Running)
             {
                 throw new SwarmException("Swarm is already running.");
@@ -370,6 +372,9 @@ namespace Libplanet.Net
                         Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
+                tasks.Add(ConsumeBlockCandidates(
+                    dialTimeout,
+                    _cancellationToken));
                 tasks.Add(
                     PollBlocksAsync(
                         dialTimeout,
