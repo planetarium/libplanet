@@ -1,0 +1,715 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RoutingTable
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RoutingTable
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Protocols.RoutingTable">
+  
+  
+  <h1 id="Libplanet_Net_Protocols_RoutingTable" data-uid="Libplanet.Net.Protocols.RoutingTable" class="text-break">Class RoutingTable
+  </h1>
+  <div class="markdown level0 summary"><p>Kademlia distributed hash table.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">RoutingTable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Protocols.html">Libplanet.Net.Protocols</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Net_Protocols_RoutingTable_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RoutingTable : object</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Address_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.%23ctor(Libplanet.Address%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L29">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable__ctor_" data-uid="Libplanet.Net.Protocols.RoutingTable.#ctor*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable__ctor_Libplanet_Address_System_Int32_System_Int32_" data-uid="Libplanet.Net.Protocols.RoutingTable.#ctor(Libplanet.Address,System.Int32,System.Int32)">RoutingTable(Address, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a Kademlia distributed hash table instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoutingTable(Address address, int tableSize = null, int bucketSize = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p><a class="xref" href="Libplanet.Address.html">Address</a> of this peer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">tableSize</span></td>
+        <td><p>The number of buckets in the table.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">bucketSize</span></td>
+        <td><p>The size of a single bucket.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_BucketSize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.BucketSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L68">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_BucketSize_" data-uid="Libplanet.Net.Protocols.RoutingTable.BucketSize*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_BucketSize" data-uid="Libplanet.Net.Protocols.RoutingTable.BucketSize">BucketSize</h4>
+  <div class="markdown level1 summary"><p>The size of a single bucket.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BucketSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Count.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Count_" data-uid="Libplanet.Net.Protocols.RoutingTable.Count*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Count" data-uid="Libplanet.Net.Protocols.RoutingTable.Count">Count</h4>
+  <div class="markdown level1 summary"><p>The number of peers in the table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Peers.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Peers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L78">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Peers_" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Peers" data-uid="Libplanet.Net.Protocols.RoutingTable.Peers">Peers</h4>
+  <div class="markdown level1 summary"><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of peers in the table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;BoundPeer&gt; Peers { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_PeerStates.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.PeerStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L84">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_PeerStates_" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_PeerStates" data-uid="Libplanet.Net.Protocols.RoutingTable.PeerStates">PeerStates</h4>
+  <div class="markdown level1 summary"><p>An <see cref="!:IReadOnlyList&lt;T>"></see> of <a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a> of peers in the table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;PeerState&gt; PeerStates { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.PeerState.html">PeerState</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_TableSize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.TableSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L63">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_TableSize_" data-uid="Libplanet.Net.Protocols.RoutingTable.TableSize*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_TableSize" data-uid="Libplanet.Net.Protocols.RoutingTable.TableSize">TableSize</h4>
+  <div class="markdown level1 summary"><p>The number of buckets in the table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TableSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_AddPeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.AddPeer(Libplanet.Net.BoundPeer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_AddPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.AddPeer*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_AddPeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.AddPeer(Libplanet.Net.BoundPeer)">AddPeer(BoundPeer)</h4>
+  <div class="markdown level1 summary"><p>Adds the <code data-dev-comment-type="paramref" class="paramref">peer</code> to the table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPeer(BoundPeer peer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer%2CDateTimeOffset%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L222">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Check_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Check_Libplanet_Net_BoundPeer_DateTimeOffset_DateTimeOffset_" data-uid="Libplanet.Net.Protocols.RoutingTable.Check(Libplanet.Net.BoundPeer,DateTimeOffset,DateTimeOffset)">Check(BoundPeer, DateTimeOffset, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Marks <code data-dev-comment-type="paramref" class="paramref">peer</code> checked and refreshes last checked time of the peer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to check.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">start</span></td>
+        <td><p><see cref="!:DateTimeOffset"></see> at the beginning of the check.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">end</span></td>
+        <td><p><see cref="!:DateTimeOffset"></see> at the end of the check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Clear.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L162">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Clear_" data-uid="Libplanet.Net.Protocols.RoutingTable.Clear*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Clear" data-uid="Libplanet.Net.Protocols.RoutingTable.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Removes all peers in the table. This method does not affect static peers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Contains_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Contains(Libplanet.Net.BoundPeer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L144">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Contains_" data-uid="Libplanet.Net.Protocols.RoutingTable.Contains*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Contains_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.Contains(Libplanet.Net.BoundPeer)">Contains(BoundPeer)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> contains the specified key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(BoundPeer peer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>Key to locate in the <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> contains
+an element with the specified key; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_GetPeer_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L156">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_GetPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.GetPeer*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_GetPeer_Libplanet_Address_" data-uid="Libplanet.Net.Protocols.RoutingTable.GetPeer(Libplanet.Address)">GetPeer(Address)</h4>
+  <div class="markdown level1 summary"><p>Finds a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <a class="xref" href="Libplanet.Address.html">Address</a> matches with
+the given <code data-dev-comment-type="paramref" class="paramref">addr</code> if it exits.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BoundPeer GetPeer(Address addr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">addr</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to search.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> whose <a class="xref" href="Libplanet.Address.html">Address</a> matches
+the given <code data-dev-comment-type="paramref" class="paramref">addr</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Address_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L193">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Neighbors_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Address_System_Int32_System_Boolean_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Address,System.Int32,System.Boolean)">Neighbors(Address, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Returns at most 2 * <code data-dev-comment-type="paramref" class="paramref">k</code> (2 * <code data-dev-comment-type="paramref" class="paramref">k</code> + 1 if
+<code data-dev-comment-type="paramref" class="paramref">includeTarget</code> is <code>true</code>) nearest peers to given parameter peer
+from routing table. Return value is sorted with respect to target.
+<a class="xref" href="Libplanet.Net.Protocols.Kademlia.html#Libplanet_Net_Protocols_Kademlia_SortByDistance_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Address_">SortByDistance(IEnumerable&lt;BoundPeer&gt;, Address)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;BoundPeer&gt; Neighbors(Address target, int k, bool includeTarget)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p><a class="xref" href="Libplanet.Address.html">Address</a> to look up.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">k</span></td>
+        <td><p>Number of peers to return.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">includeTarget</span></td>
+        <td><p>A boolean value indicates to include a peer with
+<a class="xref" href="Libplanet.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Net_BoundPeer_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.BoundPeer%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L179">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_Neighbors_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_Neighbors_Libplanet_Net_BoundPeer_System_Int32_System_Boolean_" data-uid="Libplanet.Net.Protocols.RoutingTable.Neighbors(Libplanet.Net.BoundPeer,System.Int32,System.Boolean)">Neighbors(BoundPeer, Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Returns <code data-dev-comment-type="paramref" class="paramref">k</code> nearest peers to given parameter peer from routing table.
+Return value is already sorted with respect to target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;BoundPeer&gt; Neighbors(BoundPeer target, int k, bool includeTarget)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to look up.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">k</span></td>
+        <td><p>Number of peers to return.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">includeTarget</span></td>
+        <td><p>A boolean value indicates to include a peer with
+<a class="xref" href="Libplanet.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code> in return value or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><p>An enumerable of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable_RemovePeer_Libplanet_Net_BoundPeer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable.RemovePeer(Libplanet.Net.BoundPeer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L124">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Protocols_RoutingTable_RemovePeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.RemovePeer*"></a>
+  <h4 id="Libplanet_Net_Protocols_RoutingTable_RemovePeer_Libplanet_Net_BoundPeer_" data-uid="Libplanet.Net.Protocols.RoutingTable.RemovePeer(Libplanet.Net.BoundPeer)">RemovePeer(BoundPeer)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RemovePeer(BoundPeer peer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/04e3981f55d271df4d0aa14008dcc24bc0dc009c/apiSpec/new?filename=Libplanet_Net_Protocols_RoutingTable.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.RoutingTable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/04e3981f55d271df4d0aa14008dcc24bc0dc009c/Libplanet/Net/Protocols/RoutingTable.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
