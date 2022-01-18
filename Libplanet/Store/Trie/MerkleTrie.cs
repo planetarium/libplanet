@@ -206,6 +206,128 @@ namespace Libplanet.Store.Trie
             }
         }
 
+        internal IEnumerable<(KeyBytes Key, byte[] Value)> IterateNodeKeyValuePairs()
+        {
+            if (Root is null)
+            {
+                yield break;
+            }
+
+            var queue =
+                new Queue<(KeyBytes Key, byte[] Value, ImmutableArray<byte> Path)>();
+            switch (Root)
+            {
+                case ValueNode valueNode:
+                    var value = _codec.Encode(valueNode.ToBencodex());
+                    var key = new KeyBytes(HashDigest<SHA256>.DeriveFrom(value).ByteArray);
+                    yield return (key, value);
+                    yield break;
+
+                case HashNode hashNode:
+                    key = new KeyBytes(hashNode.HashDigest.ToByteArray());
+                    queue.Enqueue((key, KeyValueStore.Get(key), ImmutableArray<byte>.Empty));
+                    break;
+
+                case FullNode _:
+                case ShortNode _:
+                    value = _codec.Encode(Root.ToBencodex());
+                    key = new KeyBytes(HashDigest<SHA256>.DeriveFrom(value).ByteArray);
+                    queue.Enqueue((key, value, ImmutableArray<byte>.Empty));
+                    break;
+            }
+
+            bool GuessValueNodeByPath(in ImmutableArray<byte> path)
+            {
+                if (path.Length < 2)
+                {
+                    return false;
+                }
+
+                bool isStartedWithUnderbar = (path[0] << 4) + path[1] == '_';
+
+                bool isStatePath = !isStartedWithUnderbar &&
+                                   path.Length == Address.Size * 2 * 2;
+                return isStatePath;
+            }
+
+            while (queue.Count > 0)
+            {
+                (KeyBytes key, byte[] value, ImmutableArray<byte> path) =
+                    queue.Dequeue();
+
+                // It assumes every length of value nodes is same with Address' hexadecimal
+                // string's hexadecimal string's size.
+                bool isValueNode = GuessValueNodeByPath(path);
+                bool noFingerprint = value.All(x => x != '*');
+                if (noFingerprint)
+                {
+                    yield return (key, value);
+
+                    // To avoid decode value node, it decodes when only there is '*' character,
+                    // fingerprint.
+                    if (isValueNode)
+                    {
+                        continue;
+                    }
+                }
+
+                var node = NodeDecoder.Decode(_codec.Decode(value, LoadIndirectValue));
+                if (!noFingerprint && !(node is null))
+                {
+                    yield return (key, _codec.Encode(node.ToBencodex()));
+                }
+
+                if (isValueNode)
+                {
+                    continue;
+                }
+
+                switch (node)
+                {
+                    case FullNode fullNode:
+                        foreach (int index in Enumerable.Range(0, FullNode.ChildrenCount - 1))
+                        {
+                            INode? child = fullNode.Children[index];
+                            if (child is HashNode hashNode)
+                            {
+                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
+                                value = KeyValueStore.Get(key);
+                                queue.Enqueue((key, value, path.Add((byte)index)));
+                            }
+                        }
+
+                        switch (fullNode.Value)
+                        {
+                            case HashNode hashNode:
+                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
+                                value = KeyValueStore.Get(key);
+                                queue.Enqueue((key, value, path));
+                                break;
+                        }
+
+                        break;
+
+                    case ShortNode shortNode:
+                        switch (shortNode.Value)
+                        {
+                            case HashNode hashNode:
+                                key = new KeyBytes(hashNode.HashDigest.ByteArray);
+                                value = KeyValueStore.Get(key);
+                                queue.Enqueue((key, value, path.AddRange(shortNode.Key)));
+                                break;
+                        }
+
+                        break;
+
+                    case ValueNode _:
+                        break;
+
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+
         private static void FreeValueCache()
         {
             foreach (KeyValuePair<Fingerprint, WeakReference<IValue>> kv in _valueCache)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
-using Bencodex;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
 using Serilog;
@@ -105,7 +104,6 @@ namespace Libplanet.Store
             IKeyValueStore targetKeyValueStore = targetStateStore._stateKeyValueStore;
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(CopyStates)}()");
-            var codec = new Codec();
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
@@ -116,22 +114,9 @@ namespace Libplanet.Store
                 _logger.Debug("Started to copy states.");
                 stopwatch.Start();
 
-                foreach (var (node, _) in stateTrie.IterateNodes())
+                foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
                 {
-                    if (node is HashNode)
-                    {
-                        continue;
-                    }
-
-                    var encoded = node.ToBencodex();
-                    var serialized = codec.Encode(encoded);
-
-                    if (serialized.Length <= HashDigest<SHA256>.Size)
-                    {
-                        continue;
-                    }
-
-                    targetKeyValueStore.Set(new KeyBytes(node.Hash().ByteArray), serialized);
+                    targetKeyValueStore.Set(key, value);
                 }
 
                 _logger.Debug(
