@@ -12,16 +12,12 @@ Questions & online chat  [![Discord](https://img.shields.io/discord/928926944937
 We have a [Discord server] to discuss Libplanet.  There are some channels
 for purposes in the *Libplanet* category:
 
- -  *#announcement*: Maintainers announce events like our roadmap or local
-    events.
- -  *#users*: Chat with game programmers who use Libplanet.
-    Ask questions to *use* Libplanet for your games.
- -  *#development*: Chat with maintainers and contributors of Libplanet.
-    Ask questions to *hack* Libplanet and to make a patch for it.
- -  *#users-ko*: The same purpose to *#users*,
-    except you can speak Korean instead English here.
- -  *#development-ko*: The same purpose to *#development*,
-    except you can speak Korean instead English here.
+ -  *#libplanet-users*: Chat with game programmers who use Libplanet.
+    Ask questions to *use* Libplanet for your games.  People here usually
+    speak in Korean, but feel free to speak in English.
+ -  *#libplanet-dev*: Chat with maintainers and contributors of Libplanet.
+    Ask questions to *hack* Libplanet and to make a patch for it.  People here
+    usually speak in Korean, but feel free to speak in English.
 
 [Discord server]: https://planetarium.dev/discord
 
