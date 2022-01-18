@@ -74,6 +74,20 @@ To be released.
 [#1710]: https://github.com/planetarium/libplanet/pull/1710
 
 
+Version 0.25.4
+--------------
+
+Released on January 18, 2022.
+
+ -  Some additional logging to track down issues with staging `Transaction<T>`s.
+    [[#1718]]
+ -  (Libplanet.RocksDBStore) Fixed `RocksDBStore`'s inaccurate lock handling.
+    [[#1719]]
+
+[#1718]: https://github.com/planetarium/libplanet/pull/1718
+[#1719]: https://github.com/planetarium/libplanet/pull/1719
+
+
 Version 0.25.3
 --------------
 
@@ -173,8 +187,8 @@ Released on January 5, 2022.
 ### Behavioral changes
 
   -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
-  -  Improved performance of `RocksDBStore<T>.IterateIndexes()` method.
-     [[#1676]]
+  -  (Libplanet.RocksDBStore) Improved performance of
+     `RocksDBStore<T>.IterateIndexes()` method. [[#1676]]
 
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
 [#1678]: https://github.com/planetarium/libplanet/pull/1678
@@ -282,8 +296,8 @@ Released on December 13, 2021.
     improve parallelism.  [[#1657]]
  -  Improved performance of `Swarm<T>`'s block synchronization.  [[#1657]]
  -  Fixed a bug where `Swarm<T>` had swapped to improper chain.  [[#1657]]
- -  Fixed a bug where `RocksDBStore.ForkBlockIndexes()` had created temporary
-    chains unnecessarily.  [[#1657]]
+ -  (Libplanet.RocksDBStore) Fixed a bug where `RocksDBStore.ForkBlockIndexes()`
+    had created temporary chains unnecessarily.  [[#1657]]
 
 [#1657]: https://github.com/planetarium/libplanet/pull/1657
 
