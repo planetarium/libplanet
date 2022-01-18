@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.25.4
 --------------
 
-To be released.
+Released on January 18, 2022.
 
  -  Some additional logging to track down issues with staging `Transaction<T>`s.
     [[#1718]]
