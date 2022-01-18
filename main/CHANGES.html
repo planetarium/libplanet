@@ -125,6 +125,14 @@ unresponsive <code>Peer</code>s when discovering a <code>Peer</code> through <co
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0254">Version 0.25.4</h2>
+<p>Released on January 18, 2022.</p>
+<ul>
+<li>Some additional logging to track down issues with staging <code>Transaction&lt;T&gt;</code>s.
+[<a href="https://github.com/planetarium/libplanet/pull/1718">#1718</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed <code>RocksDBStore</code>'s inaccurate lock handling.
+[<a href="https://github.com/planetarium/libplanet/pull/1719">#1719</a>]</li>
+</ul>
 <h2 id="version-0253">Version 0.25.3</h2>
 <p>Released on January 14, 2022.</p>
 <ul>
@@ -214,8 +222,8 @@ method. [<a href="https://github.com/planetarium/libplanet/pull/1680">#1680</a>]
 <h3 id="behavioral-changes-2">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>Swarm&lt;T&gt;</code>'s block propagation.  [<a href="https://github.com/planetarium/libplanet/pull/1676">#1676</a>]</li>
-<li>Improved performance of <code>RocksDBStore&lt;T&gt;.IterateIndexes()</code> method.
-[<a href="https://github.com/planetarium/libplanet/pull/1676">#1676</a>]</li>
+<li>(Libplanet.RocksDBStore) Improved performance of
+<code>RocksDBStore&lt;T&gt;.IterateIndexes()</code> method. [<a href="https://github.com/planetarium/libplanet/pull/1676">#1676</a>]</li>
 </ul>
 <h2 id="version-0242">Version 0.24.2</h2>
 <p>Released on December 24, 2021.</p>
@@ -290,8 +298,8 @@ practical tests in the future releases.  [<a href="https://github.com/planetariu
 improve parallelism.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
 <li>Improved performance of <code>Swarm&lt;T&gt;</code>'s block synchronization.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had swapped to improper chain.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
-<li>Fixed a bug where <code>RocksDBStore.ForkBlockIndexes()</code> had created temporary
-chains unnecessarily.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.ForkBlockIndexes()</code>
+had created temporary chains unnecessarily.  [<a href="https://github.com/planetarium/libplanet/pull/1657">#1657</a>]</li>
 </ul>
 <h2 id="version-0231">Version 0.23.1</h2>
 <p>Released on December 10, 2021.</p>
