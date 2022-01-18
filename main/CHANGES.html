@@ -106,6 +106,17 @@ staging was successful or not.  [<a href="https://github.com/planetarium/libplan
 <li>Added <code>StateStoreExtensions.GetStates()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1703">#1703</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Improved performance of <code>Swarm&lt;T&gt;.FillBlocksAsync()</code>'s block sync.
+[<a href="https://github.com/planetarium/libplanet/issues/1663">#1663</a>, <a href="https://github.com/planetarium/libplanet/pull/1699">#1699</a>]
+<ul>
+<li>The way <code>Swarm&lt;T&gt;</code> synchronizes the attached <code>BlockChain&lt;T&gt;</code>
+with peers became more performant by splitting downloading
+and appending blocks
+into two parallel tasks.</li>
+</ul>
+</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where unnecessary additional attempts were made to

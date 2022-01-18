@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "pnPsnUulW/ybB8YjHUoDp+Elym2AJEchvdTKAFsgFNY="
+          "hash": "wC0Glhnibfp4Nm4VKnO2Qmq5OSN2+cR1zAd2df5EIig="
         }
       },
       "is_incremental": false,
@@ -1829,6 +1829,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.BlockCandidateTable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.BlockCandidateTable-1.html",
+          "hash": "xsntqzuxb0IeLmpCQ6SZpXO44hScBgRSZX6r6z6KcMc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.BlockDemand.yml",
       "output": {
         ".html": {
@@ -2229,7 +2241,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "cqRmojjUC0YvUDIY0mp38by5Bw42nJhWfLtCQXcWaCo="
+          "hash": "B4CbqM1G0slPhUrIAbv7xWQ2Cf5A+DbwCBlPzL5Ij4U="
         }
       },
       "is_incremental": false,
@@ -2397,7 +2409,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "T2Ndsks8dSotYCJoDsRjpHGreKRBrxA8tizMGKLuuYk="
+          "hash": "Iw3AFnDHXiuRYYc8aQQk4NECLRRlQopheZcvU1f9lRw="
         }
       },
       "is_incremental": false,
@@ -3453,7 +3465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Q0yYuYkLVpucMYXnhQ4y86N2rBseJN/CTRwsvxj2RRc="
+          "hash": "Ndz7om5a71WXIMEdrV9AKQOhVG9DAREboZeO0Rc0aQ4="
         }
       },
       "is_incremental": false,
@@ -3562,7 +3574,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 278,
+          "total_file_count": 279,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

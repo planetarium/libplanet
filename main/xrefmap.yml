@@ -11833,6 +11833,136 @@ references:
   fullName.vb: Libplanet.Net.AsyncDelegate(Of T).Unregister
   nameWithType: AsyncDelegate<T>.Unregister
   nameWithType.vb: AsyncDelegate(Of T).Unregister
+- uid: Libplanet.Net.BlockCandidateTable`1
+  name: BlockCandidateTable<T>
+  href: api/Libplanet.Net.BlockCandidateTable-1.html
+  commentId: T:Libplanet.Net.BlockCandidateTable`1
+  name.vb: BlockCandidateTable(Of T)
+  fullName: Libplanet.Net.BlockCandidateTable<T>
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T)
+  nameWithType: BlockCandidateTable<T>
+  nameWithType.vb: BlockCandidateTable(Of T)
+- uid: Libplanet.Net.BlockCandidateTable`1.#ctor
+  name: BlockCandidateTable()
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1__ctor
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.#ctor
+  fullName: Libplanet.Net.BlockCandidateTable<T>.BlockCandidateTable()
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).BlockCandidateTable()
+  nameWithType: BlockCandidateTable<T>.BlockCandidateTable()
+  nameWithType.vb: BlockCandidateTable(Of T).BlockCandidateTable()
+- uid: Libplanet.Net.BlockCandidateTable`1.#ctor*
+  name: BlockCandidateTable
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1__ctor_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.BlockCandidateTable
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).BlockCandidateTable
+  nameWithType: BlockCandidateTable<T>.BlockCandidateTable
+  nameWithType.vb: BlockCandidateTable(Of T).BlockCandidateTable
+- uid: Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,IEnumerable{Libplanet.Blocks.Block{`0}})
+  name: Add(BlockHeader, IEnumerable<Block<T>>)
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Add_Libplanet_Blocks_BlockHeader_IEnumerable_Libplanet_Blocks_Block__0___
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.Add(Libplanet.Blocks.BlockHeader,IEnumerable{Libplanet.Blocks.Block{`0}})
+  name.vb: Add(BlockHeader, IEnumerable(Of Block(Of T)))
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Add(Libplanet.Blocks.BlockHeader, IEnumerable<Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Add(Libplanet.Blocks.BlockHeader, IEnumerable(Of Libplanet.Blocks.Block(Of T)))
+  nameWithType: BlockCandidateTable<T>.Add(BlockHeader, IEnumerable<Block<T>>)
+  nameWithType.vb: BlockCandidateTable(Of T).Add(BlockHeader, IEnumerable(Of Block(Of T)))
+- uid: Libplanet.Net.BlockCandidateTable`1.Add*
+  name: Add
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Add_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.Add
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Add
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Add
+  nameWithType: BlockCandidateTable<T>.Add
+  nameWithType.vb: BlockCandidateTable(Of T).Add
+- uid: Libplanet.Net.BlockCandidateTable`1.Any
+  name: Any()
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Any
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.Any
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Any()
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Any()
+  nameWithType: BlockCandidateTable<T>.Any()
+  nameWithType.vb: BlockCandidateTable(Of T).Any()
+- uid: Libplanet.Net.BlockCandidateTable`1.Any*
+  name: Any
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Any_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.Any
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Any
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Any
+  nameWithType: BlockCandidateTable<T>.Any
+  nameWithType.vb: BlockCandidateTable(Of T).Any
+- uid: Libplanet.Net.BlockCandidateTable`1.Cleanup(Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean})
+  name: Cleanup(Func<IBlockExcerpt, Boolean>)
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Cleanup_Func_Libplanet_Blocks_IBlockExcerpt_System_Boolean__
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.Cleanup(Func{Libplanet.Blocks.IBlockExcerpt,System.Boolean})
+  name.vb: Cleanup(Func(Of IBlockExcerpt, Boolean))
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Cleanup(Func<Libplanet.Blocks.IBlockExcerpt, System.Boolean>)
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Cleanup(Func(Of Libplanet.Blocks.IBlockExcerpt, System.Boolean))
+  nameWithType: BlockCandidateTable<T>.Cleanup(Func<IBlockExcerpt, Boolean>)
+  nameWithType.vb: BlockCandidateTable(Of T).Cleanup(Func(Of IBlockExcerpt, Boolean))
+- uid: Libplanet.Net.BlockCandidateTable`1.Cleanup*
+  name: Cleanup
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Cleanup_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.Cleanup
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Cleanup
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Cleanup
+  nameWithType: BlockCandidateTable<T>.Cleanup
+  nameWithType.vb: BlockCandidateTable(Of T).Cleanup
+- uid: Libplanet.Net.BlockCandidateTable`1.Count
+  name: Count
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Count
+  commentId: P:Libplanet.Net.BlockCandidateTable`1.Count
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Count
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Count
+  nameWithType: BlockCandidateTable<T>.Count
+  nameWithType.vb: BlockCandidateTable(Of T).Count
+- uid: Libplanet.Net.BlockCandidateTable`1.Count*
+  name: Count
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_Count_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.Count
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.Count
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).Count
+  nameWithType: BlockCandidateTable<T>.Count
+  nameWithType.vb: BlockCandidateTable(Of T).Count
+- uid: Libplanet.Net.BlockCandidateTable`1.GetCurrentRoundCandidate(Libplanet.Blocks.BlockHeader)
+  name: GetCurrentRoundCandidate(BlockHeader)
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_GetCurrentRoundCandidate_Libplanet_Blocks_BlockHeader_
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.GetCurrentRoundCandidate(Libplanet.Blocks.BlockHeader)
+  fullName: Libplanet.Net.BlockCandidateTable<T>.GetCurrentRoundCandidate(Libplanet.Blocks.BlockHeader)
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).GetCurrentRoundCandidate(Libplanet.Blocks.BlockHeader)
+  nameWithType: BlockCandidateTable<T>.GetCurrentRoundCandidate(BlockHeader)
+  nameWithType.vb: BlockCandidateTable(Of T).GetCurrentRoundCandidate(BlockHeader)
+- uid: Libplanet.Net.BlockCandidateTable`1.GetCurrentRoundCandidate*
+  name: GetCurrentRoundCandidate
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_GetCurrentRoundCandidate_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.GetCurrentRoundCandidate
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.GetCurrentRoundCandidate
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).GetCurrentRoundCandidate
+  nameWithType: BlockCandidateTable<T>.GetCurrentRoundCandidate
+  nameWithType.vb: BlockCandidateTable(Of T).GetCurrentRoundCandidate
+- uid: Libplanet.Net.BlockCandidateTable`1.TryRemove(Libplanet.Blocks.BlockHeader)
+  name: TryRemove(BlockHeader)
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_TryRemove_Libplanet_Blocks_BlockHeader_
+  commentId: M:Libplanet.Net.BlockCandidateTable`1.TryRemove(Libplanet.Blocks.BlockHeader)
+  fullName: Libplanet.Net.BlockCandidateTable<T>.TryRemove(Libplanet.Blocks.BlockHeader)
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).TryRemove(Libplanet.Blocks.BlockHeader)
+  nameWithType: BlockCandidateTable<T>.TryRemove(BlockHeader)
+  nameWithType.vb: BlockCandidateTable(Of T).TryRemove(BlockHeader)
+- uid: Libplanet.Net.BlockCandidateTable`1.TryRemove*
+  name: TryRemove
+  href: api/Libplanet.Net.BlockCandidateTable-1.html#Libplanet_Net_BlockCandidateTable_1_TryRemove_
+  commentId: Overload:Libplanet.Net.BlockCandidateTable`1.TryRemove
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockCandidateTable<T>.TryRemove
+  fullName.vb: Libplanet.Net.BlockCandidateTable(Of T).TryRemove
+  nameWithType: BlockCandidateTable<T>.TryRemove
+  nameWithType.vb: BlockCandidateTable(Of T).TryRemove
 - uid: Libplanet.Net.BlockDemand
   name: BlockDemand
   href: api/Libplanet.Net.BlockDemand.html
@@ -14077,6 +14207,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).AsPeer
   nameWithType: Swarm<T>.AsPeer
   nameWithType.vb: Swarm(Of T).AsPeer
+- uid: Libplanet.Net.Swarm`1.BlockCandidateTable
+  name: BlockCandidateTable
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockCandidateTable
+  commentId: P:Libplanet.Net.Swarm`1.BlockCandidateTable
+  fullName: Libplanet.Net.Swarm<T>.BlockCandidateTable
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockCandidateTable
+  nameWithType: Swarm<T>.BlockCandidateTable
+  nameWithType.vb: Swarm(Of T).BlockCandidateTable
+- uid: Libplanet.Net.Swarm`1.BlockCandidateTable*
+  name: BlockCandidateTable
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockCandidateTable_
+  commentId: Overload:Libplanet.Net.Swarm`1.BlockCandidateTable
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.BlockCandidateTable
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockCandidateTable
+  nameWithType: Swarm<T>.BlockCandidateTable
+  nameWithType.vb: Swarm(Of T).BlockCandidateTable
 - uid: Libplanet.Net.Swarm`1.BlockChain
   name: BlockChain
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain
