@@ -14,7 +14,7 @@ namespace Libplanet.Net
             TimeSpan timeout,
             CancellationToken cancellationToken)
         {
-            var checkInterval = TimeSpan.FromMilliseconds(100);
+            var checkInterval = TimeSpan.FromMilliseconds(10);
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (BlockCandidateTable.Any())
