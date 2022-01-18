@@ -10,7 +10,7 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private async Task BlockCandidateConsume(
+        private async Task ConsumeBlockCandidates(
             TimeSpan timeout,
             CancellationToken cancellationToken)
         {
@@ -28,7 +28,7 @@ namespace Libplanet.Net
                         _logger.Debug(
                             "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
                             "Count of {BlockCandidateTable}: {Count}",
-                            nameof(BlockCandidateConsume),
+                            nameof(ConsumeBlockCandidates),
                             latest.Value.Index,
                             latest.Value.Header,
                             nameof(BlockCandidateTable),
