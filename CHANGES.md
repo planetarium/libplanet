@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.26.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on January 18, 2022.
 
 ### Backward-incompatible API changes
 
@@ -37,10 +35,6 @@ To be released.
     and `IStagePolicy.Unstage()` now all return `bool` to indicate whether
     staging was successful or not.  [[#1710]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `BlockChain<T>.GetStates()` method.  [[#1703]]
@@ -62,10 +56,6 @@ To be released.
  -  Fixed a bug where unnecessary additional attempts were made to
     unresponsive `Peer`s when discovering a `Peer` through `KademliaProtocol`.
     [[#1692]]
-
-### Dependencies
-
-### CLI tools
 
 [#1663]: https://github.com/planetarium/libplanet/issues/1663
 [#1692]: https://github.com/planetarium/libplanet/pull/1692
