@@ -37,5 +37,7 @@
     "unrendering",
     "unrenders",
     "upstream's",
-  ]
+  ],
+  "dotnet-test-explorer.autoExpandTree": true,
+  "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
 }
