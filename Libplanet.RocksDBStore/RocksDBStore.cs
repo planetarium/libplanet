@@ -630,7 +630,7 @@ namespace Libplanet.RocksDBStore
             {
                 string blockDbName = RocksDBStoreBitConverter.GetString(blockDbNameBytes);
                 RocksDb blockDb;
-                lock (_blockCache)
+                lock (_blockDbCache)
                 {
                     if (!_blockDbCache.TryGetValue(blockDbName, out blockDb))
                     {
