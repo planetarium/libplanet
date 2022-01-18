@@ -50,7 +50,6 @@ namespace Libplanet.Net.Transports
         private Task _requestProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
-        private ConcurrentDictionary<Address, DealerSocket> _dealers;
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
 
         private RoutingTable _table;
@@ -179,7 +178,6 @@ namespace Libplanet.Net.Transports
             );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
-            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
         }
@@ -248,9 +246,6 @@ namespace Libplanet.Net.Transports
 
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(DisposeUnusedDealerSockets(
-                TimeSpan.FromSeconds(10),
-                _runtimeCancellationTokenSource.Token));
             tasks.Add(RunPoller(_routerPoller));
             tasks.Add(RunPoller(_broadcastPoller));
 
@@ -294,12 +289,6 @@ namespace Libplanet.Net.Transports
                 _router.Dispose();
                 _turnClient?.Dispose();
 
-                foreach (DealerSocket dealer in _dealers.Values)
-                {
-                    dealer.Dispose();
-                }
-
-                _dealers.Clear();
                 _runtimeCancellationTokenSource.Cancel();
                 Running = false;
             }
@@ -801,47 +790,28 @@ namespace Libplanet.Net.Transports
         private async Task ProcessRequest(
             MessageRequest request, CancellationToken cancellationToken = default)
         {
+            DateTimeOffset startTime = DateTimeOffset.UtcNow;
+
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
                 request.Message,
                 request.Id,
-                DateTimeOffset.UtcNow - request.RequestedTime
+                startTime - request.RequestedTime
             );
 
-            bool disposableDealer = request.ExpectedResponses > 0;
-            DealerSocket dealer = disposableDealer
-                ? new DealerSocket(request.Peer.ToNetMQAddress())
-                : _dealers.AddOrUpdate(
-                    request.Peer.Address,
-                    address => new DealerSocket(request.Peer.ToNetMQAddress()),
-                    (address, dealerSocket) =>
-                        {
-                            if (dealerSocket.IsDisposed)
-                            {
-                                return new DealerSocket(request.Peer.ToNetMQAddress());
-                            }
-                            else if (
-                                dealerSocket.Options.LastEndpoint != request.Peer.ToNetMQAddress())
-                            {
-                                dealerSocket.Dispose();
-                                return new DealerSocket(request.Peer.ToNetMQAddress());
-                            }
-                            else
-                            {
-                                return dealerSocket;
-                            }
-                        });
-
+            var dealer = new DealerSocket(request.Peer.ToNetMQAddress());
             try
             {
                 await ProcessRequest(request, dealer, cancellationToken);
             }
             finally
             {
-                if (disposableDealer)
-                {
-                    dealer.Dispose();
-                }
+                dealer.Dispose();
+                _logger.Debug(
+                    "Request {Message} {RequestId} processed in {TimeSpan}.",
+                    request.Message,
+                    request.Id,
+                    DateTimeOffset.UtcNow - startTime);
             }
         }
 
@@ -858,8 +828,6 @@ namespace Libplanet.Net.Transports
             DealerSocket dealer,
             CancellationToken cancellationToken = default)
         {
-            DateTimeOffset startedTime = DateTimeOffset.UtcNow;
-
             _logger.Debug(
                 "Trying to send request {RequestId} to {Peer}...: {Message}.",
                 request.Id,
@@ -883,10 +851,11 @@ namespace Libplanet.Net.Transports
                 );
 
                 _logger.Debug(
-                    "Request {Message} {RequestId} sent to {Peer}.",
+                    "Request {Message} {RequestId} sent to {Peer} with timeout {Timeout}.",
                     request.Message,
                     request.Id,
-                    request.Peer
+                    request.Peer,
+                    request.Timeout
                 );
 
                 foreach (int i in Enumerable.Range(0, request.ExpectedResponses))
@@ -943,60 +912,6 @@ namespace Libplanet.Net.Transports
             catch (TimeoutException te)
             {
                 tcs.TrySetException(te);
-            }
-
-            _logger.Debug(
-                "Request {Message} {RequestId} processed in {TimeSpan}.",
-                request.Message,
-                request.Id,
-                DateTimeOffset.UtcNow - startedTime);
-        }
-
-        /// <summary>
-        /// Periodically checks if each <see cref="Address"/> used for a cached
-        /// <see cref="DealerSocket"/> is still in the <see cref="RoutingTable"/> and removes
-        /// and disposes the associated <see cref="DealerSocket"/> accordingly.
-        /// </summary>
-        /// <param name="period">The amount of time to wait before checking cached
-        /// <see cref="DealerSocket"/>s again.</param>
-        /// <param name="cancellationToken">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable <see cref="Task"/> without a value.</returns>
-        private async Task DisposeUnusedDealerSockets(
-            TimeSpan period,
-            CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(period, cancellationToken);
-                    ImmutableHashSet<Address> peerAddresses =
-                        _table.Peers.Select(p => p.Address).ToImmutableHashSet();
-                    foreach (Address address in _dealers.Keys)
-                    {
-                        if (!peerAddresses.Contains(address) &&
-                            _dealers.TryRemove(address, out DealerSocket removed))
-                        {
-                            removed.Dispose();
-                        }
-                    }
-                }
-                catch (OperationCanceledException oce)
-                {
-                    _logger.Warning(
-                        oce,
-                        "{FName}() was cancelled.",
-                        nameof(DisposeUnusedDealerSockets));
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    _logger.Warning(
-                        e,
-                        "Unexpected exception occurred during {FName}().",
-                        nameof(DisposeUnusedDealerSockets));
-                }
             }
         }
 
