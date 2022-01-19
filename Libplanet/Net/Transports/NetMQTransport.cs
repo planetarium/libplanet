@@ -156,30 +156,20 @@ namespace Libplanet.Net.Transports
                     try
                     {
                         using var runtime = new NetMQRuntime();
-                        var workerTasks = new Task[workers];
-
-                        for (int i = 0; i < workers; i++)
-                        {
-                            workerTasks[i] = ProcessRuntime(
-                                _runtimeProcessorCancellationTokenSource.Token
-                            );
-                        }
-
+                        Task[] workerTasks = Enumerable
+                            .Range(0, workers)
+                            .Select(_ =>
+                                ProcessRuntime(_runtimeProcessorCancellationTokenSource.Token))
+                            .ToArray();
                         runtime.Run(workerTasks);
                     }
-                    catch (NetMQException e)
+                    catch (Exception e)
+                        when (e is NetMQException nme || e is ObjectDisposedException ode)
                     {
                         _logger.Error(
                             e,
-                            $"NetMQException occurred in {nameof(_runtimeProcessor)}."
-                        );
-                    }
-                    catch (ObjectDisposedException e)
-                    {
-                        _logger.Error(
-                            e,
-                            $"ObjectDisposedException occurred in {nameof(_runtimeProcessor)}."
-                        );
+                            "An exception has occurred while running {TaskName}.",
+                            nameof(_runtimeProcessor));
                     }
                 },
                 CancellationToken.None,
