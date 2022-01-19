@@ -666,18 +666,26 @@ namespace Libplanet.Net.Transports
                     try
                     {
                         string endpoint = peer.ToNetMQAddress();
-                        if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer) ||
-                            dealer.IsDisposed)
-                        {
-                            dealer = new DealerSocket(endpoint);
-                            _dealers[peer.Address] = dealer;
-                        }
-                        else if (dealer.Options.LastEndpoint != endpoint)
-                        {
-                            dealer.Dispose();
-                            dealer = new DealerSocket(endpoint);
-                            _dealers[peer.Address] = dealer;
-                        }
+                        DealerSocket dealer = _dealers.AddOrUpdate(
+                            peer.Address,
+                            address => new DealerSocket(endpoint),
+                            (address, dealerSocket) =>
+                                {
+                                    if (dealerSocket.IsDisposed)
+                                    {
+                                        return new DealerSocket(endpoint);
+                                    }
+                                    else if (
+                                        dealerSocket.Options.LastEndpoint != endpoint)
+                                    {
+                                        dealerSocket.Dispose();
+                                        return new DealerSocket(endpoint);
+                                    }
+                                    else
+                                    {
+                                        return dealerSocket;
+                                    }
+                                });
 
                         if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
                         {
@@ -911,7 +919,7 @@ namespace Libplanet.Net.Transports
                     foreach (Address address in _dealers.Keys)
                     {
                         if (!peerAddresses.Contains(address) &&
-                            _dealers.TryGetValue(address, out DealerSocket removed))
+                            _dealers.TryRemove(address, out DealerSocket removed))
                         {
                             removed.Dispose();
                         }
