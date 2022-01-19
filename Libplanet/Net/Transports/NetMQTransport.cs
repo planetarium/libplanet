@@ -167,7 +167,7 @@ namespace Libplanet.Net.Transports
                     {
                         _logger.Error(
                             e,
-                            "An exception has occurred while running {TaskName}.",
+                            "An unexpected exception has occurred while running {TaskName}.",
                             nameof(_requestProcessor)
                         );
                     }
@@ -408,10 +408,14 @@ namespace Libplanet.Net.Transports
                 if (expectedResponses > 0)
                 {
                     List<Message> replies = (await tcs.Task).ToList();
-                    const string logMsg =
-                        "Received {ReplyCount} reply messages to {RequestId} " +
-                        "from the {Peer}: {@ReplyMessages}.";
-                    _logger.Debug(logMsg, replies.Count, reqId, peer, replies);
+                    _logger.Debug(
+                        "Received {ReplyCount} reply messages to {Message} {RequestId} " +
+                        "from {Peer}: {ReplyMessages}.",
+                        replies.Count,
+                        message,
+                        reqId,
+                        peer,
+                        replies);
 
                     return replies;
                 }
@@ -422,20 +426,22 @@ namespace Libplanet.Net.Transports
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
-                const string logMsg =
-                    "{PeerAddress} sent a reply to {RequestId} with " +
-                    "a different app protocol version.";
-                _logger.Error(dapve, logMsg, peer.Address, reqId);
+                _logger.Error(
+                    dapve,
+                    "{Peer} sent a reply to {RequestId} with a different app protocol version.",
+                    peer,
+                    reqId);
                 throw;
             }
             catch (InvalidTimestampException ite)
             {
                 const string logMsg =
-                    "{PeerAddress} sent a reply to {RequestId} with stale timestamp; " +
+                    "{Peer} sent a reply to {Message} {RequestId} with a stale timestamp; " +
                     "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
                 _logger.Error(
                     logMsg,
-                    peer.Address,
+                    peer,
+                    message,
                     reqId,
                     ite.CreatedOffset,
                     ite.Lifespan,
@@ -446,32 +452,32 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Debug(
                     "{FName}() timed out after {Timeout} while waiting for a reply to " +
-                    "{MessageType} {RequestId} from {PeerAddress}.",
+                    "{Message} {RequestId} from {Peer}.",
                     nameof(SendMessageWithReplyAsync),
                     timeout,
-                    message.Type,
+                    message,
                     reqId,
-                    peer.Address);
+                    peer);
                 throw;
             }
             catch (TaskCanceledException)
             {
                 _logger.Debug(
                     "{FName}() was cancelled while waiting for a reply to " +
-                    "{MessageType} {RequestId} from {PeerAddress}.",
+                    "{Message} {RequestId} from {Peer}.",
                     nameof(SendMessageWithReplyAsync),
-                    message.Type,
+                    message,
                     reqId,
-                    peer.Address);
+                    peer);
                 throw;
             }
             catch (Exception e)
             {
                 var msg =
-                    $"{nameof(NetMQTransport)}.{nameof(SendMessageWithReplyAsync)}() encountered " +
-                    "an unexpected exception during sending a request {MessageType} {RequestId} " +
-                    "to {PeerAddress} and waiting a reply to it.";
-                _logger.Error(e, msg, message.Type, reqId, peer.Address);
+                    "{FName}() encountered an unexpected exception while waiting for a reply to " +
+                    "{Message} {RequestId} from {Peer}.";
+                _logger.Error(
+                    e, msg, nameof(SendMessageWithReplyAsync), message, reqId, peer.Address);
                 throw;
             }
         }
@@ -596,7 +602,8 @@ namespace Libplanet.Net.Transports
                     raw,
                     false,
                     AppProtocolVersionValidator);
-                _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+                _logger.Debug(
+                    "A message from {Peer} has parsed: {Message}", message.Remote, message);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
 
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
@@ -623,12 +630,12 @@ namespace Libplanet.Net.Transports
                     Identity = dapve.Identity,
                 };
                 _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
-                _logger.Debug("Message from peer with different version received.");
+                _logger.Debug("Message from peer with a different version received.");
             }
             catch (InvalidTimestampException ite)
             {
                 const string logMsg =
-                    "The received message is stale. " +
+                    "Received {Message} has a stale timestamp: " +
                     "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
                 _logger.Debug(logMsg, ite.CreatedOffset, ite.Lifespan, ite.CurrentOffset);
             }
@@ -640,7 +647,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "().");
+                    "An unexpected exception occurred during {FName}().",
+                    nameof(ReceiveMessage));
             }
         }
 
@@ -654,7 +662,7 @@ namespace Libplanet.Net.Transports
                 IReadOnlyList<BoundPeer> peers =
                     _table.PeersToBroadcast(except, _minimumBroadcastTarget);
                 _logger.Debug(
-                    "Broadcasting {MessageType} to {PeerCount} peers as {AsPeer}...",
+                    "Broadcasting {Message} to {PeerCount} peers as {AsPeer}...",
                     message,
                     peers.Count,
                     AsPeer);
@@ -687,7 +695,7 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     exc,
-                    "Unexpected error occurred during {FName}().",
+                    "An unexpected error has occurred during {FName}().",
                     nameof(DoBroadcast));
             }
         }
@@ -793,10 +801,10 @@ namespace Libplanet.Net.Transports
             DateTimeOffset startTime = DateTimeOffset.UtcNow;
 
             _logger.Debug(
-                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
+                "Request {Message} {RequestId} is ready to be processed in {DelayMs}ms.",
                 request.Message,
                 request.Id,
-                startTime - request.RequestedTime
+                (startTime - request.RequestedTime).TotalMilliseconds
             );
 
             var dealer = new DealerSocket(request.Peer.ToNetMQAddress());
@@ -808,10 +816,10 @@ namespace Libplanet.Net.Transports
             {
                 dealer.Dispose();
                 _logger.Debug(
-                    "Request {Message} {RequestId} processed in {TimeSpan}.",
+                    "Request {Message} {RequestId} processed in {DurationMs:0F}ms.",
                     request.Message,
                     request.Id,
-                    DateTimeOffset.UtcNow - startTime);
+                    (DateTimeOffset.UtcNow - startTime).TotalMilliseconds);
             }
         }
 
@@ -829,10 +837,10 @@ namespace Libplanet.Net.Transports
             CancellationToken cancellationToken = default)
         {
             _logger.Debug(
-                "Trying to send request {RequestId} to {Peer}...: {Message}.",
+                "Trying to send request {Message} {RequestId} to {Peer}...",
+                request.Message,
                 request.Id,
-                request.Peer,
-                request.Message
+                request.Peer
             );
             NetMQMessage message = _messageCodec.Encode(
                 request.Message,
@@ -878,8 +886,8 @@ namespace Libplanet.Net.Transports
                             AppProtocolVersionValidator
                         );
                         _logger.Debug(
-                            "A reply to request {Message} {RequestId} has parsed: " +
-                            "{Reply} from {Peer}.",
+                            "A reply to request {Message} {RequestId} from {Peer} has parsed: " +
+                            "{Reply}.",
                             request.Message,
                             request.Id,
                             reply,
