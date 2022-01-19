@@ -17,7 +17,7 @@
       "type": "shell",
       "command": "dotnet",
       "args": ["test"],
-      "group": "build",
+      "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "new"
