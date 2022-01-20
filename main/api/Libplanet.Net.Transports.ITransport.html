@@ -222,7 +222,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
   </span>
   <a id="Libplanet_Net_Transports_ITransport_BroadcastMessage_" data-uid="Libplanet.Net.Transports.ITransport.BroadcastMessage*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)">BroadcastMessage(Nullable&lt;Address&gt;, Message)</h4>
-  <div class="markdown level1 summary"><p>Broadcasts the <code data-dev-comment-type="paramref" class="paramref">message</code> to peers selected from the routing table.</p>
+  <div class="markdown level1 summary"><p>Broadcasts a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to peers selected from the routing table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -242,14 +242,14 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">except</span></td>
-        <td><p>An <a class="xref" href="Libplanet.Address.html">Address</a> to exclude from broadcasting.
-If <code>null</code> is given, no peers will be excluded.</p>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to exclude when broadcasting.
+If <code>null</code>, no peers will be excluded.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to broadcast.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to broadcast.</p>
 </td>
       </tr>
     </tbody>
@@ -263,7 +263,7 @@ If <code>null</code> is given, no peers will be excluded.</p>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_ReplyMessageAsync_" data-uid="Libplanet.Net.Transports.ITransport.ReplyMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)">ReplyMessageAsync(Message, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Replies message.</p>
+  <div class="markdown level1 summary"><p>Sends a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> as a reply.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -283,7 +283,7 @@ If <code>null</code> is given, no peers will be excluded.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to reply.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send as a reply.</p>
 </td>
       </tr>
       <tr>
@@ -312,9 +312,9 @@ operation should be canceled.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of the given <code data-dev-comment-type="paramref" class="paramref">message</code> must be
-matched to <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of a message corresponding to the given
-<code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of given <code data-dev-comment-type="paramref" class="paramref">message</code> must
+match the <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> of the request <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
+corresponding to <code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -325,7 +325,7 @@ matched to <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_N
   </span>
   <a id="Libplanet_Net_Transports_ITransport_SendMessageAsync_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,CancellationToken)">SendMessageAsync(BoundPeer, Message, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code> to given <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+  <div class="markdown level1 summary"><p>Sends a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to a given <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -388,8 +388,8 @@ operation should be canceled.</p>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},CancellationToken)">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code>
-to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and waits for its single reply.</p>
+  <div class="markdown level1 summary"><p>Sends a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to a given <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>
+and waits for its single reply.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -409,13 +409,13 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
       <tr>
         <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
         <td><span class="parametername">peer</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to send message to.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to send message to.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
 </td>
       </tr>
       <tr>
@@ -459,8 +459,8 @@ sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_SendMessageWithReplyAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageWithReplyAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},System.Int32,System.Boolean,CancellationToken)">SendMessageWithReplyAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, Int32, Boolean, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Sends the <code data-dev-comment-type="paramref" class="paramref">message</code>
-to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and waits for its multiple replies.</p>
+  <div class="markdown level1 summary"><p>Sends a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to a given <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>
+and waits for its multiple replies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -480,13 +480,13 @@ to given <code data-dev-comment-type="paramref" class="paramref">peer</code> and
       <tr>
         <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
         <td><span class="parametername">peer</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> to send message to.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> to send message to.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to send.</p>
 </td>
       </tr>
       <tr>
