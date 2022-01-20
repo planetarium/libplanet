@@ -104,6 +104,8 @@ namespace Libplanet.Store
             IKeyValueStore targetKeyValueStore = targetStateStore._stateKeyValueStore;
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(CopyStates)}()");
+            stopwatch.Start();
+
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
@@ -111,20 +113,14 @@ namespace Libplanet.Store
                     new HashNode(stateRootHash),
                     _secure
                 );
-                _logger.Debug("Started to copy states.");
-                stopwatch.Start();
 
                 foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
                 {
                     targetKeyValueStore.Set(key, value);
                 }
-
-                _logger.Debug(
-                    "Finished to copy states (elapsed: {ElapsedMilliseconds} ms).",
-                    stopwatch.ElapsedMilliseconds);
-                stopwatch.Stop();
             }
 
+            stopwatch.Stop();
             _logger.Debug(
                 "Finished to copy all states {ElapsedMilliseconds} ms",
                 stopwatch.ElapsedMilliseconds);
