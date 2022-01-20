@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using AsyncIO;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Protocols;
 using Libplanet.Stun;
 using NetMQ;
 using NetMQ.Sockets;
@@ -29,11 +28,11 @@ namespace Libplanet.Net.Transports
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
-        private readonly int _minimumBroadcastTarget;
         private readonly NetMQMessageCodec _messageCodec;
+        private readonly TimeSpan _dealerSocketLifetime;
 
         private NetMQQueue<Message> _replyQueue;
-        private NetMQQueue<(Address?, Message)> _broadcastQueue;
+        private NetMQQueue<(IEnumerable<BoundPeer>, Message)> _broadcastQueue;
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
@@ -50,10 +49,8 @@ namespace Libplanet.Net.Transports
         private Task _runtimeProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
-        private ConcurrentDictionary<Address, DealerSocket> _dealers;
+        private ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)> _dealers;
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
-
-        private RoutingTable _table;
 
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when the different version of
@@ -74,10 +71,6 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// Creates <see cref="NetMQTransport"/> instance.
         /// </summary>
-        /// <param name="table">
-        /// The <see cref="RoutingTable"/> that manages <see cref="Peer"/>s which are connected
-        /// with this <see cref="Peer"/>.
-        /// </param>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
         /// version of the transport layer.</param>
@@ -98,17 +91,15 @@ namespace Libplanet.Net.Transports
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
-        /// <param name="minimumBroadcastTarget">
-        /// The number of minimum peers to broadcast messages.
-        /// </param>
         /// <param name="messageLifespan">
         /// The lifespan of a message.
         /// Messages generated before this value from the current time are ignored.
         /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
+        /// <param name="dealerSocketLifetime">
+        /// The lifespan of a <see cref="DealerSocket"/> used for broadcasting messages.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
-            RoutingTable table,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
@@ -117,8 +108,8 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            int minimumBroadcastTarget,
-            TimeSpan? messageLifespan = null)
+            TimeSpan? messageLifespan = null,
+            TimeSpan? dealerSocketLifetime = null)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
@@ -139,8 +130,6 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _table = table;
-            _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageCodec = new NetMQMessageCodec(messageLifespan);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
@@ -178,9 +167,10 @@ namespace Libplanet.Net.Transports
             );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
-            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
+            _dealers = new ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)>();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
+            _dealerSocketLifetime = dealerSocketLifetime ?? TimeSpan.FromMinutes(10);
         }
 
         /// <inheritdoc/>
@@ -237,7 +227,7 @@ namespace Libplanet.Net.Transports
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             _replyQueue = new NetMQQueue<Message>();
-            _broadcastQueue = new NetMQQueue<(Address?, Message)>();
+            _broadcastQueue = new NetMQQueue<(IEnumerable<BoundPeer>, Message)>();
             _routerPoller = new NetMQPoller { _router, _replyQueue };
             _broadcastPoller = new NetMQPoller { _broadcastQueue };
 
@@ -293,7 +283,7 @@ namespace Libplanet.Net.Transports
                 _router.Dispose();
                 _turnClient?.Dispose();
 
-                foreach (DealerSocket dealer in _dealers.Values)
+                foreach ((DealerSocket dealer, _) in _dealers.Values)
                 {
                     dealer.Dispose();
                 }
@@ -474,15 +464,15 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        /// <inheritdoc/>
-        public void BroadcastMessage(Address? except, Message message)
+        /// <inheritdoc />
+        public void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message)
         {
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            _broadcastQueue.Enqueue((except, message));
+            _broadcastQueue.Enqueue((peers, message));
         }
 
         /// <inheritdoc/>
@@ -642,17 +632,18 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void DoBroadcast(object sender, NetMQQueueEventArgs<(Address?, Message)> e)
+        private void DoBroadcast(
+            object sender,
+            NetMQQueueEventArgs<(IEnumerable<BoundPeer>, Message)> e)
         {
             try
             {
-                (Address? except, Message msg) = e.Queue.Dequeue();
+                (IEnumerable<BoundPeer> peers, Message msg) = e.Queue.Dequeue();
 
                 // FIXME Should replace with PUB/SUB model.
-                IReadOnlyList<BoundPeer> peers =
-                    _table.PeersToBroadcast(except, _minimumBroadcastTarget);
+                IReadOnlyList<BoundPeer> peersList = peers.ToList();
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
-                _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
+                _logger.Debug("Peers to broadcast: {PeersCount}", peersList.Count);
 
                 NetMQMessage message = _messageCodec.Encode(
                     msg,
@@ -661,52 +652,40 @@ namespace Libplanet.Net.Transports
                     DateTimeOffset.UtcNow,
                     _appProtocolVersion);
 
-                peers.AsParallel().ForAll(peer =>
-                {
-                    try
+                peersList.AsParallel().ForAll(
+                    peer =>
                     {
                         string endpoint = peer.ToNetMQAddress();
-                        DealerSocket dealer = _dealers.AddOrUpdate(
+                        (DealerSocket dealer, _) = _dealers.AddOrUpdate(
                             peer.Address,
-                            address => new DealerSocket(endpoint),
-                            (address, dealerSocket) =>
+                            address => (new DealerSocket(endpoint), DateTimeOffset.UtcNow),
+                            (address, pair) =>
+                            {
+                                DealerSocket dealerSocket = pair.Item1;
+                                if (dealerSocket.IsDisposed)
                                 {
-                                    if (dealerSocket.IsDisposed)
-                                    {
-                                        return new DealerSocket(endpoint);
-                                    }
-                                    else if (
-                                        dealerSocket.Options.LastEndpoint != endpoint)
-                                    {
-                                        dealerSocket.Dispose();
-                                        return new DealerSocket(endpoint);
-                                    }
-                                    else
-                                    {
-                                        return dealerSocket;
-                                    }
-                                });
+                                    return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
+                                }
+                                else if (
+                                    dealerSocket.Options.LastEndpoint != endpoint)
+                                {
+                                    dealerSocket.Dispose();
+                                    return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
+                                }
+                                else
+                                {
+                                    return (dealerSocket, DateTimeOffset.UtcNow);
+                                }
+                            });
 
                         if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
                         {
-                            _logger.Warning(
-                                "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
-                                peer,
-                                msg
-                            );
-
-                            dealer.Dispose();
+                            // NOTE: ObjectDisposedException can occur even the check exists.
+                            // So just ignore the case and remove dealer socket.
+                            _logger.Verbose("DealerSocket has been disposed.");
                             _dealers.TryRemove(peer.Address, out _);
                         }
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // NOTE: ObjectDisposedException can occur even the check exists. So just
-                        // ignore the case and remove dealer socket.
-                        _logger.Verbose("DealerSocket has been disposed.");
-                        _dealers.TryRemove(peer.Address, out _);
-                    }
-                });
+                    });
             }
             catch (Exception exc)
             {
@@ -914,27 +893,31 @@ namespace Libplanet.Net.Transports
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    ImmutableHashSet<Address> peerAddresses =
-                        _table.Peers.Select(p => p.Address).ToImmutableHashSet();
                     foreach (Address address in _dealers.Keys)
                     {
-                        if (!peerAddresses.Contains(address) &&
-                            _dealers.TryRemove(address, out DealerSocket removed))
+                        if (DateTimeOffset.UtcNow - _dealers[address].Item2 > _dealerSocketLifetime
+                            && _dealers.TryRemove(
+                                address,
+                                out (DealerSocket DealerSocket, DateTimeOffset) pair))
                         {
-                            removed.Dispose();
+                            pair.DealerSocket.Dispose();
                         }
                     }
                 }
                 catch (OperationCanceledException e)
                 {
-                    _logger.Warning(e, $"{nameof(DisposeUnusedDealerSockets)}() is cancelled.");
+                    _logger.Warning(
+                        e,
+                        "{FName}() is cancelled.",
+                        nameof(DisposeUnusedDealerSockets));
                     throw;
                 }
                 catch (Exception e)
                 {
-                    var msg = "Unexpected exception occurred during " +
-                              $"{nameof(DisposeUnusedDealerSockets)}(): {{0}}";
-                    _logger.Warning(e, msg, e);
+                    _logger.Warning(
+                        e,
+                        "Unexpected exception occurred during {FName}().",
+                        nameof(DisposeUnusedDealerSockets));
                 }
             }
         }

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Serilog;
 using Xunit;
@@ -150,51 +149,20 @@ namespace Libplanet.Tests.Net.Transports
 
         private TcpTransport CreateTcpTransport(
             PrivateKey privateKey = null,
-            int tableSize = 160,
-            int bucketSize = 16,
             AppProtocolVersion appProtocolVersion = default,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            int minimumBroadcastTarget = 10,
             TimeSpan? messageLifespan = null
         )
         {
             privateKey = privateKey ?? new PrivateKey();
             host = host ?? IPAddress.Loopback.ToString();
             iceServers = iceServers ?? new IceServer[] { };
-            var table = new RoutingTable(privateKey.ToAddress(), tableSize, bucketSize);
 
-            return CreateTcpTransport(
-                table,
-                privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
-                messageLifespan);
-        }
-
-        private TcpTransport CreateTcpTransport(
-            RoutingTable table,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            int minimumBroadcastTarget,
-            TimeSpan? messageLifespan
-        )
-        {
             return new TcpTransport(
-                table,
                 privateKey,
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -202,7 +170,6 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
                 messageLifespan);
         }
     }

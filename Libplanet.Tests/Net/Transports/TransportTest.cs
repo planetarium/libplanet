@@ -24,9 +24,9 @@ namespace Libplanet.Tests.Net.Transports
 
         protected ILogger Logger { get; set; }
 
-        protected Func<RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>,
+        protected Func<PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>,
             string, int?, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered,
-            int, TimeSpan?, ITransport>
+            TimeSpan?, ITransport>
             TransportConstructor { get; set; }
 
         [SkippableFact(Timeout = Timeout)]
@@ -449,10 +449,12 @@ namespace Libplanet.Tests.Net.Transports
                 table.AddPeer(transportC.AsPeer as BoundPeer);
                 table.AddPeer(transportD.AsPeer as BoundPeer);
 
-                transportA = CreateTransport(table);
+                transportA = CreateTransport();
                 await InitializeAsync(transportA);
 
-                transportA.BroadcastMessage(transportD.AsPeer.Address, new Ping());
+                transportA.BroadcastMessage(
+                    table.PeersToBroadcast(transportD.AsPeer.Address),
+                    new Ping());
 
                 await Task.WhenAll(tcsB.Task, tcsC.Task);
 
@@ -481,50 +483,12 @@ namespace Libplanet.Tests.Net.Transports
 
         private ITransport CreateTransport(
             PrivateKey privateKey = null,
-            int tableSize = 160,
-            int bucketSize = 16,
             AppProtocolVersion appProtocolVersion = default,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            int minimumBroadcastTarget = 10,
-            TimeSpan? messageLifespan = null
-        )
-        {
-            if (TransportConstructor is null)
-            {
-                throw new XunitException("Transport constructor is not defined.");
-            }
-
-            privateKey = privateKey ?? new PrivateKey();
-            host = host ?? IPAddress.Loopback.ToString();
-            var routingTable = new RoutingTable(privateKey.ToAddress(), tableSize, bucketSize);
-
-            return CreateTransport(
-                routingTable,
-                privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners ?? ImmutableHashSet<PublicKey>.Empty,
-                host,
-                listenPort,
-                iceServers ?? Enumerable.Empty<IceServer>(),
-                differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
-                messageLifespan);
-        }
-
-        private ITransport CreateTransport(
-            RoutingTable routingTable,
-            PrivateKey privateKey = null,
-            AppProtocolVersion appProtocolVersion = default,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners = null,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            int minimumBroadcastTarget = 10,
             TimeSpan? messageLifespan = null
         )
         {
@@ -537,7 +501,6 @@ namespace Libplanet.Tests.Net.Transports
             host = host ?? IPAddress.Loopback.ToString();
 
             return TransportConstructor(
-                routingTable,
                 privateKey,
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners ?? ImmutableHashSet<PublicKey>.Empty,
@@ -545,7 +508,6 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
                 messageLifespan);
         }
     }

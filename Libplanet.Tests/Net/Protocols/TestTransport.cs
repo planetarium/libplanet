@@ -332,24 +332,24 @@ namespace Libplanet.Tests.Net.Protocols
 
             var message = new TestMessage(data) { Remote = AsPeer };
             _ignoreTestMessageWithData.Add(data);
-            BroadcastMessage(except, message);
+            BroadcastMessage(Table.PeersToBroadcast(except), message);
         }
 
-        public void BroadcastMessage(Address? except, Message message)
+        public void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message)
         {
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(TestTransport));
             }
 
-            var peers = Table.PeersToBroadcast(except);
-            var peersString = string.Join(", ", peers.Select(peer => peer.Address));
+            var peersList = peers.ToList();
+            var peersString = string.Join(", ", peersList.Select(peer => peer.Address));
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers which are: {Peers}",
                 ((TestMessage)message).Data,
-                peers.Count,
+                peersList.Count,
                 peersString);
-            foreach (var peer in peers)
+            foreach (var peer in peersList)
             {
                 _requests.Add(new Request()
                 {

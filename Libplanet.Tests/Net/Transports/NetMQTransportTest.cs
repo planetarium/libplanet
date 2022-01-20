@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using NetMQ;
 using Serilog;
@@ -19,7 +18,6 @@ namespace Libplanet.Tests.Net.Transports
         public NetMQTransportTest(ITestOutputHelper testOutputHelper)
         {
             TransportConstructor = (
-                    table,
                     privateKey,
                     appProtocolVersion,
                     trustedAppProtocolVersionSigners,
@@ -27,11 +25,9 @@ namespace Libplanet.Tests.Net.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
-                    minimumBroadcastTarget,
                     messageLifespan
                 )
                 => CreateNetMQTransport(
-                    table,
                     privateKey,
                     appProtocolVersion,
                     trustedAppProtocolVersionSigners,
@@ -40,7 +36,6 @@ namespace Libplanet.Tests.Net.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
-                    minimumBroadcastTarget,
                     messageLifespan);
 
             const string outputTemplate =
@@ -60,40 +55,6 @@ namespace Libplanet.Tests.Net.Transports
         }
 
         private NetMQTransport CreateNetMQTransport(
-            PrivateKey privateKey = null,
-            int tableSize = 160,
-            int bucketSize = 16,
-            AppProtocolVersion appProtocolVersion = default,
-            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners = null,
-            int workers = 50,
-            string host = null,
-            int? listenPort = null,
-            IEnumerable<IceServer> iceServers = null,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            int minimumBroadcastTarget = 10,
-            TimeSpan? messageLifespan = null
-        )
-        {
-            privateKey = privateKey ?? new PrivateKey();
-            host = host ?? IPAddress.Loopback.ToString();
-            var table = new RoutingTable(privateKey.ToAddress(), tableSize, bucketSize);
-
-            return new NetMQTransport(
-                table,
-                privateKey,
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                workers,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
-                messageLifespan);
-        }
-
-        private NetMQTransport CreateNetMQTransport(
-            RoutingTable table,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
@@ -102,12 +63,14 @@ namespace Libplanet.Tests.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            int minimumBroadcastTarget,
             TimeSpan? messageLifespan
         )
         {
+            privateKey = privateKey ?? new PrivateKey();
+            host = host ?? IPAddress.Loopback.ToString();
+            iceServers = iceServers ?? new IceServer[] { };
+
             return new NetMQTransport(
-                table,
                 privateKey,
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -116,7 +79,6 @@ namespace Libplanet.Tests.Net.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                minimumBroadcastTarget,
                 messageLifespan);
         }
     }

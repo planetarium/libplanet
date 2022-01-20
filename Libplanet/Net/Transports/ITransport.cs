@@ -133,12 +133,12 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// Broadcasts a <see cref="Message"/> to peers selected from the routing table.
         /// </summary>
-        /// <param name="except">The <see cref="Address"/> to exclude when broadcasting.
-        /// If <c>null</c>, no peers will be excluded.</param>
-        /// <param name="message">The <see cref="Message"/> to broadcast.</param>
+        /// <param name="peers">The <see cref="BoundPeer"/>s to broadcast the
+        /// <paramref name="message"/>.</param>
+        /// <param name="message">A <see cref="Message"/> to broadcast.</param>
         /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
         /// is already disposed.</exception>
-        void BroadcastMessage(Address? except, Message message);
+        void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message);
 
         /// <summary>
         /// Sends a <see cref="Message"/> as a reply.
