@@ -132,6 +132,10 @@ namespace Libplanet.Net.Messages
         /// If message B is a reply to message A,
         /// B's identity must be set to A's identity.
         /// </summary>
+        /// <remarks>
+        /// The handling of the identity of a <see cref="Message"/> is implementation specific to
+        /// <see cref="ITransport"/>.
+        /// </remarks>
         public byte[]? Identity { get; set; }
 
         /// <summary>
