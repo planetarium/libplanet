@@ -25,6 +25,17 @@ To be released.
 ### CLI tools
 
 
+Version 0.26.1
+--------------
+
+Released on January 20, 2022.
+
+ -  General logging overhaul in `NetMQTransport<T>` for consistency and
+    readability.  [[#1735]]
+
+[#1735]: https://github.com/planetarium/libplanet/pull/1735
+
+
 Version 0.26.0
 --------------
 
