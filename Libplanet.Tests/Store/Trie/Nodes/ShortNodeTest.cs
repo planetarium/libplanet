@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Store.Trie.Nodes;
 using Xunit;
@@ -9,7 +10,10 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         [Fact]
         public void ToBencodex()
         {
-            var shortNode = new ShortNode(ByteUtil.ParseHex("beef"), new ValueNode((Text)"foo"));
+            var shortNode = new ShortNode(
+                ByteUtil.ParseHex("beef").ToImmutableArray(),
+                new ValueNode((Text)"foo")
+            );
 
             var expected =
                 new List(new IValue[]

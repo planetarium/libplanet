@@ -7,17 +7,13 @@ namespace Libplanet.Store.Trie.Nodes
 {
     internal sealed class ShortNode : BaseNode, IEquatable<ShortNode>
     {
-        public ShortNode(byte[] key, INode? value)
-            : this(key.ToImmutableArray(), value)
-        {
-        }
-
-        public ShortNode(ImmutableArray<byte> key, INode? value)
+        public ShortNode(in ImmutableArray<byte> key, INode? value)
             : base(value)
         {
             Key = key;
         }
 
+        // FIXME: We should declare a custom value type to represent nibbles...
         public ImmutableArray<byte> Key { get; }
 
         bool IEquatable<ShortNode>.Equals(ShortNode? other)
