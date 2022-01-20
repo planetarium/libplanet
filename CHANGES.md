@@ -10,6 +10,18 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Parameters of `NetMQTransport()` constructor has modified.
+    [[#1741], [#1744]]
+     -  Removed `RoutingTable table` and `int minimumBroadcastTarget`
+        parameters.
+     -  Added `TimeSpan? dealerSocketLifetime` parameter.
+ -  Removed `RoutingTable table` and `int minimumBroadcastTarget` parameters
+    from `TcpTransport()` constructor.  [[#1741], [#1744]]
+ -  Removed `ITransport.BroadcastMessage(Address?, Message)` method.
+    Instead, added
+    `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)` method.
+    [[#1741], [#1744]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -22,6 +34,10 @@ To be released.
 ### Behavioral changes
 
  -  `MerkleTrie.Get()` method now finds multiple states in parallel.  [[#1743]]
+ -  `DealerSocket`s used for broadcasting messages in `NetMQTransport`
+    became not to be disposed right after corresponding peer is removed
+    from the routing table. Instead, it will be removed after
+    a certain amount of time.  [[#1741], [#1744]]
 
 ### Bug fixes
 
@@ -34,7 +50,9 @@ To be released.
 
 [#1531]: https://github.com/planetarium/libplanet/issues/1531
 [#1691]: https://github.com/planetarium/libplanet/pull/1691
+[#1741]: https://github.com/planetarium/libplanet/issues/1741
 [#1743]: https://github.com/planetarium/libplanet/pull/1743
+[#1744]: https://github.com/planetarium/libplanet/pull/1744
 [#1747]: https://github.com/planetarium/libplanet/pull/1747
 [#1748]: https://github.com/planetarium/libplanet/pull/1748
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
