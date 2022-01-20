@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.26.1
 --------------
 
-To be released.
+Released on January 20, 2022.
 
  -  General logging overhaul in `NetMQTransport<T>` for consistency and
     readability.  [[#1735]]
