@@ -660,6 +660,16 @@ namespace Libplanet.Store.Trie
             return value;
         }
 
+        /// <summary>
+        /// Encodes <paramref name="key"/> bytes into double-sized bytes where each byte of
+        /// the input <paramref name="key"/> is split into a high and a low nibble, e.g.,
+        /// AB CD (10101011 11001101) becomes 0A 0B 0C 0D (00001010 00001011 00001100 00001101).
+        /// While the original Patricia tree traverses a bit for each step, we followed Ethereum's
+        /// modified Patricia tree which traverses a nibble for each step.
+        /// </summary>
+        /// <param name="key">The input key bytes.</param>
+        /// <returns>Double-sized bytes where each two bytes correspond to high and low nibbles
+        /// of the input <paramref name="key"/> bytes.</returns>
         private ImmutableArray<byte> ToKey(in KeyBytes key)
         {
             var bytes = _secure
