@@ -190,7 +190,7 @@ Released on January 5, 2022.
      -  All publicly accessibe properties of `Peer` and `BoundPeer` are
         now non-nullable except for `Peer.PublicIPAddress`.
  -  Replaced `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
-    method with ohter new overloads.  [[#1680]]
+    method with other new overloads.  [[#1680]]
 
 ### Backward-incompatible network protocol changes
 
