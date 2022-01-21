@@ -92,6 +92,41 @@ namespace Libplanet.Store
             stopwatch.Stop();
         }
 
+        /// <summary>
+        /// Copies states under state root hashes of given <paramref name="stateRootHashes"/>
+        /// to <paramref name="targetStateStore"/>.
+        /// </summary>
+        /// <param name="stateRootHashes">The state root hashes of states to copy.</param>
+        /// <param name="targetStateStore">The target state store to copy state root hashes.</param>
+        public void CopyStates(
+            IImmutableSet<HashDigest<SHA256>> stateRootHashes, TrieStateStore targetStateStore)
+        {
+            IKeyValueStore targetKeyValueStore = targetStateStore._stateKeyValueStore;
+            var stopwatch = new Stopwatch();
+            _logger.Verbose($"Started {nameof(CopyStates)}()");
+            stopwatch.Start();
+
+            foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
+            {
+                var stateTrie = new MerkleTrie(
+                    _stateKeyValueStore,
+                    new HashNode(stateRootHash),
+                    _secure
+                );
+
+                foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
+                {
+                    targetKeyValueStore.Set(key, value);
+                }
+            }
+
+            stopwatch.Stop();
+            _logger.Debug(
+                "Finished to copy all states {ElapsedMilliseconds} ms",
+                stopwatch.ElapsedMilliseconds);
+            _logger.Verbose($"Finished {nameof(CopyStates)}()");
+        }
+
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?)"/>
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
             new MerkleTrie(

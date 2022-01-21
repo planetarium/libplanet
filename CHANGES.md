@@ -16,6 +16,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `TrieStateStore.CopyStates()` method.  [[#1653], [#1691]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1691]: https://github.com/planetarium/libplanet/pull/1691
 
 
 Version 0.26.1
