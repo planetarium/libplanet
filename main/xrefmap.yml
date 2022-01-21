@@ -20467,6 +20467,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.TrieStateStore
   nameWithType: TrieStateStore.TrieStateStore
+- uid: Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet{Libplanet.HashDigest{SHA256}},Libplanet.Store.TrieStateStore)
+  name: CopyStates(IImmutableSet<HashDigest<SHA256>>, TrieStateStore)
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_CopyStates_IImmutableSet_Libplanet_HashDigest_SHA256___Libplanet_Store_TrieStateStore_
+  commentId: M:Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet{Libplanet.HashDigest{SHA256}},Libplanet.Store.TrieStateStore)
+  name.vb: CopyStates(IImmutableSet(Of HashDigest(Of SHA256)), TrieStateStore)
+  fullName: Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet<Libplanet.HashDigest<SHA256>>, Libplanet.Store.TrieStateStore)
+  fullName.vb: Libplanet.Store.TrieStateStore.CopyStates(IImmutableSet(Of Libplanet.HashDigest(Of SHA256)), Libplanet.Store.TrieStateStore)
+  nameWithType: TrieStateStore.CopyStates(IImmutableSet<HashDigest<SHA256>>, TrieStateStore)
+  nameWithType.vb: TrieStateStore.CopyStates(IImmutableSet(Of HashDigest(Of SHA256)), TrieStateStore)
+- uid: Libplanet.Store.TrieStateStore.CopyStates*
+  name: CopyStates
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_CopyStates_
+  commentId: Overload:Libplanet.Store.TrieStateStore.CopyStates
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.CopyStates
+  nameWithType: TrieStateStore.CopyStates
 - uid: Libplanet.Store.TrieStateStore.Dispose
   name: Dispose()
   href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Dispose
