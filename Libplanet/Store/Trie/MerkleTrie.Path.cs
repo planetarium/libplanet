@@ -160,8 +160,8 @@ namespace Libplanet.Store.Trie
 
             // FIXME: We should declare a custom value type to represent nibbles...
             [Pure]
-            private static byte GetNibble(byte word, bool high) =>
-                high ? (byte)(word >> 4) : (byte)(word & 0b00001111);
+            private static byte GetNibble(byte octet, bool high) =>
+                high ? (byte)(octet >> 4) : (byte)(octet & 0b00001111);
         }
 
         private readonly struct PathResolution
