@@ -18,7 +18,7 @@ namespace Libplanet.Store.Trie
     /// </summary>
     // TODO: implement 'logs' for debugging.
     [Equals]
-    public class MerkleTrie : ITrie
+    public partial class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
 
@@ -101,8 +101,7 @@ namespace Libplanet.Store.Trie
 
             INode newRootNode = Insert(
                 Root,
-                ImmutableArray<byte>.Empty,
-                ToKey(key),
+                new PathCursor(key, _secure),
                 new ValueNode(value));
 
             return new MerkleTrie(KeyValueStore, newRootNode, _secure);
@@ -111,15 +110,51 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
         {
-            var values = new IValue?[keys.Count];
-            for (int i = 0; i < keys.Count; i++)
+            PathResolution[] resolutions = keys
+                .Select(k => ResolvePath(Root, new PathCursor(k, _secure)))
+                .ToArray();
+            var nextNodeHashes = new List<KeyBytes>(resolutions.Length);
+
+            while (true)
             {
-                values[i] = TryGet(Root, ImmutableArray<byte>.Empty, ToKey(keys[i]), out IValue? v)
-                    ? v
-                    : null;
+                nextNodeHashes.Clear();
+                for (int i = 0; i < resolutions.Length; i++)
+                {
+                    PathResolution resolution = resolutions[i];
+                    if (resolution.Next is (HashDigest<SHA256> nodeHash, _))
+                    {
+                        nextNodeHashes.Add(new KeyBytes(nodeHash.ByteArray));
+                    }
+                }
+
+                if (!nextNodeHashes.Any())
+                {
+                    break;
+                }
+
+                IReadOnlyDictionary<KeyBytes, byte[]> nValues = KeyValueStore.Get(nextNodeHashes);
+                for (int i = 0, j = 0; i < resolutions.Length; i++)
+                {
+                    PathResolution resolution = resolutions[i];
+                    if (resolution.Next is (_, PathCursor cursor))
+                    {
+                        byte[]? nodeValue = nValues[nextNodeHashes[j]];
+                        j++;
+                        if (nodeValue is { } v)
+                        {
+                            IValue intermediateEncoding = _codec.Decode(v, LoadIndirectValue);
+                            INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
+                            resolutions[i] = ResolvePath(nextNode, cursor);
+                        }
+                        else
+                        {
+                            resolutions[i] = PathResolution.Unresolved();
+                        }
+                    }
+                }
             }
 
-            return values;
+            return resolutions.Select(r => r.Value).ToArray();
         }
 
         /// <inheritdoc/>
@@ -414,14 +449,10 @@ namespace Libplanet.Store.Trie
             return new HashNode(nodeHash);
         }
 
-        private INode Insert(
-            INode? node,
-            ImmutableArray<byte> prefix,
-            ImmutableArray<byte> key,
-            INode value)
+        private INode Insert(INode? node, in PathCursor cursor, INode value)
         {
             // If path exists only last one
-            if (key.Length == 0)
+            if (!cursor.RemainingAnyNibbles)
             {
                 return value;
             }
@@ -429,22 +460,22 @@ namespace Libplanet.Store.Trie
             switch (node)
             {
                 case ShortNode shortNode:
-                    return InsertShortNode(shortNode, prefix, key, value);
+                    return InsertShortNode(shortNode, cursor, value);
 
                 case FullNode fullNode:
+                    byte nextNibble = cursor.NextNibble;
                     var n = Insert(
-                        fullNode.Children[key[0]],
-                        prefix.Add(key[0]),
-                        key.Skip(1).ToImmutableArray(),
+                        fullNode.Children[nextNibble],
+                        cursor.Next(1),
                         value);
-                    return fullNode.SetChild(key[0], n);
+                    return fullNode.SetChild(nextNibble, n);
 
                 case null:
-                    return new ShortNode(key.ToArray(), value);
+                    return new ShortNode(cursor.GetRemainingNibbles(), value);
 
                 case HashNode hashNode:
                     var hn = GetNode(hashNode.HashDigest);
-                    return Insert(hn, prefix, key, value);
+                    return Insert(hn, cursor, value);
 
                 default:
                     throw new InvalidTrieNodeException(
@@ -453,52 +484,26 @@ namespace Libplanet.Store.Trie
             }
         }
 
-        private INode InsertShortNode(
-            ShortNode shortNode,
-            ImmutableArray<byte> prefix,
-            ImmutableArray<byte> key,
-            INode value)
+        private INode InsertShortNode(ShortNode shortNode, in PathCursor cursor, INode value)
         {
-            int CommonPrefixLen(ImmutableArray<byte> a, ImmutableArray<byte> b)
-            {
-                var length = Math.Min(a.Length, b.Length);
-                foreach (var i in Enumerable.Range(0, length))
-                {
-                    if (a[i] != b[i])
-                    {
-                        return i;
-                    }
-                }
-
-                return length;
-            }
-
-            int commonPrefixLength = CommonPrefixLen(shortNode.Key, key);
+            int commonPrefixLength = cursor.CountCommonStartingNibbles(shortNode.Key);
             if (commonPrefixLength == shortNode.Key.Length)
             {
-                var nn = Insert(
-                    shortNode.Value,
-                    prefix.AddRange(key.Take(commonPrefixLength)),
-                    key.Skip(commonPrefixLength).ToImmutableArray(),
-                    value);
+                INode nn = Insert(shortNode.Value, cursor.Next(commonPrefixLength), value);
                 return new ShortNode(shortNode.Key, nn);
             }
 
             var branch = new FullNode();
             branch = branch.SetChild(
-                key[commonPrefixLength],
-                Insert(
-                    null,
-                    prefix.AddRange(key.Take(commonPrefixLength + 1)),
-                    key.Skip(commonPrefixLength + 1).ToImmutableArray(),
-                    value));
+                cursor.NibbleAt(commonPrefixLength),
+                Insert(null, cursor.Next(commonPrefixLength + 1), value)
+            );
+            PathCursor branchCursor =
+                PathCursor.FromNibbles(shortNode.Key, commonPrefixLength + 1);
             branch = branch.SetChild(
                 shortNode.Key[commonPrefixLength],
-                Insert(
-                    null,
-                    prefix.AddRange(shortNode.Key.Take(commonPrefixLength + 1)),
-                    shortNode.Key.Skip(commonPrefixLength + 1).ToImmutableArray(),
-                    shortNode.Value!));
+                Insert(null, branchCursor, shortNode.Value!)
+            );
 
             if (commonPrefixLength == 0)
             {
@@ -506,64 +511,11 @@ namespace Libplanet.Store.Trie
             }
 
             // extension node
-            return new ShortNode(key.Take(commonPrefixLength).ToArray(), branch);
-        }
-
-        private bool TryGet(
-            INode? node,
-            ImmutableArray<byte> prefix,
-            ImmutableArray<byte> path,
-            out IValue? value)
-        {
-            switch (node)
-            {
-                case null:
-                    value = null;
-                    return false;
-
-                case ValueNode valueNode:
-                    value = valueNode.Value;
-                    return true;
-
-                case ShortNode shortNode:
-                    if (path.Length < shortNode.Key.Length
-                        || !path.Take(shortNode.Key.Length).SequenceEqual(shortNode.Key))
-                    {
-                        value = null;
-                        return false;
-                    }
-
-                    return TryGet(
-                        shortNode.Value,
-                        prefix.AddRange(path.Take(shortNode.Key.Length)),
-                        path.Skip(shortNode.Key.Length).ToImmutableArray(),
-                        out value);
-
-                case FullNode fullNode:
-                    INode? childNode = fullNode.Children[path[0]];
-                    return TryGet(
-                        childNode,
-                        prefix.Add(path[0]).ToImmutableArray(),
-                        path.Skip(1).ToImmutableArray(),
-                        out value);
-
-                case HashNode hashNode:
-                    try
-                    {
-                        INode? resolvedNode = GetNode(hashNode.HashDigest);
-                        return TryGet(resolvedNode, prefix, path, out value);
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        value = null;
-                        return false;
-                    }
-
-                default:
-                    throw new InvalidTrieNodeException(
-                        $"Invalid node value: {node.ToBencodex().Inspect(false)}"
-                    );
-            }
+            ImmutableArray<byte> commonPrefixNibbles = shortNode.Key.RemoveRange(
+                commonPrefixLength,
+                shortNode.Key.Length - commonPrefixLength
+            );
+            return new ShortNode(commonPrefixNibbles, branch);
         }
 
         /// <summary>
@@ -658,25 +610,6 @@ namespace Libplanet.Store.Trie
             }
 
             return value;
-        }
-
-        private ImmutableArray<byte> ToKey(in KeyBytes key)
-        {
-            var bytes = _secure
-                ? HashDigest<SHA256>.DeriveFrom(key.ByteArray).ByteArray
-                : key.ByteArray;
-
-            ImmutableArray<byte>.Builder res =
-                ImmutableArray.CreateBuilder<byte>(bytes.Length * 2);
-            res.Count = bytes.Length * 2;
-            const int lowerBytesMask = 0b00001111;
-            for (var i = 0; i < bytes.Length; ++i)
-            {
-                res[i * 2] = (byte)(bytes[i] >> 4);
-                res[i * 2 + 1] = (byte)(bytes[i] & lowerBytesMask);
-            }
-
-            return res.MoveToImmutable();
         }
 
         private sealed class OffloadOptions : IOffloadOptions
