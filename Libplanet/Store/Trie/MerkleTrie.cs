@@ -110,16 +110,51 @@ namespace Libplanet.Store.Trie
         /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
         public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
         {
-            PathCursor[] pathCursors = keys.Select(k => new PathCursor(k, _secure)).ToArray();
-            var values = new IValue?[keys.Count];
-            for (int i = 0; i < keys.Count; i++)
+            PathResolution[] resolutions = keys
+                .Select(k => ResolvePath(Root, new PathCursor(k, _secure)))
+                .ToArray();
+            var nextNodeHashes = new List<KeyBytes>(resolutions.Length);
+
+            while (true)
             {
-                values[i] = TryGet(Root, pathCursors[i], out IValue? v)
-                    ? v
-                    : null;
+                nextNodeHashes.Clear();
+                for (int i = 0; i < resolutions.Length; i++)
+                {
+                    PathResolution resolution = resolutions[i];
+                    if (resolution.Next is (HashDigest<SHA256> nodeHash, _))
+                    {
+                        nextNodeHashes.Add(new KeyBytes(nodeHash.ByteArray));
+                    }
+                }
+
+                if (!nextNodeHashes.Any())
+                {
+                    break;
+                }
+
+                IReadOnlyDictionary<KeyBytes, byte[]> nValues = KeyValueStore.Get(nextNodeHashes);
+                for (int i = 0, j = 0; i < resolutions.Length; i++)
+                {
+                    PathResolution resolution = resolutions[i];
+                    if (resolution.Next is (_, PathCursor cursor))
+                    {
+                        byte[]? nodeValue = nValues[nextNodeHashes[j]];
+                        j++;
+                        if (nodeValue is { } v)
+                        {
+                            IValue intermediateEncoding = _codec.Decode(v, LoadIndirectValue);
+                            INode? nextNode = NodeDecoder.Decode(intermediateEncoding);
+                            resolutions[i] = ResolvePath(nextNode, cursor);
+                        }
+                        else
+                        {
+                            resolutions[i] = PathResolution.Unresolved();
+                        }
+                    }
+                }
             }
 
-            return values;
+            return resolutions.Select(r => r.Value).ToArray();
         }
 
         /// <inheritdoc/>
@@ -481,50 +516,6 @@ namespace Libplanet.Store.Trie
                 shortNode.Key.Length - commonPrefixLength
             );
             return new ShortNode(commonPrefixNibbles, branch);
-        }
-
-        private bool TryGet(INode? node, in PathCursor cursor, out IValue? value)
-        {
-            switch (node)
-            {
-                case null:
-                    value = null;
-                    return false;
-
-                case ValueNode valueNode:
-                    value = valueNode.Value;
-                    return true;
-
-                case ShortNode shortNode:
-                    if (!cursor.RemainingNibblesStartWith(shortNode.Key))
-                    {
-                        value = null;
-                        return false;
-                    }
-
-                    return TryGet(shortNode.Value, cursor.Next(shortNode.Key.Length), out value);
-
-                case FullNode fullNode:
-                    INode? childNode = fullNode.Children[cursor.NextNibble];
-                    return TryGet(childNode, cursor.Next(1), out value);
-
-                case HashNode hashNode:
-                    try
-                    {
-                        INode? resolvedNode = GetNode(hashNode.HashDigest);
-                        return TryGet(resolvedNode, cursor, out value);
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        value = null;
-                        return false;
-                    }
-
-                default:
-                    throw new InvalidTrieNodeException(
-                        $"Invalid node value: {node.ToBencodex().Inspect(false)}"
-                    );
-            }
         }
 
         /// <summary>

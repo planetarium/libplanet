@@ -3,11 +3,31 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Bencodex.Types;
+using Libplanet.Store.Trie.Nodes;
 
 namespace Libplanet.Store.Trie
 {
     public partial class MerkleTrie
     {
+        private PathResolution ResolvePath(INode? node, in PathCursor cursor) =>
+            node switch
+            {
+                null => PathResolution.Unresolved(),
+                ValueNode valueNode => PathResolution.Resolved(valueNode.Value),
+                ShortNode shortNode => !cursor.RemainingNibblesStartWith(shortNode.Key)
+                    ? PathResolution.Unresolved()
+                    : ResolvePath(shortNode.Value, cursor.Next(shortNode.Key.Length)),
+                FullNode fullNode => ResolvePath(
+                    fullNode.Children[cursor.NextNibble],
+                    cursor.Next(1)
+                ),
+                HashNode hashNode => PathResolution.PartiallyResolved(hashNode.HashDigest, cursor),
+                _ => throw new InvalidTrieNodeException(
+                    $"Invalid node value: {node.ToBencodex().Inspect(false)}"
+                ),
+            };
+
         internal readonly struct PathCursor
         {
             public readonly ImmutableArray<byte> Bytes;
@@ -142,6 +162,34 @@ namespace Libplanet.Store.Trie
             [Pure]
             private static byte GetNibble(byte word, bool high) =>
                 high ? (byte)(word >> 4) : (byte)(word & 0b00001111);
+        }
+
+        private readonly struct PathResolution
+        {
+            public readonly IValue? Value;
+            public readonly (HashDigest<SHA256> NodeHash, PathCursor Cursor)? Next;
+
+            private PathResolution(IValue? value)
+            {
+                Value = value;
+                Next = null;
+            }
+
+            private PathResolution(in HashDigest<SHA256> nodeHash, in PathCursor cursor)
+            {
+                Value = null;
+                Next = (nodeHash, cursor);
+            }
+
+            public static PathResolution Unresolved() => default;
+
+            public static PathResolution Resolved(IValue value) => new PathResolution(value);
+
+            public static PathResolution PartiallyResolved(
+                in HashDigest<SHA256> nodeHash,
+                in PathCursor cursor
+            ) =>
+                new PathResolution(nodeHash, cursor);
         }
     }
 }

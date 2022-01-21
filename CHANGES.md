@@ -20,6 +20,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  `MerkleTrie.Get()` method now finds multiple states in parallel.  [[#1743]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -27,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#1691]: https://github.com/planetarium/libplanet/pull/1691
+[#1743]: https://github.com/planetarium/libplanet/pull/1743
 
 
 Version 0.26.1
