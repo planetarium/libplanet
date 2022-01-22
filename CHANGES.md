@@ -28,8 +28,13 @@ To be released.
 
 ### CLI tools
 
+ -  Upgrade *node-fetch* for *@planetarium/cli* npm package.
+    [[CVE-2022-0235], [#1747]]
+
 [#1691]: https://github.com/planetarium/libplanet/pull/1691
 [#1743]: https://github.com/planetarium/libplanet/pull/1743
+[#1747]: https://github.com/planetarium/libplanet/pull/1747
+[CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 
 
 Version 0.26.1
