@@ -356,7 +356,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task ActionRenderersHaveDistinctContexts()
         {
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task RenderActionsAfterBlockIsRendered()
         {
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer<DumbAction>();
@@ -432,7 +432,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task RenderActionsAfterAppendComplete()
         {
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
@@ -1138,7 +1138,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateOnlyDrillsDownUntilRequestedAddressesAreFound()
         {
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -1191,7 +1191,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
-            var blockPolicy = new NullPolicy<DumbAction>();
+            var blockPolicy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
@@ -1241,7 +1241,7 @@ namespace Libplanet.Tests.Blockchain
 
             var chain =
                 new BlockChain<DumbAction>(
-                    new NullPolicy<DumbAction>(),
+                    new NullBlockPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
@@ -1328,7 +1328,7 @@ namespace Libplanet.Tests.Blockchain
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var chain = new BlockChain<DumbAction>(
-                new NullPolicy<DumbAction>(),
+                new NullBlockPolicy<DumbAction>(),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
@@ -1695,7 +1695,7 @@ namespace Libplanet.Tests.Blockchain
             List<int> presentIndices = new List<int>() { 4, 7 };
             List<Block<DumbAction>> presentBlocks = new List<Block<DumbAction>>();
 
-            IBlockPolicy<DumbAction> blockPolicy = new NullPolicy<DumbAction>();
+            IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
             Block<DumbAction> genesisBlock = MineGenesis<DumbAction>(
@@ -1912,7 +1912,7 @@ namespace Libplanet.Tests.Blockchain
         private void ConstructWithGenesisBlock()
         {
             var storeFixture = new MemoryStoreFixture();
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
 
             var addresses = ImmutableList<Address>.Empty
                 .Add(storeFixture.Address1)
@@ -1945,7 +1945,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private void ConstructWithUnexpectedGenesisBlock()
         {
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             HashAlgorithmType hashAlgorithm = policy.GetHashAlgorithm(0);
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             var store = new MemoryStore();
@@ -2005,7 +2005,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
 
-        private class NullPolicyForGetStatesOnUninitializedBlockChain<T> : NullPolicy<T>
+        private class NullPolicyForGetStatesOnUninitializedBlockChain<T> : NullBlockPolicy<T>
             where T : IAction, new()
         {
             private readonly Action<BlockChain<T>> _hook;

@@ -5,7 +5,6 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -53,7 +52,7 @@ namespace Libplanet.RocksDBStore.Tests
                 var store = new RocksDBStore(path);
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 var blocks = new BlockChain<DumbAction>(
-                    new NullPolicy<DumbAction>(),
+                    new NullBlockPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,

@@ -12,7 +12,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Serilog;
@@ -1031,7 +1030,7 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullPolicy<DumbAction>();
+                var policy = new NullBlockPolicy<DumbAction>();
                 var blocks = new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),

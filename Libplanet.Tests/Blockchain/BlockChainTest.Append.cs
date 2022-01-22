@@ -408,7 +408,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async Task AppendWhenActionEvaluationFailed()
         {
-            var policy = new NullPolicy<ThrowException>();
+            var policy = new NullBlockPolicy<ThrowException>();
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());
@@ -604,7 +604,7 @@ namespace Libplanet.Tests.Blockchain
         public void AppendValidatesBlock()
         {
             var blockChain = new BlockChain<DumbAction>(
-                new NullPolicy<DumbAction>(
+                new NullBlockPolicy<DumbAction>(
                     new BlockPolicyViolationException(string.Empty)),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,

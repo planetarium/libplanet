@@ -24,7 +24,7 @@ namespace Libplanet.Benchmarks
     {
         private const int SwarmNumber = 10;
         private const int WaitTimeout = 5 * 1000;
-        private readonly NullPolicy<DumbAction> _policy;
+        private readonly NullBlockPolicy<DumbAction> _policy;
         private readonly IStagePolicy<DumbAction> _stagePolicy;
         private readonly PrivateKey _miner;
         private readonly List<Block<DumbAction>> _blocks;
@@ -36,7 +36,7 @@ namespace Libplanet.Benchmarks
 
         public SwarmBenchmark()
         {
-            _policy = new NullPolicy<DumbAction>();
+            _policy = new NullBlockPolicy<DumbAction>();
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _miner = TestUtils.ChainPrivateKey;
             _blocks = new List<Block<DumbAction>>

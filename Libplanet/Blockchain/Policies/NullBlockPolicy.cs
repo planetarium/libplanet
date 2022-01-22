@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
-using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
-namespace Libplanet.Tests.Blockchain
+namespace Libplanet.Blockchain.Policies
 {
-    public class NullPolicy<T> : IBlockPolicy<T>
+    public class NullBlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
         private readonly BlockPolicyViolationException _exceptionToThrow;
         private readonly long _difficulty;
 
-        public NullPolicy(
+        public NullBlockPolicy(
             BlockPolicyViolationException exceptionToThrow = null, long difficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
@@ -32,14 +30,14 @@ namespace Libplanet.Tests.Blockchain
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blocks) =>
-            blocks.Count == 0 ? 0 : _difficulty;
+        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
+            blockChain.Count == 0 ? 0 : _difficulty;
 
         public virtual TxPolicyViolationException ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction) => null;
 
         public virtual BlockPolicyViolationException ValidateNextBlock(
-            BlockChain<T> blocks,
+            BlockChain<T> blockChain,
             Block<T> nextBlock
         )
         {

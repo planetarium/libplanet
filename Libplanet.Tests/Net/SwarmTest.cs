@@ -21,7 +21,6 @@ using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Stun;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -746,7 +745,7 @@ namespace Libplanet.Tests.Net
             // This test makes 2 different policies to reproduce an exception
             // while FillBlocksAsync.
             var policy1 = new BlockPolicy<DumbAction>();
-            var policy2 = new NullPolicy<DumbAction>();
+            var policy2 = new NullBlockPolicy<DumbAction>();
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
@@ -1191,9 +1190,9 @@ namespace Libplanet.Tests.Net
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullPolicy<DumbAction>();
-            var policyA = new NullPolicy<DumbAction>();
-            var policyB = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
+            var policyA = new NullBlockPolicy<DumbAction>();
+            var policyB = new NullBlockPolicy<DumbAction>();
             Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
                 policy.GetHashAlgorithm,
                 keyC,
