@@ -17,6 +17,7 @@ To be released.
 ### Added APIs
 
  -  Added `TrieStateStore.CopyStates()` method.  [[#1653], [#1691]]
+ -  Added `NullBlockPolicy<T>` class.  [[#1531], [#1748]]
 
 ### Behavioral changes
 
@@ -31,9 +32,11 @@ To be released.
  -  Upgrade *node-fetch* for *@planetarium/cli* npm package.
     [[CVE-2022-0235], [#1747]]
 
+[#1531]: https://github.com/planetarium/libplanet/issues/1531
 [#1691]: https://github.com/planetarium/libplanet/pull/1691
 [#1743]: https://github.com/planetarium/libplanet/pull/1743
 [#1747]: https://github.com/planetarium/libplanet/pull/1747
+[#1748]: https://github.com/planetarium/libplanet/pull/1748
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 
 

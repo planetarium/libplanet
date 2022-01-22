@@ -611,7 +611,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var renderer = new RecordingActionRenderer<DumbAction>();
-            var policy = new NullPolicy<DumbAction>(difficulty: 100_000_000);
+            var policy = new NullBlockPolicy<DumbAction>(difficulty: 100_000_000);
             StoreFixture fx = new MemoryStoreFixture(policy.BlockAction);
             using (fx)
             {

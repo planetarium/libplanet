@@ -7,11 +7,11 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -201,7 +201,7 @@ namespace Libplanet.Tests.Action
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var privateKey = new PrivateKey();
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
-                new NullPolicy<DumbAction>(),
+                new NullBlockPolicy<DumbAction>(),
                 store,
                 stateStore,
                 protocolVersion: ProtocolVersion,

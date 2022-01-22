@@ -14,7 +14,6 @@ using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -31,7 +30,7 @@ namespace Libplanet.Tests.Net
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>();
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
