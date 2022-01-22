@@ -3,7 +3,7 @@ using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Xunit;
 
-namespace Libplanet.Explorer.UnitTests.GraphTypes
+namespace Libplanet.Explorer.Tests.GraphTypes
 {
     public class PublicKeyTypeTest : ScalarGraphTypeTestBase<PublicKeyType>
     {
