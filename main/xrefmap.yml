@@ -3163,6 +3163,222 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IStagePolicy(Of T).Unstage
   nameWithType: IStagePolicy<T>.Unstage
   nameWithType.vb: IStagePolicy(Of T).Unstage
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1
+  name: NullBlockPolicy<T>
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html
+  commentId: T:Libplanet.Blockchain.Policies.NullBlockPolicy`1
+  name.vb: NullBlockPolicy(Of T)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T)
+  nameWithType: NullBlockPolicy<T>
+  nameWithType.vb: NullBlockPolicy(Of T)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.#ctor(Libplanet.Blocks.BlockPolicyViolationException,System.Int64)
+  name: NullBlockPolicy(BlockPolicyViolationException, Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1__ctor_Libplanet_Blocks_BlockPolicyViolationException_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.#ctor(Libplanet.Blocks.BlockPolicyViolationException,System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NullBlockPolicy(Libplanet.Blocks.BlockPolicyViolationException, System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NullBlockPolicy(Libplanet.Blocks.BlockPolicyViolationException, System.Int64)
+  nameWithType: NullBlockPolicy<T>.NullBlockPolicy(BlockPolicyViolationException, Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).NullBlockPolicy(BlockPolicyViolationException, Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.#ctor*
+  name: NullBlockPolicy
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1__ctor_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NullBlockPolicy
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NullBlockPolicy
+  nameWithType: NullBlockPolicy<T>.NullBlockPolicy
+  nameWithType.vb: NullBlockPolicy(Of T).NullBlockPolicy
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockAction
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_BlockAction
+  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockAction
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).BlockAction
+  nameWithType: NullBlockPolicy<T>.BlockAction
+  nameWithType.vb: NullBlockPolicy(Of T).BlockAction
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockAction*
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_BlockAction_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockAction
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).BlockAction
+  nameWithType: NullBlockPolicy<T>.BlockAction
+  nameWithType.vb: NullBlockPolicy(Of T).BlockAction
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockedMiners
+  name: BlockedMiners
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_BlockedMiners
+  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockedMiners
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.BlockedMiners
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).BlockedMiners
+  nameWithType: NullBlockPolicy<T>.BlockedMiners
+  nameWithType.vb: NullBlockPolicy(Of T).BlockedMiners
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockedMiners*
+  name: BlockedMiners
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_BlockedMiners_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.BlockedMiners
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.BlockedMiners
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).BlockedMiners
+  nameWithType: NullBlockPolicy<T>.BlockedMiners
+  nameWithType.vb: NullBlockPolicy(Of T).BlockedMiners
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.CanonicalChainComparer
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_CanonicalChainComparer
+  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy`1.CanonicalChainComparer
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: NullBlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: NullBlockPolicy(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.CanonicalChainComparer*
+  name: CanonicalChainComparer
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_CanonicalChainComparer_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.CanonicalChainComparer
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.CanonicalChainComparer
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).CanonicalChainComparer
+  nameWithType: NullBlockPolicy<T>.CanonicalChainComparer
+  nameWithType.vb: NullBlockPolicy(Of T).CanonicalChainComparer
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetHashAlgorithm(System.Int64)
+  name: GetHashAlgorithm(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetHashAlgorithm_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetHashAlgorithm(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetHashAlgorithm(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetHashAlgorithm(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetHashAlgorithm(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetHashAlgorithm(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetHashAlgorithm*
+  name: GetHashAlgorithm
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetHashAlgorithm_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetHashAlgorithm
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetHashAlgorithm
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetHashAlgorithm
+  nameWithType: NullBlockPolicy<T>.GetHashAlgorithm
+  nameWithType.vb: NullBlockPolicy(Of T).GetHashAlgorithm
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  name: GetMaxBlockBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxBlockBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxBlockBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetMaxBlockBytes(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxBlockBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes*
+  name: GetMaxBlockBytes
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxBlockBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxBlockBytes
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxBlockBytes
+  nameWithType: NullBlockPolicy<T>.GetMaxBlockBytes
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  name: GetMaxTransactionsPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsPerBlock(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsPerBlock(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerBlock*
+  name: GetMaxTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsPerBlock
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsPerBlock
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  name: GetMaxTransactionsPerSignerPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*
+  name: GetMaxTransactionsPerSignerPerBlock
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerSignerPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsPerSignerPerBlock
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsPerSignerPerBlock
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMinTransactionsPerBlock(System.Int64)
+  name: GetMinTransactionsPerBlock(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMinTransactionsPerBlock(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMinTransactionsPerBlock(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMinTransactionsPerBlock(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetMinTransactionsPerBlock(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetMinTransactionsPerBlock(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMinTransactionsPerBlock*
+  name: GetMinTransactionsPerBlock
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMinTransactionsPerBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMinTransactionsPerBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMinTransactionsPerBlock
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMinTransactionsPerBlock
+  nameWithType: NullBlockPolicy<T>.GetMinTransactionsPerBlock
+  nameWithType.vb: NullBlockPolicy(Of T).GetMinTransactionsPerBlock
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name: GetNextBlockDifficulty(BlockChain<T>)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name.vb: GetNextBlockDifficulty(BlockChain(Of T))
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: NullBlockPolicy<T>.GetNextBlockDifficulty(BlockChain<T>)
+  nameWithType.vb: NullBlockPolicy(Of T).GetNextBlockDifficulty(BlockChain(Of T))
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetNextBlockDifficulty*
+  name: GetNextBlockDifficulty
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetNextBlockDifficulty_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetNextBlockDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetNextBlockDifficulty
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetNextBlockDifficulty
+  nameWithType: NullBlockPolicy<T>.GetNextBlockDifficulty
+  nameWithType.vb: NullBlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name: ValidateNextBlock(BlockChain<T>, Block<T>)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name.vb: ValidateNextBlock(BlockChain(Of T), Block(Of T))
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.ValidateNextBlock(Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).ValidateNextBlock(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: NullBlockPolicy<T>.ValidateNextBlock(BlockChain<T>, Block<T>)
+  nameWithType.vb: NullBlockPolicy(Of T).ValidateNextBlock(BlockChain(Of T), Block(Of T))
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock*
+  name: ValidateNextBlock
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlock_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.ValidateNextBlock
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).ValidateNextBlock
+  nameWithType: NullBlockPolicy<T>.ValidateNextBlock
+  nameWithType.vb: NullBlockPolicy(Of T).ValidateNextBlock
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name: ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})
+  name.vb: ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).ValidateNextBlockTx(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T))
+  nameWithType: NullBlockPolicy<T>.ValidateNextBlockTx(BlockChain<T>, Transaction<T>)
+  nameWithType.vb: NullBlockPolicy(Of T).ValidateNextBlockTx(BlockChain(Of T), Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlockTx*
+  name: ValidateNextBlockTx
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlockTx_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlockTx
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.ValidateNextBlockTx
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).ValidateNextBlockTx
+  nameWithType: NullBlockPolicy<T>.ValidateNextBlockTx
+  nameWithType.vb: NullBlockPolicy(Of T).ValidateNextBlockTx
 - uid: Libplanet.Blockchain.Policies.VolatileStagePolicy`1
   name: VolatileStagePolicy<T>
   href: api/Libplanet.Blockchain.Policies.VolatileStagePolicy-1.html
