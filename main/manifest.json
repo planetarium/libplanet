@@ -2001,7 +2001,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.IMessageCodec-1.html",
-          "hash": "tTRyXVyWLjjUDoKnHWRJ68sZZFXDMGnXDbSm9POTvXo="
+          "hash": "Sjwt3nv6nV94VB0VXoi4oEsvNhZKEenBUkh3/gzJSUQ="
         }
       },
       "is_incremental": false,
@@ -2049,7 +2049,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.NetMQMessageCodec.html",
-          "hash": "iK7E6GxnLMmxm1QveUu45wPGYTXrSIYE8yVccbmlPZc="
+          "hash": "QMcGacPZ08zOek2is9GZAbwF3BbyCWn5sE3iyteAD6U="
         }
       },
       "is_incremental": false,
@@ -2061,7 +2061,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.TcpMessageCodec.html",
-          "hash": "pdra+UY5nIfN7aDSt+RMwAdJjkgK5kKwpHBFltgGe5o="
+          "hash": "TeUhiSNUmsl9t/VxIsoPwGg6Uw5lrEhmMmDGO1maMG0="
         }
       },
       "is_incremental": false,
