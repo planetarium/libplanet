@@ -157,8 +157,6 @@ namespace Libplanet.Tests.Net.Messages
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
-            Assert.Throws<ArgumentNullException>(
-                () => codec.Encode(message, privateKey, null, DateTimeOffset.UtcNow, apv));
             Assert.Throws<ArgumentException>(
                 () => codec.Decode(
                     new NetMQMessage(),
