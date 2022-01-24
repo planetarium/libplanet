@@ -15268,15 +15268,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.AsPeer
   nameWithType: ITransport.AsPeer
-- uid: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(Nullable<Address>, Message)
-  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(Nullable(Of Address), Message)
-  fullName: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Nullable<Libplanet.Address>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.ITransport.BroadcastMessage(System.Nullable(Of Libplanet.Address), Libplanet.Net.Messages.Message)
-  nameWithType: ITransport.BroadcastMessage(Nullable<Address>, Message)
-  nameWithType.vb: ITransport.BroadcastMessage(Nullable(Of Address), Message)
+- uid: Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
+  commentId: M:Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
+  fullName: Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
+  fullName.vb: Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
+  nameWithType: ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  nameWithType.vb: ITransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
 - uid: Libplanet.Net.Transports.ITransport.BroadcastMessage*
   name: BroadcastMessage
   href: api/Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_BroadcastMessage_
@@ -15419,15 +15419,15 @@ references:
   commentId: T:Libplanet.Net.Transports.NetMQTransport
   fullName: Libplanet.Net.Transports.NetMQTransport
   nameWithType: NetMQTransport
-- uid: Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{TimeSpan})
-  name: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Int32_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{TimeSpan})
-  name.vb: NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable(Of TimeSpan))
-  nameWithType: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQTransport.NetMQTransport(RoutingTable, PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan},System.Nullable{TimeSpan})
+  name: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan},System.Nullable{TimeSpan})
+  name.vb: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan), Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan))
+  nameWithType: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>, Nullable<TimeSpan>)
+  nameWithType.vb: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan), Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Transports.NetMQTransport.#ctor*
   name: NetMQTransport
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_
@@ -15448,15 +15448,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.AsPeer
   nameWithType: NetMQTransport.AsPeer
-- uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(Nullable<Address>, Message)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(Nullable(Of Address), Message)
-  fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable<Libplanet.Address>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(System.Nullable(Of Libplanet.Address), Libplanet.Net.Messages.Message)
-  nameWithType: NetMQTransport.BroadcastMessage(Nullable<Address>, Message)
-  nameWithType.vb: NetMQTransport.BroadcastMessage(Nullable(Of Address), Message)
+- uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
+  fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage(IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
+  nameWithType: NetMQTransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  nameWithType.vb: NetMQTransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
 - uid: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage*
   name: BroadcastMessage
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_BroadcastMessage_
@@ -15612,15 +15612,15 @@ references:
   commentId: T:Libplanet.Net.Transports.TcpTransport
   fullName: Libplanet.Net.Transports.TcpTransport
   nameWithType: TcpTransport
-- uid: Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{TimeSpan})
-  name: TcpTransport(RoutingTable, PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport__ctor_Libplanet_Net_Protocols_RoutingTable_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Nullable_IImmutableSet_Libplanet_Crypto_PublicKey___System_Nullable_System_String__System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Int32_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Net.Protocols.RoutingTable,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Int32,System.Nullable{TimeSpan})
-  name.vb: TcpTransport(RoutingTable, PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable<IImmutableSet<Libplanet.Crypto.PublicKey>>, System.Nullable<System.String>, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Net.Protocols.RoutingTable, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable(Of IImmutableSet(Of Libplanet.Crypto.PublicKey)), System.Nullable(Of System.String), System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Int32, System.Nullable(Of TimeSpan))
-  nameWithType: TcpTransport.TcpTransport(RoutingTable, PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Int32, Nullable<TimeSpan>)
-  nameWithType.vb: TcpTransport.TcpTransport(RoutingTable, PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Int32, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
+  name: TcpTransport(PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Nullable_IImmutableSet_Libplanet_Crypto_PublicKey___System_Nullable_System_String__System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
+  name.vb: TcpTransport(PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable<IImmutableSet<Libplanet.Crypto.PublicKey>>, System.Nullable<System.String>, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable(Of IImmutableSet(Of Libplanet.Crypto.PublicKey)), System.Nullable(Of System.String), System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
+  nameWithType: TcpTransport.TcpTransport(PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  nameWithType.vb: TcpTransport.TcpTransport(PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
 - uid: Libplanet.Net.Transports.TcpTransport.#ctor*
   name: TcpTransport
   href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport__ctor_
@@ -15641,15 +15641,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.TcpTransport.AsPeer
   nameWithType: TcpTransport.AsPeer
-- uid: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(Nullable<Address>, Message)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_BroadcastMessage_System_Nullable_Libplanet_Address__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.BroadcastMessage(System.Nullable{Libplanet.Address},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(Nullable(Of Address), Message)
-  fullName: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(System.Nullable<Libplanet.Address>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(System.Nullable(Of Libplanet.Address), Libplanet.Net.Messages.Message)
-  nameWithType: TcpTransport.BroadcastMessage(Nullable<Address>, Message)
-  nameWithType.vb: TcpTransport.BroadcastMessage(Nullable(Of Address), Message)
+- uid: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
+  commentId: M:Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
+  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
+  fullName: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
+  fullName.vb: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
+  nameWithType: TcpTransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
+  nameWithType.vb: TcpTransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
 - uid: Libplanet.Net.Transports.TcpTransport.BroadcastMessage*
   name: BroadcastMessage
   href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_BroadcastMessage_

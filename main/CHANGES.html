@@ -66,6 +66,22 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Parameters of <code>NetMQTransport()</code> constructor has modified.
+[<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]
+<ul>
+<li>Removed <code>RoutingTable table</code> and <code>int minimumBroadcastTarget</code>
+parameters.</li>
+<li>Added <code>TimeSpan? dealerSocketLifetime</code> parameter.</li>
+</ul>
+</li>
+<li>Removed <code>RoutingTable table</code> and <code>int minimumBroadcastTarget</code> parameters
+from <code>TcpTransport()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
+<li>Removed <code>ITransport.BroadcastMessage(Address?, Message)</code> method.
+Instead, added
+<code>ITransport.BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, Message)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -76,6 +92,10 @@
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>MerkleTrie.Get()</code> method now finds multiple states in parallel.  [<a href="https://github.com/planetarium/libplanet/pull/1743">#1743</a>]</li>
+<li><code>DealerSocket</code>s used for broadcasting messages in <code>NetMQTransport</code>
+became not to be disposed right after corresponding peer is removed
+from the routing table. Instead, it will be removed after
+a certain amount of time.  [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
