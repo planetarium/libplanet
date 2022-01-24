@@ -29,7 +29,9 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly NetMQMessageCodec _messageCodec;
+        private readonly ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)> _dealers;
         private readonly TimeSpan _dealerSocketLifetime;
+        private readonly object _dealerLock;
 
         private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<(IEnumerable<BoundPeer>, Message)> _broadcastQueue;
@@ -49,7 +51,6 @@ namespace Libplanet.Net.Transports
         private Task _runtimeProcessor;
 
         private TaskCompletionSource<object> _runningEvent;
-        private ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)> _dealers;
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
 
         /// <summary>
@@ -168,6 +169,7 @@ namespace Libplanet.Net.Transports
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
             _dealers = new ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)>();
+            _dealerLock = new object();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
             _dealerSocketLifetime = dealerSocketLifetime ?? TimeSpan.FromMinutes(10);
@@ -283,12 +285,16 @@ namespace Libplanet.Net.Transports
                 _router.Dispose();
                 _turnClient?.Dispose();
 
-                foreach ((DealerSocket dealer, _) in _dealers.Values)
+                lock (_dealerLock)
                 {
-                    dealer.Dispose();
+                    foreach ((DealerSocket dealer, _) in _dealers.Values)
+                    {
+                        dealer.Dispose();
+                    }
+
+                    _dealers.Clear();
                 }
 
-                _dealers.Clear();
                 _runtimeCancellationTokenSource.Cancel();
                 Running = false;
             }
@@ -652,40 +658,43 @@ namespace Libplanet.Net.Transports
                     DateTimeOffset.UtcNow,
                     _appProtocolVersion);
 
-                peersList.AsParallel().ForAll(
-                    peer =>
-                    {
-                        string endpoint = peer.ToNetMQAddress();
-                        (DealerSocket dealer, _) = _dealers.AddOrUpdate(
-                            peer.Address,
-                            address => (new DealerSocket(endpoint), DateTimeOffset.UtcNow),
-                            (address, pair) =>
-                            {
-                                DealerSocket dealerSocket = pair.Item1;
-                                if (dealerSocket.IsDisposed)
-                                {
-                                    return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
-                                }
-                                else if (
-                                    dealerSocket.Options.LastEndpoint != endpoint)
-                                {
-                                    dealerSocket.Dispose();
-                                    return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
-                                }
-                                else
-                                {
-                                    return (dealerSocket, DateTimeOffset.UtcNow);
-                                }
-                            });
-
-                        if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                lock (_dealerLock)
+                {
+                    peersList.AsParallel().ForAll(
+                        peer =>
                         {
-                            // NOTE: ObjectDisposedException can occur even the check exists.
-                            // So just ignore the case and remove dealer socket.
-                            _logger.Verbose("DealerSocket has been disposed.");
-                            _dealers.TryRemove(peer.Address, out _);
-                        }
-                    });
+                            string endpoint = peer.ToNetMQAddress();
+                            (DealerSocket dealer, _) = _dealers.AddOrUpdate(
+                                peer.Address,
+                                address => (new DealerSocket(endpoint), DateTimeOffset.UtcNow),
+                                (address, pair) =>
+                                {
+                                    DealerSocket dealerSocket = pair.Item1;
+                                    if (dealerSocket.IsDisposed)
+                                    {
+                                        return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
+                                    }
+                                    else if (
+                                        dealerSocket.Options.LastEndpoint != endpoint)
+                                    {
+                                        dealerSocket.Dispose();
+                                        return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
+                                    }
+                                    else
+                                    {
+                                        return (dealerSocket, DateTimeOffset.UtcNow);
+                                    }
+                                });
+
+                            if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                            {
+                                // NOTE: ObjectDisposedException can occur even the check exists.
+                                // So just ignore the case and remove dealer socket.
+                                _logger.Verbose("DealerSocket has been disposed.");
+                                _dealers.TryRemove(peer.Address, out _);
+                            }
+                        });
+                }
             }
             catch (Exception exc)
             {
@@ -893,14 +902,18 @@ namespace Libplanet.Net.Transports
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    foreach (Address address in _dealers.Keys)
+                    lock (_dealerLock)
                     {
-                        if (DateTimeOffset.UtcNow - _dealers[address].Item2 > _dealerSocketLifetime
-                            && _dealers.TryRemove(
-                                address,
-                                out (DealerSocket DealerSocket, DateTimeOffset) pair))
+                        foreach (Address address in _dealers.Keys)
                         {
-                            pair.DealerSocket.Dispose();
+                            if (DateTimeOffset.UtcNow - _dealers[address].Item2 >
+                                _dealerSocketLifetime
+                                && _dealers.TryRemove(
+                                    address,
+                                    out (DealerSocket DealerSocket, DateTimeOffset) pair))
+                            {
+                                pair.DealerSocket.Dispose();
+                            }
                         }
                     }
                 }
