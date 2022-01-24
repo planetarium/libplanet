@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Protocols;
 using Libplanet.Stun;
 using Nito.AsyncEx;
 using Serilog;
@@ -32,7 +31,6 @@ namespace Libplanet.Net.Transports
         // see also https://tools.ietf.org/html/rfc5766#section-8
         private static readonly TimeSpan TurnPermissionLifetime = TimeSpan.FromMinutes(5);
 
-        private readonly RoutingTable _table;
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
         private readonly IImmutableSet<PublicKey>? _trustedAppProtocolVersionSigners;
@@ -42,7 +40,6 @@ namespace Libplanet.Net.Transports
 
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
-        private readonly int _minimumBroadcastTarget;
         private readonly TcpMessageCodec _messageCodec;
 
         private readonly ConcurrentDictionary<Guid, ReplyStream> _streams;
@@ -59,7 +56,6 @@ namespace Libplanet.Net.Transports
         private bool _disposed;
 
         public TcpTransport(
-            RoutingTable table,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
@@ -67,7 +63,6 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
-            int minimumBroadcastTarget,
             TimeSpan? messageLifespan = null)
         {
             _logger = Log
@@ -83,14 +78,12 @@ namespace Libplanet.Net.Transports
             _runningEvent = null!;
             Running = false;
 
-            _table = table;
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _minimumBroadcastTarget = minimumBroadcastTarget;
             _messageCodec = new TcpMessageCodec(messageLifespan);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
@@ -413,14 +406,14 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        public void BroadcastMessage(Address? except, Message message)
+        public void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message)
         {
             if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(TcpTransport));
             }
 
-            foreach (var peer in _table.PeersToBroadcast(except, _minimumBroadcastTarget))
+            foreach (var peer in peers)
             {
                 _ = SendMessageAsync(peer, message, _runtimeCancellationTokenSource.Token);
             }

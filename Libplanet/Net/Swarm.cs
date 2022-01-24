@@ -102,6 +102,7 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
+            _minimumBroadcastTarget = Options.MinimumBroadcastTarget;
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = InitializeTransport(
@@ -1064,7 +1065,6 @@ namespace Libplanet.Net
             {
                 case SwarmOptions.TransportType.NetMQTransport:
                     return new NetMQTransport(
-                        RoutingTable,
                         _privateKey,
                         _appProtocolVersion,
                         TrustedAppProtocolVersionSigners,
@@ -1073,12 +1073,10 @@ namespace Libplanet.Net
                         listenPort,
                         iceServers ?? new IceServer[0],
                         differentAppProtocolVersionEncountered,
-                        Options.MinimumBroadcastTarget,
                         Options.MessageLifespan);
 
                 case SwarmOptions.TransportType.TcpTransport:
                     return new TcpTransport(
-                        RoutingTable,
                         _privateKey,
                         _appProtocolVersion,
                         TrustedAppProtocolVersionSigners,
@@ -1086,7 +1084,6 @@ namespace Libplanet.Net
                         listenPort,
                         iceServers ?? new IceServer[0],
                         differentAppProtocolVersionEncountered,
-                        Options.MinimumBroadcastTarget,
                         Options.MessageLifespan);
 
                 default:
@@ -1111,7 +1108,9 @@ namespace Libplanet.Net
 
         private void BroadcastMessage(Address? except, Message message)
         {
-            Transport.BroadcastMessage(except, message);
+            Transport.BroadcastMessage(
+                RoutingTable.PeersToBroadcast(except, _minimumBroadcastTarget),
+                message);
         }
 
         /// <summary>
