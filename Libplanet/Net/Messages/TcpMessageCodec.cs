@@ -27,7 +27,7 @@ namespace Libplanet.Net.Messages
             _messageLifespan = messageLifespan;
         }
 
-        /// <inheritdoc cref="IMessageCodec{T}.Encode"/>
+        /// <inheritdoc/>
         public byte[] Encode(
             Message message,
             PrivateKey privateKey,
@@ -35,11 +35,6 @@ namespace Libplanet.Net.Messages
             DateTimeOffset timestamp,
             AppProtocolVersion version)
         {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
             var frames = new List<byte[]>();
 
             // Write body (by concrete class)
@@ -75,7 +70,7 @@ namespace Libplanet.Net.Messages
             return stream.ToArray();
         }
 
-        /// <inheritdoc cref="IMessageCodec{T}.Decode"/>
+        /// <inheritdoc/>
         public Message Decode(
             byte[] encoded,
             bool reply,

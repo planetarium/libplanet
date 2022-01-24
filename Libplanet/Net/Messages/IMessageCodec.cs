@@ -22,8 +22,6 @@ namespace Libplanet.Net.Messages
         /// transport layer.</param>
         /// <returns>A <see typeref="T"/> containing the signed <see cref="Message"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="peer"/> is
-        /// <c>null</c>.</exception>
         T Encode(
             Message message,
             PrivateKey privateKey,

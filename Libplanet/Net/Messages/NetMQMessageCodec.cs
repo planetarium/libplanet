@@ -26,7 +26,7 @@ namespace Libplanet.Net.Messages
             _messageLifespan = messageLifespan;
         }
 
-        /// <inheritdoc cref="IMessageCodec{T}.Encode"/>
+        /// <inheritdoc/>
         public NetMQMessage Encode(
             Message message,
             PrivateKey privateKey,
@@ -34,11 +34,6 @@ namespace Libplanet.Net.Messages
             DateTimeOffset timestamp,
             AppProtocolVersion version)
         {
-            if (peer is null)
-            {
-                throw new ArgumentNullException(nameof(peer));
-            }
-
             var netMqMessage = new NetMQMessage();
 
             // Write body (by concrete class)
@@ -67,7 +62,7 @@ namespace Libplanet.Net.Messages
             return netMqMessage;
         }
 
-        /// <inheritdoc cref="IMessageCodec{T}.Decode"/>
+        /// <inheritdoc/>
         public Message Decode(
             NetMQMessage encoded,
             bool reply,
