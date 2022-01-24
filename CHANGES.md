@@ -38,6 +38,8 @@ To be released.
     became not to be disposed right after corresponding peer is removed
     from the routing table. Instead, it will be removed after
     a certain amount of time.  [[#1741], [#1744]]
+ -  `NetMQTransport` no longer attempts to retry failed communications.
+    [[#1751] [#1752]]
 
 ### Bug fixes
 
@@ -55,6 +57,8 @@ To be released.
 [#1744]: https://github.com/planetarium/libplanet/pull/1744
 [#1747]: https://github.com/planetarium/libplanet/pull/1747
 [#1748]: https://github.com/planetarium/libplanet/pull/1748
+[#1751]: https://github.com/planetarium/libplanet/issues/1751
+[#1752]: https://github.com/planetarium/libplanet/issues/1752
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 
 
