@@ -1,5 +1,3 @@
-#nullable enable
-
 namespace Libplanet.Blocks
 {
     /// <summary>

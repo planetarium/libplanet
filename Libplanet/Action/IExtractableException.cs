@@ -1,4 +1,3 @@
-#nullable enable
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
 using Libplanet.Tx;

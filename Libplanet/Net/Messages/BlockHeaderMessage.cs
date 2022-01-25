@@ -1,4 +1,3 @@
-#nullable enable
 using System.Collections.Generic;
 using Bencodex;
 using Libplanet.Blocks;

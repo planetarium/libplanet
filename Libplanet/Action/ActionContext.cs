@@ -1,4 +1,3 @@
-#nullable enable
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Store.Trie;

@@ -5,8 +5,6 @@ using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 
-#nullable enable
-
 namespace Libplanet.Action
 {
     /// <summary>

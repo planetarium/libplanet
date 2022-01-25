@@ -1,4 +1,3 @@
-#nullable enable
 #pragma warning disable S3871
 using System;
 using Libplanet.Net.Messages;

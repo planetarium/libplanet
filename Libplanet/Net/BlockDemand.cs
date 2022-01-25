@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Numerics;
 using Libplanet.Blocks;

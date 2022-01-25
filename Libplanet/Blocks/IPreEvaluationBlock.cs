@@ -1,4 +1,3 @@
-#nullable enable
 using Libplanet.Action;
 using Libplanet.Tx;
 

@@ -1,4 +1,3 @@
-#nullable enable
 using System.Numerics;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;

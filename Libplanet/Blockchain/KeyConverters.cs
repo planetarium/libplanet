@@ -1,4 +1,3 @@
-#nullable enable
 using Libplanet.Assets;
 
 namespace Libplanet.Blockchain
