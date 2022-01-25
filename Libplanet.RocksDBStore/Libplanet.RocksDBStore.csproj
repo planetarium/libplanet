@@ -21,6 +21,7 @@
   <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
   <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  <Nullable>enable</Nullable>
   <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU5104</NoWarn>

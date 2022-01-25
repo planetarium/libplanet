@@ -1,3 +1,4 @@
+#nullable disable
 using Newtonsoft.Json.Linq;
 
 namespace Libplanet.Explorer.Controllers
