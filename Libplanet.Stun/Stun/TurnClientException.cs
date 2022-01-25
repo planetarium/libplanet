@@ -6,12 +6,12 @@ namespace Libplanet.Stun
     [Serializable]
     public class TurnClientException : Exception
     {
-        public TurnClientException(string message, StunMessage response = null)
+        public TurnClientException(string message, StunMessage? response = null)
             : base(message)
         {
             Response = response;
         }
 
-        public StunMessage Response { get; }
+        public StunMessage? Response { get; }
     }
 }

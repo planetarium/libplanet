@@ -1,3 +1,5 @@
+#nullable disable
+
 namespace Libplanet.Stun.Messages
 {
     public class CreatePermissionSuccessResponse : StunMessage
