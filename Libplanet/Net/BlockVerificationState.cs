@@ -1,4 +1,3 @@
-#nullable enable
 using Libplanet.Blocks;
 
 namespace Libplanet.Net

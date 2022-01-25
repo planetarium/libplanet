@@ -43,6 +43,7 @@ https://docs.libplanet.io/</Description>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
     <!-- CS0660/CS0661/S3875 are turned off due to https://github.com/Fody/Equals/pull/96 -->
     <!-- FIXME: CS1591 should be turned on eventually. -->

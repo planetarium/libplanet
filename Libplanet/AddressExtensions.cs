@@ -1,4 +1,3 @@
-#nullable enable
 using Libplanet.Crypto;
 
 namespace Libplanet

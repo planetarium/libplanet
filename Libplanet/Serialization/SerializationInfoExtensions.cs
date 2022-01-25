@@ -1,3 +1,4 @@
+#nullable disable
 using System.Runtime.Serialization;
 
 namespace Libplanet.Serialization

@@ -2,8 +2,6 @@ using System;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
-#nullable enable
-
 namespace Libplanet.Blockchain.Renderers
 {
     /// <summary>
