@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
     <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
   </ItemGroup>
 

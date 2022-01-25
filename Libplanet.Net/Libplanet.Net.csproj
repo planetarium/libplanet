@@ -1,26 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet</PackageId>
-    <Title>Libplanet</Title>
-    <VersionPrefix>0.27.0</VersionPrefix>
-    <!-- Note: don't be confused by the word "prefix" here.  It's merely a
-    version without suffix like "-dev.123".  See the following examples:
-      Version: 1.2.3-dev.456
-      VersionPrefix: 1.2.3
-      VersionSuffix: dev.456
-    If it's a stable release the version becomes like:
-      Version: 1.2.3
-      VersionPrefix: 1.2.3
-      VersionSuffix: (N/A)
-    Note that the version suffix is filled through CLI option of dotnet command.
-    -->
-    <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
-    <Description>A .NET library for creating multiplayer online game in decentralized fashion.
-See also the docs for details:
-https://docs.libplanet.io/</Description>
-    <!-- FIXME: The above summary/description should be rewritten. -->
+    <PackageId>Libplanet.Net</PackageId>
+    <Title>P2P implementation for Libplanet</Title>
+    <Description>A peer-to-peer networking layer based on Libplanet.</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
@@ -34,16 +17,16 @@ https://docs.libplanet.io/</Description>
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <RootNamespace>Libplanet</RootNamespace>
-    <AssemblyName>Libplanet</AssemblyName>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>Libplanet.Net</RootNamespace>
+    <AssemblyName>Libplanet.Net</AssemblyName>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
     <!-- CS0660/CS0661/S3875 are turned off due to https://github.com/Fody/Equals/pull/96 -->
     <!-- FIXME: CS1591 should be turned on eventually. -->
@@ -52,7 +35,6 @@ https://docs.libplanet.io/</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
     <None Include="..\README.md" Pack="true" PackagePath="README.md" />
     <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
@@ -63,17 +45,10 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bencodex" Version="0.4.0" />
-    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
-    <PackageReference Include="Caching.dll" Version="1.4.0.1" />
-    <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="Equals.Fody" Version="4.0.1" />
     <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
-    <PackageReference Include="LiteDB" Version="4.1.4" />
-    <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -85,28 +60,13 @@ https://docs.libplanet.io/</Description>
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Norgerman.Cryptography.Scrypt" Version="2.0.1" />
-    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
-    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Planetarium.NetMQ" Version="4.0.0.261-planetarium" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
-    <PackageReference Include="System.Linq.Async" Version="4.0.*" />
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
-    <PackageReference Include="Zio" Version="0.7.4" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or
-                         '$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
@@ -114,5 +74,10 @@ https://docs.libplanet.io/</Description>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
   </ItemGroup>
 </Project>
