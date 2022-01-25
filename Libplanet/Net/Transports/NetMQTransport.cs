@@ -767,24 +767,11 @@ namespace Libplanet.Net.Transports
                 }
                 catch (Exception e)
                 {
-                    if (req.Retryable)
-                    {
-                        const int retryAfter = 100;
-                        const string retryMsg =
-                            "An unexpected exception occurred during {FName}(); " +
-                            "retry after {DelayMs} ms...";
-                        _logger.Debug(
-                            e,
-                            retryMsg,
-                            retryAfter);
-                        Interlocked.Increment(ref _requestCount);
-                        _requests.Writer.TryWrite(req.Retry());
-                        await Task.Delay(retryAfter, cancellationToken);
-                    }
-                    else
-                    {
-                        _logger.Error("Failed to process request [{req}]; discard it.", req);
-                    }
+                    _logger.Error(
+                        e,
+                        "Failed to process {Message} {RequestId}; discarding it.",
+                        req.Message,
+                        req.Id);
                 }
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
@@ -968,8 +955,6 @@ namespace Libplanet.Net.Transports
 
         private readonly struct MessageRequest
         {
-            private readonly int _retried;
-
             public MessageRequest(
                 in Guid id,
                 Message message,
@@ -979,30 +964,6 @@ namespace Libplanet.Net.Transports
                 in int expectedResponses,
                 bool returnWhenTimeout,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
-                : this(
-                      id,
-                      message,
-                      peer,
-                      requestedTime,
-                      timeout,
-                      expectedResponses,
-                      returnWhenTimeout,
-                      taskCompletionSource,
-                      0
-                    )
-            {
-            }
-
-            internal MessageRequest(
-                in Guid id,
-                Message message,
-                BoundPeer peer,
-                DateTimeOffset requestedTime,
-                in TimeSpan? timeout,
-                in int expectedResponses,
-                bool returnWhenTimeout,
-                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource,
-                int retried)
             {
                 Id = id;
                 Message = message;
@@ -1012,7 +973,6 @@ namespace Libplanet.Net.Transports
                 ExpectedResponses = expectedResponses;
                 ReturnWhenTimeout = returnWhenTimeout;
                 TaskCompletionSource = taskCompletionSource;
-                _retried = retried;
             }
 
             public Guid Id { get; }
@@ -1030,23 +990,6 @@ namespace Libplanet.Net.Transports
             public bool ReturnWhenTimeout { get; }
 
             public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
-
-            public bool Retryable => _retried < 10;
-
-            public MessageRequest Retry()
-            {
-                return new MessageRequest(
-                    Id,
-                    Message,
-                    Peer,
-                    RequestedTime,
-                    Timeout,
-                    ExpectedResponses,
-                    ReturnWhenTimeout,
-                    TaskCompletionSource,
-                    _retried + 1
-                );
-            }
         }
     }
 }
