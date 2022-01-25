@@ -7,7 +7,7 @@ using Destructurama.Attributed;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Neighbors : Message
+    public class Neighbors : Message
     {
         private static readonly Codec Codec = new Codec();
 

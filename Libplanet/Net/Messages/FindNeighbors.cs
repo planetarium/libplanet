@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
-    internal class FindNeighbors : Message
+    public class FindNeighbors : Message
     {
         // TODO: This message may request exact peer instead of its neighbors.
         public FindNeighbors(Address target)

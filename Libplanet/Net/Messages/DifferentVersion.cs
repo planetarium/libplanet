@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
-    internal class DifferentVersion : Message
+    public class DifferentVersion : Message
     {
         public override MessageType Type => MessageType.DifferentVersion;
 
