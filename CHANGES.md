@@ -30,6 +30,13 @@ To be released.
 
  -  Added `TrieStateStore.CopyStates()` method.  [[#1653], [#1691]]
  -  Added `NullBlockPolicy<T>` class.  [[#1531], [#1748]]
+ -  Added classes which implements `Message` abstract class.
+    [[#1754], [#1756]]
+     -  Added `Ping` class.
+     -  Added `Pong` class.
+     -  Added `FindNeighbors` class.
+     -  Added `Neighbors` class.
+     -  Added `DifferentVersion` class.
 
 ### Behavioral changes
 
@@ -39,7 +46,7 @@ To be released.
     from the routing table. Instead, it will be removed after
     a certain amount of time.  [[#1741], [#1744]]
  -  `NetMQTransport` no longer attempts to retry failed communications.
-    [[#1751] [#1752]]
+    [[#1751], [#1752]]
 
 ### Bug fixes
 
@@ -58,7 +65,9 @@ To be released.
 [#1747]: https://github.com/planetarium/libplanet/pull/1747
 [#1748]: https://github.com/planetarium/libplanet/pull/1748
 [#1751]: https://github.com/planetarium/libplanet/issues/1751
-[#1752]: https://github.com/planetarium/libplanet/issues/1752
+[#1752]: https://github.com/planetarium/libplanet/pull/1752
+[#1754]: https://github.com/planetarium/libplanet/issues/1754
+[#1756]: https://github.com/planetarium/libplanet/pull/1756
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 
 
