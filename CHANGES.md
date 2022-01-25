@@ -47,6 +47,8 @@ To be released.
     a certain amount of time.  [[#1741], [#1744]]
  -  `NetMQTransport` no longer attempts to retry failed communications.
     [[#1751], [#1752]]
+ -  New log output tagged with `Metric` added to measure evaluation time for
+    individual `Transaction<T>`s.  [[#1755], [#1758]]
 
 ### Bug fixes
 
@@ -67,7 +69,9 @@ To be released.
 [#1751]: https://github.com/planetarium/libplanet/issues/1751
 [#1752]: https://github.com/planetarium/libplanet/pull/1752
 [#1754]: https://github.com/planetarium/libplanet/issues/1754
+[#1755]: https://github.com/planetarium/libplanet/issues/1755
 [#1756]: https://github.com/planetarium/libplanet/pull/1756
+[#1758]: https://github.com/planetarium/libplanet/pull/1758
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 
 
