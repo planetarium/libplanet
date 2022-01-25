@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using GraphQL.Language.AST;
 using GraphQL.Types;
