@@ -424,6 +424,7 @@ namespace Libplanet.Action
                 delta = block.ProtocolVersion > 0
                     ? new AccountStateDeltaImpl(delta.GetStates, delta.GetBalance, tx.Signer)
                     : new AccountStateDeltaImplV0(delta.GetStates, delta.GetBalance, tx.Signer);
+                DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
                     tx: tx,
@@ -435,6 +436,15 @@ namespace Libplanet.Action
                     yield return evaluation;
                     delta = evaluation.OutputStates;
                 }
+
+                // FIXME: This is dependant on when the returned value is enumerated.
+                TimeSpan evalDuration = DateTimeOffset.Now - startTime;
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                        "Actions in transaction {TxId} evaluated in {DurationMs:F0}ms.",
+                        tx.Id,
+                        evalDuration.TotalMilliseconds);
             }
         }
 
