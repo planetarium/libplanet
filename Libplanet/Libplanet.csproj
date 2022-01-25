@@ -28,7 +28,7 @@ https://docs.libplanet.io/</Description>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
-    <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 

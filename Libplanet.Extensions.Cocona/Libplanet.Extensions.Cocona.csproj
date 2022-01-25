@@ -6,7 +6,7 @@
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
