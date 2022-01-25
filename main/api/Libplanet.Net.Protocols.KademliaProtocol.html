@@ -165,7 +165,7 @@ If it's omitted or <code>null</code> is given, will automatically be set to 5 se
   <a id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Tries to add given <code data-dev-comment-type="paramref" class="paramref">peers</code> to routing table
-by sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
+by sending <a class="xref" href="Libplanet.Net.Messages.Ping.html">Ping</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -191,7 +191,7 @@ by sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td><span class="parametername">timeout</span></td>
-        <td><p>A timeout of waiting for the reply of <span class="xref">Libplanet.Net.Messages.Ping</span>
+        <td><p>A timeout of waiting for the reply of <a class="xref" href="Libplanet.Net.Messages.Ping.html">Ping</a>
 message sent to <code data-dev-comment-type="paramref" class="paramref">peers</code>.
 If <code>null</code> is given, task never halts by itself
 even the target peer gives no any response.</p>
@@ -258,7 +258,7 @@ to bootstrap.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td><span class="parametername">pingSeedTimeout</span></td>
-        <td><p>A timeout of waiting for the reply of <span class="xref">Libplanet.Net.Messages.Ping</span>
+        <td><p>A timeout of waiting for the reply of <a class="xref" href="Libplanet.Net.Messages.Ping.html">Ping</a>
 message sent to seed <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.
 If <code>null</code> is given, the task never halts by itself
 even no any response was given from the the target seed.</p>
@@ -268,7 +268,7 @@ even no any response was given from the the target seed.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td><span class="parametername">findNeighborsTimeout</span></td>
         <td><p>A timeout of waiting for the reply of
-<span class="xref">Libplanet.Net.Messages.FindNeighbors</span> message sent to seed <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.
+<a class="xref" href="Libplanet.Net.Messages.FindNeighbors.html">FindNeighbors</a> message sent to seed <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.
 If <code>null</code> is given, task never halts by itself
 even the target seed gives no any response.</p>
 </td>
@@ -425,7 +425,7 @@ that this operation should be canceled.</p>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)">FindSpecificPeerAsync(Address, Int32, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Use <span class="xref">Libplanet.Net.Messages.FindNeighbors</span> messages to to find a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with
+  <div class="markdown level1 summary"><p>Use <a class="xref" href="Libplanet.Net.Messages.FindNeighbors.html">FindNeighbors</a> messages to to find a <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with
 <a class="xref" href="Libplanet.Address.html">Address</a> of <code data-dev-comment-type="paramref" class="paramref">target</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -459,7 +459,7 @@ that this operation should be canceled.</p>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td><span class="parametername">timeout</span></td>
         <td><p><see cref="!:TimeSpan"></see> for waiting reply of
-<span class="xref">Libplanet.Net.Messages.FindNeighbors</span>.</p>
+<a class="xref" href="Libplanet.Net.Messages.FindNeighbors.html">FindNeighbors</a>.</p>
 </td>
       </tr>
       <tr>
@@ -555,7 +555,7 @@ that this operation should be canceled.</p>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan,CancellationToken)">RefreshTableAsync(TimeSpan, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Checks whether <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> is online by
-sending <span class="xref">Libplanet.Net.Messages.Ping</span>.</p>
+sending <a class="xref" href="Libplanet.Net.Messages.Ping.html">Ping</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

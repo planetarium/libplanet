@@ -88,6 +88,16 @@ Instead, added
 <ul>
 <li>Added <code>TrieStateStore.CopyStates()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1653">#1653</a>, <a href="https://github.com/planetarium/libplanet/pull/1691">#1691</a>]</li>
 <li>Added <code>NullBlockPolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1531">#1531</a>, <a href="https://github.com/planetarium/libplanet/pull/1748">#1748</a>]</li>
+<li>Added classes which implements <code>Message</code> abstract class.
+[<a href="https://github.com/planetarium/libplanet/issues/1754">#1754</a>, <a href="https://github.com/planetarium/libplanet/pull/1756">#1756</a>]
+<ul>
+<li>Added <code>Ping</code> class.</li>
+<li>Added <code>Pong</code> class.</li>
+<li>Added <code>FindNeighbors</code> class.</li>
+<li>Added <code>Neighbors</code> class.</li>
+<li>Added <code>DifferentVersion</code> class.</li>
+</ul>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -97,7 +107,7 @@ became not to be disposed right after corresponding peer is removed
 from the routing table. Instead, it will be removed after
 a certain amount of time.  [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
 <li><code>NetMQTransport</code> no longer attempts to retry failed communications.
-[<a href="https://github.com/planetarium/libplanet/issues/1751">#1751</a> <a href="https://github.com/planetarium/libplanet/issues/1752">#1752</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/1751">#1751</a>, <a href="https://github.com/planetarium/libplanet/pull/1752">#1752</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
