@@ -7,6 +7,10 @@ using Destructurama.Attributed;
 
 namespace Libplanet.Net.Messages
 {
+    /// <summary>
+    /// Message containing nearby peers. A reply to <see cref="FindNeighbors"/>.
+    /// </summary>
+    /// <seealso cref="FindNeighbors"/>
     public class Neighbors : Message
     {
         private static readonly Codec Codec = new Codec();

@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
+    /// <summary>
+    /// Message containing request for nearby peers.
+    /// </summary>
+    /// <seealso cref="Neighbors"/>
     public class FindNeighbors : Message
     {
         // TODO: This message may request exact peer instead of its neighbors.
