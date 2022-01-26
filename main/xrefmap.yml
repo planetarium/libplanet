@@ -10219,6 +10219,44 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.SymmetricKey.ToByteArray
   nameWithType: SymmetricKey.ToByteArray
+- uid: Libplanet.EnumerableMeasurement
+  name: EnumerableMeasurement
+  href: api/Libplanet.EnumerableMeasurement.html
+  commentId: T:Libplanet.EnumerableMeasurement
+  fullName: Libplanet.EnumerableMeasurement
+  nameWithType: EnumerableMeasurement
+- uid: Libplanet.EnumerableMeasurement.OnBeforeAndAfter*
+  name: OnBeforeAndAfter
+  href: api/Libplanet.EnumerableMeasurement.html#Libplanet_EnumerableMeasurement_OnBeforeAndAfter_
+  commentId: Overload:Libplanet.EnumerableMeasurement.OnBeforeAndAfter
+  isSpec: "True"
+  fullName: Libplanet.EnumerableMeasurement.OnBeforeAndAfter
+  nameWithType: EnumerableMeasurement.OnBeforeAndAfter
+- uid: Libplanet.EnumerableMeasurement.OnBeforeAndAfter``1(IEnumerable{``0},System.Action,System.Action)
+  name: OnBeforeAndAfter<T>(IEnumerable<T>, System.Action, System.Action)
+  href: api/Libplanet.EnumerableMeasurement.html#Libplanet_EnumerableMeasurement_OnBeforeAndAfter__1_IEnumerable___0__System_Action_System_Action_
+  commentId: M:Libplanet.EnumerableMeasurement.OnBeforeAndAfter``1(IEnumerable{``0},System.Action,System.Action)
+  name.vb: OnBeforeAndAfter(Of T)(IEnumerable(Of T), System.Action, System.Action)
+  fullName: Libplanet.EnumerableMeasurement.OnBeforeAndAfter<T>(IEnumerable<T>, System.Action, System.Action)
+  fullName.vb: Libplanet.EnumerableMeasurement.OnBeforeAndAfter(Of T)(IEnumerable(Of T), System.Action, System.Action)
+  nameWithType: EnumerableMeasurement.OnBeforeAndAfter<T>(IEnumerable<T>, System.Action, System.Action)
+  nameWithType.vb: EnumerableMeasurement.OnBeforeAndAfter(Of T)(IEnumerable(Of T), System.Action, System.Action)
+- uid: Libplanet.EnumerableMeasurement.WithMeasuringTime*
+  name: WithMeasuringTime
+  href: api/Libplanet.EnumerableMeasurement.html#Libplanet_EnumerableMeasurement_WithMeasuringTime_
+  commentId: Overload:Libplanet.EnumerableMeasurement.WithMeasuringTime
+  isSpec: "True"
+  fullName: Libplanet.EnumerableMeasurement.WithMeasuringTime
+  nameWithType: EnumerableMeasurement.WithMeasuringTime
+- uid: Libplanet.EnumerableMeasurement.WithMeasuringTime``1(IEnumerable{``0},System.Action{Stopwatch})
+  name: WithMeasuringTime<T>(IEnumerable<T>, System.Action<Stopwatch>)
+  href: api/Libplanet.EnumerableMeasurement.html#Libplanet_EnumerableMeasurement_WithMeasuringTime__1_IEnumerable___0__System_Action_Stopwatch__
+  commentId: M:Libplanet.EnumerableMeasurement.WithMeasuringTime``1(IEnumerable{``0},System.Action{Stopwatch})
+  name.vb: WithMeasuringTime(Of T)(IEnumerable(Of T), System.Action(Of Stopwatch))
+  fullName: Libplanet.EnumerableMeasurement.WithMeasuringTime<T>(IEnumerable<T>, System.Action<Stopwatch>)
+  fullName.vb: Libplanet.EnumerableMeasurement.WithMeasuringTime(Of T)(IEnumerable(Of T), System.Action(Of Stopwatch))
+  nameWithType: EnumerableMeasurement.WithMeasuringTime<T>(IEnumerable<T>, System.Action<Stopwatch>)
+  nameWithType.vb: EnumerableMeasurement.WithMeasuringTime(Of T)(IEnumerable(Of T), System.Action(Of Stopwatch))
 - uid: Libplanet.HashAlgorithmType
   name: HashAlgorithmType
   href: api/Libplanet.HashAlgorithmType.html

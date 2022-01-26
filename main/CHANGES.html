@@ -65,6 +65,9 @@
 <h2 id="version-0270">Version 0.27.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>Added <code>EnumerableMeasurement</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1764">#1764</a>, <a href="https://github.com/planetarium/libplanet/pull/1766">#1766</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li>Moved everything in <code>Libplanet.Net</code> namespace from <em>Libplanet</em> assembly
@@ -128,6 +131,16 @@ individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/pla
 <ul>
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.
 [<a href="https://github.com/advisories/GHSA-r683-j2x4-v87g">CVE-2022-0235</a>, <a href="https://github.com/planetarium/libplanet/pull/1747">#1747</a>]</li>
+</ul>
+<h2 id="version-0262">Version 0.26.2</h2>
+<p>Released on January 26, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>ActionEvaluator&lt;T&gt;</code>'s logs had been ignored due to
+its initialization timings.  [<a href="https://github.com/planetarium/libplanet/pull/1764">#1764</a>]</li>
+<li>The elapsed time taking for ordering <code>Transaction&lt;T&gt;</code>s before evaluating
+them are now measured and logged.  [<a href="https://github.com/planetarium/libplanet/pull/1764">#1764</a>]</li>
+<li>The time started and finished to calculate state root hashes are now
+logged.  [<a href="https://github.com/planetarium/libplanet/pull/1764">#1764</a>]</li>
 </ul>
 <h2 id="version-0261">Version 0.26.1</h2>
 <p>Released on January 20, 2022.</p>

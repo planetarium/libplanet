@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "2EyZVTRjkxoDearpx75CdWwG2hC9RkJ6RH2/0hdQmZs="
+          "hash": "ndONaWgIqx1StVAEKNOi7k5ChT4tDmqbtOxmc1JOqr4="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.ActionEvaluator-1.html",
-          "hash": "m6odCRjKCFg6D2X8pKkpH/+P1dvYi896OmOksteNbwU="
+          "hash": "w9ERR5vlubPRSUL/T0777DI7lcC51HL0a2NJSwK8mHo="
         }
       },
       "is_incremental": false,
@@ -1353,7 +1353,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.PreEvaluationBlock-1.html",
-          "hash": "pPu/JWJtgeykVykj7TC/IcpWmxiysWNcHuKrIM+mTv4="
+          "hash": "LJbBrqEdmagSCsx2k7qbt3L8TNOgDYTPK9KDu8DgTTw="
         }
       },
       "is_incremental": false,
@@ -1498,6 +1498,18 @@
         ".html": {
           "relative_path": "api/Libplanet.Crypto.html",
           "hash": "ZQBng7ZI9urxDhzfHcu50zf1UTFNz7GpMZPhTWCR8jk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.EnumerableMeasurement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.EnumerableMeasurement.html",
+          "hash": "Jav2hEO+36pEqCXgpp8k1CTpNOQuG1MTCQ4dJ8vD6Nc="
         }
       },
       "is_incremental": false,
@@ -2829,7 +2841,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.html",
-          "hash": "WNUrTmrCr7CGF8t/oaGC+2wGpnSiT+owGLIf2/eJrzw="
+          "hash": "jDTtET2otBB7YQ35mmNGnDAKIUwbL8gfddkqBdfUKwI="
         }
       },
       "is_incremental": false,
@@ -2853,7 +2865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "lGgHVods+r+SvQxoNmDcTQGZ1IqofzuteYX6XGLcMdI="
+          "hash": "YzCjn3E5BKl9Xbs3cqb8MzanehCZIRUyxvl8xwpiBOs="
         }
       },
       "is_incremental": false,
@@ -2962,7 +2974,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 228,
+          "total_file_count": 229,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
