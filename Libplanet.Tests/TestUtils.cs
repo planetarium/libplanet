@@ -16,7 +16,6 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -491,19 +490,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             return chain;
-        }
-
-        public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
-        {
-            var table = new RoutingTable(tableAddress);
-            PrivateKey privateKey;
-            do
-            {
-                privateKey = new PrivateKey();
-            }
-            while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
-
-            return privateKey;
         }
 
         public static async Task AssertThatEventually(

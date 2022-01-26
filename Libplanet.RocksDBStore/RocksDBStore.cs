@@ -9,7 +9,6 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LruCacheNet;
-using NetMQ;
 using RocksDbSharp;
 using Serilog;
 
@@ -838,7 +837,7 @@ namespace Libplanet.RocksDBStore
                 byte[] key = BlockKey(blockHash);
                 _blockPerceptionDb.Put(
                     key,
-                    NetworkOrderBitsConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
+                    RocksDBStoreBitConverter.GetBytes(perceivedTime.ToUnixTimeMilliseconds())
                 );
             }
             catch (Exception e)
@@ -856,7 +855,7 @@ namespace Libplanet.RocksDBStore
                 byte[] key = BlockKey(blockHash);
                 if (_blockPerceptionDb.Get(key) is { } bytes)
                 {
-                    long unixTimeMs = NetworkOrderBitsConverter.ToInt64(bytes);
+                    long unixTimeMs = RocksDBStoreBitConverter.ToInt64(bytes);
                     return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMs);
                 }
             }

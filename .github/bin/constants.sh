@@ -3,8 +3,9 @@
 # shellcheck disable=SC2034
 solution="Libplanet"
 projects=(
-  "Libplanet.Stun"
   "Libplanet"
+  "Libplanet.Stun"
+  "Libplanet.Net"
   "Libplanet.RocksDBStore"
   "Libplanet.Analyzers"
   "Libplanet.Tools"

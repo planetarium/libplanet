@@ -75,12 +75,15 @@ The [planetarium/libplanet](https://github.com/planetarium/libplanet) repository
 on GitHub consists of several projects:
 
  -  *Libplanet*: The main project, which contains the most of implementation
-    code.  When this is  built into a [NuGet package], it consists of two
-    assemblies: *Libplanet*, and *Libplanet.Stun*, explained below.
+    code.  It is distributed as a NuGet package with the same name:
+    *[Libplanet][NuGet package]*.
+
+ -  *Libplanet.Net*: The peer-to-peer networking layer built on top of
+    *Libplanet*.  This is distributed as a distinct NuGet package:
+    *[Libplanet.Net]*.
 
  -  *Libplanet.Stun*: The project dedicated to implement [TURN & STUN].
-    Note that the assembly built from this project is included by
-    *[Libplanet][NuGet package]* package on NuGet.
+    This is distributed as a distinct NuGet package: *[Libplanet.Stun]*.
 
  -  *Libplanet.RocksDBStore*: The `IStore` implementation built on [RocksDB].
     As this depends on platform-dependent libraries (which is written in C/C++),
@@ -91,7 +94,8 @@ on GitHub consists of several projects:
     *[Libplanet.Analyzers]*.
 
  -  *Libplanet.Extensions.Cocona*: The project to provide the [Cocona] commands
-    to handle *Libplanet* structures in command line.
+    to handle *Libplanet* structures in command line.  This is  distributed as
+    a distinct NuGet package: *[Libplanet.Extensions.Cocona]*.
 
  -  *Libplanet.Tools*: The CLI tools for Libplanet.  This project is distributed
     as a distinct NuGet package: *[Libplanet.Tools]*. See its own
@@ -113,6 +117,8 @@ on GitHub consists of several projects:
  -  *Libplanet.Tests*: Unit tests of the *Libplanet* project.  See the *Tests*
     section below.
 
+ -  *Libplanet.Net.Tests*: Unit tests of the *Libplanet.Net* project.
+
  -  *Libplanet.Stun.Tests*: Unit tests of the *Libplanet.Stun* project.
 
  -  *Libplanet.RocksDBStore.Tests*: Unit tests of the *Libplanet.RocksDBStore*
@@ -129,11 +135,14 @@ on GitHub consists of several projects:
 
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
+[Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
 [TURN & STUN]: https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/
 [RocksDB]: https://rocksdb.org/
+[Libplanet.Stun]: https://www.nuget.org/packages/Libplanet.Stun/
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
 [Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
 [Cocona]: https://www.nuget.org/packages/Cocona
+[Libplanet.Extensions.Cocona]: https://www.nuget.org/packages/Libplanet.Extensions.Cocona
 [Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
 [GraphQL]: https://graphql.org/
 [libplanet-explorer-frontend]: https://github.com/planetarium/libplanet-explorer-frontend

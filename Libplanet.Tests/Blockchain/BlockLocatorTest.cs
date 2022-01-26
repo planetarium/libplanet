@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using NetMQ;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,7 +24,7 @@ namespace Libplanet.Tests.Blockchain
             // for the sake of easier debugging.
             ImmutableArray<BlockHash> blocks = Enumerable.Range(0, 0x10).Select(i =>
             {
-                byte[] bytes = NetworkOrderBitsConverter.GetBytes(i);
+                byte[] bytes = GetBigEndianBytes(i);
                 var buffer = new byte[32];
                 bytes.CopyTo(buffer, buffer.Length - bytes.Length);
                 return new BlockHash(buffer);
@@ -57,6 +56,17 @@ namespace Libplanet.Tests.Blockchain
                 },
                 locator
             );
+        }
+
+        private static byte[] GetBigEndianBytes(long value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes);
+            }
+
+            return bytes;
         }
     }
 }

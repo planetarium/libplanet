@@ -1,59 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Libplanet.Tools</PackageId>
-    <Title>planet: Libplanet CLI Tools</Title>
-    <Summary>planet: Libplanet CLI Tools</Summary>
-    <Description>This CLI app is a collection of utilities for application <!--
-    --> programmers who create decentralized games powered by Libplanet <!--
-    --> (https://libplanet.io/).</Description>
-    <OutputType>Exe</OutputType>
+    <PackageId>Libplanet.Net</PackageId>
+    <Title>P2P implementation for Libplanet</Title>
+    <Description>A peer-to-peer networking layer based on Libplanet.</Description>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
     <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/main/CHANGES.md</PackageReleaseNotes>
+    <PackageTags>multiplayer online game;game;blockchain</PackageTags>
     <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Libplanet.Tools</RootNamespace>
-    <ToolCommandName>planet</ToolCommandName>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>Libplanet.Net</RootNamespace>
+    <AssemblyName>Libplanet.Net</AssemblyName>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
+    <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
+    <!-- CS0660/CS0661/S3875 are turned off due to https://github.com/Fody/Equals/pull/96 -->
+    <!-- FIXME: CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-  <PropertyGroup Condition="
-    '$([System.Runtime.InteropServices.RuntimeInformation]::
-      OSArchitecture.ToString())' == 'Arm64' ">
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
-    <PackAsTool>true</PackAsTool>
-    <AssemblyName>Libplanet.Tools</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' ">
-    <AssemblyName>planet</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And&#xD;&#xA;                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
-    <InvariantGlobalization>true</InvariantGlobalization>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
-    <None Include="README.md" Pack="true" PackagePath="README.md" />
+    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
     <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
@@ -62,17 +45,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona.Lite" Version="1.5.*" />
+    <PackageReference Include="Equals.Fody" Version="4.0.1" />
+    <PackageReference Include="Fody" Version="6.1.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
+    <PackageReference
+      Include="Microsoft.DotNet.Analyzers.Compatibility"
+      Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
+    <PackageReference Include="Planetarium.NetMQ" Version="4.0.0.261-planetarium" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers
@@ -88,10 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
-    <!-- FIXME: We should specify the version range when the following NuGet
-    issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
+    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
   </ItemGroup>
 </Project>

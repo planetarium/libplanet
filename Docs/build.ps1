@@ -68,7 +68,7 @@ if (-not (Test-Path "$BaseDir/docfx")) {
 $originExisted = -not ( `
   git remote | Select-String -AllMatches -CaseSensitive -Quiet "origin")
 if ($originExisted) {
-  git remote add origin "git://github.com/planetarium/libplanet.git"
+  git remote add origin "https://github.com/planetarium/libplanet.git"
 }
 try {
 

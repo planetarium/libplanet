@@ -6,7 +6,7 @@
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\Libplanet.Net\Libplanet.Net.csproj" />
     <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
   </ItemGroup>
 

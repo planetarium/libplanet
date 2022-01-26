@@ -3,7 +3,7 @@
     <PackageId>Libplanet.Explorer</PackageId>
     <Title>Libplanet.Explorer</Title>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <RepositoryUrl>git://github.com/planetarium/libplanet-explorer.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>Planetarium</Company>
     <Authors>Planetarium</Authors>
