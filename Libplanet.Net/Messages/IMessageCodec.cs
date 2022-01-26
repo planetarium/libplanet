@@ -48,8 +48,8 @@ namespace Libplanet.Net.Messages
         /// </exception>
         /// <exception cref="InvalidMessageTimestampException"> Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
-        /// <exception cref="InvalidMessageException">
-        /// Thrown when given <paramref name="encoded"/>'s signer is invalid.</exception>
+        /// <exception cref="InvalidMessageSignatureException"> Thrown when the signer of
+        /// <paramref name="encoded"/> is invalid.</exception>
         Message Decode(
             T encoded,
             bool reply,

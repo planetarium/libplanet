@@ -25,11 +25,6 @@ To be released.
 
 ### Bug fixes
 
- -  (Libplanet.Net) `IMessageCodec<T>.Decode()` now throws
-    `InvalidMessageTimestampException` if the timestamp of the message is
-    earlier than the current timestamp regardless of whether `messageLifespan`
-    argument was provided or not to `NetMQMessageCodec()`.  [[#1771]]
-
 ### Dependencies
 
 ### CLI tools

@@ -127,12 +127,12 @@ namespace Libplanet.Net.Messages
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
 
             var currentTime = DateTimeOffset.UtcNow;
-            if (currentTime < timestamp ||
-                (_messageLifespan is TimeSpan lifespan && timestamp + lifespan < currentTime))
+            if (_messageLifespan is TimeSpan lifespan &&
+                (currentTime < timestamp || timestamp + lifespan < currentTime))
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {_messageLifespan} and " +
+                          $"but designated lifetime is {lifespan} and " +
                           $"the current datetime offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
                 throw new InvalidMessageTimestampException(
