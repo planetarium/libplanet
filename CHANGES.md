@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Added `EnumerableMeasurement` static class.  [[#1764], [#1766]]
+
 ### Backward-incompatible API changes
 
  -  Moved everything in `Libplanet.Net` namespace from *Libplanet* assembly
@@ -86,6 +88,7 @@ To be released.
 [#1758]: https://github.com/planetarium/libplanet/pull/1758
 [#1759]: https://github.com/planetarium/libplanet/pull/1759
 [#1760]: https://github.com/planetarium/libplanet/pull/1760
+[#1766]: https://github.com/planetarium/libplanet/pull/1766
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
 

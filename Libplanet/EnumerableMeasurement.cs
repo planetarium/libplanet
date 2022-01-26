@@ -1,4 +1,3 @@
-#nullable enable
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -8,7 +7,7 @@ namespace Libplanet
     /// Extension methods for measuring exact evaluation time of lazy <see cref="IEnumerable{T}"/>
     /// objects.
     /// </summary>
-    internal static class EnumerableMeasurement
+    public static class EnumerableMeasurement
     {
         /// <summary>
         /// Invokes the specified actions before and after the actual evaluation of the specified
