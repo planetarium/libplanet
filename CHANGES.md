@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.27.0
 --------------
 
-To be released.
+Released on January 26, 2022.
 
 ### Deprecated APIs
 
@@ -26,10 +26,6 @@ To be released.
     method.  Instead, added
     `ITransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)` method.
     [[#1741], [#1744]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -58,8 +54,6 @@ To be released.
     synchronization mechanisms.  [[#1731], [#1759]]
  -  New log output tagged with `Metric` added to measure evaluation time for
     individual `Transaction<T>`s.  [[#1755], [#1758]]
-
-### Bug fixes
 
 ### Dependencies
 
