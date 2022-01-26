@@ -1,0 +1,913 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BlockPolicy&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BlockPolicy&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1">
+  
+  
+  <h1 id="Libplanet_Blockchain_Policies_BlockPolicy_1" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1" class="text-break">Class BlockPolicy&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A default implementation of <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a> interface.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BlockPolicy&lt;T&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicy_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BlockPolicy&lt;T&gt; : object, IBlockPolicy&lt;T&gt; where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
+to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_TimeSpan__System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException___System_Nullable_IComparer_Libplanet_Blocks_IBlockExcerpt___Libplanet_Blocks_HashAlgorithmGetter_System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.%23ctor(Libplanet.Action.IAction%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BFunc%7BLibplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D%2CLibplanet.Tx.TxPolicyViolationException%7D%7D%2CSystem.Nullable%7BFunc%7BLibplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D%2CLibplanet.Blocks.BlockPolicyViolationException%7D%7D%2CSystem.Nullable%7BIComparer%7BLibplanet.Blocks.IBlockExcerpt%7D%7D%2CLibplanet.Blocks.HashAlgorithmGetter%2CSystem.Nullable%7BFunc%7BSystem.Int64%2CSystem.Int64%7D%7D%2CSystem.Nullable%7BFunc%7BSystem.Int64%2CSystem.Int32%7D%7D%2CSystem.Nullable%7BFunc%7BSystem.Int64%2CSystem.Int32%7D%7D%2CSystem.Nullable%7BFunc%7BSystem.Int64%2CSystem.Int32%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L84">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_TimeSpan__System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException___System_Nullable_IComparer_Libplanet_Blocks_IBlockExcerpt___Libplanet_Blocks_HashAlgorithmGetter_System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException}},System.Nullable{IComparer{Libplanet.Blocks.IBlockExcerpt}},Libplanet.Blocks.HashAlgorithmGetter,System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}})">BlockPolicy(IAction, Nullable&lt;TimeSpan&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Func&lt;BlockChain&lt;T&gt;, Transaction&lt;T&gt;, TxPolicyViolationException&gt;&gt;, Nullable&lt;Func&lt;BlockChain&lt;T&gt;, Block&lt;T&gt;, BlockPolicyViolationException&gt;&gt;, Nullable&lt;IComparer&lt;IBlockExcerpt&gt;&gt;, HashAlgorithmGetter, Nullable&lt;Func&lt;Int64, Int64&gt;&gt;, Nullable&lt;Func&lt;Int64, Int32&gt;&gt;, Nullable&lt;Func&lt;Int64, Int32&gt;&gt;, Nullable&lt;Func&lt;Int64, Int32&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>
+Creates a default <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> instance.
+</p>
+<p>
+Each unprovided argument will be assigned a default value.  See each parameter
+description for more detail.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockPolicy(IAction blockAction = null, TimeSpan? blockInterval = null, long? difficultyStability = null, long? minimumDifficulty = null, Func&lt;BlockChain&lt;T&gt;, Transaction&lt;T&gt;, TxPolicyViolationException&gt;? validateNextBlockTx = null, Func&lt;BlockChain&lt;T&gt;, Block&lt;T&gt;, BlockPolicyViolationException&gt;? validateNextBlock = null, IComparer&lt;IBlockExcerpt&gt;? canonicalChainComparer = null, HashAlgorithmGetter hashAlgorithmGetter = null, Func&lt;long, long&gt;? getMaxBlockBytes = null, Func&lt;long, int&gt;? getMinTransactionsPerBlock = null, Func&lt;long, int&gt;? getMaxTransactionsPerBlock = null, Func&lt;long, int&gt;? getMaxTransactionsPerSignerPerBlock = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="parametername">blockAction</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> to executed for
+every <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.  Set to <code>null</code> by default, which results
+in no additional execution other than those included in <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td><span class="parametername">blockInterval</span></td>
+        <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>.
+Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultTargetBlockInterval">DefaultTargetBlockInterval</a>
+by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">difficultyStability</span></td>
+        <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability">DifficultyStability</a>.
+Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultDifficultyStability">DefaultDifficultyStability</a>
+by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><span class="parametername">minimumDifficulty</span></td>
+        <td><p>Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty">MinimumDifficulty</a>.
+Set to <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_DefaultMinimumDifficulty">DefaultMinimumDifficulty</a>
+by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;, <a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a>&gt;&gt;</td>
+        <td><span class="parametername">validateNextBlockTx</span></td>
+        <td><p>The predicate that determines if
+a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> follows the policy.  Set to a constant function of
+<code>null</code> by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;, <a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a>&gt;&gt;</td>
+        <td><span class="parametername">validateNextBlock</span></td>
+        <td><p>The predicate that determines if
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> follows the policy.  Set to a default implementation
+where block's hash algorithm type, bytes count, and transactions count are validated.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IComparer</span>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;&gt;</td>
+        <td><span class="parametername">canonicalChainComparer</span></td>
+        <td><p>The custom rule to determine which is the canonical
+chain.  If omitted, <a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a> is used by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
+        <td><span class="parametername">hashAlgorithmGetter</span></td>
+        <td><p>Configures <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_System_Int64_">GetHashAlgorithm(Int64)</a>.
+If omitted, SHA-256 is used for every block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><span class="parametername">getMaxBlockBytes</span></td>
+        <td><p>The function determining the maximum size of
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> in number of <code>byte</code>s given
+its <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>.  Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_">GetMaxBlockBytes(Int64)</a>.
+Set to a constant size of <code>100</code>KiB, i.e. <code>100 * 1024</code>, by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td><span class="parametername">getMinTransactionsPerBlock</span></td>
+        <td><p>The function determining the minimum number of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s that must be included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
+Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_">GetMinTransactionsPerBlock(Int64)</a>.  Set to a constant function
+of <code>0</code> by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td><span class="parametername">getMaxTransactionsPerBlock</span></td>
+        <td><p>The function determining how many
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s can be included in a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
+Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_">GetMaxTransactionsPerBlock(Int64)</a>.  Set to a constant function
+of <code>100</code> by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Func</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td><span class="parametername">getMaxTransactionsPerSignerPerBlock</span></td>
+        <td><p>The function determining the maximum
+number of transactions from the same signer that can be included in
+a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> given the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s index.
+Goes to <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_">GetMaxTransactionsPerSignerPerBlock(Int64)</a>.  Set to
+<a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_">GetMaxTransactionsPerBlock(Int64)</a> by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.BlockAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L192">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockAction*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockAction" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockAction">BlockAction</h4>
+  <div class="markdown level1 summary"><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> to execute and be rendered for every block, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAction BlockAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.BlockInterval%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L199">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockInterval*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.BlockInterval">BlockInterval</h4>
+  <div class="markdown level1 summary"><p>Targeted time interval between two consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+See the corresponding parameter description for
+<a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</a> for full detail.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan BlockInterval { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.CanonicalChainComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L216">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.CanonicalChainComparer">CanonicalChainComparer</h4>
+  <div class="markdown level1 summary"><p>A comparer to determine which branch is the canonical chain (i.e., best chain).
+The most greater one according to this comparer is considered to be the canon.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IComparer&lt;IBlockExcerpt&gt; CanonicalChainComparer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IComparer</span>&lt;<a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicy_1_CanonicalChainComparer_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></div>
+      <div><a class="xref" href="Libplanet.Blockchain.TotalDifficultyComparer.html">TotalDifficultyComparer</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.DifficultyStability%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L206">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_DifficultyStability" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyStability">DifficultyStability</h4>
+  <div class="markdown level1 summary"><p>Stability of a series of difficulties for a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
+See the corresponding parameter description for
+<a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</a> for full detail.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long DifficultyStability { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.MinimumDifficulty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L213">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_MinimumDifficulty" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty">MinimumDifficulty</h4>
+  <div class="markdown level1 summary"><p>Minimum difficulty for a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.  See the corresponding
+parameter description for <a class="xref" href="Libplanet.Blockchain.Policies.DifficultyAdjustment-1.html#Libplanet_Blockchain_Policies_DifficultyAdjustment_1_BaseAlgorithm_Libplanet_Blockchain_BlockChain__0__TimeSpan_System_Int64_System_Int64_">BaseAlgorithm(BlockChain&lt;T&gt;, TimeSpan, Int64, Int64)</a> for
+full detail.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long MinimumDifficulty { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetHashAlgorithm(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L250">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetHashAlgorithm*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetHashAlgorithm_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetHashAlgorithm(System.Int64)">GetHashAlgorithm(Int64)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.HashAlgorithmType.html">HashAlgorithmType</a> to use for block's proof-of-work.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashAlgorithmType GetHashAlgorithm(long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to
+do proof-of-work.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashAlgorithmType.html">HashAlgorithmType</a></td>
+        <td><p>The <a class="xref" href="Libplanet.HashAlgorithmType.html">HashAlgorithmType</a> to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetMaxBlockBytes(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L238">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)">GetMaxBlockBytes(Int64)</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum length of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> in bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long GetMaxBlockBytes(long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+for which this constraint should apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>The maximum length of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> in bytes to accept.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetMaxTransactionsPerBlock(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L246">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)">GetMaxTransactionsPerBlock(Int64)</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetMaxTransactionsPerBlock(long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+for which this constraint should apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetMaxTransactionsPerSignerPerBlock(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L253">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerSignerPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerSignerPerBlock(System.Int64)">GetMaxTransactionsPerSignerPerBlock(Int64)</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed per signer for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetMaxTransactionsPerSignerPerBlock(long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+for which this constraint should apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The maximum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed per signer for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetMinTransactionsPerBlock(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L242">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMinTransactionsPerBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMinTransactionsPerBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetMinTransactionsPerBlock_System_Int64_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetMinTransactionsPerBlock(System.Int64)">GetMinTransactionsPerBlock(Int64)</h4>
+  <div class="markdown level1 summary"><p>Gets the minimum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetMinTransactionsPerBlock(long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+for which this constraint should apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The minimum number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s allowed for
+a valid <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can accept.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L234">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})">GetNextBlockDifficulty(BlockChain&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Determines a right <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a>
+for a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined
+right after the given <code data-dev-comment-type="paramref" class="paramref">blockChain</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual long GetNextBlockDifficulty(BlockChain&lt;T&gt; blockChain)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>Consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s to be
+followed by a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>A right <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a>
+for a new <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.ValidateNextBlock(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L226">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Checks if a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> can be appended to
+the given <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual BlockPolicyViolationException ValidateNextBlock(BlockChain&lt;T&gt; blockChain, Block&lt;T&gt; nextBlock)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The target <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> to
+append <code data-dev-comment-type="paramref" class="paramref">nextBlock</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">nextBlock</span></td>
+        <td><p>The next block to append to
+<code data-dev-comment-type="paramref" class="paramref">blockChain</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a> with a description
+as to why given <code data-dev-comment-type="paramref" class="paramref">nextBlock</code> is <em>invalid</em>,
+or <code>null</code> if <code data-dev-comment-type="paramref" class="paramref">nextBlock</code> is <em>valid</em>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</a> will be called separately from
+a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> when appending a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.
+Hence, to reduce redundancy, an implementation of this interface should not
+call <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L219">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlockTx(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})">ValidateNextBlockTx(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Checks if a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> can be included in a yet to be mined
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that can be appended to the given <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TxPolicyViolationException ValidateNextBlockTx(BlockChain&lt;T&gt; blockChain, Transaction&lt;T&gt; transaction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The target <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> to include
+given <code data-dev-comment-type="paramref" class="paramref">transaction</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">transaction</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to consider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.TxPolicyViolationException.html">TxPolicyViolationException</a> with a description
+as to why given <code data-dev-comment-type="paramref" class="paramref">transaction</code> is <em>invalid</em>,
+or <code>null</code> if <code data-dev-comment-type="paramref" class="paramref">transaction</code> is <em>valid</em>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlockTx_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is used in two different cases:</p>
+<ul><li>When selecting which <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to include
+    when mining a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</li><li>When appending a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+    with <code data-dev-comment-type="paramref" class="paramref">transaction</code> to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.</li></ul>
+This is called separately from <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__">ValidateNextBlock(BlockChain&lt;T&gt;, Block&lt;T&gt;)</a> from
+a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>.
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/cd3af4c631320b32a9eba6af39474b2283025e09/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicy_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicy%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/cd3af4c631320b32a9eba6af39474b2283025e09/Libplanet/Blockchain/Policies/BlockPolicy.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
