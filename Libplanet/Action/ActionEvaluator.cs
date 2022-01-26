@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -439,11 +440,16 @@ namespace Libplanet.Action
 
                 // FIXME: This is dependant on when the returned value is enumerated.
                 TimeSpan evalDuration = DateTimeOffset.Now - startTime;
+                const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                        "Actions in transaction {TxId} evaluated in {DurationMs:F0}ms.",
+                        "Actions in transaction {TxId} by {Signer} with timestamp {TxTimestamp} " +
+                        "evaluated in {DurationMs:F0}ms.",
                         tx.Id,
+                        tx.Signer,
+                        tx.Timestamp.ToString(
+                            TimestampFormat, CultureInfo.InvariantCulture),
                         evalDuration.TotalMilliseconds);
             }
         }
