@@ -444,8 +444,9 @@ namespace Libplanet.Action
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                        "Actions in transaction {TxId} by {Signer} with timestamp {TxTimestamp} " +
-                        "evaluated in {DurationMs:F0}ms.",
+                        "{ActionCount} actions in transaction {TxId} by {Signer} " +
+                        "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                        tx.Actions.Count,
                         tx.Id,
                         tx.Signer,
                         tx.Timestamp.ToString(
