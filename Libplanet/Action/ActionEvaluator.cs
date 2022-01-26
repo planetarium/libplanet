@@ -25,7 +25,7 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
-        private static readonly ILogger _logger = Log.ForContext<ActionEvaluator<T>>();
+        private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
@@ -45,6 +45,7 @@ namespace Libplanet.Action
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter)
         {
+            _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
@@ -177,6 +178,7 @@ namespace Libplanet.Action
         /// </param>
         /// <param name="blockAction">Pass <c>true</c> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
         /// </returns>
@@ -209,7 +211,8 @@ namespace Libplanet.Action
             IImmutableList<IAction> actions,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
-            bool blockAction = false)
+            bool blockAction = false,
+            ILogger? logger = null)
         {
             ActionContext CreateActionContext(IAccountStateDelta prevStates, int randomSeed)
             {
@@ -248,7 +251,7 @@ namespace Libplanet.Action
                     DateTimeOffset actionExecutionStarted = DateTimeOffset.Now;
                     nextStates = action.Execute(context);
                     TimeSpan spent = DateTimeOffset.Now - actionExecutionStarted;
-                    _logger.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
+                    logger?.Verbose($"{action} execution spent {spent.TotalMilliseconds} ms.");
                 }
                 catch (OutOfMemoryException e)
                 {
@@ -258,7 +261,7 @@ namespace Libplanet.Action
                         "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
                         "pre-evaluation hash {PreEvaluationHash} threw an exception " +
                         "during execution.";
-                    _logger.Error(
+                    logger?.Error(
                         e,
                         message,
                         action,
@@ -291,7 +294,7 @@ namespace Libplanet.Action
                             "pre-evaluation hash {PreEvaluationHash} and previous " +
                             "state root hash {StateRootHash} threw an exception " +
                             "during execution.";
-                        _logger.Error(
+                        logger?.Error(
                             e,
                             message,
                             action,
@@ -305,7 +308,7 @@ namespace Libplanet.Action
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property.";
-                        _logger.Error(
+                        logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
                             preEvaluationHash,

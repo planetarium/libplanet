@@ -6,6 +6,11 @@ Version 0.26.2
 
 To be released.
 
+ -  Fixed a bug where `ActionEvaluator<T>`'s logs had been ignored due to
+    its initialization timings.  [[#1764]]
+
+[#1764]: https://github.com/planetarium/libplanet/pull/1764
+
 
 Version 0.26.1
 --------------
