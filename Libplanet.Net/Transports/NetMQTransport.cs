@@ -869,6 +869,10 @@ namespace Libplanet.Net.Transports
             {
                 tcs.TrySetException(imte);
             }
+            catch (InvalidMessageSignatureException imse)
+            {
+                tcs.TrySetException(imse);
+            }
             catch (TimeoutException te)
             {
                 tcs.TrySetException(te);

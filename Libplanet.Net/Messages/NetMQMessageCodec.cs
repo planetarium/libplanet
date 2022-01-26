@@ -138,7 +138,8 @@ namespace Libplanet.Net.Messages
 
             if (!remotePeer.PublicKey.Verify(messageForVerify.ToByteArray(), signature))
             {
-                throw new InvalidMessageException("The message signature is invalid", message);
+                throw new InvalidMessageSignatureException(
+                    "The message signature is invalid", message);
             }
 
             if (!reply)
