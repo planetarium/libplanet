@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.26.2
 --------------
 
-To be released.
+Released on January 26, 2022.
 
  -  Fixed a bug where `ActionEvaluator<T>`'s logs had been ignored due to
     its initialization timings.  [[#1764]]
