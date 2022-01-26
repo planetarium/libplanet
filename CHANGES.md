@@ -50,6 +50,10 @@ To be released.
     a certain amount of time.  [[#1741], [#1744]]
  -  (Libplanet.Net) `NetMQTransport` no longer attempts to retry failed
     communications.  [[#1751], [#1752]]
+ -  (Libplanet.Net) Fixed races between `Swarm<T>`'s dual systems for block
+    synchronization (polling and event-driven in parallel) on updating chain by
+    serializing the post-download process which is common for both
+    synchronization mechanisms.  [[#1731], [#1759]]
  -  New log output tagged with `Metric` added to measure evaluation time for
     individual `Transaction<T>`s.  [[#1755], [#1758]]
 
@@ -68,6 +72,7 @@ To be released.
 [#1421]: https://github.com/planetarium/libplanet/issues/1421
 [#1531]: https://github.com/planetarium/libplanet/issues/1531
 [#1691]: https://github.com/planetarium/libplanet/pull/1691
+[#1731]: https://github.com/planetarium/libplanet/issues/1731
 [#1741]: https://github.com/planetarium/libplanet/issues/1741
 [#1743]: https://github.com/planetarium/libplanet/pull/1743
 [#1744]: https://github.com/planetarium/libplanet/pull/1744
@@ -79,6 +84,7 @@ To be released.
 [#1755]: https://github.com/planetarium/libplanet/issues/1755
 [#1756]: https://github.com/planetarium/libplanet/pull/1756
 [#1758]: https://github.com/planetarium/libplanet/pull/1758
+[#1759]: https://github.com/planetarium/libplanet/pull/1759
 [#1760]: https://github.com/planetarium/libplanet/pull/1760
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
