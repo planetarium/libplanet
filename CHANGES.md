@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Added `EnumerableMeasurement` static class.  [[#1764], [#1766]]
+
 ### Backward-incompatible API changes
 
  -  Moved everything in `Libplanet.Net` namespace from *Libplanet* assembly
@@ -86,8 +88,24 @@ To be released.
 [#1758]: https://github.com/planetarium/libplanet/pull/1758
 [#1759]: https://github.com/planetarium/libplanet/pull/1759
 [#1760]: https://github.com/planetarium/libplanet/pull/1760
+[#1766]: https://github.com/planetarium/libplanet/pull/1766
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
+
+
+Version 0.26.2
+--------------
+
+Released on January 26, 2022.
+
+ -  Fixed a bug where `ActionEvaluator<T>`'s logs had been ignored due to
+    its initialization timings.  [[#1764]]
+ -  The elapsed time taking for ordering `Transaction<T>`s before evaluating
+    them are now measured and logged.  [[#1764]]
+ -  The time started and finished to calculate state root hashes are now
+    logged.  [[#1764]]
+
+[#1764]: https://github.com/planetarium/libplanet/pull/1764
 
 
 Version 0.26.1

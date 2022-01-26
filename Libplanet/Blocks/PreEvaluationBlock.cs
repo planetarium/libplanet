@@ -10,6 +10,7 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
+using Serilog;
 using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blocks
@@ -367,18 +368,36 @@ namespace Libplanet.Blocks
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             // FIXME: Add a dedicate unit test for this method.
+            ILogger logger = Log.ForContext<PreEvaluationBlock<T>>();
             blockChain._rwlock.EnterUpgradeableReadLock();
             try
             {
                 IReadOnlyList<ActionEvaluation> actionEvaluations =
                     blockChain.ActionEvaluator.Evaluate(this, stateCompleterSet);
+                logger.Verbose(
+                    "Start to calculate the total delta of states made in block #{BlockIndex}...",
+                    Index
+                );
                 statesDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                logger.Verbose(
+                    "Calculated the total delta of states made in block #{BlockIndex}.",
+                    Index
+                );
                 blockChain._rwlock.EnterWriteLock();
                 try
                 {
+                    logger.Verbose(
+                        "Start to commit state changes made in block #{BlockIndex}...",
+                        Index
+                    );
                     ITrie trie = blockChain.StateStore.Commit(
                         blockChain.Store.GetStateRootHash(PreviousHash),
                         statesDelta
+                    );
+                    logger.Verbose(
+                        "Committed the state changes made in block #{BlockIndex}: {StateRootHash}.",
+                        Index,
+                        trie.Hash
                     );
                     return (trie.Hash, actionEvaluations);
                 }
