@@ -106,12 +106,15 @@ To skip the analyzer, you can use:</p>
 on GitHub consists of several projects:</p>
 <ul>
 <li><p><em>Libplanet</em>: The main project, which contains the most of implementation
-code.  When this is  built into a <a href="https://www.nuget.org/packages/Libplanet/">NuGet package</a>, it consists of two
-assemblies: <em>Libplanet</em>, and <em>Libplanet.Stun</em>, explained below.</p>
+code.  It is distributed as a NuGet package with the same name:
+<em><a href="https://www.nuget.org/packages/Libplanet/">Libplanet</a></em>.</p>
+</li>
+<li><p><em>Libplanet.Net</em>: The peer-to-peer networking layer built on top of
+<em>Libplanet</em>.  This is distributed as a distinct NuGet package:
+<em><a href="https://www.nuget.org/packages/Libplanet.Net/">Libplanet.Net</a></em>.</p>
 </li>
 <li><p><em>Libplanet.Stun</em>: The project dedicated to implement <a href="https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/">TURN &amp; STUN</a>.
-Note that the assembly built from this project is included by
-<em><a href="https://www.nuget.org/packages/Libplanet/">Libplanet</a></em> package on NuGet.</p>
+This is distributed as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.Stun/">Libplanet.Stun</a></em>.</p>
 </li>
 <li><p><em>Libplanet.RocksDBStore</em>: The <code>IStore</code> implementation built on <a href="https://rocksdb.org/">RocksDB</a>.
 As this depends on platform-dependent libraries (which is written in C/C++),
@@ -122,7 +125,8 @@ use Libplanet.  This project is distributed as a distinct NuGet package:
 <em><a href="https://www.nuget.org/packages/Libplanet.Analyzers/">Libplanet.Analyzers</a></em>.</p>
 </li>
 <li><p><em>Libplanet.Extensions.Cocona</em>: The project to provide the <a href="https://www.nuget.org/packages/Cocona">Cocona</a> commands
-to handle <em>Libplanet</em> structures in command line.</p>
+to handle <em>Libplanet</em> structures in command line.  This is  distributed as
+a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.Extensions.Cocona">Libplanet.Extensions.Cocona</a></em>.</p>
 </li>
 <li><p><em>Libplanet.Tools</em>: The CLI tools for Libplanet.  This project is distributed
 as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.Tools/">Libplanet.Tools</a></em>. See its own
@@ -143,6 +147,8 @@ See the <a href="#benchmarks"><em>Benchmarks</em></a> section below.</p>
 </li>
 <li><p><em>Libplanet.Tests</em>: Unit tests of the <em>Libplanet</em> project.  See the <em>Tests</em>
 section below.</p>
+</li>
+<li><p><em>Libplanet.Net.Tests</em>: Unit tests of the <em>Libplanet.Net</em> project.</p>
 </li>
 <li><p><em>Libplanet.Stun.Tests</em>: Unit tests of the <em>Libplanet.Stun</em> project.</p>
 </li>

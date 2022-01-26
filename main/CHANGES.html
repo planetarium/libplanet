@@ -67,7 +67,9 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
-<li>Parameters of <code>NetMQTransport()</code> constructor has modified.
+<li>Moved everything in <code>Libplanet.Net</code> namespace from <em>Libplanet</em> assembly
+to <em>Libplanet.Net</em> assembly.  [<a href="https://github.com/planetarium/libplanet/issues/1421">#1421</a>, <a href="https://github.com/planetarium/libplanet/pull/1760">#1760</a>]</li>
+<li>(Libplanet.Net) Parameters of <code>NetMQTransport()</code> constructor has modified.
 [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]
 <ul>
 <li>Removed <code>RoutingTable table</code> and <code>int minimumBroadcastTarget</code>
@@ -75,10 +77,11 @@ parameters.</li>
 <li>Added <code>TimeSpan? dealerSocketLifetime</code> parameter.</li>
 </ul>
 </li>
-<li>Removed <code>RoutingTable table</code> and <code>int minimumBroadcastTarget</code> parameters
-from <code>TcpTransport()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
-<li>Removed <code>ITransport.BroadcastMessage(Address?, Message)</code> method.
-Instead, added
+<li>(Libplanet.Net) Removed <code>RoutingTable table</code> and
+<code>int minimumBroadcastTarget</code> parameters from <code>TcpTransport()</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
+<li>(Libplanet.Net) Removed <code>ITransport.BroadcastMessage(Address?, Message)</code>
+method.  Instead, added
 <code>ITransport.BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, Message)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
 </ul>
@@ -88,7 +91,7 @@ Instead, added
 <ul>
 <li>Added <code>TrieStateStore.CopyStates()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1653">#1653</a>, <a href="https://github.com/planetarium/libplanet/pull/1691">#1691</a>]</li>
 <li>Added <code>NullBlockPolicy&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1531">#1531</a>, <a href="https://github.com/planetarium/libplanet/pull/1748">#1748</a>]</li>
-<li>Added classes which implements <code>Message</code> abstract class.
+<li>(Libplanet.Net) Added classes which implements <code>Message</code> abstract class.
 [<a href="https://github.com/planetarium/libplanet/issues/1754">#1754</a>, <a href="https://github.com/planetarium/libplanet/pull/1756">#1756</a>]
 <ul>
 <li>Added <code>Ping</code> class.</li>
@@ -102,17 +105,21 @@ Instead, added
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>MerkleTrie.Get()</code> method now finds multiple states in parallel.  [<a href="https://github.com/planetarium/libplanet/pull/1743">#1743</a>]</li>
-<li><code>DealerSocket</code>s used for broadcasting messages in <code>NetMQTransport</code>
-became not to be disposed right after corresponding peer is removed
-from the routing table. Instead, it will be removed after
+<li>(Libplanet.Net) <code>DealerSocket</code>s used for broadcasting messages in
+<code>NetMQTransport</code> became not to be disposed right after corresponding peer
+is removed from the routing table. Instead, it will be removed after
 a certain amount of time.  [<a href="https://github.com/planetarium/libplanet/issues/1741">#1741</a>, <a href="https://github.com/planetarium/libplanet/pull/1744">#1744</a>]</li>
-<li><code>NetMQTransport</code> no longer attempts to retry failed communications.
-[<a href="https://github.com/planetarium/libplanet/issues/1751">#1751</a>, <a href="https://github.com/planetarium/libplanet/pull/1752">#1752</a>]</li>
+<li>(Libplanet.Net) <code>NetMQTransport</code> no longer attempts to retry failed
+communications.  [<a href="https://github.com/planetarium/libplanet/issues/1751">#1751</a>, <a href="https://github.com/planetarium/libplanet/pull/1752">#1752</a>]</li>
 <li>New log output tagged with <code>Metric</code> added to measure evaluation time for
 individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/1755">#1755</a>, <a href="https://github.com/planetarium/libplanet/pull/1758">#1758</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
+<ul>
+<li><em>Libplanet.Net</em> assembly is now distributed as a seaprate NuGet package:
+<em><a href="https://www.nuget.org/packages/Libplanet.Net/">Libplanet.Net</a></em>.  [<a href="https://github.com/planetarium/libplanet/issues/1421">#1421</a>, <a href="https://github.com/planetarium/libplanet/pull/1760">#1760</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.

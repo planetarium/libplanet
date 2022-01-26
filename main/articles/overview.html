@@ -248,8 +248,8 @@ The following code has been re-implemented using
 }
 </code></pre>
 <h2 id="networking">Networking</h2>
-<p>Libplanet has the feature to store Blocks and Transactions, as well as sharing them across other nodes in the P2P network. Game developers can use the <a class="xref" href="../api/Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> class to propagate or receive Blocks from other nodes in the network.</p>
-<p>Also, because the network is a P2P network without a central server, <a class="xref" href="../api/Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> also does not need a specific server, however, it is necessary to specify a seed node with a specific address to configure the network. These seed nodes are completely the same as other nodes, except that they must have an IP address or domain accessible from the Internet.</p>
+<p>Libplanet has the feature to store Blocks and Transactions, as well as sharing them across other nodes in the P2P network. Game developers can use the @&quot;Libplanet.Net.Swarm`1&quot; class to propagate or receive Blocks from other nodes in the network.</p>
+<p>Also, because the network is a P2P network without a central server, @&quot;Libplanet.Net.Swarm`1&quot; also does not need a specific server, however, it is necessary to specify a seed node with a specific address to configure the network. These seed nodes are completely the same as other nodes, except that they must have an IP address or domain accessible from the Internet.</p>
 <h2 id="consensus">Consensus</h2>
 <h3 id="perspective">Perspective</h3>
 <p>Libplanet is a library that enables game developers to create &quot;centralized server&quot;-less multiplayer games. “Centralized server-less” means that not only one entity is responsible for the state of the game, but every node in the network has the state of the game and synchronizes it accordingly. To synchronize, it should maintain a consistent state even in the event of a failure or tampering. The way of choosing which state is canonical is also called <a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">consensus</a> in distributed computing and multi-agent environments.</p>
