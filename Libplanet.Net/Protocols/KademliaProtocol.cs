@@ -458,7 +458,7 @@ namespace Libplanet.Net.Protocols
                     peer,
                     $"Timeout occurred during dial to {peer}.");
             }
-            catch (InvalidTimestampException)
+            catch (InvalidMessageTimestampException)
             {
                 throw new PingTimeoutException(
                     peer,
@@ -645,7 +645,7 @@ namespace Libplanet.Net.Protocols
 
                 return neighbors.Found;
             }
-            catch (InvalidTimestampException)
+            catch (InvalidMessageTimestampException)
             {
                 _logger.Debug($"Reply of {nameof(GetNeighbors)}'s timestamp is stale.");
                 return ImmutableArray<BoundPeer>.Empty;

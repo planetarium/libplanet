@@ -1,13 +1,18 @@
 using System;
 using System.Runtime.Serialization;
+using Libplanet.Net.Messages;
 using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
+    /// <summary>
+    /// An exception that is thrown when the timestamp of an encoded <see cref="Message"/> is
+    /// invalid.
+    /// </summary>
     [Serializable]
-    public class InvalidTimestampException : Exception
+    public class InvalidMessageTimestampException : Exception
     {
-        internal InvalidTimestampException(
+        internal InvalidMessageTimestampException(
             string message,
             DateTimeOffset createdOffset,
             TimeSpan? lifespan,
@@ -21,7 +26,7 @@ namespace Libplanet.Net
             CurrentOffset = currentOffset;
         }
 
-        internal InvalidTimestampException(
+        internal InvalidMessageTimestampException(
             string message,
             DateTimeOffset createdOffset,
             TimeSpan? lifespan,
@@ -33,7 +38,7 @@ namespace Libplanet.Net
             CurrentOffset = currentOffset;
         }
 
-        protected InvalidTimestampException(
+        protected InvalidMessageTimestampException(
             SerializationInfo info,
             StreamingContext context
         )

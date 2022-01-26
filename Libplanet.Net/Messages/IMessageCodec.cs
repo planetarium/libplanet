@@ -46,6 +46,8 @@ namespace Libplanet.Net.Messages
         /// local version does not match with given <paramref name="encoded"/>'s
         /// <see cref="Version"/> by given <paramref name="appProtocolVersionValidator"/>.
         /// </exception>
+        /// <exception cref="InvalidMessageTimestampException"> Thrown when the timestamp of
+        /// <paramref name="encoded"/> is invalid.</exception>
         /// <exception cref="InvalidMessageException">
         /// Thrown when given <paramref name="encoded"/>'s signer is invalid.</exception>
         Message Decode(
