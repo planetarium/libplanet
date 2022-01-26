@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) `IMessageCodec<T>.Decode()` now throws
+    `InvalidMessageSignatureException` and `InvalidMessageTimestampException`
+    instead of `InvalidMessageException` and `InvalidTimestampException`
+    respectively.  [[#1771]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -20,9 +25,16 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Net) `IMessageCodec<T>.Decode()` now throws
+    `InvalidMessageTimestampException` if the timestamp of the message is
+    earlier than the current timestamp regardless of whether `messageLifespan`
+    argument was provided or not to `NetMQMessageCodec()`.  [[#1771]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#1771] https://github.com/planetarium/libplanet/pull/1771
 
 
 Version 0.27.0
