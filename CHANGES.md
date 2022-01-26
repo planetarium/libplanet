@@ -90,6 +90,21 @@ To be released.
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
 
 
+Version 0.26.2
+--------------
+
+Released on January 26, 2022.
+
+ -  Fixed a bug where `ActionEvaluator<T>`'s logs had been ignored due to
+    its initialization timings.  [[#1764]]
+ -  The elapsed time taking for ordering `Transaction<T>`s before evaluating
+    them are now measured and logged.  [[#1764]]
+ -  The time started and finished to calculate state root hashes are now
+    logged.  [[#1764]]
+
+[#1764]: https://github.com/planetarium/libplanet/pull/1764
+
+
 Version 0.26.1
 --------------
 
