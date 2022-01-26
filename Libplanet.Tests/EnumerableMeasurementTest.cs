@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -42,6 +43,36 @@ namespace Libplanet.Tests
                 Assert.True(beforeCalled);
                 Assert.True(afterCalled);
             }
+        }
+
+        [Fact]
+        public void WithMeasuringTime()
+        {
+            IEnumerable<int> Stream()
+            {
+                yield return 1;
+                Thread.Sleep(100);
+                yield return 2;
+                Thread.Sleep(100);
+                yield return 3;
+                Thread.Sleep(100);
+            }
+
+            var elapsed = 0L;
+            IEnumerable<int> e = Stream().WithMeasuringTime(
+                sw => elapsed = sw.ElapsedMilliseconds
+            );
+            Assert.Equal(0L, elapsed);
+
+            foreach (var unused in e)
+            {
+                Assert.Equal(0L, elapsed);
+            }
+
+            Assert.True(
+                elapsed >= 300L,
+                $"{elapsed}ms is not greater than 300ms."
+            );
         }
     }
 }

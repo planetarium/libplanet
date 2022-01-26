@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Libplanet
 {
@@ -49,6 +50,46 @@ namespace Libplanet
             }
 
             after();
+        }
+
+        /// <summary>
+        /// Measures how long it takes to actually evaluate the specified
+        /// <paramref name="enumerable"/> and then reports the elapsed time through
+        /// the specified <paramref name="onMeasured"/> callback.
+        /// </summary>
+        /// <example><![CDATA[
+        /// IEnumerable<int> stream = GetStream().WithMeasuringTime(
+        ///     elapsed => Console.WriteLine("Elapsed time: {0} ms", elapsed.ElapsedMilliseconds)
+        /// );
+        /// foreach (int i in stream) Console.WriteLine("Enumerating... {0}", i);
+        /// // Output:
+        /// // Enumerating... 1
+        /// // Enumerating... 2
+        /// // ...
+        /// // Elapsed time: ... ms
+        /// ]]></example>
+        /// <param name="enumerable">An enumerable object.</param>
+        /// <param name="onMeasured">A callback to be invoked when the enumeration and its
+        /// measurement is done.  A <see cref="Stopwatch"/> instance is passed as the
+        /// first argument to the callback.</param>
+        /// <typeparam name="T">The type of the elements of <paramref name="enumerable"/>.
+        /// </typeparam>
+        /// <returns>Equivalent to <paramref name="enumerable"/>.</returns>
+        public static IEnumerable<T> WithMeasuringTime<T>(
+            this IEnumerable<T> enumerable,
+            System.Action<Stopwatch> onMeasured
+        )
+        {
+            var stopwatch = new Stopwatch();
+            return OnBeforeAndAfter(
+                enumerable,
+                before: stopwatch.Start,
+                after: () =>
+                {
+                    stopwatch.Stop();
+                    onMeasured(stopwatch);
+                }
+            );
         }
     }
 }
