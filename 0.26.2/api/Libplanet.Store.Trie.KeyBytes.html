@@ -1,0 +1,796 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct KeyBytes
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct KeyBytes
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.KeyBytes">
+  
+  
+  <h1 id="Libplanet_Store_Trie_KeyBytes" data-uid="Libplanet.Store.Trie.KeyBytes" class="text-break">Struct KeyBytes
+  </h1>
+  <div class="markdown level0 summary"><p>Wraps a byte array and provides equality comparison and hash code calculation.  Designed
+to be used as a key in dictionaries.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_Trie_KeyBytes_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly struct KeyBytes : IEquatable&lt;KeyBytes&gt;, IEquatable&lt;ImmutableArray&lt;byte&gt;&gt;, IEquatable&lt;byte[]&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes__ctor_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.%23ctor(ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L31">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes__ctor_" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes__ctor_ImmutableArray_System_Byte___" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor(ImmutableArray{System.Byte}@)">KeyBytes(in ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> instance from the given byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KeyBytes(in ImmutableArray&lt;byte&gt; bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>An immutable byte array to wrap.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L22">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes__ctor_" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes__ctor_System_Byte___" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor(System.Byte[])">KeyBytes(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> instance from the given byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KeyBytes(params byte[] bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>A mutable byte array to wrap.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes__ctor_System_String_Encoding_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.%23ctor(System.String%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes__ctor_" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes__ctor_System_String_Encoding_" data-uid="Libplanet.Store.Trie.KeyBytes.#ctor(System.String,Encoding)">KeyBytes(String, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> instance from the given <code data-dev-comment-type="paramref" class="paramref">string</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KeyBytes(string string, Encoding encoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">string</span></td>
+        <td><p>A key string.  This is encoded to bytes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Encoding</span></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The text encoding used for the key string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L58">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_ByteArray_" data-uid="Libplanet.Store.Trie.KeyBytes.ByteArray*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_ByteArray" data-uid="Libplanet.Store.Trie.KeyBytes.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>The immutable array of bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Hex.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Hex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L65">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Hex_" data-uid="Libplanet.Store.Trie.KeyBytes.Hex*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Hex" data-uid="Libplanet.Store.Trie.KeyBytes.Hex">Hex</h4>
+  <div class="markdown level1 summary"><p>The hexadecimal string representation of the byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string Hex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Length.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L53">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Length_" data-uid="Libplanet.Store.Trie.KeyBytes.Length*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Length" data-uid="Libplanet.Store.Trie.KeyBytes.Length">Length</h4>
+  <div class="markdown level1 summary"><p>The length of the byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int Length { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Equals_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L111">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Equals_" data-uid="Libplanet.Store.Trie.KeyBytes.Equals*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Equals_ImmutableArray_System_Byte__" data-uid="Libplanet.Store.Trie.KeyBytes.Equals(ImmutableArray{System.Byte})">Equals(ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(ImmutableArray&lt;byte&gt; other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Equals_Libplanet_Store_Trie_KeyBytes_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L134">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Equals_" data-uid="Libplanet.Store.Trie.KeyBytes.Equals*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Equals_Libplanet_Store_Trie_KeyBytes_" data-uid="Libplanet.Store.Trie.KeyBytes.Equals(Libplanet.Store.Trie.KeyBytes)">Equals(KeyBytes)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(KeyBytes other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Equals_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Equals(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L137">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Equals_" data-uid="Libplanet.Store.Trie.KeyBytes.Equals*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Equals_System_Byte___" data-uid="Libplanet.Store.Trie.KeyBytes.Equals(System.Byte[])">Equals(Byte[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(byte[] other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L156">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_Equals_" data-uid="Libplanet.Store.Trie.KeyBytes.Equals*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Store.Trie.KeyBytes.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_FromHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.FromHex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_FromHex_" data-uid="Libplanet.Store.Trie.KeyBytes.FromHex*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_FromHex_System_String_" data-uid="Libplanet.Store.Trie.KeyBytes.FromHex(System.String)">FromHex(String)</h4>
+  <div class="markdown level1 summary"><p>Parses the given hexadecimal string as bytes and returns a new <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>
+instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static KeyBytes FromHex(string hex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">hex</span></td>
+        <td><p>A hexadecimal string which encodes bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><p>A new <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L159">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_GetHashCode_" data-uid="Libplanet.Store.Trie.KeyBytes.GetHashCode*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_GetHashCode" data-uid="Libplanet.Store.Trie.KeyBytes.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L106">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_ToByteArray_" data-uid="Libplanet.Store.Trie.KeyBytes.ToByteArray*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_ToByteArray" data-uid="Libplanet.Store.Trie.KeyBytes.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Converts to a mutable byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A new copy of mutable byte array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L174">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_ToString_" data-uid="Libplanet.Store.Trie.KeyBytes.ToString*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_ToString" data-uid="Libplanet.Store.Trie.KeyBytes.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_op_Equality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.op_Equality(Libplanet.Store.Trie.KeyBytes%2CLibplanet.Store.Trie.KeyBytes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L76">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_op_Equality_" data-uid="Libplanet.Store.Trie.KeyBytes.op_Equality*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_op_Equality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_" data-uid="Libplanet.Store.Trie.KeyBytes.op_Equality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)">Equality(KeyBytes, KeyBytes)</h4>
+  <div class="markdown level1 summary"><p>Compares two <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(KeyBytes left, KeyBytes right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>An operand.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>Another operand.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">true</span> if two values equal; otherwise <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes_op_Inequality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes.op_Inequality(Libplanet.Store.Trie.KeyBytes%2CLibplanet.Store.Trie.KeyBytes)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L85">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_KeyBytes_op_Inequality_" data-uid="Libplanet.Store.Trie.KeyBytes.op_Inequality*"></a>
+  <h4 id="Libplanet_Store_Trie_KeyBytes_op_Inequality_Libplanet_Store_Trie_KeyBytes_Libplanet_Store_Trie_KeyBytes_" data-uid="Libplanet.Store.Trie.KeyBytes.op_Inequality(Libplanet.Store.Trie.KeyBytes,Libplanet.Store.Trie.KeyBytes)">Inequality(KeyBytes, KeyBytes)</h4>
+  <div class="markdown level1 summary"><p>Compares two <a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a> values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(KeyBytes left, KeyBytes right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>An operand.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>Another operand.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><span class="xref">false</span> if two values equal; otherwise <span class="xref">true</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/7828909385311fc26c7a60c242de06f2731db5bb/apiSpec/new?filename=Libplanet_Store_Trie_KeyBytes.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.KeyBytes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/7828909385311fc26c7a60c242de06f2731db5bb/Libplanet/Store/Trie/KeyBytes.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
