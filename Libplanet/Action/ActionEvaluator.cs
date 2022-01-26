@@ -422,6 +422,11 @@ namespace Libplanet.Action
                 block.ProtocolVersion,
                 block.Transactions,
                 block.PreEvaluationHash
+            ).WithMeasuringTime(
+                sw => _logger.Verbose(
+                    "Took {ElapsedMilliseconds}ms to order transactions.",
+                    sw.ElapsedMilliseconds
+                )
             );
             foreach (Transaction<T> tx in orderedTxs)
             {

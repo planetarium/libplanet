@@ -8,6 +8,8 @@ To be released.
 
  -  Fixed a bug where `ActionEvaluator<T>`'s logs had been ignored due to
     its initialization timings.  [[#1764]]
+ -  The elapsed time taking for ordering `Transaction<T>`s before evaluating
+    them are now measured and logged.  [[#1764]]
 
 [#1764]: https://github.com/planetarium/libplanet/pull/1764
 
