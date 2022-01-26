@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Net.Messages
             frames.Push(netMqMessage[1]);
             frames.Push(netMqMessage[0]);
 
-            Assert.Throws<InvalidMessageException>(() =>
+            Assert.Throws<InvalidMessageSignatureException>(() =>
             {
                 codec.Decode(
                     frames,

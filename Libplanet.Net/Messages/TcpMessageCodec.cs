@@ -132,10 +132,11 @@ namespace Libplanet.Net.Messages
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {lifespan} and the current datetime " +
-                          $"offset is " +
+                          $"but designated lifetime is {_messageLifespan} and " +
+                          $"the current datetime offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
-                throw new InvalidMessageTimestampException(msg, timestamp, lifespan, currentTime);
+                throw new InvalidMessageTimestampException(
+                    msg, timestamp, _messageLifespan, currentTime);
             }
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];
