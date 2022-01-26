@@ -593,7 +593,6 @@ namespace Libplanet.Net
                 peersWithExcerpts,
                 workspace,
                 progress,
-                preload: true,
                 render: render,
                 cancellationToken: cancellationToken);
             renderSwap();
