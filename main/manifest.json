@@ -369,7 +369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Assets.FungibleAssetValue.html",
-          "hash": "wucPBxTHKW8IcspIpAilBT56DrAwT6CwRLgM2dongc8="
+          "hash": "AFz4elYxNP/VaJ3lnebTNj1PGrvnQ/S0cXSrQqC0y8g="
         }
       },
       "is_incremental": false,
@@ -993,7 +993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockMetadata.html",
-          "hash": "IMbLhvXYvv1a0B3JVJ2oAGeeKDziBpaIcy8idB32xcE="
+          "hash": "6KmJAHgbZUTW9eGfcnq7w47NqiNom0g32mU6Vy68Ai4="
         }
       },
       "is_incremental": false,
@@ -1569,7 +1569,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Hashcash.html",
-          "hash": "YfnEm+GefuD/6EI0MMzpO0DZQn8VzVsygRJ1rtSDGyI="
+          "hash": "kyw60Z68RaQWC9DDK1O3cBHZRdHcPeihhBQV5F5XU5o="
         }
       },
       "is_incremental": false,
@@ -2121,7 +2121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.html",
-          "hash": "oVhHYjmkuj17IxtcyI3RKygiD7RoMu1ojk8HnFA8j78="
+          "hash": "CxmNqsGRYqb5dIedsM5JzVqjNDrQb9HVqnv3hMYc9Pw="
         }
       },
       "is_incremental": false,
