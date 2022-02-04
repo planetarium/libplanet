@@ -6,6 +6,12 @@ Version 0.26.3
 
 To be released.
 
+ -  `Swarm<T>.PreloadAsync()` method became to catch up recent blocks
+    until the local tip is close enough to the topmost tip among peers.
+    [[#1775]]
+
+[#1775]: https://github.com/planetarium/libplanet/pull/1775
+
 
 Version 0.26.2
 --------------
