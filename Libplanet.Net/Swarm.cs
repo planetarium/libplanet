@@ -287,9 +287,7 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, bool, CancellationToken)"
-        /// /> method too.</remarks>
+        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastBlockInterval = 15000,
@@ -328,9 +326,7 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, bool, CancellationToken)"
-        /// /> method too.</remarks>
+        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastBlockInterval,
@@ -535,6 +531,10 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="render">
         /// The value indicates whether to render blocks and actions while preloading.</param>
+        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
+        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
+        /// peers by more than this threshold after a preloading is once done, the preloading
+        /// is repeated.  25 by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -551,6 +551,7 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             bool render = false,
+            long tipDeltaThreshold = 25L,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -563,9 +564,6 @@ namespace Libplanet.Net
                 BlockChain.Tip.Index,
                 BlockChain.Tip.Hash
             );
-
-            // TODO: This should become configurable in the next minor release:
-            const long tipDeltaThreshold = 25L;
 
             // FIXME: Currently `IProgress<PreloadState>` can be rewinded to the previous stage
             // as it starts from the first stage when it's still not close enough to the topmost

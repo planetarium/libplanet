@@ -14,6 +14,8 @@ To be released.
     `InvalidMessageSignatureException` and `InvalidMessageTimestampException`
     instead of `InvalidMessageException` and `InvalidTimestampException`
     respectively.  [[#1771]]
+ -  (Libplanet.Net) Added `long tipDeltaThreshold = 25L` option to
+    `Swarm<T>.PreloadAsync()` method.  [[#1775], [#1777], [#1779]]
 
 ### Backward-incompatible network protocol changes
 
@@ -29,7 +31,8 @@ To be released.
 
 ### CLI tools
 
-[#1771] https://github.com/planetarium/libplanet/pull/1771
+[#1771]: https://github.com/planetarium/libplanet/pull/1771
+[#1779]: https://github.com/planetarium/libplanet/pull/1779
 
 
 Version 0.27.1
