@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet">Libplanet</h1>
+
+<p><a href="https://planetarium.dev/discord"><img src="https://img.shields.io/discord/928926944937013338.svg?color=7289da&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
+<a href="https://app.circleci.com/pipelines/github/planetarium/libplanet"><img src="https://circleci.com/gh/planetarium/libplanet/tree/main.svg?style=shield" alt="Build Status (CircleCI)"></a>
+<a href="https://codecov.io/gh/planetarium/libplanet"><img src="https://codecov.io/gh/planetarium/libplanet/branch/main/graph/badge.svg" alt="Codecov"></a>
+<a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/v/Libplanet.svg?style=flat" alt="NuGet"></a>
+<a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat" alt="NuGet (prerelease)"></a></p>
+<p>Libplanet is a .NET library for creating multiplayer online game in
+decentralized fashion, which means the whole gameplay occurs on a
+peer-to-peer network among equal nodes rather than an authorized central
+server.  Under the hood, it incorporates many features (e.g.,
+<a href="https://en.wikipedia.org/wiki/Digital_signature">digital signature</a>, <a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance">BFT</a> consensus, data replication) of a <a href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>.</p>
+<p>It has competitive advantages over other solutions for decentralized gaming:</p>
+<ul>
+<li><p><em>Embeddable</em>: A game app does not have to communicate with another running
+process, hence it doesn't require extra marshaling or processes management.
+To draw a parallel, Libplanet is closer to SQLite than MySQL or PostgreSQL.</p>
+</li>
+<li><p><em>Isomorphic</em>: Libplanet is a .NET library, so every game logic can be
+written in the same language, C#, and run on the blockchain. No glue
+code or &quot;smart contracts&quot; are needed.</p>
+</li>
+<li><p><em>Token-independent</em>: Unlike almost every blockchain system, it does not
+force users to create and deal with yet-another-cryptocurrency. Your
+game can be free to play, and enjoyed by regular gamers.</p>
+</li>
+</ul>
+<p>To learn more about why Planetarium is creating technology for fully
+decentralized games, please refer to our <a href="https://medium.com/planetarium/introducing-planetarium-powering-games-with-freedom-22ab1ab70e0e">blog post</a>.</p>
+<h2 id="nuget">NuGet</h2>
+<p>For every stable release, we pack Libplanet into a <em>.nupkg</em> and
+upload it to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> and GitHub <a href="https://github.com/planetarium/libplanet/releases">releases</a> page.
+(You can find the changelog for versions from <a href="https://github.com/planetarium/libplanet/releases">releases</a> page.)
+To use Libplanet in your game, your project needs to add a dependency
+to <em>Libplanet</em> package.  On Visual Studio IDE, run the following command
+in Package Manager Console:</p>
+<pre><code>Install-Package Libplanet
+</code></pre>
+<p>If you prefer <code>dotnet</code> CLI run the following command instead:</p>
+<pre><code class="lang-bash">dotnet add package Libplanet
+</code></pre>
+<p>See also Microsoft's docs on <a href="https://docs.microsoft.com/nuget/consume-packages/ways-to-install-a-package">different ways to install NuGet package</a>.</p>
+<p>In addition to stable releases, we also provide pre-release packages.
+For every day and every merge commit, it is packed into a <em>.nupkg</em>
+and uploaded to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> with a hyphen-suffixed version name.</p>
+<p>For a merge commit build, a version name looks like
+<code>0.1.0-dev.20181231235959+a0b1c2d</code> where <code>20181231235959</code> is a UTC timestamp of
+the build and <code>a0b1c2d</code> is the first 7 hexadecimals of the Git commit hash.
+For a daily build, a version name is like <code>0.1.0-nightly.20181231+a0b1c2d</code>.</p>
+<p>Unfortunately, Unity currently does not support NuGet.  There are some Unity
+plug-ins to deal with NuGet package system, and these seem immature at present.
+To use Libplanet on Unity, you need to manually extract <em>Libplanet.dll</em>
+from <em>Libplanet.*.nupkg</em> file and place it inside of your Unity project.
+We are acknowledging the fact Libplanet is currently not very usable together
+with Unity, and promise to make it better in the next few minor releases.
+Until then, you could try <a href="https://github.com/microsoft/MSBuildForUnity">MSBuildForUnity</a> which is experimental as of
+January 2020.</p>
+<h2 id="build">Build</h2>
+<p>You could build <em>Libplanet.dll</em> and <em>Libplanet.Stun.dll</em> assemblies
+from the source code.</p>
+<p>The following command installs dependencies (required library packages) and
+builds the whole Libplanet solution:</p>
+<pre><code class="lang-bash">dotnet build
+</code></pre>
+<p>Note that <code>dotnet</code> command is distributed together with <a href="https://dot.net/">.NET Core</a> SDK.</p>
+<p>If you'd like to contribute code to the Libplanet project in earnest,
+please read our <a href="CONTRIBUTING.html">contributor guide</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/799d5bc1b75feaeb4c8e9fa9a3bb0a4564234b8a/Docs/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
