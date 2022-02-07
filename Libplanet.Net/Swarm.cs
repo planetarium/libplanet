@@ -213,8 +213,6 @@ namespace Libplanet.Net
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
-        internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
-
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
@@ -289,9 +287,7 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, bool, CancellationToken)"
-        /// /> method too.</remarks>
+        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastBlockInterval = 15000,
@@ -330,9 +326,7 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, bool, CancellationToken)"
-        /// /> method too.</remarks>
+        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastBlockInterval,
@@ -537,6 +531,10 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="render">
         /// The value indicates whether to render blocks and actions while preloading.</param>
+        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
+        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
+        /// peers by more than this threshold after a preloading is once done, the preloading
+        /// is repeated.  25 by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -553,6 +551,7 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             bool render = false,
+            long tipDeltaThreshold = 25L,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -566,36 +565,74 @@ namespace Libplanet.Net
                 BlockChain.Tip.Hash
             );
 
-            _logger.Information(
-                "Fetching excerpts from {PeersCount} peers...",
-                Peers.Count);
-            var peersWithExcerpts = await GetPeersWithExcerpts(
-                dialTimeout, int.MaxValue, cancellationToken);
-
-            if (!peersWithExcerpts.Any())
-            {
-                _logger.Information("There are no appropriate peers for preloading.");
-                return;
-            }
-            else
+            // FIXME: Currently `IProgress<PreloadState>` can be rewinded to the previous stage
+            // as it starts from the first stage when it's still not close enough to the topmost
+            // tip in the network.
+            for (int i = 0; !cancellationToken.IsCancellationRequested; i++)
             {
                 _logger.Information(
-                    "Fetched {PeersWithExcerptsCount} excerpts from {PeersCount} peers.",
-                    peersWithExcerpts.Count,
+                    "Fetching excerpts from {PeersCount} peers...",
                     Peers.Count);
+                var peersWithExcerpts = await GetPeersWithExcerpts(
+                    dialTimeout, int.MaxValue, cancellationToken);
+
+                if (!peersWithExcerpts.Any())
+                {
+                    _logger.Information("There are no appropriate peers for preloading.");
+                    break;
+                }
+                else
+                {
+                    _logger.Information(
+                        "Fetched {PeersWithExcerptsCount} excerpts from {PeersCount} peers.",
+                        peersWithExcerpts.Count,
+                        Peers.Count);
+                }
+
+                Block<T> localTip = BlockChain.Tip;
+                IBlockExcerpt topmostTip = peersWithExcerpts
+                    .Select(pair => pair.Item2)
+                    .Greatest(tip => tip.Index);
+                if (topmostTip.Index - (i > 0 ? tipDeltaThreshold : 0L) <= localTip.Index)
+                {
+                    const string msg =
+                        "As the local tip (#{LocalTipIndex} {LocalTipHash}) is close enough to " +
+                        "the topmost tip in the network (#{TopmostTipIndex} {TopmostTipHash}), " +
+                        "preloading is no longer needed.";
+                    _logger.Information(
+                        msg,
+                        localTip.Index,
+                        localTip.Hash,
+                        topmostTip.Index,
+                        topmostTip.Hash
+                    );
+                    break;
+                }
+                else
+                {
+                    const string msg =
+                        "As the local tip (#{LocalTipIndex} {LocalTipHash}) is still not close " +
+                        "enough to the topmost tip in the network " +
+                        "(#{TopmostTipIndex} {TopmostTipHash}), preload one more time...";
+                    _logger.Information(
+                        msg,
+                        localTip.Index,
+                        localTip.Hash,
+                        topmostTip.Index,
+                        topmostTip.Hash
+                    );
+                }
+
+                _logger.Information("Preloading (trial #{Trial}) started...", i + 1);
+                BlockChain<T> workspace = BlockChain.Fork(localTip.Hash, inheritRenderers: false);
+                var renderSwap = await CompleteBlocksAsync(
+                    peersWithExcerpts,
+                    workspace,
+                    progress,
+                    render: render,
+                    cancellationToken: cancellationToken);
+                renderSwap();
             }
-
-            PreloadStarted.Set();
-            _logger.Information("Preloading started...");
-
-            BlockChain<T> workspace = BlockChain.Fork(BlockChain.Tip.Hash, inheritRenderers: false);
-            var renderSwap = await CompleteBlocksAsync(
-                peersWithExcerpts,
-                workspace,
-                progress,
-                render: render,
-                cancellationToken: cancellationToken);
-            renderSwap();
         }
 
         /// <summary>
