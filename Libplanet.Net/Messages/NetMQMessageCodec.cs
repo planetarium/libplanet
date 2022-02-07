@@ -108,10 +108,11 @@ namespace Libplanet.Net.Messages
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {lifespan} and the current datetime " +
-                          $"offset is " +
+                          $"but designated lifetime is {lifespan} and " +
+                          $"the current datetime offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
-                throw new InvalidTimestampException(msg, timestamp, lifespan, currentTime);
+                throw new InvalidMessageTimestampException(
+                    msg, timestamp, _messageLifespan, currentTime);
             }
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign].ToByteArray();
@@ -138,7 +139,8 @@ namespace Libplanet.Net.Messages
 
             if (!remotePeer.PublicKey.Verify(messageForVerify.ToByteArray(), signature))
             {
-                throw new InvalidMessageException("The message signature is invalid", message);
+                throw new InvalidMessageSignatureException(
+                    "The message signature is invalid", message);
             }
 
             if (!reply)

@@ -435,11 +435,11 @@ namespace Libplanet.Net.Transports
                 _logger.Error(dapve, errMsg, message, peer, reqId);
                 throw;
             }
-            catch (InvalidTimestampException ite)
+            catch (InvalidMessageTimestampException imte)
             {
                 const string errMsg =
                     "{Peer} sent a reply to {Message} {RequestId} with a stale timestamp.";
-                _logger.Error(ite, errMsg, message, peer, reqId);
+                _logger.Error(imte, errMsg, message, peer, reqId);
                 throw;
             }
             catch (TimeoutException toe)
@@ -620,12 +620,12 @@ namespace Libplanet.Net.Transports
                 _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
                 _logger.Debug("Message from peer with a different version received.");
             }
-            catch (InvalidTimestampException ite)
+            catch (InvalidMessageTimestampException imte)
             {
                 const string logMsg =
                     "Received message has a stale timestamp: " +
                     "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
-                _logger.Debug(logMsg, ite.CreatedOffset, ite.Lifespan, ite.CurrentOffset);
+                _logger.Debug(logMsg, imte.CreatedOffset, imte.Lifespan, imte.CurrentOffset);
             }
             catch (InvalidMessageException ex)
             {
@@ -865,9 +865,13 @@ namespace Libplanet.Net.Transports
             {
                 tcs.TrySetException(dapve);
             }
-            catch (InvalidTimestampException ite)
+            catch (InvalidMessageTimestampException imte)
             {
-                tcs.TrySetException(ite);
+                tcs.TrySetException(imte);
+            }
+            catch (InvalidMessageSignatureException imse)
+            {
+                tcs.TrySetException(imse);
             }
             catch (TimeoutException te)
             {

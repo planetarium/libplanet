@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) `IMessageCodec<T>.Decode()` now throws
+    `InvalidMessageSignatureException` and `InvalidMessageTimestampException`
+    instead of `InvalidMessageException` and `InvalidTimestampException`
+    respectively.  [[#1771]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +28,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1771] https://github.com/planetarium/libplanet/pull/1771
 
 
 Version 0.27.0

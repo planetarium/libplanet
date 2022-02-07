@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Libplanet.Tests.Net
 {
-    public class InvalidTimestampExceptionTest
+    public class InvalidMessageTimestampExceptionTest
     {
         public static IEnumerable<object[]> TestData => new List<object[]>()
         {
@@ -20,19 +20,19 @@ namespace Libplanet.Tests.Net
         [MemberData(nameof(TestData))]
         public void Serialization(TimeSpan? lifespan)
         {
-            var e = new InvalidTimestampException(
+            var e = new InvalidMessageTimestampException(
                 "An error message",
                 DateTimeOffset.UtcNow,
                 lifespan,
                 DateTimeOffset.UtcNow + TimeSpan.FromSeconds(1));
             var f = new BinaryFormatter();
-            InvalidTimestampException e2;
+            InvalidMessageTimestampException e2;
 
             using (var s = new MemoryStream())
             {
                 f.Serialize(s, e);
                 s.Seek(0, SeekOrigin.Begin);
-                e2 = (InvalidTimestampException)f.Deserialize(s);
+                e2 = (InvalidMessageTimestampException)f.Deserialize(s);
             }
 
             Assert.Equal(e.Message, e2.Message);
