@@ -4,13 +4,12 @@ Libplanet changelog
 Version 0.27.1
 --------------
 
-To be released.
+Released on February 7, 2022.
 
  -  (Libplanet.Net) `Swarm<T>.PreloadAsync()` method became to catch up recent
     blocks until the local tip is close enough to the topmost tip among peers.
     [[#1775], [#1777]]
 
-[#1775]: https://github.com/planetarium/libplanet/pull/1775
 [#1777]: https://github.com/planetarium/libplanet/pull/1777
 
 
