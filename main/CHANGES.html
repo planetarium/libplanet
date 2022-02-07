@@ -70,7 +70,9 @@
 <li>(Libplanet.Net) <code>IMessageCodec&lt;T&gt;.Decode()</code> now throws
 <code>InvalidMessageSignatureException</code> and <code>InvalidMessageTimestampException</code>
 instead of <code>InvalidMessageException</code> and <code>InvalidTimestampException</code>
-respectively.  [[#1771]]</li>
+respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#1771</a>]</li>
+<li>(Libplanet.Net) Added <code>long tipDeltaThreshold = 25L</code> option to
+<code>Swarm&lt;T&gt;.PreloadAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>, <a href="https://github.com/planetarium/libplanet/pull/1777">#1777</a>, <a href="https://github.com/planetarium/libplanet/pull/1779">#1779</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -79,7 +81,13 @@ respectively.  [[#1771]]</li>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
-<p>[#1771] <a href="https://github.com/planetarium/libplanet/pull/1771">https://github.com/planetarium/libplanet/pull/1771</a></p>
+<h2 id="version-0271">Version 0.27.1</h2>
+<p>Released on February 7, 2022.</p>
+<ul>
+<li>(Libplanet.Net) <code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to catch up recent
+blocks until the local tip is close enough to the topmost tip among peers.
+[<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>, <a href="https://github.com/planetarium/libplanet/pull/1777">#1777</a>]</li>
+</ul>
 <h2 id="version-0270">Version 0.27.0</h2>
 <p>Released on January 26, 2022.</p>
 <h3 id="deprecated-apis-1">Deprecated APIs</h3>
@@ -146,6 +154,13 @@ individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/pla
 <ul>
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.
 [<a href="https://github.com/advisories/GHSA-r683-j2x4-v87g">CVE-2022-0235</a>, <a href="https://github.com/planetarium/libplanet/pull/1747">#1747</a>]</li>
+</ul>
+<h2 id="version-0263">Version 0.26.3</h2>
+<p>Released on February 7, 2022.</p>
+<ul>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to catch up recent blocks
+until the local tip is close enough to the topmost tip among peers.
+[<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>]</li>
 </ul>
 <h2 id="version-0262">Version 0.26.2</h2>
 <p>Released on January 26, 2022.</p>
