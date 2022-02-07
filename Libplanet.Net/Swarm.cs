@@ -213,8 +213,6 @@ namespace Libplanet.Net
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
-        internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
-
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
@@ -627,10 +625,7 @@ namespace Libplanet.Net
                     );
                 }
 
-                // FIXME: This seems unused anymore:
-                PreloadStarted.Set();
                 _logger.Information("Preloading (trial #{Trial}) started...", i + 1);
-
                 BlockChain<T> workspace = BlockChain.Fork(localTip.Hash, inheritRenderers: false);
                 var renderSwap = await CompleteBlocksAsync(
                     peersWithExcerpts,
