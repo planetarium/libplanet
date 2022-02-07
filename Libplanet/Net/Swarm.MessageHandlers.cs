@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -158,13 +159,22 @@ namespace Libplanet.Net
                 return;
             }
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            bool needed = IsBlockNeeded(header);
+            TimeSpan elapsed = stopwatch.Elapsed;
+            stopwatch.Stop();
+
             _logger.Information(
-                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}.",
+                "Received " + nameof(BlockHeader) + " #{BlockIndex} {BlockHash}; " +
+                "Needed? {Needed}; Elapsed: {Elapsed}",
                 header.Index,
-                header.Hash
+                header.Hash,
+                needed,
+                elapsed
             );
 
-            if (!IsBlockNeeded(header))
+            if (!needed)
             {
                 _logger.Debug(
                     "Received header #{BlockIndex} {BlockHash} from peer {Peer} is not needed " +
@@ -179,7 +189,7 @@ namespace Libplanet.Net
 
             _logger.Information(
                 "Adding received header #{BlockIndex} {BlockHash} from peer {Peer} to " +
-                $"{nameof(BlockDemandTable)}...",
+                nameof(BlockDemandTable) + "...",
                 header.Index,
                 header.Hash,
                 peer);
