@@ -286,8 +286,11 @@ namespace Libplanet.Blockchain
             Block<T> block,
             StateCompleterSet<T> stateCompleters)
         {
+            DateTimeOffset startTime = DateTimeOffset.UtcNow;
             _logger.Debug(
-                "Render actions in block #{BlockIndex} {BlockHash}", block?.Index, block?.Hash);
+                "Rendering actions in block #{BlockIndex} {BlockHash}...",
+                block.Index,
+                block.Hash);
 
             if (evaluations is null)
             {
@@ -318,6 +321,16 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            TimeSpan renderDuration = DateTimeOffset.Now - startTime;
+            _logger
+                .ForContext("Tag", "Metric")
+                .Debug(
+                    "Finished rendering {RenderCount} renders for actions in " +
+                    "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
+                    count,
+                    block.Index,
+                    block.Hash,
+                    renderDuration.TotalMilliseconds);
             return count;
         }
 
