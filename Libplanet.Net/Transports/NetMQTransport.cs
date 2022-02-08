@@ -55,8 +55,8 @@ namespace Libplanet.Net.Transports
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
 
         /// <summary>
-        /// The <see cref="EventHandler" /> triggered when the different version of
-        /// <see cref="Peer" /> is discovered.
+        /// The <see cref="EventHandler"/> triggered when the different version of
+        /// <see cref="Peer"/> is discovered.
         /// </summary>
         private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
@@ -471,7 +471,7 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void BroadcastMessage(IEnumerable<BoundPeer> peers, Message message)
         {
             if (_disposed)
@@ -687,7 +687,7 @@ namespace Libplanet.Net.Transports
                                     }
                                 });
 
-                            if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                            if (!dealer.TrySendMultipartMessage(message))
                             {
                                 // NOTE: ObjectDisposedException can occur even the check exists.
                                 // So just ignore the case and remove dealer socket.
@@ -701,7 +701,8 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     exc,
-                    "Unexpected error occurred during " + nameof(DoBroadcast) + "().");
+                    "Unexpected error occurred during {FName}().",
+                    nameof(DoBroadcast));
             }
         }
 
@@ -792,10 +793,11 @@ namespace Libplanet.Net.Transports
             using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
 
             _logger.Debug(
-                "Trying to send request {Message} {RequestId} to {Peer}...",
+                "Trying to send request {Message} {RequestId} to {Peer} with timeout {Timeout}...",
                 req.Message,
                 req.Id,
-                req.Peer);
+                req.Peer,
+                req.Timeout);
             var message = _messageCodec.Encode(
                 req.Message,
                 _privateKey,
@@ -806,18 +808,27 @@ namespace Libplanet.Net.Transports
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try
             {
-                await dealer.SendMultipartMessageAsync(
-                    message,
-                    timeout: req.Timeout,
-                    cancellationToken: cancellationToken
-                );
+                if (dealer.TrySendMultipartMessage(message))
+                {
+                    _logger.Debug(
+                        "Request {Message} {RequestId} sent to {Peer}.",
+                        req.Message,
+                        req.Id,
+                        req.Peer);
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Failed to send {Message} {RequestId} to {Peer}.",
+                        req.Message,
+                        req.Id,
+                        req.Peer);
 
-                _logger.Debug(
-                    "Request {Message} {RequestId} sent to {Peer} with timeout {Timeout}.",
-                    req.Message,
-                    req.Id,
-                    req.Peer,
-                    req.Timeout);
+                    // FIXME: Separate exception class should be implemented when API change
+                    // is allowed.
+                    throw new TimeoutException(
+                        $"{nameof(DealerSocket)} failed to accept {req.Message}");
+                }
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
