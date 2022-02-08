@@ -35,6 +35,19 @@ To be released.
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 
 
+Version 0.27.2
+--------------
+
+Released on Februrary 8, 2022.
+
+ -  (Libplanet.Net) Sending a `Message` through `NetMQTransport` now fails
+    immediately if the `Message` cannot be queued to a `DealerSocket`
+    right away.  [[#1753], [#1778]]
+
+[#1753]: https://github.com/planetarium/libplanet/issues/1753
+[#1778]: https://github.com/planetarium/libplanet/pull/1778
+
+
 Version 0.27.1
 --------------
 
