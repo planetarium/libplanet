@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IStagePolicy&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IStagePolicy&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1">
+  
+  
+  <h1 id="Libplanet_Blockchain_Policies_IStagePolicy_1" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1" class="text-break">Interface IStagePolicy&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>An interface to configure a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s strategy to deal with staged
+transactions.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Policies_IStagePolicy_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IStagePolicy&lt;T&gt;
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
+the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_IStagePolicy_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Every operation of an implementation of this <code>interface</code> must be thread-safe.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Get(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Get_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Get*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Get_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_System_Boolean_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Get(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId,System.Boolean)">Get(BlockChain&lt;T&gt;, TxId, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Retrieves a staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> by its <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Transaction&lt;T&gt; Get(BlockChain&lt;T&gt; blockChain, TxId id, bool filtered = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to get.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">filtered</span></td>
+        <td><p>Whether to filter masked staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+or not.  Set to <code>true</code> by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><p>The staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> associated with <code data-dev-comment-type="paramref" class="paramref">id</code>
+if found,  <code>null</code> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.GetNextTxNonce(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L103">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_GetNextTxNonce_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.GetNextTxNonce*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_GetNextTxNonce_Libplanet_Blockchain_BlockChain__0__Libplanet_Address_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.GetNextTxNonce(Libplanet.Blockchain.BlockChain{`0},Libplanet.Address)">GetNextTxNonce(BlockChain&lt;T&gt;, Address)</h4>
+  <div class="markdown level1 summary"><p>Calculates the next nonce according for given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">long GetNextTxNonce(BlockChain&lt;T&gt; blockChain, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to calculate the next nonce for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>The next appropriate nonce for <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Ignore(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L61">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Ignore(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Ignore(BlockChain&lt;T&gt;, TxId)</h4>
+  <div class="markdown level1 summary"><p>Marks given <code data-dev-comment-type="paramref" class="paramref">id</code> as ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Ignore(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to ignore.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Ignore_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> associated with <code data-dev-comment-type="paramref" class="paramref">id</code> is already
+staged, this also unstages the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Ignores(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Ignores_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Ignores_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Ignores(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Ignores(BlockChain&lt;T&gt;, TxId)</h4>
+  <div class="markdown level1 summary"><p>Checks if given <code data-dev-comment-type="paramref" class="paramref">id</code> is marked as ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Ignores(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if <code data-dev-comment-type="paramref" class="paramref">id</code> is marked as ignored,
+<code>false</code> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Iterate(Libplanet.Blockchain.BlockChain%7B%600%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L93">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Iterate_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Iterate*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Iterate_Libplanet_Blockchain_BlockChain__0__System_Boolean_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Iterate(Libplanet.Blockchain.BlockChain{`0},System.Boolean)">Iterate(BlockChain&lt;T&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Enumerates all staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Transaction&lt;T&gt;&gt; Iterate(BlockChain&lt;T&gt; blockChain, bool filtered = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">filtered</span></td>
+        <td><p>Whether to filter masked staged <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+or not.  Set to <code>true</code> by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><p>All staged transactions.  No ordering is guaranteed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Stage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L36">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Stage_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Stage*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Stage(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0})">Stage(BlockChain&lt;T&gt;, Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Stages a <code data-dev-comment-type="paramref" class="paramref">transaction</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Stage(BlockChain&lt;T&gt; blockChain, Transaction&lt;T&gt; transaction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">transaction</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> to be staged.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if staging was successful, <code>false</code> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Stage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+This does not throw any exception regardless of whether <code data-dev-comment-type="paramref" class="paramref">transaction</code>
+was successfully staged or not.
+</p>
+<p>
+If the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of <code data-dev-comment-type="paramref" class="paramref">transaction</code> is marked
+as ignored, <code data-dev-comment-type="paramref" class="paramref">transaction</code> will not be staged.
+</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601.Unstage(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L49">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_IStagePolicy_1_Unstage_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Unstage*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId_" data-uid="Libplanet.Blockchain.Policies.IStagePolicy`1.Unstage(Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.TxId)">Unstage(BlockChain&lt;T&gt;, TxId)</h4>
+  <div class="markdown level1 summary"><p>Unstages a transaction <code data-dev-comment-type="paramref" class="paramref">id</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Unstage(BlockChain&lt;T&gt; blockChain, TxId id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> that the stage belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> to unstage.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if unstaging was successful, <code>false</code> otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_IStagePolicy_1_Unstage_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_TxId__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not throw any exception regardless of whether <code data-dev-comment-type="paramref" class="paramref">id</code> was
+successfully unstaged or not.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/apiSpec/new?filename=Libplanet_Blockchain_Policies_IStagePolicy_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IStagePolicy%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/246914d8de43f1eab8fdb45cc1fab196efb9d8f3/Libplanet/Blockchain/Policies/IStagePolicy.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
