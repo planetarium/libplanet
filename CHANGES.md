@@ -23,6 +23,9 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Net) `MessageSendFailedException` class added.
+    [[#1781], [#1786]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -33,6 +36,8 @@ To be released.
 
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
+[#1781]: https://github.com/planetarium/libplanet/issues/1781
+[#1786]: https://github.com/planetarium/libplanet/pull/1786
 
 
 Version 0.27.2
