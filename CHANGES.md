@@ -40,6 +40,12 @@ To be released.
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
 
 
+Version 0.27.3
+--------------
+
+To be released.
+
+
 Version 0.27.2
 --------------
 
