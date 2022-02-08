@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.27.2
 --------------
 
-To be released.
+Released on Februrary 8, 2022.
 
  -  (Libplanet.Net) Sending a `Message` through `NetMQTransport` now fails
     immediately if the `Message` cannot be queued to a `DealerSocket`
