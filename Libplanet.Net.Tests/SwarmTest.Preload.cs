@@ -532,8 +532,8 @@ namespace Libplanet.Net.Tests
 
                 // FIXME: this test does not ensures block download in order
                 Assert.Equal(
-                    Enumerable.ToHashSet(expectedStates),
-                    Enumerable.ToHashSet(actualStates)
+                    new HashSet<PreloadState>(expectedStates),
+                    new HashSet<PreloadState>(actualStates)
                 );
             }
             finally

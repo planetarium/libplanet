@@ -8,6 +8,9 @@ using Libplanet.Net.Protocols;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 
 namespace Libplanet.Net.Tests.Protocols
 {

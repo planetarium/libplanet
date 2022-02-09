@@ -16,6 +16,9 @@ using Serilog;
 using xRetry;
 using Xunit;
 using Xunit.Abstractions;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 using static Libplanet.Tests.TestUtils;
 using AsyncEnumerable = System.Linq.AsyncEnumerable;
 

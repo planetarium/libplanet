@@ -20,6 +20,9 @@ using Serilog;
 using Serilog.Events;
 using xRetry;
 using Xunit;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 using static Libplanet.Tests.LoggerExtensions;
 using static Libplanet.Tests.TestUtils;
 
