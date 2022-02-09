@@ -117,6 +117,18 @@ namespace Libplanet.Net.Tests
                 host = IPAddress.Loopback.ToString();
             }
 
+            options ??= new SwarmOptions();
+            string type = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
+            switch (type)
+            {
+                case "tcp":
+                    options.Type = SwarmOptions.TransportType.TcpTransport;
+                    break;
+                case "netmq":
+                    options.Type = SwarmOptions.TransportType.NetMQTransport;
+                    break;
+            }
+
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
