@@ -3,10 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Net;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public class InvalidMessageTimestampExceptionTest
     {

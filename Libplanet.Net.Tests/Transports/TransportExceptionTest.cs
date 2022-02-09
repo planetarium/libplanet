@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Net.Transports;
 using Xunit;
 
-namespace Libplanet.Tests.Net.Transports
+namespace Libplanet.Net.Tests.Transports
 {
     public class TransportExceptionTest
     {

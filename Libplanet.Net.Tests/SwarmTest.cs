@@ -15,7 +15,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -31,7 +30,7 @@ using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     [Collection("NetMQConfiguration")]
     public partial class SwarmTest : IDisposable
@@ -539,7 +538,7 @@ namespace Libplanet.Tests.Net
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
-            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
+            var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
             AppProtocolVersion ver = AppProtocolVersion.Sign(key, 1);
             Assert.Throws<ArgumentNullException>(() => { new Swarm<DumbAction>(null, key, ver); });
@@ -750,8 +749,8 @@ namespace Libplanet.Tests.Net
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
 
-            var chain1 = TestUtils.MakeBlockChain(policy1, fx1.Store, fx1.StateStore);
-            var chain2 = TestUtils.MakeBlockChain(policy2, fx2.Store, fx2.StateStore);
+            var chain1 = MakeBlockChain(policy1, fx1.Store, fx1.StateStore);
+            var chain2 = MakeBlockChain(policy2, fx2.Store, fx2.StateStore);
 
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
@@ -765,13 +764,13 @@ namespace Libplanet.Tests.Net
             await chain2.MineBlock(key2);
 
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
-            Block<DumbAction> block3 = TestUtils.MineNext(
+            Block<DumbAction> block3 = MineNext(
                 chain2.Tip,
                 policy2.GetHashAlgorithm,
-                miner: TestUtils.ChainPrivateKey.PublicKey,
+                miner: ChainPrivateKey.PublicKey,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).Evaluate(TestUtils.ChainPrivateKey, chain2);
+            ).Evaluate(ChainPrivateKey, chain2);
             chain2.Append(block3);
             try
             {
@@ -803,7 +802,7 @@ namespace Libplanet.Tests.Net
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var renderer = new RecordingActionRenderer<DumbAction>();
-            var chain = TestUtils.MakeBlockChain(
+            var chain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
@@ -815,7 +814,7 @@ namespace Libplanet.Tests.Net
 
             var miner1 = CreateSwarm(chain, key1);
             var miner2 = CreateSwarm(
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     new MemoryStore(),
                     new TrieStateStore(new MemoryKeyValueStore())
@@ -860,11 +859,11 @@ namespace Libplanet.Tests.Net
         public async Task ForkByDifficulty()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var chain1 = TestUtils.MakeBlockChain(
+            var chain1 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
-            var chain2 = TestUtils.MakeBlockChain(
+            var chain2 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()));
@@ -879,13 +878,13 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(key2);
             long nextDifficulty =
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-            Block<DumbAction> block = TestUtils.MineNext(
+            Block<DumbAction> block = MineNext(
                 chain2.Tip,
                 policy.GetHashAlgorithm,
-                miner: TestUtils.ChainPrivateKey.PublicKey,
+                miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
-            ).Evaluate(TestUtils.ChainPrivateKey, chain2);
+            ).Evaluate(ChainPrivateKey, chain2);
             chain2.Append(block);
 
             Assert.True(chain1.Tip.Index > chain2.Tip.Index);
@@ -921,7 +920,7 @@ namespace Libplanet.Tests.Net
 
             Swarm<Sleep> MakeSwarm(PrivateKey key = null) =>
                 CreateSwarm(
-                    TestUtils.MakeBlockChain(
+                    MakeBlockChain(
                         policy,
                         new MemoryStore(),
                         new TrieStateStore(new MemoryKeyValueStore())
@@ -1078,9 +1077,9 @@ namespace Libplanet.Tests.Net
             var fx2 = new MemoryStoreFixture();
 
             var swarmA = CreateSwarm(
-                TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore, privateKey: validKey));
+                MakeBlockChain(policy, fx1.Store, fx1.StateStore, privateKey: validKey));
             var swarmB = CreateSwarm(
-                TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore, privateKey: validKey));
+                MakeBlockChain(policy, fx2.Store, fx2.StateStore, privateKey: validKey));
 
             var invalidKey = new PrivateKey();
 
@@ -1137,14 +1136,14 @@ namespace Libplanet.Tests.Net
             var fx2 = new MemoryStoreFixture();
 
             var swarmA = CreateSwarm(
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     fx1.Store,
                     fx1.StateStore,
                     privateKey: validKey,
                     timestamp: DateTimeOffset.MinValue));
             var swarmB = CreateSwarm(
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     fx2.Store,
                     fx2.StateStore,
@@ -1527,12 +1526,12 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = TestUtils.MineNext(
+                Block<DumbAction> block = MineNext(
                     chain.Tip,
                     chain.Policy.GetHashAlgorithm,
-                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
-                ).Evaluate(TestUtils.ChainPrivateKey, chain);
+                ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }
 
@@ -1571,12 +1570,12 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = TestUtils.MineNext(
+                Block<DumbAction> block = MineNext(
                     chain.Tip,
                     chain.Policy.GetHashAlgorithm,
-                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
-                ).Evaluate(TestUtils.ChainPrivateKey, chain);
+                ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }
 
@@ -1616,12 +1615,12 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = TestUtils.MineNext(
+                Block<DumbAction> block = MineNext(
                     chain.Tip,
                     chain.Policy.GetHashAlgorithm,
-                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
-                ).Evaluate(TestUtils.ChainPrivateKey, chain);
+                ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }
 

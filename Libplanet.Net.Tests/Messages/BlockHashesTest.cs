@@ -5,12 +5,11 @@ using System.Linq;
 using System.Net;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using NetMQ;
 using Xunit;
 
-namespace Libplanet.Tests.Net.Messages
+namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
     public class BlockHashesTest : IDisposable

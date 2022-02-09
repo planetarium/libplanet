@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Libplanet.Net;
 using Libplanet.Stun;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public class IceServerTest
     {

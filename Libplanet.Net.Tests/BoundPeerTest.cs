@@ -5,10 +5,9 @@ using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public class BoundPeerTest
     {

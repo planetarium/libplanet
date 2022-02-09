@@ -7,15 +7,15 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net.Messages
+namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
     public class NetMQMessageCodecTest : IDisposable
@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Net.Messages
             var privateKey = new PrivateKey();
             var boundPeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("localhost", 1000));
             IBlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>();
-            BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
+            BlockChain<DumbAction> chain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())

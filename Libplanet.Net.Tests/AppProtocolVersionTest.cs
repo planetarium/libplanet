@@ -3,10 +3,9 @@ using System;
 using System.Collections.Immutable;
 using Bencodex;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public class AppProtocolVersionTest
     {

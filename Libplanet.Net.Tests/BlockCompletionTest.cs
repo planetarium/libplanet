@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
-using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using xRetry;
 using Xunit;
 using Xunit.Abstractions;
+using static Libplanet.Tests.TestUtils;
 using AsyncEnumerable = System.Linq.AsyncEnumerable;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public class BlockCompletionTest
     {
@@ -292,10 +292,10 @@ namespace Libplanet.Tests.Net
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
             HashAlgorithmGetter hashAlgoGetter = _ => HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> genesis = TestUtils.MineGenesisBlock<DumbAction>(
-                    hashAlgoGetter, TestUtils.GenesisMiner),
-                demand = TestUtils.MineNextBlock(genesis, hashAlgoGetter, TestUtils.GenesisMiner),
-                wrong = TestUtils.MineNextBlock(genesis, hashAlgoGetter, TestUtils.GenesisMiner);
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
+                    hashAlgoGetter, GenesisMiner),
+                demand = MineNextBlock(genesis, hashAlgoGetter, GenesisMiner),
+                wrong = MineNextBlock(genesis, hashAlgoGetter, GenesisMiner);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -405,13 +405,13 @@ namespace Libplanet.Tests.Net
             if (count >= 1)
             {
                 Block<T> block =
-                    TestUtils.MineGenesisBlock<T>(hashAlgorithmGetter, TestUtils.GenesisMiner);
+                    MineGenesisBlock<T>(hashAlgorithmGetter, GenesisMiner);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
                     block =
-                        TestUtils.MineNextBlock(block, hashAlgorithmGetter, TestUtils.GenesisMiner);
+                        MineNextBlock(block, hashAlgorithmGetter, GenesisMiner);
                     yield return block;
                 }
             }

@@ -6,13 +6,14 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests;
 using Libplanet.Tests.Common.Action;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
@@ -43,12 +44,12 @@ namespace Libplanet.Tests.Net
                 new MinerReward(1),
                 canonicalChainComparer: canonComparer
             );
-            BlockChain<DumbAction> chain1 = TestUtils.MakeBlockChain(
+            BlockChain<DumbAction> chain1 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
             );
-            BlockChain<DumbAction> chain2 = TestUtils.MakeBlockChain(
+            BlockChain<DumbAction> chain2 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore())
@@ -69,13 +70,13 @@ namespace Libplanet.Tests.Net
                 default:
                     long nextDifficulty =
                         (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-                    bestBlock = TestUtils.MineNext(
+                    bestBlock = MineNext(
                         chain2.Tip,
                         policy.GetHashAlgorithm,
                         difficulty: nextDifficulty,
                         blockInterval: TimeSpan.FromMilliseconds(1),
-                        miner: TestUtils.ChainPrivateKey.PublicKey
-                    ).Evaluate(TestUtils.ChainPrivateKey, chain2);
+                        miner: ChainPrivateKey.PublicKey
+                    ).Evaluate(ChainPrivateKey, chain2);
                     _output.WriteLine("chain1's total difficulty: {0}", chain1.Tip.TotalDifficulty);
                     _output.WriteLine("chain2's total difficulty: {0}", bestBlock.TotalDifficulty);
                     break;
@@ -85,13 +86,13 @@ namespace Libplanet.Tests.Net
                     string hashStr;
                     do
                     {
-                        bestBlock = TestUtils.MineNext(
+                        bestBlock = MineNext(
                             chain2.Tip,
                             policy.GetHashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
                             blockInterval: TimeSpan.FromMilliseconds(1),
-                            miner: TestUtils.ChainPrivateKey.PublicKey
-                        ).Evaluate(TestUtils.ChainPrivateKey, chain2);
+                            miner: ChainPrivateKey.PublicKey
+                        ).Evaluate(ChainPrivateKey, chain2);
                         hashStr = bestBlock.Hash.ToString();
                         _output.WriteLine("chain1's tip hash: {0}", chain1.Tip.Hash);
                         _output.WriteLine("chain2's tip hash: {0}", bestBlock.Hash);

@@ -13,9 +13,9 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -23,8 +23,9 @@ using Serilog;
 using Serilog.Events;
 using xRetry;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
@@ -118,12 +119,12 @@ namespace Libplanet.Tests.Net
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 11))
             {
-                Block<DumbAction> block = TestUtils.MineNext(
+                Block<DumbAction> block = MineNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
                     hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
-                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
-                ).Evaluate(TestUtils.ChainPrivateKey, minerChain);
+                ).Evaluate(ChainPrivateKey, minerChain);
                 blocks.Add(block);
                 if (i != 10)
                 {
@@ -252,13 +253,13 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var renderer1 = new RecordingActionRenderer<DumbAction>();
             var renderer2 = new RecordingActionRenderer<DumbAction>();
-            var chain1 = TestUtils.MakeBlockChain(
+            var chain1 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 renderers: new[] { renderer1 }
             );
-            var chain2 = TestUtils.MakeBlockChain(
+            var chain2 = MakeBlockChain(
                 policy,
                 new MemoryStore(),
                 new TrieStateStore(new MemoryKeyValueStore()),
@@ -270,7 +271,7 @@ namespace Libplanet.Tests.Net
             var receiver1 = CreateSwarm(chain1);
             var receiver2 = CreateSwarm(chain2);
             var sender = CreateSwarm(
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     new MemoryStore(),
                     new TrieStateStore(new MemoryKeyValueStore())
@@ -367,8 +368,8 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<ThrowException>();
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
-            var minerChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
-            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
+            var minerChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
+            var receiverChain = MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 
             var minerKey = new PrivateKey();
 
@@ -399,14 +400,14 @@ namespace Libplanet.Tests.Net
                     DateTimeOffset.UtcNow
                 );
 
-                Block<ThrowException> block = TestUtils.MineNext(
+                Block<ThrowException> block = MineNext(
                     minerChain.Tip,
                     minerChain.Policy.GetHashAlgorithm,
                     new[] { tx },
-                    miner: TestUtils.ChainPrivateKey.PublicKey,
+                    miner: ChainPrivateKey.PublicKey,
                     difficulty: policy.GetNextBlockDifficulty(minerChain),
                     blockInterval: TimeSpan.FromSeconds(1)
-                ).Evaluate(TestUtils.ChainPrivateKey, minerChain);
+                ).Evaluate(ChainPrivateKey, minerChain);
                 minerSwarm.BlockChain.Append(block, false, true, false);
 
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
@@ -432,11 +433,11 @@ namespace Libplanet.Tests.Net
             fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
             {
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     fxForNominers[0].Store,
                     fxForNominers[0].StateStore),
-                TestUtils.MakeBlockChain(
+                MakeBlockChain(
                     policy,
                     fxForNominers[1].Store,
                     fxForNominers[1].StateStore),
@@ -531,8 +532,8 @@ namespace Libplanet.Tests.Net
 
                 // FIXME: this test does not ensures block download in order
                 Assert.Equal(
-                    expectedStates.ToHashSet(),
-                    actualStates.ToHashSet()
+                    Enumerable.ToHashSet(expectedStates),
+                    Enumerable.ToHashSet(actualStates)
                 );
             }
             finally
@@ -875,12 +876,12 @@ namespace Libplanet.Tests.Net
 
             long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
-            Block<DumbAction> block = TestUtils.MineNext(
+            Block<DumbAction> block = MineNext(
                 minerChain2.Tip,
                 minerChain2.Policy.GetHashAlgorithm,
-                miner: TestUtils.ChainPrivateKey.PublicKey,
+                miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty
-            ).Evaluate(TestUtils.ChainPrivateKey, minerChain2);
+            ).Evaluate(ChainPrivateKey, minerChain2);
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);
@@ -928,10 +929,11 @@ namespace Libplanet.Tests.Net
                 new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
             );
 
-            BlockChain<DumbAction> MakeBlockChain(PreEvaluationBlock<DumbAction> genesisBlock)
+            BlockChain<DumbAction> MakeBlockChainWithGenesis(
+                PreEvaluationBlock<DumbAction> genesisBlock)
             {
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-                return TestUtils.MakeBlockChain(
+                return MakeBlockChain(
                     policy,
                     new MemoryStore(),
                     stateStore,
@@ -939,9 +941,9 @@ namespace Libplanet.Tests.Net
                 );
             }
 
-            BlockChain<DumbAction> receiverChain = MakeBlockChain(genesisBlock1);
-            BlockChain<DumbAction> validSeedChain = MakeBlockChain(genesisBlock1);
-            BlockChain<DumbAction> invalidSeedChain = MakeBlockChain(genesisBlock2);
+            BlockChain<DumbAction> receiverChain = MakeBlockChainWithGenesis(genesisBlock1);
+            BlockChain<DumbAction> validSeedChain = MakeBlockChainWithGenesis(genesisBlock1);
+            BlockChain<DumbAction> invalidSeedChain = MakeBlockChainWithGenesis(genesisBlock2);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
             Swarm<DumbAction> validSeedSwarm = CreateSwarm(validSeedChain);
             Swarm<DumbAction> invalidSeedSwarm = CreateSwarm(invalidSeedChain);
@@ -989,8 +991,8 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
-            var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
-            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
+            var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
+            var receiverChain = MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 
             var seedKey = new PrivateKey();
 
@@ -1043,8 +1045,8 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
-            var seedChain = TestUtils.MakeBlockChain(policy, fx1.Store, fx1.StateStore);
-            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store, fx2.StateStore);
+            var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
+            var receiverChain = MakeBlockChain(policy, fx2.Store, fx2.StateStore);
 
             Swarm<DumbAction> seed = CreateSwarm(seedChain);
             Swarm<DumbAction> receiver = CreateSwarm(receiverChain);
