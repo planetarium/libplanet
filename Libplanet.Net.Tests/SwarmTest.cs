@@ -567,7 +567,16 @@ namespace Libplanet.Net.Tests
             var expected = new DnsEndPoint("1.2.3.4", 5678);
             using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
             {
-                await ((TcpTransport)s.Transport).Initialize();
+                // Looks weired, but inevitable because Initialize() is internal.
+                if (s.Transport is TcpTransport t)
+                {
+                    await t.Initialize();
+                }
+                else if (s.Transport is NetMQTransport n)
+                {
+                    await n.Initialize();
+                }
+
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
             }

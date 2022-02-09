@@ -119,6 +119,7 @@ namespace Libplanet.Net.Tests
 
             options ??= new SwarmOptions();
             string type = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
+            _logger.Debug("Transport type: {Type}", type);
             switch (type)
             {
                 case "tcp":
