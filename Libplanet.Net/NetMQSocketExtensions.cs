@@ -52,41 +52,21 @@ namespace Libplanet.Net
 
         public static Task<NetMQMessage> ReceiveMultipartMessageAsync(
             this NetMQSocket socket,
-            TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var timeoutCts = new CancellationTokenSource();
-            if (timeout is TimeSpan timeoutNotNull)
-            {
-                timeoutCts.CancelAfter(timeoutNotNull);
-            }
-
-            CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(
-                cancellationToken,
-                timeoutCts.Token
-            );
-
             return socket.ReceiveMultipartMessageAsync(
                 expectedFrameCount: 4,
-                cancellationToken: cts.Token
+                cancellationToken: cancellationToken
             ).ContinueWith(t =>
             {
-                try
+                if (t.IsCanceled)
                 {
-                    if (t.IsCanceled && timeoutCts.IsCancellationRequested)
-                    {
-                        throw new TimeoutException(
-                            $"The operation exceeded the specified time: {timeout}."
-                        );
-                    }
+                    throw new OperationCanceledException(
+                        $"{nameof(ReceiveMultipartMessageAsync)}() was canceled during " +
+                        "its operation.");
+                }
 
-                    return t.Result;
-                }
-                finally
-                {
-                    timeoutCts.Dispose();
-                    cts.Dispose();
-                }
+                return t.Result;
             });
         }
     }
