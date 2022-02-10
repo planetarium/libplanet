@@ -32,6 +32,11 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Net) `NetMQTransport.SendMessageWithReplyAsync()` should now
+    complete its process within given timeframe `timeout` argument instead
+    of possibly taking longer on some edge cases when waiting for
+    multiple replies.  [[#1734], [#1789]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -43,10 +48,12 @@ To be released.
     than it outputs all of the different nodes at once.  [[#1729]]
 
 [#1729]: https://github.com/planetarium/libplanet/pull/1729
+[#1734]: https://github.com/planetarium/libplanet/issues/1734
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
+[#1789]: https://github.com/planetarium/libplanet/pull/1789
 [Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
 
 
