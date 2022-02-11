@@ -286,8 +286,10 @@ namespace Libplanet.Net
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpt,
             BlockChain<T> workspace,
             IProgress<PreloadState> progress,
+            bool preload,
             bool render,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+        )
         {
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -521,7 +523,7 @@ namespace Libplanet.Net
                     if (bottomBlock.PreviousHash is { } bp)
                     {
                         branchpoint = workspace[bp];
-                        if (workspace[-1] != branchpoint)
+                        if (preload || workspace[-1] != branchpoint)
                         {
                             _logger.Debug(
                                 "Branchpoint block is #{Index} {Hash}.",
@@ -546,7 +548,7 @@ namespace Libplanet.Net
                                     deltaBlock.Hash);
                                 workspace.Append(
                                     deltaBlock,
-                                    evaluateActions: true,
+                                    evaluateActions: !preload,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
                                 );
@@ -581,11 +583,14 @@ namespace Libplanet.Net
                     }
                 }
 
-                ExecuteActions(
-                    workspace,
-                    branchpoint,
-                    progress,
-                    cancellationToken);
+                if (preload)
+                {
+                    ExecuteActions(
+                        workspace,
+                        branchpoint,
+                        progress,
+                        cancellationToken);
+                }
 
                 complete = true;
             }
