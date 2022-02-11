@@ -804,15 +804,13 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PullBlocks()
         {
-            var swarmOptions = new SwarmOptions();
-            swarmOptions.Type = SwarmOptions.TransportType.NetMQTransport;
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
             var keyC = new PrivateKey();
 
-            var swarmA = CreateSwarm(keyA, options: swarmOptions);
-            var swarmB = CreateSwarm(keyB, options: swarmOptions);
-            var swarmC = CreateSwarm(keyC, options: swarmOptions);
+            var swarmA = CreateSwarm(keyA);
+            var swarmB = CreateSwarm(keyB);
+            var swarmC = CreateSwarm(keyC);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
@@ -845,7 +843,6 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
-                await swarmC.BlockAppended.WaitAsync();
                 Assert.Equal(chainC.Tip, chainATip);
             }
             finally
@@ -863,8 +860,6 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PullBlocksByDifficulty()
         {
-            var swarmOptions = new SwarmOptions();
-            swarmOptions.Type = SwarmOptions.TransportType.NetMQTransport;
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var chain1 = MakeBlockChain(
                 policy,
@@ -878,8 +873,8 @@ namespace Libplanet.Net.Tests
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
 
-            var miner1 = CreateSwarm(chain1, key1, options: swarmOptions);
-            var miner2 = CreateSwarm(chain2, key2, options: swarmOptions);
+            var miner1 = CreateSwarm(chain1, key1);
+            var miner2 = CreateSwarm(chain2, key2);
 
             await chain1.MineBlock(key1);
             await chain1.MineBlock(key2);
@@ -905,7 +900,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(miner2, miner1.AsPeer);
 
                 await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
-                await miner1.BlockAppended.WaitAsync();
+
                 Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
                 Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
             }
