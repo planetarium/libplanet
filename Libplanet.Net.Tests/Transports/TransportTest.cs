@@ -8,7 +8,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -18,7 +17,7 @@ using Xunit;
 using Xunit.Sdk;
 using static Libplanet.Net.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net.Transports
+namespace Libplanet.Net.Tests.Transports
 {
     public abstract class TransportTest
     {

@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Protocols;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {

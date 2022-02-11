@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Transports;
 using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Tests.Net.Transports
+namespace Libplanet.Net.Tests.Transports
 {
     [Collection("NetMQConfiguration")]
     public class NetMQTransportTest : TransportTest, IDisposable

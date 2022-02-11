@@ -9,12 +9,12 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Net.Tests
 {
     public partial class SwarmTest
     {
@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Net
                 var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
                 using (var storeFx = new MemoryStoreFixture())
                 {
-                    var chain = TestUtils.MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
+                    var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
                     var miner = new PrivateKey();
                     var signer = new PrivateKey();
                     Address address = signer.ToAddress();
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Net
         {
             policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
-            var blockchain = TestUtils.MakeBlockChain(
+            var blockchain = MakeBlockChain(
                 policy,
                 fx.Store,
                 fx.StateStore,
@@ -115,6 +115,19 @@ namespace Libplanet.Tests.Net
             if (host is null && !(iceServers?.Any() ?? false))
             {
                 host = IPAddress.Loopback.ToString();
+            }
+
+            options ??= new SwarmOptions();
+            string type = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
+            _logger.Debug("Transport type: {Type}", type);
+            switch (type)
+            {
+                case "tcp":
+                    options.Type = SwarmOptions.TransportType.TcpTransport;
+                    break;
+                case "netmq":
+                    options.Type = SwarmOptions.TransportType.NetMQTransport;
+                    break;
             }
 
             var swarm = new Swarm<T>(

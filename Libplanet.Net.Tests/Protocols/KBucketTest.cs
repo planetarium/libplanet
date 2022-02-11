@@ -5,12 +5,14 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 
-namespace Libplanet.Tests.Net.Protocols
+namespace Libplanet.Net.Tests.Protocols
 {
     public class KBucketTest
     {

@@ -8,14 +8,13 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Tests.Net.Transports
+namespace Libplanet.Net.Tests.Transports
 {
     public class TcpTransportTest : TransportTest
     {

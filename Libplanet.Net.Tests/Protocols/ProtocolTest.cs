@@ -5,15 +5,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 using static Libplanet.Net.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net.Protocols
+namespace Libplanet.Net.Tests.Protocols
 {
     public class ProtocolTest
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Tests.Net.Protocols
+namespace Libplanet.Net.Tests.Protocols
 {
     internal class TestMessage : Message
     {

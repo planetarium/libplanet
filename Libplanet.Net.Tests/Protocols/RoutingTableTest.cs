@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Protocols;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+#if NETFRAMEWORK && (NET47 || NET471)
+using static Libplanet.Tests.HashSetExtensions;
+#endif
 
-namespace Libplanet.Tests.Net.Protocols
+namespace Libplanet.Net.Tests.Protocols
 {
     public class RoutingTableTest
     {

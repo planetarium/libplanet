@@ -6,13 +6,13 @@ using System.Net;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net.Messages
+namespace Libplanet.Net.Tests.Messages
 {
     [Collection("NetMQConfiguration")]
     public class MessageTest : IDisposable
@@ -95,9 +95,9 @@ namespace Libplanet.Tests.Net.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = TestUtils.MineGenesisBlock<DumbAction>(
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
                 _ => HashAlgorithmType.Of<SHA256>(),
-                TestUtils.GenesisMiner
+                GenesisMiner
             );
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();

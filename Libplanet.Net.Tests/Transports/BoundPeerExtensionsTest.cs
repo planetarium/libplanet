@@ -5,15 +5,15 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using NetMQ;
 using Xunit;
 using Xunit.Sdk;
+using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Net.Transports
+namespace Libplanet.Net.Tests.Transports
 {
     [Collection("NetMQConfiguration")]
     public class BoundPeerExtensionsTest : IDisposable
@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Net.Transports
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
-            var blockchain = TestUtils.MakeBlockChain(policy, fx.Store, fx.StateStore);
+            var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var apvKey = new PrivateKey();
             var swarmKey = new PrivateKey();
             AppProtocolVersion apv = AppProtocolVersion.Sign(apvKey, 1);
