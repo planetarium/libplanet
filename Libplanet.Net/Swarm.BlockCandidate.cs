@@ -174,8 +174,7 @@ namespace Libplanet.Net
                  );
              }
 
-             if (!(workspace.Tip is null) &&
-                 !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
+             if (!(workspace.Tip is null))
              {
                  blocks = blocks.Skip(1).ToList();
              }
@@ -239,7 +238,7 @@ namespace Libplanet.Net
                 {
                     newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
                 }
-                catch (InvalidOperationException)
+                catch (ArgumentNullException)
                 {
                     newTip = BlockChain[bPrev];
                 }
@@ -268,7 +267,7 @@ namespace Libplanet.Net
                     {
                         newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
                     }
-                    catch (InvalidOperationException)
+                    catch (ArgumentNullException)
                     {
                         newTip = BlockChain[bPrev];
                     }
