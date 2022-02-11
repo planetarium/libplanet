@@ -6,6 +6,14 @@ Version 0.27.3
 
 To be released.
 
+ -  (Libplanet.Net) `Swarm<T>.CompleteBlockSync()` changed back,
+    reverting the behavior implemented in [#1759]
+    to fixed races between `Swarm<T>`'s dual systems for block
+    synchronization (polling and event-driven in parallel)
+    on updating chain  [[#1797]]
+
+[#1797]: https://github.com/planetarium/libplanet/pull/1797
+
 
 Version 0.27.2
 --------------
