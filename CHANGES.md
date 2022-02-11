@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.27.3
 --------------
 
-To be released.
+Released on Februrary 11, 2022.
 
  -  (Libplanet.Net) `Swarm<T>.CompleteBlockSync()` changed back,
     reverting the behavior implemented in [#1759]
