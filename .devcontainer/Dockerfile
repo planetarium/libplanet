@@ -4,6 +4,8 @@
 ARG VARIANT="6.0-bullseye-slim"
 FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
 
-# [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install bash-completion
+    && apt-get -y install bash-completion xz-utils
+
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs
