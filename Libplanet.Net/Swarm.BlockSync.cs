@@ -286,10 +286,8 @@ namespace Libplanet.Net
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpt,
             BlockChain<T> workspace,
             IProgress<PreloadState> progress,
-            bool preload,
             bool render,
-            CancellationToken cancellationToken
-        )
+            CancellationToken cancellationToken)
         {
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -523,17 +521,14 @@ namespace Libplanet.Net
                     if (bottomBlock.PreviousHash is { } bp)
                     {
                         branchpoint = workspace[bp];
-                        if (preload || workspace[-1] != branchpoint)
-                        {
-                            _logger.Debug(
-                                "Branchpoint block is #{Index} {Hash}.",
-                                branchpoint.Index,
-                                branchpoint.Hash);
-                            workspace = workspace.Fork(bp, inheritRenderers: true);
-                            chainIds.Add(workspace.Id);
-                            renderBlocks = false;
-                            renderActions = false;
-                        }
+                        _logger.Debug(
+                            "Branchpoint block is #{Index} {Hash}.",
+                            branchpoint.Index,
+                            branchpoint.Hash);
+                        workspace = workspace.Fork(bp, inheritRenderers: true);
+                        chainIds.Add(workspace.Id);
+                        renderBlocks = false;
+                        renderActions = false;
 
                         try
                         {
@@ -548,7 +543,7 @@ namespace Libplanet.Net
                                     deltaBlock.Hash);
                                 workspace.Append(
                                     deltaBlock,
-                                    evaluateActions: !preload,
+                                    evaluateActions: false,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
                                 );
@@ -583,15 +578,11 @@ namespace Libplanet.Net
                     }
                 }
 
-                if (preload)
-                {
-                    ExecuteActions(
-                        workspace,
-                        branchpoint,
-                        progress,
-                        cancellationToken);
-                }
-
+                ExecuteActions(
+                    workspace,
+                    branchpoint,
+                    progress,
+                    cancellationToken);
                 complete = true;
             }
             finally
