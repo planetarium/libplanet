@@ -73,6 +73,10 @@ instead of <code>InvalidMessageException</code> and <code>InvalidTimestampExcept
 respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#1771</a>]</li>
 <li>(Libplanet.Net) Added <code>long tipDeltaThreshold = 25L</code> option to
 <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>, <a href="https://github.com/planetarium/libplanet/pull/1777">#1777</a>, <a href="https://github.com/planetarium/libplanet/pull/1779">#1779</a>]</li>
+<li>The return type of <code>MerkleTrieExtensions.DifferentNodes()</code> became
+<code>IEnumerable&lt;Tuple&lt;KeyBytes, IValue, IValue&gt;&gt;</code> from
+<code>IEnumerable&lt;IGrouping&lt;string, (HashDigest&lt;SHA256&gt; Root, IValue Value)&gt;&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -85,6 +89,11 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li><code>planet mpt diff</code> command became to output the key and its values
+in one line as JSON whenever a different key is found,
+than it outputs all of the different nodes at once.  [<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
+</ul>
 <h2 id="version-0273">Version 0.27.3</h2>
 <p>Released on Februrary 11, 2022.</p>
 <ul>

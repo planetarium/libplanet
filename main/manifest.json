@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "AVGMo0MkkNZnpPp4GzxjTU6/Usq4FYD2OeMvrYCvtao="
+          "hash": "4RvuCl2HD/6bCcncyjfjD6nj07KHm1tlkk82OGvIF1I="
         }
       },
       "is_incremental": false,
@@ -2121,7 +2121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.Trie.MerkleTrieExtensions.html",
-          "hash": "oVhHYjmkuj17IxtcyI3RKygiD7RoMu1ojk8HnFA8j78="
+          "hash": "7JcOiZfypQ6WqJ/wPjBsado2taAXaBjKdc1+6QB4M3E="
         }
       },
       "is_incremental": false,
