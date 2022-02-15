@@ -16,6 +16,10 @@ To be released.
     respectively.  [[#1771]]
  -  (Libplanet.Net) Added `long tipDeltaThreshold = 25L` option to
     `Swarm<T>.PreloadAsync()` method.  [[#1775], [#1777], [#1779]]
+ -  The return type of `MerkleTrieExtensions.DifferentNodes()` became
+    `IEnumerable<Tuple<KeyBytes, IValue, IValue>>` from
+    `IEnumerable<IGrouping<string, (HashDigest<SHA256> Root, IValue Value)>>`.
+    [[#1729]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,6 +38,11 @@ To be released.
 
 ### CLI tools
 
+ -  `planet mpt diff` command became to output the key and its values
+    in one line as JSON whenever a different key is found,
+    than it outputs all of the different nodes at once.  [[#1729]]
+
+[#1729]: https://github.com/planetarium/libplanet/pull/1729
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 [#1781]: https://github.com/planetarium/libplanet/issues/1781

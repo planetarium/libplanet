@@ -59,11 +59,15 @@ namespace Libplanet.Tools.Tests
                     otherStateRootHashHex,
                     new TestToolConfigurationService(configuration));
 
+                string expected = string.Format(
+                    @"{{""Key"":""636f6d6d6f6e"",""StateRootHashToValue"":" +
+                    @"{{""{0}"":""75363a6265666f7265"",""{1}"":""75353a6166746572""}}}}" + "\n" +
+                    @"{{""Key"":""64656c65746564""," +
+                    @"""StateRootHashToValue"":{{""{0}"":""6e"",""{1}"":""null""}}}}" + "\n",
+                    stateRootHashHex,
+                    otherStateRootHashHex);
                 Assert.Equal(
-                    $@"{{""636f6d6d6f6e"":{{""{stateRootHashHex}"":""75363a6265666f7265""," +
-                    $@"""{otherStateRootHashHex}"":""75353a6166746572""}}," +
-                    $@"""64656c65746564"":{{""{stateRootHashHex}"":""6e""}}," +
-                    $@"""63726561746564"":{{""{otherStateRootHashHex}"":""6e""}}}}",
+                    expected,
                     stringWriter.ToString());
             }
             finally
