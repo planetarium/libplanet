@@ -8,8 +8,14 @@ To be released.
 
  -  Fixed *@planetarium/cli* npm package's bug where installation had not
     worked since 0.27.0.  [[#1790], [#1799]]
+ -  (Libplanet.Net) Return the fixed races between `Swarm<T>`'s dual systems
+    for block synchronization (polling and event-driven in parallel)
+    on updating chain by serializing the post-download process
+    which is common for both synchronization mechanisms.  [[#1731], [#1798]]
+
 
 [#1790]: https://github.com/planetarium/libplanet/issues/1790
+[#1798]: https://github.com/planetarium/libplanet/pull/1798
 [#1799]: https://github.com/planetarium/libplanet/pull/1799
 
 
