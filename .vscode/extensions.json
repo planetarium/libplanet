@@ -2,6 +2,7 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "ms-dotnettools.csharp",
-    "formulahendry.dotnet-test-explorer"
+    "formulahendry.dotnet-test-explorer",
+    "ms-vscode.powershell"
   ]
 }

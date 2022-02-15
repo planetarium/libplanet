@@ -43,3 +43,23 @@ Here's a testing script:
 ~~~ bash
 bin/npm-test.sh 0.27.3  # Libplanet.Tools version to install
 ~~~
+
+It must terminate with the output `Succeeded!` in the end if tests passed.
+
+### Windows
+
+There are prerequisites for testing:
+
+ -  PowerShell 5.1 or higher
+ -  npm
+
+Here's a testing script:
+
+~~~ powershell
+powershell `
+  -ExecutionPolicy Bypass `
+  -File bin\npm-test.ps1 `
+  -Version 0.27.3  # Libplanet.Tools version to install
+~~~
+
+It must terminate with the output `Succeeded!` in the end if tests passed.

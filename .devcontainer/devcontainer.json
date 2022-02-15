@@ -19,6 +19,7 @@
     "editorconfig.editorconfig",
     "ms-dotnettools.csharp",
     "formulahendry.dotnet-test-explorer",
+    "ms-vscode.powershell",
     "ms-vsliveshare.vsliveshare"
   ],
 
