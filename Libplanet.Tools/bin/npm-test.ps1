@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 param (
   [Parameter(Mandatory, Position=0, HelpMessage="Enter a version to download.")]
-  [ValidatePattern("^[0-9]+\.[1-9][0-9]*\.[1-9][0-9]*$")]
+  [ValidatePattern("^[0-9]+\.[1-9][0-9]*\.[0-9]+$")]
   [string]
   $Version
 )

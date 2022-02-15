@@ -3,10 +3,10 @@ set -e
 if [[ "$1" = "" ]]; then
   echo error: missing version to download >&2
   exit 1
-elif [[ "$1" =~ ^[0-9]+\.[1-9][0-9]*\.[1-9][0-9]*$ ]]; then
+elif [[ "$1" =~ ^[0-9]+\.[1-9][0-9]*\.[0-9]+$ ]]; then
   version="$1"
 else
-  echo error: invalid version number >&2
+  echo error: invalid version number: "$1" >&2
   exit 1
 fi
 

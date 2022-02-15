@@ -6,6 +6,12 @@ Version 0.27.4
 
 To be released.
 
+ -  Fixed *@planetarium/cli* npm package's bug where installation had not
+    worked since 0.27.0.  [[#1790], [#1799]]
+
+[#1790]: https://github.com/planetarium/libplanet/issues/1790
+[#1799]: https://github.com/planetarium/libplanet/pull/1799
+
 
 Version 0.27.3
 --------------

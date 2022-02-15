@@ -150,3 +150,51 @@ jobs:
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test-npm:
+    name: test-npm
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+    - id: latest-tag
+      name: Get the latest tag
+      uses: WyriHaximus/github-action-get-previous-tag@v1
+      with:
+        fallback: 0.27.3
+    - if: runner.os != 'Windows'
+      run: |
+        set -ev
+        cd Libplanet.Tools/
+        if [[ "$GITHUB_REF_TYPE" = "tag" ]]; then
+          v="$GITHUB_REF_NAME"
+        else
+          v="$LATEST_VERSION"
+        fi
+        echo "version: '$v'"
+        bin/npm-test.sh "$v"
+      env:
+        LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
+    - if: runner.os == 'Windows'
+      run: |
+        $ErrorActionPreference = "Stop"
+        cd Libplanet.Tools\
+        if ($env:GITHUB_REF_TYPE -eq "tag") {
+          $v = $env:GITHUB_REF_NAME
+        } else {
+          $v = $env:LATEST_VERSION
+        }
+        echo "version: '$v'"
+        powershell `
+          -ExecutionPolicy Bypass `
+          -File bin\npm-test.ps1 `
+          -Version $v
+      env:
+        LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
