@@ -85,6 +85,15 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0273">Version 0.27.3</h2>
+<p>Released on Februrary 11, 2022.</p>
+<ul>
+<li>(Libplanet.Net) <code>Swarm&lt;T&gt;.CompleteBlockSync()</code> changed back,
+reverting the behavior implemented in <a href="https://github.com/planetarium/libplanet/pull/1759">#1759</a>
+to fixed races between <code>Swarm&lt;T&gt;</code>'s dual systems for block
+synchronization (polling and event-driven in parallel)
+on updating chain  [<a href="https://github.com/planetarium/libplanet/pull/1797">#1797</a>]</li>
+</ul>
 <h2 id="version-0272">Version 0.27.2</h2>
 <p>Released on Februrary 8, 2022.</p>
 <ul>
