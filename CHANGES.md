@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.27.4
 --------------
 
-To be released.
+Released on February 16, 2022.
 
  -  Fixed *@planetarium/cli* npm package's bug where installation had not
     worked since 0.27.0.  [[#1790], [#1799]]
