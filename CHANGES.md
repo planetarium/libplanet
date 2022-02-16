@@ -7,9 +7,11 @@ Version 0.26.4
 To be released.
 
  -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
-    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].  [[#1791]]
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
+    [[#1791], [#1803]]
 
 [#1791]: https://github.com/planetarium/libplanet/pull/1791
+[#1803]: https://github.com/planetarium/libplanet/pull/1803
 [Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
 
 
