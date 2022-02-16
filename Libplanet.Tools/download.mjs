@@ -1,11 +1,6 @@
 // The planet binary downloader for npm.
 // Inspired by Elm's npm packaging: <https://www.npmjs.com/package/elm>.
 "use strict";
-const nodeMajorVersion = process.versions.node.split('.')[0];
-if (nodeMajorVersion < 12) {
-  throw new Error("Requires Node.js v12 or Higher Version.");
-}
-
 import child_process from "child_process";
 import fs from "fs";
 import os from "os";

@@ -9,6 +9,9 @@
     "win32"
   ],
   "cpu": ["x64"],
+  "engines": {
+    "node": ">=12"
+  },
   "files": [
     "README.md",
     "bin/planet.mjs",
