@@ -36,6 +36,9 @@ To be released.
 
 ### Dependencies
 
+ -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].  [[#1791]]
+
 ### CLI tools
 
  -  `planet mpt diff` command became to output the key and its values
@@ -47,6 +50,8 @@ To be released.
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
+[#1791]: https://github.com/planetarium/libplanet/pull/1791
+[Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
 
 
 Version 0.27.3
