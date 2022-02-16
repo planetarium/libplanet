@@ -48,7 +48,7 @@
       runtime; build; native; contentfiles; analyzers; buildtransitive
     </IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.4-planetarium" />
+  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.6-planetarium" />
   <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>
