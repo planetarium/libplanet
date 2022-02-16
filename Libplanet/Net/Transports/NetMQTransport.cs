@@ -43,8 +43,6 @@ namespace Libplanet.Net.Transports
         private DnsEndPoint _hostEndPoint;
 
         private Channel<MessageRequest> _requests;
-        private long _requestCount;
-        private long _socketCount;
         private CancellationTokenSource _runtimeProcessorCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -55,6 +53,10 @@ namespace Libplanet.Net.Transports
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
 
         private RoutingTable _table;
+
+        // Used only for logging.
+        private long _requestCount;
+        private long _socketCount;
 
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when the different version of
@@ -812,7 +814,9 @@ namespace Libplanet.Net.Transports
             {
                 DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
                 long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
-                _logger.Debug(
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
                     "{SocketCount} sockets open for processing request {Message} {RequestId}.",
                     incrementedSocketCount,
                     request.Message,
@@ -824,7 +828,9 @@ namespace Libplanet.Net.Transports
                 const string logMsg =
                     "{SocketCount} sockets currently open for processing requests; " +
                     "failed to create an additional socket for request {Message} {RequestId}.";
-                _logger.Debug(
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
                     nme,
                     logMsg,
                     Interlocked.Read(ref _socketCount),
@@ -843,7 +849,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
-            using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
+            using var dealer = GetRequestDealerSocket(req);
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}...",
                 req.Message,
