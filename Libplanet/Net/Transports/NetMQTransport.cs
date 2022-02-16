@@ -884,25 +884,37 @@ namespace Libplanet.Net.Transports
                 }
 
                 tcs.TrySetResult(result);
+                const string logMsg =
+                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
+                    "processed in {DurationMs:F0}ms.";
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    logMsg,
+                    req.Message,
+                    req.Id,
+                    req.Timeout?.TotalMilliseconds,
+                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
-            catch (DifferentAppProtocolVersionException dapve)
+            catch (Exception e) when (
+                e is DifferentAppProtocolVersionException ||
+                e is InvalidTimestampException ||
+                e is TimeoutException)
             {
-                tcs.TrySetException(dapve);
+                tcs.TrySetException(e);
+                const string logMsg =
+                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
+                    "processing failed in {DurationMs:F0}ms.";
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    e,
+                    logMsg,
+                    req.Message,
+                    req.Id,
+                    req.Timeout?.TotalMilliseconds,
+                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
-            catch (InvalidTimestampException ite)
-            {
-                tcs.TrySetException(ite);
-            }
-            catch (TimeoutException te)
-            {
-                tcs.TrySetException(te);
-            }
-
-            _logger.Debug(
-                "Request {Message} {RequestId} processed in {TimeSpan}.",
-                req.Message,
-                req.Id,
-                DateTimeOffset.UtcNow - startedTime);
         }
 
         private async Task DisposeUnusedDealerSockets(
