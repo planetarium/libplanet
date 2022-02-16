@@ -1,6 +1,6 @@
 // Post-install hook for npm.
 "use strict";
-const { download } = require("./download.js");
+import { download } from "./download.mjs";
 
 download().then(console.debug).catch(console.error);
 

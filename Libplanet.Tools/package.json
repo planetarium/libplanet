@@ -8,24 +8,26 @@
     "linux",
     "win32"
   ],
-  "cpu": [
-    "x64"
-  ],
+  "cpu": ["x64"],
+  "engines": {
+    "node": ">=12"
+  },
   "files": [
     "README.md",
-    "bin/planet",
-    "download.js",
-    "install.js"
+    "bin/planet.mjs",
+    "download.mjs",
+    "install.mjs"
   ],
   "dependencies": {
     "node-fetch": "^3.1.1",
     "unzipper": "^0.10.11"
   },
+  "type": "module",
   "scripts": {
-    "install": "node install.js"
+    "install": "node install.mjs"
   },
   "bin": {
-    "planet": "bin/planet"
+    "planet": "bin/planet.mjs"
   },
   "repository": {
     "type": "git",
