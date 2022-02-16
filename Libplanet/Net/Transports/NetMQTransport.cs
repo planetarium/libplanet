@@ -44,6 +44,7 @@ namespace Libplanet.Net.Transports
 
         private Channel<MessageRequest> _requests;
         private long _requestCount;
+        private long _socketCount;
         private CancellationTokenSource _runtimeProcessorCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -132,6 +133,7 @@ namespace Libplanet.Net.Transports
 
             Running = false;
 
+            _socketCount = 0;
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
@@ -804,6 +806,34 @@ namespace Libplanet.Net.Transports
             }
         }
 
+        private DealerSocket GetRequestDealerSocket(MessageRequest request)
+        {
+            try
+            {
+                DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
+                long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
+                _logger.Debug(
+                    "{SocketCount} sockets open for processing request {Message} {RequestId}.",
+                    incrementedSocketCount,
+                    request.Message,
+                    request.Id);
+                return dealer;
+            }
+            catch (NetMQException nme)
+            {
+                const string logMsg =
+                    "{SocketCount} sockets currently open for processing requests; " +
+                    "failed to create an additional socket for request {Message} {RequestId}.";
+                _logger.Debug(
+                    nme,
+                    logMsg,
+                    Interlocked.Read(ref _socketCount),
+                    request.Message,
+                    request.Id);
+                throw;
+            }
+        }
+
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             _logger.Debug(
@@ -814,7 +844,6 @@ namespace Libplanet.Net.Transports
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
             using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
-
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}...",
                 req.Message,
@@ -863,8 +892,8 @@ namespace Libplanet.Net.Transports
                             true,
                             AppProtocolVersionValidator);
                         _logger.Debug(
-                            "A reply to request {Message} {RequestId} from {Peer} has parsed: " +
-                            "{Reply}.",
+                            "A reply to request {Message} {RequestId} from {Peer} " +
+                            "has parsed: {Reply}.",
                             req.Message,
                             req.Id,
                             reply.Remote,
@@ -893,7 +922,7 @@ namespace Libplanet.Net.Transports
                     logMsg,
                     req.Message,
                     req.Id,
-                    req.Timeout?.TotalMilliseconds,
+                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
                     (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
             catch (Exception e) when (
@@ -912,8 +941,12 @@ namespace Libplanet.Net.Transports
                     logMsg,
                     req.Message,
                     req.Id,
-                    req.Timeout?.TotalMilliseconds,
+                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
                     (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _socketCount);
             }
         }
 
@@ -926,6 +959,9 @@ namespace Libplanet.Net.Transports
                 try
                 {
                     await Task.Delay(period, cancellationToken);
+                    _logger.Debug(
+                        "{SocketCount} sockets open for broadcasting.",
+                        _dealers.Count);
                     ImmutableHashSet<Address> peerAddresses =
                         _table.Peers.Select(p => p.Address).ToImmutableHashSet();
                     foreach (Address address in _dealers.Keys)
