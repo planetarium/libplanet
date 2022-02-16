@@ -76,7 +76,7 @@ namespace Libplanet.Net
 
             var totalBlocksToDownload = 0L;
             Block<T> tempTip = BlockChain.Tip;
-            List<Block<T>> blocks = new List<Block<T>>();
+            var blocks = new List<Block<T>>();
 
             try
             {
