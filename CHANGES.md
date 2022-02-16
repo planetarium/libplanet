@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.26.4
 --------------
 
-To be released.
+Released on February 16, 2022.
 
  -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
     [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
