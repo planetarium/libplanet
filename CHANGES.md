@@ -6,6 +6,11 @@ Version 0.27.5
 
 To be released.
 
+ -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
+    [[#1791], [#1803]]
+ -  Additional logs tagged `Metric` to monitor `ITransport` behavior.  [[#1802]]
+
 
 Version 0.27.4
 --------------
@@ -148,6 +153,22 @@ Released on January 26, 2022.
 [#1766]: https://github.com/planetarium/libplanet/pull/1766
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
+
+
+Version 0.26.4
+--------------
+
+Released on February 16, 2022.
+
+ -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
+    [[#1791], [#1803]]
+ -  Additional logs tagged `Metric` to monitor `ITransport` behavior.  [[#1802]]
+
+[#1791]: https://github.com/planetarium/libplanet/pull/1791
+[#1802]: https://github.com/planetarium/libplanet/pull/1802
+[#1803]: https://github.com/planetarium/libplanet/pull/1803
+[Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
 
 
 Version 0.26.3
