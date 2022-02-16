@@ -22,7 +22,7 @@ To be released.
 Version 0.27.3
 --------------
 
-Released on Februrary 11, 2022.
+Released on February 11, 2022.
 
  -  (Libplanet.Net) `Swarm<T>.CompleteBlockSync()` changed back,
     reverting the behavior implemented in [#1759]
@@ -36,7 +36,7 @@ Released on Februrary 11, 2022.
 Version 0.27.2
 --------------
 
-Released on Februrary 8, 2022.
+Released on February 8, 2022.
 
  -  (Libplanet.Net) Sending a `Message` through `NetMQTransport` now fails
     immediately if the `Message` cannot be queued to a `DealerSocket`

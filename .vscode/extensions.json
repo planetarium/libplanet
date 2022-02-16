@@ -3,6 +3,7 @@
     "editorconfig.editorconfig",
     "ms-dotnettools.csharp",
     "formulahendry.dotnet-test-explorer",
-    "ms-vscode.powershell"
+    "ms-vscode.powershell",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
