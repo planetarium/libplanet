@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class StunMessage
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class StunMessage
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Stun.Messages.StunMessage">
+  
+  
+  <h1 id="Libplanet_Stun_Messages_StunMessage" data-uid="Libplanet.Stun.Messages.StunMessage" class="text-break">Class StunMessage
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">StunMessage</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.AllocateErrorResponse.html">AllocateErrorResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.AllocateRequest.html">AllocateRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.AllocateSuccessResponse.html">AllocateSuccessResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.BindingRequest.html">BindingRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.BindingSuccessResponse.html">BindingSuccessResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.ConnectionAttempt.html">ConnectionAttempt</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.ConnectionBindRequest.html">ConnectionBindRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.ConnectionBindSuccessResponse.html">ConnectionBindSuccessResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.ConnectRequest.html">ConnectRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.ConnectSuccessResponse.html">ConnectSuccessResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.CreatePermissionErrorResponse.html">CreatePermissionErrorResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.CreatePermissionRequest.html">CreatePermissionRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.CreatePermissionSuccessResponse.html">CreatePermissionSuccessResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.RefreshErrorResponse.html">RefreshErrorResponse</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.RefreshRequest.html">RefreshRequest</a></div>
+      <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.RefreshSuccessResponse.html">RefreshSuccessResponse</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Stun.Messages.html">Libplanet.Stun.Messages</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Stun.dll</h6>
+  <h5 id="Libplanet_Stun_Messages_StunMessage_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class StunMessage : object</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L17">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage__ctor_" data-uid="Libplanet.Stun.Messages.StunMessage.#ctor*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage__ctor" data-uid="Libplanet.Stun.Messages.StunMessage.#ctor">StunMessage()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected StunMessage()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_Attributes.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.Attributes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L78">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_Attributes_" data-uid="Libplanet.Stun.Messages.StunMessage.Attributes*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_Attributes" data-uid="Libplanet.Stun.Messages.StunMessage.Attributes">Attributes</h4>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Stun.Attributes.Attribute.html">Attribute</a> of STUN packet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IEnumerable&lt;Attribute&gt; Attributes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Stun.Attributes.Attribute.html">Attribute</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_Class.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.Class%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L54">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_Class_" data-uid="Libplanet.Stun.Messages.StunMessage.Class*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_Class" data-uid="Libplanet.Stun.Messages.StunMessage.Class">Class</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Stun.Messages.StunMessage.MessageClass.html">StunMessage.MessageClass</a> of STUN packet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract StunMessage.MessageClass Class { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Stun.Messages.StunMessage.MessageClass.html">StunMessage.MessageClass</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_Method.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.Method%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L59">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_Method_" data-uid="Libplanet.Stun.Messages.StunMessage.Method*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_Method" data-uid="Libplanet.Stun.Messages.StunMessage.Method">Method</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Stun.Messages.StunMessage.MessageMethod.html">StunMessage.MessageMethod</a> of STUN packet.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract StunMessage.MessageMethod Method { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Stun.Messages.StunMessage.MessageMethod.html">StunMessage.MessageMethod</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_TransactionId.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.TransactionId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L64">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_TransactionId_" data-uid="Libplanet.Stun.Messages.StunMessage.TransactionId*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_TransactionId" data-uid="Libplanet.Stun.Messages.StunMessage.TransactionId">TransactionId</h4>
+  <div class="markdown level1 summary"><p>A 96-bit length identifier, used to uniquely identify STUN transactions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] TransactionId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_Encode_Libplanet_Stun_IStunContext_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.Encode(Libplanet.Stun.IStunContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L153">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_Encode_" data-uid="Libplanet.Stun.Messages.StunMessage.Encode*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_Encode_Libplanet_Stun_IStunContext_" data-uid="Libplanet.Stun.Messages.StunMessage.Encode(Libplanet.Stun.IStunContext)">Encode(IStunContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Encode(IStunContext ctx)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Stun.IStunContext.html">IStunContext</a></td>
+        <td><span class="parametername">ctx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_GetAttribute__1.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.GetAttribute%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L300">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_GetAttribute_" data-uid="Libplanet.Stun.Messages.StunMessage.GetAttribute*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_GetAttribute__1" data-uid="Libplanet.Stun.Messages.StunMessage.GetAttribute``1">GetAttribute&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected T GetAttribute&lt;T&gt;()
+    where T : Attribute</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_ParseAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L91">View Source</a>
+  </span>
+  <a id="Libplanet_Stun_Messages_StunMessage_ParseAsync_" data-uid="Libplanet.Stun.Messages.StunMessage.ParseAsync*"></a>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_ParseAsync_Stream_CancellationToken_" data-uid="Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream,CancellationToken)">ParseAsync(Stream, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Parses <a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a> from <code data-dev-comment-type="paramref" class="paramref">stream</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static async Task&lt;StunMessage&gt; ParseAsync(Stream stream, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>A view of a sequence of STUN packet's bytes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A cancellation token used to propagate notification that this
+operation should be canceled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a>&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a> derived on
+bytes read from <code data-dev-comment-type="paramref" class="paramref">stream</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/1c6abd026cda5b913e5d44903d1f51edbbe5a64c/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
