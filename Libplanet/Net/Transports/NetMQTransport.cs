@@ -826,7 +826,7 @@ namespace Libplanet.Net.Transports
             catch (NetMQException nme)
             {
                 const string logMsg =
-                    "{SocketCount} sockets currently open for processing requests; " +
+                    "{SocketCount} sockets open for processing requests; " +
                     "failed to create an additional socket for request {Message} {RequestId}.";
                 _logger
                     .ForContext("Tag", "Metric")
@@ -965,7 +965,9 @@ namespace Libplanet.Net.Transports
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    _logger.Debug(
+                    _logger
+                        .ForContext("Tag", "Metric")
+                        .Debug(
                         "{SocketCount} sockets open for broadcasting.",
                         _dealers.Count);
                     ImmutableHashSet<Address> peerAddresses =
