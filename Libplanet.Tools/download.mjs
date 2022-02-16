@@ -2,7 +2,7 @@
 // Inspired by Elm's npm packaging: <https://www.npmjs.com/package/elm>.
 "use strict";
 import child_process from "child_process";
-import fs from "fs";
+import { chmod, copyFile, mkdtemp, readFile } from "fs/promises";
 import os from "os";
 import { fileURLToPath } from 'url';
 import path from "path";
@@ -22,7 +22,7 @@ export const BIN_PATH = path.join(PACKAGE_PATH, "bin");
 
 export async function download(options = {}) {
   const { binPath = BIN_PATH, binName = BIN_NAME, log = console.log } = options;
-  const packageMetadata = JSON.parse(await fs.promises.readFile(METADATA_PATH));
+  const packageMetadata = JSON.parse(await readFile(METADATA_PATH));
   const ver = packageMetadata.version;
   const platform = os.platform();
   const platformSuffixes = SUFFIXES[platform];
@@ -40,13 +40,13 @@ export async function download(options = {}) {
 
   const url = `${URL_BASE}/${ver}/planet-${ver}-${suffix}`;
 
-  const dirPath = await fs.promises.mkdtemp(path.join(os.tmpdir(), "planet-"));
+  const dirPath = await mkdtemp(path.join(os.tmpdir(), "planet-"));
   const srcPath = path.join(dirPath, BIN_NAME);
   const dstPath = path.join(binPath, binName);
   const finalize = async () => {
-    await fs.promises.copyFile(srcPath, dstPath);
+    await copyFile(srcPath, dstPath);
     if (platform === "win32") return;
-    await fs.promises.chmod(dstPath, 0o755);
+    await chmod(dstPath, 0o755);
   };
 
   const unarchive = (value) => {
