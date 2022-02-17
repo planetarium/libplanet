@@ -161,7 +161,7 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        [SkippableFact(Timeout = Timeout, Skip = "Target method is broken.")]
+        [Fact(Timeout = Timeout)]
         public async Task SendMessageAsync()
         {
             ITransport transportA = CreateTransport();
@@ -199,8 +199,7 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        // This also tests ITransport.ReplyMessageAsync at the same time.
-        [SkippableFact(Timeout = Timeout)]
+        [Fact(Timeout = Timeout)]
         public async Task SendMessageWithReplyAsync()
         {
             ITransport transportA = CreateTransport();
