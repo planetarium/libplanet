@@ -236,7 +236,18 @@ namespace Libplanet.Blockchain.Renderers
                     Thread.CurrentThread.ManagedThreadId,
                     Environment.StackTrace
                 );
-                _worker.Start();
+                try
+                {
+                    _worker.Start();
+                }
+                catch (ThreadStateException e)
+                {
+                    _logger.Error(
+                        e,
+                        "The rendering thread #{WorkerThreadId} failed to start.",
+                        _worker.ManagedThreadId
+                    );
+                }
             }
         }
     }
