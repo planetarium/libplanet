@@ -45,7 +45,6 @@ namespace Libplanet.Net.Transports
         private DnsEndPoint _hostEndPoint;
 
         private Channel<MessageRequest> _requests;
-        private long _requestCount;
         private CancellationTokenSource _runtimeProcessorCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
@@ -53,6 +52,10 @@ namespace Libplanet.Net.Transports
 
         private TaskCompletionSource<object> _runningEvent;
         private ConcurrentDictionary<string, TaskCompletionSource<object>> _replyCompletionSources;
+
+        // Used only for logging.
+        private long _requestCount;
+        private long _socketCount;
 
         /// <summary>
         /// The <see cref="EventHandler"/> triggered when the different version of
@@ -125,6 +128,7 @@ namespace Libplanet.Net.Transports
 
             Running = false;
 
+            _socketCount = 0;
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
@@ -781,6 +785,38 @@ namespace Libplanet.Net.Transports
             }
         }
 
+        private DealerSocket GetRequestDealerSocket(MessageRequest request)
+        {
+            try
+            {
+                DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
+                long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    "{SocketCount} sockets open for processing request {Message} {RequestId}.",
+                    incrementedSocketCount,
+                    request.Message,
+                    request.Id);
+                return dealer;
+            }
+            catch (NetMQException nme)
+            {
+                const string logMsg =
+                    "{SocketCount} sockets open for processing requests; " +
+                    "failed to create an additional socket for request {Message} {RequestId}.";
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    nme,
+                    logMsg,
+                    Interlocked.Read(ref _socketCount),
+                    request.Message,
+                    request.Id);
+                throw;
+            }
+        }
+
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             _logger.Debug(
@@ -790,8 +826,7 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
-            using var dealer = new DealerSocket(req.Peer.ToNetMQAddress());
-
+            using var dealer = GetRequestDealerSocket(req);
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer} with timeout {Timeout}...",
                 req.Message,
@@ -850,8 +885,8 @@ namespace Libplanet.Net.Transports
                             true,
                             AppProtocolVersionValidator);
                         _logger.Debug(
-                            "A reply to request {Message} {RequestId} from {Peer} has parsed: " +
-                            "{Reply}.",
+                            "A reply to request {Message} {RequestId} from {Peer} " +
+                            "has parsed: {Reply}.",
                             req.Message,
                             req.Id,
                             reply.Remote,
@@ -871,33 +906,43 @@ namespace Libplanet.Net.Transports
                 }
 
                 tcs.TrySetResult(result);
+                const string logMsg =
+                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
+                    "processed in {DurationMs:F0}ms.";
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    logMsg,
+                    req.Message,
+                    req.Id,
+                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
+                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
-            catch (MessageSendFailedException msfe)
+            catch (Exception e) when (
+                e is DifferentAppProtocolVersionException ||
+                e is InvalidMessageTimestampException ||
+                e is InvalidMessageSignatureException ||
+                e is MessageSendFailedException ||
+                e is TimeoutException)
             {
-                tcs.TrySetException(msfe);
+                tcs.TrySetException(e);
+                const string logMsg =
+                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
+                    "processing failed in {DurationMs:F0}ms.";
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                    e,
+                    logMsg,
+                    req.Message,
+                    req.Id,
+                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
+                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
-            catch (DifferentAppProtocolVersionException dapve)
+            finally
             {
-                tcs.TrySetException(dapve);
+                Interlocked.Decrement(ref _socketCount);
             }
-            catch (InvalidMessageTimestampException imte)
-            {
-                tcs.TrySetException(imte);
-            }
-            catch (InvalidMessageSignatureException imse)
-            {
-                tcs.TrySetException(imse);
-            }
-            catch (TimeoutException te)
-            {
-                tcs.TrySetException(te);
-            }
-
-            _logger.Debug(
-                "Request {Message} {RequestId} processed in {TimeSpan}.",
-                req.Message,
-                req.Id,
-                DateTimeOffset.UtcNow - startedTime);
         }
 
         private async Task DisposeUnusedDealerSockets(
@@ -911,6 +956,9 @@ namespace Libplanet.Net.Transports
                     await Task.Delay(period, cancellationToken);
                     lock (_dealerLock)
                     {
+                        _logger
+                            .ForContext("Tag", "Metric")
+                            .Debug("{SocketCount} sockets open for broadcasting.", _dealers.Count);
                         foreach (Address address in _dealers.Keys)
                         {
                             if (DateTimeOffset.UtcNow - _dealers[address].Item2 >

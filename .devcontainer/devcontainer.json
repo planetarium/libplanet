@@ -19,7 +19,9 @@
     "editorconfig.editorconfig",
     "ms-dotnettools.csharp",
     "formulahendry.dotnet-test-explorer",
-    "ms-vsliveshare.vsliveshare"
+    "ms-vscode.powershell",
+    "ms-vsliveshare.vsliveshare",
+    "streetsidesoftware.code-spell-checker"
   ],
 
   // Use 'postCreateCommand' to run commands after the container is created.

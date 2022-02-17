@@ -74,28 +74,123 @@ namespace Libplanet.Net
                 return;
             }
 
+            var totalBlocksToDownload = 0L;
+            Block<T> tempTip = BlockChain.Tip;
+            var blocks = new List<Block<T>>();
+
             try
             {
-                _logger.Debug(
-                    $"The chain before {nameof(PullBlocksAsync)}() : " +
-                    "{Id} #{Index} {Hash}",
-                    BlockChain.Id,
-                    BlockChain.Tip.Index,
-                    BlockChain.Tip.Hash);
-                System.Action renderSwap = await CompleteBlocksAsync(
-                    peersWithBlockExcerpt,
+                var blockCompletion = new BlockCompletion<BoundPeer, T>(
+                    completionPredicate: BlockChain.Store.ContainsBlock,
+                    window: InitialBlockDownloadWindow
+                );
+                var demandBlockHashes = GetDemandBlockHashes(
                     BlockChain,
+                    peersWithBlockExcerpt,
                     null,
-                    preload: false,
-                    render: true,
-                    cancellationToken: cancellationToken);
-                BroadcastBlock(BlockChain.Tip);
-                renderSwap();
+                    cancellationToken
+                ).WithCancellation(cancellationToken);
+                await foreach ((long index, BlockHash hash) in demandBlockHashes)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                // FIXME: Should add new event handler that indicates rendering has finished,
-                // and move these events before BroadcastBlock()
-                BlockReceived.Set();
-                BlockAppended.Set();
+                    if (index == 0 && !hash.Equals(BlockChain.Genesis.Hash))
+                    {
+                        // FIXME: This behavior can unexpectedly terminate the swarm
+                        // (and the game app) if it encounters a peer having a different
+                        // blockchain, and therefore can be exploited to remotely shut
+                        // down other nodes as well.
+                        // Since the intention of this behavior is to prevent mistakes
+                        // to try to connect incorrect seeds (by a user),
+                        // this behavior should be limited for only seed peers.
+                        // FIXME: ChainStatus message became to contain hash value of
+                        // the genesis block, so this exception will not be happened.
+                        var msg =
+                            $"Since the genesis block is fixed to {BlockChain.Genesis} " +
+                            "protocol-wise, the blockchain which does not share " +
+                            "any mutual block is not acceptable.";
+                        var e = new InvalidGenesisBlockException(
+                            hash,
+                            BlockChain.Genesis.Hash,
+                            msg);
+                        throw new AggregateException(msg, e);
+                    }
+
+                    _logger.Verbose(
+                        "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
+                        index,
+                        hash
+                    );
+                    if (blockCompletion.Demand(hash))
+                    {
+                        totalBlocksToDownload++;
+                    }
+                }
+
+                if (totalBlocksToDownload == 0)
+                {
+                    _logger.Debug("No any blocks to fetch.");
+                    return;
+                }
+
+                IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
+                    blockCompletion.Complete(
+                        peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
+                        blockFetcher: GetBlocksAsync,
+                        singleSessionTimeout: Options.MaxTimeout,
+                        cancellationToken: cancellationToken
+                    );
+
+                await foreach (
+                    (Block<T> block, BoundPeer sourcePeer)
+                    in completedBlocks.WithCancellation(cancellationToken))
+                {
+                    _logger.Verbose(
+                        "Got #{BlockIndex} {BlockHash} from {Peer}.",
+                        block.Index,
+                        block.Hash,
+                        sourcePeer
+                    );
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (block.Index == 0 && !block.Hash.Equals(BlockChain.Genesis.Hash))
+                    {
+                        // FIXME: This behavior can unexpectedly terminate the swarm
+                        // (and the game app) if it encounters a peer having a different
+                        // blockchain, and therefore can be exploited to remotely shut
+                        // down other nodes as well.
+                        // Since the intention of this behavior is to prevent mistakes
+                        // to try to connect incorrect seeds (by a user),
+                        // this behavior should be limited for only seed peers.
+                        var msg =
+                            $"Since the genesis block is fixed to {BlockChain.Genesis} " +
+                            "protocol-wise, the blockchain which does not share " +
+                            "any mutual block is not acceptable.";
+
+                        // Although it's actually not aggregated, but to be consistent with
+                        // above code throwing InvalidGenesisBlockException, makes this
+                        // to wrap an exception with AggregateException... Not sure if
+                        // it show be wrapped from the very beginning.
+                        throw new AggregateException(
+                            msg,
+                            new InvalidGenesisBlockException(
+                                block.Hash,
+                                BlockChain.Genesis.Hash,
+                                msg
+                            )
+                        );
+                    }
+
+                    block.ValidateTimestamp();
+                    blocks.Add(block);
+                    if (tempTip is null ||
+                        BlockChain.Policy.CanonicalChainComparer.Compare(
+                            BlockChain.PerceiveBlock(block),
+                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                    {
+                        tempTip = block;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -106,6 +201,12 @@ namespace Libplanet.Net
             }
             finally
             {
+                if (blocks.Count != 0)
+                {
+                    BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
+                    BlockReceived.Set();
+                }
+
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully.");
             }
@@ -185,10 +286,8 @@ namespace Libplanet.Net
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpt,
             BlockChain<T> workspace,
             IProgress<PreloadState> progress,
-            bool preload,
             bool render,
-            CancellationToken cancellationToken
-        )
+            CancellationToken cancellationToken)
         {
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -422,17 +521,14 @@ namespace Libplanet.Net
                     if (bottomBlock.PreviousHash is { } bp)
                     {
                         branchpoint = workspace[bp];
-                        if (preload || workspace[-1] != branchpoint)
-                        {
-                            _logger.Debug(
-                                "Branchpoint block is #{Index} {Hash}.",
-                                branchpoint.Index,
-                                branchpoint.Hash);
-                            workspace = workspace.Fork(bp, inheritRenderers: true);
-                            chainIds.Add(workspace.Id);
-                            renderBlocks = false;
-                            renderActions = false;
-                        }
+                        _logger.Debug(
+                            "Branchpoint block is #{Index} {Hash}.",
+                            branchpoint.Index,
+                            branchpoint.Hash);
+                        workspace = workspace.Fork(bp, inheritRenderers: true);
+                        chainIds.Add(workspace.Id);
+                        renderBlocks = false;
+                        renderActions = false;
 
                         try
                         {
@@ -447,7 +543,7 @@ namespace Libplanet.Net
                                     deltaBlock.Hash);
                                 workspace.Append(
                                     deltaBlock,
-                                    evaluateActions: !preload,
+                                    evaluateActions: false,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
                                 );
@@ -482,15 +578,11 @@ namespace Libplanet.Net
                     }
                 }
 
-                if (preload)
-                {
-                    ExecuteActions(
-                        workspace,
-                        branchpoint,
-                        progress,
-                        cancellationToken);
-                }
-
+                ExecuteActions(
+                    workspace,
+                    branchpoint,
+                    progress,
+                    cancellationToken);
                 complete = true;
             }
             finally

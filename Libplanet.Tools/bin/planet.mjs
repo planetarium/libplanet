@@ -12,16 +12,15 @@
 //   this script, regardless of --ignore-scripts option.  There is likely no way
 //   to avoid this node.js script being invoked before the actual planet.exe
 //   is invoked.
-const child_process = require("child_process");
-const fs = require("fs");
-const path = require("path");
-const { BIN_PATH, BIN_NAME, download } = require("../download.js");
+import child_process from "child_process";
+import fs from "fs";
+import path from "path";
+import { BIN_PATH, BIN_NAME, download } from "../download.mjs";
 
 const exePath = path.join(BIN_PATH, BIN_NAME);
 
 function runExe() {
-  child_process.spawn(exePath, process.argv.slice(2), { stdio: "inherit" })
-    .on("exit", process.exit);
+  child_process.spawnSync(exePath, process.argv.slice(2), { stdio: "inherit" });
 }
 
 if (process.platform === "win32") {
@@ -39,7 +38,8 @@ if (process.platform === "win32") {
   // is overwritten after download() executed, which means if the below code is
   // executed there must *not* be the actual ELF binary of the "planet" command.
   // Therefore, download() should be invoked first.
-  download({ log: console.warn }).then(runExe).catch(console.error);
+  const downloaded = await download({ log: console.warn });
+  runExe(downloaded);
 }
 
 // vim: ts=2 sw=2 et ft=javascript
