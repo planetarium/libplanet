@@ -6,7 +6,7 @@ Version 0.26.5
 
 To be released.
 
- -  (Libplanet.Net) Fixed a bug where `Swarm<T>.PreloadAsync()`
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()`
     had not thrown `OperationCanceledException` even cancellation
     was requested.  [[#1547], [#1796]]
 
