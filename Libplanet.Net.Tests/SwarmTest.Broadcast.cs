@@ -308,12 +308,7 @@ namespace Libplanet.Net.Tests
                 Assert.Contains(swarmC.AsPeer, swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarmC.Peers);
 
-                for (var i = 0; i < 100; i++)
-                {
-                    swarmA.BroadcastTxs(txs);
-                }
-
-                var t = Task.Run(async () =>
+                Task miningTask = Task.Run(async () =>
                 {
                     for (var i = 0; i < 10; i++)
                     {
@@ -321,12 +316,15 @@ namespace Libplanet.Net.Tests
                     }
                 });
 
-                while (!chainC.GetStagedTransactionIds().Any())
+                Task txReceivedTask = swarmC.TxReceived.WaitAsync();
+
+                for (var i = 0; i < 100; i++)
                 {
-                    await swarmC.TxReceived.WaitAsync();
+                    swarmA.BroadcastTxs(txs);
                 }
 
-                await t;
+                await txReceivedTask;
+                await miningTask;
 
                 for (var i = 0; i < txCount; i++)
                 {

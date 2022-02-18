@@ -633,6 +633,8 @@ namespace Libplanet.Net
                     cancellationToken: cancellationToken);
                 renderSwap();
             }
+
+            cancellationToken.ThrowIfCancellationRequested();
         }
 
         /// <summary>

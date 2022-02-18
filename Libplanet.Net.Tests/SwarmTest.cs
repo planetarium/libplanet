@@ -1253,8 +1253,8 @@ namespace Libplanet.Net.Tests
 
             try
             {
-                await StartAsync(minerSwarmA);
-                await StartAsync(minerSwarmB);
+                await StartAsync(minerSwarmA, 5000);
+                await StartAsync(minerSwarmB, 5000);
                 await StartAsync(receiverSwarm);
 
                 await BootstrapAsync(minerSwarmA, receiverSwarm.AsPeer);
@@ -1267,8 +1267,10 @@ namespace Libplanet.Net.Tests
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
                     15_000,
+                    output: _output,
                     conditionLabel:
-                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                        $"{nameof(receiverChain)}'s tip being same to " +
+                        $"{nameof(minerChainA)}'s tip 1st"
                 );
 
                 // Broadcast SwarmB's second block.
@@ -1278,8 +1280,10 @@ namespace Libplanet.Net.Tests
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainB.Tip),
                     15_000,
+                    output: _output,
                     conditionLabel:
-                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                        $"{nameof(receiverChain)}'s tip being same to " +
+                        $"{nameof(minerChainB)}'s tip 2nd"
                 );
 
                 // Broadcast SwarmA's third block.
@@ -1288,8 +1292,10 @@ namespace Libplanet.Net.Tests
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
                     15_000,
+                    output: _output,
                     conditionLabel:
-                        $"{nameof(receiverChain)}'s tip being same to {nameof(minerChainA)}'s tip"
+                        $"{nameof(receiverChain)}'s tip being same to " +
+                        $"{nameof(minerChainA)}'s tip 3rd"
                 );
             }
             finally
@@ -1765,13 +1771,14 @@ namespace Libplanet.Net.Tests
 
         private async Task<Task> StartAsync<T>(
             Swarm<T> swarm,
+            int millisecondsBroadcastBlockInterval = 15 * 1000,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new()
         {
             Task task = swarm.StartAsync(
                 millisecondsDialTimeout: 200,
-                millisecondsBroadcastBlockInterval: 15 * 1000,
+                millisecondsBroadcastBlockInterval: millisecondsBroadcastBlockInterval,
                 millisecondsBroadcastTxInterval: 200,
                 cancellationToken: cancellationToken
             );
