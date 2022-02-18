@@ -843,6 +843,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await swarmC.BlockAppended.WaitAsync();
                 Assert.Equal(chainC.Tip, chainATip);
             }
             finally
@@ -900,6 +901,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(miner2, miner1.AsPeer);
 
                 await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await miner1.BlockAppended.WaitAsync();
 
                 Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
                 Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);

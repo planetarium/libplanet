@@ -191,6 +191,21 @@ namespace Libplanet.Net
                         tempTip = block;
                     }
                 }
+
+                BlockHash? previousHash = blocks.First().PreviousHash;
+                Block<T> branchpoint;
+                if (previousHash != null)
+                {
+                    branchpoint = BlockChain.Store.GetBlock<T>(
+                        BlockChain.Policy.GetHashAlgorithm,
+                        (BlockHash)previousHash);
+                }
+                else
+                {
+                    branchpoint = BlockChain.Genesis;
+                }
+
+                blocks.Insert(0, branchpoint);
             }
             catch (Exception e)
             {

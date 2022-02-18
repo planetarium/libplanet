@@ -174,7 +174,8 @@ namespace Libplanet.Net
                  );
              }
 
-             if (!(workspace.Tip is null))
+             if (!(workspace.Tip is null) &&
+                 !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
              {
                  blocks = blocks.Skip(1).ToList();
              }
