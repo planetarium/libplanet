@@ -6,12 +6,16 @@ Version 0.26.5
 
 To be released.
 
- -  (Libplanet.Net) Fixed a bug where `Swarm<T>.PreloadAsync()`
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()`
     had not thrown `OperationCanceledException` even cancellation
     was requested.  [[#1547], [#1796]]
+ -  Fixed `ThreadStateException` thrown by `NonblockRenderer<T>` and
+    `NonblockActionRenderer<T>` classes.  [[#1772], [#1810]]
 
 [#1547]: https://github.com/planetarium/libplanet/issues/1547
+[#1772]: https://github.com/planetarium/libplanet/issues/1772
 [#1796]: https://github.com/planetarium/libplanet/pull/1796
+[#1810]: https://github.com/planetarium/libplanet/pull/1810
 
 
 Version 0.26.4

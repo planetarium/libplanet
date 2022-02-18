@@ -47,7 +47,7 @@ namespace Libplanet.Blockchain.Renderers
         private readonly ChannelReader<System.Action> _reader;
         private readonly FullFallback? _fullFallback;
         private readonly Thread _worker;
-        private readonly object _workerLock = new object();
+        private int _workerStarted = 0;
         private (string StackTrace, DateTimeOffset Time)? _disposedContext;
 
         /// <summary>
@@ -116,13 +116,20 @@ namespace Libplanet.Blockchain.Renderers
             _fullFallback = fullFallback;
             _worker = new Thread(async () =>
             {
+                ulong events = 0UL;
                 while (await _reader.WaitToReadAsync())
                 {
                     while (_reader.TryRead(out System.Action? action))
                     {
                         action?.Invoke();
+                        events++;
                     }
                 }
+
+                const string log =
+                    "Terminating the rendering thread #{WorkerThreadId} after processed " +
+                    "{RenderEvents} events...";
+                Log.ForContext(GetType()).Debug(log, Thread.CurrentThread.ManagedThreadId, events);
             })
             {
                 IsBackground = true,
@@ -218,16 +225,28 @@ namespace Libplanet.Blockchain.Renderers
                 return;
             }
 
-            if (!_worker.IsAlive)
+            if (!_worker.IsAlive && Interlocked.Increment(ref _workerStarted) == 1)
             {
-                // ↑ To avoid entering the below lock at all except of the first time,
-                // checks one more time if the worker is alive before we try to lock.
-                lock (_workerLock)
+                const string logMsg =
+                    "Starting the rendering thread #{WorkerThreadId} (spawned from thread " +
+                    "#{CurrentThreadId})\n{StackTrace}";
+                _logger.Debug(
+                    logMsg,
+                    _worker.ManagedThreadId,
+                    Thread.CurrentThread.ManagedThreadId,
+                    Environment.StackTrace
+                );
+                try
                 {
-                    if (!_worker.IsAlive && _disposedContext is null)
-                    {
-                        _worker.Start();
-                    }
+                    _worker.Start();
+                }
+                catch (ThreadStateException e)
+                {
+                    _logger.Error(
+                        e,
+                        "The rendering thread #{WorkerThreadId} failed to start.",
+                        _worker.ManagedThreadId
+                    );
                 }
             }
         }
