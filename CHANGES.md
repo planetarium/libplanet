@@ -6,6 +6,12 @@ Version 0.27.7
 
 To be released.
 
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had thrown `IndexOutOfRangeException` for the input longer or shorter
+    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+
 
 Version 0.27.6
 --------------
@@ -174,6 +180,18 @@ Released on January 26, 2022.
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
 
 
+Version 0.26.6
+--------------
+
+Released on February 18, 2022.
+
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had thrown `IndexOutOfRangeException` for the input longer or shorter
+    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+
+
 Version 0.26.5
 --------------
 
@@ -306,6 +324,21 @@ Released on January 18, 2022.
 [#1699]: https://github.com/planetarium/libplanet/pull/1699
 [#1703]: https://github.com/planetarium/libplanet/pull/1703
 [#1710]: https://github.com/planetarium/libplanet/pull/1710
+
+
+Version 0.25.5
+--------------
+
+Released on February 18, 2022.
+
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had thrown `IndexOutOfRangeException` for the input longer or shorter
+    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+ -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
+    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+
+[#1706]: https://github.com/planetarium/libplanet/issues/1706
+[#1815]: https://github.com/planetarium/libplanet/pull/1815
 
 
 Version 0.25.4
