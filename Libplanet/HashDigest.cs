@@ -205,8 +205,8 @@ namespace Libplanet
         public static HashDigest<T> DeriveFrom(ReadOnlySpan<byte> input)
         {
 #if NETSTANDARD2_0
-            var array = new byte[Size];
-            for (int i = 0; i < Size; i++)
+            var array = new byte[input.Length];
+            for (int i = 0; i < input.Length; i++)
             {
                 array[i] = input[i];
             }
