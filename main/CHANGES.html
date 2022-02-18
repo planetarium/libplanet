@@ -88,18 +88,42 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
-<ul>
-<li>Upgraded <em>Planetarium.RocksDbSharp</em> from 6.2.4-planetarium to
-<a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium">6.2.6-planetarium</a>.  [<a href="https://github.com/planetarium/libplanet/pull/1791">#1791</a>]</li>
-</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
 <li><code>planet mpt diff</code> command became to output the key and its values
 in one line as JSON whenever a different key is found,
 than it outputs all of the different nodes at once.  [<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
 </ul>
+<h2 id="version-0276">Version 0.27.6</h2>
+<p>Released on February 18, 2022.</p>
+<ul>
+<li>(Libplanet.Net) Fixed a bug where <code>Swarm&lt;T&gt;.PreloadAsync()</code>
+had not thrown <code>OperationCanceledException</code> even cancellation
+was requested.  [<a href="https://github.com/planetarium/libplanet/issues/1547">#1547</a>, <a href="https://github.com/planetarium/libplanet/pull/1796">#1796</a>]</li>
+<li>Fixed <code>ThreadStateException</code> thrown by <code>NonblockRenderer&lt;T&gt;</code> and
+<code>NonblockActionRenderer&lt;T&gt;</code> classes.  [<a href="https://github.com/planetarium/libplanet/issues/1772">#1772</a>, <a href="https://github.com/planetarium/libplanet/pull/1810">#1810</a>]</li>
+</ul>
+<h2 id="version-0275">Version 0.27.5</h2>
+<p>Released on February 16, 2022.</p>
+<ul>
+<li>Upgraded <em>Planetarium.RocksDbSharp</em> from 6.2.4-planetarium to
+<a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium">6.2.6-planetarium</a>.
+[<a href="https://github.com/planetarium/libplanet/pull/1791">#1791</a>, <a href="https://github.com/planetarium/libplanet/pull/1803">#1803</a>]</li>
+<li>(Libplanet.Net) Additional logs tagged <code>Metric</code> to monitor <code>ITransport</code>
+behavior.  [<a href="https://github.com/planetarium/libplanet/pull/1802">#1802</a>]</li>
+</ul>
+<h2 id="version-0274">Version 0.27.4</h2>
+<p>Released on February 16, 2022.</p>
+<ul>
+<li>Fixed *@planetarium/cli* npm package's bug where installation had not
+worked since 0.27.0.  [<a href="https://github.com/planetarium/libplanet/issues/1790">#1790</a>, <a href="https://github.com/planetarium/libplanet/pull/1799">#1799</a>]</li>
+<li>(Libplanet.Net) Return the fixed races between <code>Swarm&lt;T&gt;</code>'s dual systems
+for block synchronization (polling and event-driven in parallel)
+on updating chain by serializing the post-download process
+which is common for both synchronization mechanisms.  [<a href="https://github.com/planetarium/libplanet/issues/1731">#1731</a>, <a href="https://github.com/planetarium/libplanet/pull/1798">#1798</a>]</li>
+</ul>
 <h2 id="version-0273">Version 0.27.3</h2>
-<p>Released on Februrary 11, 2022.</p>
+<p>Released on February 11, 2022.</p>
 <ul>
 <li>(Libplanet.Net) <code>Swarm&lt;T&gt;.CompleteBlockSync()</code> changed back,
 reverting the behavior implemented in <a href="https://github.com/planetarium/libplanet/pull/1759">#1759</a>
@@ -108,7 +132,7 @@ synchronization (polling and event-driven in parallel)
 on updating chain  [<a href="https://github.com/planetarium/libplanet/pull/1797">#1797</a>]</li>
 </ul>
 <h2 id="version-0272">Version 0.27.2</h2>
-<p>Released on Februrary 8, 2022.</p>
+<p>Released on February 8, 2022.</p>
 <ul>
 <li>(Libplanet.Net) Sending a <code>Message</code> through <code>NetMQTransport</code> now fails
 immediately if the <code>Message</code> cannot be queued to a <code>DealerSocket</code>
@@ -187,6 +211,23 @@ individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/pla
 <ul>
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.
 [<a href="https://github.com/advisories/GHSA-r683-j2x4-v87g">CVE-2022-0235</a>, <a href="https://github.com/planetarium/libplanet/pull/1747">#1747</a>]</li>
+</ul>
+<h2 id="version-0265">Version 0.26.5</h2>
+<p>Released on February 18, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.PreloadAsync()</code>
+had not thrown <code>OperationCanceledException</code> even cancellation
+was requested.  [<a href="https://github.com/planetarium/libplanet/issues/1547">#1547</a>, <a href="https://github.com/planetarium/libplanet/pull/1796">#1796</a>]</li>
+<li>Fixed <code>ThreadStateException</code> thrown by <code>NonblockRenderer&lt;T&gt;</code> and
+<code>NonblockActionRenderer&lt;T&gt;</code> classes.  [<a href="https://github.com/planetarium/libplanet/issues/1772">#1772</a>, <a href="https://github.com/planetarium/libplanet/pull/1810">#1810</a>]</li>
+</ul>
+<h2 id="version-0264">Version 0.26.4</h2>
+<p>Released on February 16, 2022.</p>
+<ul>
+<li>Upgraded <em>Planetarium.RocksDbSharp</em> from 6.2.4-planetarium to
+<a href="https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium">6.2.6-planetarium</a>.
+[<a href="https://github.com/planetarium/libplanet/pull/1791">#1791</a>, <a href="https://github.com/planetarium/libplanet/pull/1803">#1803</a>]</li>
+<li>Additional logs tagged <code>Metric</code> to monitor <code>ITransport</code> behavior.  [<a href="https://github.com/planetarium/libplanet/pull/1802">#1802</a>]</li>
 </ul>
 <h2 id="version-0263">Version 0.26.3</h2>
 <p>Released on February 7, 2022.</p>

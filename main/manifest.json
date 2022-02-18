@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Pm3rFGw0pviZUTjmL7fwHL9g1PMVxjdtQ2c9LypLjO8="
+          "hash": "5jkGdbRjsWFmyHi2Aa74Ifz0FEYO6p6j6j0UflWVkCU="
         }
       },
       "is_incremental": false,
@@ -70,6 +70,18 @@
         ".html": {
           "relative_path": "explorer/README.html",
           "hash": "EjMgSpNJDYEEqafkoULQQeF0m56jV5GhWah8B0wtNsY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../Libplanet.Tools/CONTRIBUTING.md",
+      "output": {
+        ".html": {
+          "relative_path": "cli/CONTRIBUTING.html",
+          "hash": "x2O7tK95nyF7FHI6y5vIlaYkYYZGI6/OynPJGLhE0bU="
         }
       },
       "is_incremental": false,
@@ -801,7 +813,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullFallback.html",
-          "hash": "yHr1yyp+0MF56zRChh7PLcjB0bB9jLT/TAsVqXH0U2A="
+          "hash": "YJlvXPUhemsN92pV39tSlCGDHel3n2bboJciRacfG3M="
         }
       },
       "is_incremental": false,
@@ -813,7 +825,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.FullMode.html",
-          "hash": "6WAUhekHk+/pFpzOcDWcfgRU4MRvRyh3iufilfProqE="
+          "hash": "zsFtGAWrbwnt+CzSyig5tqU4GxV23OFzT14MK9kTqmI="
         }
       },
       "is_incremental": false,
@@ -825,7 +837,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Renderers.NonblockRenderer-1.html",
-          "hash": "lqHSckqrbgmez8g8D4/08vXQ2uI+owA6Pu+dRwNLSbI="
+          "hash": "sEytTnY0XMbLwWEjpUmgJrNcRK3fhXL0ZJqph8+awWc="
         }
       },
       "is_incremental": false,
@@ -2968,7 +2980,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 12,
+          "total_file_count": 13,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {

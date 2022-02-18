@@ -5,11 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Delegate NonblockRenderer&lt;T&gt;.FullFallback
-   | Libplanet </title>
+    <title>On npm packaging | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Delegate NonblockRenderer&lt;T&gt;.FullFallback
-   | Libplanet ">
+    <meta name="title" content="On npm packaging | Libplanet ">
     <meta name="generator" content="docfx 2.58.2.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -17,7 +15,7 @@
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
     
     
@@ -59,48 +57,57 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        
-        <div class="sidenav hide-when-search">
-          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
-          <div class="sidetoggle collapse" id="sidetoggle">
-            <div id="sidetoc"></div>
-          </div>
-        </div>
-        <div class="article row grid-right">
+        <div class="article row grid">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.FullFallback">
-  
-  
-  <h1 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_FullFallback" data-uid="Libplanet.Blockchain.Renderers.NonblockRenderer`1.FullFallback" class="text-break">Delegate NonblockRenderer&lt;T&gt;.FullFallback
-  </h1>
-  <div class="markdown level0 summary"><p>Customizes behavior when the internal event queue is full so that no more event
-can be added.</p>
-</div>
-  <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Renderers.html">Libplanet.Blockchain.Renderers</a></h6>
-  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Blockchain_Renderers_NonblockRenderer_1_FullFallback_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate void FullFallback(System.Action droppedEvent);</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action">System.Action</a></td>
-        <td><span class="parametername">droppedEvent</span></td>
-        <td><p>The render event failed to be queued.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="on-npm-packaging">On npm packaging</h1>
+
+<p>Although <em>Libplanet.Tools</em> is a CLI program written in .NET, it's also
+distributed via <em>npm</em>, the popular package manager for JavaScript:
+<em><a href="https://www.npmjs.com/package/@planetarium/cli">@planetarium/cli</a></em>.  The npm package consists of three scripts:</p>
+<ul>
+<li><em>download.mjs</em> downloads an appropriate archive file for the machine from
+GitHub release page, and unpack the executable binary to the right place.</li>
+<li><em>install.mjs</em> simply invokes the above script.  It's automatically invoked
+by npm when the package is installed.</li>
+<li><em>bin/planet.mjs</em> is used on Windows or if the package is installed with
+npm's <code>--ignore-scripts</code> option.  The suffix <em>.mjs</em> is stripped when it's
+installed in a Linux/macOS system or replaced by <em>.exe</em> on Windows.
+Read the comment on the top of the file
+for details.</li>
+</ul>
+<p>As the npm package <em><a href="https://www.npmjs.com/package/@planetarium/cli">@planetarium/cli</a></em> is just a thin wrapper around
+<em>Libplanet.Tools</em> project, which is also a thin entrypoint of
+<em>Libplanet.Extensions.Cocona</em> project, if you want to change the program itself
+see <em>Libplanet.Extensions.Cocona</em> project instead.</p>
+<h2 id="testing-the-installer">Testing the installer</h2>
+<p>Note that the below examples do not test <code>npm install @planetarium/cli@0.27.3</code>,
+but install <em>Libplanet.Tools</em> 0.27.3 with the <em>current install script in your
+local working directory</em>.</p>
+<h3 id="linuxmacos">Linux/macOS</h3>
+<p>There are prerequisites for testing:</p>
+<ul>
+<li>GNU Bash</li>
+<li>jq</li>
+<li>npm</li>
+</ul>
+<p>Here's a testing script:</p>
+<pre><code class="lang-bash">bin/npm-test.sh 0.27.3  # Libplanet.Tools version to install
+</code></pre>
+<p>It must terminate with the output <code>Succeeded!</code> in the end if tests passed.</p>
+<h3 id="windows">Windows</h3>
+<p>There are prerequisites for testing:</p>
+<ul>
+<li>PowerShell 5.1 or higher</li>
+<li>npm</li>
+</ul>
+<p>Here's a testing script:</p>
+<pre><code class="lang-powershell">powershell `
+  -ExecutionPolicy Bypass `
+  -File bin\npm-test.ps1 `
+  -Version 0.27.3  # Libplanet.Tools version to install
+</code></pre>
+<p>It must terminate with the output <code>Succeeded!</code> in the end if tests passed.</p>
 </article>
           </div>
           
@@ -109,10 +116,7 @@ can be added.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_Renderers_NonblockRenderer_1_FullFallback.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Renderers.NonblockRenderer%601.FullFallback%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/Renderers/NonblockRenderer.cs/#L144" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Tools/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
