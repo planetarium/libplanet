@@ -94,6 +94,15 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 in one line as JSON whenever a different key is found,
 than it outputs all of the different nodes at once.  [<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
 </ul>
+<h2 id="version-0277">Version 0.27.7</h2>
+<p>Released on February 18, 2022.</p>
+<ul>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had thrown <code>IndexOutOfRangeException</code> for the input longer or shorter
+than <code>HashDigest&lt;T&gt;.Size</code> on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had returned the wrong digest on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
+</ul>
 <h2 id="version-0276">Version 0.27.6</h2>
 <p>Released on February 18, 2022.</p>
 <ul>
@@ -212,6 +221,15 @@ individual <code>Transaction&lt;T&gt;</code>s.  [<a href="https://github.com/pla
 <li>Upgrade <em>node-fetch</em> for *@planetarium/cli* npm package.
 [<a href="https://github.com/advisories/GHSA-r683-j2x4-v87g">CVE-2022-0235</a>, <a href="https://github.com/planetarium/libplanet/pull/1747">#1747</a>]</li>
 </ul>
+<h2 id="version-0266">Version 0.26.6</h2>
+<p>Released on February 18, 2022.</p>
+<ul>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had thrown <code>IndexOutOfRangeException</code> for the input longer or shorter
+than <code>HashDigest&lt;T&gt;.Size</code> on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had returned the wrong digest on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
+</ul>
 <h2 id="version-0265">Version 0.26.5</h2>
 <p>Released on February 18, 2022.</p>
 <ul>
@@ -309,6 +327,15 @@ into two parallel tasks.</li>
 <li>Fixed a bug where unnecessary additional attempts were made to
 unresponsive <code>Peer</code>s when discovering a <code>Peer</code> through <code>KademliaProtocol</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/1692">#1692</a>]</li>
+</ul>
+<h2 id="version-0255">Version 0.25.5</h2>
+<p>Released on February 18, 2022.</p>
+<ul>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had thrown <code>IndexOutOfRangeException</code> for the input longer or shorter
+than <code>HashDigest&lt;T&gt;.Size</code> on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
+<li>Fixed <code>HashDigest&lt;T&gt;.DeriveFrom(ReadOnlySpan&lt;byte&gt;)</code> method's bug where
+it had returned the wrong digest on .NET Standard 2.0. [<a href="https://github.com/planetarium/libplanet/issues/1706">#1706</a>, <a href="https://github.com/planetarium/libplanet/pull/1815">#1815</a>]</li>
 </ul>
 <h2 id="version-0254">Version 0.25.4</h2>
 <p>Released on January 18, 2022.</p>
