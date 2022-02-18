@@ -507,9 +507,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             {
                 output?.WriteLine(
                     "[{0}/{1}] Waiting for {2}...",
-                    until - started,
+                    DateTimeOffset.UtcNow - started,
                     timeout,
-                    conditionLabel is string c ? c : $"satisfying the condition ({condition.Body})"
+                    conditionLabel is string c1
+                        ? c1
+                        : $"satisfying the condition ({condition.Body})"
                 );
                 await Task.Delay(delay);
             }
@@ -519,6 +521,13 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 $"Waited {timeout} but the condition (" +
                     (conditionLabel is string l ? l : condition.Body.ToString()) +
                     ") has never been satisfied."
+            );
+
+            output?.WriteLine(
+                "[{0}/{1}] Done {2}...",
+                DateTimeOffset.UtcNow - started,
+                timeout,
+                conditionLabel is string c2 ? c2 : $"satisfying the condition ({condition.Body})"
             );
         }
 
