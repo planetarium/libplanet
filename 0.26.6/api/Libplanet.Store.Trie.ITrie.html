@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ITrie
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ITrie
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.Trie.ITrie">
+  
+  
+  <h1 id="Libplanet_Store_Trie_ITrie" data-uid="Libplanet.Store.Trie.ITrie" class="text-break">Interface ITrie
+  </h1>
+  <div class="markdown level0 summary"><p>An interface for <a href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle Tree</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.Trie.html">Libplanet.Store.Trie</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_Trie_ITrie_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ITrie</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Hash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L17">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Hash_" data-uid="Libplanet.Store.Trie.ITrie.Hash*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Hash" data-uid="Libplanet.Store.Trie.ITrie.Hash">Hash</h4>
+  <div class="markdown level1 summary"><p>The state root hash of the trie.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">HashDigest&lt;SHA256&gt; Hash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Recorded.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Recorded%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L23">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Recorded_" data-uid="Libplanet.Store.Trie.ITrie.Recorded*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Recorded" data-uid="Libplanet.Store.Trie.ITrie.Recorded">Recorded</h4>
+  <div class="markdown level1 summary"><p>Whether the trie root is recorded in the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool Recorded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_Trie_ITrie_Recorded_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Empty root is considered as recorded.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Commit.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Commit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L49">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Commit_" data-uid="Libplanet.Store.Trie.ITrie.Commit*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Commit" data-uid="Libplanet.Store.Trie.ITrie.Commit">Commit()</h4>
+  <div class="markdown level1 summary"><p>Cleans up and stores the <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> in storage.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITrie Commit()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>Returns new committed <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Get(IReadOnlyList%7BLibplanet.Store.Trie.KeyBytes%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L43">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Get_" data-uid="Libplanet.Store.Trie.ITrie.Get*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Get_IReadOnlyList_Libplanet_Store_Trie_KeyBytes__" data-uid="Libplanet.Store.Trie.ITrie.Get(IReadOnlyList{Libplanet.Store.Trie.KeyBytes})">Get(IReadOnlyList&lt;KeyBytes&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the values stored with <code data-dev-comment-type="paramref" class="paramref">keys</code> in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IValue?&gt; Get(IReadOnlyList&lt;KeyBytes&gt; keys)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a>&gt;</td>
+        <td><span class="parametername">keys</span></td>
+        <td><p>The keys used in <a class="xref" href="Libplanet.Store.Trie.ITrie.html#Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_">Set(in KeyBytes, IValue)</a> to store a value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;&gt;</td>
+        <td><p>The values associated to the specified <code data-dev-comment-type="paramref" class="paramref">keys</code>.  The associated
+values are ordered in the same way to the corresponding <code data-dev-comment-type="paramref" class="paramref">keys</code>.  Absent
+values are represented as <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes%40%2CIValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L34">View Source</a>
+  </span>
+  <a id="Libplanet_Store_Trie_ITrie_Set_" data-uid="Libplanet.Store.Trie.ITrie.Set*"></a>
+  <h4 id="Libplanet_Store_Trie_ITrie_Set_Libplanet_Store_Trie_KeyBytes__IValue_" data-uid="Libplanet.Store.Trie.ITrie.Set(Libplanet.Store.Trie.KeyBytes@,IValue)">Set(in KeyBytes, IValue)</h4>
+  <div class="markdown level1 summary"><p>Stores the <code data-dev-comment-type="paramref" class="paramref">value</code> to the
+node corresponding to given <code data-dev-comment-type="paramref" class="paramref">key</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITrie Set(in KeyBytes key, IValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.KeyBytes.html">KeyBytes</a></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The unique key to associate with the <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a></td>
+        <td><p>Returns new updated <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/573d4fa9502a1d58d7aae7462dea67d3e36de49b/apiSpec/new?filename=Libplanet_Store_Trie_ITrie.md&amp;value=---%0Auid%3A%20Libplanet.Store.Trie.ITrie%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/573d4fa9502a1d58d7aae7462dea67d3e36de49b/Libplanet/Store/Trie/ITrie.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
