@@ -36,9 +36,6 @@ To be released.
 
 ### Dependencies
 
- -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
-    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].  [[#1791]]
-
 ### CLI tools
 
  -  `planet mpt diff` command became to output the key and its values
@@ -50,14 +47,55 @@ To be released.
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
-[#1791]: https://github.com/planetarium/libplanet/pull/1791
 [Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
+
+
+Version 0.27.6
+--------------
+
+Released on February 18, 2022.
+
+ -  (Libplanet.Net) Fixed a bug where `Swarm<T>.PreloadAsync()`
+    had not thrown `OperationCanceledException` even cancellation
+    was requested.  [[#1547], [#1796]]
+ -  Fixed `ThreadStateException` thrown by `NonblockRenderer<T>` and
+    `NonblockActionRenderer<T>` classes.  [[#1772], [#1810]]
+
+
+Version 0.27.5
+--------------
+
+Released on February 16, 2022.
+
+ -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
+    [[#1791], [#1803]]
+ -  (Libplanet.Net) Additional logs tagged `Metric` to monitor `ITransport`
+    behavior.  [[#1802]]
+
+
+Version 0.27.4
+--------------
+
+Released on February 16, 2022.
+
+ -  Fixed *@planetarium/cli* npm package's bug where installation had not
+    worked since 0.27.0.  [[#1790], [#1799]]
+ -  (Libplanet.Net) Return the fixed races between `Swarm<T>`'s dual systems
+    for block synchronization (polling and event-driven in parallel)
+    on updating chain by serializing the post-download process
+    which is common for both synchronization mechanisms.  [[#1731], [#1798]]
+
+
+[#1790]: https://github.com/planetarium/libplanet/issues/1790
+[#1798]: https://github.com/planetarium/libplanet/pull/1798
+[#1799]: https://github.com/planetarium/libplanet/pull/1799
 
 
 Version 0.27.3
 --------------
 
-Released on Februrary 11, 2022.
+Released on February 11, 2022.
 
  -  (Libplanet.Net) `Swarm<T>.CompleteBlockSync()` changed back,
     reverting the behavior implemented in [#1759]
@@ -71,7 +109,7 @@ Released on Februrary 11, 2022.
 Version 0.27.2
 --------------
 
-Released on Februrary 8, 2022.
+Released on February 8, 2022.
 
  -  (Libplanet.Net) Sending a `Message` through `NetMQTransport` now fails
     immediately if the `Message` cannot be queued to a `DealerSocket`
@@ -177,6 +215,39 @@ Released on January 26, 2022.
 [#1766]: https://github.com/planetarium/libplanet/pull/1766
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
+
+
+Version 0.26.5
+--------------
+
+Released on February 18, 2022.
+
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()`
+    had not thrown `OperationCanceledException` even cancellation
+    was requested.  [[#1547], [#1796]]
+ -  Fixed `ThreadStateException` thrown by `NonblockRenderer<T>` and
+    `NonblockActionRenderer<T>` classes.  [[#1772], [#1810]]
+
+[#1547]: https://github.com/planetarium/libplanet/issues/1547
+[#1772]: https://github.com/planetarium/libplanet/issues/1772
+[#1796]: https://github.com/planetarium/libplanet/pull/1796
+[#1810]: https://github.com/planetarium/libplanet/pull/1810
+
+
+Version 0.26.4
+--------------
+
+Released on February 16, 2022.
+
+ -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
+    [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
+    [[#1791], [#1803]]
+ -  Additional logs tagged `Metric` to monitor `ITransport` behavior.  [[#1802]]
+
+[#1791]: https://github.com/planetarium/libplanet/pull/1791
+[#1802]: https://github.com/planetarium/libplanet/pull/1802
+[#1803]: https://github.com/planetarium/libplanet/pull/1803
+[Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
 
 
 Version 0.26.3

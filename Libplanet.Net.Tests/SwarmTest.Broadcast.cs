@@ -308,12 +308,7 @@ namespace Libplanet.Net.Tests
                 Assert.Contains(swarmC.AsPeer, swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarmC.Peers);
 
-                for (var i = 0; i < 100; i++)
-                {
-                    swarmA.BroadcastTxs(txs);
-                }
-
-                var t = Task.Run(async () =>
+                Task miningTask = Task.Run(async () =>
                 {
                     for (var i = 0; i < 10; i++)
                     {
@@ -321,12 +316,15 @@ namespace Libplanet.Net.Tests
                     }
                 });
 
-                while (!chainC.GetStagedTransactionIds().Any())
+                Task txReceivedTask = swarmC.TxReceived.WaitAsync();
+
+                for (var i = 0; i < 100; i++)
                 {
-                    await swarmC.TxReceived.WaitAsync();
+                    swarmA.BroadcastTxs(txs);
                 }
 
-                await t;
+                await txReceivedTask;
+                await miningTask;
 
                 for (var i = 0; i < txCount; i++)
                 {
@@ -843,6 +841,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 await swarmC.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await swarmC.BlockAppended.WaitAsync();
                 Assert.Equal(chainC.Tip, chainATip);
             }
             finally
@@ -900,6 +899,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(miner2, miner1.AsPeer);
 
                 await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
+                await miner1.BlockAppended.WaitAsync();
 
                 Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
                 Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);

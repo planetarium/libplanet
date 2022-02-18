@@ -58,13 +58,15 @@ namespace Libplanet.Net
         {
             BlockChain<T> synced = null;
             System.Action renderSwap = () => { };
+            const string methodName =
+                nameof(Swarm<T>) + "<T>." + nameof(BlockCandidateProcess) + "()";
             try
             {
                 FillBlocksAsyncStarted.Set();
                 _logger.Debug(
-                    "{MethodName} start append. Current tip: #{BlockIndex}",
-                    nameof(BlockCandidateProcess),
-                    BlockChain.Tip.Index);
+                    methodName + " starts to append. Current tip: #{BlockIndex}.",
+                    BlockChain.Tip.Index
+                );
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
@@ -72,17 +74,13 @@ namespace Libplanet.Net
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
-                    "{MethodName} finish append. Synced tip: #{BlockIndex}",
-                    nameof(BlockCandidateProcess),
-                    synced.Tip.Index);
+                    methodName + " finished appending blocks. Synced tip: #{BlockIndex}.",
+                    synced.Tip.Index
+                );
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    "Cannot append blocks at {MethodName}. " +
-                    "InnerException: {InnerException}",
-                    nameof(BlockCandidateTable),
-                    e.Message);
+                _logger.Error(e, methodName + " failed to append blocks.");
                 FillBlocksAsyncFailed.Set();
                 return false;
             }
@@ -174,7 +172,8 @@ namespace Libplanet.Net
                  );
              }
 
-             if (!(workspace.Tip is null))
+             if (!(workspace.Tip is null) &&
+                 !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
              {
                  blocks = blocks.Skip(1).ToList();
              }
