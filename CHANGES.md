@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.26.6
 --------------
 
-To be released.
+Released on February 18, 2022.
 
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
     it had thrown `IndexOutOfRangeException` for the input longer or shorter
