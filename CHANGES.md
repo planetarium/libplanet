@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.27.6
 --------------
 
-To be released.
+Released on February 18, 2022.
 
  -  (Libplanet.Net) Fixed a bug where `Swarm<T>.PreloadAsync()`
     had not thrown `OperationCanceledException` even cancellation
