@@ -849,6 +849,7 @@ namespace Libplanet.Net.Transports
                 _appProtocolVersion);
             var result = new List<Message>();
 
+            // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
                 if (dealer.TrySendMultipartMessage(message))
@@ -958,6 +959,9 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
+                // FIXME: Immediate disposal of DealerSocket results in a crash in
+                // a Windows environment.
+                await Task.Delay(1);
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
             }
