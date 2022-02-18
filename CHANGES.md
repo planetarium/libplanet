@@ -6,6 +6,12 @@ Version 0.27.6
 
 To be released.
 
+ -  (Libplanet.Net) Fixed a bug where `Swarm<T>.PreloadAsync()`
+    had not thrown `OperationCanceledException` even cancellation
+    was requested.  [[#1547], [#1796]]
+ -  Fixed `ThreadStateException` thrown by `NonblockRenderer<T>` and
+    `NonblockActionRenderer<T>` classes.  [[#1772], [#1810]]
+
 
 Version 0.27.5
 --------------
@@ -15,7 +21,8 @@ Released on February 16, 2022.
  -  Upgraded *Planetarium.RocksDbSharp* from 6.2.4-planetarium to
     [6.2.6-planetarium][Planetarium.RocksDbSharp 6.2.6-planetarium].
     [[#1791], [#1803]]
- -  Additional logs tagged `Metric` to monitor `ITransport` behavior.  [[#1802]]
+ -  (Libplanet.Net) Additional logs tagged `Metric` to monitor `ITransport`
+    behavior.  [[#1802]]
 
 
 Version 0.27.4
@@ -159,6 +166,23 @@ Released on January 26, 2022.
 [#1766]: https://github.com/planetarium/libplanet/pull/1766
 [CVE-2022-0235]: https://github.com/advisories/GHSA-r683-j2x4-v87g
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
+
+
+Version 0.26.5
+--------------
+
+Released on February 18, 2022.
+
+ -  Fixed a bug where `Swarm<T>.PreloadAsync()`
+    had not thrown `OperationCanceledException` even cancellation
+    was requested.  [[#1547], [#1796]]
+ -  Fixed `ThreadStateException` thrown by `NonblockRenderer<T>` and
+    `NonblockActionRenderer<T>` classes.  [[#1772], [#1810]]
+
+[#1547]: https://github.com/planetarium/libplanet/issues/1547
+[#1772]: https://github.com/planetarium/libplanet/issues/1772
+[#1796]: https://github.com/planetarium/libplanet/pull/1796
+[#1810]: https://github.com/planetarium/libplanet/pull/1810
 
 
 Version 0.26.4

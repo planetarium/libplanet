@@ -587,15 +587,19 @@ namespace Libplanet.Tests.Net
             var startedStop = false;
             var shouldStopSwarm =
                 swarm0.AsPeer.Equals(receiverSwarm.Peers.First()) ? swarm0 : swarm1;
-            await receiverSwarm.PreloadAsync(
-                progress: new ActionProgress<PreloadState>(async (state) =>
+
+            async void Action(PreloadState state)
+            {
+                if (!startedStop && state is BlockDownloadState)
                 {
-                    if (!startedStop && state is BlockDownloadState)
-                    {
-                        startedStop = true;
-                        await shouldStopSwarm.StopAsync(TimeSpan.Zero);
-                    }
-                }));
+                    startedStop = true;
+                    await shouldStopSwarm.StopAsync(TimeSpan.Zero);
+                }
+            }
+
+            await receiverSwarm.PreloadAsync(
+                dialTimeout: TimeSpan.FromSeconds(5),
+                progress: new ActionProgress<PreloadState>(Action));
 
             Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);

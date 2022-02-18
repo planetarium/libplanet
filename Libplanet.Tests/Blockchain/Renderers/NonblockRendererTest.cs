@@ -97,5 +97,57 @@ namespace Libplanet.Tests.Blockchain.Renderers
             // Double disposing does nothing.
             renderer.Dispose();
         }
+
+        [Theory]
+        [InlineData(4)]
+        [InlineData(8)]
+        [InlineData(16)]
+        [InlineData(32)]
+        public void StatingWorkerThreadOnlyOnce(int parallel)
+        {
+            // This is a regression test for the follwing bug:
+            // https://github.com/planetarium/libplanet/issues/1772
+            var renderer = new NonblockRenderer<DumbAction>(
+                new AnonymousRenderer<DumbAction>(),
+                25,
+                NonblockRenderer<DumbAction>.FullMode.DropNewest
+            );
+            Thread[] threads = new Thread[parallel];
+            Exception[] errors = new Exception[threads.Length];
+            using (renderer)
+            {
+                for (int i = 0; i < threads.Length; i++)
+                {
+                    // Declare a new variable for each iteration to avoid being captured by closure:
+                    int threadNo = i;
+                    threads[threadNo] = new Thread(() =>
+                    {
+                        try
+                        {
+                            renderer.RenderBlock(_blockA, _blockB);
+                        }
+                        catch (Exception e)
+                        {
+                            errors[threadNo] = e;
+                        }
+                    });
+                }
+
+                for (int i = 0; i < threads.Length; i++)
+                {
+                    threads[i].Start();
+                }
+
+                for (int i = 0; i < threads.Length; i++)
+                {
+                    threads[i].Join();
+                }
+            }
+
+            for (int i = 0; i < threads.Length; i++)
+            {
+                Assert.Null(errors[i]);
+            }
+        }
     }
 }
