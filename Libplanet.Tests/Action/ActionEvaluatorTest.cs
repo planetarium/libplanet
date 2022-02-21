@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -943,8 +944,12 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
         }
 
-        [Fact]
-        public void OrderTxsForEvaluation()
+        [Theory]
+        [ClassData(typeof(OrderTxsForEvaluationData))]
+        public void OrderTxsForEvaluation(
+            int protocolVersion,
+            string[] originalAddresses,
+            string[] orderedAddresses)
         {
             const int numSigners = 5;
             const int numTxsPerSigner = 3;
@@ -989,74 +994,35 @@ namespace Libplanet.Tests.Action
             };
             ImmutableArray<byte> preEvaluationHash = preEvaluationHashBytes.ToImmutableArray();
 
-            string[] originalAddresses =
-            {
-                "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
-                "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-                "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-                "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
-                "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-            };
             // Sanity check.
             Assert.True(originalAddresses.SequenceEqual(
                 signers.Select(signer => signer.ToAddress().ToString())));
 
-            // Make sure to cover every case *and* the currently running protocol does not break.
-            int[] protocolVersions = { 0, 3, BlockMetadata.CurrentProtocolVersion };
-            foreach (int protocolVersion in protocolVersions)
+            var orderedTxs = ActionEvaluator<RandomAction>.OrderTxsForEvaluation(
+                protocolVersion: protocolVersion,
+                txs: txs,
+                preEvaluationHash: preEvaluationHash
+            ).ToImmutableArray();
+
+            // Check signers are grouped together.
+            for (int i = 0; i < numSigners; i++)
             {
-                var orderedTxs = ActionEvaluator<RandomAction>.OrderTxsForEvaluation(
-                    protocolVersion: protocolVersion,
-                    txs: txs,
-                    preEvaluationHash: preEvaluationHash
-                ).ToImmutableArray();
-
-                // Check signers are grouped together.
-                for (int i = 0; i < numSigners; i++)
-                {
-                    var signerTxs = orderedTxs.Skip(i * numTxsPerSigner).Take(numTxsPerSigner);
-                    Assert.True(signerTxs.Select(tx => tx.Signer).Distinct().Count() == 1);
-                }
-
-                // Check nonces are ordered.
-                foreach (var signer in signers)
-                {
-                    var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.ToAddress());
-                    Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
-                }
-
-                List<string> orderedAddresses;
-                if (protocolVersion >= 3)
-                {
-                    // Spec for protocol version >= 3.
-                    orderedAddresses = new List<string>
-                    {
-                        "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-                        "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-                        "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
-                        "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
-                        "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-                    };
-                }
-                else
-                {
-                    // Spec for protocol version < 3.
-                    orderedAddresses = new List<string>
-                    {
-                        "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-                        "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-                        "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-                        "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
-                        "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
-                    };
-                }
-
-                // Check according to spec.
-                Assert.True(orderedAddresses.SequenceEqual(
-                    orderedTxs
-                        .Where((tx, i) => i % numTxsPerSigner == 0)
-                        .Select(tx => tx.Signer.ToString())));
+                var signerTxs = orderedTxs.Skip(i * numTxsPerSigner).Take(numTxsPerSigner);
+                Assert.True(signerTxs.Select(tx => tx.Signer).Distinct().Count() == 1);
             }
+
+            // Check nonces are ordered.
+            foreach (var signer in signers)
+            {
+                var signerTxs = orderedTxs.Where(tx => tx.Signer == signer.ToAddress());
+                Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
+            }
+
+            // Check according to spec.
+            Assert.True(orderedAddresses.SequenceEqual(
+                orderedTxs
+                    .Where((tx, i) => i % numTxsPerSigner == 0)
+                    .Select(tx => tx.Signer.ToString())));
         }
 
         private (Address[], Transaction<DumbAction>[]) MakeFixturesForAppendTests(
@@ -1124,4 +1090,65 @@ namespace Libplanet.Tests.Action
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single type
+    internal class OrderTxsForEvaluationData : IEnumerable<object[]>
+    {
+        // For fixture sanity.
+        public string[] OriginalAddresses =
+        {
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+        };
+
+        // Spec for protocol version < 3.
+        public string[] OrderedAddressesV0 =
+        {
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+        };
+
+        // Spec for protocol version >= 3.
+        public string[] OrderedAddressesV3 =
+        {
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+        };
+
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[]
+            {
+                0,
+                OriginalAddresses,
+                OrderedAddressesV0,
+            };
+            yield return new object[]
+            {
+                3,
+                OriginalAddresses,
+                OrderedAddressesV3,
+            };
+            yield return new object[]
+            {
+                BlockMetadata.CurrentProtocolVersion,
+                OriginalAddresses,
+                BlockMetadata.CurrentProtocolVersion < 3
+                    ? OrderedAddressesV0
+                    : OrderedAddressesV3,
+            };
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+#pragma warning restore SA1402
 }
