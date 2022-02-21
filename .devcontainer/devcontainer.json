@@ -21,7 +21,8 @@
     "formulahendry.dotnet-test-explorer",
     "ms-vscode.powershell",
     "ms-vsliveshare.vsliveshare",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "GitHub.vscode-pull-request-github"
   ],
 
   // Use 'postCreateCommand' to run commands after the container is created.
