@@ -819,14 +819,22 @@ namespace Libplanet.Net.Transports
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
+            DateTimeOffset startedTime = DateTimeOffset.UtcNow;
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}.",
                 req.Message,
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
-            DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
             using var dealer = GetRequestDealerSocket(req);
+            TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+            CancellationTokenSource timerCts =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            if (req.Timeout is TimeSpan timespan)
+            {
+                timerCts.CancelAfter(timespan);
+            }
+
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer} with timeout {Timeout}...",
                 req.Message,
@@ -840,7 +848,8 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow,
                 _appProtocolVersion);
             var result = new List<Message>();
-            TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+
+            // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
                 if (dealer.TrySendMultipartMessage(message))
@@ -870,9 +879,7 @@ namespace Libplanet.Net.Transports
                     try
                     {
                         NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                            timeout: req.Timeout,
-                            cancellationToken: cancellationToken
-                        );
+                            cancellationToken: timerCts.Token);
                         _logger.Verbose(
                             "Received a raw message with {FrameCount} frames as a reply to " +
                             "request {RequestId} from {Peer}.",
@@ -894,14 +901,25 @@ namespace Libplanet.Net.Transports
 
                         result.Add(reply);
                     }
-                    catch (TimeoutException)
+                    catch (OperationCanceledException oce)
                     {
-                        if (req.ReturnWhenTimeout)
+                        if (timerCts.IsCancellationRequested)
                         {
-                            break;
+                            if (req.ReturnWhenTimeout)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                throw new TimeoutException(
+                                    $"The operation was canceled due to timeout {req.Timeout}.",
+                                    oce);
+                            }
                         }
-
-                        throw;
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
 
@@ -941,7 +959,11 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
+                // FIXME: Immediate disposal of DealerSocket results in a crash in
+                // a Windows environment.
+                await Task.Delay(1);
                 Interlocked.Decrement(ref _socketCount);
+                timerCts.Dispose();
             }
         }
 
