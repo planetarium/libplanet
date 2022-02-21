@@ -948,8 +948,8 @@ namespace Libplanet.Tests.Action
         [ClassData(typeof(OrderTxsForEvaluationData))]
         public void OrderTxsForEvaluation(
             int protocolVersion,
-            string[] originalAddresses,
-            string[] orderedAddresses)
+            List<string> originalAddresses,
+            List<string> orderedAddresses)
         {
             const int numSigners = 5;
             const int numTxsPerSigner = 3;
@@ -1095,7 +1095,7 @@ namespace Libplanet.Tests.Action
     internal class OrderTxsForEvaluationData : IEnumerable<object[]>
     {
         // For fixture sanity.
-        public string[] OriginalAddresses =
+        public List<string> OriginalAddresses = new List<string>
         {
             "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
             "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
@@ -1105,7 +1105,7 @@ namespace Libplanet.Tests.Action
         };
 
         // Spec for protocol version < 3.
-        public string[] OrderedAddressesV0 =
+        public List<string> OrderedAddressesV0 = new List<string>
         {
             "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
             "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
@@ -1115,7 +1115,7 @@ namespace Libplanet.Tests.Action
         };
 
         // Spec for protocol version >= 3.
-        public string[] OrderedAddressesV3 =
+        public List<string> OrderedAddressesV3 = new List<string>
         {
             "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
             "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
