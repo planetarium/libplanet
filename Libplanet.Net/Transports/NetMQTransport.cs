@@ -912,11 +912,11 @@ namespace Libplanet.Net.Transports
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                    logMsg,
-                    req.Message,
-                    req.Id,
-                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
-                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
+                        logMsg,
+                        req.Message,
+                        req.Id,
+                        req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
+                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
             catch (Exception e) when (
                 e is DifferentAppProtocolVersionException ||
@@ -932,12 +932,12 @@ namespace Libplanet.Net.Transports
                 _logger
                     .ForContext("Tag", "Metric")
                     .Debug(
-                    e,
-                    logMsg,
-                    req.Message,
-                    req.Id,
-                    req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
-                    (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
+                        e,
+                        logMsg,
+                        req.Message,
+                        req.Id,
+                        req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
+                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
             finally
             {
