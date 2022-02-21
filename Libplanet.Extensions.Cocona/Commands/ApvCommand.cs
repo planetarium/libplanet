@@ -22,12 +22,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             Guid keyId,
             [Argument(Name = "VERSION", Description = "A version number to sign.")]
             int version,
-            [Option(
-                'p',
-                ValueName = "PASSPHRASE",
-                Description = "Take passphrase through this option instead of prompt."
-            )]
-            string? passphrase = null,
+            PassphraseParameters passphrase,
             [Option(
                 'E',
                 ValueName = "FILE",
@@ -47,7 +42,15 @@ namespace Libplanet.Extensions.Cocona.Commands
             string[]? extra = null
         )
         {
-            PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase);
+            if (passphrase.PassphraseFile == "-" && extraFile == "-")
+            {
+                throw Utils.Error(
+                    "-P/--passphrase-file and -E/--extra-file cannot read standard input at a " +
+                    "time.  Please specify one of both to read from a regular file."
+                );
+            }
+
+            PrivateKey key = new KeyCommand().UnprotectKey(keyId, passphrase, ignoreStdin: true);
             IValue? extraValue = null;
             if (extraFile is string path)
             {
@@ -167,7 +170,13 @@ namespace Libplanet.Extensions.Cocona.Commands
                 foreach (Tuple<Guid, ProtectedPrivateKey> pair in ppks)
                 {
                     pair.Deconstruct(out Guid keyId, out ProtectedPrivateKey ppk);
-                    PublicKey pubKey = keyInstance.UnprotectKey(keyId).PublicKey;
+
+                    // FIXME: The command should take options like --key-id, --key-passphrase, &
+                    // --key-passphrase-file:
+                    PublicKey pubKey = keyInstance.UnprotectKey(
+                        keyId,
+                        new PassphraseParameters()
+                    ).PublicKey;
                     if (v.Verify(pubKey))
                     {
                         Console.Error.WriteLine(

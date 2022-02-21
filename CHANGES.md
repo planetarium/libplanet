@@ -10,16 +10,22 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  The return type of `MerkleTrieExtensions.DifferentNodes()` became
+    `IEnumerable<Tuple<KeyBytes, IValue, IValue>>` from
+    `IEnumerable<IGrouping<string, (HashDigest<SHA256> Root, IValue Value)>>`.
+    [[#1729]]
+ -  (Libplanet.Extensions.Cocona) Replaced `string? passphrase = null` parameter
+    of methods belonging `KeyCommand` and `ApvCommand` with
+    `PassphraseParameters passphrase`.  [[#1593], [#1823]]
+ -  (Libplanet.Extensions.Cocona) Replaced `KeyCommand.UnprotectKey(Guid keyId,
+    string? passphrase = null)` method with `UnprotectedKey(Guid,
+    PassphraseParameters, bool)` method.  [[#1593], [#1823]]
  -  (Libplanet.Net) `IMessageCodec<T>.Decode()` now throws
     `InvalidMessageSignatureException` and `InvalidMessageTimestampException`
     instead of `InvalidMessageException` and `InvalidTimestampException`
     respectively.  [[#1771]]
  -  (Libplanet.Net) Added `long tipDeltaThreshold = 25L` option to
     `Swarm<T>.PreloadAsync()` method.  [[#1775], [#1777], [#1779]]
- -  The return type of `MerkleTrieExtensions.DifferentNodes()` became
-    `IEnumerable<Tuple<KeyBytes, IValue, IValue>>` from
-    `IEnumerable<IGrouping<string, (HashDigest<SHA256> Root, IValue Value)>>`.
-    [[#1729]]
 
 ### Backward-incompatible network protocol changes
 
@@ -27,7 +33,12 @@ To be released.
 
 ### Added APIs
 
- -  (Libplanet.Net) `MessageSendFailedException` class added.
+ -  (Libplanet.Extensions.Cocona) Added `PassphraseParameters` class.
+    [[#1593], [#1823]]
+ -  (Libplanet.Extensions.Cocona) Added `KeyCommand.UnprotectKey(Guid keyId,
+    PassphraseParameters passphrase, bool ignoreStdin = false)` method.
+    [[#1593], [#1823]]
+ -  (Libplanet.Net) Added `MessageSendFailedException` class.
     [[#1781], [#1786]]
 
 ### Behavioral changes
@@ -41,12 +52,22 @@ To be released.
 
 ### Dependencies
 
+ -  (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.5.\* to
+    [1.6.\*][Cocona.Lite 1.6.0].  [[#1593], [#1823]]
+
 ### CLI tools
 
+ -  All `planet` subcommands taking passphrase now have `--passphrase-file`
+    option besides `-p`/`--passphrase` option to read it from the specified
+    file or standard input (`-`) instead.  [[#1593], [#1823]]
+ -  Fixed a bug where `planet` subcommands taking passphrase had unexpectedly
+    terminated with an uncaught `InvalidOperationException` when it's not
+    associated to any terminal device (tty), i.e., piped.  [[#1593], [#1823]]
  -  `planet mpt diff` command became to output the key and its values
     in one line as JSON whenever a different key is found,
     than it outputs all of the different nodes at once.  [[#1729]]
 
+[#1593]: https://github.com/planetarium/libplanet/pull/1593
 [#1729]: https://github.com/planetarium/libplanet/pull/1729
 [#1734]: https://github.com/planetarium/libplanet/issues/1734
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
@@ -54,7 +75,8 @@ To be released.
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
 [#1789]: https://github.com/planetarium/libplanet/pull/1789
-[Planetarium.RocksDbSharp 6.2.6-planetarium]: https://www.nuget.org/packages/Planetarium.RocksDbSharp/6.2.6-planetarium
+[#1823]: https://github.com/planetarium/libplanet/pull/1823
+[Cocona.Lite 1.6.0]: https://www.nuget.org/packages/Cocona.Lite/1.6.0
 
 
 Version 0.27.7

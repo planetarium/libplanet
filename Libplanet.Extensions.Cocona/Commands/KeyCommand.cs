@@ -30,12 +30,7 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         [Command(Description = "Create a new private key.")]
         public void Create(
-            [Option(
-                'p',
-                ValueName = "PASSPHRASE",
-                Description = "Take passphrase through this option instead of prompt."
-            )]
-            string? passphrase = null,
+            PassphraseParameters passphrase,
             [Option(
                 Description = "Print the created private key as Web3 Secret Storage format."
             )]
@@ -47,13 +42,9 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
-            [Argument(Name = "KEY-ID", Description = "A key UUID to remove.")] Guid keyId,
-            [Option(
-                'p',
-                ValueName = "PASSPHRASE",
-                Description = "Take passphrase through this option instead of prompt."
-            )]
-            string? passphrase = null,
+            [Argument(Name = "KEY-ID", Description = "A key UUID to remove.")]
+            Guid keyId,
+            PassphraseParameters passphrase,
             [Option(Description = "Remove without asking passphrase.")]
             bool noPassphrase = false
         )
@@ -80,12 +71,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "A raw private key to import in hexadecimal string."
             )]
             string rawKeyHex,
-            [Option(
-                'p',
-                ValueName = "PASSPHRASE",
-                Description = "Take passphrase through this option instead of prompt."
-            )]
-            string? passphrase = null,
+            PassphraseParameters passphrase,
             [Option(
                 Description = "Print the created private key as Web3 Secret Storage format."
             )]
@@ -117,13 +103,9 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         [Command(Description = "Export a raw private key (or public key).")]
         public void Export(
-            [Argument("KEY-ID", Description = "A key UUID to export.")] Guid keyId,
-            [Option(
-                'p',
-                ValueName = "PASSPHRASE",
-                Description = "Take passphrase through this option instead of prompt."
-            )]
-            string? passphrase = null,
+            [Argument("KEY-ID", Description = "A key UUID to export.")]
+            Guid keyId,
+            PassphraseParameters passphrase,
             [Option('P', Description = "Export a public key instead of private key.")]
             bool publicKey = false,
             [Option(
@@ -183,7 +165,11 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        public PrivateKey UnprotectKey(Guid keyId, string? passphrase = null)
+        public PrivateKey UnprotectKey(
+            Guid keyId,
+            PassphraseParameters passphrase,
+            bool ignoreStdin = false
+        )
         {
             ProtectedPrivateKey ppk;
             try
@@ -195,11 +181,11 @@ namespace Libplanet.Extensions.Cocona.Commands
                 throw Utils.Error($"No such key ID: {keyId}");
             }
 
-            passphrase ??= ConsolePasswordReader.Read($"Passphrase (of {keyId}): ");
+            string passphraseValue = passphrase.Take($"Passphrase (of {keyId}): ");
 
             try
             {
-                return ppk.Unprotect(passphrase);
+                return ppk.Unprotect(passphraseValue);
             }
             catch (IncorrectPassphraseException)
             {
@@ -207,19 +193,15 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        private void Add(PrivateKey key, string? passphrase, bool json, bool dryRun)
+        private void Add(
+            PrivateKey key,
+            PassphraseParameters passphrase,
+            bool json,
+            bool dryRun
+        )
         {
-            if (passphrase is null)
-            {
-                passphrase = ConsolePasswordReader.Read("Passphrase: ");
-                string second = ConsolePasswordReader.Read("Retype passphrase: ");
-                if (!passphrase.Equals(second))
-                {
-                    throw Utils.Error("Passphrases do not match.");
-                }
-            }
-
-            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(key, passphrase);
+            string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(key, passphraseValue);
             Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
             if (json)
             {
