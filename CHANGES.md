@@ -6,6 +6,7 @@ Version 0.28.0
 
 To be released.
 
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -52,6 +53,8 @@ To be released.
     complete its process within given timeframe `timeout` argument instead
     of possibly taking longer on some edge cases when waiting for
     multiple replies.  [[#1734], [#1789]]
+ -  `ActionEvaluator<T>.Evaluate()` method became to log message directly
+    instead of other methods that use it.  [[#1773]]
 
 ### Bug fixes
 
@@ -79,6 +82,7 @@ To be released.
 [#1729]: https://github.com/planetarium/libplanet/pull/1729
 [#1734]: https://github.com/planetarium/libplanet/issues/1734
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
+[#1773]: https://github.com/planetarium/libplanet/pull/1773
 [#1779]: https://github.com/planetarium/libplanet/pull/1779
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786

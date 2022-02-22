@@ -70,31 +70,57 @@ namespace Libplanet.Action
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            ITrie? previousBlockStatesTrie = !(_trieGetter is null) && block.PreviousHash is { } h
-                ? _trieGetter(h)
-                : null;
-            IAccountStateDelta previousStates =
-                GetPreviousBlockOutputStates(block, stateCompleterSet);
-
-            ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
-                block: block,
-                previousStates: previousStates,
-                previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
-
-            if (_policyBlockAction is null)
+            _logger.Debug(
+                "Evaluating actions in the block #{BlockIndex} preEvaluationHash: {BlockHash}...",
+                block.Index,
+                block.PreEvaluationHash
+            );
+            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
+            try
             {
-                return evaluations;
+                ITrie? previousBlockStatesTrie =
+                    !(_trieGetter is null) && block.PreviousHash is { } h
+                    ? _trieGetter(h)
+                    : null;
+                IAccountStateDelta previousStates =
+                    GetPreviousBlockOutputStates(block, stateCompleterSet);
+
+                ImmutableList<ActionEvaluation> evaluations = EvaluateBlock(
+                    block: block,
+                    previousStates: previousStates,
+                    previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
+
+                if (_policyBlockAction is null)
+                {
+                    return evaluations;
+                }
+                else
+                {
+                    previousStates = evaluations.Count > 0
+                        ? evaluations.Last().OutputStates
+                        : previousStates;
+                    return evaluations.Add(
+                        EvaluatePolicyBlockAction(
+                            block: block,
+                            previousStates: previousStates,
+                            previousBlockStatesTrie: previousBlockStatesTrie
+                        )
+                    );
+                }
             }
-            else
+            finally
             {
-                previousStates = evaluations.Count > 0
-                    ? evaluations.Last().OutputStates
-                    : previousStates;
-                return evaluations.Add(
-                    EvaluatePolicyBlockAction(
-                        block: block,
-                        previousStates: previousStates,
-                        previousBlockStatesTrie: previousBlockStatesTrie));
+                TimeSpan evalDuration = DateTimeOffset.Now - evaluateActionStarted;
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                        "Actions in {TxCount} transactions for block #{BlockIndex} " +
+                        "preEvaluationHash: {BlockHash} evaluated in {DurationMs:F0}ms.",
+                        block.Transactions.Count,
+                        block.Index,
+                        block.PreEvaluationHash,
+                        evalDuration.TotalMilliseconds
+                    );
             }
         }
 

@@ -783,28 +783,10 @@ namespace Libplanet.Blockchain
             StateCompleterSet<T>? stateCompleters = null
         )
         {
-            _logger.Debug(
-                "Evaluating actions in the block #{BlockIndex} {BlockHash}...",
-                block.Index,
-                block.Hash
-            );
-            IReadOnlyList<ActionEvaluation> evaluations = null;
-            DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
-            evaluations = ActionEvaluator.Evaluate(
+            IReadOnlyList<ActionEvaluation> evaluations = ActionEvaluator.Evaluate(
                 block,
                 stateCompleters ?? StateCompleterSet<T>.Recalculate
             );
-            TimeSpan evalDuration = DateTimeOffset.Now - evaluateActionStarted;
-            _logger
-                .ForContext("Tag", "Metric")
-                .Debug(
-                    "Actions in {TxCount} transactions for block #{BlockIndex} {BlockHash} " +
-                    "evaluated in {DurationMs:F0}ms.",
-                    block.Transactions.Count,
-                    block.Index,
-                    block.Hash,
-                    evalDuration.TotalMilliseconds);
-
             _rwlock.EnterWriteLock();
             try
             {
