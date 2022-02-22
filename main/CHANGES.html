@@ -83,6 +83,10 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>, <a href="https://github.com/planetarium/libplanet/pull/1777">#1777</a>, <a href="https://github.com/planetarium/libplanet/pull/1779">#1779</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The <code>Block&lt;T&gt;.CurrentProtocolVersion</code> is bumped from 2 to 3.
+[<a href="https://github.com/planetarium/libplanet/issues/1322">#1322</a>, <a href="https://github.com/planetarium/libplanet/issues/1323">#1323</a>, <a href="https://github.com/planetarium/libplanet/pull/1518">#1518</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
@@ -95,6 +99,8 @@ respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#17
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>Block&lt;T&gt;.Transactions</code> is ordered using a different scheme for
+evaluation due to protocol version bump.  [<a href="https://github.com/planetarium/libplanet/issues/1322">#1322</a>, <a href="https://github.com/planetarium/libplanet/issues/1323">#1323</a>, <a href="https://github.com/planetarium/libplanet/pull/1518">#1518</a>]</li>
 <li>(Libplanet.Net) <code>NetMQTransport.SendMessageWithReplyAsync()</code> should now
 complete its process within given timeframe <code>timeout</code> argument instead
 of possibly taking longer on some edge cases when waiting for
