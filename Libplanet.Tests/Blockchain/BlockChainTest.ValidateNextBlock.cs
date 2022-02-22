@@ -45,22 +45,19 @@ namespace Libplanet.Tests.Blockchain
             }.Mine(_fx.GetHashAlgorithm(1)).Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            PreEvaluationBlock<DumbAction> preEvalblock2 = new BlockContent<DumbAction>
+            Block<DumbAction> block2 = new BlockContent<DumbAction>
             {
                 Index = 2,
                 Difficulty = 1024,
                 TotalDifficulty = block1.TotalDifficulty + 1024,
-                Miner = _fx.GenesisBlock.Miner,
+                PublicKey = _fx.Miner.PublicKey,
+                Miner = _fx.Miner.ToAddress(),
                 PreviousHash = block1.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
                 ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
-            }.Mine(_fx.GetHashAlgorithm(2));
-            Block<DumbAction> block2 = new Block<DumbAction>(
-                preEvalblock2,
-                preEvalblock2.DetermineStateRootHash(_blockChain),
-                null
-            );
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, _blockChain);
+
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>

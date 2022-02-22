@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace Libplanet.Tests.Action
     public class ActionEvaluatorTest
     {
         private readonly ILogger _logger;
+        private readonly ITestOutputHelper _output;
         private readonly BlockPolicy<DumbAction> _policy;
         private readonly StoreFixture _storeFx;
         private readonly TxFixture _txFx;
@@ -43,6 +45,7 @@ namespace Libplanet.Tests.Action
                 .CreateLogger()
                 .ForContext<ActionEvaluatorTest>();
 
+            _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxBlockBytes: _ => 50 * 1024);
@@ -316,8 +319,8 @@ namespace Libplanet.Tests.Action
                     actions: new DumbAction[0],
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
-            int i = 0;
-            foreach (Transaction<DumbAction> tx in block1Txs)
+            foreach ((var tx, var i) in block1Txs.Zip(
+                Enumerable.Range(0, block1Txs.Count()), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
@@ -439,8 +442,8 @@ namespace Libplanet.Tests.Action
                     },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(6)),
             };
-            i = 0;
-            foreach (Transaction<DumbAction> tx in block2Txs)
+            foreach ((var tx, var i) in block2Txs.Zip(
+                Enumerable.Range(0, block2Txs.Count()), (x, y) => (x, y)))
             {
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
@@ -470,10 +473,11 @@ namespace Libplanet.Tests.Action
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
+
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
                 (
                     2,
                     0,
@@ -484,15 +488,15 @@ namespace Libplanet.Tests.Action
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
-                Assert.Equal(block2Txs[expect.Item1].Id, eval.InputContext.TxId);
-                Assert.Equal(block2Txs[expect.Item1].Actions[expect.Item2], eval.Action);
-                Assert.Equal(expect.Item4, eval.InputContext.Signer);
+                Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
+                Assert.Equal(block2Txs[expect.TxIdx].Actions[expect.Item2], eval.Action);
+                Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
                 Assert.Equal(
-                    expect.Item3,
+                    expect.UpdatedStates,
                     addresses
                         .Select(eval.OutputStates.GetState)
                         .Select(x => x is Text t ? t.Value : null));
@@ -940,11 +944,13 @@ namespace Libplanet.Tests.Action
                 (Integer)evaluation.OutputStates.GetState(block.Miner));
         }
 
-        [Fact]
-        public void OrderTxsForEvaluation()
+        [Theory]
+        [ClassData(typeof(OrderTxsForEvaluationData))]
+        public void OrderTxsForEvaluation(
+            int protocolVersion,
+            List<string> originalAddresses,
+            List<string> orderedAddresses)
         {
-            // New test should be written once this breaks with a protocol version bump.
-            const int protocolVersion = BlockMetadata.CurrentProtocolVersion;
             const int numSigners = 5;
             const int numTxsPerSigner = 3;
             var epoch = DateTimeOffset.FromUnixTimeSeconds(0);
@@ -988,6 +994,10 @@ namespace Libplanet.Tests.Action
             };
             ImmutableArray<byte> preEvaluationHash = preEvaluationHashBytes.ToImmutableArray();
 
+            // Sanity check.
+            Assert.True(originalAddresses.SequenceEqual(
+                signers.Select(signer => signer.ToAddress().ToString())));
+
             var orderedTxs = ActionEvaluator<RandomAction>.OrderTxsForEvaluation(
                 protocolVersion: protocolVersion,
                 txs: txs,
@@ -1008,25 +1018,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(signerTxs.OrderBy(tx => tx.Nonce).ToArray(), signerTxs.ToArray());
             }
 
-            string[] originalAddresses =
-            {
-                "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
-                "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-                "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-                "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
-                "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-            };
-            string[] orderedAddresses =
-            {
-                "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
-                "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-                "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-                "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
-                "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
-            };
-
-            Assert.True(originalAddresses.SequenceEqual(
-                signers.Select(signer => signer.ToAddress().ToString())));
+            // Check according to spec.
             Assert.True(orderedAddresses.SequenceEqual(
                 orderedTxs
                     .Where((tx, i) => i % numTxsPerSigner == 0)
@@ -1098,4 +1090,65 @@ namespace Libplanet.Tests.Action
                     .SetState(BlockIndexKey, (Integer)context.BlockIndex);
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single type
+    internal class OrderTxsForEvaluationData : IEnumerable<object[]>
+    {
+        // For fixture sanity.
+        public List<string> OriginalAddresses = new List<string>
+        {
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+        };
+
+        // Spec for protocol version < 3.
+        public List<string> OrderedAddressesV0 = new List<string>
+        {
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+        };
+
+        // Spec for protocol version >= 3.
+        public List<string> OrderedAddressesV3 = new List<string>
+        {
+            "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
+            "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+        };
+
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[]
+            {
+                0,
+                OriginalAddresses,
+                OrderedAddressesV0,
+            };
+            yield return new object[]
+            {
+                3,
+                OriginalAddresses,
+                OrderedAddressesV3,
+            };
+            yield return new object[]
+            {
+                BlockMetadata.CurrentProtocolVersion,
+                OriginalAddresses,
+                BlockMetadata.CurrentProtocolVersion < 3
+                    ? OrderedAddressesV0
+                    : OrderedAddressesV3,
+            };
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+#pragma warning restore SA1402
 }

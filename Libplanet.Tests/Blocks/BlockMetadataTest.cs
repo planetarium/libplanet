@@ -135,7 +135,7 @@ namespace Libplanet.Tests.Blocks
                     "public_key",
                     ParseHex("0200e02709cc0c051dc105188c454a2e7ef7b36b85da34529d3abc1968167cf54f")
                 )
-                .Add("protocol_version", 2);
+                .Add("protocol_version", 3);
             AssertBencodexEqual(expectedGenesis, GenesisMetadata.MakeCandidateData(default));
             AssertBencodexEqual(
                 expectedGenesis.SetItem("nonce", new byte[] { 0x00, 0x01, 0x02 }),
@@ -160,7 +160,7 @@ namespace Libplanet.Tests.Blocks
                     "transaction_fingerprint",
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
-                .Add("protocol_version", 2);
+                .Add("protocol_version", 3);
             AssertBencodexEqual(
                 expectedBlock1,
                 BlockMetadata1.MakeCandidateData(new Nonce(new byte[] { 0xff, 0xef, 0x01, 0xcc }))
@@ -259,15 +259,15 @@ namespace Libplanet.Tests.Blocks
             HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(sha256, default);
             AssertBytesEqual(
-                FromHex("0bc1b1d6ff56e7e714d016e32e7a95417e51ee407717a65632cef29a1599e8c4"),
+                FromHex("98866bfa9622d47dda427a7d3eb2a44397e0eacedd01078acb5cc6de36bb6a90"),
                 hash
             );
 
             hash = GenesisMetadata.DerivePreEvaluationHash(sha512, default);
             AssertBytesEqual(
                 FromHex(
-                    "aa46f7b4a740ff144cd866505a1696461c004a4eaa6b032dafec194ae42c76d7" +
-                    "fadd4ca45bfbb802aa4b9af28d3150f5e1f67a94b32ddb399f5c455b3e118d03"
+                    "f68f16b3c41b46865930b61c17db21071f15dcd0c8411d846f2dff18ab66d189" +
+                    "0cf2a12349795ddb5032fbe31607ec2c0d1c67778ef5cafb5275055af6048fc5"
                 ),
                 hash
             );
@@ -277,7 +277,7 @@ namespace Libplanet.Tests.Blocks
                 new Nonce(FromHex("e7c1adf92c65d35aaae5"))
             );
             AssertBytesEqual(
-                FromHex("c9f3fc47ec5554dc1544fd1317760f16627366af728e2608348736673e2b7b3d"),
+                FromHex("9691d5845a0d0ef5bcc99b2bb22108abe0d0168ce240ade7c40452967feb33e6"),
                 hash
             );
 
@@ -287,8 +287,8 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBytesEqual(
                 FromHex(
-                    "41d59e78eef7f1bb4b95a2f34973674afc7840eb1a4a468f5ea303eda3e3cdb1" +
-                    "0ee2fdf9d900a07447fb2208197ef7dd76b83ed2e463886e234fa6b5e29c1bff"
+                    "e693300ac4c55f4e5ad8fd54817d1763bfa8fe50342060f855ef84d04c4e7f93" +
+                    "c798b6b6c5bb517a1ad0b3a388e1de41d031389367ab295ebdee5ba4916f4232"
                 ),
                 hash
             );
