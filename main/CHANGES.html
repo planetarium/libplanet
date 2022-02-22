@@ -67,22 +67,30 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>The return type of <code>MerkleTrieExtensions.DifferentNodes()</code> became
+<code>IEnumerable&lt;Tuple&lt;KeyBytes, IValue, IValue&gt;&gt;</code> from
+<code>IEnumerable&lt;IGrouping&lt;string, (HashDigest&lt;SHA256&gt; Root, IValue Value)&gt;&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
+<li>(Libplanet.Extensions.Cocona) Replaced <code>string? passphrase = null</code> parameter
+of methods belonging <code>KeyCommand</code> and <code>ApvCommand</code> with
+<code>PassphraseParameters passphrase</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
+<li>(Libplanet.Extensions.Cocona) Replaced <code>KeyCommand.UnprotectKey(Guid keyId, string? passphrase = null)</code> method with <code>UnprotectedKey(Guid, PassphraseParameters, bool)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
 <li>(Libplanet.Net) <code>IMessageCodec&lt;T&gt;.Decode()</code> now throws
 <code>InvalidMessageSignatureException</code> and <code>InvalidMessageTimestampException</code>
 instead of <code>InvalidMessageException</code> and <code>InvalidTimestampException</code>
 respectively.  [<a href="https://github.com/planetarium/libplanet/pull/1771">#1771</a>]</li>
 <li>(Libplanet.Net) Added <code>long tipDeltaThreshold = 25L</code> option to
 <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1775">#1775</a>, <a href="https://github.com/planetarium/libplanet/pull/1777">#1777</a>, <a href="https://github.com/planetarium/libplanet/pull/1779">#1779</a>]</li>
-<li>The return type of <code>MerkleTrieExtensions.DifferentNodes()</code> became
-<code>IEnumerable&lt;Tuple&lt;KeyBytes, IValue, IValue&gt;&gt;</code> from
-<code>IEnumerable&lt;IGrouping&lt;string, (HashDigest&lt;SHA256&gt; Root, IValue Value)&gt;&gt;</code>.
-[<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
-<li>(Libplanet.Net) <code>MessageSendFailedException</code> class added.
+<li>(Libplanet.Extensions.Cocona) Added <code>PassphraseParameters</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
+<li>(Libplanet.Extensions.Cocona) Added <code>KeyCommand.UnprotectKey(Guid keyId, PassphraseParameters passphrase, bool ignoreStdin = false)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
+<li>(Libplanet.Net) Added <code>MessageSendFailedException</code> class.
 [<a href="https://github.com/planetarium/libplanet/issues/1781">#1781</a>, <a href="https://github.com/planetarium/libplanet/pull/1786">#1786</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
@@ -94,8 +102,18 @@ multiple replies.  [<a href="https://github.com/planetarium/libplanet/issues/173
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.5.* to
+<a href="https://www.nuget.org/packages/Cocona.Lite/1.6.0">1.6.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
+<li>All <code>planet</code> subcommands taking passphrase now have <code>--passphrase-file</code>
+option besides <code>-p</code>/<code>--passphrase</code> option to read it from the specified
+file or standard input (<code>-</code>) instead.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
+<li>Fixed a bug where <code>planet</code> subcommands taking passphrase had unexpectedly
+terminated with an uncaught <code>InvalidOperationException</code> when it's not
+associated to any terminal device (tty), i.e., piped.  [<a href="https://github.com/planetarium/libplanet/pull/1593">#1593</a>, <a href="https://github.com/planetarium/libplanet/pull/1823">#1823</a>]</li>
 <li><code>planet mpt diff</code> command became to output the key and its values
 in one line as JSON whenever a different key is found,
 than it outputs all of the different nodes at once.  [<a href="https://github.com/planetarium/libplanet/pull/1729">#1729</a>]</li>
