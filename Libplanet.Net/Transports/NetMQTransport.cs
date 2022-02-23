@@ -693,10 +693,11 @@ namespace Libplanet.Net.Transports
 
                             if (!dealer.TrySendMultipartMessage(message))
                             {
-                                // NOTE: ObjectDisposedException can occur even the check exists.
-                                // So just ignore the case and remove dealer socket.
-                                _logger.Verbose("DealerSocket has been disposed.");
+                                // FIXME: Immediate disposal of DealerSocket results in a crash in
+                                // a Windows environment.
+                                Thread.Sleep(1);
                                 _dealers.TryRemove(peer.Address, out _);
+                                dealer.Dispose();
                             }
                         });
                 }
