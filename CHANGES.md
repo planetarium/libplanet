@@ -55,6 +55,9 @@ To be released.
     multiple replies.  [[#1734], [#1789]]
  -  `ActionEvaluator<T>.Evaluate()` method became to log message directly
     instead of other methods that use it.  [[#1773]]
+ -  (Libplanet.Net) `NetMQTransport.DoBroadcast` now uses
+    `NetMQTransport.SendMessageAsync()` internally instead of
+    using `NetMQ` directly.  [[#1722], [#1824]]
 
 ### Bug fixes
 
@@ -82,6 +85,7 @@ To be released.
 [#1323]: https://github.com/planetarium/libplanet/issues/1323
 [#1518]: https://github.com/planetarium/libplanet/pull/1518
 [#1593]: https://github.com/planetarium/libplanet/pull/1593
+[#1722]: https://github.com/planetarium/libplanet/issues/1722
 [#1729]: https://github.com/planetarium/libplanet/pull/1729
 [#1734]: https://github.com/planetarium/libplanet/issues/1734
 [#1771]: https://github.com/planetarium/libplanet/pull/1771
@@ -92,6 +96,7 @@ To be released.
 [#1789]: https://github.com/planetarium/libplanet/pull/1789
 [#1819]: https://github.com/planetarium/libplanet/issues/1819
 [#1823]: https://github.com/planetarium/libplanet/pull/1823
+[#1824]: https://github.com/planetarium/libplanet/pull/1824
 [#1825]: https://github.com/planetarium/libplanet/pull/1825
 [Cocona.Lite 1.6.0]: https://www.nuget.org/packages/Cocona.Lite/1.6.0
 

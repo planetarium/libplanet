@@ -30,9 +30,7 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly NetMQMessageCodec _messageCodec;
-        private readonly ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)> _dealers;
         private readonly TimeSpan _dealerSocketLifetime;
-        private readonly object _dealerLock;
 
         private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<(IEnumerable<BoundPeer>, Message)> _broadcastQueue;
@@ -173,8 +171,6 @@ namespace Libplanet.Net.Transports
             );
 
             ProcessMessageHandler = new AsyncDelegate<Message>();
-            _dealers = new ConcurrentDictionary<Address, (DealerSocket, DateTimeOffset)>();
-            _dealerLock = new object();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
             _dealerSocketLifetime = dealerSocketLifetime ?? TimeSpan.FromMinutes(10);
@@ -244,9 +240,6 @@ namespace Libplanet.Net.Transports
 
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(DisposeUnusedDealerSockets(
-                TimeSpan.FromSeconds(10),
-                _runtimeCancellationTokenSource.Token));
             tasks.Add(RunPoller(_routerPoller));
             tasks.Add(RunPoller(_broadcastPoller));
 
@@ -289,16 +282,6 @@ namespace Libplanet.Net.Transports
                 _replyQueue.Dispose();
                 _router.Dispose();
                 _turnClient?.Dispose();
-
-                lock (_dealerLock)
-                {
-                    foreach ((DealerSocket dealer, _) in _dealers.Values)
-                    {
-                        dealer.Dispose();
-                    }
-
-                    _dealers.Clear();
-                }
 
                 _runtimeCancellationTokenSource.Cancel();
                 Running = false;
@@ -649,58 +632,14 @@ namespace Libplanet.Net.Transports
         {
             try
             {
-                (IEnumerable<BoundPeer> peers, Message msg) = e.Queue.Dequeue();
+                (IEnumerable<BoundPeer> peers, Message message) = e.Queue.Dequeue();
 
                 // FIXME Should replace with PUB/SUB model.
                 IReadOnlyList<BoundPeer> peersList = peers.ToList();
-                _logger.Debug("Broadcasting message: {Message} as {AsPeer}", msg, AsPeer);
+                _logger.Debug("Broadcasting message: {Message} as {AsPeer}", message, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peersList.Count);
 
-                NetMQMessage message = _messageCodec.Encode(
-                    msg,
-                    _privateKey,
-                    AsPeer,
-                    DateTimeOffset.UtcNow,
-                    _appProtocolVersion);
-
-                lock (_dealerLock)
-                {
-                    peersList.AsParallel().ForAll(
-                        peer =>
-                        {
-                            string endpoint = peer.ToNetMQAddress();
-                            (DealerSocket dealer, _) = _dealers.AddOrUpdate(
-                                peer.Address,
-                                address => (new DealerSocket(endpoint), DateTimeOffset.UtcNow),
-                                (address, pair) =>
-                                {
-                                    DealerSocket dealerSocket = pair.Item1;
-                                    if (dealerSocket.IsDisposed)
-                                    {
-                                        return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
-                                    }
-                                    else if (
-                                        dealerSocket.Options.LastEndpoint != endpoint)
-                                    {
-                                        dealerSocket.Dispose();
-                                        return (new DealerSocket(endpoint), DateTimeOffset.UtcNow);
-                                    }
-                                    else
-                                    {
-                                        return (dealerSocket, DateTimeOffset.UtcNow);
-                                    }
-                                });
-
-                            if (!dealer.TrySendMultipartMessage(message))
-                            {
-                                // FIXME: Immediate disposal of DealerSocket results in a crash in
-                                // a Windows environment.
-                                Thread.Sleep(1);
-                                _dealers.TryRemove(peer.Address, out _);
-                                dealer.Dispose();
-                            }
-                        });
-                }
+                peersList.AsParallel().ForAll(peer => SendMessageAsync(peer, message, default));
             }
             catch (Exception exc)
             {
@@ -965,51 +904,6 @@ namespace Libplanet.Net.Transports
                 await Task.Delay(1);
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
-            }
-        }
-
-        private async Task DisposeUnusedDealerSockets(
-            TimeSpan period,
-            CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(period, cancellationToken);
-                    lock (_dealerLock)
-                    {
-                        _logger
-                            .ForContext("Tag", "Metric")
-                            .Debug("{SocketCount} sockets open for broadcasting.", _dealers.Count);
-                        foreach (Address address in _dealers.Keys)
-                        {
-                            if (DateTimeOffset.UtcNow - _dealers[address].Item2 >
-                                _dealerSocketLifetime
-                                && _dealers.TryRemove(
-                                    address,
-                                    out (DealerSocket DealerSocket, DateTimeOffset) pair))
-                            {
-                                pair.DealerSocket.Dispose();
-                            }
-                        }
-                    }
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(
-                        e,
-                        "{FName}() is cancelled.",
-                        nameof(DisposeUnusedDealerSockets));
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    _logger.Warning(
-                        e,
-                        "Unexpected exception occurred during {FName}().",
-                        nameof(DisposeUnusedDealerSockets));
-                }
             }
         }
 
