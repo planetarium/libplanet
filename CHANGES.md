@@ -58,6 +58,9 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Net) Fixed a leak in handling `DealerSocket`s inside
+    `NetMQTransport.DoBroadcast()` method.  [[#1819], [#1825]]
+
 ### Dependencies
 
  -  (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.5.\* to
@@ -87,7 +90,9 @@ To be released.
 [#1781]: https://github.com/planetarium/libplanet/issues/1781
 [#1786]: https://github.com/planetarium/libplanet/pull/1786
 [#1789]: https://github.com/planetarium/libplanet/pull/1789
+[#1819]: https://github.com/planetarium/libplanet/issues/1819
 [#1823]: https://github.com/planetarium/libplanet/pull/1823
+[#1825]: https://github.com/planetarium/libplanet/pull/1825
 [Cocona.Lite 1.6.0]: https://www.nuget.org/packages/Cocona.Lite/1.6.0
 
 
