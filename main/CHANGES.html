@@ -107,6 +107,9 @@ of possibly taking longer on some edge cases when waiting for
 multiple replies.  [<a href="https://github.com/planetarium/libplanet/issues/1734">#1734</a>, <a href="https://github.com/planetarium/libplanet/pull/1789">#1789</a>]</li>
 <li><code>ActionEvaluator&lt;T&gt;.Evaluate()</code> method became to log message directly
 instead of other methods that use it.  [<a href="https://github.com/planetarium/libplanet/pull/1773">#1773</a>]</li>
+<li>(Libplanet.Net) <code>NetMQTransport.DoBroadcast</code> now uses
+<code>NetMQTransport.SendMessageAsync()</code> internally instead of
+using <code>NetMQ</code> directly.  [<a href="https://github.com/planetarium/libplanet/issues/1722">#1722</a>, <a href="https://github.com/planetarium/libplanet/pull/1824">#1824</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
