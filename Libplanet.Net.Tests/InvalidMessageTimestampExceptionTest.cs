@@ -17,12 +17,12 @@ namespace Libplanet.Net.Tests
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public void Serialization(TimeSpan? lifespan)
+        public void Serialization(TimeSpan? buffer)
         {
             var e = new InvalidMessageTimestampException(
                 "An error message",
                 DateTimeOffset.UtcNow,
-                lifespan,
+                buffer,
                 DateTimeOffset.UtcNow + TimeSpan.FromSeconds(1));
             var f = new BinaryFormatter();
             InvalidMessageTimestampException e2;
@@ -36,7 +36,7 @@ namespace Libplanet.Net.Tests
 
             Assert.Equal(e.Message, e2.Message);
             Assert.Equal(e.CreatedOffset, e2.CreatedOffset);
-            Assert.Equal(e.Lifespan, e2.Lifespan);
+            Assert.Equal(e.Buffer, e2.Buffer);
             Assert.Equal(e.CurrentOffset, e2.CurrentOffset);
         }
     }

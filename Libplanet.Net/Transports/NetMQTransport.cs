@@ -606,9 +606,9 @@ namespace Libplanet.Net.Transports
             catch (InvalidMessageTimestampException imte)
             {
                 const string logMsg =
-                    "Received message has a stale timestamp: " +
-                    "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
-                _logger.Debug(logMsg, imte.CreatedOffset, imte.Lifespan, imte.CurrentOffset);
+                    "Received message has an invalid timestamp: " +
+                    "(timestamp: {Timestamp}, buffer: {Buffer}, current: {Current})";
+                _logger.Debug(logMsg, imte.CreatedOffset, imte.Buffer, imte.CurrentOffset);
             }
             catch (InvalidMessageException ex)
             {
