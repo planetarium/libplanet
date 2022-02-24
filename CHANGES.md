@@ -11,6 +11,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Unused parameter `dealerSocketLifetime` removed from
+    `NetMQTransport()`.  [[#1832]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -24,6 +27,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1832]: https://github.com/planetarium/libplanet/pull/1832
 
 
 Version 0.28.0
