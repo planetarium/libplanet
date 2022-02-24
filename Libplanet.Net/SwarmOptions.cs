@@ -60,9 +60,10 @@ namespace Libplanet.Net
         public TimeSpan BlockDemandLifespan { get; set; } = TimeSpan.FromMinutes(1);
 
         /// <summary>
-        /// The lifespan of <see cref="Message"/>.
+        /// The amount of difference in <see cref="TimeSpan"/> allowed from current local time for
+        /// a received <see cref="Message"/>.
         /// </summary>
-        public TimeSpan? MessageLifespan { get; set; } = TimeSpan.FromSeconds(60);
+        public TimeSpan? MessageTimestampBuffer { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
         /// The frequency of <see cref="IProtocol.RefreshTableAsync" />.

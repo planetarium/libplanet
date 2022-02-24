@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Messages
         }
 
         [Fact]
-        public void InvalidTimestamp()
+        public void InvalidMessageTimestamp()
         {
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
@@ -68,7 +68,7 @@ namespace Libplanet.Net.Tests.Messages
             var codec = new NetMQMessageCodec(TimeSpan.FromSeconds(1));
             NetMQMessage futureRaw =
                 codec.Encode(message, privateKey, peer, futureOffset, appProtocolVersion);
-            // Messages from the future throws InvalidTimestampException.
+            // Messages from the future throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 codec.Decode(
                     futureRaw,
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Messages
                     (i, p, v) => { }));
             NetMQMessage pastRaw =
                 codec.Encode(message, privateKey, peer, pastOffset, appProtocolVersion);
-            // Messages from the far past throws InvalidTimestampException.
+            // Messages from the far past throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 codec.Decode(
                     pastRaw,

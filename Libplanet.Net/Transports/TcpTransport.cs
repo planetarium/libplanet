@@ -62,7 +62,7 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
-            TimeSpan? messageLifespan = null)
+            TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
                 .ForContext<TcpTransport>()
@@ -83,7 +83,7 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new TcpMessageCodec(messageLifespan);
+            _messageCodec = new TcpMessageCodec(messageTimestampBuffer);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();

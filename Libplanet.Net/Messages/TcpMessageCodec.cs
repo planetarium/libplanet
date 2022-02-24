@@ -14,16 +14,17 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
-        private readonly TimeSpan? _messageLifespan;
+        private readonly TimeSpan? _messageTimestampBuffer;
 
         /// <summary>
         /// Creates a <see cref="TcpMessageCodec"/> instance.
         /// </summary>
-        /// <param name="messageLifespan">Lifespan to use for messages when decoding.</param>
-        public TcpMessageCodec(TimeSpan? messageLifespan = null)
+        /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
+        /// when decoding <see cref="Message"/>s.</param>
+        public TcpMessageCodec(TimeSpan? messageTimestampBuffer = null)
         {
             _codec = new Codec();
-            _messageLifespan = messageLifespan;
+            _messageTimestampBuffer = messageTimestampBuffer;
         }
 
         /// <inheritdoc/>
@@ -127,16 +128,16 @@ namespace Libplanet.Net.Messages
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
 
             var currentTime = DateTimeOffset.UtcNow;
-            if (_messageLifespan is TimeSpan lifespan &&
-                (currentTime - timestamp).Duration() > lifespan)
+            if (_messageTimestampBuffer is TimeSpan timestampBuffer &&
+                (currentTime - timestamp).Duration() > timestampBuffer)
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {lifespan} and " +
+                          $"but designated lifetime is {timestampBuffer} and " +
                           $"the current datetime offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
                 throw new InvalidMessageTimestampException(
-                    msg, timestamp, _messageLifespan, currentTime);
+                    msg, timestamp, _messageTimestampBuffer, currentTime);
             }
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];

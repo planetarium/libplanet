@@ -155,7 +155,7 @@ namespace Libplanet.Net.Tests.Transports
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            TimeSpan? messageLifespan = null
+            TimeSpan? messageTimestampBuffer = null
         )
         {
             privateKey = privateKey ?? new PrivateKey();
@@ -170,7 +170,7 @@ namespace Libplanet.Net.Tests.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                messageLifespan);
+                messageTimestampBuffer);
         }
     }
 }
