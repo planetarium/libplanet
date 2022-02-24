@@ -128,7 +128,7 @@ namespace Libplanet.Net.Messages
 
             var currentTime = DateTimeOffset.UtcNow;
             if (_messageLifespan is TimeSpan lifespan &&
-                (currentTime < timestamp || timestamp + lifespan < currentTime))
+                (currentTime - timestamp).Duration() > lifespan)
             {
                 var msg = $"Received message is invalid, created at " +
                           $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +

@@ -62,7 +62,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The lifespan of <see cref="Message"/>.
         /// </summary>
-        public TimeSpan? MessageLifespan { get; set; } = null;
+        public TimeSpan? MessageLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
         /// The frequency of <see cref="IProtocol.RefreshTableAsync" />.
