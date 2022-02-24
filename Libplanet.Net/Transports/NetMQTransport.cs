@@ -30,7 +30,6 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly NetMQMessageCodec _messageCodec;
-        private readonly TimeSpan _dealerSocketLifetime;
 
         private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<(IEnumerable<BoundPeer>, Message)> _broadcastQueue;
@@ -98,8 +97,6 @@ namespace Libplanet.Net.Transports
         /// The lifespan of a message.
         /// Messages generated before this value from the current time are ignored.
         /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
-        /// <param name="dealerSocketLifetime">
-        /// The lifespan of a <see cref="DealerSocket"/> used for broadcasting messages.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
@@ -111,8 +108,7 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            TimeSpan? messageLifespan = null,
-            TimeSpan? dealerSocketLifetime = null)
+            TimeSpan? messageLifespan = null)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
@@ -173,7 +169,6 @@ namespace Libplanet.Net.Transports
             ProcessMessageHandler = new AsyncDelegate<Message>();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
-            _dealerSocketLifetime = dealerSocketLifetime ?? TimeSpan.FromMinutes(10);
         }
 
         /// <inheritdoc/>
