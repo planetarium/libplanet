@@ -11,6 +11,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `SwarmOptions.MessageLifespan` property changed to
+    `SwarmOptions.MessageTimestampBuffer`  [[#1828], [#1831]]
  -  (Libplanet.Net) Unused parameter `dealerSocketLifetime` removed from
     `NetMQTransport()`.  [[#1832]]
 
@@ -22,12 +24,21 @@ To be released.
 
 ### Behavioral changes
 
+ -  Default value of `SwarmOptions.MessageTimestampBuffer` is set to 60 seconds
+    instead of `null`.  [[#1828], [#1831]]
+ -  (Libplanet.Net) Acceptible timestamp range for `Message`s, when non-null
+    `SwarmOptions.MessageTimestampBuffer` is provided, has changed to allow
+    `Message`s with future timestamps.
+    [[#1828], [#1831]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[#1828]: https://github.com/planetarium/libplanet/issues/1828
+[#1831]: https://github.com/planetarium/libplanet/pull/1831
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
 
 
