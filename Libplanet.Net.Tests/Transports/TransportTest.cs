@@ -490,7 +490,7 @@ namespace Libplanet.Net.Tests.Transports
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            TimeSpan? messageLifespan = null
+            TimeSpan? messageTimestampBuffer = null
         )
         {
             if (TransportConstructor is null)
@@ -509,7 +509,7 @@ namespace Libplanet.Net.Tests.Transports
                 listenPort,
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
-                messageLifespan);
+                messageTimestampBuffer);
         }
     }
 }

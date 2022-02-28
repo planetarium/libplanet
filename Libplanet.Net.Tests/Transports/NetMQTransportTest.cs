@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
-                    messageLifespan
+                    messageTimestampBuffer
                 )
                 => CreateNetMQTransport(
                     privateKey,
@@ -36,7 +36,7 @@ namespace Libplanet.Net.Tests.Transports
                     listenPort,
                     iceServers,
                     differentAppProtocolVersionEncountered,
-                    messageLifespan);
+                    messageTimestampBuffer);
 
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffff}[{ThreadId}] - {Message}";
@@ -63,7 +63,7 @@ namespace Libplanet.Net.Tests.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            TimeSpan? messageLifespan
+            TimeSpan? messageTimestampBuffer
         )
         {
             privateKey = privateKey ?? new PrivateKey();
@@ -79,7 +79,7 @@ namespace Libplanet.Net.Tests.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                messageLifespan);
+                messageTimestampBuffer);
         }
     }
 }

@@ -1112,7 +1112,7 @@ namespace Libplanet.Net
                         listenPort,
                         iceServers ?? new IceServer[0],
                         differentAppProtocolVersionEncountered,
-                        Options.MessageLifespan);
+                        Options.MessageTimestampBuffer);
 
                 case SwarmOptions.TransportType.TcpTransport:
                     return new TcpTransport(
@@ -1123,7 +1123,7 @@ namespace Libplanet.Net
                         listenPort,
                         iceServers ?? new IceServer[0],
                         differentAppProtocolVersionEncountered,
-                        Options.MessageLifespan);
+                        Options.MessageTimestampBuffer);
 
                 default:
                     throw new ArgumentException(nameof(SwarmOptions.Type));

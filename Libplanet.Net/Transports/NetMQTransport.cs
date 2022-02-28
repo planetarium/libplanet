@@ -93,10 +93,11 @@ namespace Libplanet.Net.Transports
         /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
-        /// <param name="messageLifespan">
-        /// The lifespan of a message.
-        /// Messages generated before this value from the current time are ignored.
-        /// If <c>null</c> is given, messages will not be ignored by its timestamp.</param>
+        /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
+        /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
+        /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
+        /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
+        /// If <c>null</c>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
         public NetMQTransport(
@@ -108,7 +109,7 @@ namespace Libplanet.Net.Transports
             int? listenPort,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
-            TimeSpan? messageLifespan = null)
+            TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
                 .ForContext<NetMQTransport>()
@@ -130,7 +131,7 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new NetMQMessageCodec(messageLifespan);
+            _messageCodec = new NetMQMessageCodec(messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -605,9 +606,9 @@ namespace Libplanet.Net.Transports
             catch (InvalidMessageTimestampException imte)
             {
                 const string logMsg =
-                    "Received message has a stale timestamp: " +
-                    "(timestamp: {Timestamp}, lifespan: {Lifespan}, current: {Current})";
-                _logger.Debug(logMsg, imte.CreatedOffset, imte.Lifespan, imte.CurrentOffset);
+                    "Received message has an invalid timestamp: " +
+                    "(timestamp: {Timestamp}, buffer: {Buffer}, current: {Current})";
+                _logger.Debug(logMsg, imte.CreatedOffset, imte.Buffer, imte.CurrentOffset);
             }
             catch (InvalidMessageException ex)
             {

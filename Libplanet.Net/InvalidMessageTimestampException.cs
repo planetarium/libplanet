@@ -15,26 +15,26 @@ namespace Libplanet.Net
         internal InvalidMessageTimestampException(
             string message,
             DateTimeOffset createdOffset,
-            TimeSpan? lifespan,
+            TimeSpan? buffer,
             DateTimeOffset currentOffset,
             Exception innerException
         )
             : base(message, innerException)
         {
             CreatedOffset = createdOffset;
-            Lifespan = lifespan;
+            Buffer = buffer;
             CurrentOffset = currentOffset;
         }
 
         internal InvalidMessageTimestampException(
             string message,
             DateTimeOffset createdOffset,
-            TimeSpan? lifespan,
+            TimeSpan? buffer,
             DateTimeOffset currentOffset)
             : base(message)
         {
             CreatedOffset = createdOffset;
-            Lifespan = lifespan;
+            Buffer = buffer;
             CurrentOffset = currentOffset;
         }
 
@@ -45,13 +45,13 @@ namespace Libplanet.Net
             : base(info, context)
         {
             CreatedOffset = info.GetValue<DateTimeOffset>(nameof(CreatedOffset));
-            Lifespan = info.GetValue<TimeSpan?>(nameof(Lifespan));
+            Buffer = info.GetValue<TimeSpan?>(nameof(Buffer));
             CurrentOffset = info.GetValue<DateTimeOffset>(nameof(CurrentOffset));
         }
 
         internal DateTimeOffset CreatedOffset { get; private set; }
 
-        internal TimeSpan? Lifespan { get; private set; }
+        internal TimeSpan? Buffer { get; private set; }
 
         internal DateTimeOffset CurrentOffset { get; private set; }
 
@@ -60,7 +60,7 @@ namespace Libplanet.Net
         {
             base.GetObjectData(info, context);
             info.AddValue(nameof(CreatedOffset), CreatedOffset);
-            info.AddValue(nameof(Lifespan), Lifespan);
+            info.AddValue(nameof(Buffer), Buffer);
             info.AddValue(nameof(CurrentOffset), CurrentOffset);
         }
     }
