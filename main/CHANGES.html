@@ -67,6 +67,8 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li><code>SwarmOptions.MessageLifespan</code> property changed to
+<code>SwarmOptions.MessageTimestampBuffer</code>  [<a href="https://github.com/planetarium/libplanet/issues/1828">#1828</a>, <a href="https://github.com/planetarium/libplanet/pull/1831">#1831</a>]</li>
 <li>(Libplanet.Net) Unused parameter <code>dealerSocketLifetime</code> removed from
 <code>NetMQTransport()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1832">#1832</a>]</li>
 </ul>
@@ -74,6 +76,14 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Default value of <code>SwarmOptions.MessageTimestampBuffer</code> is set to 60 seconds
+instead of <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1828">#1828</a>, <a href="https://github.com/planetarium/libplanet/pull/1831">#1831</a>]</li>
+<li>(Libplanet.Net) Acceptible timestamp range for <code>Message</code>s, when non-null
+<code>SwarmOptions.MessageTimestampBuffer</code> is provided, has changed to allow
+<code>Message</code>s with future timestamps.
+[<a href="https://github.com/planetarium/libplanet/issues/1828">#1828</a>, <a href="https://github.com/planetarium/libplanet/pull/1831">#1831</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
