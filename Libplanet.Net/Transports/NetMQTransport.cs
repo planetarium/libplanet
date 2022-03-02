@@ -730,6 +730,7 @@ namespace Libplanet.Net.Transports
             try
             {
                 DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
+                dealer.Options.Linger = TimeSpan.FromSeconds(3);
                 long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                 _logger
                     .ForContext("Tag", "Metric")
@@ -899,9 +900,6 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
-                // FIXME: Immediate disposal of DealerSocket results in a crash in
-                // a Windows environment.
-                await Task.Delay(1);
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
             }
