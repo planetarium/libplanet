@@ -115,10 +115,10 @@ namespace Libplanet.Action
                     .ForContext("Tag", "Metric")
                     .Debug(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "preEvaluationHash: {BlockHash} evaluated in {DurationMs:F0}ms.",
+                        "pre-evaluation hash: {PreEvalHash} evaluated in {DurationMs:F0}ms.",
                         block.Transactions.Count,
                         block.Index,
-                        block.PreEvaluationHash,
+                        ByteUtil.Hex(block.PreEvaluationHash),
                         evalDuration.TotalMilliseconds
                     );
             }
