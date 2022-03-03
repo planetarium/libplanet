@@ -9,7 +9,7 @@ To be released
  -  Fixed an evaluation log to output `IPreEvaluationBlock<T>.PreEvaluationHash`
     as a hex formatted string.  [[#1835], [#1837]]
  -  Fixed a bug where some messages could not be sent using `NetMQTransport`
-    due to premature `DealerSocket` disposal.
+    due to premature `DealerSocket` disposal.  [[#1836], [#1839]]
 
 [#1835]: https://github.com/planetarium/libplanet/issues/1835
 [#1836]: https://github.com/planetarium/libplanet/issues/1836
