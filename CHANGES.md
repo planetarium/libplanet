@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.28.1
 --------------
 
-To be released
+Released on March 3, 2022.
 
  -  Fixed an evaluation log to output `IPreEvaluationBlock<T>.PreEvaluationHash`
     as a hex formatted string.  [[#1835], [#1837]]
