@@ -42,11 +42,26 @@ To be released.
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
 
 
+Version 0.28.1
+--------------
+
+Released on March 3, 2022.
+
+ -  Fixed an evaluation log to output `IPreEvaluationBlock<T>.PreEvaluationHash`
+    as a hex formatted string.  [[#1835], [#1837]]
+ -  Fixed a bug where some messages could not be sent using `NetMQTransport`
+    due to premature `DealerSocket` disposal.  [[#1836], [#1839]]
+
+[#1835]: https://github.com/planetarium/libplanet/issues/1835
+[#1836]: https://github.com/planetarium/libplanet/issues/1836
+[#1837]: https://github.com/planetarium/libplanet/pull/1837
+[#1839]: https://github.com/planetarium/libplanet/pull/1839
+
+
 Version 0.28.0
 --------------
 
 Released on February 23, 2022.
-
 
 ### Deprecated APIs
 

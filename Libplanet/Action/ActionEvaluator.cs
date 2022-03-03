@@ -71,9 +71,10 @@ namespace Libplanet.Action
             StateCompleterSet<T> stateCompleterSet)
         {
             _logger.Debug(
-                "Evaluating actions in the block #{BlockIndex} preEvaluationHash: {BlockHash}...",
+                "Evaluating actions in the block #{BlockIndex} " +
+                "pre-evaluation hash: {PreEvaluationHash}...",
                 block.Index,
-                block.PreEvaluationHash
+                ByteUtil.Hex(block.PreEvaluationHash)
             );
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
             try
@@ -115,10 +116,10 @@ namespace Libplanet.Action
                     .ForContext("Tag", "Metric")
                     .Debug(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "preEvaluationHash: {BlockHash} evaluated in {DurationMs:F0}ms.",
+                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms.",
                         block.Transactions.Count,
                         block.Index,
-                        block.PreEvaluationHash,
+                        ByteUtil.Hex(block.PreEvaluationHash),
                         evalDuration.TotalMilliseconds
                     );
             }
