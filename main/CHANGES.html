@@ -87,6 +87,14 @@ instead of <code>null</code>.  [<a href="https://github.com/planetarium/libplane
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0281">Version 0.28.1</h2>
+<p>Released on March 3, 2022.</p>
+<ul>
+<li>Fixed an evaluation log to output <code>IPreEvaluationBlock&lt;T&gt;.PreEvaluationHash</code>
+as a hex formatted string.  [<a href="https://github.com/planetarium/libplanet/issues/1835">#1835</a>, <a href="https://github.com/planetarium/libplanet/pull/1837">#1837</a>]</li>
+<li>Fixed a bug where some messages could not be sent using <code>NetMQTransport</code>
+due to premature <code>DealerSocket</code> disposal.  [<a href="https://github.com/planetarium/libplanet/issues/1836">#1836</a>, <a href="https://github.com/planetarium/libplanet/pull/1839">#1839</a>]</li>
+</ul>
 <h2 id="version-0280">Version 0.28.0</h2>
 <p>Released on February 23, 2022.</p>
 <h3 id="deprecated-apis-1">Deprecated APIs</h3>
