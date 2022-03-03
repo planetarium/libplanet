@@ -730,7 +730,6 @@ namespace Libplanet.Net.Transports
             try
             {
                 DealerSocket dealer = new DealerSocket(request.Peer.ToNetMQAddress());
-                dealer.Options.Linger = TimeSpan.FromSeconds(3);
                 long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                 _logger
                     .ForContext("Tag", "Metric")
@@ -900,6 +899,12 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
+                if (req.ExpectedResponses == 0)
+                {
+                    // FIXME: Temporary fix to wait for a message to be sent.
+                    await Task.Delay(1000);
+                }
+
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
             }
