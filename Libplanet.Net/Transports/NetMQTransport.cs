@@ -899,9 +899,12 @@ namespace Libplanet.Net.Transports
             }
             finally
             {
-                // FIXME: Immediate disposal of DealerSocket results in a crash in
-                // a Windows environment.
-                await Task.Delay(1);
+                if (req.ExpectedResponses == 0)
+                {
+                    // FIXME: Temporary fix to wait for a message to be sent.
+                    await Task.Delay(1000);
+                }
+
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
             }
