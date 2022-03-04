@@ -36,6 +36,8 @@ To be released.
     `SwarmOptions.MessageTimestampBuffer` is provided, has changed to allow
     `Message`s with future timestamps.
     [[#1828], [#1831]]
+ -  (Libplanet.Net) `Swarm<T>` now replies `Pong`s to received `TxIds`
+    and `BlockHeaderMessage` messages.  [[#1845]]
 
 ### Bug fixes
 
@@ -50,6 +52,7 @@ To be released.
 [#1831]: https://github.com/planetarium/libplanet/pull/1831
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
 [#1838]: https://github.com/planetarium/libplanet/pull/1838
+[#1845]: https://github.com/planetarium/libplanet/pull/1845
 [#1849]: https://github.com/planetarium/libplanet/pull/1849
 [column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
