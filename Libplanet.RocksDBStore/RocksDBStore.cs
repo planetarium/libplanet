@@ -548,6 +548,8 @@ namespace Libplanet.RocksDBStore
                 IndexCountKey(destinationChainId),
                 RocksDBStoreBitConverter.GetBytes(bpIndex + 1)
             );
+
+            _chainDb.Put(ChainIdKey(destinationChainId), destinationChainId.ToByteArray());
             AddFork(sourceChainId, destinationChainId);
         }
 
