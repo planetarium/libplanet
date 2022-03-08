@@ -185,7 +185,7 @@ namespace Libplanet.RocksDBStore
             });
         }
 
-        public static void MigrateChainDBFromColumnFamilies(string path)
+        public static bool MigrateChainDBFromColumnFamilies(string path)
         {
             var opt = new DbOptions();
             opt.SetCreateIfMissing();
@@ -196,14 +196,14 @@ namespace Libplanet.RocksDBStore
                 cfs.Add(name, opt);
             }
 
-            if (cfs.Count() == 1)
+            RocksDb db = RocksDb.Open(opt, path, cfs);
+            if (cfs.Count() == 1 && IterateDb(db, ChainIdKeyPrefix).Any())
             {
                 // Already migrated.
-                return;
+                return false;
             }
 
             var tmpDbPath = Path.GetDirectoryName(path) + ".tmp";
-            RocksDb db = RocksDb.Open(opt, path, cfs);
             RocksDb newDb = RocksDb.Open(opt, tmpDbPath);
             var ccid = new Guid(db.Get(CanonicalChainIdIdKey));
             newDb.Put(CanonicalChainIdIdKey, ccid.ToByteArray());
@@ -297,6 +297,8 @@ namespace Libplanet.RocksDBStore
             newDb.Dispose();
             Directory.Delete(path, true);
             Directory.Move(tmpDbPath, path);
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -1188,7 +1190,7 @@ namespace Libplanet.RocksDBStore
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
 
-        private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
+        private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {
             using Iterator it = db.NewIterator();
             for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
