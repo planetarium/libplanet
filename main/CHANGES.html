@@ -74,6 +74,11 @@
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<ul>
+<li><code>RocksDBStore</code> became not to use <a href="https://github.com/facebook/rocksdb/wiki/Column-Families">column families</a> to manage
+chain ids. Instead, chain id is concatenated into key prefix.
+[<a href="https://github.com/planetarium/libplanet/pull/1838">#1838</a>]</li>
+</ul>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -87,6 +92,10 @@ instead of <code>null</code>.  [<a href="https://github.com/planetarium/libplane
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>Added <code>planet store migrate-index</code> for index database migration.
+(from column families based to key-prefix)  [<a href="https://github.com/planetarium/libplanet/pull/1838">#1838</a>]</li>
+</ul>
 <h2 id="version-0281">Version 0.28.1</h2>
 <p>Released on March 3, 2022.</p>
 <ul>
