@@ -237,13 +237,14 @@ namespace Libplanet.RocksDBStore
                     it.Next()
                 )
                 {
-                    long index = RocksDBStoreBitConverter.ToInt64(it.Key().Skip(1).ToArray());
+                    byte[] indexBytes = it.Key().Skip(1).ToArray();
+                    long index = RocksDBStoreBitConverter.ToInt64(indexBytes);
                     if (index > limit)
                     {
                         continue;
                     }
 
-                    batch.Put(IndexKey(ccid, it.Key()), it.Value());
+                    batch.Put(IndexKey(ccid, indexBytes), it.Value());
 
                     if (batch.Count() > 10000)
                     {
