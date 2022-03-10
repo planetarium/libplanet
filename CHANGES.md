@@ -20,6 +20,10 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+ -  `RocksDBStore` became not to use [column families] to manage
+    chain ids. Instead, chain id is concatenated into key prefix.
+    [[#1838]]
+
 ### Added APIs
 
 ### Behavioral changes
@@ -44,6 +48,7 @@ To be released.
 [#1831]: https://github.com/planetarium/libplanet/pull/1831
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
 [#1838]: https://github.com/planetarium/libplanet/pull/1838
+[column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 
 Version 0.28.1
