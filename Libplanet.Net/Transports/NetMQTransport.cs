@@ -306,27 +306,14 @@ namespace Libplanet.Net.Transports
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <inheritdoc/>
-        public Task SendMessageAsync(
-            BoundPeer peer,
-            Message message,
-            CancellationToken cancellationToken)
-            => SendMessageWithReplyAsync(
-                peer,
-                message,
-                TimeSpan.FromSeconds(3),
-                0,
-                false,
-                cancellationToken);
-
-        /// <inheritdoc/>
-        public async Task<Message> SendMessageWithReplyAsync(
+        public async Task<Message> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             IEnumerable<Message> replies =
-                await SendMessageWithReplyAsync(
+                await SendMessageAsync(
                     peer,
                     message,
                     timeout,
@@ -339,7 +326,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        public async Task<IEnumerable<Message>> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -431,7 +418,7 @@ namespace Libplanet.Net.Transports
                     "{FName}() timed out after {Timeout} while waiting for a reply to " +
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Debug(
-                    toe, dbgMsg, nameof(SendMessageWithReplyAsync), timeout, message, reqId, peer);
+                    toe, dbgMsg, nameof(SendMessageAsync), timeout, message, reqId, peer);
                 throw;
             }
             catch (TaskCanceledException tce)
@@ -440,7 +427,7 @@ namespace Libplanet.Net.Transports
                     "{FName}() was cancelled while waiting for a reply to " +
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Debug(
-                    tce, dbgMsg, nameof(SendMessageWithReplyAsync), message, reqId, peer);
+                    tce, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
                 throw;
             }
             catch (Exception e)
@@ -449,7 +436,7 @@ namespace Libplanet.Net.Transports
                     "{FName}() encountered an unexpected exception while waiting for a reply to " +
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Error(
-                    e, errMsg, nameof(SendMessageWithReplyAsync), message, reqId, peer.Address);
+                    e, errMsg, nameof(SendMessageAsync), message, reqId, peer.Address);
                 throw;
             }
         }
@@ -635,7 +622,12 @@ namespace Libplanet.Net.Transports
                 _logger.Debug("Broadcasting message: {Message} as {AsPeer}", message, AsPeer);
                 _logger.Debug("Peers to broadcast: {PeersCount}", peersList.Count);
 
-                peersList.AsParallel().ForAll(peer => SendMessageAsync(peer, message, default));
+                peersList.AsParallel().ForAll(
+                    peer => Task.Run(() => SendMessageAsync(
+                        peer,
+                        message,
+                        TimeSpan.FromSeconds(1),
+                        _runtimeCancellationTokenSource.Token)));
             }
             catch (Exception exc)
             {

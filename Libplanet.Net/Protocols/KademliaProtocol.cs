@@ -430,7 +430,7 @@ namespace Libplanet.Net.Protocols
             try
             {
                 _logger.Verbose("Trying to ping async to {Peer}.", peer);
-                Message reply = await _transport.SendMessageWithReplyAsync(
+                Message reply = await _transport.SendMessageAsync(
                     peer,
                     new Ping(),
                     timeout,
@@ -631,7 +631,7 @@ namespace Libplanet.Net.Protocols
             var findPeer = new Messages.FindNeighbors(target);
             try
             {
-                Message reply = await _transport.SendMessageWithReplyAsync(
+                Message reply = await _transport.SendMessageAsync(
                     peer,
                     findPeer,
                     timeout,

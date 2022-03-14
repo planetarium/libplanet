@@ -946,7 +946,7 @@ namespace Libplanet.Net.Tests
 
                 var transport = swarm1.Transport;
                 var msg = new GetTxs(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
-                var replies = (await transport.SendMessageWithReplyAsync(
+                var replies = (await transport.SendMessageAsync(
                     (BoundPeer)swarm2.AsPeer,
                     msg,
                     TimeSpan.FromSeconds(1),

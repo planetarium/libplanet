@@ -17,7 +17,7 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// The list of tasks invoked when a message that is not
         /// a reply is received. To handle reply, please use <see cref=
-        /// "SendMessageWithReplyAsync(BoundPeer, Message, TimeSpan?, CancellationToken)"/>.
+        /// "SendMessageAsync(BoundPeer, Message, TimeSpan?, CancellationToken)"/>.
         /// </summary>
         AsyncDelegate<Message> ProcessMessageHandler { get; }
 
@@ -74,19 +74,6 @@ namespace Libplanet.Net.Transports
         Task WaitForRunningAsync();
 
         /// <summary>
-        /// Sends a <see cref="Message"/> to a given <see cref="BoundPeer"/>.
-        /// </summary>
-        /// <param name="peer">A <see cref="Peer"/> to send message to.</param>
-        /// <param name="message">A <see cref="Message"/> to send.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
-        Task SendMessageAsync(BoundPeer peer, Message message, CancellationToken cancellationToken);
-
-        /// <summary>
         /// Sends a <see cref="Message"/> to a given <see cref="BoundPeer"/>
         /// and waits for its single reply.
         /// </summary>
@@ -100,7 +87,7 @@ namespace Libplanet.Net.Transports
         /// sent by <paramref name="peer"/>.</returns>
         /// <exception cref="ObjectDisposedException">
         /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
-        Task<Message> SendMessageWithReplyAsync(
+        Task<Message> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -123,7 +110,7 @@ namespace Libplanet.Net.Transports
         /// sent by <paramref name="peer"/>.</returns>
         /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
         /// is already disposed.</exception>
-        Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        Task<IEnumerable<Message>> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,

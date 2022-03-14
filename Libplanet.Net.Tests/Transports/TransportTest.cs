@@ -91,15 +91,13 @@ namespace Libplanet.Net.Tests.Transports
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.StopAsync(TimeSpan.Zero));
                 await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.SendMessageAsync(boundPeer, message, default));
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.SendMessageWithReplyAsync(
+                    async () => await transport.SendMessageAsync(
                         boundPeer,
                         message,
                         null,
                         default));
                 await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.SendMessageWithReplyAsync(
+                    async () => await transport.SendMessageAsync(
                         boundPeer,
                         message,
                         null,
@@ -161,47 +159,9 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        [SkippableFact(Timeout = Timeout, Skip = "Target method is broken.")]
-        public async Task SendMessageAsync()
-        {
-            ITransport transportA = CreateTransport();
-            ITransport transportB = CreateTransport();
-
-            TaskCompletionSource<Message> tcs = new TaskCompletionSource<Message>();
-
-            transportB.ProcessMessageHandler.Register(async message =>
-            {
-                tcs.SetResult(message);
-                await Task.Yield();
-            });
-
-            try
-            {
-                await InitializeAsync(transportA);
-                await InitializeAsync(transportB);
-
-                Assert.True(transportA.Running);
-                Assert.True(transportB.Running);
-
-                await transportA.SendMessageAsync(
-                    (BoundPeer)transportB.AsPeer,
-                    new Ping(),
-                    CancellationToken.None);
-
-                Message message = await tcs.Task;
-
-                Assert.IsType<Ping>(message);
-            }
-            finally
-            {
-                transportA.Dispose();
-                transportB.Dispose();
-            }
-        }
-
         // This also tests ITransport.ReplyMessageAsync at the same time.
         [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageWithReplyAsync()
+        public async Task SendMessageAsync()
         {
             ITransport transportA = CreateTransport();
             ITransport transportB = CreateTransport();
@@ -224,7 +184,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportA);
                 await InitializeAsync(transportB);
 
-                Message reply = await transportA.SendMessageWithReplyAsync(
+                Message reply = await transportA.SendMessageAsync(
                     (BoundPeer)transportB.AsPeer,
                     new Ping(),
                     TimeSpan.FromSeconds(3),
@@ -240,7 +200,7 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageWithReplyCancelAsync()
+        public async Task SendMessageCancelAsync()
         {
             ITransport transportA = CreateTransport();
             ITransport transportB = CreateTransport();
@@ -253,7 +213,7 @@ namespace Libplanet.Net.Tests.Transports
 
                 cts.CancelAfter(TimeSpan.FromSeconds(1));
                 await Assert.ThrowsAsync<TaskCanceledException>(
-                    async () => await transportA.SendMessageWithReplyAsync(
+                    async () => await transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
                         new Ping(),
                         null,
@@ -268,7 +228,7 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageWithMultipleRepliesAsync()
+        public async Task SendMessageMultipleRepliesAsync()
         {
             ITransport transportA = CreateTransport();
             ITransport transportB = CreateTransport();
@@ -297,7 +257,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportA);
                 await InitializeAsync(transportB);
 
-                var replies = (await transportA.SendMessageWithReplyAsync(
+                var replies = (await transportA.SendMessageAsync(
                     (BoundPeer)transportB.AsPeer,
                     new Ping(),
                     TimeSpan.FromSeconds(3),
@@ -317,7 +277,7 @@ namespace Libplanet.Net.Tests.Transports
 
         // This also tests ITransport.ReplyMessage at the same time.
         [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageWithReplyAsyncTimeout()
+        public async Task SendMessageAsyncTimeout()
         {
             ITransport transportA = CreateTransport();
             ITransport transportB = CreateTransport();
@@ -328,7 +288,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 await Assert.ThrowsAsync<TimeoutException>(
-                    async () => await transportA.SendMessageWithReplyAsync(
+                    async () => await transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
                         new Ping(),
                         TimeSpan.FromSeconds(3),
@@ -359,7 +319,7 @@ namespace Libplanet.Net.Tests.Transports
                     new DnsEndPoint(
                         "0.0.0.0",
                         port));
-                Task task = transport.SendMessageWithReplyAsync(
+                Task task = transport.SendMessageAsync(
                     peer,
                     new Ping(),
                     TimeSpan.FromSeconds(5),
@@ -385,7 +345,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportA);
                 await InitializeAsync(transportB);
 
-                Task t = transportA.SendMessageWithReplyAsync(
+                Task t = transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
                         new Ping(),
                         null,

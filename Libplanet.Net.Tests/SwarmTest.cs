@@ -469,7 +469,7 @@ namespace Libplanet.Net.Tests
                 ITransport transport = swarmB.Transport;
 
                 var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
-                Message[] responses = (await transport.SendMessageWithReplyAsync(
+                Message[] responses = (await transport.SendMessageAsync(
                     (BoundPeer)swarmA.AsPeer,
                     request,
                     null,

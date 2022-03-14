@@ -193,26 +193,15 @@ namespace Libplanet.Net.Transports
         /// <inheritdoc cref="ITransport.WaitForRunningAsync"/>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
-        public Task SendMessageAsync(
-            BoundPeer peer,
-            Message message,
-            CancellationToken cancellationToken)
-            => SendMessageWithReplyAsync(
-                peer,
-                message,
-                TimeSpan.FromSeconds(3),
-                0,
-                false,
-                cancellationToken);
-
-        public async Task<Message> SendMessageWithReplyAsync(
+        /// <inheritdoc/>
+        public async Task<Message> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             IEnumerable<Message> replies =
-                await SendMessageWithReplyAsync(
+                await SendMessageAsync(
                     peer,
                     message,
                     timeout,
@@ -224,7 +213,8 @@ namespace Libplanet.Net.Transports
             return reply;
         }
 
-        public async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        /// <inheritdoc/>
+        public async Task<IEnumerable<Message>> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -312,7 +302,7 @@ namespace Libplanet.Net.Transports
                         if (timeoutCts.IsCancellationRequested)
                         {
                             var msg =
-                                $"{nameof(SendMessageWithReplyAsync)}() timed out after " +
+                                $"{nameof(SendMessageAsync)}() timed out after " +
                                 "{Timeout} of waiting a reply to {MessageType} ({RequestId}) " +
                                 "from {PeerAddress}.";
                             _logger.Debug(
@@ -358,7 +348,7 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     e,
                     "ArgumentException occurred during {FName} to {RequestId}.",
-                    nameof(SendMessageWithReplyAsync),
+                    nameof(SendMessageAsync),
                     reqId);
 
                 // To match with previous implementation, throws TimeoutException when it failed to
@@ -371,7 +361,7 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     e,
                     "SocketException occurred during {FName} to {Peer}.",
-                    nameof(SendMessageWithReplyAsync),
+                    nameof(SendMessageAsync),
                     peer);
 
                 // To match with previous implementation, throws TimeoutException when it failed to
@@ -412,10 +402,12 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(TcpTransport));
             }
 
-            foreach (var peer in peers)
-            {
-                _ = SendMessageAsync(peer, message, _runtimeCancellationTokenSource.Token);
-            }
+            peers.AsParallel().ForAll(
+                peer => Task.Run(() => SendMessageAsync(
+                    peer,
+                    message,
+                    TimeSpan.FromSeconds(1),
+                    _runtimeCancellationTokenSource.Token)));
         }
 
         public async Task ReplyMessageAsync(Message message, CancellationToken cancellationToken)
