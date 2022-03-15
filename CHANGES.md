@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.28.2
 --------------
 
-To be released.
+Released on March 15, 2022.
 
  -  (Libplanet.RocksDBStore) `RocksDBStore.GetBlockDigest()` became to silently
     return `null` with no misleading error log when it's asked a non-existent
