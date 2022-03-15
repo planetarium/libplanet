@@ -860,17 +860,6 @@ namespace Libplanet.Net.Transports
                 }
 
                 tcs.TrySetResult(result);
-                const string logMsg =
-                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
-                    "processed in {DurationMs:F0}ms.";
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .Debug(
-                        logMsg,
-                        req.Message,
-                        req.Id,
-                        req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
-                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
             catch (Exception e) when (
                 e is DifferentAppProtocolVersionException ||
@@ -880,18 +869,6 @@ namespace Libplanet.Net.Transports
                 e is TimeoutException)
             {
                 tcs.TrySetException(e);
-                const string logMsg =
-                    "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
-                    "processing failed in {DurationMs:F0}ms.";
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .Debug(
-                        e,
-                        logMsg,
-                        req.Message,
-                        req.Id,
-                        req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
-                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
             }
             finally
             {
@@ -903,6 +880,19 @@ namespace Libplanet.Net.Transports
 
                 Interlocked.Decrement(ref _socketCount);
                 timerCts.Dispose();
+
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .Debug(
+                        "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
+                        "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
+                        "out of {ExpectedCount} expected replies.",
+                        req.Message,
+                        req.Id,
+                        req.Timeout is TimeSpan t ? t.TotalMilliseconds : 0.0,
+                        (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds,
+                        result.Count,
+                        req.ExpectedResponses);
             }
         }
 
