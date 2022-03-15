@@ -216,7 +216,7 @@ namespace Libplanet.Net.Tests.Protocols
             BoundPeer peer,
             Message message,
             CancellationToken cancellationToken)
-            => SendMessageWithReplyAsync(
+            => SendMessageAsync(
                 peer,
                 message,
                 TimeSpan.FromSeconds(3),
@@ -361,7 +361,7 @@ namespace Libplanet.Net.Tests.Protocols
         }
 
 #pragma warning disable S4457 // Cannot split the method since method is in interface
-        public async Task<Message> SendMessageWithReplyAsync(
+        public async Task<Message> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -408,7 +408,7 @@ namespace Libplanet.Net.Tests.Protocols
                         message.Identity,
                         timeout ?? TimeSpan.MaxValue);
                     throw new TimeoutException(
-                        $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}().");
+                        $"Timeout occurred during {nameof(SendMessageAsync)}().");
                 }
 
                 await Task.Delay(10, cancellationToken);
@@ -417,7 +417,7 @@ namespace Libplanet.Net.Tests.Protocols
             if (cancellationToken.IsCancellationRequested)
             {
                 throw new OperationCanceledException(
-                    $"Operation is canceled during {nameof(SendMessageWithReplyAsync)}().");
+                    $"Operation is canceled during {nameof(SendMessageAsync)}().");
             }
 
             if (_replyToReceive.TryRemove(message.Identity, out Message reply))
@@ -436,13 +436,13 @@ namespace Libplanet.Net.Tests.Protocols
             {
                 _logger.Error(
                     "Unexpected error occurred during " +
-                    $"{nameof(SendMessageWithReplyAsync)}()");
+                    $"{nameof(SendMessageAsync)}()");
                 throw new SwarmException();
             }
         }
 #pragma warning restore S4457 // Cannot split the method since method is in interface
 
-        public async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        public async Task<IEnumerable<Message>> SendMessageAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -452,7 +452,7 @@ namespace Libplanet.Net.Tests.Protocols
         {
             return new[]
             {
-                await SendMessageWithReplyAsync(peer, message, timeout, cancellationToken),
+                await SendMessageAsync(peer, message, timeout, cancellationToken),
             };
         }
 

@@ -15,6 +15,9 @@ To be released.
     `SwarmOptions.MessageTimestampBuffer`  [[#1828], [#1831]]
  -  (Libplanet.Net) Unused parameter `dealerSocketLifetime` removed from
     `NetMQTransport()`.  [[#1832]]
+ -  (Libplanet.Net) Old `ITransport.SendMessageAsync()` method is deprecated.
+    `ITransport.SendMessageWithReplyAsync()` methods are renamed as
+    `ITransport.SendMessageAsync()`.  [[#1849]]
 
 ### Backward-incompatible network protocol changes
 
@@ -48,6 +51,7 @@ To be released.
 [#1831]: https://github.com/planetarium/libplanet/pull/1831
 [#1832]: https://github.com/planetarium/libplanet/pull/1832
 [#1838]: https://github.com/planetarium/libplanet/pull/1838
+[#1849]: https://github.com/planetarium/libplanet/pull/1849
 [column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 

@@ -744,7 +744,7 @@ namespace Libplanet.Net
                 nameof(Messages.GetBlockHashes),
                 locator.FirstOrDefault(),
                 stop);
-            Message parsedMessage = await Transport.SendMessageWithReplyAsync(
+            Message parsedMessage = await Transport.SendMessageAsync(
                 peer,
                 request,
                 timeout: transportTimeout,
@@ -811,7 +811,7 @@ namespace Libplanet.Net
                 blockRecvTimeout = Options.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
+            IEnumerable<Message> replies = await Transport.SendMessageAsync(
                 peer,
                 request,
                 blockRecvTimeout,
@@ -876,7 +876,7 @@ namespace Libplanet.Net
                 txRecvTimeout = Options.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
+            IEnumerable<Message> replies = await Transport.SendMessageAsync(
                 peer,
                 request,
                 txRecvTimeout,
@@ -1237,7 +1237,7 @@ namespace Libplanet.Net
             IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(_ => rnd.Next())
                 .Take(maxPeersToDial)
                 .Select(
-                    peer => Transport.SendMessageWithReplyAsync(
+                    peer => Transport.SendMessageAsync(
                         peer,
                         new GetChainStatus(),
                         dialTimeout,
