@@ -1,0 +1,1922 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DefaultStore
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DefaultStore
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.DefaultStore">
+  
+  
+  <h1 id="Libplanet_Store_DefaultStore" data-uid="Libplanet.Store.DefaultStore" class="text-break">Class DefaultStore
+  </h1>
+  <div class="markdown level0 summary"><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
+the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+for some complex indices.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></div>
+    <div class="level2"><span class="xref">DefaultStore</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+    <div><span class="xref">IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_">BaseStore.GetBlock&lt;T&gt;(HashAlgorithmGetter, BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockIndex(BlockHash)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetFirstTxIdBlockHashIndex_Libplanet_Tx_TxId_">BaseStore.GetFirstTxIdBlockHashIndex(TxId)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxSuccess_">BaseStore.SerializeTxExecution(TxSuccess)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SerializeTxExecution_Libplanet_Tx_TxFailure_">BaseStore.SerializeTxExecution(TxFailure)</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeserializeTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_IValue_ILogger_">BaseStore.DeserializeTxExecution(BlockHash, TxId, IValue, ILogger)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_DefaultStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DefaultStore : BaseStore, IStore, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.%23ctor(System.String%2CSystem.Boolean%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore__ctor_" data-uid="Libplanet.Store.DefaultStore.#ctor*"></a>
+  <h4 id="Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_" data-uid="Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DefaultStore(string path, bool journal = true, int indexCacheSize = 50000, int blockCacheSize = 512, int txCacheSize = 1024, bool flush = true, bool readOnly = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>The path of the directory where the storage files will be saved.
+If the path is <code>null</code>, the database is created in memory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">journal</span></td>
+        <td><p>Enables or disables double write check to ensure durability.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">indexCacheSize</span></td>
+        <td><p>Max number of pages in the index cache.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">blockCacheSize</span></td>
+        <td><p>The capacity of the block cache.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">txCacheSize</span></td>
+        <td><p>The capacity of the transaction cache.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">flush</span></td>
+        <td><p>Writes data direct to disk avoiding OS cache.  Turned on by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">readOnly</span></td>
+        <td><p>Opens database readonly mode. Turned off by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.AppendIndex(Guid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L231">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_AppendIndex_" data-uid="Libplanet.Store.DefaultStore.AppendIndex*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.AppendIndex(Guid,Libplanet.Blocks.BlockHash)">AppendIndex(Guid, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Appends a block to a chain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long AppendIndex(Guid chainId, BlockHash hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of a chain to append a block to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">hash</span></td>
+        <td><p>The hash of a block to append.  Assumes the block is already put
+into the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>The index of the appended block.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_">BaseStore.AppendIndex(Guid, BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L468">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ContainsBlock_" data-uid="Libplanet.Store.DefaultStore.ContainsBlock*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.Blocks.BlockHash)">ContainsBlock(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ContainsBlock(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to
+check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_Libplanet_Blocks_BlockHash_">BaseStore.ContainsBlock(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L360">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ContainsTransaction_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ContainsTransaction(TxId txId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_">BaseStore.ContainsTransaction(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L659">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_CountBlocks_" data-uid="Libplanet.Store.DefaultStore.CountBlocks*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_CountBlocks" data-uid="Libplanet.Store.DefaultStore.CountBlocks">CountBlocks()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountBlocks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountBlocks">BaseStore.CountBlocks()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountIndex(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L199">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_CountIndex_" data-uid="Libplanet.Store.DefaultStore.CountIndex*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_CountIndex_Guid_" data-uid="Libplanet.Store.DefaultStore.CountIndex(Guid)">CountIndex(Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountIndex(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountIndex_Guid_">BaseStore.CountIndex(Guid)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L648">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_CountTransactions_" data-uid="Libplanet.Store.DefaultStore.CountTransactions*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_CountTransactions" data-uid="Libplanet.Store.DefaultStore.CountTransactions">CountTransactions()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountTransactions()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountTransactions">BaseStore.CountTransactions()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L454">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_DeleteBlock_" data-uid="Libplanet.Store.DefaultStore.DeleteBlock*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)">DeleteBlock(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Removes a block from the store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteBlock(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The hash of a block to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>false</code> if such block does not exist. Otherwise <code>true</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_Blocks_BlockHash_">BaseStore.DeleteBlock(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L167">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_DeleteChainId_" data-uid="Libplanet.Store.DefaultStore.DeleteChainId*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.DefaultStore.DeleteChainId(Guid)">DeleteChainId(Guid)</h4>
+  <div class="markdown level1 summary"><p>Deletes an index, tx nonces, and state references in the given
+<code data-dev-comment-type="paramref" class="paramref">chainId</code>.
+It also deletes chain itself.  If there is no such <code data-dev-comment-type="paramref" class="paramref">chainId</code> it
+does nothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteChainId(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of chain to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteChainId_Guid_">BaseStore.DeleteChainId(Guid)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_DeleteChainId_Guid__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not delete blocks or transactions that belong to the index of
+the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but only the index, tx nonces, and state references.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L346">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_DeleteTransaction_" data-uid="Libplanet.Store.DefaultStore.DeleteTransaction*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteTransaction(TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_">BaseStore.DeleteTransaction(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L554">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">DeleteTxIdBlockHashIndex(TxId, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Deletes the index for the <code data-dev-comment-type="paramref" class="paramref">txId</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>
+of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_">BaseStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L669">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_Dispose_" data-uid="Libplanet.Store.DefaultStore.Dispose*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_Dispose" data-uid="Libplanet.Store.DefaultStore.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Dispose()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_Dispose">BaseStore.Dispose()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L237">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ForkBlockIndexes_" data-uid="Libplanet.Store.DefaultStore.ForkBlockIndexes*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid,Guid,Libplanet.Blocks.BlockHash)">ForkBlockIndexes(Guid, Guid, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Forks block indexes from
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> to
+<code data-dev-comment-type="paramref" class="paramref">destinationChainId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">sourceChainId</span></td>
+        <td><p>The chain ID of block indexes to
+fork.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">destinationChainId</span></td>
+        <td><p>The chain ID of destination
+block indexes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">branchpoint</span></td>
+        <td><p>The branchpoint <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to fork.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_">BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)</a></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.ChainIdNotFoundException.html">ChainIdNotFoundException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_DefaultStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__">IterateIndexes</a>(<span class="xref">Guid</span>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_">AppendIndex</a>(<span class="xref">Guid</span>, <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ForkTxNonces_Guid_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ForkTxNonces(Guid%2CGuid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L632">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ForkTxNonces_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ForkTxNonces_Guid_Guid_" data-uid="Libplanet.Store.DefaultStore.ForkTxNonces(Guid,Guid)">ForkTxNonces(Guid, Guid)</h4>
+  <div class="markdown level1 summary"><p>Forks <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s from
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> to
+<code data-dev-comment-type="paramref" class="paramref">destinationChainId</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">sourceChainId</span></td>
+        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s to fork.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">destinationChainId</span></td>
+        <td><p>The chain <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id">Id</a> of destination
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonces_Guid_Guid_">BaseStore.ForkTxNonces(Guid, Guid)</a></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.ChainIdNotFoundException.html">ChainIdNotFoundException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">sourceChainId</code> does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L402">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetBlockDigest_" data-uid="Libplanet.Store.DefaultStore.GetBlockDigest*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetBlockDigest_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.GetBlockDigest(Libplanet.Blocks.BlockHash)">GetBlockDigest(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets the corresponding stored <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a> to the given
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BlockDigest? GetBlockDigest(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to find.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
+        <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <code>null</code> if no block having such
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockDigest_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockDigest(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L581">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetBlockPerceivedTime_" data-uid="Libplanet.Store.DefaultStore.GetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.GetBlockPerceivedTime(Libplanet.Blocks.BlockHash)">GetBlockPerceivedTime(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Queries the perceived time of a block, if it has been recorded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
+        <td><p>The perceived time of a block, if it exists.  Otherwise, <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockPerceivedTime_Libplanet_Blocks_BlockHash_">BaseStore.GetBlockPerceivedTime(BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L174">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetCanonicalChainId_" data-uid="Libplanet.Store.DefaultStore.GetCanonicalChainId*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetCanonicalChainId" data-uid="Libplanet.Store.DefaultStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
+  <div class="markdown level1 summary"><p>Gets the ID of the current canonical chain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Guid? GetCanonicalChainId()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Guid</span>&gt;</td>
+        <td><p>The ID of the current canonical chain.  Maybe <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetCanonicalChainId">BaseStore.GetCanonicalChainId()</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_GetCanonicalChainId_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetCanonicalChainId_Guid_">SetCanonicalChainId</a>(<span class="xref">Guid</span>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L305">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetTransaction_" data-uid="Libplanet.Store.DefaultStore.GetTransaction*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Transaction&lt;T&gt; GetTransaction&lt;T&gt;(TxId txid)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_">BaseStore.GetTransaction&lt;T&gt;(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Blocks.BlockHash%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L502">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetTxExecution_" data-uid="Libplanet.Store.DefaultStore.GetTxExecution*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.GetTxExecution(Libplanet.Blocks.BlockHash,Libplanet.Tx.TxId)">GetTxExecution(BlockHash, TxId)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the recorded transaction execution summary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override TxExecution GetTxExecution(BlockHash blockHash, TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of the recorded transaction
+execution to retrieve.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a> of the recorded transaction
+execution to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></td>
+        <td><p>The recorded transaction execution summary.  If it has been never recorded
+<code>null</code> is returned instead.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">BaseStore.GetTxExecution(BlockHash, TxId)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_GetTxNonce_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.GetTxNonce(Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L608">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_GetTxNonce_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_GetTxNonce_Guid_Libplanet_Address_" data-uid="Libplanet.Store.DefaultStore.GetTxNonce(Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
+  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce of the
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long GetTxNonce(Guid chainId, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of the chain to get <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to get
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce. If there is no
+previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, return 0.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_Guid_Libplanet_Address_">BaseStore.GetTxNonce(Guid, Address)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_GetTxNonce_Guid_Libplanet_Address__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_">IncreaseTxNonce</a>(<span class="xref">Guid</span>, <a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IncreaseTxNonce(Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L623">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IncreaseTxNonce_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_" data-uid="Libplanet.Store.DefaultStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
+  <div class="markdown level1 summary"><p>Increases (or decreases if a negative <code data-dev-comment-type="paramref" class="paramref">delta</code> is given)
+the tx nonce counter for <code data-dev-comment-type="paramref" class="paramref">signer</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of the chain to increase
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">signer</span></td>
+        <td><p>The address of the account to increase tx nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">delta</span></td>
+        <td><p>How many to increase the counter.  A negative number decreases
+the counter.  1 by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_">BaseStore.IncreaseTxNonce(Guid, Address, Int64)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Address_">GetTxNonce</a>(<span class="xref">Guid</span>, <a class="xref" href="Libplanet.Address.html">Address</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L213">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IndexBlockHash_" data-uid="Libplanet.Store.DefaultStore.IndexBlockHash*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IndexBlockHash_Guid_System_Int64_" data-uid="Libplanet.Store.DefaultStore.IndexBlockHash(Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
+  <div class="markdown level1 summary"><p>Determines the block hash by its <code data-dev-comment-type="paramref" class="paramref">index</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override BlockHash? IndexBlockHash(Guid chainId, long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID of the index that contains the block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The index of the block to query its hash.  Negative indices mean
+the offset from the end.  For example, -1 means the topmost block.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>The block hash of the index in the chain.  If there is no such index,
+it returns <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IndexBlockHash_Guid_System_Int64_">BaseStore.IndexBlockHash(Guid, Int64)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L371">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IterateBlockHashes_" data-uid="Libplanet.Store.DefaultStore.IterateBlockHashes*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IterateBlockHashes" data-uid="Libplanet.Store.DefaultStore.IterateBlockHashes">IterateBlockHashes()</h4>
+  <div class="markdown level1 summary"><p>Lists all block hashes in the store, regardless of their belonging chains.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateBlockHashes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>All block hashes in the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateBlockHashes">BaseStore.IterateBlockHashes()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L205">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IterateIndexes_" data-uid="Libplanet.Store.DefaultStore.IterateIndexes*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.DefaultStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
+  <div class="markdown level1 summary"><p>Lists all block hashes in the <parmaref name="chainId"></parmaref>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateIndexes(Guid chainId, int offset, int? limit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The chain ID of the index that contains block hashes to
+iterate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The starting point to return block hashes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">limit</span></td>
+        <td><p>The maximum number of block hashes to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><p>Block hashes in the index of the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, in ascending
+order; the genesis block goes first, and the tip block goes last.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__">BaseStore.IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L269">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IterateTransactionIds_" data-uid="Libplanet.Store.DefaultStore.IterateTransactionIds*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IterateTransactionIds" data-uid="Libplanet.Store.DefaultStore.IterateTransactionIds">IterateTransactionIds()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;TxId&gt; IterateTransactionIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTransactionIds">BaseStore.IterateTransactionIds()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L539">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)">IterateTxIdBlockHashIndex(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;BlockHash&gt; IterateTxIdBlockHashIndex(TxId txId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_">BaseStore.IterateTxIdBlockHashIndex(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ListChainIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L159">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ListChainIds_" data-uid="Libplanet.Store.DefaultStore.ListChainIds*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ListChainIds" data-uid="Libplanet.Store.DefaultStore.ListChainIds">ListChainIds()</h4>
+  <div class="markdown level1 summary"><p>Lists existing chain IDs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;Guid&gt; ListChainIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Guid</span>&gt;</td>
+        <td><p>Existing chain IDs.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListChainIds">BaseStore.ListChainIds()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.ListTxNonces(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L590">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_ListTxNonces_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_ListTxNonces_Guid_" data-uid="Libplanet.Store.DefaultStore.ListTxNonces(Guid)">ListTxNonces(Guid)</h4>
+  <div class="markdown level1 summary"><p>Lists all <a class="xref" href="Libplanet.Address.html">Address</a>es that have ever signed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>,
+and their corresponding <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;KeyValuePair&lt;Address, long&gt;&gt; ListTxNonces(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of the chain to list <a class="xref" href="Libplanet.Address.html">Address</a>es and their
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">KeyValuePair</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><p>Pairs of an <a class="xref" href="Libplanet.Address.html">Address</a> and its tx nonce.  All nonces are greater
+than 0.  (If there are underlying entries having zero nonces these must be hidden.)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_Guid_">BaseStore.ListTxNonces(Guid)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_ListTxNonces_Guid__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_Guid_Libplanet_Address_">GetTxNonce</a>(<span class="xref">Guid</span>, <a class="xref" href="Libplanet.Address.html">Address</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L430">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_PutBlock_" data-uid="Libplanet.Store.DefaultStore.PutBlock*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.DefaultStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Puts the given <code data-dev-comment-type="paramref" class="paramref">block</code> in to the store.
+If the same block already exists in the store it does nothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutBlock&lt;T&gt;(Block&lt;T&gt; block)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to put into the store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutBlock&lt;T&gt;(Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L334">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_PutTransaction_" data-uid="Libplanet.Store.DefaultStore.PutTransaction*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.DefaultStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">tx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutTransaction&lt;T&gt;(Libplanet.Tx.Transaction&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxFailure_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxFailure)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L491">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_PutTxExecution_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxFailure_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxFailure)">PutTxExecution(TxFailure)</h4>
+  <div class="markdown level1 summary"><p>Records the given <code data-dev-comment-type="paramref" class="paramref">txFailure</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxExecution(TxFailure txFailure)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></td>
+        <td><span class="parametername">txFailure</span></td>
+        <td><p>The failed transaction execution summary to record.
+Must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxFailure_">BaseStore.PutTxExecution(TxFailure)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxFailure__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If there is already the record for the same <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash">BlockHash</a>
+and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId">TxId</a>, the record is silently overwritten.</p>
+</div>
+  <h5 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxFailure__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxSuccess_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">GetTxExecution</a>(<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>, <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxSuccess_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxSuccess)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L480">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_PutTxExecution_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxSuccess_" data-uid="Libplanet.Store.DefaultStore.PutTxExecution(Libplanet.Tx.TxSuccess)">PutTxExecution(TxSuccess)</h4>
+  <div class="markdown level1 summary"><p>Records the given <code data-dev-comment-type="paramref" class="paramref">txSuccess</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxExecution(TxSuccess txSuccess)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></td>
+        <td><span class="parametername">txSuccess</span></td>
+        <td><p>The successful transaction execution summary to record.
+Must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxExecution_Libplanet_Tx_TxSuccess_">BaseStore.PutTxExecution(TxSuccess)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxSuccess__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If there is already the record for the same <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_BlockHash">BlockHash</a>
+and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution_TxId">TxId</a>, the record is silently overwritten.</p>
+</div>
+  <h5 id="Libplanet_Store_DefaultStore_PutTxExecution_Libplanet_Tx_TxSuccess__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTxExecution_Libplanet_Tx_TxFailure_">PutTxExecution</a>(<a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a>)</div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxExecution_Libplanet_Blocks_BlockHash_Libplanet_Tx_TxId_">GetTxExecution</a>(<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>, <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L531">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_" data-uid="Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.DefaultStore.PutTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)">PutTxIdBlockHashIndex(TxId, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Records a index for given pair <code data-dev-comment-type="paramref" class="paramref">txId</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.
+If there exist a record for <code data-dev-comment-type="paramref" class="paramref">txId</code> already,
+it overwrites the record silently.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txId</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> of the <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_">BaseStore.PutTxIdBlockHashIndex(TxId, BlockHash)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L564">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_SetBlockPerceivedTime_" data-uid="Libplanet.Store.DefaultStore.SetBlockPerceivedTime*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_" data-uid="Libplanet.Store.DefaultStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)">SetBlockPerceivedTime(BlockHash, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Records the perceived time of a block.  If there is already a record, it is overwritten.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> to record its perceived time.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">perceivedTime</span></td>
+        <td><p>The perceived time to record.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_">BaseStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L190">View Source</a>
+  </span>
+  <a id="Libplanet_Store_DefaultStore_SetCanonicalChainId_" data-uid="Libplanet.Store.DefaultStore.SetCanonicalChainId*"></a>
+  <h4 id="Libplanet_Store_DefaultStore_SetCanonicalChainId_Guid_" data-uid="Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)">SetCanonicalChainId(Guid)</h4>
+  <div class="markdown level1 summary"><p>Sets the canonical chain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetCanonicalChainId(Guid chainId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Guid</span></td>
+        <td><span class="parametername">chainId</span></td>
+        <td><p>The ID of a new canonical chain.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_">BaseStore.SetCanonicalChainId(Guid)</a></div>
+  <h5 id="Libplanet_Store_DefaultStore_SetCanonicalChainId_Guid__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetCanonicalChainId">GetCanonicalChainId</a>()</div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
+  </div>
+  <div>
+      <span class="xref">IDisposable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/36d19040398f1d4a9d57942d2df6726941f5f535/apiSpec/new?filename=Libplanet_Store_DefaultStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.DefaultStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/36d19040398f1d4a9d57942d2df6726941f5f535/Libplanet/Store/DefaultStore.cs/#L27" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
