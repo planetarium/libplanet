@@ -1,6 +1,12 @@
 Libplanet changelog
 ===================
 
+Version 0.28.3
+--------------
+
+To be released.
+
+
 Version 0.28.2
 --------------
 
@@ -10,8 +16,8 @@ Released on March 15, 2022.
     return `null` with no misleading error log when it's asked a non-existent
     block hash.  [[#1500], [#1852]]
 
-[[#1500]]: https://github.com/planetarium/libplanet/issues/1500
-[[#1852]]: https://github.com/planetarium/libplanet/pull/1852
+[#1500]: https://github.com/planetarium/libplanet/issues/1500
+[#1852]: https://github.com/planetarium/libplanet/pull/1852
 
 
 Version 0.28.1
