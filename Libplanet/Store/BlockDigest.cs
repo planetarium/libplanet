@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
@@ -135,11 +136,18 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="bytes">Serialized <see cref="BlockDigest"/>.</param>
         /// <returns>Deserialized <see cref="BlockDigest"/>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the passed <paramref name="bytes"/>
+        /// is <see langword="null"/>.</exception>
         /// <exception cref="DecodingException">Thrown when decoded value is not
         /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
         public static BlockDigest Deserialize(byte[] bytes)
         {
-            IValue value = new Codec().Decode(bytes);
+            if (!(bytes is byte[] bytesArray))
+            {
+                throw new ArgumentNullException(nameof(bytes));
+            }
+
+            IValue value = new Codec().Decode(bytesArray);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException(

@@ -415,15 +415,7 @@ namespace Libplanet.Store
             BlockDigest blockDigest;
             try
             {
-                IValue value = Codec.Decode(_blocks.ReadAllBytes(path));
-                if (!(value is Bencodex.Types.Dictionary dict))
-                {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
-                }
-
-                blockDigest = new BlockDigest(dict);
+                blockDigest = BlockDigest.Deserialize(_blocks.ReadAllBytes(path));
             }
             catch (FileNotFoundException)
             {
