@@ -560,8 +560,13 @@ namespace Libplanet.Net.Transports
                     raw,
                     false,
                     AppProtocolVersionValidator);
-                _logger.Debug(
-                    "A message from {Peer} has parsed: {Message}", message.Remote, message);
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "InboundMessageReport")
+                    .Debug(
+                        "Received message {Message} from {Peer}.",
+                        message,
+                        message.Remote);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
 
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
@@ -877,7 +882,7 @@ namespace Libplanet.Net.Transports
 
                 _logger
                     .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "RequestStatus")
+                    .ForContext("Subtag", "OutboundMessageReport")
                     .Debug(
                         "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +
