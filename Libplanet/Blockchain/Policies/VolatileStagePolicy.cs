@@ -102,6 +102,7 @@ namespace Libplanet.Blockchain.Policies
                             const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                             _logger
                                 .ForContext("Tag", "Metric")
+                                .ForContext("Subtag", "TxStageTimestamp")
                                 .Debug(
                                     "Transaction {TxId} by {Signer} " +
                                     "with timestamp {TxTimestamp} staged at {StagedTimestamp}.",

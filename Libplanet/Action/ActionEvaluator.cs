@@ -114,6 +114,7 @@ namespace Libplanet.Action
                 TimeSpan evalDuration = DateTimeOffset.Now - evaluateActionStarted;
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "BlockEvaluationDuration")
                     .Debug(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
                         "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms.",
@@ -480,6 +481,7 @@ namespace Libplanet.Action
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "TxEvaluationDuration")
                     .Debug(
                         "{ActionCount} actions in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",

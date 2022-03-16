@@ -324,6 +324,7 @@ namespace Libplanet.Blockchain
             TimeSpan renderDuration = DateTimeOffset.Now - startTime;
             _logger
                 .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "BlockRenderDuration")
                 .Debug(
                     "Finished rendering {RenderCount} renders for actions in " +
                     "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
