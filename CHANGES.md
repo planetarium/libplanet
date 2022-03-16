@@ -6,13 +6,12 @@ Version 0.29.0
 
 To be released.
 
-
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
 
- -  `SwarmOptions.MessageLifespan` property changed to
-    `SwarmOptions.MessageTimestampBuffer`  [[#1828], [#1831]]
+ -  (Libplanet.Net) `SwarmOptions.MessageLifespan` property changed to
+    `SwarmOptions.MessageTimestampBuffer`.  [[#1828], [#1831]]
  -  (Libplanet.Net) Unused parameter `dealerSocketLifetime` removed from
     `NetMQTransport()`.  [[#1832]]
  -  (Libplanet.Net) Old `ITransport.SendMessageAsync()` method is deprecated.
@@ -23,17 +22,17 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
- -  `RocksDBStore` became not to use [column families] to manage
-    chain ids. Instead, chain id is concatenated into key prefix.
+ -  (Libplanet.RocksDBStore) `RocksDBStore` became not to use [column families]
+    to manage chain ids. Instead, chain id is concatenated into key prefix.
     [[#1838]]
 
 ### Added APIs
 
 ### Behavioral changes
 
- -  Default value of `SwarmOptions.MessageTimestampBuffer` is set to 60 seconds
-    instead of `null`.  [[#1828], [#1831]]
- -  (Libplanet.Net) Acceptible timestamp range for `Message`s, when non-null
+ -  (Libplanet.Net) Default value of `SwarmOptions.MessageTimestampBuffer` is
+    set to 60 seconds instead of `null`.  [[#1828], [#1831]]
+ -  (Libplanet.Net) Acceptable timestamp range for `Message`s, when non-null
     `SwarmOptions.MessageTimestampBuffer` is provided, has changed to allow
     `Message`s with future timestamps.
     [[#1828], [#1831]]
@@ -44,8 +43,8 @@ To be released.
 
 ### CLI tools
 
-  - Added `planet store migrate-index` for index database migration.
-    (from column families based to key-prefix)  [[#1838]]
+  - Added `planet store migrate-index` for index database migration
+    (from column families based to key-prefix).  [[#1838]]
 
 [#1828]: https://github.com/planetarium/libplanet/issues/1828
 [#1831]: https://github.com/planetarium/libplanet/pull/1831
@@ -55,6 +54,18 @@ To be released.
 [column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 
+Version 0.28.2
+--------------
+
+Released on March 15, 2022.
+
+ -  (Libplanet.RocksDBStore) `RocksDBStore.GetBlockDigest()` became to silently
+    return `null` with no misleading error log when it's asked a non-existent
+    block hash.  [[#1500], [#1852]]
+
+[#1852]: https://github.com/planetarium/libplanet/pull/1852
+
+
 Version 0.28.1
 --------------
 
@@ -62,8 +73,9 @@ Released on March 3, 2022.
 
  -  Fixed an evaluation log to output `IPreEvaluationBlock<T>.PreEvaluationHash`
     as a hex formatted string.  [[#1835], [#1837]]
- -  Fixed a bug where some messages could not be sent using `NetMQTransport`
-    due to premature `DealerSocket` disposal.  [[#1836], [#1839]]
+ -  (Libplanet.Net) Fixed a bug where some messages could not be sent using
+    `NetMQTransport` due to premature `DealerSocket` disposal.
+    [[#1836], [#1839]]
 
 [#1835]: https://github.com/planetarium/libplanet/issues/1835
 [#1836]: https://github.com/planetarium/libplanet/issues/1836
