@@ -764,7 +764,10 @@ namespace Libplanet.RocksDBStore
                     }
                 }
 
-                byte[] blockBytes = blockDb.Get(key);
+                if (!(blockDb.Get(key) is byte[] blockBytes))
+                {
+                    return null;
+                }
 
                 BlockDigest blockDigest = BlockDigest.Deserialize(blockBytes);
 

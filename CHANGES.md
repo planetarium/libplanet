@@ -55,6 +55,19 @@ To be released.
 [column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 
+Version 0.28.2
+--------------
+
+Released on March 15, 2022.
+
+ -  (Libplanet.RocksDBStore) `RocksDBStore.GetBlockDigest()` became to silently
+    return `null` with no misleading error log when it's asked a non-existent
+    block hash.  [[#1500], [#1852]]
+
+[#1500]: https://github.com/planetarium/libplanet/issues/1500
+[#1852]: https://github.com/planetarium/libplanet/pull/1852
+
+
 Version 0.28.1
 --------------
 
@@ -62,8 +75,9 @@ Released on March 3, 2022.
 
  -  Fixed an evaluation log to output `IPreEvaluationBlock<T>.PreEvaluationHash`
     as a hex formatted string.  [[#1835], [#1837]]
- -  Fixed a bug where some messages could not be sent using `NetMQTransport`
-    due to premature `DealerSocket` disposal.  [[#1836], [#1839]]
+ -  (Libplanet.Net) Fixed a bug where some messages could not be sent using
+    `NetMQTransport` due to premature `DealerSocket` disposal.
+    [[#1836], [#1839]]
 
 [#1835]: https://github.com/planetarium/libplanet/issues/1835
 [#1836]: https://github.com/planetarium/libplanet/issues/1836
