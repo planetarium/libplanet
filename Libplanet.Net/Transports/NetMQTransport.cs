@@ -32,11 +32,9 @@ namespace Libplanet.Net.Transports
         private readonly NetMQMessageCodec _messageCodec;
 
         private NetMQQueue<Message> _replyQueue;
-        private NetMQQueue<(IEnumerable<BoundPeer>, Message)> _broadcastQueue;
 
         private RouterSocket _router;
         private NetMQPoller _routerPoller;
-        private NetMQPoller _broadcastPoller;
         private int _listenPort;
         private TurnClient _turnClient;
         private DnsEndPoint _hostEndPoint;
@@ -226,18 +224,14 @@ namespace Libplanet.Net.Transports
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             _replyQueue = new NetMQQueue<Message>();
-            _broadcastQueue = new NetMQQueue<(IEnumerable<BoundPeer>, Message)>();
             _routerPoller = new NetMQPoller { _router, _replyQueue };
-            _broadcastPoller = new NetMQPoller { _broadcastQueue };
 
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
-            _broadcastQueue.ReceiveReady += DoBroadcast;
 
             List<Task> tasks = new List<Task>();
 
             tasks.Add(RunPoller(_routerPoller));
-            tasks.Add(RunPoller(_broadcastPoller));
 
             Running = true;
 
@@ -259,7 +253,6 @@ namespace Libplanet.Net.Transports
             {
                 await Task.Delay(waitFor, cancellationToken);
 
-                _broadcastQueue.ReceiveReady -= DoBroadcast;
                 _replyQueue.ReceiveReady -= DoReply;
                 _router.ReceiveReady -= ReceiveMessage;
                 _router.Unbind($"tcp://*:{_listenPort}");
@@ -269,12 +262,6 @@ namespace Libplanet.Net.Transports
                     _routerPoller.Dispose();
                 }
 
-                if (_broadcastPoller.IsRunning)
-                {
-                    _broadcastPoller.Dispose();
-                }
-
-                _broadcastQueue.Dispose();
                 _replyQueue.Dispose();
                 _router.Dispose();
                 _turnClient?.Dispose();
@@ -449,7 +436,18 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            _broadcastQueue.Enqueue((peers, message));
+            IReadOnlyList<BoundPeer> peersList = peers.ToList();
+            _logger.Debug(
+                "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
+                message,
+                AsPeer,
+                peersList.Count);
+            peersList.AsParallel().ForAll(
+                peer => Task.Run(() => SendMessageAsync(
+                    peer,
+                    message,
+                    TimeSpan.FromSeconds(1),
+                    _runtimeCancellationTokenSource.Token)));
         }
 
         /// <inheritdoc/>
@@ -611,35 +609,6 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     ex,
                     $"An unexpected exception occurred during " + nameof(ReceiveMessage) + "().");
-            }
-        }
-
-        private void DoBroadcast(
-            object sender,
-            NetMQQueueEventArgs<(IEnumerable<BoundPeer>, Message)> e)
-        {
-            try
-            {
-                (IEnumerable<BoundPeer> peers, Message message) = e.Queue.Dequeue();
-
-                // FIXME Should replace with PUB/SUB model.
-                IReadOnlyList<BoundPeer> peersList = peers.ToList();
-                _logger.Debug("Broadcasting message: {Message} as {AsPeer}", message, AsPeer);
-                _logger.Debug("Peers to broadcast: {PeersCount}", peersList.Count);
-
-                peersList.AsParallel().ForAll(
-                    peer => Task.Run(() => SendMessageAsync(
-                        peer,
-                        message,
-                        TimeSpan.FromSeconds(1),
-                        _runtimeCancellationTokenSource.Token)));
-            }
-            catch (Exception exc)
-            {
-                _logger.Error(
-                    exc,
-                    "Unexpected error occurred during {FName}().",
-                    nameof(DoBroadcast));
             }
         }
 
