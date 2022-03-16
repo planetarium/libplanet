@@ -721,6 +721,7 @@ namespace Libplanet.Net.Transports
                 long incrementedSocketCount = Interlocked.Increment(ref _socketCount);
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "SocketCount")
                     .Debug(
                     "{SocketCount} sockets open for processing request {Message} {RequestId}.",
                     incrementedSocketCount,
@@ -735,6 +736,7 @@ namespace Libplanet.Net.Transports
                     "failed to create an additional socket for request {Message} {RequestId}.";
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "SocketCount")
                     .Debug(
                     nme,
                     logMsg,
@@ -875,6 +877,7 @@ namespace Libplanet.Net.Transports
 
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "RequestStatus")
                     .Debug(
                         "Request {Message} {RequestId} with timeout {TimeoutMs:F0}ms " +
                         "processed in {DurationMs:F0}ms with {ReceivedCount} replies received " +

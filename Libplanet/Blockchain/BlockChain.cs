@@ -820,6 +820,7 @@ namespace Libplanet.Blockchain
                 TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
                 _logger
                     .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "StateUpdateDuration")
                     .Debug(
                         "Finished updating the states with {KeyCount} key changes affected by " +
                         "block #{BlockIndex} {BlockHash} in {DurationMs:F0}ms.",
@@ -932,6 +933,7 @@ namespace Libplanet.Blockchain
                         const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
                         _logger
                             .ForContext("Tag", "Metric")
+                            .ForContext("Subtag", "BlockAppendTimestamp")
                             .Debug(
                                 "Block #{BlockIndex} {BlockHash} with " +
                                 "timestamp {BlockTimestamp} appended at {AppendTimestamp}.",
@@ -1140,6 +1142,7 @@ namespace Libplanet.Blockchain
             TimeSpan duration = DateTimeOffset.Now - startTime;
             _logger
                 .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "FindHashesDuration")
                 .Debug(
                     "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
                     "in {DurationMs:F0}ms.",
