@@ -12359,19 +12359,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces
   nameWithType: RocksDBStore.ListTxNonces
-- uid: Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(System.String)
-  name: MigrateChainDBFromColumnFamilies(String)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_MigrateChainDBFromColumnFamilies_System_String_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(System.String)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(System.String)
-  nameWithType: RocksDBStore.MigrateChainDBFromColumnFamilies(String)
-- uid: Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies*
-  name: MigrateChainDBFromColumnFamilies
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_MigrateChainDBFromColumnFamilies_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies
-  nameWithType: RocksDBStore.MigrateChainDBFromColumnFamilies
 - uid: Libplanet.RocksDBStore.RocksDBStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutBlock_
