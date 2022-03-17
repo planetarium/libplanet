@@ -103,34 +103,6 @@ namespace Libplanet.RocksDBStore.Tests
         }
 
         [SkippableFact]
-        public void ListChainIds()
-        {
-            var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
-            var store = new RocksDBStore(path);
-            try
-            {
-                Guid cid = Guid.NewGuid();
-                store.AppendIndex(cid, Fx.Block1.Hash);
-                store.AppendIndex(cid, Fx.Block2.Hash);
-                store.AppendIndex(cid, Fx.Block3.Hash);
-
-                store.PutBlock(Fx.Block1);
-                store.PutBlock(Fx.Block2);
-                store.PutBlock(Fx.Block3);
-
-                Assert.Single(store.ListChainIds());
-
-                store.ForkBlockIndexes(cid, Guid.NewGuid(), Fx.Block3.Hash);
-                Assert.Equal(2, store.ListChainIds().Count());
-            }
-            finally
-            {
-                store.Dispose();
-                Directory.Delete(path, true);
-            }
-        }
-
-        [SkippableFact]
         public void ParallelGetTransaction()
         {
             var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
