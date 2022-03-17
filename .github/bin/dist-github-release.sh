@@ -57,12 +57,20 @@ fi
 github_user="${GITHUB_REPOSITORY%/*}"
 github_repo="${GITHUB_REPOSITORY#*/}"
 
-"$(dirname "$0")/github-release.sh" release \
-  --user "$github_user" \
-  --repo "$github_repo" \
-  --tag "$tag" \
-  --name "$solution $tag" \
-  --description - < obj/release_note.txt
+trial=0
+while ! "$(dirname "$0")/github-release.sh" info \
+          --user "$github_user" \
+          --repo "$github_repo" \
+          --tag "$tag"; do
+  "$(dirname "$0")/github-release.sh" release \
+    --user "$github_user" \
+    --repo "$github_repo" \
+    --tag "$tag" \
+    --name "$solution $tag" \
+    --description - < obj/release_note.txt || true
+  trial=$(( trial + 1 ))
+  if [[ "$trial" -gt 5 ]]; then break; fi
+done
 
 for project in "${projects[@]}"; do
   nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
