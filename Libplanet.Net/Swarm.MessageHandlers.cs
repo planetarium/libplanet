@@ -84,6 +84,9 @@ namespace Libplanet.Net
                     break;
 
                 case TxIds txIds:
+                    await Transport.ReplyMessageAsync(
+                        new Pong { Identity = txIds.Identity },
+                        default);
                     ProcessTxIds(txIds);
                     break;
 
@@ -94,6 +97,9 @@ namespace Libplanet.Net
                     break;
 
                 case BlockHeaderMessage blockHeader:
+                    await Transport.ReplyMessageAsync(
+                        new Pong { Identity = blockHeader.Identity },
+                        default);
                     ProcessBlockHeader(blockHeader);
                     break;
 
