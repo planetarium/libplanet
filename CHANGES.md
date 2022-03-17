@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.29.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on March 17, 2022.
 
 ### Backward-incompatible API changes
 
@@ -18,12 +16,6 @@ To be released.
     `ITransport.SendMessageWithReplyAsync()` methods are renamed as
     `ITransport.SendMessageAsync()`.  [[#1849]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
 ### Behavioral changes
 
  -  (Libplanet.Net) Default value of `SwarmOptions.MessageTimestampBuffer` is
@@ -34,13 +26,6 @@ To be released.
     [[#1828], [#1831]]
  -  (Libplanet.Net) `Swarm<T>` now replies `Pong`s to received `TxIds`
     and `BlockHeaderMessage` messages.  [[#1845]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 
 [#1828]: https://github.com/planetarium/libplanet/issues/1828
 [#1831]: https://github.com/planetarium/libplanet/pull/1831

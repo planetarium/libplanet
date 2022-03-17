@@ -21,7 +21,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
-    - if: github.event_name != 'schedule' && github.ref_type == 'tag'
+    - if: github.ref_type == 'tag'
       run: |
         set -evx
         pushd /tmp
@@ -32,14 +32,14 @@ jobs:
            [[ "$( git cat-file -p "$GITHUB_REF_NAME" \
                 | grep -Ei '^parent\s+[0-9a-f]{40}$' | wc -l )" -lt 2 ]]; then
           echo "::error title=Invalid tag commit::Tags must refer to a merge" \
-               "commit or a commit signed by GitHub web-flow" \
+               "commit or a commit signed by GitHub @web-flow" \
                "($WEB_FLOW_KEY_URL).  The tag $GITHUB_REF_NAME refers to " \
                "a commit $(git rev-parse $GITHUB_REF_NAME) which is neither" \
-               "a merge commit nor signed by GitHub web-flow."
+               "a merge commit nor signed by GitHub @web-flow."
           exit 1
         fi
       env:
-        $WEB_FLOW_KEY_URL: https://github.com/web-flow.gpg
+        WEB_FLOW_KEY_URL: https://github.com/web-flow.gpg
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
