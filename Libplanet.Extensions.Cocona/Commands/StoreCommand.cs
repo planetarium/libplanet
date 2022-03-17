@@ -126,6 +126,19 @@ namespace Libplanet.Extensions.Cocona.Commands
             store?.Dispose();
         }
 
+        [Command]
+        public void MigrateIndex(string storePath)
+        {
+            if (RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies(storePath))
+            {
+                Console.WriteLine("Successfully migrated.");
+            }
+            else
+            {
+                Console.WriteLine("Already migrated, no need to migrate.");
+            }
+        }
+
         private static Block<T> GetBlock<T>(IStore store, BlockHash blockHash)
             where T : IAction, new()
         {
