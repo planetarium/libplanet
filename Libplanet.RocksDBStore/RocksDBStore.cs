@@ -200,6 +200,7 @@ namespace Libplanet.RocksDBStore
             if (cfs.Count() == 1 && IterateDb(db, ChainIdKeyPrefix).Any())
             {
                 // Already migrated.
+                db.Dispose();
                 return false;
             }
 
