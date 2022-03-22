@@ -14,6 +14,10 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+ -  (Libplanet.RocksDBStore) `RocksDBStore` became not to use [column families]
+    to manage chain ids. Instead, chain id is concatenated into key prefix.
+    [[#1862]]
+
 ### Added APIs
 
 ### Behavioral changes
@@ -23,6 +27,12 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+  - Added `planet store migrate-index` for index database migration
+    (from column families based to key-prefix).  [[#1862]]
+
+[#1862]: https://github.com/planetarium/libplanet/pull/1862
+[column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 
 Version 0.29.0
