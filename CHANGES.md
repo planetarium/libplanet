@@ -4,27 +4,13 @@ Libplanet changelog
 Version 0.30.0
 --------------
 
-To be released.
-
-### Deprecated APIs
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
+Released on March 24, 2022.
 
 ### Backward-incompatible storage format changes
 
  -  (Libplanet.RocksDBStore) `RocksDBStore` became not to use [column families]
     to manage chain ids. Instead, chain id is concatenated into key prefix.
     [[#1862]]
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
 
 ### CLI tools
 
