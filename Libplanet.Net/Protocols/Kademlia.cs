@@ -43,17 +43,6 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Calculates the distance between two <see cref="Address"/>es.
-        /// </summary>
-        /// <param name="left">The first <see cref="Address"/>.</param>
-        /// <param name="right">The second <see cref="Address"/>.</param>
-        /// <returns>The distance between the two <see cref="Address"/>es given.</returns>
-        public static int CalculateDistance(Address left, Address right)
-        {
-            return Address.Size * 8 - CommonPrefixLength(left, right);
-        }
-
-        /// <summary>
         /// Calculates the length of the common prefix between two <see cref="Address"/>es
         /// by finding the index of the first non-zero bit of the xor between the two.
         /// </summary>
@@ -82,6 +71,17 @@ namespace Libplanet.Net.Protocols
             }
 
             return length;
+        }
+
+        /// <summary>
+        /// Calculates the distance between two <see cref="Address"/>es.
+        /// </summary>
+        /// <param name="left">The first <see cref="Address"/>.</param>
+        /// <param name="right">The second <see cref="Address"/>.</param>
+        /// <returns>The distance between the two <see cref="Address"/>es given.</returns>
+        public static int CalculateDistance(Address left, Address right)
+        {
+            return Address.Size * 8 - CommonPrefixLength(left, right);
         }
 
         /// <summary>
