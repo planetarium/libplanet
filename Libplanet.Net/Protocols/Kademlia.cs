@@ -85,19 +85,20 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Sorts the element of the sequence from in ascending order of
-        /// the distance with <paramref name="target"/>.
+        /// Sorts a list of <see cref="BoundPeer"/>s with respect to
+        /// the distance from <paramref name="target"/> in ascending order.
         /// </summary>
-        /// <param name="peers">A sequence of values to order.</param>
-        /// <param name="target">
-        /// <see cref="Address"/> to calculate distance of element.</param>
+        /// <param name="peers">The <see cref="IEnumerable{T}"/> of <see cref="BoundPeer"/>s
+        /// to sort.</param>
+        /// <param name="target">The <see cref="Address"/> to calculate the distance of
+        /// each element in <paramref name="peers"/>.</param>
         /// <returns>>An <see cref="IEnumerable{T}"/> whose elements are sorted
         /// according to the distance with <paramref name="target"/>.</returns>
         public static IEnumerable<BoundPeer> SortByDistance(
             IEnumerable<BoundPeer> peers,
             Address target)
         {
-            return peers.OrderBy(peer => CalculateDifference(peer.Address, target).ToHex());
+            return peers.OrderBy(peer => CalculateDistance(target, peer.Address));
         }
     }
 }
