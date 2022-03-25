@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Protocols
 
             Assert.Equal(
                 new Address("000000000100000111111000100001100100000d"),
-                Kademlia.CalculateDistance(addr3, addr4));
+                Kademlia.CalculateDifference(addr3, addr4));
 
             Assert.Equal(159, Kademlia.CommonPrefixLength(addr1, addr2));
             Assert.Equal(156, Kademlia.CommonPrefixLength(addr1, addr3));
