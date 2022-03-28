@@ -12,7 +12,6 @@ namespace Libplanet.Net.Protocols
         private readonly Random _random;
         private readonly ConcurrentDictionary<Address, PeerState> _peerStates;
         private readonly ILogger _logger;
-        private DateTimeOffset _lastUpdated;
 
         public KBucket(int size, Random random, ILogger logger)
         {
@@ -27,8 +26,6 @@ namespace Libplanet.Net.Protocols
             _logger = logger;
             _peerStates = new ConcurrentDictionary<Address, PeerState>();
             ReplacementCache = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
-
-            _lastUpdated = DateTimeOffset.UtcNow;
         }
 
         public int Count => _peerStates.Count;
@@ -89,11 +86,9 @@ namespace Libplanet.Net.Protocols
                 else
                 {
                     _logger.Verbose("Bucket does not contains peer {Peer}", peer);
-                    _lastUpdated = updated;
                     if (_peerStates.TryAdd(peer.Address, new PeerState(peer, updated)))
                     {
                         _logger.Verbose("Peer {Peer} is added to bucket", peer);
-                        _lastUpdated = updated;
 
                         if (ReplacementCache.TryRemove(peer, out var dateTimeOffset))
                         {
@@ -128,7 +123,6 @@ namespace Libplanet.Net.Protocols
         public void Clear()
         {
             _peerStates.Clear();
-            _lastUpdated = DateTimeOffset.UtcNow;
         }
 
         /// <summary>
