@@ -11,11 +11,6 @@ Released on March 24, 2022.
  -  (Libplanet.RocksDBStore) `RocksDBStore` became not to use [column families]
     to manage chain ids. Instead, chain id is concatenated into key prefix.
     [[#1862]]
- -  (Libplanet.Net) Existing method name `Kademlia.CalculateDistance()`
-    changed to `Kademlia.CalculateDifference()` to better indicate its behavior.
-    [[#1871]]
- -  (Libplanet.Net) `Kademlia.CalculateDistance()` method reimplemented with
-    return type `int`.  [[#1871]]
 
 ### CLI tools
 
@@ -23,7 +18,6 @@ Released on March 24, 2022.
     (from column families based to key-prefix).  [[#1862]]
 
 [#1862]: https://github.com/planetarium/libplanet/pull/1862
-[#1871]: https://github.com/planetarium/libplanet/pull/1871
 [column families]: https://github.com/facebook/rocksdb/wiki/Column-Families
 
 
