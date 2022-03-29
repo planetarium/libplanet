@@ -757,8 +757,8 @@ namespace Libplanet.Net.Protocols
             {
                 if (closestKnownPeer is { } ckp &&
                    string.CompareOrdinal(
-                       Kademlia.CalculateDifference(peer.Address, target).ToHex(),
-                       Kademlia.CalculateDifference(ckp.Address, target).ToHex()
+                       Kademlia.CalculateDistance(peer.Address, target).ToHex(),
+                       Kademlia.CalculateDistance(ckp.Address, target).ToHex()
                    ) >= 1)
                 {
                     break;

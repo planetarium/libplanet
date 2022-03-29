@@ -43,26 +43,18 @@ namespace Libplanet.Net.Tests.Protocols
             var addr2 = new Address("0000000000000000000000000000000000000001");
             var addr3 = new Address("000000000000000000000000000000000000000c");
             var addr4 = new Address("0000000001000001111110001000011001000001");
-            var addr5 = new Address("ffffffffffffffffffffffffffffffffffffffff");
 
             Assert.Equal(
                 new Address("000000000100000111111000100001100100000d"),
-                Kademlia.CalculateDifference(addr3, addr4));
-            Assert.Equal(
-                Kademlia.CalculateDifference(addr2, addr4),
-                Kademlia.CalculateDifference(addr4, addr2));
+                Kademlia.CalculateDistance(addr3, addr4));
 
             Assert.Equal(159, Kademlia.CommonPrefixLength(addr1, addr2));
             Assert.Equal(156, Kademlia.CommonPrefixLength(addr1, addr3));
             Assert.Equal(39, Kademlia.CommonPrefixLength(addr1, addr4));
 
-            Assert.Equal(0, Kademlia.CalculateDistance(addr4, addr4));
-            Assert.Equal(Address.Size * 8, Kademlia.CalculateDistance(addr1, addr5));
-
             Assert.True(string.CompareOrdinal(addr1.ToHex(), addr2.ToHex()) < 1);
             Assert.True(string.CompareOrdinal(addr2.ToHex(), addr3.ToHex()) < 1);
             Assert.True(string.CompareOrdinal(addr3.ToHex(), addr4.ToHex()) < 1);
-            Assert.True(string.CompareOrdinal(addr4.ToHex(), addr4.ToHex()) == 0);
         }
 
         [Fact(Timeout = Timeout)]

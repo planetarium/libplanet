@@ -30,12 +30,12 @@ namespace Libplanet.Net.Protocols
         public const int MaxDepth = 3;
 
         /// <summary>
-        /// Calculates the difference between two <see cref="Address"/>es.
+        /// Calculates the xor distance between two <see cref="Address"/>es.
         /// </summary>
-        /// <param name="left">The first <see cref="Address"/>.</param>
-        /// <param name="right">The second <see cref="Address"/>.</param>
-        /// <returns>The difference between the two <see cref="Address"/>es given.</returns>
-        public static Address CalculateDifference(Address left, Address right)
+        /// <param name="left">The first element to calculate the distance.</param>
+        /// <param name="right">The second element to calculate the distance.</param>
+        /// <returns>The distance between two <see cref="Address"/>es.</returns>
+        public static Address CalculateDistance(Address left, Address right)
         {
             byte[] dba = Enumerable.Zip(
                 left.ByteArray, right.ByteArray, (l, r) => (byte)(l ^ r)).ToArray();
@@ -52,7 +52,7 @@ namespace Libplanet.Net.Protocols
         /// <paramref name="right"/>.</returns>
         public static int CommonPrefixLength(Address left, Address right)
         {
-            ImmutableArray<byte> bytes = CalculateDifference(left, right).ByteArray;
+            ImmutableArray<byte> bytes = CalculateDistance(left, right).ByteArray;
             int length = 0;
 
             foreach (byte b in bytes)
@@ -74,31 +74,19 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Calculates the distance between two <see cref="Address"/>es.
+        /// Sorts the element of the sequence from in ascending order of
+        /// the distance with <paramref name="target"/>.
         /// </summary>
-        /// <param name="left">The first <see cref="Address"/>.</param>
-        /// <param name="right">The second <see cref="Address"/>.</param>
-        /// <returns>The distance between the two <see cref="Address"/>es given.</returns>
-        public static int CalculateDistance(Address left, Address right)
-        {
-            return Address.Size * 8 - CommonPrefixLength(left, right);
-        }
-
-        /// <summary>
-        /// Sorts a list of <see cref="BoundPeer"/>s with respect to
-        /// the distance from <paramref name="target"/> in ascending order.
-        /// </summary>
-        /// <param name="peers">The <see cref="IEnumerable{T}"/> of <see cref="BoundPeer"/>s
-        /// to sort.</param>
-        /// <param name="target">The <see cref="Address"/> to calculate the distance of
-        /// each element in <paramref name="peers"/>.</param>
+        /// <param name="peers">A sequence of values to order.</param>
+        /// <param name="target">
+        /// <see cref="Address"/> to calculate distance of element.</param>
         /// <returns>>An <see cref="IEnumerable{T}"/> whose elements are sorted
         /// according to the distance with <paramref name="target"/>.</returns>
         public static IEnumerable<BoundPeer> SortByDistance(
             IEnumerable<BoundPeer> peers,
             Address target)
         {
-            return peers.OrderBy(peer => CalculateDistance(target, peer.Address));
+            return peers.OrderBy(peer => CalculateDistance(peer.Address, target).ToHex());
         }
     }
 }
