@@ -20,9 +20,16 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Stun) Increased the number of internal proxies to increase
+    the inbound network traffic throughput of a node when using a `TurnClient`.
+    [[#1864], [#1876]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#1864]: https://github.com/planetarium/libplanet/issues/1864
+[#1876]: https://github.com/planetarium/libplanet/pull/1876
 
 
 Version 0.30.0
