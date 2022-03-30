@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Serilog;
@@ -10,7 +9,8 @@ namespace Libplanet.Net.Protocols
     {
         private readonly int _size;
         private readonly Random _random;
-        private readonly ConcurrentDictionary<Address, PeerState> _peerStates;
+        private readonly KBucketDictionary _peerStates;
+        private readonly KBucketDictionary _replacementCache;
         private readonly ILogger _logger;
 
         public KBucket(int size, Random random, ILogger logger)
@@ -24,8 +24,8 @@ namespace Libplanet.Net.Protocols
             _size = size;
             _random = random;
             _logger = logger;
-            _peerStates = new ConcurrentDictionary<Address, PeerState>();
-            ReplacementCache = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
+            _peerStates = new KBucketDictionary(_size, false, logger);
+            _replacementCache = new KBucketDictionary(int.MaxValue, true, logger);
         }
 
         public int Count => _peerStates.Count;
@@ -38,71 +38,27 @@ namespace Libplanet.Net.Protocols
         /// The <see cref="PeerState"/> used most recently. If the bucket is empty,
         /// this is <c>null</c>.
         /// </summary>
-        public PeerState? Head => _peerStates.Values
-            .OrderBy(peerState => peerState.LastUpdated)
-            .LastOrDefault();
+        public PeerState? Head => _peerStates.Head;
 
         /// <summary>
         /// The <see cref="PeerState"/> used longest time ago. If the bucket is empty,
         /// this is <c>null</c>.
         /// </summary>
-        public PeerState? Tail => _peerStates.Values
-            .OrderBy(peerState => peerState.LastUpdated)
-            .FirstOrDefault();
+        public PeerState? Tail => _peerStates.Tail;
 
-        public IEnumerable<BoundPeer> Peers => _peerStates.Values.Select(state => state.Peer);
+        public IEnumerable<BoundPeer> Peers => _peerStates.Peers;
 
-        public IEnumerable<PeerState> PeerStates => _peerStates.Values;
+        public IEnumerable<PeerState> PeerStates => _peerStates.PeerStates;
 
         // replacement candidate stored in this cache when
         // the bucket is full and least recently used peer responds.
-        public ConcurrentDictionary<BoundPeer, DateTimeOffset> ReplacementCache { get; }
+        public KBucketDictionary ReplacementCache => _replacementCache;
 
         public void AddPeer(BoundPeer peer, DateTimeOffset updated)
         {
-            if (_peerStates.ContainsKey(peer.Address))
+            if (!_peerStates.AddOrUpdate(peer, new PeerState(peer, updated)))
             {
-                _logger.Verbose("Bucket already contains peer {Peer}", peer);
-
-                // This done because peer's other attribute except public key might be changed.
-                // (eg. public IP address, endpoint)
-                PeerState state = _peerStates[peer.Address];
-                state.Peer = peer;
-                state.LastUpdated = updated;
-            }
-            else
-            {
-                if (IsFull)
-                {
-                    _logger.Verbose("Bucket is full to add peer {Peer}", peer);
-                    if (ReplacementCache.TryAdd(peer, updated))
-                    {
-                        _logger.Verbose(
-                            "Added {Peer} to replacement cache. (total: {Count})",
-                            peer,
-                            ReplacementCache.Count);
-                    }
-                }
-                else
-                {
-                    _logger.Verbose("Bucket does not contains peer {Peer}", peer);
-                    if (_peerStates.TryAdd(peer.Address, new PeerState(peer, updated)))
-                    {
-                        _logger.Verbose("Peer {Peer} is added to bucket", peer);
-
-                        if (ReplacementCache.TryRemove(peer, out var dateTimeOffset))
-                        {
-                            _logger.Verbose(
-                                "Removed peer {Peer} from replacement cache. (total: {Count})",
-                                peer,
-                                ReplacementCache.Count);
-                        }
-                    }
-                    else
-                    {
-                        _logger.Verbose("Failed to add peer {Peer} to bucket", peer);
-                    }
-                }
+                ReplacementCache.AddOrUpdate(peer, new PeerState(peer, updated));
             }
         }
 
@@ -114,7 +70,7 @@ namespace Libplanet.Net.Protocols
         /// <c>false</c> otherwise.</returns>
         public bool Contains(BoundPeer peer)
         {
-            return _peerStates.ContainsKey(peer.Address);
+            return _peerStates.Contains(peer.Address);
         }
 
         /// <summary>
@@ -134,7 +90,7 @@ namespace Libplanet.Net.Protocols
         /// </returns>
         public bool RemovePeer(BoundPeer peer)
         {
-            if (_peerStates.TryRemove(peer.Address, out var digest))
+            if (_peerStates.Remove(peer.Address))
             {
                 _logger.Verbose("Removed peer {Peer} from bucket.", peer);
                 return true;
@@ -158,8 +114,7 @@ namespace Libplanet.Net.Protocols
         /// </returns>
         public BoundPeer? GetRandomPeer(Address? except = null)
         {
-            List<BoundPeer> peers = _peerStates.Values
-                .Select(d => d.Peer)
+            List<BoundPeer> peers = _peerStates.Peers
                 .Where(p => (!(except is Address e) || !p.Address.Equals(e)))
                 .ToList();
             return peers.Count > 0 ? peers[_random.Next(peers.Count)] : null;
@@ -167,11 +122,10 @@ namespace Libplanet.Net.Protocols
 
         public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
         {
-            if (_peerStates.ContainsKey(peer.Address))
+            if (_peerStates.Get(peer.Address) is PeerState peerState)
             {
-                PeerState state = _peerStates[peer.Address];
-                state.LastChecked = start;
-                state.Latency = end - start;
+                peerState.LastChecked = start;
+                peerState.Latency = end - start;
             }
         }
     }

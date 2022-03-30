@@ -88,9 +88,9 @@ namespace Libplanet.Net.Protocols
             get
             {
                 return NonFullBuckets.Select(
-                    bucket => bucket.ReplacementCache
-                        .OrderBy(kv => kv.Value)
-                        .Select(kv => kv.Key)
+                    bucket => bucket.ReplacementCache.PeerStates
+                        .OrderBy(peerState => peerState.LastUpdated)
+                        .Select(peerState => peerState.Peer)
                         .ToArray()
                 ).ToArray();
             }
@@ -263,7 +263,7 @@ namespace Libplanet.Net.Protocols
         internal bool RemoveCache(BoundPeer peer)
         {
             KBucket bucket = BucketOf(peer);
-            return bucket.ReplacementCache.TryRemove(peer, out var _);
+            return bucket.ReplacementCache.Remove(peer);
         }
 
         internal KBucket BucketOf(BoundPeer peer)
