@@ -12,9 +12,9 @@ To be released.
 
  -  (Libplanet.Net) Existing method name `Kademlia.CalculateDistance()`
     changed to `Kademlia.CalculateDifference()` to better indicate its behavior.
-    [[#1871]]
+    [[#1877]]
  -  (Libplanet.Net) `Kademlia.CalculateDistance()` method reimplemented with
-    return type `int`.  [[#1871]]
+    return type `int`.  [[#1877]]
 
 ### Backward-incompatible network protocol changes
 
@@ -35,8 +35,8 @@ To be released.
 ### CLI tools
 
 [#1864]: https://github.com/planetarium/libplanet/issues/1864
-[#1871]: https://github.com/planetarium/libplanet/pull/1871
 [#1876]: https://github.com/planetarium/libplanet/pull/1876
+[#1877]: https://github.com/planetarium/libplanet/pull/1877
 
 
 Version 0.30.0
