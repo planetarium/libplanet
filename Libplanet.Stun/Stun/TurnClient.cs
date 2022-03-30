@@ -18,6 +18,7 @@ namespace Libplanet.Stun
     {
         public const int TurnDefaultPort = 3478;
         private const int AllocateRetry = 5;
+        private const int ProxyCount = 16;
 
         // TURN Permission lifetime was defined in RFC 5766
         // see also https://tools.ietf.org/html/rfc5766#section-8
@@ -99,7 +100,8 @@ namespace Libplanet.Stun
                 {
                     if (BehindNAT)
                     {
-                        _turnTasks = BindMultipleProxies(listenPort, 3, _turnTaskCts.Token);
+                        _turnTasks = BindMultipleProxies(
+                            listenPort, ProxyCount, _turnTaskCts.Token);
                         _turnTasks.Add(RefreshAllocate(_turnTaskCts.Token));
                     }
 
