@@ -228,6 +228,12 @@ namespace Libplanet.Tests.Store
             _store.ForkTxNonces(sourceChainId, destinationChainId);
         }
 
+        public void PruneOutdatedChains(bool noopWithoutCanon = false)
+        {
+            Log(nameof(PruneOutdatedChains));
+            _store.PruneOutdatedChains();
+        }
+
         public Guid? GetCanonicalChainId()
         {
             Log(nameof(GetCanonicalChainId));

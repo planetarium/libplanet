@@ -152,9 +152,16 @@ namespace Libplanet.Explorer.Store
             return _store.CountBlocks();
         }
 
+        /// <inheritdoc cref="IStore.ForkTxNonces(Guid, Guid)"/>
         public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
             _store.ForkTxNonces(sourceChainId, destinationChainId);
+        }
+
+        /// <inheritdoc cref="IStore.PruneOutdatedChains(bool)"/>
+        public void PruneOutdatedChains(bool noopWithoutCanon = false)
+        {
+            _store.PruneOutdatedChains(noopWithoutCanon);
         }
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>

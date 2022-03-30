@@ -1140,6 +1140,86 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc />
+        public override void PruneOutdatedChains(bool noopWithoutCanon = false)
+        {
+            if (!(GetCanonicalChainId() is { } ccid))
+            {
+                if (noopWithoutCanon)
+                {
+                    return;
+                }
+
+                throw new InvalidOperationException("Canonical chain ID is not assigned.");
+            }
+
+            using var batch = new WriteBatch();
+
+            // Copy indexes from previous chains.
+            // TxNonce is not copied because it is copied during .ForkTxNonces().
+            long index = 0;
+            foreach (var hash in IterateIndexes(ccid, 0, null))
+            {
+                batch.Put(
+                    IndexKey(ccid, RocksDBStoreBitConverter.GetBytes(index)),
+                    hash.ToByteArray());
+
+                if (batch.Count() > 10000)
+                {
+                    _chainDb.Write(batch);
+                    batch.Clear();
+                }
+
+                index++;
+            }
+
+            _chainDb.Write(batch);
+            batch.Clear();
+
+            batch.Delete(PreviousChainIdKey(ccid));
+            batch.Delete(PreviousChainIndexKey(ccid));
+            batch.Delete(DeletedChainKey(ccid));
+            _chainDb.Write(batch);
+            batch.Clear();
+
+            int guidLength = ccid.ToByteArray().Length;
+            using Iterator it = _chainDb.NewIterator();
+            for (it.SeekToFirst();
+                 it.Valid();
+                 it.Next())
+            {
+                if (it.Key().StartsWith(CanonicalChainIdIdKey))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var id = new Guid(it.Key().Skip(1).Take(guidLength).ToArray());
+                    if (id.Equals(ccid))
+                    {
+                        continue;
+                    }
+
+                    batch.Delete(it.Key());
+                }
+                catch (Exception)
+                {
+                    // Key is corrupted, delete.
+                    batch.Delete(it.Key());
+                }
+
+                if (batch.Count() > 10000)
+                {
+                    _chainDb.Write(batch);
+                    batch.Clear();
+                }
+            }
+
+            _chainDb.Write(batch);
+            batch.Clear();
+        }
+
         private static byte[] DeletedChainKey(Guid chainId)
             => DeletedKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
 

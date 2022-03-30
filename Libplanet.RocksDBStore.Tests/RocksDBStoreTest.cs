@@ -8,6 +8,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using RocksDbSharp;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -159,6 +160,107 @@ namespace Libplanet.RocksDBStore.Tests
                 store.Dispose();
                 Directory.Delete(path, true);
             }
+        }
+
+        [SkippableFact]
+        public void PruneOutdatedChainsRocksDb()
+        {
+            var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
+            var store = new RocksDBStore(path);
+            RocksDb chainDb = null;
+
+            int KeysWithChainId(RocksDb db, Guid cid)
+            {
+                using (Iterator it = db.NewIterator())
+                {
+                    byte[] key = cid.ToByteArray();
+                    int count = 0;
+                    for (it.SeekToFirst(); it.Valid(); it.Next())
+                    {
+                        if (!it.Key().Skip(1).ToArray().StartsWith(key))
+                        {
+                            continue;
+                        }
+
+                        count++;
+                    }
+
+                    return count;
+                }
+            }
+
+            try
+            {
+                store.PutBlock(Fx.GenesisBlock);
+                store.PutBlock(Fx.Block1);
+                store.PutBlock(Fx.Block2);
+                store.PutBlock(Fx.Block3);
+
+                Guid cid1 = Guid.NewGuid();
+                int guidLength = cid1.ToByteArray().Length;
+                store.AppendIndex(cid1, Fx.GenesisBlock.Hash);
+                store.AppendIndex(cid1, Fx.Block1.Hash);
+                store.AppendIndex(cid1, Fx.Block2.Hash);
+                Assert.Single(store.ListChainIds());
+                Assert.Equal(
+                    new[] { Fx.GenesisBlock.Hash, Fx.Block1.Hash, Fx.Block2.Hash },
+                    store.IterateIndexes(cid1, 0, null));
+
+                Guid cid2 = Guid.NewGuid();
+                store.ForkBlockIndexes(cid1, cid2, Fx.Block1.Hash);
+                store.AppendIndex(cid2, Fx.Block2.Hash);
+                store.AppendIndex(cid2, Fx.Block3.Hash);
+                Assert.Equal(2, store.ListChainIds().Count());
+                Assert.Equal(
+                    new[] { Fx.GenesisBlock.Hash, Fx.Block1.Hash, Fx.Block2.Hash, Fx.Block3.Hash },
+                    store.IterateIndexes(cid2, 0, null));
+
+                Guid cid3 = Guid.NewGuid();
+                store.ForkBlockIndexes(cid1, cid3, Fx.Block2.Hash);
+                Assert.Equal(3, store.ListChainIds().Count());
+                Assert.Equal(
+                    new[] { Fx.GenesisBlock.Hash, Fx.Block1.Hash, Fx.Block2.Hash },
+                    store.IterateIndexes(cid3, 0, null));
+
+                Assert.Throws<InvalidOperationException>(() => store.PruneOutdatedChains());
+                store.PruneOutdatedChains(true);
+                store.SetCanonicalChainId(cid3);
+                store.PruneOutdatedChains();
+                Assert.Single(store.ListChainIds());
+                Assert.Equal(
+                    new[] { Fx.GenesisBlock.Hash, Fx.Block1.Hash, Fx.Block2.Hash },
+                    store.IterateIndexes(cid3, 0, null));
+                Assert.Equal(3, store.CountIndex(cid3));
+
+                store.Dispose();
+                store = null;
+
+                chainDb = RocksDb.Open(new DbOptions(), Path.Combine(path, "chain"));
+
+                Assert.Equal(0, KeysWithChainId(chainDb, cid1));
+                Assert.Equal(0, KeysWithChainId(chainDb, cid2));
+                Assert.NotEqual(0, KeysWithChainId(chainDb, cid3));
+            }
+            finally
+            {
+                store?.Dispose();
+                chainDb?.Dispose();
+                Directory.Delete(path, true);
+            }
+        }
+
+        private long ToInt64(byte[] value)
+        {
+            byte[] bytes = new byte[sizeof(long)];
+            value.CopyTo(bytes, 0);
+
+            // Use Big-endian to order index lexicographically.
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes);
+            }
+
+            return BitConverter.ToInt64(bytes, 0);
         }
     }
 }
