@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IStore.PruneOutdatedChains(bool noopWithoutCanon)` method.
+   [[#1874], [#1878]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +26,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1874]: https://github.com/planetarium/libplanet/issues/1874
+[#1878]: https://github.com/planetarium/libplanet/pull/1878
 
 
 Version 0.31.0
