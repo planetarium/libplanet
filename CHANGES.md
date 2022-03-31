@@ -21,14 +21,22 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Net) Internal cache size of a `KBucket` is now capped.
+    [[#1879]]
+
 ### Bug fixes
+
+ -  (Libplanet.Net) Internal dictionaries of a `KBucket` are made to be
+    concurrent.  [[#1872], [#1879]]
 
 ### Dependencies
 
 ### CLI tools
 
+[#1872]: https://github.com/planetarium/libplanet/issues/1872
 [#1874]: https://github.com/planetarium/libplanet/issues/1874
 [#1878]: https://github.com/planetarium/libplanet/pull/1878
+[#1879]: https://github.com/planetarium/libplanet/pull/1879
 
 
 Version 0.31.0
