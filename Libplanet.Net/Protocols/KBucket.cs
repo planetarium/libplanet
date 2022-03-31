@@ -25,7 +25,7 @@ namespace Libplanet.Net.Protocols
             _random = random;
             _logger = logger;
             _peerStates = new KBucketDictionary(_size, false, logger);
-            _replacementCache = new KBucketDictionary(int.MaxValue, true, logger);
+            _replacementCache = new KBucketDictionary(_size, true, logger);
         }
 
         public int Count => _peerStates.Count;

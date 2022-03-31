@@ -290,6 +290,7 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.Single(transportA.Peers);
             Assert.Contains(transportA.AsPeer, transport.Peers);
             Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
 
             await transportA.StopAsync(TimeSpan.Zero);
             await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
@@ -297,8 +298,8 @@ namespace Libplanet.Net.Tests.Protocols
 
             Assert.Single(transport.Peers);
             Assert.DoesNotContain(transportA.AsPeer, transport.Peers);
-            Assert.Contains(transportB.AsPeer, transport.Peers);
-            Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Peers);
+            Assert.Contains(transportC.AsPeer, transport.Peers);
 
             transport.Dispose();
             transportA.Dispose();
