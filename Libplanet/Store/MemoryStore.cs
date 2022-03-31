@@ -264,5 +264,23 @@ namespace Libplanet.Store
                 $"No such chain ID: {sourceChainId}."
             );
         }
+
+        void IStore.PruneOutdatedChains(bool noopWithoutCanon)
+        {
+            if (!(_canonicalChainId is { } ccid))
+            {
+                if (noopWithoutCanon)
+                {
+                    return;
+                }
+
+                throw new InvalidOperationException("Canonical chain ID is not assigned.");
+            }
+
+            foreach (Guid id in _indices.Keys.Where(id => !id.Equals(ccid)))
+            {
+                ((IStore)this).DeleteChainId(id);
+            }
+        }
     }
 }

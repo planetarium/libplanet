@@ -332,5 +332,22 @@ namespace Libplanet.Store
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
         void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
+
+        /// <summary>
+        /// Delete all non-canonical chains.
+        /// </summary>
+        /// <param name="noopWithoutCanon">
+        /// Flag to determine whether the function throws exception
+        /// when the canonical chain is not assigned.  <c>false</c> by default.
+        /// If it set to <c>true</c>, does not throw exception when
+        /// there is no canonical chain.
+        /// Otherwise, throws <see cref="InvalidOperationException"/> when
+        /// there is no canonical chain.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when there is no canonical chain and
+        /// <paramref name="noopWithoutCanon"/> is false.
+        /// </exception>
+        void PruneOutdatedChains(bool noopWithoutCanon = false);
     }
 }

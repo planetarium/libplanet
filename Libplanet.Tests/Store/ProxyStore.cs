@@ -199,5 +199,9 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.ForkTxNonces(Guid, Guid)"/>
         public virtual void ForkTxNonces(Guid sourceChainId, Guid destinationChainId) =>
             Store.ForkTxNonces(sourceChainId, destinationChainId);
+
+        /// <inheritdoc cref="IStore.PruneOutdatedChains(bool)"/>
+        public void PruneOutdatedChains(bool noopWithoutCanon = false) =>
+            Store.PruneOutdatedChains(noopWithoutCanon);
     }
 }

@@ -179,6 +179,9 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
 
+        /// <inheritdoc/>
+        public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
+
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {
             var sDelta = new Dictionary(

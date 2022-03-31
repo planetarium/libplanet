@@ -645,6 +645,25 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override void PruneOutdatedChains(bool noopWithoutCanon = false)
+        {
+            if (!(GetCanonicalChainId() is { } ccid))
+            {
+                if (noopWithoutCanon)
+                {
+                    return;
+                }
+
+                throw new InvalidOperationException("Canonical chain ID is not assigned.");
+            }
+
+            foreach (Guid id in ListChainIds().Where(id => !id.Equals(ccid)))
+            {
+                DeleteChainId(id);
+            }
+        }
+
+        /// <inheritdoc/>
         public override long CountTransactions()
         {
             // FIXME: This implementation is too inefficient.  Fortunately, this method seems
