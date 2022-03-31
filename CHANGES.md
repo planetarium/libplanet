@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.31.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on March 31, 2022
 
 ### Backward-incompatible API changes
 
@@ -16,23 +14,11 @@ To be released.
  -  (Libplanet.Net) `Kademlia.CalculateDistance()` method reimplemented with
     return type `int`.  [[#1877]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
 ### Bug fixes
 
  -  (Libplanet.Stun) Increased the number of internal proxies to increase
     the inbound network traffic throughput of a node when using a `TurnClient`.
     [[#1864], [#1876]]
-
-### Dependencies
-
-### CLI tools
 
 [#1864]: https://github.com/planetarium/libplanet/issues/1864
 [#1876]: https://github.com/planetarium/libplanet/pull/1876
