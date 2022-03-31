@@ -1,0 +1,705 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PolymorphicAction&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PolymorphicAction&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.PolymorphicAction`1">
+  
+  
+  <h1 id="Libplanet_Action_PolymorphicAction_1" data-uid="Libplanet.Action.PolymorphicAction`1" class="text-break">Class PolymorphicAction&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A decorator to enable subtype polymorphism for action classes.</p>
+<p>By convention, concrete action subclasses are named with verb
+phrases, e.g., <code>Heal</code>, <code>Sell</code>.</p>
+<p>One downside of this compared to the vanilla <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+is the fact that it uses reflection under the hood.  This may cause
+compatibility issues on certain platforms, and is slightly slower.
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">PolymorphicAction&lt;T&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class PolymorphicAction&lt;T&gt; : object, IAction where T : IAction</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An action base class which implements
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and has subclasses.  Usually an abstract
+class.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Every concrete action subclass of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+has to be marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.
+Even if a superclass is marked with
+the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> its subclass also should be
+marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> if it is concrete.</p>
+</div>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how polymorphic actions look like
+(compare this with an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> example without
+subtype polymorphism):</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using Bencodex.Types;
+using Libplanet;
+using Libplanet.Action;
+// Instead of having multiple in-game actions in a class,
+// in this example, we declare one abstract base class
+// and its three concrete subclasses.
+public abstract class ActionBase : IAction
+{
+    public ActionBase() { }
+    public ActionBase(Address targetAddress)
+    {
+        TargetAddress = targetAddress;
+    }
+    public Address TargetAddress { get; private set; }
+    // Leaves Execute() abstract so that concrete subclasses
+    // implement their own logic.
+    public abstract IAccountStateDelta Execute(IActionContext context);
+    IValue IAction.PlainValue =>
+        new Bencodex.Types.Dictionary(new Dictionary&lt;IKey, IValue>
+        {
+            [(Text)&quot;target_address&quot;] = (Binary)TargetAddress.ToByteArray(),
+        });
+    void IAction.LoadPlainValue(
+        IValue plainValue)
+    {
+        var dictionary = (Bencodex.Types.Dictionary)plainValue;
+        TargetAddress =
+            new Address(dictionary.GetValue&lt;Binary>(&quot;target_address&quot;));
+    }
+}
+// PolymorphicAction&lt;T> requires concrete action classes marked with
+// ActionTypeAttribute.
+// There is only one required parameter to ActionTypeAttribute,
+// which takes a unique identifier of the action type.
+// This is used for serialization and deserialization under the hood.
+[ActionType(&quot;create_character&quot;)]
+public sealed class CreateCharacter : ActionBase
+{
+    public override IAccountStateDelta Execute(IActionContext context)
+    {
+        var state =
+            context.PreviousStates.GetState(TargetAddress);
+        if (!TargetAddress.Equals(context.Signer))
+            throw new Exception(
+                &quot;TargetAddress of CreateCharacter action only can be &quot; +
+                &quot;the same address to the Transaction&lt;T>.Signer.&quot;
+            );
+        else if (!(state is null))
+            throw new Exception(&quot;Character was already created.&quot;);
+        return context.PreviousStates.SetState(
+            TargetAddress,
+            new Bencodex.Types.Dictionary(new Dictionary&lt;IKey, IValue>
+            {
+                [(Text)&quot;hp&quot;] = (Integer)20,
+            })
+        );
+    }
+}
+[ActionType(&quot;attack&quot;)]
+public sealed class Attack : ActionBase
+{
+    public override IAccountStateDelta Execute(IActionContext context)
+    {
+        var state =
+            (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
+        return context.PreviousStates.SetState(
+            TargetAddress,
+            (Bencodex.Types.Dictionary)state
+                .SetItem(
+                    (Text)&quot;hp&quot;,
+                    (Integer)Math.Max(state.GetValue&lt;Integer>(&quot;hp&quot;) - 5, 0))
+        );
+    }
+}
+[ActionType(&quot;heal&quot;)]
+public sealed class Heal : ActionBase
+{
+    public override IAccountStateDelta Execute(IActionContext context)
+    {
+        var state =
+            (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
+        return context.PreviousStates.SetState(
+            TargetAddress,
+            (Bencodex.Types.Dictionary)state
+                .SetItem(
+                    (Text)&quot;hp&quot;,
+                    (Integer)Math.Min(state.GetValue&lt;Integer>(&quot;hp&quot;) + 5, 20))
+        );
+    }
+}</code></pre>
+<p>Note that when it's rendered through <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a>,
+an instance of <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> is passed instead of its
+<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction">InnerAction</a>:</p>
+<pre><code>public class Renderer : IActionRenderer&lt;PolymorphicAction&lt;ActionBase>>
+{
+    public void RenderAction(IAction action,
+                             IActionContext context,
+                             IAccountStateDelta nextStates)
+    {
+        if (action is PolymorphicAction&lt;ActionBase> polymorphicAction)
+        {
+            switch (polymorphicAction.InnerAction)
+            {
+                // render things here
+            }
+        }
+    }
+    // ... other method implementations
+}</code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L163">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1__ctor" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor">PolymorphicAction()</h4>
+  <div class="markdown level1 summary"><p>Do not use this constructor.
+Use <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1__ctor__0_">PolymorphicAction(T)</a> instead.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PolymorphicAction()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L177">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1__ctor__0_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor(`0)">PolymorphicAction(T)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> instance wrapping
+an <code data-dev-comment-type="paramref" class="paramref">innerAction</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PolymorphicAction(T innerAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">innerAction</span></td>
+        <td><p>An instance of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+(or one of its subtypes) to wrap.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></td>
+        <td><p>Thrown
+when the class of the given <code data-dev-comment-type="paramref" class="paramref">innerAction</code>
+is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_InnerAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.InnerAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L186">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_InnerAction_" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_InnerAction" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction">InnerAction</h4>
+  <div class="markdown level1 summary"><p>The wrapped action object of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+(or one of its subtypes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T InnerAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L204">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_PlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_PlainValue" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue">PlainValue</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IValue PlainValue { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L250">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_Execute_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
+  <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
+<em>deterministic</em>.</p>
+<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
+it receives information such as a transaction signer,
+its states immediately before the execution,
+and a deterministic random seed.</p>
+<p>Other “bound” information resides in the action
+object in itself, as its properties (or fields).</p>
+<p>A returned <a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a> object functions as
+a delta which shifts from previous states to next states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAccountStateDelta Execute(IActionContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A context object containing addresses that
+signed the transaction, states immediately before the execution,
+and a PRNG object which produces deterministic random numbers.
+See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method should be deterministic:
+for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.
+Side effects should be avoided, because an action's
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
+than once, the time it's called is difficult to predict.</p>
+<p>For changing in-memory game states or drawing graphics,
+implement the <a class="xref" href="Libplanet.Blockchain.Renderers.IRenderer-1.html">IRenderer&lt;T&gt;</a> interface separately and
+attach it to a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance.</p>
+<p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
+nor any other PRNGs provided by other than Libplanet.
+Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
+<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
+has the consistent result for every node in the network.</p>
+<p>Also do not perform I/O operations such as file system access
+or networking.  These bring an action indeterministic.  You maybe
+fine to log messages for debugging purpose, but equivalent messages
+could be logged multiple times.</p>
+<p>Although it might be surprising, <a href="https://wp.me/p1fTCO-kT">floating-point arithmetics are
+underspecified so that it can make different results on different
+machines, platforms, runtimes, compilers, and builds</a>.</p>
+<p>Lastly, you need to be aware and keep in mind that there
+is a global state named <see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see> on .NET;
+if you format numbers, dates and times, currencies, or other such
+things into strings and parse these strings back these can rely on
+<see cref="!:System.Globalization.CultureInfo.CurrentCulture"></see>,
+so that the same action make different results on two differently
+configured systems like Thai language and French language.
+In order to make these types of conversions deterministic,
+you have to explicitly pass <see cref="!:System.Globalization.CultureInfo.InvariantCulture"></see>.</p>
+<p>For more on determinism in general, please read also <a href="https://tendermint.com/docs/spec/abci/abci.html#determinism">Tendermint ABCI&apos;s docs on determinism</a>.</p>
+<p>Lastly, you can conduct static analysis on your code
+using <a href="https://git.io/JTmby">Libplanet.Analyzers</a>.
+The analyzer can be enabled by adding its NuGet package into
+your project as a dependency.</p>
+</div>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L233">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_Dictionary_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(Dictionary)">LoadPlainValue(Dictionary)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LoadPlainValue(Dictionary plainValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">plainValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(IValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L244">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LoadPlainValue(IValue plainValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">plainValue</span></td>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IValue__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L253">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_ToString_" data-uid="Libplanet.Action.PolymorphicAction`1.ToString*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_ToString" data-uid="Libplanet.Action.PolymorphicAction`1.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.op_Implicit(%600)~Libplanet.Action.PolymorphicAction%7B%600%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L228">View Source</a>
+  </span>
+  <a id="Libplanet_Action_PolymorphicAction_1_op_Implicit_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit*"></a>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}">Implicit(T to PolymorphicAction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>For convenience, an inner action <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> can be
+implicitly casted to <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator PolymorphicAction&lt;T&gt;(T innerAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">innerAction</span></td>
+        <td><p>An instance of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
+(or one of its subtypes) to wrap.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction</a>&lt;T&gt;</td>
+        <td><p>A <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> wrapping the given
+<code data-dev-comment-type="paramref" class="paramref">innerAction</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></td>
+        <td><p>Thrown
+when the class of the given <code data-dev-comment-type="paramref" class="paramref">innerAction</code>
+is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/1a4bf24f0ff1f9c60fa9c66eecbb43a80ee3f0fc/Libplanet/Action/PolymorphicAction.cs/#L148" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2021 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
