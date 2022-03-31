@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Existing method name `Kademlia.CalculateDistance()`
+    changed to `Kademlia.CalculateDifference()` to better indicate its behavior.
+    [[#1877]]
+ -  (Libplanet.Net) `Kademlia.CalculateDistance()` method reimplemented with
+    return type `int`.  [[#1877]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -30,6 +36,7 @@ To be released.
 
 [#1864]: https://github.com/planetarium/libplanet/issues/1864
 [#1876]: https://github.com/planetarium/libplanet/pull/1876
+[#1877]: https://github.com/planetarium/libplanet/pull/1877
 
 
 Version 0.30.0
