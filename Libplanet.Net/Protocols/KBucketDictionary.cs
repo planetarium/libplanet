@@ -39,8 +39,16 @@ namespace Libplanet.Net.Protocols
         /// <param name="replace">Whether to replace the oldest <see cref="PeerState"/>,
         /// i.e. <see cref="Tail"/>, if the dictionary is already full.</param>
         /// <param name="logger">The <see cref="ILogger"/> to write log messages to.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size"/>
+        /// is not positive..</exception>
         public KBucketDictionary(int size, bool replace, ILogger logger)
         {
+            if (size <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"The value of {nameof(size)} must be positive.");
+            }
+
             _lock = new object();
             _size = size;
             _replace = replace;
@@ -201,7 +209,7 @@ namespace Libplanet.Net.Protocols
         /// Adds or updates the dictionary with a key/value pair.
         /// </para>
         /// <para>
-        /// Internal logic is as the following:
+        /// Internal logic is as follows:
         /// <list type="bullet">
         ///     <item><description>
         ///         If <paramref name="address"/> is found, update its value
@@ -213,7 +221,12 @@ namespace Libplanet.Net.Protocols
         ///         a key/value pair.
         ///     </description></item>
         ///     <item><description>
-        ///         Otherwise, ignore.
+        ///         Else, if the dictionary is full and replace option is set to <c>true</c>,
+        ///         replace the oldest <see cref="PeerState"/>, i.e. <see cref="Tail"/>,
+        ///         with <paramref name="peerState"/>.
+        ///     </description></item>
+        ///     <item><description>
+        ///         Else, ignore.
         ///     </description></item>
         /// </list>
         /// </para>
@@ -262,7 +275,7 @@ namespace Libplanet.Net.Protocols
                     {
                         if (_replace)
                         {
-                            // Tail is never null.
+                            // Tail is never null since the dictionary size is always positive.
                             _dictionary.Remove(Tail!.Peer.Address);
                             _dictionary[address] = peerState;
                             return true;
