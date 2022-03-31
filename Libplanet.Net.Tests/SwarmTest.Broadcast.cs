@@ -549,6 +549,69 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task DelayedBlockBroadcast()
+        {
+            // If the bucket stored peers are the same, the block may not propagate,
+            // so specify private keys to make the buckets different.
+            PrivateKey keyA = PrivateKey.FromString(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
+            PrivateKey keyB = PrivateKey.FromString(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
+            PrivateKey keyX = PrivateKey.FromString(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
+
+            var swarmA = CreateSwarm(keyA);
+            var swarmB = CreateSwarm(keyB);
+            var swarmX = CreateSwarm(keyX);
+
+            BlockChain<DumbAction> chainA = swarmA.BlockChain;
+            BlockChain<DumbAction> chainB = swarmB.BlockChain;
+            BlockChain<DumbAction> chainX = swarmX.BlockChain;
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                await chainA.MineBlock(keyA);
+            }
+
+            foreach (int i in Enumerable.Range(1, 5))
+            {
+                chainB.Append(chainA[i]);
+            }
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmX);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                await BootstrapAsync(swarmX, swarmA.AsPeer);
+
+                Block<DumbAction> oldTip = chainB.Tip;
+
+                swarmB.BroadcastBlock(chainB.Tip);
+                await Task.Delay(1);
+                swarmA.BroadcastBlock(chainA.Tip);
+
+                await swarmA.BlockHeaderReceived.WaitAsync();
+                await swarmB.BlockAppended.WaitAsync();
+                await swarmX.BlockAppended.WaitAsync();
+                Assert.Equal(chainA.Tip.Hash, chainB.Tip.Hash);
+                Assert.Equal(oldTip.Hash, chainX.Tip.Hash);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmX);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmX.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
             // If the bucket stored peers are the same, the block may not propagate,
