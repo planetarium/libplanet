@@ -28,6 +28,7 @@ namespace Libplanet.Net.Protocols
     {
         private readonly object _lock;
         private readonly int _size;
+        private readonly bool _replace;
         private readonly ILogger _logger;
         private Dictionary<Address, PeerState> _dictionary;
 
@@ -35,11 +36,14 @@ namespace Libplanet.Net.Protocols
         /// Creates an instance with a size limit given by <paramref name="size"/>.
         /// </summary>
         /// <param name="size">The maximum number of elements the dictionary can hold.</param>
+        /// <param name="replace">Whether to replace the oldest <see cref="PeerState"/>,
+        /// i.e. <see cref="Tail"/>, if the dictionary is already full.</param>
         /// <param name="logger">The <see cref="ILogger"/> to write log messages to.</param>
-        public KBucketDictionary(int size, ILogger logger)
+        public KBucketDictionary(int size, bool replace, ILogger logger)
         {
             _lock = new object();
             _size = size;
+            _replace = replace;
             _dictionary = new Dictionary<Address, PeerState>();
             _logger = logger;
         }
@@ -109,7 +113,7 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Retrievees the <see cref="BoundPeer"/> associated with <paramref name="peer"/>'s
+        /// Retrieves the <see cref="BoundPeer"/> associated with <paramref name="peer"/>'s
         /// <see cref="Address"/>.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
@@ -219,8 +223,19 @@ namespace Libplanet.Net.Protocols
         /// <returns><c>true</c> if the key/value pair was either added or updated,
         /// <c>false</c> otherwise.</returns>
         /// <remarks>
-        /// The only way this returns <c>false</c> is for the dictionary to be full already
-        /// <em>and</em> not contain <paramref name="address"/> as a key.
+        /// This returns <c>false</c> only if all following conditions are met:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         The dictionary does not contain <paramref name="address"/> as a key.
+        ///     </description></item>
+        ///     <item><description>
+        ///         The dictionary is already full.
+        ///     </description></item>
+        ///     <item><description>
+        ///         The replacement option is set to <c>false</c> for
+        ///         this <see cref="KBucketDictionary"/> instance.
+        ///     </description></item>
+        /// </list>
         /// </remarks>
         public bool AddOrUpdate(Address address, PeerState peerState)
         {
@@ -236,21 +251,31 @@ namespace Libplanet.Net.Protocols
                 }
                 else
                 {
-                    if (_dictionary.Count >= _size)
-                    {
-                        _logger.Verbose(
-                            "Cannot add {Address}; " +
-                            "the dictionary size is already at its limit of {Size}.",
-                            address,
-                            _size);
-                        return false;
-                    }
-                    else
+                    if (_dictionary.Count < _size)
                     {
                         _dictionary[address] = peerState;
                         _logger.Verbose(
                             "Added {Address} to the dictionary.", address);
                         return true;
+                    }
+                    else
+                    {
+                        if (_replace)
+                        {
+                            // Tail is never null.
+                            _dictionary.Remove(Tail!.Peer.Address);
+                            _dictionary[address] = peerState;
+                            return true;
+                        }
+                        else
+                        {
+                            _logger.Verbose(
+                                "Cannot add {Address}; " +
+                                "the dictionary size is already at its limit of {Size}.",
+                                address,
+                                _size);
+                            return false;
+                        }
                     }
                 }
             }
