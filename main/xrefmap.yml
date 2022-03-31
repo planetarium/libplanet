@@ -12372,6 +12372,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.MigrateChainDBFromColumnFamilies
   nameWithType: RocksDBStore.MigrateChainDBFromColumnFamilies
+- uid: Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains(System.Boolean)
+  name: PruneOutdatedChains(Boolean)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PruneOutdatedChains_System_Boolean_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains(System.Boolean)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains(System.Boolean)
+  nameWithType: RocksDBStore.PruneOutdatedChains(Boolean)
+- uid: Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains*
+  name: PruneOutdatedChains
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PruneOutdatedChains_
+  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains
+  isSpec: "True"
+  fullName: Libplanet.RocksDBStore.RocksDBStore.PruneOutdatedChains
+  nameWithType: RocksDBStore.PruneOutdatedChains
 - uid: Libplanet.RocksDBStore.RocksDBStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_PutBlock_
@@ -13216,6 +13229,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListTxNonces
   nameWithType: BaseStore.ListTxNonces
+- uid: Libplanet.Store.BaseStore.PruneOutdatedChains(System.Boolean)
+  name: PruneOutdatedChains(Boolean)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PruneOutdatedChains_System_Boolean_
+  commentId: M:Libplanet.Store.BaseStore.PruneOutdatedChains(System.Boolean)
+  fullName: Libplanet.Store.BaseStore.PruneOutdatedChains(System.Boolean)
+  nameWithType: BaseStore.PruneOutdatedChains(Boolean)
+- uid: Libplanet.Store.BaseStore.PruneOutdatedChains*
+  name: PruneOutdatedChains
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PruneOutdatedChains_
+  commentId: Overload:Libplanet.Store.BaseStore.PruneOutdatedChains
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.PruneOutdatedChains
+  nameWithType: BaseStore.PruneOutdatedChains
 - uid: Libplanet.Store.BaseStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock_
@@ -14165,6 +14191,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ListTxNonces
   nameWithType: DefaultStore.ListTxNonces
+- uid: Libplanet.Store.DefaultStore.PruneOutdatedChains(System.Boolean)
+  name: PruneOutdatedChains(Boolean)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PruneOutdatedChains_System_Boolean_
+  commentId: M:Libplanet.Store.DefaultStore.PruneOutdatedChains(System.Boolean)
+  fullName: Libplanet.Store.DefaultStore.PruneOutdatedChains(System.Boolean)
+  nameWithType: DefaultStore.PruneOutdatedChains(Boolean)
+- uid: Libplanet.Store.DefaultStore.PruneOutdatedChains*
+  name: PruneOutdatedChains
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PruneOutdatedChains_
+  commentId: Overload:Libplanet.Store.DefaultStore.PruneOutdatedChains
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PruneOutdatedChains
+  nameWithType: DefaultStore.PruneOutdatedChains
 - uid: Libplanet.Store.DefaultStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock_
@@ -14685,6 +14724,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListTxNonces
   nameWithType: IStore.ListTxNonces
+- uid: Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)
+  name: PruneOutdatedChains(Boolean)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_
+  commentId: M:Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)
+  fullName: Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)
+  nameWithType: IStore.PruneOutdatedChains(Boolean)
+- uid: Libplanet.Store.IStore.PruneOutdatedChains*
+  name: PruneOutdatedChains
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PruneOutdatedChains_
+  commentId: Overload:Libplanet.Store.IStore.PruneOutdatedChains
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.PruneOutdatedChains
+  nameWithType: IStore.PruneOutdatedChains
 - uid: Libplanet.Store.IStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock_
@@ -15273,6 +15325,23 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.ListTxNonces
   nameWithType: MemoryStore.IStore.ListTxNonces
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.ListTxNonces
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains(System.Boolean)
+  name: IStore.PruneOutdatedChains(Boolean)
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PruneOutdatedChains_System_Boolean_
+  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains(System.Boolean)
+  name.vb: Libplanet.Store.IStore.PruneOutdatedChains(Boolean)
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PruneOutdatedChains(System.Boolean)
+  nameWithType: MemoryStore.IStore.PruneOutdatedChains(Boolean)
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PruneOutdatedChains(Boolean)
+- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains*
+  name: IStore.PruneOutdatedChains
+  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PruneOutdatedChains_
+  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PruneOutdatedChains
+  isSpec: "True"
+  name.vb: Libplanet.Store.IStore.PruneOutdatedChains
+  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.PruneOutdatedChains
+  nameWithType: MemoryStore.IStore.PruneOutdatedChains
+  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.PruneOutdatedChains
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#PutBlock*
   name: IStore.PutBlock
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_PutBlock_
