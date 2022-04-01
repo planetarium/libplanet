@@ -507,36 +507,28 @@ namespace Libplanet.Net.Transports
             Peer remotePeer,
             AppProtocolVersion remoteVersion)
         {
-            bool valid;
-            if (remoteVersion.Equals(_appProtocolVersion))
+            bool IsSignedByTrusted(AppProtocolVersion version)
             {
-                valid = true;
-            }
-            else if (!(_trustedAppProtocolVersionSigners is null) &&
-                     !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
-            {
-                valid = false;
-            }
-            else if (_differentAppProtocolVersionEncountered is null)
-            {
-                valid = false;
-            }
-            else
-            {
-                valid = _differentAppProtocolVersionEncountered(
-                    remotePeer,
-                    remoteVersion,
-                    _appProtocolVersion);
+                return !(
+                    _trustedAppProtocolVersionSigners is { } tapvs &&
+                    tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
             }
 
-            if (!valid)
+            if (remoteVersion.Equals(_appProtocolVersion))
             {
-                throw new DifferentAppProtocolVersionException(
-                    "The version of the received message is not valid.",
-                    identity,
-                    _appProtocolVersion,
-                    remoteVersion);
+                return;
             }
+            else if (IsSignedByTrusted(remoteVersion) &&
+                _differentAppProtocolVersionEncountered is { } dapve)
+            {
+                dapve(remotePeer, remoteVersion, _appProtocolVersion);
+            }
+
+            throw new DifferentAppProtocolVersionException(
+                "The version of the received message is not valid.",
+                identity,
+                _appProtocolVersion,
+                remoteVersion);
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)

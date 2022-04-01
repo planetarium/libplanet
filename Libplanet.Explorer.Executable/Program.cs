@@ -238,7 +238,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         options.AppProtocolVersionToken is string t
                             ? AppProtocolVersion.FromToken(t)
                             : default(AppProtocolVersion),
-                        differentAppProtocolVersionEncountered: (p, pv, lv) => true,
+                        differentAppProtocolVersionEncountered: (p, pv, lv) => { },
                         workers: options.Workers,
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions

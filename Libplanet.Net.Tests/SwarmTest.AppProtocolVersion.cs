@@ -66,7 +66,6 @@ namespace Libplanet.Net.Tests
                 differentAppProtocolVersionEncountered: (_, ver, __) =>
                 {
                     isCalled = true;
-                    return false;
                 }
             );
             var b = CreateSwarm(appProtocolVersion: v2);
@@ -105,14 +104,13 @@ namespace Libplanet.Net.Tests
 
             var logs = new ConcurrentDictionary<Peer, AppProtocolVersion>();
 
-            bool DifferentAppProtocolVersionEncountered(
+            void DifferentAppProtocolVersionEncountered(
                 Peer peer,
                 AppProtocolVersion peerVersion,
                 AppProtocolVersion localVersion
             )
             {
                 logs[peer] = peerVersion;
-                return false;
             }
 
             var a = CreateSwarm(

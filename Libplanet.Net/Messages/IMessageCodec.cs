@@ -4,6 +4,10 @@ using Libplanet.Net.Transports;
 
 namespace Libplanet.Net.Messages
 {
+    /// <summary>
+    /// An interface to encode and decode <see cref="Message"/>.
+    /// </summary>
+    /// <typeparam name="T">An encoded message type.</typeparam>
     public interface IMessageCodec<T>
     {
         /// <summary>
@@ -30,7 +34,7 @@ namespace Libplanet.Net.Messages
 
         /// <summary>
         /// Decodes given <see typeref="T"/>-typed <paramref name="encoded"/> into
-        /// <see cref="Message"/> and checks its validity.
+        /// a <see cref="Message"/>.
         /// <seealso cref="Encode"/>
         /// </summary>
         /// <param name="encoded">A <see typeref="T"/>-typed instance to parse.</param>
@@ -46,10 +50,17 @@ namespace Libplanet.Net.Messages
         /// local version does not match with given <paramref name="encoded"/>'s
         /// <see cref="Version"/> by given <paramref name="appProtocolVersionValidator"/>.
         /// </exception>
-        /// <exception cref="InvalidMessageTimestampException"> Thrown when the timestamp of
+        /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
-        /// <exception cref="InvalidMessageSignatureException"> Thrown when the signer of
+        /// <exception cref="InvalidMessageSignatureException">Thrown when the signer of
         /// <paramref name="encoded"/> is invalid.</exception>
+        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
+        /// the <see cref="AppProtocolVersion"/> attached to <paramref name="encoded"/> does
+        /// not match the one in <paramref name="appProtocolVersionValidator"/>.</exception>
+        /// <remarks>
+        /// A <see cref="Message"/> with an invalid property value is never decoded even if
+        /// it can be decoded.
+        /// </remarks>
         Message Decode(
             T encoded,
             bool reply,
