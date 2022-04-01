@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,8 +53,8 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.NotNull(bucket.GetRandomPeer());
             Assert.Null(bucket.GetRandomPeer(peer1.Address));
             Assert.NotNull(bucket.GetRandomPeer(peer2.Address));
-            Assert.Equal(peer1, bucket.Head.Peer);
-            Assert.Equal(peer1, bucket.Tail.Peer);
+            Assert.Equal(peer1, bucket.Head?.Peer);
+            Assert.Equal(peer1, bucket.Tail?.Peer);
 
             // Sleep statement is used to distinguish updated times.
             Thread.Sleep(100);
@@ -90,14 +89,14 @@ namespace Libplanet.Net.Tests.Protocols
                 new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
             );
             Assert.False(bucket.Contains(peer5));
-            Assert.Equal(peer4, bucket.Head.Peer);
-            Assert.Equal(peer1, bucket.Tail.Peer);
+            Assert.Equal(peer4, bucket.Head?.Peer);
+            Assert.Equal(peer1, bucket.Tail?.Peer);
 
             // Check order has changed.
             Thread.Sleep(100);
             bucket.AddPeer(peer1, DateTimeOffset.UtcNow);
-            Assert.Equal(peer1, bucket.Head.Peer);
-            Assert.Equal(peer2, bucket.Tail.Peer);
+            Assert.Equal(peer1, bucket.Head?.Peer);
+            Assert.Equal(peer2, bucket.Tail?.Peer);
 
             Assert.False(bucket.RemovePeer(peer5));
             Assert.True(bucket.RemovePeer(peer1));
