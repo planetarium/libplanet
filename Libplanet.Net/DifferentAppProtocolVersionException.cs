@@ -1,6 +1,7 @@
-#pragma warning disable S3871
 using System;
+using System.Runtime.Serialization;
 using Libplanet.Net.Messages;
+using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
@@ -10,34 +11,54 @@ namespace Libplanet.Net
     /// is different.
     /// </summary>
     [Serializable]
-    internal sealed class DifferentAppProtocolVersionException : Exception
+    public class DifferentAppProtocolVersionException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="DifferentAppProtocolVersionException"/> class.
         /// </summary>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
+        /// <param name="peer">The <see cref="Message.Remote"/> of the <see cref="Message"/>
+        /// received.</param>
         /// <param name="identity">The <see cref="Message.Identity"/> of the <see cref="Message"/>
         /// received.</param>
-        /// <param name="expectedVersion">The protocol version of the current
-        /// <see cref="Swarm{T}"/>.</param>
-        /// <param name="actualVersion">The protocol version of the <see cref="Peer"/> that
-        /// <see cref="Swarm{T}"/> is trying to connect to.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
-        public DifferentAppProtocolVersionException(
+        /// <param name="localVersion">The protocol version of the local <see cref="Swarm{T}"/>.
+        /// </param>
+        /// <param name="peerVersion">The protocol version of the <see cref="Peer"/> that
+        /// the local <see cref="Swarm{T}"/> is trying to connect to.</param>
+        /// <param name="fromTrustedSource">Whether <paramref name="peerVersion"/> is signed
+        /// by a trusted signer.</param>
+        internal DifferentAppProtocolVersionException(
             string message,
+            Peer peer,
             byte[] identity,
-            AppProtocolVersion expectedVersion,
-            AppProtocolVersion actualVersion)
-            : base($"{message}\n" +
-                   $"Expected Version: {expectedVersion} " +
-                   $"[{ByteUtil.Hex(expectedVersion.Signature)} by {expectedVersion.Signer}]\n" +
-                   $"Actual Version: {actualVersion} " +
-                   $"[{ByteUtil.Hex(actualVersion.Signature)} by {actualVersion.Signer}]")
+            AppProtocolVersion localVersion,
+            AppProtocolVersion peerVersion,
+            bool fromTrustedSource)
+            : base(message)
         {
+            Peer = peer;
             Identity = identity;
-            ExpectedVersion = expectedVersion;
-            ActualVersion = actualVersion;
+            LocalVersion = localVersion;
+            PeerVersion = peerVersion;
+            FromTrustedSource = fromTrustedSource;
         }
+
+        protected DifferentAppProtocolVersionException(
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
+        {
+            Peer = info.GetValue<Peer>(nameof(Peer));
+            Identity = info.GetValue<byte[]>(nameof(Identity));
+            LocalVersion = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(LocalVersion)));
+            PeerVersion = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(PeerVersion)));
+            FromTrustedSource = info.GetValue<bool>(nameof(FromTrustedSource));
+        }
+
+        public Peer Peer { get; private set; }
 
         /// <summary>
         /// The identity of the message received.
@@ -47,13 +68,28 @@ namespace Libplanet.Net
         /// <summary>
         /// The protocol version of the current <see cref="Swarm{T}"/>.
         /// </summary>
-        public AppProtocolVersion ExpectedVersion { get; }
+        public AppProtocolVersion LocalVersion { get; }
 
         /// <summary>
         /// The protocol version of the <see cref="Peer"/> that the
         /// <see cref="Swarm{T}" /> is trying to connect to.
         /// </summary>
-        public AppProtocolVersion ActualVersion { get; }
+        public AppProtocolVersion PeerVersion { get; }
+
+        /// <summary>
+        /// Whether <see cref="PeerVersion"/> is signed by a trusted signer.
+        /// </summary>
+        public bool FromTrustedSource { get; }
+
+        public override void GetObjectData(
+            SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue(nameof(Peer), Peer);
+            info.AddValue(nameof(Identity), Identity);
+            info.AddValue(nameof(LocalVersion), LocalVersion.Token);
+            info.AddValue(nameof(PeerVersion), PeerVersion.Token);
+            info.AddValue(nameof(FromTrustedSource), FromTrustedSource);
+        }
     }
 }
-#pragma warning restore S3871

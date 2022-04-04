@@ -137,7 +137,7 @@ namespace Libplanet.Net.Messages
                           $"the current datetime offset is " +
                           $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
                 throw new InvalidMessageTimestampException(
-                    msg, timestamp, _messageTimestampBuffer, currentTime);
+                    msg, remotePeer, timestamp, _messageTimestampBuffer, currentTime);
             }
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];
@@ -164,7 +164,11 @@ namespace Libplanet.Net.Messages
             if (!remotePeer.PublicKey.Verify(messageForVerify, signature))
             {
                 throw new InvalidMessageSignatureException(
-                    "The message signature is invalid", message);
+                    "The message signature is invalid",
+                    remotePeer,
+                    remotePeer.PublicKey,
+                    messageForVerify,
+                    signature);
             }
 
             if (!reply)

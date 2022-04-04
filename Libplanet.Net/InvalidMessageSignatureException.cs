@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.Serialization;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
@@ -11,30 +13,47 @@ namespace Libplanet.Net
     [Serializable]
     public class InvalidMessageSignatureException : Exception
     {
-        public InvalidMessageSignatureException(
+        internal InvalidMessageSignatureException(
             string message,
-            Message receivedMessage)
+            Peer peer,
+            PublicKey publicKey,
+            byte[] messageToVerify,
+            byte[] signature)
             : base(message)
         {
-            ReceivedMessage = receivedMessage;
+            Peer = peer;
+            PublicKey = publicKey;
+            MessageToVerify = messageToVerify;
+            Signature = signature;
         }
 
-        private InvalidMessageSignatureException(SerializationInfo info, StreamingContext context)
-            : base(info.GetString(nameof(Message)) ?? string.Empty)
+        protected InvalidMessageSignatureException(
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context)
         {
-            ReceivedMessage = info.GetValue(nameof(ReceivedMessage), typeof(Message)) is Message m
-                ? m
-                : throw new SerializationException(
-                    $"{nameof(ReceivedMessage)} is expected to be a non-null {nameof(Message)}.");
+            Peer = info.GetValue<Peer>(nameof(Peer));
+            PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
+            MessageToVerify = info.GetValue<byte[]>(nameof(MessageToVerify));
+            Signature = info.GetValue<byte[]>(nameof(Signature));
         }
 
-        public Message ReceivedMessage { get; private set; }
+        public Peer Peer { get; private set; }
+
+        public PublicKey PublicKey { get; private set; }
+
+        public byte[] MessageToVerify { get; private set; }
+
+        public byte[] Signature { get; private set; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(ReceivedMessage), ReceivedMessage);
+            info.AddValue(nameof(Peer), Peer);
+            info.AddValue(nameof(PublicKey), PublicKey.Format(true));
+            info.AddValue(nameof(MessageToVerify), MessageToVerify);
+            info.AddValue(nameof(Signature), Signature);
         }
     }
 }
