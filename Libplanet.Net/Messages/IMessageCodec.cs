@@ -88,8 +88,6 @@ namespace Libplanet.Net.Messages
         /// <param name="encoded">A <see typeref="T"/>-typed instance to parse.</param>
         /// <param name="reply">A flag to express whether the target is a reply of other message.
         /// </param>
-        /// <param name="differentAppProtocolVersionEncountered">The delegate to call back
-        /// when a different <see cref="AppProtocolVersion"/>is encountered.</param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="encoded"/>.</returns>
         /// <exception cref="ArgumentException">
         /// Thrown when empty <paramref name="encoded"/> is given.</exception>
@@ -106,7 +104,6 @@ namespace Libplanet.Net.Messages
         /// </remarks>
         Message Decode(
             T encoded,
-            bool reply,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered);
+            bool reply);
     }
 }

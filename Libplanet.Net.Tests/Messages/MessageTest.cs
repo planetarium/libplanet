@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Messages
                 DateTimeOffset.UtcNow);
 
             Assert.Throws<DifferentAppProtocolVersionException>(() =>
-                codec2.Decode(netMQMessage, true, null));
+                codec2.Decode(netMQMessage, true));
         }
 
         [Fact]
@@ -68,12 +68,12 @@ namespace Libplanet.Net.Tests.Messages
                 codec.Encode(message, privateKey, peer, futureOffset);
             // Messages from the future throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(futureRaw, true, null));
+                codec.Decode(futureRaw, true));
             NetMQMessage pastRaw =
                 codec.Encode(message, privateKey, peer, pastOffset);
             // Messages from the far past throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(pastRaw, true, null));
+                codec.Decode(pastRaw, true));
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace Libplanet.Net.Tests.Messages
             var codec = new NetMQMessageCodec(appProtocolVersion);
             NetMQMessage raw =
                 codec.Encode(message, privateKey, peer, dateTimeOffset);
-            var parsed = codec.Decode(raw, true, null);
+            var parsed = codec.Decode(raw, true);
             Assert.Equal(peer, parsed.Remote);
         }
 
@@ -132,7 +132,7 @@ namespace Libplanet.Net.Tests.Messages
 
             Assert.Throws<InvalidMessageSignatureException>(() =>
             {
-                codec.Decode(frames, true, null);
+                codec.Decode(frames, true);
             });
         }
 
@@ -148,7 +148,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             Assert.Throws<ArgumentException>(
-                () => codec.Decode(new NetMQMessage(), true, null));
+                () => codec.Decode(new NetMQMessage(), true));
         }
     }
 }

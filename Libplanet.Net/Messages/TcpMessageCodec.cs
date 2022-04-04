@@ -25,14 +25,21 @@ namespace Libplanet.Net.Messages
         /// decoding a message.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <see cref="LocalAppProtocolVersion"/>, and their version is
+        /// signed by a trusted party.</param>
         public TcpMessageCodec(
             AppProtocolVersion localAppProtocolVersion = default,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
-            TimeSpan? messageTimestampBuffer = null)
+            TimeSpan? messageTimestampBuffer = null,
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered = null)
         {
             _codec = new Codec();
             _messageValidator = new MessageValidator(
-                localAppProtocolVersion, trustedAppProtocolVersionSigners, messageTimestampBuffer);
+                localAppProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                messageTimestampBuffer,
+                differentAppProtocolVersionEncountered);
         }
 
         /// <inheritdoc/>
@@ -92,8 +99,7 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc/>
         public Message Decode(
             byte[] encoded,
-            bool reply,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
+            bool reply)
         {
             if (encoded.Length == 0)
             {
@@ -134,23 +140,10 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            try
-            {
-                _messageValidator.ValidateAppProtocolVersion(
-                    remotePeer,
-                    reply ? new byte[] { } : frames[0],
-                    remoteVersion);
-            }
-            catch (DifferentAppProtocolVersionException e)
-            {
-                if (e.FromTrustedSource &&
-                    differentAppProtocolVersionEncountered is { } dapve)
-                {
-                    dapve(remotePeer, remoteVersion, LocalAppProtocolVersion);
-                }
-
-                throw;
-            }
+            _messageValidator.ValidateAppProtocolVersion(
+                remotePeer,
+                reply ? new byte[] { } : frames[0],
+                remoteVersion);
 
             var type =
                 (Message.MessageType)BitConverter.ToInt32(

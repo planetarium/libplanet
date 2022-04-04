@@ -13,11 +13,14 @@ namespace Libplanet.Net.Messages
         internal MessageValidator(
             AppProtocolVersion localAppProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            TimeSpan? messageTimestampBuffer)
+            TimeSpan? messageTimestampBuffer,
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
         {
             LocalAppProtocolVersion = localAppProtocolVersion;
             TrustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             MessageTimestampBuffer = messageTimestampBuffer;
+            DifferentAppProtocolVersionEncountered =
+                differentAppProtocolVersionEncountered ?? ((p, pv, lv) => { });
         }
 
         internal AppProtocolVersion LocalAppProtocolVersion { get; }
@@ -26,11 +29,17 @@ namespace Libplanet.Net.Messages
 
         internal TimeSpan? MessageTimestampBuffer { get; }
 
+        internal DifferentAppProtocolVersionEncountered DifferentAppProtocolVersionEncountered
+        {
+            get;
+        }
+
         internal void ValidateAppProtocolVersion(
             Peer remotePeer, byte[] identity, AppProtocolVersion remoteVersion) =>
             ValidateAppProtocolVersionTemplate(
                 LocalAppProtocolVersion,
                 TrustedAppProtocolVersionSigners,
+                DifferentAppProtocolVersionEncountered,
                 remotePeer,
                 identity,
                 remoteVersion);
@@ -63,6 +72,7 @@ namespace Libplanet.Net.Messages
         private static void ValidateAppProtocolVersionTemplate(
             AppProtocolVersion localAppProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             Peer remotePeer,
             byte[] identity,
             AppProtocolVersion remoteVersion)
@@ -75,6 +85,12 @@ namespace Libplanet.Net.Messages
             bool trusted = !(
                 trustedAppProtocolVersionSigners is { } tapvs &&
                 tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
+            if (trusted)
+            {
+                differentAppProtocolVersionEncountered(
+                    remotePeer, remoteVersion, localAppProtocolVersion);
+            }
+
             throw new DifferentAppProtocolVersionException(
                 $"The version of the received message is not valid.\n" +
                 $"Remote version: {remoteVersion} " +

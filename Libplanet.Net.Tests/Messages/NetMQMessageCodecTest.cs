@@ -55,7 +55,7 @@ namespace Libplanet.Net.Tests.Messages
             var codec = new NetMQMessageCodec(appProtocolVersion);
             NetMQMessage raw =
                 codec.Encode(message, privateKey, peer, dateTimeOffset);
-            var parsed = codec.Decode(raw, true, null);
+            var parsed = codec.Decode(raw, true);
             Assert.Equal(appProtocolVersion, parsed.Version);
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);

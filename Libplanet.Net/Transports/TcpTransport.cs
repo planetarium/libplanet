@@ -32,7 +32,7 @@ namespace Libplanet.Net.Transports
 
         private readonly PrivateKey _privateKey;
         private readonly string? _host;
-        private readonly DifferentAppProtocolVersionEncountered?
+        private readonly DifferentAppProtocolVersionEncountered
             _differentAppProtocolVersionEncountered;
 
         private readonly IList<IceServer>? _iceServers;
@@ -59,7 +59,7 @@ namespace Libplanet.Net.Transports
             string? host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             TimeSpan? messageTimestampBuffer = null)
         {
             _logger = Log
@@ -80,7 +80,10 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _messageCodec = new TcpMessageCodec(
-                appProtocolVersion, trustedAppProtocolVersionSigners, messageTimestampBuffer);
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                messageTimestampBuffer,
+                differentAppProtocolVersionEncountered);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -585,10 +588,7 @@ namespace Libplanet.Net.Transports
 
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
-            Message message = _messageCodec.Decode(
-                content.ToArray(),
-                false,
-                _differentAppProtocolVersionEncountered);
+            Message message = _messageCodec.Decode(content.ToArray(), false);
 
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",

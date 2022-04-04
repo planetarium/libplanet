@@ -18,20 +18,27 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Creates a <see cref="NetMQMessageCodec"/> instance.
         /// </summary>
-        /// <param name="localAppProtocolVersion">The <see cref="LocalAppProtocolVersion"/> to use
+        /// <param name="localAppProtocolVersion">The <see cref="AppProtocolVersion"/> to use
         /// when encoding and decoding.</param>
         /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
         /// decoding a message.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <see cref="LocalAppProtocolVersion"/>, and their version is
+        /// signed by a trusted party.</param>
         public NetMQMessageCodec(
             AppProtocolVersion localAppProtocolVersion = default,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
-            TimeSpan? messageTimestampBuffer = null)
+            TimeSpan? messageTimestampBuffer = null,
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered = null)
         {
             _codec = new Codec();
             _messageValidator = new MessageValidator(
-                localAppProtocolVersion, trustedAppProtocolVersionSigners, messageTimestampBuffer);
+                localAppProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                messageTimestampBuffer,
+                differentAppProtocolVersionEncountered);
         }
 
         /// <inheritdoc/>
@@ -84,8 +91,7 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc/>
         public Message Decode(
             NetMQMessage encoded,
-            bool reply,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
+            bool reply)
         {
             if (encoded.FrameCount == 0)
             {
@@ -112,23 +118,10 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            try
-            {
-                _messageValidator.ValidateAppProtocolVersion(
-                    remotePeer,
-                    reply ? new byte[] { } : encoded[0].ToByteArray(),
-                    remoteVersion);
-            }
-            catch (DifferentAppProtocolVersionException e)
-            {
-                if (e.FromTrustedSource &&
-                    differentAppProtocolVersionEncountered is { } dapve)
-                {
-                    dapve(remotePeer, remoteVersion, LocalAppProtocolVersion);
-                }
-
-                throw;
-            }
+            _messageValidator.ValidateAppProtocolVersion(
+                remotePeer,
+                reply ? new byte[] { } : encoded[0].ToByteArray(),
+                remoteVersion);
 
             var type =
                 (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
