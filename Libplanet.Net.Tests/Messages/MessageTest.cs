@@ -47,11 +47,7 @@ namespace Libplanet.Net.Tests.Messages
                 DateTimeOffset.UtcNow);
 
             Assert.Throws<DifferentAppProtocolVersionException>(() =>
-                codec2.Decode(
-                    netMQMessage,
-                    true,
-                    (i, p, v) => { },
-                    null));
+                codec2.Decode(netMQMessage, true, null));
         }
 
         [Fact]
@@ -72,20 +68,12 @@ namespace Libplanet.Net.Tests.Messages
                 codec.Encode(message, privateKey, peer, futureOffset);
             // Messages from the future throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(
-                    futureRaw,
-                    true,
-                    (i, p, v) => { },
-                    null));
+                codec.Decode(futureRaw, true, null));
             NetMQMessage pastRaw =
                 codec.Encode(message, privateKey, peer, pastOffset);
             // Messages from the far past throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(
-                    pastRaw,
-                    true,
-                    (i, p, v) => { },
-                    null));
+                codec.Decode(pastRaw, true, null));
         }
 
         [Fact]
@@ -107,7 +95,7 @@ namespace Libplanet.Net.Tests.Messages
             var codec = new NetMQMessageCodec(appProtocolVersion);
             NetMQMessage raw =
                 codec.Encode(message, privateKey, peer, dateTimeOffset);
-            var parsed = codec.Decode(raw, true, (i, p, v) => { }, null);
+            var parsed = codec.Decode(raw, true, null);
             Assert.Equal(peer, parsed.Remote);
         }
 
@@ -144,11 +132,7 @@ namespace Libplanet.Net.Tests.Messages
 
             Assert.Throws<InvalidMessageSignatureException>(() =>
             {
-                codec.Decode(
-                    frames,
-                    true,
-                    (i, p, v) => { },
-                    null);
+                codec.Decode(frames, true, null);
             });
         }
 
@@ -164,11 +148,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             Assert.Throws<ArgumentException>(
-                () => codec.Decode(
-                    new NetMQMessage(),
-                    true,
-                    (i, p, v) => { },
-                    null));
+                () => codec.Decode(new NetMQMessage(), true, null));
         }
     }
 }

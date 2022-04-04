@@ -24,8 +24,6 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -123,14 +121,12 @@ namespace Libplanet.Net.Transports
 
             _socketCount = 0;
             _privateKey = privateKey;
-            _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _messageCodec = new NetMQMessageCodec(
-                _appProtocolVersion, _trustedAppProtocolVersionSigners, messageTimestampBuffer);
+                appProtocolVersion, trustedAppProtocolVersionSigners, messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -503,32 +499,6 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void AppProtocolVersionValidator(
-            byte[] identity,
-            Peer remotePeer,
-            AppProtocolVersion remoteVersion)
-        {
-            if (remoteVersion.Equals(_appProtocolVersion))
-            {
-                return;
-            }
-
-            bool trusted = !(
-                _trustedAppProtocolVersionSigners is { } tapvs &&
-                tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
-            if (trusted && _differentAppProtocolVersionEncountered is { } dapve)
-            {
-                dapve(remotePeer, remoteVersion, _appProtocolVersion);
-            }
-
-            throw new DifferentAppProtocolVersionException(
-                "The version of the received message is not valid.",
-                identity,
-                _appProtocolVersion,
-                remoteVersion,
-                trusted);
-        }
-
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
             try
@@ -547,7 +517,6 @@ namespace Libplanet.Net.Transports
                 Message message = _messageCodec.Decode(
                     raw,
                     false,
-                    AppProtocolVersionValidator,
                     _differentAppProtocolVersionEncountered);
                 _logger
                     .ForContext("Tag", "Metric")
@@ -783,7 +752,6 @@ namespace Libplanet.Net.Transports
                         Message reply = _messageCodec.Decode(
                             raw,
                             true,
-                            AppProtocolVersionValidator,
                             _differentAppProtocolVersionEncountered);
                         _logger.Debug(
                             "A reply to request {Message} {RequestId} from {Peer} " +

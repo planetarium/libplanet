@@ -85,7 +85,6 @@ namespace Libplanet.Net.Messages
         public Message Decode(
             NetMQMessage encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
         {
             if (encoded.FrameCount == 0)

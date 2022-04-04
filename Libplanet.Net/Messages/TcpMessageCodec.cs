@@ -93,7 +93,6 @@ namespace Libplanet.Net.Messages
         public Message Decode(
             byte[] encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
         {
             if (encoded.Length == 0)

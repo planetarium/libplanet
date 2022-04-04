@@ -88,8 +88,6 @@ namespace Libplanet.Net.Messages
         /// <param name="encoded">A <see typeref="T"/>-typed instance to parse.</param>
         /// <param name="reply">A flag to express whether the target is a reply of other message.
         /// </param>
-        /// <param name="appProtocolVersionValidator">The delegate that validates
-        /// the <see cref="AppProtocolVersion"/> of the message.</param>
         /// <param name="differentAppProtocolVersionEncountered">The delegate to call back
         /// when a different <see cref="AppProtocolVersion"/>is encountered.</param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="encoded"/>.</returns>
@@ -100,8 +98,8 @@ namespace Libplanet.Net.Messages
         /// <exception cref="InvalidMessageSignatureException">Thrown when the signer of
         /// <paramref name="encoded"/> is invalid.</exception>
         /// <exception cref="DifferentAppProtocolVersionException">Thrown when
-        /// the <see cref="LocalAppProtocolVersion"/> attached to <paramref name="encoded"/> does
-        /// not match the one in <paramref name="appProtocolVersionValidator"/>.</exception>
+        /// the <see cref="AppProtocolVersion"/> attached to <paramref name="encoded"/> does
+        /// not match <see cref="LocalAppProtocolVersion"/>.</exception>
         /// <remarks>
         /// A <see cref="Message"/> with an invalid property value is never decoded even if
         /// it can be decoded.
@@ -109,7 +107,6 @@ namespace Libplanet.Net.Messages
         Message Decode(
             T encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered);
     }
 }
