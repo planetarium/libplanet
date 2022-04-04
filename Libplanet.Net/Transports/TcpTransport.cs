@@ -333,10 +333,9 @@ namespace Libplanet.Net.Transports
             catch (DifferentAppProtocolVersionException e)
             {
                 const string logMsg =
-                    "{PeerAddress} sent a reply to {RequestId} with " +
-                    "a different app protocol version; " +
-                    "expected: {ExpectedVersion}; actual: {ActualVersion}.";
-                _logger.Error(e, logMsg, peer.Address, reqId, e.ExpectedVersion, e.ActualVersion);
+                    "{Peer} sent a reply to {RequestId} with " +
+                    "a different app protocol version.";
+                _logger.Error(e, logMsg, peer, reqId);
                 throw;
             }
             catch (ArgumentException e)

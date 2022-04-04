@@ -150,22 +150,10 @@ namespace Libplanet.Net.Protocols
             }
             catch (DifferentAppProtocolVersionException e)
             {
-                AppProtocolVersion expected = e.ExpectedVersion, actual = e.ActualVersion;
                 _logger.Debug(
-                    $"Different version encountered during {nameof(AddPeersAsync)}().\n" +
-                    "Expected version: {ExpectedVersion} ({ExpectedVersionExtra}) " +
-                    "[{ExpectedSignature}; {ExpectedSigner}]\n" +
-                    "Actual version: {ActualVersion} ({ActualVersionExtra}) [{ActualSignature};" +
-                    "{ActualSigner}]",
-                    expected.Version,
-                    expected.Extra,
-                    ByteUtil.Hex(expected.Signature),
-                    expected.Signer.ToString(),
-                    actual.Version,
-                    actual.Extra,
-                    ByteUtil.Hex(actual.Signature),
-                    actual.Signer
-                );
+                    e,
+                    "A Different version was encountered during {FName}().",
+                    nameof(AddPeersAsync));
             }
             catch (TimeoutException e)
             {

@@ -27,37 +27,44 @@ namespace Libplanet.Net.Messages
         internal TimeSpan? MessageTimestampBuffer { get; }
 
         internal void ValidateAppProtocolVersion(
-            byte[] identity, Peer remotePeer, AppProtocolVersion remoteVersion) =>
+            Peer remotePeer, byte[] identity, AppProtocolVersion remoteVersion) =>
             ValidateAppProtocolVersionTemplate(
                 LocalAppProtocolVersion,
                 TrustedAppProtocolVersionSigners,
-                identity,
                 remotePeer,
+                identity,
                 remoteVersion);
 
         internal void ValidateTimestamp(
-            DateTimeOffset currentTimestamp, DateTimeOffset messageTimestamp) =>
+            Peer peer, DateTimeOffset currentTimestamp, DateTimeOffset messageTimestamp) =>
             ValidateTimestampTemplate(
                 MessageTimestampBuffer,
+                peer,
                 currentTimestamp,
                 messageTimestamp);
 
         internal void ValidateSignature(
+            Peer peer,
             PublicKey publicKey,
             byte[] messageToVerify,
             byte[] signature)
         {
             if (!publicKey.Verify(messageToVerify, signature))
             {
-                throw new InvalidMessageSignatureException("The message signature is invalid");
+                throw new InvalidMessageSignatureException(
+                    "The signature of an encoded message is invalid.",
+                    peer,
+                    publicKey,
+                    messageToVerify,
+                    signature);
             }
         }
 
         private static void ValidateAppProtocolVersionTemplate(
             AppProtocolVersion localAppProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            byte[] identity,
             Peer remotePeer,
+            byte[] identity,
             AppProtocolVersion remoteVersion)
         {
             if (remoteVersion.Equals(localAppProtocolVersion))
@@ -69,7 +76,14 @@ namespace Libplanet.Net.Messages
                 trustedAppProtocolVersionSigners is { } tapvs &&
                 tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
             throw new DifferentAppProtocolVersionException(
-                "The version of the received message is not valid.",
+                $"The version of the received message is not valid.\n" +
+                $"Remote version: {remoteVersion} " +
+                $"[{ByteUtil.Hex(remoteVersion.Signature)} by {remoteVersion.Signer}]\n" +
+                $"Local version: {localAppProtocolVersion} " +
+                $"[{ByteUtil.Hex(localAppProtocolVersion.Signature)} " +
+                $"by {localAppProtocolVersion.Signer}]\n" +
+                $"Signed by a trusted signer: {trusted}",
+                remotePeer,
                 identity,
                 localAppProtocolVersion,
                 remoteVersion,
@@ -78,6 +92,7 @@ namespace Libplanet.Net.Messages
 
         private static void ValidateTimestampTemplate(
             TimeSpan? timestampBuffer,
+            Peer peer,
             DateTimeOffset currentTimestamp,
             DateTimeOffset messageTimestamp)
         {
@@ -91,7 +106,7 @@ namespace Libplanet.Net.Messages
                     $"the current datetime offset is " +
                     $"{currentTimestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
                 throw new InvalidMessageTimestampException(
-                    message, messageTimestamp, buffer, currentTimestamp);
+                    message, peer, messageTimestamp, buffer, currentTimestamp);
             }
         }
     }

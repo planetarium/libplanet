@@ -137,8 +137,8 @@ namespace Libplanet.Net.Messages
             try
             {
                 _messageValidator.ValidateAppProtocolVersion(
-                    reply ? new byte[] { } : frames[0],
                     remotePeer,
+                    reply ? new byte[] { } : frames[0],
                     remoteVersion);
             }
             catch (DifferentAppProtocolVersionException e)
@@ -159,7 +159,7 @@ namespace Libplanet.Net.Messages
             long ticks = BitConverter.ToInt64(remains[(int)Message.MessageFrame.Timestamp], 0);
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
             var currentTime = DateTimeOffset.UtcNow;
-            _messageValidator.ValidateTimestamp(currentTime, timestamp);
+            _messageValidator.ValidateTimestamp(remotePeer, currentTime, timestamp);
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];
 
@@ -181,7 +181,8 @@ namespace Libplanet.Net.Messages
             var messageToVerify = headerWithoutSign.Concat(body).Aggregate(
                 new byte[] { },
                 (arr, bytes) => arr.Concat(bytes).ToArray());
-            _messageValidator.ValidateSignature(remotePeer.PublicKey, messageToVerify, signature);
+            _messageValidator.ValidateSignature(
+                remotePeer, remotePeer.PublicKey, messageToVerify, signature);
 
             if (!reply)
             {
