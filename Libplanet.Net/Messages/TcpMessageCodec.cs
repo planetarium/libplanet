@@ -14,26 +14,34 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly TimeSpan? _messageTimestampBuffer;
 
         /// <summary>
         /// Creates a <see cref="TcpMessageCodec"/> instance.
         /// </summary>
+        /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> to use when
+        /// encoding and decoding.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
-        public TcpMessageCodec(TimeSpan? messageTimestampBuffer = null)
+        public TcpMessageCodec(
+            AppProtocolVersion appProtocolVersion = default,
+            TimeSpan? messageTimestampBuffer = null)
         {
             _codec = new Codec();
+            _appProtocolVersion = appProtocolVersion;
             _messageTimestampBuffer = messageTimestampBuffer;
         }
+
+        /// <inheritdoc/>
+        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
         /// <inheritdoc/>
         public byte[] Encode(
             Message message,
             PrivateKey privateKey,
             Peer peer,
-            DateTimeOffset timestamp,
-            AppProtocolVersion version)
+            DateTimeOffset timestamp)
         {
             var frames = new List<byte[]>();
 
@@ -47,7 +55,7 @@ namespace Libplanet.Net.Messages
             frames.Insert(0, BitConverter.GetBytes(timestamp.Ticks));
             frames.Insert(0, _codec.Encode(peer.ToBencodex()));
             frames.Insert(0, BitConverter.GetBytes((int)message.Type));
-            frames.Insert(0, Encoding.ASCII.GetBytes(version.Token));
+            frames.Insert(0, Encoding.ASCII.GetBytes(AppProtocolVersion.Token));
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(

@@ -118,13 +118,12 @@ namespace Libplanet.Net.Tests.Transports
                     Identity = Guid.NewGuid().ToByteArray(),
                 };
 
-                var codec = new TcpMessageCodec();
+                var codec = new TcpMessageCodec(version);
                 byte[] serialized = codec.Encode(
                     message,
                     new PrivateKey(),
                     transport.AsPeer,
-                    DateTimeOffset.UtcNow,
-                    version);
+                    DateTimeOffset.UtcNow);
                 int length = serialized.Length;
                 var buffer = new byte[invalidCookie.Length + sizeof(int) + length];
                 invalidCookie.CopyTo(buffer, 0);

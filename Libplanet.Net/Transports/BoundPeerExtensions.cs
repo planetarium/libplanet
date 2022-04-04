@@ -37,9 +37,7 @@ namespace Libplanet.Net.Transports
                 ping,
                 key,
                 new Peer(key.PublicKey),
-                DateTimeOffset.UtcNow,
-                default
-            );
+                DateTimeOffset.UtcNow);
 
             TimeSpan timeoutNotNull = timeout ?? TimeSpan.FromSeconds(5);
             try
@@ -103,8 +101,7 @@ namespace Libplanet.Net.Transports
                 ping,
                 key,
                 peer,
-                DateTimeOffset.UtcNow,
-                default);
+                DateTimeOffset.UtcNow);
             int length = serialized.Length;
             var buffer = new byte[TcpTransport.MagicCookie.Length + sizeof(int) + length];
             TcpTransport.MagicCookie.CopyTo(buffer, 0);

@@ -83,7 +83,7 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new TcpMessageCodec(messageTimestampBuffer);
+            _messageCodec = new TcpMessageCodec(_appProtocolVersion, messageTimestampBuffer);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -494,8 +494,7 @@ namespace Libplanet.Net.Transports
                 message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             int length = serialized.Length;
             var buffer = new byte[MagicCookie.Length + sizeof(int) + length];
             MagicCookie.CopyTo(buffer, 0);

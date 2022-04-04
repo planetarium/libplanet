@@ -129,7 +129,7 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new NetMQMessageCodec(messageTimestampBuffer);
+            _messageCodec = new NetMQMessageCodec(_appProtocolVersion, messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -613,8 +613,7 @@ namespace Libplanet.Net.Transports
                             message,
                             _privateKey,
                             AsPeer,
-                            DateTimeOffset.UtcNow,
-                            _appProtocolVersion);
+                            DateTimeOffset.UtcNow);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
@@ -738,8 +737,7 @@ namespace Libplanet.Net.Transports
                 req.Message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             var result = new List<Message>();
 
             // Normal OperationCanceledException initiated from outside should bubble up.

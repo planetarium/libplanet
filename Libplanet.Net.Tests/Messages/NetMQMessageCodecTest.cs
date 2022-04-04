@@ -52,9 +52,9 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var message = CreateMessage(type);
-            var codec = new NetMQMessageCodec();
+            var codec = new NetMQMessageCodec(appProtocolVersion);
             NetMQMessage raw =
-                codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
+                codec.Encode(message, privateKey, peer, dateTimeOffset);
             var parsed = codec.Decode(raw, true, (i, p, v) => { });
             Assert.Equal(appProtocolVersion, parsed.Version);
             Assert.Equal(peer, parsed.Remote);

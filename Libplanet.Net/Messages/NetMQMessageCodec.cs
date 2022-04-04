@@ -13,26 +13,34 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly TimeSpan? _messageTimestampBuffer;
 
         /// <summary>
         /// Creates a <see cref="NetMQMessageCodec"/> instance.
         /// </summary>
+        /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> to use when
+        /// encoding and decoding.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
-        public NetMQMessageCodec(TimeSpan? messageTimestampBuffer = null)
+        public NetMQMessageCodec(
+            AppProtocolVersion appProtocolVersion = default,
+            TimeSpan? messageTimestampBuffer = null)
         {
             _codec = new Codec();
+            _appProtocolVersion = appProtocolVersion;
             _messageTimestampBuffer = messageTimestampBuffer;
         }
+
+        /// <inheritdoc/>
+        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
         /// <inheritdoc/>
         public NetMQMessage Encode(
             Message message,
             PrivateKey privateKey,
             Peer peer,
-            DateTimeOffset timestamp,
-            AppProtocolVersion version)
+            DateTimeOffset timestamp)
         {
             var netMqMessage = new NetMQMessage();
 
@@ -46,7 +54,7 @@ namespace Libplanet.Net.Messages
             netMqMessage.Push(timestamp.Ticks);
             netMqMessage.Push(_codec.Encode(peer.ToBencodex()));
             netMqMessage.Push((int)message.Type);
-            netMqMessage.Push(version.Token);
+            netMqMessage.Push(AppProtocolVersion.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());
