@@ -1,4 +1,3 @@
-#pragma warning disable S3871
 using System;
 using Libplanet.Net.Messages;
 
@@ -10,33 +9,38 @@ namespace Libplanet.Net
     /// is different.
     /// </summary>
     [Serializable]
-    internal sealed class DifferentAppProtocolVersionException : Exception
+    internal sealed class DifferentAppProtocolVersionException : ArgumentException
     {
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="DifferentAppProtocolVersionException"/> class.
         /// </summary>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
         /// <param name="identity">The <see cref="Message.Identity"/> of the <see cref="Message"/>
         /// received.</param>
         /// <param name="expectedVersion">The protocol version of the current
         /// <see cref="Swarm{T}"/>.</param>
         /// <param name="actualVersion">The protocol version of the <see cref="Peer"/> that
         /// <see cref="Swarm{T}"/> is trying to connect to.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
+        /// <param name="fromTrustedSource">Whether <paramref name="actualVersion"/> is signed
+        /// by a trusted signer.</param>
         public DifferentAppProtocolVersionException(
             string message,
             byte[] identity,
             AppProtocolVersion expectedVersion,
-            AppProtocolVersion actualVersion)
+            AppProtocolVersion actualVersion,
+            bool fromTrustedSource)
             : base($"{message}\n" +
                    $"Expected Version: {expectedVersion} " +
                    $"[{ByteUtil.Hex(expectedVersion.Signature)} by {expectedVersion.Signer}]\n" +
                    $"Actual Version: {actualVersion} " +
-                   $"[{ByteUtil.Hex(actualVersion.Signature)} by {actualVersion.Signer}]")
+                   $"[{ByteUtil.Hex(actualVersion.Signature)} by {actualVersion.Signer}]\n" +
+                   $"Signed by a trusted signer: {fromTrustedSource}")
         {
             Identity = identity;
             ExpectedVersion = expectedVersion;
             ActualVersion = actualVersion;
+            FromTrustedSource = fromTrustedSource;
         }
 
         /// <summary>
@@ -54,6 +58,10 @@ namespace Libplanet.Net
         /// <see cref="Swarm{T}" /> is trying to connect to.
         /// </summary>
         public AppProtocolVersion ActualVersion { get; }
+
+        /// <summary>
+        /// Whether <see cref="ActualVersion"/> is signed by a trusted signer.
+        /// </summary>
+        public bool FromTrustedSource { get; }
     }
 }
-#pragma warning restore S3871

@@ -507,19 +507,15 @@ namespace Libplanet.Net.Transports
             Peer remotePeer,
             AppProtocolVersion remoteVersion)
         {
-            bool IsSignedByTrusted(AppProtocolVersion version)
-            {
-                return !(
-                    _trustedAppProtocolVersionSigners is { } tapvs &&
-                    tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
-            }
-
             if (remoteVersion.Equals(_appProtocolVersion))
             {
                 return;
             }
-            else if (IsSignedByTrusted(remoteVersion) &&
-                _differentAppProtocolVersionEncountered is { } dapve)
+
+            bool trusted = !(
+                _trustedAppProtocolVersionSigners is { } tapvs &&
+                tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
+            if (trusted && _differentAppProtocolVersionEncountered is { } dapve)
             {
                 dapve(remotePeer, remoteVersion, _appProtocolVersion);
             }
@@ -528,7 +524,8 @@ namespace Libplanet.Net.Transports
                 "The version of the received message is not valid.",
                 identity,
                 _appProtocolVersion,
-                remoteVersion);
+                remoteVersion,
+                trusted);
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)

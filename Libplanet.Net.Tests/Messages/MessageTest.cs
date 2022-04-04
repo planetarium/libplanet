@@ -49,7 +49,8 @@ namespace Libplanet.Net.Tests.Messages
                         string.Empty,
                         i,
                         v,
-                        v)));
+                        v,
+                        true)));
         }
 
         [Fact]

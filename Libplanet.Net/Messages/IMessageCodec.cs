@@ -46,10 +46,6 @@ namespace Libplanet.Net.Messages
         /// <returns>A <see cref="Message"/> parsed from <paramref name="encoded"/>.</returns>
         /// <exception cref="ArgumentException">
         /// Thrown when empty <paramref name="encoded"/> is given.</exception>
-        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
-        /// local version does not match with given <paramref name="encoded"/>'s
-        /// <see cref="Version"/> by given <paramref name="appProtocolVersionValidator"/>.
-        /// </exception>
         /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
         /// <exception cref="InvalidMessageSignatureException">Thrown when the signer of
