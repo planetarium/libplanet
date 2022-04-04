@@ -55,6 +55,11 @@ namespace Libplanet.Net.Messages
         /// </summary>
         IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; }
 
+        /// <summary>The <see cref="TimeSpan"/> to use as a buffer when
+        /// decoding <see cref="Message"/>s.
+        /// </summary>
+        TimeSpan? MessageTimestampBuffer { get; }
+
         /// <summary>
         /// Encodes the message to <see typeref="T"/>-typed instance with given
         /// <paramref name="privateKey"/>, <paramref name="peer"/>

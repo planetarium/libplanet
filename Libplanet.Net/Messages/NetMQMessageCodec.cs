@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Linq;
 using Bencodex;
 using Libplanet.Crypto;
@@ -14,9 +13,7 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
-        private readonly AppProtocolVersion _localAppProtocolVersion;
-        private readonly IImmutableSet<PublicKey>? _trustedAppProtocolVersionSigners;
-        private readonly TimeSpan? _messageTimestampBuffer;
+        private readonly MessageValidator _messageValidator;
 
         /// <summary>
         /// Creates a <see cref="NetMQMessageCodec"/> instance.
@@ -33,17 +30,21 @@ namespace Libplanet.Net.Messages
             TimeSpan? messageTimestampBuffer = null)
         {
             _codec = new Codec();
-            _localAppProtocolVersion = localAppProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
-            _messageTimestampBuffer = messageTimestampBuffer;
+            _messageValidator = new MessageValidator(
+                localAppProtocolVersion, trustedAppProtocolVersionSigners, messageTimestampBuffer);
         }
 
         /// <inheritdoc/>
-        public AppProtocolVersion LocalAppProtocolVersion => _localAppProtocolVersion;
+        public AppProtocolVersion LocalAppProtocolVersion =>
+            _messageValidator.LocalAppProtocolVersion;
 
         /// <inheritdoc/>
         public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners =>
-            _trustedAppProtocolVersionSigners;
+            _messageValidator.TrustedAppProtocolVersionSigners;
+
+        /// <inheritdoc/>
+        public TimeSpan? MessageTimestampBuffer =>
+            _messageValidator.MessageTimestampBuffer;
 
         /// <inheritdoc/>
         public NetMQMessage Encode(
@@ -114,7 +115,7 @@ namespace Libplanet.Net.Messages
 
             try
             {
-                ValidateAppProtocolVersion(
+                _messageValidator.ValidateAppProtocolVersion(
                     reply ? new byte[] { } : encoded[0].ToByteArray(),
                     remotePeer,
                     remoteVersion);
@@ -134,19 +135,8 @@ namespace Libplanet.Net.Messages
                 (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
             var ticks = remains[(int)Message.MessageFrame.Timestamp].ConvertToInt64();
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
-
             var currentTime = DateTimeOffset.UtcNow;
-            if (_messageTimestampBuffer is TimeSpan timestampBuffer &&
-                (currentTime - timestamp).Duration() > timestampBuffer)
-            {
-                var msg = $"Received message is invalid, created at " +
-                          $"{timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture)} " +
-                          $"but designated lifetime is {timestampBuffer} and " +
-                          $"the current datetime offset is " +
-                          $"{currentTime.ToString(TimestampFormat, CultureInfo.InvariantCulture)}.";
-                throw new InvalidMessageTimestampException(
-                    msg, timestamp, _messageTimestampBuffer, currentTime);
-            }
+            _messageValidator.ValidateTimestamp(currentTime, timestamp);
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign].ToByteArray();
 
@@ -168,13 +158,8 @@ namespace Libplanet.Net.Messages
                 remains[(int)Message.MessageFrame.Timestamp],
             };
 
-            var messageForVerify = headerWithoutSign.Concat(body).ToArray();
-
-            if (!remotePeer.PublicKey.Verify(messageForVerify.ToByteArray(), signature))
-            {
-                throw new InvalidMessageSignatureException(
-                    "The message signature is invalid", message);
-            }
+            var messageToVerify = headerWithoutSign.Concat(body).ToByteArray();
+            _messageValidator.ValidateSignature(remotePeer.PublicKey, messageToVerify, signature);
 
             if (!reply)
             {
@@ -221,27 +206,6 @@ namespace Libplanet.Net.Messages
                 default:
                     throw new InvalidCastException($"Given type {type} is not a valid message.");
             }
-        }
-
-        private void ValidateAppProtocolVersion(
-            byte[] identity,
-            Peer remotePeer,
-            AppProtocolVersion remoteVersion)
-        {
-            if (remoteVersion.Equals(LocalAppProtocolVersion))
-            {
-                return;
-            }
-
-            bool trusted = !(
-                _trustedAppProtocolVersionSigners is { } tapvs &&
-                tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
-            throw new DifferentAppProtocolVersionException(
-                "The version of the received message is not valid.",
-                identity,
-                LocalAppProtocolVersion,
-                remoteVersion,
-                trusted);
         }
     }
 }
