@@ -129,7 +129,8 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new NetMQMessageCodec(_appProtocolVersion, messageTimestampBuffer);
+            _messageCodec = new NetMQMessageCodec(
+                _appProtocolVersion, _trustedAppProtocolVersionSigners, messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -546,7 +547,8 @@ namespace Libplanet.Net.Transports
                 Message message = _messageCodec.Decode(
                     raw,
                     false,
-                    AppProtocolVersionValidator);
+                    AppProtocolVersionValidator,
+                    _differentAppProtocolVersionEncountered);
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "InboundMessageReport")
@@ -781,7 +783,8 @@ namespace Libplanet.Net.Transports
                         Message reply = _messageCodec.Decode(
                             raw,
                             true,
-                            AppProtocolVersionValidator);
+                            AppProtocolVersionValidator,
+                            _differentAppProtocolVersionEncountered);
                         _logger.Debug(
                             "A reply to request {Message} {RequestId} from {Peer} " +
                             "has parsed: {Reply}.",

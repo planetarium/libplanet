@@ -66,8 +66,8 @@ namespace Libplanet.Net.Tests
                 differentAppProtocolVersionEncountered: (_, ver, __) =>
                 {
                     isCalled = true;
-                }
-            );
+                },
+                trustedAppProtocolVersionSigners: new[] { signer.PublicKey });
             var b = CreateSwarm(appProtocolVersion: v2);
 
             try

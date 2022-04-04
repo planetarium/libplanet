@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,27 +15,36 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
-        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly AppProtocolVersion _localAppProtocolVersion;
+        private readonly IImmutableSet<PublicKey>? _trustedAppProtocolVersionSigners;
         private readonly TimeSpan? _messageTimestampBuffer;
 
         /// <summary>
         /// Creates a <see cref="TcpMessageCodec"/> instance.
         /// </summary>
-        /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> to use when
-        /// encoding and decoding.</param>
+        /// <param name="localAppProtocolVersion">The <see cref="LocalAppProtocolVersion"/> to use
+        /// when encoding and decoding.</param>
+        /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
+        /// decoding a message.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
         public TcpMessageCodec(
-            AppProtocolVersion appProtocolVersion = default,
+            AppProtocolVersion localAppProtocolVersion = default,
+            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
             TimeSpan? messageTimestampBuffer = null)
         {
             _codec = new Codec();
-            _appProtocolVersion = appProtocolVersion;
+            _localAppProtocolVersion = localAppProtocolVersion;
+            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _messageTimestampBuffer = messageTimestampBuffer;
         }
 
         /// <inheritdoc/>
-        public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
+        public AppProtocolVersion LocalAppProtocolVersion => _localAppProtocolVersion;
+
+        /// <inheritdoc/>
+        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners =>
+            _trustedAppProtocolVersionSigners;
 
         /// <inheritdoc/>
         public byte[] Encode(
@@ -55,7 +65,7 @@ namespace Libplanet.Net.Messages
             frames.Insert(0, BitConverter.GetBytes(timestamp.Ticks));
             frames.Insert(0, _codec.Encode(peer.ToBencodex()));
             frames.Insert(0, BitConverter.GetBytes((int)message.Type));
-            frames.Insert(0, Encoding.ASCII.GetBytes(AppProtocolVersion.Token));
+            frames.Insert(0, Encoding.ASCII.GetBytes(LocalAppProtocolVersion.Token));
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(
@@ -82,7 +92,8 @@ namespace Libplanet.Net.Messages
         public Message Decode(
             byte[] encoded,
             bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator)
+            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator,
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
         {
             if (encoded.Length == 0)
             {
@@ -123,10 +134,23 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            appProtocolVersionValidator(
-                reply ? new byte[] { } : frames[0],
-                remotePeer,
-                remoteVersion);
+            try
+            {
+                ValidateAppProtocolVersion(
+                    reply ? new byte[] { } : frames[0],
+                    remotePeer,
+                    remoteVersion);
+            }
+            catch (DifferentAppProtocolVersionException e)
+            {
+                if (e.FromTrustedSource &&
+                    differentAppProtocolVersionEncountered is { } dapve)
+                {
+                    dapve(remotePeer, remoteVersion, LocalAppProtocolVersion);
+                }
+
+                throw;
+            }
 
             var type =
                 (Message.MessageType)BitConverter.ToInt32(
@@ -220,6 +244,27 @@ namespace Libplanet.Net.Messages
                 default:
                     throw new InvalidCastException($"Given type {type} is not a valid message.");
             }
+        }
+
+        private void ValidateAppProtocolVersion(
+            byte[] identity,
+            Peer remotePeer,
+            AppProtocolVersion remoteVersion)
+        {
+            if (remoteVersion.Equals(LocalAppProtocolVersion))
+            {
+                return;
+            }
+
+            bool trusted = !(
+                _trustedAppProtocolVersionSigners is { } tapvs &&
+                tapvs.All(publicKey => !remoteVersion.Verify(publicKey)));
+            throw new DifferentAppProtocolVersionException(
+                "The version of the received message is not valid.",
+                identity,
+                LocalAppProtocolVersion,
+                remoteVersion,
+                trusted);
         }
     }
 }
