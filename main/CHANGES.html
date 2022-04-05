@@ -73,6 +73,13 @@
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.Net) <code>DifferentAppProtocolVersionException</code> is made <code>public</code>.
+[[#1889]]</li>
+<li>(Libplanet.Net) <code>InvalidMessageSignatureException</code> and
+<code>InvalidMessageTimestampException</code> gained additional properties.
+[[#1889]]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>(Libplanet.Net) Internal cache size of a <code>KBucket</code> is now capped.
@@ -82,6 +89,9 @@
 <ul>
 <li>(Libplanet.Net) Internal dictionaries of a <code>KBucket</code> are made to be
 concurrent.  [<a href="https://github.com/planetarium/libplanet/issues/1872">#1872</a>, <a href="https://github.com/planetarium/libplanet/pull/1879">#1879</a>]</li>
+<li>(Libplanet.Net) <code>DifferentAppProtocolVersionException</code> and
+<code>InvalidMessageSignatureException</code> can now be serialized and deserialized.
+[[#1889]]</li>
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
