@@ -335,11 +335,11 @@ namespace Libplanet.Net.Transports
             }
             catch (DifferentAppProtocolVersionException e)
             {
-                const string logMsg =
-                    "{PeerAddress} sent a reply to {RequestId} with " +
-                    "a different app protocol version; " +
-                    "expected: {ExpectedVersion}; actual: {ActualVersion}.";
-                _logger.Error(e, logMsg, peer.Address, reqId, e.ExpectedVersion, e.ActualVersion);
+                _logger.Error(
+                    e,
+                    "{Peer} sent a reply to {RequestId} with a different app protocol version.",
+                    peer,
+                    reqId);
                 throw;
             }
             catch (ArgumentException e)
@@ -607,6 +607,7 @@ namespace Libplanet.Net.Transports
             AppProtocolVersion remoteVersion)
         {
             bool valid;
+            bool trusted = true;
             if (remoteVersion.Equals(_appProtocolVersion))
             {
                 valid = true;
@@ -615,6 +616,7 @@ namespace Libplanet.Net.Transports
                      !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
             {
                 valid = false;
+                trusted = false;
             }
             else if (_differentAppProtocolVersionEncountered is null)
             {
@@ -632,9 +634,11 @@ namespace Libplanet.Net.Transports
             {
                 throw new DifferentAppProtocolVersionException(
                     "The version of the received message is not valid.",
+                    remotePeer,
                     identity,
                     _appProtocolVersion,
-                    remoteVersion);
+                    remoteVersion,
+                    trusted);
             }
         }
 

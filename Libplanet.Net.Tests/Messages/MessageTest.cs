@@ -47,9 +47,11 @@ namespace Libplanet.Net.Tests.Messages
                     true,
                     (i, p, v) => throw new DifferentAppProtocolVersionException(
                         string.Empty,
+                        peer,
                         i,
                         v,
-                        v)));
+                        v,
+                        true)));
         }
 
         [Fact]

@@ -508,6 +508,7 @@ namespace Libplanet.Net.Transports
             AppProtocolVersion remoteVersion)
         {
             bool valid;
+            bool trusted = true;
             if (remoteVersion.Equals(_appProtocolVersion))
             {
                 valid = true;
@@ -516,6 +517,7 @@ namespace Libplanet.Net.Transports
                      !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
             {
                 valid = false;
+                trusted = false;
             }
             else if (_differentAppProtocolVersionEncountered is null)
             {
@@ -533,9 +535,11 @@ namespace Libplanet.Net.Transports
             {
                 throw new DifferentAppProtocolVersionException(
                     "The version of the received message is not valid.",
+                    remotePeer,
                     identity,
                     _appProtocolVersion,
-                    remoteVersion);
+                    remoteVersion,
+                    trusted);
             }
         }
 

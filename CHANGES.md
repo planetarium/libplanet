@@ -19,6 +19,12 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Net) `DifferentAppProtocolVersionException` is made `public`.
+    [[#1889]]
+ -  (Libplanet.Net) `InvalidMessageSignatureException` and
+    `InvalidMessageTimestampException` gained additional properties.
+    [[#1889]]
+
 ### Behavioral changes
 
  -  (Libplanet.Net) Internal cache size of a `KBucket` is now capped.
@@ -28,6 +34,9 @@ To be released.
 
  -  (Libplanet.Net) Internal dictionaries of a `KBucket` are made to be
     concurrent.  [[#1872], [#1879]]
+ -  (Libplanet.Net) `DifferentAppProtocolVersionException` and
+    `InvalidMessageSignatureException` can now be serialized and deserialized.
+    [[#1889]]
 
 ### Dependencies
 
