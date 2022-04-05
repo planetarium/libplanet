@@ -12,65 +12,36 @@ namespace Libplanet.Net.Messages
     public interface IMessageCodec<T>
     {
         /// <summary>
-        /// <para>
-        /// The local <see cref="AppProtocolVersion"/> used for <see cref="Encode"/>
-        /// and <see cref="Decode"/> methods.
-        /// </para>
-        /// <para>
-        /// In particular, this is used in the following cases:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         When encoding, this value is attached to the encoded output.
-        ///     </description></item>
-        ///     <item><description>
-        ///         When decoding, the encoded message's <see cref="AppProtocolVersion"/> must
-        ///         match this value.
-        ///     </description></item>
-        /// </list>
-        /// </para>
+        /// See <see cref="MessageValidator.Apv"/>.
         /// </summary>
-        AppProtocolVersion LocalAppProtocolVersion { get; }
+        AppProtocolVersion Apv { get; }
 
         /// <summary>
-        /// <para>
-        /// An <see cref="IImmutableSet{T}"/> of <see cref="Address"/>es to trust as a signer
-        /// when a different <see cref="AppProtocolVersion"/> is encountered.
-        /// </para>
-        /// <para>
-        /// Whether to trust an unknown <see cref="AppProtocolVersion"/>, i.e.
-        /// an <see cref="AppProtocolVersion"/> that is different
-        /// from <see cref="LocalAppProtocolVersion"/>, depends on this value:
-        /// <list type="bullet">
-        ///     <item><description>
-        ///         If <c>null</c>, the <see cref="AppProtocolVersion"/> in question is trusted
-        ///         regardless of its signer.
-        ///     </description></item>
-        ///     <item><description>
-        ///         If not <c>null</c>, an <see cref="AppProtocolVersion"/> is trusted if it is
-        ///         signed by one of the signers in the set.  In particular, if the set is empty,
-        ///         no <see cref="AppProtocolVersion"/> is trusted.
-        ///     </description></item>
-        /// </list>
-        /// </para>
+        /// See <see cref="MessageValidator.TrustedApvSigners"/>.
         /// </summary>
-        IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners { get; }
+        IImmutableSet<PublicKey>? TrustedApvSigners { get; }
 
-        /// <summary>The <see cref="TimeSpan"/> to use as a buffer when
-        /// decoding <see cref="Message"/>s.
+        /// <summary>
+        /// See <see cref="MessageValidator.MessageTimestampBuffer"/>.
         /// </summary>
         TimeSpan? MessageTimestampBuffer { get; }
 
         /// <summary>
+        /// See <see cref="MessageValidator.DifferentApvEncountered"/>.
+        /// </summary>
+        DifferentAppProtocolVersionEncountered? DifferentApvEncountered { get; }
+
+        /// <summary>
         /// Encodes the message to <see typeref="T"/>-typed instance with given
         /// <paramref name="privateKey"/>, <paramref name="peer"/>
-        /// and <see cref="LocalAppProtocolVersion"/>.
+        /// and <see cref="Apv"/>.
         /// </summary>
-        /// <param name="message">A message to encode.</param>
-        /// <param name="privateKey">A <see cref="PrivateKey"/> to sign message.</param>
-        /// <param name="peer"><see cref="Peer"/>-typed representation of the
+        /// <param name="message">The message to encode.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to sign message.</param>
+        /// <param name="peer">A <see cref="Peer"/>-typed representation of the
         /// sender's transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
-        /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the message is created.
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the message creation.
         /// </param>
         /// <returns>A <see typeref="T"/> containing the signed <see cref="Message"/>.
         /// </returns>
@@ -93,11 +64,11 @@ namespace Libplanet.Net.Messages
         /// Thrown when empty <paramref name="encoded"/> is given.</exception>
         /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
-        /// <exception cref="InvalidMessageSignatureException">Thrown when the signer of
+        /// <exception cref="InvalidMessageSignatureException">Thrown when the signature of
         /// <paramref name="encoded"/> is invalid.</exception>
         /// <exception cref="DifferentAppProtocolVersionException">Thrown when
-        /// the <see cref="AppProtocolVersion"/> attached to <paramref name="encoded"/> does
-        /// not match <see cref="LocalAppProtocolVersion"/>.</exception>
+        /// the <see cref="AppProtocolVersion"/> of <paramref name="encoded"/> does not
+        /// match <see cref="Apv"/>.</exception>
         /// <remarks>
         /// A <see cref="Message"/> with an invalid property value is never decoded even if
         /// it can be decoded.

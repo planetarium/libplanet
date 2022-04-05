@@ -18,40 +18,44 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Creates a <see cref="NetMQMessageCodec"/> instance.
         /// </summary>
-        /// <param name="localAppProtocolVersion">The <see cref="AppProtocolVersion"/> to use
+        /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> to use
         /// when encoding and decoding.</param>
         /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
         /// decoding a message.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <see cref="LocalAppProtocolVersion"/>, and their version is
-        /// signed by a trusted party.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A callback method that gets
+        /// invoked when a an <see cref="AppProtocolVersion"/> by a <em>trusted</em> signer that is
+        /// different from <see cref="Apv"/> is encountered.</param>
         public NetMQMessageCodec(
-            AppProtocolVersion localAppProtocolVersion = default,
+            AppProtocolVersion appProtocolVersion = default,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
             TimeSpan? messageTimestampBuffer = null,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered = null)
         {
             _codec = new Codec();
             _messageValidator = new MessageValidator(
-                localAppProtocolVersion,
+                appProtocolVersion,
                 trustedAppProtocolVersionSigners,
                 messageTimestampBuffer,
                 differentAppProtocolVersionEncountered);
         }
 
         /// <inheritdoc/>
-        public AppProtocolVersion LocalAppProtocolVersion =>
-            _messageValidator.LocalAppProtocolVersion;
+        public AppProtocolVersion Apv =>
+            _messageValidator.Apv;
 
         /// <inheritdoc/>
-        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners =>
-            _messageValidator.TrustedAppProtocolVersionSigners;
+        public IImmutableSet<PublicKey>? TrustedApvSigners =>
+            _messageValidator.TrustedApvSigners;
 
         /// <inheritdoc/>
         public TimeSpan? MessageTimestampBuffer =>
             _messageValidator.MessageTimestampBuffer;
+
+        /// <inheritdoc/>
+        public DifferentAppProtocolVersionEncountered? DifferentApvEncountered =>
+            _messageValidator.DifferentApvEncountered;
 
         /// <inheritdoc/>
         public NetMQMessage Encode(
@@ -72,7 +76,7 @@ namespace Libplanet.Net.Messages
             netMqMessage.Push(timestamp.Ticks);
             netMqMessage.Push(_codec.Encode(peer.ToBencodex()));
             netMqMessage.Push((int)message.Type);
-            netMqMessage.Push(LocalAppProtocolVersion.Token);
+            netMqMessage.Push(Apv.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());

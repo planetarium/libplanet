@@ -19,40 +19,45 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Creates a <see cref="TcpMessageCodec"/> instance.
         /// </summary>
-        /// <param name="localAppProtocolVersion">The <see cref="LocalAppProtocolVersion"/> to use
+        /// <param name="appProtocolVersion">The <see cref="Apv"/> to use
         /// when encoding and decoding.</param>
         /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
         /// decoding a message.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <see cref="LocalAppProtocolVersion"/>, and their version is
-        /// signed by a trusted party.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A callback method that gets
+        /// invoked when a an <see cref="AppProtocolVersion"/> by a <em>trusted</em> signer that is
+        /// different from <see cref="Apv"/> is encountered.</param>
+        /// <seealso cref="MessageValidator"/>.
         public TcpMessageCodec(
-            AppProtocolVersion localAppProtocolVersion = default,
+            AppProtocolVersion appProtocolVersion = default,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
             TimeSpan? messageTimestampBuffer = null,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered = null)
         {
             _codec = new Codec();
             _messageValidator = new MessageValidator(
-                localAppProtocolVersion,
+                appProtocolVersion,
                 trustedAppProtocolVersionSigners,
                 messageTimestampBuffer,
                 differentAppProtocolVersionEncountered);
         }
 
         /// <inheritdoc/>
-        public AppProtocolVersion LocalAppProtocolVersion =>
-            _messageValidator.LocalAppProtocolVersion;
+        public AppProtocolVersion Apv =>
+            _messageValidator.Apv;
 
         /// <inheritdoc/>
-        public IImmutableSet<PublicKey>? TrustedAppProtocolVersionSigners =>
-            _messageValidator.TrustedAppProtocolVersionSigners;
+        public IImmutableSet<PublicKey>? TrustedApvSigners =>
+            _messageValidator.TrustedApvSigners;
 
         /// <inheritdoc/>
         public TimeSpan? MessageTimestampBuffer =>
             _messageValidator.MessageTimestampBuffer;
+
+        /// <inheritdoc/>
+        public DifferentAppProtocolVersionEncountered? DifferentApvEncountered =>
+            _messageValidator.DifferentApvEncountered;
 
         /// <inheritdoc/>
         public byte[] Encode(
@@ -73,7 +78,7 @@ namespace Libplanet.Net.Messages
             frames.Insert(0, BitConverter.GetBytes(timestamp.Ticks));
             frames.Insert(0, _codec.Encode(peer.ToBencodex()));
             frames.Insert(0, BitConverter.GetBytes((int)message.Type));
-            frames.Insert(0, Encoding.ASCII.GetBytes(LocalAppProtocolVersion.Token));
+            frames.Insert(0, Encoding.ASCII.GetBytes(Apv.Token));
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(
