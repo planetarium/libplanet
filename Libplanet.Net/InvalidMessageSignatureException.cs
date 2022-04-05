@@ -13,7 +13,7 @@ namespace Libplanet.Net
     [Serializable]
     public class InvalidMessageSignatureException : Exception
     {
-        internal InvalidMessageSignatureException(
+        public InvalidMessageSignatureException(
             string message,
             Peer peer,
             PublicKey publicKey,

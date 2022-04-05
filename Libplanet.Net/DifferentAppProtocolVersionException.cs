@@ -22,26 +22,26 @@ namespace Libplanet.Net
         /// received.</param>
         /// <param name="identity">The <see cref="Message.Identity"/> of the <see cref="Message"/>
         /// received.</param>
-        /// <param name="localVersion">The protocol version of the local <see cref="Swarm{T}"/>.
-        /// </param>
-        /// <param name="peerVersion">The protocol version of the <see cref="Peer"/> that
+        /// <param name="appProtocolVersion">The protocol version of
+        /// the local <see cref="Swarm{T}"/>.</param>
+        /// <param name="peerAppProtocolVersion">The protocol version of the <see cref="Peer"/> that
         /// the local <see cref="Swarm{T}"/> is trying to connect to.</param>
-        /// <param name="fromTrustedSource">Whether <paramref name="peerVersion"/> is signed
-        /// by a trusted signer.</param>
-        internal DifferentAppProtocolVersionException(
+        /// <param name="trusted">Whether <paramref name="peerAppProtocolVersion"/>
+        /// is signed by a trusted signer.</param>
+        public DifferentAppProtocolVersionException(
             string message,
             Peer peer,
             byte[] identity,
-            AppProtocolVersion localVersion,
-            AppProtocolVersion peerVersion,
-            bool fromTrustedSource)
+            AppProtocolVersion appProtocolVersion,
+            AppProtocolVersion peerAppProtocolVersion,
+            bool trusted)
             : base(message)
         {
             Peer = peer;
             Identity = identity;
-            LocalVersion = localVersion;
-            PeerVersion = peerVersion;
-            FromTrustedSource = fromTrustedSource;
+            Apv = appProtocolVersion;
+            PeerApv = peerAppProtocolVersion;
+            Trusted = trusted;
         }
 
         protected DifferentAppProtocolVersionException(
@@ -51,11 +51,11 @@ namespace Libplanet.Net
         {
             Peer = info.GetValue<Peer>(nameof(Peer));
             Identity = info.GetValue<byte[]>(nameof(Identity));
-            LocalVersion = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(LocalVersion)));
-            PeerVersion = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(PeerVersion)));
-            FromTrustedSource = info.GetValue<bool>(nameof(FromTrustedSource));
+            Apv = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(Apv)));
+            PeerApv = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(PeerApv)));
+            Trusted = info.GetValue<bool>(nameof(Trusted));
         }
 
         public Peer Peer { get; private set; }
@@ -68,18 +68,18 @@ namespace Libplanet.Net
         /// <summary>
         /// The protocol version of the current <see cref="Swarm{T}"/>.
         /// </summary>
-        public AppProtocolVersion LocalVersion { get; }
+        public AppProtocolVersion Apv { get; }
 
         /// <summary>
         /// The protocol version of the <see cref="Peer"/> that the
         /// <see cref="Swarm{T}" /> is trying to connect to.
         /// </summary>
-        public AppProtocolVersion PeerVersion { get; }
+        public AppProtocolVersion PeerApv { get; }
 
         /// <summary>
-        /// Whether <see cref="PeerVersion"/> is signed by a trusted signer.
+        /// Whether <see cref="PeerApv"/> is signed by a trusted signer.
         /// </summary>
-        public bool FromTrustedSource { get; }
+        public bool Trusted { get; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
@@ -87,9 +87,9 @@ namespace Libplanet.Net
             base.GetObjectData(info, context);
             info.AddValue(nameof(Peer), Peer);
             info.AddValue(nameof(Identity), Identity);
-            info.AddValue(nameof(LocalVersion), LocalVersion.Token);
-            info.AddValue(nameof(PeerVersion), PeerVersion.Token);
-            info.AddValue(nameof(FromTrustedSource), FromTrustedSource);
+            info.AddValue(nameof(Apv), Apv.Token);
+            info.AddValue(nameof(PeerApv), PeerApv.Token);
+            info.AddValue(nameof(Trusted), Trusted);
         }
     }
 }
