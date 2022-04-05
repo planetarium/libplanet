@@ -48,8 +48,8 @@ namespace Libplanet.Net.Tests
             Assert.Equal(e1.Message, e2.Message);
             Assert.Equal(e1.Peer, e2.Peer);
             Assert.True(e1.Identity.SequenceEqual(e2.Identity));
-            Assert.Equal(e1.Apv, e2.Apv);
-            Assert.Equal(e1.PeerApv, e2.PeerApv);
+            Assert.Equal(e1.ExpectedApv, e2.ExpectedApv);
+            Assert.Equal(e1.ActualApv, e2.ActualApv);
             Assert.Equal(e1.Trusted, e2.Trusted);
         }
     }

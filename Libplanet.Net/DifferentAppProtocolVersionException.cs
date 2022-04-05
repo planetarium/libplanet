@@ -22,25 +22,25 @@ namespace Libplanet.Net
         /// received.</param>
         /// <param name="identity">The <see cref="Message.Identity"/> of the <see cref="Message"/>
         /// received.</param>
-        /// <param name="appProtocolVersion">The protocol version of
+        /// <param name="expectedAppProtocolVersion">The protocol version of
         /// the local <see cref="Swarm{T}"/>.</param>
-        /// <param name="peerAppProtocolVersion">The protocol version of the <see cref="Peer"/> that
-        /// the local <see cref="Swarm{T}"/> is trying to connect to.</param>
-        /// <param name="trusted">Whether <paramref name="peerAppProtocolVersion"/>
+        /// <param name="actualAppProtocolVersion">The protocol version of the <see cref="Peer"/>
+        /// that the local <see cref="Swarm{T}"/> is trying to connect to.</param>
+        /// <param name="trusted">Whether <paramref name="actualAppProtocolVersion"/>
         /// is signed by a trusted signer.</param>
         public DifferentAppProtocolVersionException(
             string message,
             Peer peer,
             byte[] identity,
-            AppProtocolVersion appProtocolVersion,
-            AppProtocolVersion peerAppProtocolVersion,
+            AppProtocolVersion expectedAppProtocolVersion,
+            AppProtocolVersion actualAppProtocolVersion,
             bool trusted)
             : base(message)
         {
             Peer = peer;
             Identity = identity;
-            Apv = appProtocolVersion;
-            PeerApv = peerAppProtocolVersion;
+            ExpectedApv = expectedAppProtocolVersion;
+            ActualApv = actualAppProtocolVersion;
             Trusted = trusted;
         }
 
@@ -51,10 +51,10 @@ namespace Libplanet.Net
         {
             Peer = info.GetValue<Peer>(nameof(Peer));
             Identity = info.GetValue<byte[]>(nameof(Identity));
-            Apv = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(Apv)));
-            PeerApv = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(PeerApv)));
+            ExpectedApv = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(ExpectedApv)));
+            ActualApv = AppProtocolVersion.FromToken(
+                info.GetValue<string>(nameof(ActualApv)));
             Trusted = info.GetValue<bool>(nameof(Trusted));
         }
 
@@ -68,16 +68,16 @@ namespace Libplanet.Net
         /// <summary>
         /// The protocol version of the current <see cref="Swarm{T}"/>.
         /// </summary>
-        public AppProtocolVersion Apv { get; }
+        public AppProtocolVersion ExpectedApv { get; }
 
         /// <summary>
         /// The protocol version of the <see cref="Peer"/> that the
         /// <see cref="Swarm{T}" /> is trying to connect to.
         /// </summary>
-        public AppProtocolVersion PeerApv { get; }
+        public AppProtocolVersion ActualApv { get; }
 
         /// <summary>
-        /// Whether <see cref="PeerApv"/> is signed by a trusted signer.
+        /// Whether <see cref="ActualApv"/> is signed by a trusted signer.
         /// </summary>
         public bool Trusted { get; }
 
@@ -87,8 +87,8 @@ namespace Libplanet.Net
             base.GetObjectData(info, context);
             info.AddValue(nameof(Peer), Peer);
             info.AddValue(nameof(Identity), Identity);
-            info.AddValue(nameof(Apv), Apv.Token);
-            info.AddValue(nameof(PeerApv), PeerApv.Token);
+            info.AddValue(nameof(ExpectedApv), ExpectedApv.Token);
+            info.AddValue(nameof(ActualApv), ActualApv.Token);
             info.AddValue(nameof(Trusted), Trusted);
         }
     }
