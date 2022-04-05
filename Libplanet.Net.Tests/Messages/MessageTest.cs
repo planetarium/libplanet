@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -61,15 +60,18 @@ namespace Libplanet.Net.Tests.Messages
             var peer = new Peer(privateKey.PublicKey);
             var futureOffset = DateTimeOffset.MaxValue;
             var pastOffset = DateTimeOffset.MinValue;
-            var appProtocolVersion = new AppProtocolVersion(
+            var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
+            var buffer = TimeSpan.FromSeconds(1);
             var message = new Ping();
-            var codec = new NetMQMessageCodec(TimeSpan.FromSeconds(1));
+            var codec = new NetMQMessageCodec(
+                appProtocolVersion: apv,
+                messageTimestampBuffer: buffer);
             NetMQMessage futureRaw =
-                codec.Encode(message, privateKey, peer, futureOffset, appProtocolVersion);
+                codec.Encode(message, privateKey, peer, futureOffset, apv);
             // Messages from the future throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 codec.Decode(
@@ -77,7 +79,7 @@ namespace Libplanet.Net.Tests.Messages
                     true,
                     (i, p, v) => { }));
             NetMQMessage pastRaw =
-                codec.Encode(message, privateKey, peer, pastOffset, appProtocolVersion);
+                codec.Encode(message, privateKey, peer, pastOffset, apv);
             // Messages from the far past throws InvalidMessageTimestampException.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 codec.Decode(
@@ -91,7 +93,7 @@ namespace Libplanet.Net.Tests.Messages
         {
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
-            var appProtocolVersion = new AppProtocolVersion(
+            var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
@@ -102,9 +104,9 @@ namespace Libplanet.Net.Tests.Messages
                 GenesisMiner
             );
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
-            var codec = new NetMQMessageCodec();
+            var codec = new NetMQMessageCodec(appProtocolVersion: apv);
             NetMQMessage raw =
-                codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
+                codec.Encode(message, privateKey, peer, dateTimeOffset, apv);
             var parsed = codec.Decode(raw, true, (i, p, v) => { });
             Assert.Equal(peer, parsed.Remote);
         }
@@ -115,23 +117,19 @@ namespace Libplanet.Net.Tests.Messages
             // Victim
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey, new IPAddress(1024L));
-            var dateTimeOffset = DateTimeOffset.UtcNow;
-            var validAppProtocolVersion = new AppProtocolVersion(
+            var timestamp = DateTimeOffset.UtcNow;
+            var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var ping = new Ping();
-            var codec = new NetMQMessageCodec();
-            var netMqMessage =
-                codec.Encode(ping, privateKey, peer, dateTimeOffset, validAppProtocolVersion)
-                    .ToArray();
+            var codec = new NetMQMessageCodec(appProtocolVersion: apv);
+            var netMqMessage = codec.Encode(ping, privateKey, peer, timestamp, apv).ToArray();
 
             // Attacker
             var fakePeer = new Peer(privateKey.PublicKey, new IPAddress(2048L));
-            var fakeMessage =
-                codec.Encode(ping, privateKey, fakePeer, dateTimeOffset, validAppProtocolVersion)
-                    .ToArray();
+            var fakeMessage = codec.Encode(ping, privateKey, fakePeer, timestamp, apv).ToArray();
 
             var frames = new NetMQMessage();
             frames.Push(netMqMessage[4]);

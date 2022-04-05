@@ -46,17 +46,17 @@ namespace Libplanet.Net.Tests.Messages
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            var appProtocolVersion = new AppProtocolVersion(
+            var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var message = CreateMessage(type);
-            var codec = new NetMQMessageCodec();
+            var codec = new NetMQMessageCodec(apv);
             NetMQMessage raw =
-                codec.Encode(message, privateKey, peer, dateTimeOffset, appProtocolVersion);
+                codec.Encode(message, privateKey, peer, dateTimeOffset, apv);
             var parsed = codec.Decode(raw, true, (i, p, v) => { });
-            Assert.Equal(appProtocolVersion, parsed.Version);
+            Assert.Equal(apv, parsed.Version);
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);
             Assert.IsType(message.GetType(), parsed);

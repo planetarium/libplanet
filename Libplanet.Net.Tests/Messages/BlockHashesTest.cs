@@ -38,15 +38,15 @@ namespace Libplanet.Net.Tests.Messages
             Assert.Equal(123, msg.StartIndex);
             Assert.Equal(blockHashes, msg.Hashes);
             var privKey = new PrivateKey();
-            AppProtocolVersion ver = AppProtocolVersion.Sign(privKey, 3);
+            AppProtocolVersion apv = AppProtocolVersion.Sign(privKey, 3);
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234));
-            var messageCodec = new NetMQMessageCodec();
+            var messageCodec = new NetMQMessageCodec(appProtocolVersion: apv);
             NetMQMessage encoded = messageCodec.Encode(
                 msg,
                 privKey,
                 peer,
                 DateTimeOffset.UtcNow,
-                ver);
+                apv);
             BlockHashes restored = (BlockHashes)messageCodec.Decode(
                 encoded,
                 true,

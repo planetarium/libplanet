@@ -129,7 +129,11 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new NetMQMessageCodec(messageTimestampBuffer);
+            _messageCodec = new NetMQMessageCodec(
+                _appProtocolVersion,
+                _trustedAppProtocolVersionSigners,
+                _differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -507,7 +511,7 @@ namespace Libplanet.Net.Transports
             Peer remotePeer,
             AppProtocolVersion remoteVersion)
         {
-            bool valid;
+            bool valid = false;
             bool trusted = true;
             if (remoteVersion.Equals(_appProtocolVersion))
             {
@@ -516,16 +520,11 @@ namespace Libplanet.Net.Transports
             else if (!(_trustedAppProtocolVersionSigners is null) &&
                      !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
             {
-                valid = false;
                 trusted = false;
             }
-            else if (_differentAppProtocolVersionEncountered is null)
+            else if (_differentAppProtocolVersionEncountered is { } callback)
             {
-                valid = false;
-            }
-            else
-            {
-                valid = _differentAppProtocolVersionEncountered(
+                callback(
                     remotePeer,
                     remoteVersion,
                     _appProtocolVersion);

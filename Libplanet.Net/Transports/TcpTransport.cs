@@ -83,7 +83,11 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers.ToList();
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new TcpMessageCodec(messageTimestampBuffer);
+            _messageCodec = new TcpMessageCodec(
+                _appProtocolVersion,
+                _trustedAppProtocolVersionSigners,
+                _differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -606,7 +610,7 @@ namespace Libplanet.Net.Transports
             Peer remotePeer,
             AppProtocolVersion remoteVersion)
         {
-            bool valid;
+            bool valid = false;
             bool trusted = true;
             if (remoteVersion.Equals(_appProtocolVersion))
             {
@@ -615,16 +619,11 @@ namespace Libplanet.Net.Transports
             else if (!(_trustedAppProtocolVersionSigners is null) &&
                      !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
             {
-                valid = false;
                 trusted = false;
             }
-            else if (_differentAppProtocolVersionEncountered is null)
+            else if (_differentAppProtocolVersionEncountered is { } callback)
             {
-                valid = false;
-            }
-            else
-            {
-                valid = _differentAppProtocolVersionEncountered(
+                callback(
                     remotePeer,
                     remoteVersion,
                     _appProtocolVersion);
