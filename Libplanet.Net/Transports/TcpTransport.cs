@@ -31,7 +31,6 @@ namespace Libplanet.Net.Transports
         private static readonly TimeSpan TurnPermissionLifetime = TimeSpan.FromMinutes(5);
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly string? _host;
 
         private readonly IList<IceServer>? _iceServers;
@@ -75,11 +74,10 @@ namespace Libplanet.Net.Transports
             Running = false;
 
             _privateKey = privateKey;
-            _appProtocolVersion = appProtocolVersion;
             _host = host;
             _iceServers = iceServers.ToList();
             _messageCodec = new TcpMessageCodec(
-                _appProtocolVersion,
+                appProtocolVersion,
                 trustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
@@ -493,8 +491,7 @@ namespace Libplanet.Net.Transports
                 message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             int length = serialized.Length;
             var buffer = new byte[MagicCookie.Length + sizeof(int) + length];
             MagicCookie.CopyTo(buffer, 0);

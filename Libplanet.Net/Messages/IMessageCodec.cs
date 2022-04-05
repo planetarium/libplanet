@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     {
         /// <summary>
         /// Encodes the message to <see typeref="T"/>-typed instance with given
-        /// <paramref name="privateKey"/>, <paramref name="peer"/> and <paramref name="version"/>.
+        /// <paramref name="privateKey"/> and <paramref name="peer"/>.
         /// </summary>
         /// <param name="message">A message to encode.</param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> to sign message.</param>
@@ -17,16 +17,13 @@ namespace Libplanet.Net.Messages
         /// <seealso cref="ITransport.AsPeer"/></param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> of the message is created.
         /// </param>
-        /// <param name="version"><see cref="AppProtocolVersion"/>-typed version of the
-        /// transport layer.</param>
         /// <returns>A <see typeref="T"/> containing the signed <see cref="Message"/>.
         /// </returns>
         T Encode(
             Message message,
             PrivateKey privateKey,
             Peer peer,
-            DateTimeOffset timestamp,
-            AppProtocolVersion version);
+            DateTimeOffset timestamp);
 
         /// <summary>
         /// Decodes given <see typeref="T"/>-typed <paramref name="encoded"/> into

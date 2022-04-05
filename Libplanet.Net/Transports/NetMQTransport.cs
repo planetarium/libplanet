@@ -24,7 +24,6 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -116,12 +115,11 @@ namespace Libplanet.Net.Transports
 
             _socketCount = 0;
             _privateKey = privateKey;
-            _appProtocolVersion = appProtocolVersion;
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _messageCodec = new NetMQMessageCodec(
-                _appProtocolVersion,
+                appProtocolVersion,
                 trustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
@@ -579,8 +577,7 @@ namespace Libplanet.Net.Transports
                             message,
                             _privateKey,
                             AsPeer,
-                            DateTimeOffset.UtcNow,
-                            _appProtocolVersion);
+                            DateTimeOffset.UtcNow);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
@@ -704,8 +701,7 @@ namespace Libplanet.Net.Transports
                 req.Message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             var result = new List<Message>();
 
             // Normal OperationCanceledException initiated from outside should bubble up.

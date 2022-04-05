@@ -47,8 +47,7 @@ namespace Libplanet.Net.Messages
             Message message,
             PrivateKey privateKey,
             Peer peer,
-            DateTimeOffset timestamp,
-            AppProtocolVersion version)
+            DateTimeOffset timestamp)
         {
             var frames = new List<byte[]>();
 
@@ -62,7 +61,7 @@ namespace Libplanet.Net.Messages
             frames.Insert(0, BitConverter.GetBytes(timestamp.Ticks));
             frames.Insert(0, _codec.Encode(peer.ToBencodex()));
             frames.Insert(0, BitConverter.GetBytes((int)message.Type));
-            frames.Insert(0, Encoding.ASCII.GetBytes(version.Token));
+            frames.Insert(0, Encoding.ASCII.GetBytes(_messageValidator.Apv.Token));
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(
