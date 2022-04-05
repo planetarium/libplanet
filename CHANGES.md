@@ -11,7 +11,17 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Added `IStore.PruneOutdatedChains(bool noopWithoutCanon)` method.
-   [[#1874], [#1878]]
+    [[#1874], [#1878]]
+ -  `IMessageCodec` interface and its implementations overhauled.  [[#1890]]
+     -  Removed `AppProtocolVersion version` parameter from
+        `IMessageCodec.Encode()`.
+     -  Removed `Action appProtocolVersionValidator` parameter from
+        `IMessageCodec.Decode()`.
+     -  Both `TcpMessageCodec()` and `NetMQMessageCodec()` now takes
+        additional parameters for setting up its `MessageValidator` instance
+        for running context.
+ -  `DifferentAppProtocolVersionEncountered` delegate now returns `void`.
+    [[#1885], [#1890]]
 
 ### Backward-incompatible network protocol changes
 
@@ -24,11 +34,14 @@ To be released.
  -  (Libplanet.Net) `InvalidMessageSignatureException` and
     `InvalidMessageTimestampException` gained additional properties.
     [[#1889]]
+ -  (Libplanet.Net) `MessageValidator` helper class introduced.  [[#1890]]
 
 ### Behavioral changes
 
  -  (Libplanet.Net) Internal cache size of a `KBucket` is now capped.
     [[#1879]]
+ -  (Libplanet.Net) `IMessageCodec` now never decodes a `Message` with
+    a different `AppProtocolVersion` from the local version.  [[#1885], [#1890]]
 
 ### Bug fixes
 
@@ -46,6 +59,9 @@ To be released.
 [#1874]: https://github.com/planetarium/libplanet/issues/1874
 [#1878]: https://github.com/planetarium/libplanet/pull/1878
 [#1879]: https://github.com/planetarium/libplanet/pull/1879
+[#1885]: https://github.com/planetarium/libplanet/issues/1885
+[#1889]: https://github.com/planetarium/libplanet/pull/1889
+[#1890]: https://github.com/planetarium/libplanet/pull/1890
 
 
 Version 0.31.0
