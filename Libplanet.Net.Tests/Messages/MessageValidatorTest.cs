@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Xunit;
@@ -41,30 +40,6 @@ namespace Libplanet.Net.Tests.Messages
                 peer, DateTimeOffset.UtcNow, DateTimeOffset.MinValue);
             messageValidator.ValidateTimestamp(
                 peer, DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
-        }
-
-        [Fact]
-        public void ValidateSignature()
-        {
-            var goodPrivateKey = new PrivateKey();
-            var badPrivateKey = new PrivateKey();
-            var peer = new Peer(goodPrivateKey.PublicKey, new IPAddress(1024L));
-
-            var random = new Random();
-            var message = new byte[128];
-            random.NextBytes(message);
-            var signature = goodPrivateKey.Sign(message);
-            var messageValidator = new MessageValidator(
-                appProtocolVersion: default,
-                trustedAppProtocolVersionSigners: null,
-                messageTimestampBuffer: null,
-                differentAppProtocolVersionEncountered: null);
-
-            messageValidator.ValidateSignature(
-                peer, goodPrivateKey.PublicKey, message, signature);
-            Assert.Throws<InvalidMessageSignatureException>(() =>
-                messageValidator.ValidateSignature(
-                    peer, badPrivateKey.PublicKey, message, signature));
         }
 
         [Fact]

@@ -149,34 +149,6 @@ namespace Libplanet.Net.Messages
                 currentTimestamp,
                 messageTimestamp);
 
-        /// <summary>
-        /// Validates a signature of a <see cref="Message"/>.
-        /// </summary>
-        /// <param name="peer">The <see cref="Peer"/> that has sent the <see cref="Message"/>
-        /// with <paramref name="signature"/>.</param>
-        /// <param name="publicKey">The <see cref="PublicKey"/> of <paramref name="peer"/>.</param>
-        /// <param name="messageToVerify">The portion of the <see cref="Message"/> to verify.
-        /// </param>
-        /// <param name="signature">The signature of the <see cref="Message"/> to verify.</param>
-        /// <exception cref="InvalidMessageSignatureException">Thrown when
-        /// <paramref name="signature"/> is invalid.</exception>
-        public void ValidateSignature(
-            Peer peer,
-            PublicKey publicKey,
-            byte[] messageToVerify,
-            byte[] signature)
-        {
-            if (!publicKey.Verify(messageToVerify, signature))
-            {
-                throw new InvalidMessageSignatureException(
-                    "The signature of an encoded message is invalid.",
-                    peer,
-                    publicKey,
-                    messageToVerify,
-                    signature);
-            }
-        }
-
         private static void ValidateAppProtocolVersionTemplate(
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,

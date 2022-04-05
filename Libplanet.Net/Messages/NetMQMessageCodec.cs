@@ -23,7 +23,7 @@ namespace Libplanet.Net.Messages
         /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
         /// decoding a message.</param>
         /// <param name="differentAppProtocolVersionEncountered">A callback method that gets
-        /// invoked when a an <see cref="AppProtocolVersion"/> by a <em>trusted</em> signer that is
+        /// invoked when an <see cref="AppProtocolVersion"/> by a <em>trusted</em> signer that is
         /// different from <paramref name="appProtocolVersion"/> is encountered.</param>
         /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
         /// when decoding <see cref="Message"/>s.</param>
@@ -138,12 +138,16 @@ namespace Libplanet.Net.Messages
                 remains[(int)Message.MessageFrame.Timestamp],
             };
 
-            var messageForVerify = headerWithoutSign.Concat(body).ToByteArray();
-            _messageValidator.ValidateSignature(
-                remotePeer,
-                remotePeer.PublicKey,
-                messageForVerify,
-                signature);
+            var messageToVerify = headerWithoutSign.Concat(body).ToByteArray();
+            if (!remotePeer.PublicKey.Verify(messageToVerify, signature))
+            {
+                throw new InvalidMessageSignatureException(
+                    "The signature of an encoded message is invalid.",
+                    remotePeer,
+                    remotePeer.PublicKey,
+                    messageToVerify,
+                    signature);
+            }
 
             if (!reply)
             {
