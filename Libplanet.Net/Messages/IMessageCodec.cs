@@ -36,15 +36,12 @@ namespace Libplanet.Net.Messages
         /// <param name="encoded">A <see typeref="T"/>-typed instance to parse.</param>
         /// <param name="reply">A flag to express whether the target is a reply of other message.
         /// </param>
-        /// <param name="appProtocolVersionValidator">
-        /// The delegate validates the app protocol version of the message.
-        /// </param>
         /// <returns>A <see cref="Message"/> parsed from <paramref name="encoded"/>.</returns>
         /// <exception cref="ArgumentException">
         /// Thrown when empty <paramref name="encoded"/> is given.</exception>
         /// <exception cref="DifferentAppProtocolVersionException">Thrown when
         /// local version does not match with given <paramref name="encoded"/>'s
-        /// <see cref="Version"/> by given <paramref name="appProtocolVersionValidator"/>.
+        /// <see cref="AppProtocolVersion"/>.
         /// </exception>
         /// <exception cref="InvalidMessageTimestampException"> Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
@@ -52,7 +49,6 @@ namespace Libplanet.Net.Messages
         /// <paramref name="encoded"/> is invalid.</exception>
         Message Decode(
             T encoded,
-            bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator);
+            bool reply);
     }
 }

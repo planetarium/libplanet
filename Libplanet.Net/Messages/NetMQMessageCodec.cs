@@ -80,8 +80,7 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc/>
         public Message Decode(
             NetMQMessage encoded,
-            bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator)
+            bool reply)
         {
             if (encoded.FrameCount == 0)
             {

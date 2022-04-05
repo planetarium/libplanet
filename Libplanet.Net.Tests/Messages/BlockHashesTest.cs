@@ -47,10 +47,7 @@ namespace Libplanet.Net.Tests.Messages
                 peer,
                 DateTimeOffset.UtcNow,
                 apv);
-            BlockHashes restored = (BlockHashes)messageCodec.Decode(
-                encoded,
-                true,
-                (b, p, a) => { });
+            BlockHashes restored = (BlockHashes)messageCodec.Decode(encoded, true);
             Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);
         }

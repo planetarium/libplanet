@@ -32,10 +32,7 @@ namespace Libplanet.Net.Transports
 
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey>? _trustedAppProtocolVersionSigners;
         private readonly string? _host;
-        private readonly DifferentAppProtocolVersionEncountered?
-            _differentAppProtocolVersionEncountered;
 
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
@@ -79,14 +76,12 @@ namespace Libplanet.Net.Transports
 
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _iceServers = iceServers.ToList();
-            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _messageCodec = new TcpMessageCodec(
                 _appProtocolVersion,
-                _trustedAppProtocolVersionSigners,
-                _differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
@@ -594,51 +589,12 @@ namespace Libplanet.Net.Transports
 
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
-            Message message = _messageCodec.Decode(
-                content.ToArray(),
-                false,
-                AppProtocolVersionValidator);
+            Message message = _messageCodec.Decode(content.ToArray(), false);
 
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",
                 message);
             return message;
-        }
-
-        private void AppProtocolVersionValidator(
-            byte[] identity,
-            Peer remotePeer,
-            AppProtocolVersion remoteVersion)
-        {
-            bool valid = false;
-            bool trusted = true;
-            if (remoteVersion.Equals(_appProtocolVersion))
-            {
-                valid = true;
-            }
-            else if (!(_trustedAppProtocolVersionSigners is null) &&
-                     !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
-            {
-                trusted = false;
-            }
-            else if (_differentAppProtocolVersionEncountered is { } callback)
-            {
-                callback(
-                    remotePeer,
-                    remoteVersion,
-                    _appProtocolVersion);
-            }
-
-            if (!valid)
-            {
-                throw new DifferentAppProtocolVersionException(
-                    "The version of the received message is not valid.",
-                    remotePeer,
-                    identity,
-                    _appProtocolVersion,
-                    remoteVersion,
-                    trusted);
-            }
         }
 
         private async Task ReceiveMessageAsync(CancellationToken cancellationToken)

@@ -88,8 +88,7 @@ namespace Libplanet.Net.Messages
         /// <inheritdoc/>
         public Message Decode(
             byte[] encoded,
-            bool reply,
-            Action<byte[], Peer, AppProtocolVersion> appProtocolVersionValidator)
+            bool reply)
         {
             if (encoded.Length == 0)
             {
