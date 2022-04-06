@@ -1,4 +1,5 @@
 #nullable disable
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,8 +151,21 @@ namespace Libplanet.Net.Tests
 
                 foreach (var peer in peers)
                 {
-                    await a.AddPeersAsync(new[] { peer }, null);
-                    await b.AddPeersAsync(new[] { peer }, null);
+                    try
+                    {
+                        await a.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1));
+                    }
+                    catch (PingTimeoutException)
+                    {
+                    }
+
+                    try
+                    {
+                        await b.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1));
+                    }
+                    catch (PingTimeoutException)
+                    {
+                    }
                 }
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
@@ -173,11 +187,15 @@ namespace Libplanet.Net.Tests
             {
                 await StopAsync(c);
                 await StopAsync(d);
+                await StopAsync(e);
+                await StopAsync(f);
 
                 a.Dispose();
                 b.Dispose();
                 c.Dispose();
                 d.Dispose();
+                e.Dispose();
+                f.Dispose();
             }
         }
     }
