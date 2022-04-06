@@ -114,10 +114,7 @@ namespace Libplanet
                 throw new ArgumentNullException(nameof(bytes));
             }
 
-            return bytes.Aggregate(
-                0,
-                (current, t) => unchecked(current * (bytes.Length + 1) + t)
-            );
+            return bytes.Aggregate(0, (current, b) => unchecked(current * 397) ^ b);
         }
 
         /// <summary>

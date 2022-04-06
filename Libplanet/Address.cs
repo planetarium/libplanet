@@ -39,7 +39,6 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [Serializable]
-    [Equals]
     public readonly struct Address : ISerializable, IComparable<Address>, IComparable
     {
         /// <summary>
@@ -174,9 +173,15 @@ namespace Libplanet
             }
         }
 
-        public static bool operator ==(Address left, Address right) => Operator.Weave(left, right);
+        public static bool operator ==(Address left, Address right) => left.Equals(right);
 
-        public static bool operator !=(Address left, Address right) => Operator.Weave(left, right);
+        public static bool operator !=(Address left, Address right) => !left.Equals(right);
+
+        public bool Equals(Address other) => ByteArray.SequenceEqual(other.ByteArray);
+
+        public override bool Equals(object? obj) => obj is Address other && Equals(other);
+
+        public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
         /// <summary>
         /// Gets a mutable array of 20 <see cref="byte"/>s that represent

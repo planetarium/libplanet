@@ -12,8 +12,8 @@ namespace Libplanet.Blocks
     /// <see cref="Block{T}.PreEvaluationHash"/> is invalid.
     /// </summary>
     [Serializable]
-    [Equals]
-    public class InvalidBlockPreEvaluationHashException : InvalidBlockException
+    public class InvalidBlockPreEvaluationHashException
+        : InvalidBlockException, IEquatable<InvalidBlockPreEvaluationHashException>
     {
         /// <summary>
         /// Initializes a new instance of the
@@ -59,12 +59,12 @@ namespace Libplanet.Blocks
         public static bool operator ==(
             InvalidBlockPreEvaluationHashException left,
             InvalidBlockPreEvaluationHashException right
-        ) => Operator.Weave(left, right);
+        ) => left.Equals(right);
 
         public static bool operator !=(
             InvalidBlockPreEvaluationHashException left,
             InvalidBlockPreEvaluationHashException right
-        ) => Operator.Weave(left, right);
+        ) => !left.Equals(right);
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -73,5 +73,28 @@ namespace Libplanet.Blocks
             info.AddValue(nameof(ActualPreEvaluationHash), ActualPreEvaluationHash.ToArray());
             info.AddValue(nameof(ExpectedPreEvaluationHash), ExpectedPreEvaluationHash.ToArray());
         }
+
+        public bool Equals(InvalidBlockPreEvaluationHashException? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return ActualPreEvaluationHash.SequenceEqual(other.ActualPreEvaluationHash) &&
+                   ExpectedPreEvaluationHash.SequenceEqual(other.ExpectedPreEvaluationHash) &&
+                   Message.Equals(other.Message);
+        }
+
+        public override bool Equals(object? obj) =>
+            obj is InvalidBlockPreEvaluationHashException other && Equals(other);
+
+        public override int GetHashCode() =>
+            HashCode.Combine(ActualPreEvaluationHash, ExpectedPreEvaluationHash, Message);
     }
 }

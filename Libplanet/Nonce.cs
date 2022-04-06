@@ -9,8 +9,7 @@ namespace Libplanet
     /// An arbitrary <see cref="byte"/>s that determines a
     /// <see cref="Hashcash.Stamp"/>.
     /// </summary>
-    [Equals]
-    public struct Nonce
+    public struct Nonce : IEquatable<Nonce>
     {
         private ImmutableArray<byte> _byteArray;
 
@@ -59,9 +58,15 @@ namespace Libplanet
             }
         }
 
-        public static bool operator ==(Nonce left, Nonce right) => Operator.Weave(left, right);
+        public static bool operator ==(Nonce left, Nonce right) => left.Equals(right);
 
-        public static bool operator !=(Nonce left, Nonce right) => Operator.Weave(left, right);
+        public static bool operator !=(Nonce left, Nonce right) => !left.Equals(right);
+
+        public bool Equals(Nonce other) => ByteArray.SequenceEqual(other.ByteArray);
+
+        public override bool Equals(object? obj) => obj is Nonce other && Equals(other);
+
+        public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of the nonce.

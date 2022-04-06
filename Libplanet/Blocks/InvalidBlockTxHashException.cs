@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -6,8 +5,8 @@ using System.Security.Cryptography;
 namespace Libplanet.Blocks
 {
     [Serializable]
-    [Equals]
-    public class InvalidBlockTxHashException : InvalidBlockException
+    public class InvalidBlockTxHashException
+        : InvalidBlockException, IEquatable<InvalidBlockTxHashException>
     {
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockTxHashException"/> class.
@@ -20,7 +19,8 @@ namespace Libplanet.Blocks
             string message,
             HashDigest<SHA256>? blockTxHash,
             HashDigest<SHA256>? calculatedTxHash)
-            : base($"{message}\n" +
+            : base(
+                $"{message}\n" +
                 $"In block header: {blockTxHash}\n" +
                 $"Calculated: {calculatedTxHash}")
         {
@@ -31,12 +31,13 @@ namespace Libplanet.Blocks
         protected InvalidBlockTxHashException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            if ((byte[])info.GetValue(nameof(BlockTxHash), typeof(byte[])) is { } bTxHashBytes)
+            if ((byte[])info.GetValue(nameof(BlockTxHash), typeof(byte[]))! is { } bTxHashBytes)
             {
                 BlockTxHash = new HashDigest<SHA256>(bTxHashBytes);
             }
 
-            if ((byte[])info.GetValue(nameof(CalculatedTxHash), typeof(byte[])) is { } cTxHashBytes)
+            if ((byte[])info.GetValue(nameof(CalculatedTxHash), typeof(byte[]))! is
+                { } cTxHashBytes)
             {
                 CalculatedTxHash = new HashDigest<SHA256>(cTxHashBytes);
             }
@@ -55,12 +56,12 @@ namespace Libplanet.Blocks
         public static bool operator ==(
             InvalidBlockTxHashException left,
             InvalidBlockTxHashException right
-        ) => Operator.Weave(left, right);
+        ) => left.Equals(right);
 
         public static bool operator !=(
             InvalidBlockTxHashException left,
             InvalidBlockTxHashException right
-        ) => Operator.Weave(left, right);
+        ) => !left.Equals(right);
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -68,5 +69,27 @@ namespace Libplanet.Blocks
             info.AddValue(nameof(BlockTxHash), BlockTxHash?.ToByteArray());
             info.AddValue(nameof(CalculatedTxHash), CalculatedTxHash?.ToByteArray());
         }
+
+        public bool Equals(InvalidBlockTxHashException? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Nullable.Equals(BlockTxHash, other.BlockTxHash) && Nullable.Equals(
+                CalculatedTxHash,
+                other.CalculatedTxHash);
+        }
+
+        public override bool Equals(object? obj) =>
+            obj is InvalidBlockTxHashException other && Equals(other);
+
+        public override int GetHashCode() => HashCode.Combine(BlockTxHash, CalculatedTxHash);
     }
 }

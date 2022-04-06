@@ -1,4 +1,4 @@
-#nullable disable
+using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
@@ -6,8 +6,7 @@ using Bencodex.Types;
 
 namespace Libplanet.Tx
 {
-    [Equals]
-    internal readonly struct RawTransaction
+    internal readonly struct RawTransaction : IEquatable<RawTransaction>
     {
         public static readonly byte[] NonceKey = { 0x6e }; // 'n'
 
@@ -103,10 +102,22 @@ namespace Libplanet.Tx
         public ImmutableArray<IValue> Actions { get; }
 
         public static bool operator ==(RawTransaction left, RawTransaction right) =>
-            Operator.Weave(left, right);
+            left.Equals(right);
 
         public static bool operator !=(RawTransaction left, RawTransaction right) =>
-            Operator.Weave(left, right);
+            !left.Equals(right);
+
+        public bool Equals(RawTransaction other) => Nonce == other.Nonce &&
+                                                    Signer.SequenceEqual(other.Signer) &&
+                                                    PublicKey.SequenceEqual(other.PublicKey) &&
+                                                    GenesisHash.SequenceEqual(other.GenesisHash) &&
+                                                    UpdatedAddresses.SequenceEqual(
+                                                        other.UpdatedAddresses) &&
+                                                    Timestamp == other.Timestamp &&
+                                                    Signature.SequenceEqual(other.Signature) &&
+                                                    Actions.SequenceEqual(other.Actions);
+
+        public override bool Equals(object? obj) => obj is RawTransaction other && Equals(other);
 
         public RawTransaction AddSignature(byte[] signature)
         {
@@ -147,10 +158,7 @@ namespace Libplanet.Tx
             return dict;
         }
 
-        public override int GetHashCode()
-        {
-            return ByteUtil.CalculateHashCode(Signature.ToArray());
-        }
+        public override int GetHashCode() => ByteUtil.CalculateHashCode(Signature.ToArray());
 
         public override string ToString()
         {

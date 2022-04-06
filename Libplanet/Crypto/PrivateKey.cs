@@ -39,8 +39,7 @@ namespace Libplanet.Crypto
     /// <para>Every <see cref="PrivateKey"/> object is immutable.</para>
     /// </remarks>
     /// <seealso cref="Libplanet.Crypto.PublicKey"/>
-    [Equals]
-    public class PrivateKey
+    public class PrivateKey : IEquatable<PrivateKey>
     {
         private const int KeyByteSize = 32;
         private PublicKey? _publicKey;
@@ -101,7 +100,6 @@ namespace Libplanet.Crypto
         /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this private key.
         /// </summary>
-        [IgnoreDuringEquals]
         public PublicKey PublicKey
         {
             get
@@ -140,11 +138,9 @@ namespace Libplanet.Crypto
 
         internal ECPrivateKeyParameters KeyParam { get; }
 
-        public static bool operator ==(PrivateKey left, PrivateKey right) =>
-            Operator.Weave(left, right);
+        public static bool operator ==(PrivateKey left, PrivateKey right) => left.Equals(right);
 
-        public static bool operator !=(PrivateKey left, PrivateKey right) =>
-            Operator.Weave(left, right);
+        public static bool operator !=(PrivateKey left, PrivateKey right) => !left.Equals(right);
 
         /// <summary>
         /// Creates a <see cref="PrivateKey"/> instance from hexadecimal string of bytes.
@@ -172,6 +168,14 @@ namespace Libplanet.Crypto
 
             return new PrivateKey(unverifiedKey: bytes, informedConsent: true);
         }
+
+        public bool Equals(PrivateKey? other) => KeyParam.Equals(other?.KeyParam);
+
+        public override bool Equals(object? obj) => obj is PrivateKey other && Equals(other);
+
+        public override int GetHashCode() =>
+            unchecked(ByteUtil.CalculateHashCode(ToByteArray()) * 397 ^
+                      KeyParam.GetHashCode());
 
         /// <summary>
         /// Creates a signature from the given <paramref name="message"/>.

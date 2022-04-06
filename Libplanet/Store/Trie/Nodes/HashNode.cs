@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Bencodex.Types;
 
@@ -6,8 +7,7 @@ namespace Libplanet.Store.Trie.Nodes
     /// <summary>
     /// <see cref="HashDigest{T}"/>'s wrapper class, used in <see cref="ITrie"/> interface.
     /// </summary>
-    [Equals]
-    internal class HashNode : INode
+    internal class HashNode : INode, IEquatable<HashNode>
     {
         public HashNode(HashDigest<SHA256> hashDigest)
         {
@@ -16,11 +16,13 @@ namespace Libplanet.Store.Trie.Nodes
 
         public HashDigest<SHA256> HashDigest { get; }
 
-        public static bool operator ==(HashNode left, HashNode right) =>
-            Operator.Weave(left, right);
+        public static bool operator ==(HashNode left, HashNode right) => left.Equals(right);
 
-        public static bool operator !=(HashNode left, HashNode right) =>
-            Operator.Weave(left, right);
+        public static bool operator !=(HashNode left, HashNode right) => !left.Equals(right);
+
+        public bool Equals(HashNode? other) => HashDigest.Equals(other?.HashDigest);
+
+        public override bool Equals(object? obj) => obj is HashNode other && Equals(other);
 
         public byte[] Serialize()
         {
@@ -31,9 +33,6 @@ namespace Libplanet.Store.Trie.Nodes
         public IValue ToBencodex() =>
             new Binary(HashDigest.ToByteArray());
 
-        public override int GetHashCode()
-        {
-            return HashDigest.GetHashCode();
-        }
+        public override int GetHashCode() => HashDigest.GetHashCode();
     }
 }

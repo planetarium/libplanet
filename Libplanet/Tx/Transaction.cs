@@ -647,27 +647,13 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc />
-        public bool Equals(Transaction<T> other)
-        {
-            return Id.Equals(other.Id);
-        }
+        public bool Equals(Transaction<T> other) => Id.Equals(other?.Id);
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            return obj is Transaction<T> other && Equals(other);
-        }
+        public override bool Equals(object obj) => obj is Transaction<T> other && Equals(other);
 
         /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
 
         internal RawTransaction ToRawTransaction(bool includeSign)
         {

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
@@ -21,8 +20,7 @@ namespace Libplanet.Crypto
     /// cryptography, it uses the same <see cref="SymmetricKey"/> for both
     /// encrypting a plaintext and decrypting a ciphertext.
     /// </summary>
-    [Equals]
-    public class SymmetricKey
+    public class SymmetricKey : IEquatable<SymmetricKey>
     {
         private const int KeyBitSize = 256;
         private const int MacBitSize = 128;
@@ -73,11 +71,29 @@ namespace Libplanet.Crypto
         [Pure]
         public ImmutableArray<byte> ByteArray => _key.ToImmutableArray();
 
-        public static bool operator ==(SymmetricKey left, SymmetricKey right) =>
-            Operator.Weave(left, right);
+        public static bool operator ==(SymmetricKey left, SymmetricKey right) => left.Equals(right);
 
         public static bool operator !=(SymmetricKey left, SymmetricKey right) =>
-            Operator.Weave(left, right);
+            !left.Equals(right);
+
+        public bool Equals(SymmetricKey? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return ByteArray.SequenceEqual(other.ByteArray);
+        }
+
+        public override bool Equals(object? obj) => obj is SymmetricKey other && Equals(other);
+
+        public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
         /// <summary>
         /// Converts a plain <paramref name="message"/> to a ciphertext
@@ -96,7 +112,7 @@ namespace Libplanet.Crypto
         /// </returns>
         /// <seealso cref="Decrypt(byte[], int)"/>
         [Pure]
-        public byte[] Encrypt(byte[] message, byte[] nonSecret = null)
+        public byte[] Encrypt(byte[] message, byte[]? nonSecret = null)
         {
             var nonce = new byte[NonceBitSize / 8];
             _secureRandom.NextBytes(nonce, 0, nonce.Length);

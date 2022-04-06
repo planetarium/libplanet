@@ -50,7 +50,7 @@ namespace Libplanet.Tests
                 0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
             };
 
-            Assert.Equal(465595541, ByteUtil.CalculateHashCode(bytes));
+            Assert.Equal(-1026516859, ByteUtil.CalculateHashCode(bytes));
 
             var otherBytes = TestUtils.GetRandomBytes(20);
             otherBytes[19] = 0xdd;

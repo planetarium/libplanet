@@ -26,8 +26,7 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
-    [Equals]
-    public class PublicKey
+    public class PublicKey : IEquatable<PublicKey>
     {
         /// <summary>
         /// Creates a <see cref="PublicKey"/> instance from the given
@@ -55,11 +54,15 @@ namespace Libplanet.Crypto
 
         internal ECPublicKeyParameters KeyParam { get; }
 
-        public static bool operator ==(PublicKey left, PublicKey right) =>
-            Operator.Weave(left, right);
+        public static bool operator ==(PublicKey left, PublicKey right) => left.Equals(right);
 
-        public static bool operator !=(PublicKey left, PublicKey right) =>
-            Operator.Weave(left, right);
+        public static bool operator !=(PublicKey left, PublicKey right) => !left.Equals(right);
+
+        public bool Equals(PublicKey? other) => KeyParam.Equals(other?.KeyParam);
+
+        public override bool Equals(object? obj) => obj is PublicKey other && Equals(other);
+
+        public override int GetHashCode() => KeyParam.GetHashCode();
 
         /// <summary>
         /// Encodes this public key into a mutable <see cref="byte"/> array representation.
