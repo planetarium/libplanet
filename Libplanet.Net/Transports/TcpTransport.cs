@@ -664,12 +664,14 @@ namespace Libplanet.Net.Transports
             catch (DifferentAppProtocolVersionException dapve)
             {
                 _logger.Debug("Message from peer with different version received.");
-                var differentVersion = new DifferentVersion
+                if (dapve.Trusted)
                 {
-                    Identity = dapve.Identity,
-                };
-
-                await WriteMessageAsync(differentVersion, client, cancellationToken);
+                    var differentVersion = new DifferentVersion
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    await WriteMessageAsync(differentVersion, client, cancellationToken);
+                }
             }
             catch (IOException)
             {

@@ -42,6 +42,9 @@ To be released.
     [[#1879]]
  -  (Libplanet.Net) `IMessageCodec` now never decodes a `Message` with
     a different `AppProtocolVersion` from the local version.  [[#1885], [#1890]]
+ -  (Libplanet.Net) `ITransport` no longer replies with `DifferentVersion` type
+    `Message` to a `Peer` with a different `AppProtocolVersion` that is not
+    signed by a trusted source.  [[#1890]]
 
 ### Bug fixes
 

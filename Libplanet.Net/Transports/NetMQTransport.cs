@@ -539,12 +539,15 @@ namespace Libplanet.Net.Transports
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
-                var differentVersion = new DifferentVersion()
-                {
-                    Identity = dapve.Identity,
-                };
-                _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
                 _logger.Debug("Message from peer with a different version received.");
+                if (dapve.Trusted)
+                {
+                    var differentVersion = new DifferentVersion()
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
+                }
             }
             catch (InvalidMessageTimestampException imte)
             {
