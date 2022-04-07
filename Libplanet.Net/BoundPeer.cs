@@ -10,8 +10,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Net
 {
     [Serializable]
-    [Equals]
-    public sealed class BoundPeer : Peer
+    public sealed class BoundPeer : Peer, IEquatable<BoundPeer>
     {
         private static readonly byte[] EndPointHostKey = { 0x68 }; // 'h'
         private static readonly byte[] EndPointPortKey = { 0x65 }; // 'e'
@@ -62,11 +61,9 @@ namespace Libplanet.Net
         [Pure]
         public DnsEndPoint EndPoint { get; }
 
-        public static bool operator ==(BoundPeer left, BoundPeer right) =>
-            Operator.Weave(left, right);
+        public static bool operator ==(BoundPeer left, BoundPeer right) => left.Equals(right);
 
-        public static bool operator !=(BoundPeer left, BoundPeer right) =>
-            Operator.Weave(left, right);
+        public static bool operator !=(BoundPeer left, BoundPeer right) => !left.Equals(right);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundPeer"/> class from
@@ -121,6 +118,25 @@ namespace Libplanet.Net
                 );
             }
         }
+
+        public bool Equals(BoundPeer? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return base.Equals(other) && EndPoint.Equals(other.EndPoint);
+        }
+
+        public override bool Equals(object? obj) => obj is BoundPeer other && Equals(other);
+
+        public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), EndPoint);
 
         /// <inheritdoc/>
         public override void GetObjectData(

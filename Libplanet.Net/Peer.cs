@@ -14,8 +14,7 @@ namespace Libplanet.Net
     /// </summary>
     /// <seealso cref="Swarm{T}"/>
     [Serializable]
-    [Equals]
-    public class Peer : ISerializable
+    public class Peer : ISerializable, IEquatable<Peer>
     {
         private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
         private static readonly byte[] PublicIpAddressKey = { 0x50 }; // 'P'
@@ -63,7 +62,6 @@ namespace Libplanet.Net
         /// </summary>
         /// <seealso cref="PublicKey"/>
         [LogAsScalar]
-        [IgnoreDuringEquals]
         [Pure]
         public Address Address => new Address(PublicKey);
 
@@ -71,9 +69,31 @@ namespace Libplanet.Net
         [Pure]
         public IPAddress? PublicIPAddress { get; }
 
-        public static bool operator ==(Peer left, Peer right) => Operator.Weave(left, right);
+        public static bool operator ==(Peer left, Peer right) => left.Equals(right);
 
-        public static bool operator !=(Peer left, Peer right) => Operator.Weave(left, right);
+        public static bool operator !=(Peer left, Peer right) => !left.Equals(right);
+
+        public bool Equals(Peer? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return PublicKey.Equals(other.PublicKey) &&
+                   (PublicIPAddress?.Equals(other.PublicIPAddress) ??
+                    other.PublicIPAddress is null);
+        }
+
+        public override bool Equals(object? obj) => obj is Peer other && Equals(other);
+
+        public override int GetHashCode() =>
+            HashCode.Combine(PublicKey.GetHashCode(), PublicIPAddress?.GetHashCode());
 
         /// <inheritdoc/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
