@@ -96,7 +96,7 @@ Libplanet-backed games/apps too.</p>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Crypto_PublicKey_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PublicKey : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class PublicKey : IEquatable&lt;PublicKey&gt;</code></pre>
   </div>
   <h5 id="Libplanet_Crypto_PublicKey_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object is immutable.</p>
@@ -108,7 +108,7 @@ Libplanet-backed games/apps too.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.%23ctor(IReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey__ctor_" data-uid="Libplanet.Crypto.PublicKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PublicKey__ctor_IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.#ctor(IReadOnlyList{System.Byte})">PublicKey(IReadOnlyList&lt;Byte&gt;)</h4>
@@ -158,7 +158,7 @@ a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> can be en
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L134">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L137">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Encrypt_" data-uid="Libplanet.Crypto.PublicKey.Encrypt*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Encrypt_ImmutableArray_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.Encrypt(ImmutableArray{System.Byte})">Encrypt(ImmutableArray&lt;Byte&gt;)</h4>
@@ -219,7 +219,7 @@ a returned ciphertext is not a Unicode <see cref="!:System.String"></see>, but a
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Encrypt_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Encrypt(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L113">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Encrypt_" data-uid="Libplanet.Crypto.PublicKey.Encrypt*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte___" data-uid="Libplanet.Crypto.PublicKey.Encrypt(System.Byte[])">Encrypt(Byte[])</h4>
@@ -277,10 +277,104 @@ a returned ciphertext is not a Unicode <see cref="!:System.String"></see>, but a
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Equals_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Equals(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L61">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PublicKey_Equals_" data-uid="Libplanet.Crypto.PublicKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_PublicKey_Equals_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PublicKey.Equals(Libplanet.Crypto.PublicKey)">Equals(PublicKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(PublicKey other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L63">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PublicKey_Equals_" data-uid="Libplanet.Crypto.PublicKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_PublicKey_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Crypto.PublicKey.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Format_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Format(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L80">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Format_" data-uid="Libplanet.Crypto.PublicKey.Format*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Format_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.Format(System.Boolean)">Format(Boolean)</h4>
@@ -338,10 +432,40 @@ or not.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L65">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PublicKey_GetHashCode_" data-uid="Libplanet.Crypto.PublicKey.GetHashCode*"></a>
+  <h4 id="Libplanet_Crypto_PublicKey_GetHashCode" data-uid="Libplanet.Crypto.PublicKey.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L93">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_ToImmutableArray_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_ToImmutableArray_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.ToImmutableArray(System.Boolean)">ToImmutableArray(Boolean)</h4>
@@ -401,7 +525,7 @@ or not.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L193">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L196">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_ToString_" data-uid="Libplanet.Crypto.PublicKey.ToString*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_ToString" data-uid="Libplanet.Crypto.PublicKey.ToString">ToString()</h4>
@@ -433,7 +557,7 @@ or not.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Verify(IReadOnlyList%7BSystem.Byte%7D%2CIReadOnlyList%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L151">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L154">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_Verify_" data-uid="Libplanet.Crypto.PublicKey.Verify*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Verify_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__" data-uid="Libplanet.Crypto.PublicKey.Verify(IReadOnlyList{System.Byte},IReadOnlyList{System.Byte})">Verify(IReadOnlyList&lt;Byte&gt;, IReadOnlyList&lt;Byte&gt;)</h4>
@@ -498,7 +622,7 @@ Otherwise <code>false</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_op_Equality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.op_Equality(Libplanet.Crypto.PublicKey%2CLibplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L58">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_op_Equality_" data-uid="Libplanet.Crypto.PublicKey.op_Equality*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_op_Equality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PublicKey.op_Equality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)">Equality(PublicKey, PublicKey)</h4>
@@ -550,7 +674,7 @@ Otherwise <code>false</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Crypto_PublicKey_op_Inequality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.op_Inequality(Libplanet.Crypto.PublicKey%2CLibplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L61">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Crypto/PublicKey.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PublicKey_op_Inequality_" data-uid="Libplanet.Crypto.PublicKey.op_Inequality*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_op_Inequality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PublicKey.op_Inequality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)">Inequality(PublicKey, PublicKey)</h4>
