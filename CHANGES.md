@@ -34,6 +34,21 @@ To be released.
 [#1891]: https://github.com/planetarium/libplanet/pull/1891
 
 
+Version 0.32.1
+--------------
+
+Released on April 8th, 2022.
+
+### Behavioral changes
+
+ -  (Libplanet.Net) `ITransport`'s behavior rolled back to send replies
+    with `DifferentVersion` type `Message` to a `Peer` with a different
+    `AppProtocolVersion` regardless of whether the `APV` from `Peer` is
+    signed by a trusted source or not.  [[#1900]]
+
+[#1900]: https://github.com/planetarium/libplanet/pull/1900
+
+
 Version 0.32.0
 --------------
 
