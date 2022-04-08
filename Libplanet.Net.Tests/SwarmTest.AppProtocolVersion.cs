@@ -146,26 +146,19 @@ namespace Libplanet.Net.Tests
                 await StartAsync(e);
                 await StartAsync(f);
 
-                var peers = new[] { c.AsPeer, d.AsPeer, e.AsPeer, f.AsPeer };
+                await a.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
+                await a.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
+                await Assert.ThrowsAsync<PingTimeoutException>(
+                    () => a.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
+                await Assert.ThrowsAsync<PingTimeoutException>(
+                    () => a.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
 
-                foreach (var peer in peers)
-                {
-                    try
-                    {
-                        await a.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1));
-                    }
-                    catch (PingTimeoutException)
-                    {
-                    }
-
-                    try
-                    {
-                        await b.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1));
-                    }
-                    catch (PingTimeoutException)
-                    {
-                    }
-                }
+                await b.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
+                await b.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
+                await Assert.ThrowsAsync<PingTimeoutException>(
+                    () => b.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
+                await Assert.ThrowsAsync<PingTimeoutException>(
+                    () => b.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
