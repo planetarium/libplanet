@@ -5,7 +5,6 @@ using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using Serilog;
 
 namespace Libplanet.Net
 {
@@ -18,79 +17,85 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>> _blocks;
-
         public BlockCandidateTable()
         {
-            _blocks = new ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>>();
+            Branches = new ConcurrentBag<CandidateBranch<T>>();
         }
+
+       /// <summary>
+        /// Reference to <see cref="BlockChain{T}.Tip"/>.
+        /// </summary>
+        public Block<T>? Tip { get; }
+
+        /// <summary>
+        /// Retrieves the <see cref="CandidateBranch{T}"/> with the best <see cref="Tip"/>, i.e.
+        /// the highest <see cref="Block{T}.TotalDifficulty"/>.
+        /// </summary>
+        public CandidateBranch<T>? BestBranch { get; }
 
         public long Count
         {
-            get => _blocks.Count;
-        }
-
-        public bool Any() => !_blocks.IsEmpty;
-
-        /// <summary>
-        /// Adds a <see cref="Block{T}"/>s to the table.
-        /// </summary>
-        /// <param name="blockHeader">This is the header of the <see cref="BlockChain{T}"/>
-        /// tip at the time of downloading the blocks.</param>
-        /// <param name="blocks">List of downloaded <see cref="Block{T}"/>.</param>
-        public void Add(BlockHeader blockHeader, IEnumerable<Block<T>> blocks)
-        {
-            if (_blocks.ContainsKey(blockHeader))
-            {
-                return;
-            }
-
-            try
-            {
-                var sortedBlocks =
-                    new SortedList<long, Block<T>>(blocks.ToDictionary(i => i.Index));
-                _blocks.TryAdd(blockHeader, sortedBlocks);
-            }
-            catch (ArgumentException e)
-            {
-                Log.Debug(
-                    "Among the previous blocks of BlockHeader " +
-                    "#{Index} {BlockHash}, there is a block with the wrong index. " +
-                    "InnerMessage: {InnerMessage}",
-                    blockHeader.Index,
-                    blockHeader.Hash,
-                    e.Message);
-            }
+            get => Branches.Count;
         }
 
         /// <summary>
-        /// Get the <see cref="Block{T}"/>s which are in the table.
+        /// An <see cref="IEnumerable{T}"/> of <see cref="CandidateBranch{T}"/>es that can be appended
+        /// to the <em>current</em> <see cref="BlockChain{T}"/>.
         /// </summary>
-        /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
-        /// tip of this round.</param>
-        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/>.</returns>
-        public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
-            BlockHeader thisRoundTip)
+        private ConcurrentBag<CandidateBranch<T>> Branches { get; }
+
+        /// <summary>
+        /// Adds an <see cref="CandidateBranch{T}"/> to <see cref="Branches"/>.
+        /// </summary>
+        /// <param name="branch">The <see cref="CandidateBranch{T}"/>
+        /// to add to <see cref="Branches"/>.
+        /// </param>
+        /// <remarks>
+        /// Note that <see cref="Tip"/> could have changed while downloading <see cref="Block{T}"/>s
+        /// to create <paramref name="branch"/>.  This should be dealt with accordingly in order
+        /// to ensure concurrency and enforce the stated properties in the interface summary.
+        /// In particular, the first point may no longer be <c>true</c> even if
+        /// <paramref name="branch"/> can still be "appended".
+        /// </remarks>
+        public void Add(CandidateBranch<T> branch)
         {
-            return _blocks.TryGetValue(thisRoundTip, out var blocks)
-                ? blocks
-                : null;
+            Branches.Add(branch);
         }
 
-        public bool TryRemove(BlockHeader header)
+        /// <summary>
+        /// Updates all <see cref="CandidateBranch{T}"/>es in <see cref="Branches"/> with
+        /// an <see cref="UpdatePath{T}"/>.
+        /// </summary>
+        /// <param name="path">The <see cref="UpdatePath{T}"/> representing a path from the previous
+        /// <see cref="Tip"/> to the newly changed <see cref="Tip"/>.</param>
+        /// <param name="predicate"><see cref="Func{TResult}"/> for predicate which
+        /// <see cref="Branches"/> are no more needed.</param>
+        /// <remarks>
+        /// <para>
+        /// In order for this to be kept concurrent with the local <see cref="BlockChain{T}"/>,
+        /// this should be invoked every time when the tip of the <see cref="BlockChain{T}"/> is
+        /// updated.
+        /// </para>
+        /// <para>
+        /// Also, while updating each <see cref="CandidateBranch{T}"/>,
+        /// if an <see cref="CandidateBranch{T}"/> is no longer needed,
+        /// i.e. if <see cref="CandidateBranch{T}.Tip"/>'s <see cref="Block{T}.TotalDifficulty"/> is
+        /// no longer higher than that of <see cref="UpdatePath{T}.NewTip"/>, it should be discarded.
+        /// </para>
+        /// </remarks>
+        public void Update(UpdatePath<T> path, Func<IBlockExcerpt, bool> predicate)
         {
-            return _blocks.TryRemove(header, out _);
+            return;
         }
 
-        public void Cleanup(Func<IBlockExcerpt, bool> predicate)
+        /// <summary>
+        /// Removes every <see cref="CandidateBranch{T}"/> in <see cref="Branches"/>.
+        /// </summary>
+        public void Clear()
         {
-            foreach (var blockHeader in _blocks.Keys)
-            {
-                if (!predicate(blockHeader))
-                {
-                    _blocks.TryRemove(blockHeader, out _);
-                }
-            }
+            return;
         }
+
+        public bool Any() => Branches.Any();
     }
 }

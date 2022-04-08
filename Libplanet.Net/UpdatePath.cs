@@ -34,10 +34,10 @@ namespace Libplanet.Net
     /// </remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class CandidatePath<T>
+    public class UpdatePath<T>
         where T : IAction, new()
     {
-        public CandidatePath(
+        public UpdatePath(
             IEnumerable<Block<T>> blocks,
             Block<T> oldTip,
             Block<T> branchPoint,
