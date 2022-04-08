@@ -148,17 +148,13 @@ namespace Libplanet.Net.Tests
 
                 await a.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
                 await a.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
-                await Assert.ThrowsAsync<PingTimeoutException>(
-                    () => a.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
-                await Assert.ThrowsAsync<PingTimeoutException>(
-                    () => a.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
+                await a.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1));
+                await a.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1));
 
                 await b.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
                 await b.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
-                await Assert.ThrowsAsync<PingTimeoutException>(
-                    () => b.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
-                await Assert.ThrowsAsync<PingTimeoutException>(
-                    () => b.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
+                await b.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1));
+                await b.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1));
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
