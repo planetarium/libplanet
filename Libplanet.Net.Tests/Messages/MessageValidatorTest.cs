@@ -14,6 +14,8 @@ namespace Libplanet.Net.Tests.Messages
         {
             var peer = new Peer(new PrivateKey().PublicKey);
             var buffer = TimeSpan.FromSeconds(1);
+            var halfBuffer = TimeSpan.FromSeconds(0.5);
+            var doubleBuffer = TimeSpan.FromSeconds(2);
             var messageValidator = new MessageValidator(
                 appProtocolVersion: default,
                 trustedAppProtocolVersionSigners: null,
@@ -22,17 +24,17 @@ namespace Libplanet.Net.Tests.Messages
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + (buffer / 2));
+                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + halfBuffer);
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - (buffer / 2));
+                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - halfBuffer);
 
             // Outside buffer throws an exception.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + (buffer * 2)));
+                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + doubleBuffer));
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - (buffer * 2)));
+                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - doubleBuffer));
 
             // If buffer is null, no exception gets thrown.
             messageValidator = new MessageValidator(default, null, null, null);
