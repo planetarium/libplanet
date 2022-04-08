@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.32.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on April 8th, 2022.
 
 ### Backward-incompatible API changes
 
@@ -22,10 +20,6 @@ To be released.
         for running context.
  -  `DifferentAppProtocolVersionEncountered` delegate now returns `void`.
     [[#1885], [#1890]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -53,10 +47,6 @@ To be released.
  -  (Libplanet.Net) `DifferentAppProtocolVersionException` and
     `InvalidMessageSignatureException` can now be serialized and deserialized.
     [[#1889]]
-
-### Dependencies
-
-### CLI tools
 
 [#1872]: https://github.com/planetarium/libplanet/issues/1872
 [#1874]: https://github.com/planetarium/libplanet/issues/1874
