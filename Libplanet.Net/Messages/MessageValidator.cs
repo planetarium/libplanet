@@ -17,13 +17,13 @@ namespace Libplanet.Net.Messages
         internal MessageValidator(
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            TimeSpan? messageTimestampBuffer,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered)
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            TimeSpan? messageTimestampBuffer)
         {
             Apv = appProtocolVersion;
             TrustedApvSigners = trustedAppProtocolVersionSigners;
-            MessageTimestampBuffer = messageTimestampBuffer;
             DifferentApvEncountered = differentAppProtocolVersionEncountered;
+            MessageTimestampBuffer = messageTimestampBuffer;
         }
 
         /// <summary>
@@ -71,6 +71,15 @@ namespace Libplanet.Net.Messages
         public IImmutableSet<PublicKey>? TrustedApvSigners { get; }
 
         /// <summary>
+        /// A callback method that gets invoked when a an <see cref="AppProtocolVersion"/>
+        /// by a <em>trusted</em> signer that is different from <see cref="Apv"/> is encountered.
+        /// </summary>
+        /// <remarks>
+        /// If <c>null</c>, no action is taken.
+        /// </remarks>
+        public DifferentAppProtocolVersionEncountered? DifferentApvEncountered { get; }
+
+        /// <summary>
         /// <para>
         /// The <see cref="TimeSpan"/> to use as a buffer when decoding <see cref="Message"/>s.
         /// </para>
@@ -90,15 +99,6 @@ namespace Libplanet.Net.Messages
         /// </para>
         /// </summary>
         public TimeSpan? MessageTimestampBuffer { get; }
-
-        /// <summary>
-        /// A callback method that gets invoked when a an <see cref="AppProtocolVersion"/>
-        /// by a <em>trusted</em> signer that is different from <see cref="Apv"/> is encountered.
-        /// </summary>
-        /// <remarks>
-        /// If <c>null</c>, no action is taken.
-        /// </remarks>
-        public DifferentAppProtocolVersionEncountered? DifferentApvEncountered { get; }
 
         /// <summary>
         /// Validates an <see cref="AppProtocolVersion"/> against <see cref="Apv"/>.

@@ -38,8 +38,8 @@ namespace Libplanet.Net.Messages
             _messageValidator = new MessageValidator(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
-                messageTimestampBuffer,
-                differentAppProtocolVersionEncountered);
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
         }
 
         /// <inheritdoc/>
