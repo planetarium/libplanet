@@ -657,7 +657,8 @@ namespace Libplanet.Store
                 throw new InvalidOperationException("Canonical chain ID is not assigned.");
             }
 
-            foreach (Guid id in ListChainIds().Where(id => !id.Equals(ccid)))
+            Guid[] chainIds = ListChainIds().ToArray();
+            foreach (Guid id in chainIds.Where(id => !id.Equals(ccid)))
             {
                 DeleteChainId(id);
             }
