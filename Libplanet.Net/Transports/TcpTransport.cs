@@ -35,6 +35,7 @@ namespace Libplanet.Net.Transports
 
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly TcpMessageCodec _messageCodec;
 
         private readonly ConcurrentDictionary<Guid, ReplyStream> _streams;
@@ -76,6 +77,7 @@ namespace Libplanet.Net.Transports
             _privateKey = privateKey;
             _host = host;
             _iceServers = iceServers.ToList();
+            _appProtocolVersion = appProtocolVersion;
             _messageCodec = new TcpMessageCodec(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -490,6 +492,7 @@ namespace Libplanet.Net.Transports
             byte[] serialized = _messageCodec.Encode(
                 message,
                 _privateKey,
+                _appProtocolVersion,
                 AsPeer,
                 DateTimeOffset.UtcNow);
             int length = serialized.Length;

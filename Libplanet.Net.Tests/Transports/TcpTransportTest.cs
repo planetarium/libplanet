@@ -125,6 +125,7 @@ namespace Libplanet.Net.Tests.Transports
                 byte[] serialized = codec.Encode(
                     message,
                     privateKey,
+                    apv,
                     transport.AsPeer,
                     DateTimeOffset.UtcNow);
                 int length = serialized.Length;

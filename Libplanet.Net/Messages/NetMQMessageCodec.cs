@@ -45,6 +45,7 @@ namespace Libplanet.Net.Messages
         public NetMQMessage Encode(
             Message message,
             PrivateKey privateKey,
+            AppProtocolVersion appProtocolVersion,
             Peer peer,
             DateTimeOffset timestamp)
         {
@@ -70,7 +71,7 @@ namespace Libplanet.Net.Messages
             netMqMessage.Push(timestamp.Ticks);
             netMqMessage.Push(_codec.Encode(peer.ToBencodex()));
             netMqMessage.Push((int)message.Type);
-            netMqMessage.Push(_messageValidator.Apv.Token);
+            netMqMessage.Push(appProtocolVersion.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());

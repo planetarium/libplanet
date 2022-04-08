@@ -44,6 +44,7 @@ namespace Libplanet.Net.Tests.Messages
             NetMQMessage encoded = messageCodec.Encode(
                 msg,
                 privateKey,
+                apv,
                 peer,
                 DateTimeOffset.UtcNow);
             BlockHashes restored = (BlockHashes)messageCodec.Decode(encoded, true);

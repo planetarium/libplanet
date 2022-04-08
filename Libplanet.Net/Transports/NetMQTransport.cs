@@ -27,6 +27,7 @@ namespace Libplanet.Net.Transports
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly NetMQMessageCodec _messageCodec;
 
         private NetMQQueue<Message> _replyQueue;
@@ -118,6 +119,7 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
+            _appProtocolVersion = appProtocolVersion;
             _messageCodec = new NetMQMessageCodec(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -576,6 +578,7 @@ namespace Libplanet.Net.Transports
             NetMQMessage netMqMessage = _messageCodec.Encode(
                             message,
                             _privateKey,
+                            _appProtocolVersion,
                             AsPeer,
                             DateTimeOffset.UtcNow);
 
@@ -700,6 +703,7 @@ namespace Libplanet.Net.Transports
             var message = _messageCodec.Encode(
                 req.Message,
                 _privateKey,
+                _appProtocolVersion,
                 AsPeer,
                 DateTimeOffset.UtcNow);
             var result = new List<Message>();
