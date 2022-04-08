@@ -24,8 +24,6 @@ namespace Libplanet.Net.Transports
     public class NetMQTransport : ITransport
     {
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -51,12 +49,6 @@ namespace Libplanet.Net.Transports
         // Used only for logging.
         private long _requestCount;
         private long _socketCount;
-
-        /// <summary>
-        /// The <see cref="EventHandler"/> triggered when the different version of
-        /// <see cref="Peer"/> is discovered.
-        /// </summary>
-        private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
 
         private bool _disposed;
 
@@ -123,13 +115,14 @@ namespace Libplanet.Net.Transports
 
             _socketCount = 0;
             _privateKey = privateKey;
-            _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
-            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new NetMQMessageCodec(messageTimestampBuffer);
+            _messageCodec = new NetMQMessageCodec(
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -502,47 +495,6 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private void AppProtocolVersionValidator(
-            byte[] identity,
-            Peer remotePeer,
-            AppProtocolVersion remoteVersion)
-        {
-            bool valid;
-            bool trusted = true;
-            if (remoteVersion.Equals(_appProtocolVersion))
-            {
-                valid = true;
-            }
-            else if (!(_trustedAppProtocolVersionSigners is null) &&
-                     !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
-            {
-                valid = false;
-                trusted = false;
-            }
-            else if (_differentAppProtocolVersionEncountered is null)
-            {
-                valid = false;
-            }
-            else
-            {
-                valid = _differentAppProtocolVersionEncountered(
-                    remotePeer,
-                    remoteVersion,
-                    _appProtocolVersion);
-            }
-
-            if (!valid)
-            {
-                throw new DifferentAppProtocolVersionException(
-                    "The version of the received message is not valid.",
-                    remotePeer,
-                    identity,
-                    _appProtocolVersion,
-                    remoteVersion,
-                    trusted);
-            }
-        }
-
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
             try
@@ -558,10 +510,7 @@ namespace Libplanet.Net.Transports
                     return;
                 }
 
-                Message message = _messageCodec.Decode(
-                    raw,
-                    false,
-                    AppProtocolVersionValidator);
+                Message message = _messageCodec.Decode(raw, false);
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "InboundMessageReport")
@@ -590,12 +539,15 @@ namespace Libplanet.Net.Transports
             }
             catch (DifferentAppProtocolVersionException dapve)
             {
-                var differentVersion = new DifferentVersion()
-                {
-                    Identity = dapve.Identity,
-                };
-                _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
                 _logger.Debug("Message from peer with a different version received.");
+                if (dapve.Trusted)
+                {
+                    var differentVersion = new DifferentVersion()
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
+                }
             }
             catch (InvalidMessageTimestampException imte)
             {
@@ -628,8 +580,7 @@ namespace Libplanet.Net.Transports
                             message,
                             _privateKey,
                             AsPeer,
-                            DateTimeOffset.UtcNow,
-                            _appProtocolVersion);
+                            DateTimeOffset.UtcNow);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
@@ -753,8 +704,7 @@ namespace Libplanet.Net.Transports
                 req.Message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             var result = new List<Message>();
 
             // Normal OperationCanceledException initiated from outside should bubble up.
@@ -795,10 +745,7 @@ namespace Libplanet.Net.Transports
                             req.Id,
                             req.Peer
                         );
-                        Message reply = _messageCodec.Decode(
-                            raw,
-                            true,
-                            AppProtocolVersionValidator);
+                        Message reply = _messageCodec.Decode(raw, true);
                         _logger.Debug(
                             "A reply to request {Message} {RequestId} from {Peer} " +
                             "has parsed: {Reply}.",

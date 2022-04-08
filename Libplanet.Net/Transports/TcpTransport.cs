@@ -31,11 +31,7 @@ namespace Libplanet.Net.Transports
         private static readonly TimeSpan TurnPermissionLifetime = TimeSpan.FromMinutes(5);
 
         private readonly PrivateKey _privateKey;
-        private readonly AppProtocolVersion _appProtocolVersion;
-        private readonly IImmutableSet<PublicKey>? _trustedAppProtocolVersionSigners;
         private readonly string? _host;
-        private readonly DifferentAppProtocolVersionEncountered?
-            _differentAppProtocolVersionEncountered;
 
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
@@ -78,12 +74,13 @@ namespace Libplanet.Net.Transports
             Running = false;
 
             _privateKey = privateKey;
-            _appProtocolVersion = appProtocolVersion;
-            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _iceServers = iceServers.ToList();
-            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
-            _messageCodec = new TcpMessageCodec(messageTimestampBuffer);
+            _messageCodec = new TcpMessageCodec(
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -494,8 +491,7 @@ namespace Libplanet.Net.Transports
                 message,
                 _privateKey,
                 AsPeer,
-                DateTimeOffset.UtcNow,
-                _appProtocolVersion);
+                DateTimeOffset.UtcNow);
             int length = serialized.Length;
             var buffer = new byte[MagicCookie.Length + sizeof(int) + length];
             MagicCookie.CopyTo(buffer, 0);
@@ -590,56 +586,12 @@ namespace Libplanet.Net.Transports
 
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
-            Message message = _messageCodec.Decode(
-                content.ToArray(),
-                false,
-                AppProtocolVersionValidator);
+            Message message = _messageCodec.Decode(content.ToArray(), false);
 
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",
                 message);
             return message;
-        }
-
-        private void AppProtocolVersionValidator(
-            byte[] identity,
-            Peer remotePeer,
-            AppProtocolVersion remoteVersion)
-        {
-            bool valid;
-            bool trusted = true;
-            if (remoteVersion.Equals(_appProtocolVersion))
-            {
-                valid = true;
-            }
-            else if (!(_trustedAppProtocolVersionSigners is null) &&
-                     !_trustedAppProtocolVersionSigners.Any(remoteVersion.Verify))
-            {
-                valid = false;
-                trusted = false;
-            }
-            else if (_differentAppProtocolVersionEncountered is null)
-            {
-                valid = false;
-            }
-            else
-            {
-                valid = _differentAppProtocolVersionEncountered(
-                    remotePeer,
-                    remoteVersion,
-                    _appProtocolVersion);
-            }
-
-            if (!valid)
-            {
-                throw new DifferentAppProtocolVersionException(
-                    "The version of the received message is not valid.",
-                    remotePeer,
-                    identity,
-                    _appProtocolVersion,
-                    remoteVersion,
-                    trusted);
-            }
         }
 
         private async Task ReceiveMessageAsync(CancellationToken cancellationToken)
@@ -712,12 +664,14 @@ namespace Libplanet.Net.Transports
             catch (DifferentAppProtocolVersionException dapve)
             {
                 _logger.Debug("Message from peer with different version received.");
-                var differentVersion = new DifferentVersion
+                if (dapve.Trusted)
                 {
-                    Identity = dapve.Identity,
-                };
-
-                await WriteMessageAsync(differentVersion, client, cancellationToken);
+                    var differentVersion = new DifferentVersion
+                    {
+                        Identity = dapve.Identity,
+                    };
+                    await WriteMessageAsync(differentVersion, client, cancellationToken);
+                }
             }
             catch (IOException)
             {

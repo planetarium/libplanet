@@ -109,8 +109,8 @@ namespace Libplanet.Net.Tests.Transports
             await client.ConnectAsync("127.0.0.1", ((IPEndPoint)listener.LocalEndpoint).Port);
             TcpClient listenerSocket = await listener.AcceptTcpClientAsync();
 
-            AppProtocolVersion version = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            TcpTransport transport = CreateTcpTransport(appProtocolVersion: version);
+            AppProtocolVersion apv = AppProtocolVersion.Sign(new PrivateKey(), 1);
+            TcpTransport transport = CreateTcpTransport(appProtocolVersion: apv);
             try
             {
                 var message = new Ping
@@ -123,8 +123,7 @@ namespace Libplanet.Net.Tests.Transports
                     message,
                     new PrivateKey(),
                     transport.AsPeer,
-                    DateTimeOffset.UtcNow,
-                    version);
+                    DateTimeOffset.UtcNow);
                 int length = serialized.Length;
                 var buffer = new byte[invalidCookie.Length + sizeof(int) + length];
                 invalidCookie.CopyTo(buffer, 0);
