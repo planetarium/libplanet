@@ -331,7 +331,10 @@ commands:
             args+=("--exclude-class=$c")
           done
           for project in *.Tests; do
-            args+=("$PWD/$project/bin/Release/net47/$project.dll")
+            if [[ $project !=  *"Explorer"* ]]
+            then
+              args+=("$PWD/$project/bin/Release/net47/$project.dll")
+            fi
           done
           "$xur_path" "${args[@]}"
         no_output_timeout: 65s
