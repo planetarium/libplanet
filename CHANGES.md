@@ -18,11 +18,20 @@ To be released.
 
 ### Behavioral changes
 
+ -  Inner logic of `ByteUtil.CalculateHashCode(byte[] bytes)` has modified.
+    [[#1866], [#1891]]
+
 ### Bug fixes
 
 ### Dependencies
 
+ -  No longer depend on *Fody*.  [[#1866], [#1891]]
+ -  No longer depend on *Equals.Fody*.  [[#1866], [#1891]]
+
 ### CLI tools
+
+[#1866]: https://github.com/planetarium/libplanet/issues/1866
+[#1891]: https://github.com/planetarium/libplanet/pull/1891
 
 
 Version 0.32.0

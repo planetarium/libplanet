@@ -16,7 +16,6 @@ namespace Libplanet.Store.Trie
     /// <see href="https://eth.wiki/fundamentals/patricia-tree">Merkle Patricia Trie</see>.
     /// </summary>
     // TODO: implement 'logs' for debugging.
-    [Equals]
     public partial class MerkleTrie : ITrie
     {
         public static readonly HashDigest<SHA256> EmptyRootHash;
@@ -83,12 +82,6 @@ namespace Libplanet.Store.Trie
         internal INode? Root { get; }
 
         private IKeyValueStore KeyValueStore { get; }
-
-        public static bool operator ==(MerkleTrie left, MerkleTrie right) =>
-            Operator.Weave(left, right);
-
-        public static bool operator !=(MerkleTrie left, MerkleTrie right) =>
-            Operator.Weave(left, right);
 
         /// <inheritdoc/>
         public ITrie Set(in KeyBytes key, IValue value)

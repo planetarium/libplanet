@@ -44,9 +44,8 @@ https://docs.libplanet.io/</Description>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
-    <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
-    <!-- CS0660/CS0661/S3875 are turned off due to https://github.com/Fody/Equals/pull/96 -->
-    <!-- FIXME: CS1591 should be turned on eventually. -->
+    <NoWarn>$(NoWarn);S4035;CS1591;NU5104;MEN001</NoWarn>
+    <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -67,12 +66,9 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
-    <PackageReference Include="Equals.Fody" Version="4.0.1" />
-    <PackageReference Include="Fody" Version="6.1.1">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
     <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>

@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Libplanet.Tests.Store
 {
-    [Equals]
     public sealed class StoreTrackLog : IEquatable<StoreTrackLog>
     {
         private StoreTrackLog(string method, object[] @params)

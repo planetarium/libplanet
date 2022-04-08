@@ -18,7 +18,6 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
     [Serializable]
-    [Equals]
     public struct TxId : ISerializable, IComparable<TxId>, IComparable
     {
         /// <summary>
@@ -87,9 +86,15 @@ namespace Libplanet.Tx
             }
         }
 
-        public static bool operator ==(TxId left, TxId right) => Operator.Weave(left, right);
+        public static bool operator ==(TxId left, TxId right) => left.Equals(right);
 
-        public static bool operator !=(TxId left, TxId right) => Operator.Weave(left, right);
+        public static bool operator !=(TxId left, TxId right) => !left.Equals(right);
+
+        public bool Equals(TxId other) => ByteArray.SequenceEqual(other.ByteArray);
+
+        public override bool Equals(object obj) => obj is TxId other && Equals(other);
+
+        public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of
