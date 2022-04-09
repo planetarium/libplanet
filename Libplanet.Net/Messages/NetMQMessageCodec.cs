@@ -117,17 +117,11 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            _messageValidator.ValidateAppProtocolVersion(
-                remotePeer,
-                reply ? new byte[] { } : encoded[0].ToByteArray(),
-                remoteVersion);
-
             var type =
                 (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
             var ticks = remains[(int)Message.MessageFrame.Timestamp].ConvertToInt64();
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
             var currentTime = DateTimeOffset.UtcNow;
-            _messageValidator.ValidateTimestamp(remotePeer, currentTime, timestamp);
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign].ToByteArray();
 
@@ -165,6 +159,8 @@ namespace Libplanet.Net.Messages
                 message.Identity = encoded[0].Buffer.ToArray();
             }
 
+            _messageValidator.ValidateAppProtocolVersion(message);
+            _messageValidator.ValidateTimestamp(message, currentTime);
             return message;
         }
 

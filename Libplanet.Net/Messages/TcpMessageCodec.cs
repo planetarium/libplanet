@@ -106,10 +106,10 @@ namespace Libplanet.Net.Messages
             }
 
             using var stream = new MemoryStream(encoded);
-            var buffer = new byte[sizeof(int)];
+            byte[] buffer = new byte[sizeof(int)];
             stream.Read(buffer, 0, sizeof(int));
             int frameCount = BitConverter.ToInt32(buffer, 0);
-            var frames = new List<byte[]>();
+            List<byte[]> frames = new List<byte[]>();
             for (var i = 0; i < frameCount; i++)
             {
                 buffer = new byte[sizeof(int)];
@@ -139,11 +139,6 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            _messageValidator.ValidateAppProtocolVersion(
-                remotePeer,
-                reply ? new byte[] { } : frames[0],
-                remoteVersion);
-
             var type =
                 (Message.MessageType)BitConverter.ToInt32(
                     remains[(int)Message.MessageFrame.Type],
@@ -151,7 +146,6 @@ namespace Libplanet.Net.Messages
             long ticks = BitConverter.ToInt64(remains[(int)Message.MessageFrame.Timestamp], 0);
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
             var currentTime = DateTimeOffset.UtcNow;
-            _messageValidator.ValidateTimestamp(remotePeer, currentTime, timestamp);
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];
 
@@ -188,6 +182,8 @@ namespace Libplanet.Net.Messages
                 message.Identity = frames[0];
             }
 
+            _messageValidator.ValidateAppProtocolVersion(message);
+            _messageValidator.ValidateTimestamp(message, currentTime);
             return message;
         }
 

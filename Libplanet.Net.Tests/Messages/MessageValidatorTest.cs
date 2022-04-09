@@ -24,24 +24,30 @@ namespace Libplanet.Net.Tests.Messages
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + halfBuffer);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + halfBuffer },
+                DateTimeOffset.UtcNow);
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - halfBuffer);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - halfBuffer },
+                DateTimeOffset.UtcNow);
 
             // Outside buffer throws an exception.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow + doubleBuffer));
+                    new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + doubleBuffer },
+                    DateTimeOffset.UtcNow));
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    peer, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow - doubleBuffer));
+                    new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - doubleBuffer },
+                    DateTimeOffset.UtcNow));
 
             // If buffer is null, no exception gets thrown.
             messageValidator = new MessageValidator(default, null, null, null);
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.MinValue);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MaxValue },
+                DateTimeOffset.UtcNow);
             messageValidator.ValidateTimestamp(
-                peer, DateTimeOffset.UtcNow, DateTimeOffset.MaxValue);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MinValue },
+                DateTimeOffset.UtcNow);
         }
 
         [Fact]
@@ -68,6 +74,10 @@ namespace Libplanet.Net.Tests.Messages
             ImmutableHashSet<PublicKey>? trustedApvSigners3 = null;
             DifferentAppProtocolVersionEncountered callback = (p, pv, lv) => { called = true; };
             var peer = new Peer(trustedSigner.PublicKey);
+            var trustedPing1 = new Ping() { Remote = peer, Version = trustedApv1 };
+            var trustedPing2 = new Ping() { Remote = peer, Version = trustedApv2 };
+            var unknownPing1 = new Ping() { Remote = peer, Version = unknownApv1 };
+            var unknownPing2 = new Ping() { Remote = peer, Version = unknownApv2 };
 
             DifferentAppProtocolVersionException exception;
             MessageValidator messageValidator;
@@ -78,18 +88,18 @@ namespace Libplanet.Net.Tests.Messages
                 trustedAppProtocolVersionSigners: trustedApvSigners1,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv1);
+            messageValidator.ValidateAppProtocolVersion(trustedPing1);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv1));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
             Assert.False(exception.Trusted);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv2));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
             Assert.False(exception.Trusted);
             Assert.False(called);
 
@@ -99,17 +109,17 @@ namespace Libplanet.Net.Tests.Messages
                 trustedAppProtocolVersionSigners: trustedApvSigners2,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv1);
+            messageValidator.ValidateAppProtocolVersion(trustedPing1);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv1));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
             Assert.False(exception.Trusted);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
             Assert.False(exception.Trusted);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv2));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
             Assert.False(exception.Trusted);
             Assert.False(called);
 
@@ -119,19 +129,19 @@ namespace Libplanet.Net.Tests.Messages
                 trustedAppProtocolVersionSigners: trustedApvSigners3,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv1);
+            messageValidator.ValidateAppProtocolVersion(trustedPing1);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv1));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, trustedApv2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(peer, identity, unknownApv2));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
             Assert.True(exception.Trusted);
             Assert.True(called);
         }
