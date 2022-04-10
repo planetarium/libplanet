@@ -102,6 +102,19 @@ namespace Libplanet.Net.Tests.Messages
         }
 
         [Fact]
+        public void InvalidCredential()
+        {
+            var message = new Ping();
+            var privateKey = new PrivateKey();
+            var peer = new Peer(privateKey.PublicKey);
+            var timestamp = DateTimeOffset.UtcNow;
+            var badPrivateKey = new PrivateKey();
+            var codec = new NetMQMessageCodec();
+            Assert.Throws<InvalidCredentialException>(() =>
+                codec.Encode(message, badPrivateKey, peer, timestamp));
+        }
+
+        [Fact]
         public void UseInvalidSignature()
         {
             // Victim
