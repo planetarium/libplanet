@@ -11,7 +11,9 @@ namespace Libplanet.Net.Messages
         /// <paramref name="privateKey"/> and <paramref name="peer"/>.
         /// </summary>
         /// <param name="message">A message to encode.</param>
-        /// <param name="privateKey">A <see cref="PrivateKey"/> to sign message.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to sign
+        /// <paramref name="message"/> with.  This should be a matching <see cref="PrivateKey"/>
+        /// for the <see cref="PublicKey"/> of <paramref name="peer"/>.</param>
         /// <param name="peer"><see cref="Peer"/>-typed representation of the
         /// sender's transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
