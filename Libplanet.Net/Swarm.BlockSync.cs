@@ -217,7 +217,8 @@ namespace Libplanet.Net
             {
                 if (blocks.Count != 0)
                 {
-                    BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
+                    var branch = new CandidateBranch<T>(blocks, blocks.First(), blocks.Last());
+                    BlockCandidateTable.Add(branch);
                     BlockReceived.Set();
                 }
 
