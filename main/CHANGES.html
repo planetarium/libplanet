@@ -69,10 +69,16 @@
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>(Libplanet.Net) <code>InvalidCredentialException</code> class added.
+[<a href="https://github.com/planetarium/libplanet/issues/1904">#1904</a>, <a href="https://github.com/planetarium/libplanet/pull/1905">#1905</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Inner logic of <code>ByteUtil.CalculateHashCode(byte[] bytes)</code> has modified.
 [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
+<li>(Libplanet.Net) <code>IMessageCodec.Encode()</code> now requires a <em>matching</em>
+<code>PrivateKey</code> to be provided for <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1904">#1904</a>, <a href="https://github.com/planetarium/libplanet/pull/1905">#1905</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
