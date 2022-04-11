@@ -111,6 +111,10 @@ namespace Libplanet.Net.Messages
         /// If <see cref="Message.Version"/> of <paramref name="message"/> is not valid but
         /// is signed by a trusted signer, then <see cref="DifferentApvEncountered"/> is called.
         /// </remarks>
+        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
+        /// local version does not match with given <paramref name="message"/>'s
+        /// <see cref="Message.Version"/>.
+        /// </exception>
         /// <seealso cref="Apv"/>
         /// <seealso cref="TrustedApvSigners"/>
         /// <seealso cref="DifferentApvEncountered"/>
@@ -138,6 +142,8 @@ namespace Libplanet.Net.Messages
         /// </summary>
         /// <param name="message">The <see cref="Message"/> to validate.</param>
         /// <param name="timestamp">Current timestamp.</param>
+        /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
+        /// <paramref name="message"/> is invalid.</exception>
         /// <seealso cref="MessageTimestampBuffer"/>.
         public void ValidateTimestamp(Message message, DateTimeOffset timestamp)
         {

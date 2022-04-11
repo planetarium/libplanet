@@ -182,8 +182,6 @@ namespace Libplanet.Net.Messages
                 message.Identity = frames[0];
             }
 
-            _messageValidator.ValidateAppProtocolVersion(message);
-            _messageValidator.ValidateTimestamp(message, currentTime);
             return message;
         }
 

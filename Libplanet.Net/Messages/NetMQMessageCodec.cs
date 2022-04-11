@@ -159,8 +159,6 @@ namespace Libplanet.Net.Messages
                 message.Identity = encoded[0].Buffer.ToArray();
             }
 
-            _messageValidator.ValidateAppProtocolVersion(message);
-            _messageValidator.ValidateTimestamp(message, currentTime);
             return message;
         }
 

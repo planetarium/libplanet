@@ -28,6 +28,7 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
 
         private NetMQQueue<Message> _replyQueue;
@@ -120,6 +121,11 @@ namespace Libplanet.Net.Transports
             _iceServers = iceServers?.ToList();
             _listenPort = listenPort ?? 0;
             _appProtocolVersion = appProtocolVersion;
+            _messageValidator = new MessageValidator(
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
             _messageCodec = new NetMQMessageCodec(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -513,6 +519,8 @@ namespace Libplanet.Net.Transports
                 }
 
                 Message message = _messageCodec.Decode(raw, false);
+                _messageValidator.ValidateTimestamp(message, DateTimeOffset.UtcNow);
+                _messageValidator.ValidateAppProtocolVersion(message);
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "InboundMessageReport")
@@ -747,6 +755,8 @@ namespace Libplanet.Net.Transports
                             req.Peer
                         );
                         Message reply = _messageCodec.Decode(raw, true);
+                        _messageValidator.ValidateTimestamp(reply, DateTimeOffset.UtcNow);
+                        _messageValidator.ValidateAppProtocolVersion(reply);
                         _logger.Debug(
                             "A reply to request {Message} {RequestId} from {Peer} " +
                             "has parsed: {Reply}.",

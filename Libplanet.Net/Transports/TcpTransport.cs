@@ -36,6 +36,7 @@ namespace Libplanet.Net.Transports
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly MessageValidator _messageValidator;
         private readonly TcpMessageCodec _messageCodec;
 
         private readonly ConcurrentDictionary<Guid, ReplyStream> _streams;
@@ -78,6 +79,11 @@ namespace Libplanet.Net.Transports
             _host = host;
             _iceServers = iceServers.ToList();
             _appProtocolVersion = appProtocolVersion;
+            _messageValidator = new MessageValidator(
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
             _messageCodec = new TcpMessageCodec(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -590,6 +596,8 @@ namespace Libplanet.Net.Transports
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
             Message message = _messageCodec.Decode(content.ToArray(), false);
+            _messageValidator.ValidateTimestamp(message, DateTimeOffset.UtcNow);
+            _messageValidator.ValidateAppProtocolVersion(message);
 
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",

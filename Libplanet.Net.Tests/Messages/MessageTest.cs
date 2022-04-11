@@ -22,63 +22,6 @@ namespace Libplanet.Net.Tests.Messages
         }
 
         [Fact]
-        public void DifferentAppProtocolVersionStructure()
-        {
-            var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
-            var apv1 = new AppProtocolVersion(
-                1,
-                new Bencodex.Types.Integer(0),
-                ImmutableArray<byte>.Empty,
-                default(Address));
-            var apv2 = new AppProtocolVersion(
-                2,
-                new Bencodex.Types.Integer(0),
-                ImmutableArray<byte>.Empty,
-                default(Address));
-            var message = new Ping();
-            var codec = new NetMQMessageCodec(appProtocolVersion: apv1);
-            NetMQMessage netMQMessage = codec.Encode(
-                message,
-                privateKey,
-                apv2,
-                peer,
-                DateTimeOffset.UtcNow);
-
-            Assert.Throws<DifferentAppProtocolVersionException>(() =>
-                codec.Decode(netMQMessage, true));
-        }
-
-        [Fact]
-        public void InvalidMessageTimestamp()
-        {
-            var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
-            var futureOffset = DateTimeOffset.MaxValue;
-            var pastOffset = DateTimeOffset.MinValue;
-            var apv = new AppProtocolVersion(
-                1,
-                new Bencodex.Types.Integer(0),
-                ImmutableArray<byte>.Empty,
-                default(Address));
-            var buffer = TimeSpan.FromSeconds(1);
-            var message = new Ping();
-            var codec = new NetMQMessageCodec(
-                appProtocolVersion: apv,
-                messageTimestampBuffer: buffer);
-            NetMQMessage futureRaw =
-                codec.Encode(message, privateKey, apv, peer, futureOffset);
-            // Messages from the future throws InvalidMessageTimestampException.
-            Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(futureRaw, true));
-            NetMQMessage pastRaw =
-                codec.Encode(message, privateKey, apv, peer, pastOffset);
-            // Messages from the far past throws InvalidMessageTimestampException.
-            Assert.Throws<InvalidMessageTimestampException>(() =>
-                codec.Decode(pastRaw, true));
-        }
-
-        [Fact]
         public void BlockHeaderMessage()
         {
             var privateKey = new PrivateKey();
