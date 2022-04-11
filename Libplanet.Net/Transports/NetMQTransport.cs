@@ -381,30 +381,6 @@ namespace Libplanet.Net.Transports
                     return new Message[0];
                 }
             }
-            catch (DifferentAppProtocolVersionException dapve)
-            {
-                const string errMsg =
-                    "{Peer} sent a reply to {Message} {RequestId} " +
-                    "with a different app protocol version.";
-                _logger.Error(dapve, errMsg, message, peer, reqId);
-                throw;
-            }
-            catch (InvalidMessageTimestampException imte)
-            {
-                const string errMsg =
-                    "{Peer} sent a reply to {Message} {RequestId} with a stale timestamp.";
-                _logger.Error(imte, errMsg, message, peer, reqId);
-                throw;
-            }
-            catch (TimeoutException toe)
-            {
-                const string dbgMsg =
-                    "{FName}() timed out after {Timeout} while waiting for a reply to " +
-                    "{Message} {RequestId} from {Peer}.";
-                _logger.Debug(
-                    toe, dbgMsg, nameof(SendMessageAsync), timeout, message, reqId, peer);
-                throw;
-            }
             catch (TaskCanceledException tce)
             {
                 const string dbgMsg =
@@ -412,6 +388,19 @@ namespace Libplanet.Net.Transports
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Debug(
                     tce, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
+                throw;
+            }
+            catch (Exception e) when (
+                e is MessageSendFailedException ||
+                e is InvalidMessageSignatureException ||
+                e is InvalidMessageTimestampException ||
+                e is DifferentAppProtocolVersionException ||
+                e is TimeoutException)
+            {
+                const string errMsg =
+                    "Failed to send and receive replies from {Peer} for request " +
+                    "{Message} {RequestId}.";
+                _logger.Error(e, errMsg, peer, message, reqId);
                 throw;
             }
             catch (Exception e)
@@ -523,8 +512,34 @@ namespace Libplanet.Net.Transports
                         message,
                         message.Remote);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
-                _messageValidator.ValidateTimestamp(message);
-                _messageValidator.ValidateAppProtocolVersion(message);
+                try
+                {
+                    _messageValidator.ValidateTimestamp(message);
+                    _messageValidator.ValidateAppProtocolVersion(message);
+                }
+                catch (InvalidMessageTimestampException imte)
+                {
+                    _logger.Debug(
+                        imte,
+                        "Received request {Message} from {Peer} has an invalid timestamp.",
+                        message,
+                        message.Remote);
+                    return;
+                }
+                catch (DifferentAppProtocolVersionException dapve)
+                {
+                    _logger.Debug(
+                        dapve,
+                        "Received request {Message} from {Peer} has an invalid APV.",
+                        message,
+                        message.Remote);
+                    var differentVersion = new DifferentVersion() { Identity = dapve.Identity };
+                    _logger.Debug(
+                        "Replying to {Peer} with {Reply}.",
+                        differentVersion);
+                    _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
+                    return;
+                }
 
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
 
@@ -542,22 +557,6 @@ namespace Libplanet.Net.Transports
                         throw;
                     }
                 });
-            }
-            catch (DifferentAppProtocolVersionException dapve)
-            {
-                _logger.Debug("Message from peer with a different version received.");
-                var differentVersion = new DifferentVersion()
-                {
-                    Identity = dapve.Identity,
-                };
-                _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
-            }
-            catch (InvalidMessageTimestampException imte)
-            {
-                const string logMsg =
-                    "Received message has an invalid timestamp: " +
-                    "(timestamp: {Timestamp}, buffer: {Buffer}, current: {Current})";
-                _logger.Debug(logMsg, imte.CreatedOffset, imte.Buffer, imte.CurrentOffset);
             }
             catch (InvalidMessageException ex)
             {
@@ -732,7 +731,7 @@ namespace Libplanet.Net.Transports
                         req.Peer);
 
                     throw new MessageSendFailedException(
-                        $"{nameof(DealerSocket)} failed to accept {req.Message}",
+                        $"Failed to send {req.Message} to {req.Peer}.",
                         req.Message.Type,
                         req.Peer);
                 }
@@ -758,8 +757,39 @@ namespace Libplanet.Net.Transports
                             req.Id,
                             reply.Remote,
                             reply);
-                        _messageValidator.ValidateTimestamp(reply);
-                        _messageValidator.ValidateAppProtocolVersion(reply);
+                        try
+                        {
+                            _messageValidator.ValidateTimestamp(reply);
+                            _messageValidator.ValidateAppProtocolVersion(reply);
+                        }
+                        catch (InvalidMessageTimestampException imte)
+                        {
+                            const string dbgMsg =
+                                "Received reply {Reply} from {Peer} to request {Message} " +
+                                "{RequestId} has an invalid timestamp.";
+                            _logger.Debug(
+                                imte,
+                                dbgMsg,
+                                reply,
+                                reply.Remote,
+                                message,
+                                req.Id);
+                            throw;
+                        }
+                        catch (DifferentAppProtocolVersionException dapve)
+                        {
+                            const string dbgMsg =
+                                "Received reply {Reply} from {Peer} to request {Message} " +
+                                "{RequestId} has an invalid APV.";
+                            _logger.Debug(
+                                dapve,
+                                dbgMsg,
+                                reply,
+                                reply.Remote,
+                                message,
+                                req.Id);
+                            throw;
+                        }
 
                         result.Add(reply);
                     }
@@ -788,10 +818,10 @@ namespace Libplanet.Net.Transports
                 tcs.TrySetResult(result);
             }
             catch (Exception e) when (
-                e is DifferentAppProtocolVersionException ||
-                e is InvalidMessageTimestampException ||
-                e is InvalidMessageSignatureException ||
                 e is MessageSendFailedException ||
+                e is InvalidMessageSignatureException ||
+                e is InvalidMessageTimestampException ||
+                e is DifferentAppProtocolVersionException ||
                 e is TimeoutException)
             {
                 tcs.TrySetException(e);
