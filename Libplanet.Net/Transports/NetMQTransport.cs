@@ -126,11 +126,7 @@ namespace Libplanet.Net.Transports
                 trustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
-            _messageCodec = new NetMQMessageCodec(
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
+            _messageCodec = new NetMQMessageCodec();
 
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeProcessorCancellationTokenSource = new CancellationTokenSource();
@@ -519,8 +515,6 @@ namespace Libplanet.Net.Transports
                 }
 
                 Message message = _messageCodec.Decode(raw, false);
-                _messageValidator.ValidateTimestamp(message, DateTimeOffset.UtcNow);
-                _messageValidator.ValidateAppProtocolVersion(message);
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "InboundMessageReport")
@@ -529,6 +523,8 @@ namespace Libplanet.Net.Transports
                         message,
                         message.Remote);
                 _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
+                _messageValidator.ValidateTimestamp(message);
+                _messageValidator.ValidateAppProtocolVersion(message);
 
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
 
@@ -755,8 +751,6 @@ namespace Libplanet.Net.Transports
                             req.Peer
                         );
                         Message reply = _messageCodec.Decode(raw, true);
-                        _messageValidator.ValidateTimestamp(reply, DateTimeOffset.UtcNow);
-                        _messageValidator.ValidateAppProtocolVersion(reply);
                         _logger.Debug(
                             "A reply to request {Message} {RequestId} from {Peer} " +
                             "has parsed: {Reply}.",
@@ -764,6 +758,8 @@ namespace Libplanet.Net.Transports
                             req.Id,
                             reply.Remote,
                             reply);
+                        _messageValidator.ValidateTimestamp(reply);
+                        _messageValidator.ValidateAppProtocolVersion(reply);
 
                         result.Add(reply);
                     }

@@ -24,30 +24,32 @@ namespace Libplanet.Net.Tests.Messages
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + halfBuffer },
-                DateTimeOffset.UtcNow);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + halfBuffer });
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - halfBuffer },
-                DateTimeOffset.UtcNow);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - halfBuffer });
 
             // Outside buffer throws an exception.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + doubleBuffer },
-                    DateTimeOffset.UtcNow));
+                    new Ping()
+                    {
+                        Remote = peer,
+                        Timestamp = DateTimeOffset.UtcNow + doubleBuffer,
+                    }));
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - doubleBuffer },
-                    DateTimeOffset.UtcNow));
+                    new Ping()
+                    {
+                        Remote = peer,
+                        Timestamp = DateTimeOffset.UtcNow - doubleBuffer,
+                    }));
 
             // If buffer is null, no exception gets thrown.
             messageValidator = new MessageValidator(default, null, null, null);
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MaxValue },
-                DateTimeOffset.UtcNow);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MaxValue });
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MinValue },
-                DateTimeOffset.UtcNow);
+                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MinValue });
         }
 
         [Fact]

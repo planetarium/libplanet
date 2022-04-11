@@ -141,18 +141,17 @@ namespace Libplanet.Net.Messages
         /// Validates a <see cref="DateTimeOffset"/> timestamp against current timestamp.
         /// </summary>
         /// <param name="message">The <see cref="Message"/> to validate.</param>
-        /// <param name="timestamp">Current timestamp.</param>
         /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="message"/> is invalid.</exception>
         /// <seealso cref="MessageTimestampBuffer"/>.
-        public void ValidateTimestamp(Message message, DateTimeOffset timestamp)
+        public void ValidateTimestamp(Message message)
         {
             if (message.Remote is { } peer)
             {
                 ValidateTimestampTemplate(
                     MessageTimestampBuffer,
                     peer,
-                    timestamp,
+                    DateTimeOffset.UtcNow,
                     message.Timestamp);
             }
             else

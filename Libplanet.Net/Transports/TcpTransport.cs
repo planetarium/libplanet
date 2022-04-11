@@ -84,11 +84,7 @@ namespace Libplanet.Net.Transports
                 trustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
-            _messageCodec = new TcpMessageCodec(
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
+            _messageCodec = new TcpMessageCodec();
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -596,12 +592,12 @@ namespace Libplanet.Net.Transports
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
             Message message = _messageCodec.Decode(content.ToArray(), false);
-            _messageValidator.ValidateTimestamp(message, DateTimeOffset.UtcNow);
-            _messageValidator.ValidateAppProtocolVersion(message);
-
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",
                 message);
+            _messageValidator.ValidateTimestamp(message);
+            _messageValidator.ValidateAppProtocolVersion(message);
+
             return message;
         }
 

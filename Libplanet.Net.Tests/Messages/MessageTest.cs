@@ -37,7 +37,7 @@ namespace Libplanet.Net.Tests.Messages
                 GenesisMiner
             );
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
-            var codec = new NetMQMessageCodec(appProtocolVersion: apv);
+            var codec = new NetMQMessageCodec();
             NetMQMessage raw =
                 codec.Encode(message, privateKey, apv, peer, dateTimeOffset);
             var parsed = codec.Decode(raw, true);
@@ -75,7 +75,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var ping = new Ping();
-            var codec = new NetMQMessageCodec(appProtocolVersion: apv);
+            var codec = new NetMQMessageCodec();
             var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
 
             // Attacker

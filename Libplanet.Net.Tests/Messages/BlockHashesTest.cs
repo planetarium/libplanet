@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Messages
             var privateKey = new PrivateKey();
             AppProtocolVersion apv = AppProtocolVersion.Sign(privateKey, 3);
             Peer peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234));
-            var messageCodec = new NetMQMessageCodec(appProtocolVersion: apv);
+            var messageCodec = new NetMQMessageCodec();
             NetMQMessage encoded = messageCodec.Encode(
                 msg,
                 privateKey,
