@@ -111,31 +111,16 @@ namespace Libplanet.Net.Messages
         /// If <see cref="Message.Version"/> of <paramref name="message"/> is not valid but
         /// is signed by a trusted signer, then <see cref="DifferentApvEncountered"/> is called.
         /// </remarks>
+        /// <exception cref="NullReferenceException">Thrown when <see cref="Message.Remote"/> is
+        /// <c>null</c> for <paramref name="message"/>.</exception>
         /// <exception cref="DifferentAppProtocolVersionException">Thrown when
         /// local version does not match with given <paramref name="message"/>'s
-        /// <see cref="Message.Version"/>.
-        /// </exception>
+        /// <see cref="Message.Version"/>.</exception>
         /// <seealso cref="Apv"/>
         /// <seealso cref="TrustedApvSigners"/>
         /// <seealso cref="DifferentApvEncountered"/>
-        public void ValidateAppProtocolVersion(Message message)
-        {
-            if (message.Remote is { } peer)
-            {
-                ValidateAppProtocolVersion(
-                    Apv,
-                    TrustedApvSigners,
-                    DifferentApvEncountered,
-                    peer,
-                    message.Identity ?? new byte[] { },
-                    message.Version);
-            }
-            else
-            {
-                throw new NullReferenceException(
-                    $"Property {nameof(message.Remote)} of {nameof(message)} cannot be null.");
-            }
-        }
+        public void ValidateAppProtocolVersion(Message message) =>
+            ValidateAppProtocolVersion(Apv, TrustedApvSigners, DifferentApvEncountered, message);
 
         /// <summary>
         /// Validates a <see cref="DateTimeOffset"/> timestamp against current timestamp.
@@ -144,15 +129,42 @@ namespace Libplanet.Net.Messages
         /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="message"/> is invalid.</exception>
         /// <seealso cref="MessageTimestampBuffer"/>.
-        public void ValidateTimestamp(Message message)
+        public void ValidateTimestamp(Message message) =>
+            ValidateTimestamp(MessageTimestampBuffer, DateTimeOffset.UtcNow, message.Timestamp);
+
+        private static void ValidateAppProtocolVersion(
+            AppProtocolVersion appProtocolVersion,
+            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
+            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
+            Message message)
         {
             if (message.Remote is { } peer)
             {
-                ValidateTimestampTemplate(
-                    MessageTimestampBuffer,
-                    peer,
-                    DateTimeOffset.UtcNow,
-                    message.Timestamp);
+                if (message.Version.Equals(appProtocolVersion))
+                {
+                    return;
+                }
+
+                bool trusted = !(
+                    trustedAppProtocolVersionSigners is { } tapvs &&
+                    tapvs.All(publicKey => !message.Version.Verify(publicKey)));
+                if (trusted && differentAppProtocolVersionEncountered is { } dapve)
+                {
+                    dapve(peer, message.Version, appProtocolVersion);
+                }
+
+                throw new DifferentAppProtocolVersionException(
+                    $"The APV of a received message is invalid:\n" +
+                    $"Expected: APV {appProtocolVersion} with " +
+                    $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
+                    $"signer {appProtocolVersion.Signer}\n" +
+                    $"Actual: APV {message.Version} with " +
+                    $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
+                    $"signer: {message.Version.Signer}\n" +
+                    $"Signed by a trusted signer: {trusted}",
+                    appProtocolVersion,
+                    message.Version,
+                    trusted);
             }
             else
             {
@@ -161,46 +173,8 @@ namespace Libplanet.Net.Messages
             }
         }
 
-        private static void ValidateAppProtocolVersion(
-            AppProtocolVersion appProtocolVersion,
-            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
-            Peer peer,
-            byte[] identity,
-            AppProtocolVersion peerAppProtocolVersion)
-        {
-            if (peerAppProtocolVersion.Equals(appProtocolVersion))
-            {
-                return;
-            }
-
-            bool trusted = !(
-                trustedAppProtocolVersionSigners is { } tapvs &&
-                tapvs.All(publicKey => !peerAppProtocolVersion.Verify(publicKey)));
-            if (trusted && differentAppProtocolVersionEncountered is { } dapve)
-            {
-                dapve(peer, peerAppProtocolVersion, appProtocolVersion);
-            }
-
-            throw new DifferentAppProtocolVersionException(
-                $"The APV of a received message is invalid; " +
-                $"Local: APV {appProtocolVersion} " +
-                $"with signature {ByteUtil.Hex(appProtocolVersion.Signature)} " +
-                $"by signer {appProtocolVersion.Signer}\n" +
-                $"Remote: APV {peerAppProtocolVersion} " +
-                $"with signature {ByteUtil.Hex(peerAppProtocolVersion.Signature)} " +
-                $"by signer {peerAppProtocolVersion.Signer}\n" +
-                $"Signed by a trusted signer: {trusted}",
-                peer,
-                identity,
-                appProtocolVersion,
-                peerAppProtocolVersion,
-                trusted);
-        }
-
-        private static void ValidateTimestampTemplate(
+        private static void ValidateTimestamp(
             TimeSpan? timestampBuffer,
-            Peer peer,
             DateTimeOffset currentTimestamp,
             DateTimeOffset messageTimestamp)
         {
@@ -215,7 +189,6 @@ namespace Libplanet.Net.Messages
                     $"{currentTimestamp.ToString(TimestampFormat, cultureInfo)}\n" +
                     $"Message timestamp: " +
                     $"{messageTimestamp.ToString(TimestampFormat, cultureInfo)}",
-                    peer,
                     messageTimestamp,
                     buffer,
                     currentTimestamp);

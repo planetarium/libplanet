@@ -24,25 +24,17 @@ namespace Libplanet.Net.Tests.Messages
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow + halfBuffer });
+                new Ping() { Timestamp = DateTimeOffset.UtcNow + halfBuffer });
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.UtcNow - halfBuffer });
+                new Ping() { Timestamp = DateTimeOffset.UtcNow - halfBuffer });
 
             // Outside buffer throws an exception.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping()
-                    {
-                        Remote = peer,
-                        Timestamp = DateTimeOffset.UtcNow + doubleBuffer,
-                    }));
+                    new Ping() { Timestamp = DateTimeOffset.UtcNow + doubleBuffer }));
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping()
-                    {
-                        Remote = peer,
-                        Timestamp = DateTimeOffset.UtcNow - doubleBuffer,
-                    }));
+                    new Ping() { Timestamp = DateTimeOffset.UtcNow - doubleBuffer }));
 
             // If buffer is null, no exception gets thrown.
             messageValidator = new MessageValidator(default, null, null, null);

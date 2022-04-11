@@ -533,7 +533,7 @@ namespace Libplanet.Net.Transports
                         "Received request {Message} from {Peer} has an invalid APV.",
                         message,
                         message.Remote);
-                    var differentVersion = new DifferentVersion() { Identity = dapve.Identity };
+                    var differentVersion = new DifferentVersion() { Identity = message.Identity };
                     _logger.Debug(
                         "Replying to {Peer} with {Reply}.",
                         differentVersion);
