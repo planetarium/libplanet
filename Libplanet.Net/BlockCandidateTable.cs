@@ -22,16 +22,11 @@ namespace Libplanet.Net
             Branches = new ConcurrentBag<CandidateBranch<T>>();
         }
 
-       /// <summary>
-        /// Reference to <see cref="BlockChain{T}.Tip"/>.
-        /// </summary>
-        public Block<T>? Tip { get; }
-
         /// <summary>
-        /// Retrieves the <see cref="CandidateBranch{T}"/> with the best <see cref="Tip"/>, i.e.
+        /// Retrieves the <see cref="CandidateBranch{T}"/> with the best Tip, i.e.
         /// the highest <see cref="Block{T}.TotalDifficulty"/>.
         /// </summary>
-        public CandidateBranch<T>? BestBranch { get; }
+        public CandidateBranch<T>? BestBranch { get; private set; }
 
         public long Count
         {
@@ -39,10 +34,11 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// An <see cref="IEnumerable{T}"/> of <see cref="CandidateBranch{T}"/>es that can be appended
+        /// An <see cref="IEnumerable{T}"/> of
+        /// <see cref="CandidateBranch{T}"/>es that can be appended
         /// to the <em>current</em> <see cref="BlockChain{T}"/>.
         /// </summary>
-        private ConcurrentBag<CandidateBranch<T>> Branches { get; }
+        private ConcurrentBag<CandidateBranch<T>> Branches { get; set; }
 
         /// <summary>
         /// Adds an <see cref="CandidateBranch{T}"/> to <see cref="Branches"/>.
@@ -50,15 +46,11 @@ namespace Libplanet.Net
         /// <param name="branch">The <see cref="CandidateBranch{T}"/>
         /// to add to <see cref="Branches"/>.
         /// </param>
-        /// <remarks>
-        /// Note that <see cref="Tip"/> could have changed while downloading <see cref="Block{T}"/>s
-        /// to create <paramref name="branch"/>.  This should be dealt with accordingly in order
-        /// to ensure concurrency and enforce the stated properties in the interface summary.
-        /// In particular, the first point may no longer be <c>true</c> even if
-        /// <paramref name="branch"/> can still be "appended".
-        /// </remarks>
         public void Add(CandidateBranch<T> branch)
         {
+            BestBranch ??= branch;
+            BestBranch = CompareBranch(BestBranch, branch);
+
             Branches.Add(branch);
         }
 
@@ -67,7 +59,7 @@ namespace Libplanet.Net
         /// an <see cref="UpdatePath{T}"/>.
         /// </summary>
         /// <param name="path">The <see cref="UpdatePath{T}"/> representing a path from the previous
-        /// <see cref="Tip"/> to the newly changed <see cref="Tip"/>.</param>
+        /// Tip to the newly changed Tip.</param>
         /// <param name="predicate"><see cref="Func{TResult}"/> for predicate which
         /// <see cref="Branches"/> are no more needed.</param>
         /// <remarks>
@@ -79,13 +71,49 @@ namespace Libplanet.Net
         /// <para>
         /// Also, while updating each <see cref="CandidateBranch{T}"/>,
         /// if an <see cref="CandidateBranch{T}"/> is no longer needed,
-        /// i.e. if <see cref="CandidateBranch{T}.Tip"/>'s <see cref="Block{T}.TotalDifficulty"/> is
-        /// no longer higher than that of <see cref="UpdatePath{T}.NewTip"/>, it should be discarded.
+        /// i.e. if <see cref="CandidateBranch{T}.Tip"/>'s
+        /// <see cref="Block{T}.TotalDifficulty"/> is
+        /// no longer higher than that of <see cref="UpdatePath{T}.NewTip"/>,
+        /// it should be discarded.
         /// </para>
         /// </remarks>
         public void Update(UpdatePath<T> path, Func<IBlockExcerpt, bool> predicate)
         {
-            return;
+            var newBag = new ConcurrentBag<CandidateBranch<T>>();
+            CandidateBranch<T>? longestBranch = null;
+
+            // if OldTip is equals to BranchPoint, means it is not reorg.
+            if (path.OldTip.Equals(path.BranchPoint))
+            {
+                foreach (var branch in Branches)
+                {
+                    if (!predicate(branch.Tip))
+                    {
+                        continue;
+                    }
+
+                    var newBlocks =
+                        branch.Blocks.FindAll(x => x.Index > path.NewTip.Index).ToList();
+                    var newBranch = new CandidateBranch<T>(
+                        newBlocks,
+                        newBlocks.First(),
+                        newBlocks.Last());
+
+                    longestBranch ??= newBranch;
+                    longestBranch = CompareBranch(longestBranch, newBranch);
+                }
+            }
+            else
+            {
+            }
+
+            if (longestBranch is { })
+            {
+                newBag.Add(longestBranch);
+                BestBranch = longestBranch;
+            }
+
+            Branches = newBag;
         }
 
         /// <summary>
@@ -93,9 +121,13 @@ namespace Libplanet.Net
         /// </summary>
         public void Clear()
         {
-            return;
+            Branches = new ConcurrentBag<CandidateBranch<T>>();
+            BestBranch = null;
         }
 
         public bool Any() => Branches.Any();
+
+        private CandidateBranch<T> CompareBranch(CandidateBranch<T> lf, CandidateBranch<T> rf)
+            => lf.Tip.TotalDifficulty < rf.Tip.TotalDifficulty ? rf : lf;
     }
 }
