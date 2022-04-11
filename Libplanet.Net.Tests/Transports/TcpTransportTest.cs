@@ -103,6 +103,7 @@ namespace Libplanet.Net.Tests.Transports
             byte[] invalidCookie = { 0x01, 0x02 };
             Assert.False(TcpTransport.MagicCookie.SequenceEqual(invalidCookie));
 
+            var privateKey = new PrivateKey();
             var listener = new TcpListener(IPAddress.Any, 0);
             listener.Start();
             var client = new TcpClient();
@@ -110,7 +111,9 @@ namespace Libplanet.Net.Tests.Transports
             TcpClient listenerSocket = await listener.AcceptTcpClientAsync();
 
             AppProtocolVersion apv = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            TcpTransport transport = CreateTcpTransport(appProtocolVersion: apv);
+            TcpTransport transport = CreateTcpTransport(
+                privateKey: privateKey,
+                appProtocolVersion: apv);
             try
             {
                 var message = new Ping
@@ -121,7 +124,7 @@ namespace Libplanet.Net.Tests.Transports
                 var codec = new TcpMessageCodec();
                 byte[] serialized = codec.Encode(
                     message,
-                    new PrivateKey(),
+                    privateKey,
                     transport.AsPeer,
                     DateTimeOffset.UtcNow);
                 int length = serialized.Length;

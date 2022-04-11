@@ -11,7 +11,9 @@ namespace Libplanet.Net.Messages
         /// <paramref name="privateKey"/> and <paramref name="peer"/>.
         /// </summary>
         /// <param name="message">A message to encode.</param>
-        /// <param name="privateKey">A <see cref="PrivateKey"/> to sign message.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to sign
+        /// <paramref name="message"/> with.  This should be a matching <see cref="PrivateKey"/>
+        /// for the <see cref="PublicKey"/> of <paramref name="peer"/>.</param>
         /// <param name="peer"><see cref="Peer"/>-typed representation of the
         /// sender's transport layer.
         /// <seealso cref="ITransport.AsPeer"/></param>
@@ -19,6 +21,8 @@ namespace Libplanet.Net.Messages
         /// </param>
         /// <returns>A <see typeref="T"/> containing the signed <see cref="Message"/>.
         /// </returns>
+        /// <exception cref="InvalidCredentialException">Thrown when <paramref name="privateKey"/>'s
+        /// <see cref="PublicKey"/> does not match that of <paramref name="peer"/>.</exception>
         T Encode(
             Message message,
             PrivateKey privateKey,
@@ -40,9 +44,9 @@ namespace Libplanet.Net.Messages
         /// local version does not match with given <paramref name="encoded"/>'s
         /// <see cref="AppProtocolVersion"/>.
         /// </exception>
-        /// <exception cref="InvalidMessageTimestampException"> Thrown when the timestamp of
+        /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
         /// <paramref name="encoded"/> is invalid.</exception>
-        /// <exception cref="InvalidMessageSignatureException"> Thrown when the signer of
+        /// <exception cref="InvalidMessageSignatureException">Thrown when the signer of
         /// <paramref name="encoded"/> is invalid.</exception>
         Message Decode(
             T encoded,

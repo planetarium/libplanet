@@ -49,6 +49,16 @@ namespace Libplanet.Net.Messages
             Peer peer,
             DateTimeOffset timestamp)
         {
+            if (!privateKey.PublicKey.Equals(peer.PublicKey))
+            {
+                throw new InvalidCredentialException(
+                    $"An invalid private key was provided: " +
+                    $"the provided private key's expected public key is {peer.PublicKey} " +
+                    $"but its actual public key is {privateKey.PublicKey}.",
+                    peer.PublicKey,
+                    privateKey.PublicKey);
+            }
+
             var frames = new List<byte[]>();
 
             // Write body (by concrete class)

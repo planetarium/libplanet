@@ -16,10 +16,15 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Net) `InvalidCredentialException` class added.
+    [[#1904], [#1905]]
+
 ### Behavioral changes
 
  -  Inner logic of `ByteUtil.CalculateHashCode(byte[] bytes)` has modified.
     [[#1866], [#1891]]
+ -  (Libplanet.Net) `IMessageCodec.Encode()` now requires a *matching*
+    `PrivateKey` to be provided for `Peer`.  [[#1904], [#1905]]
 
 ### Bug fixes
 
@@ -32,6 +37,8 @@ To be released.
 
 [#1866]: https://github.com/planetarium/libplanet/issues/1866
 [#1891]: https://github.com/planetarium/libplanet/pull/1891
+[#1904]: https://github.com/planetarium/libplanet/issues/1904
+[#1905]: https://github.com/planetarium/libplanet/pull/1905
 
 
 Version 0.32.1
