@@ -7,6 +7,7 @@
             "Libplanet/Libplanet.csproj",
             "Libplanet.Net/Libplanet.Net.csproj",
             "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
+            "Libplanet.Extensions.Cocona/Libplanet.Extensions.Cocona.csproj",
             "Libplanet.Stun/Libplanet.Stun.csproj"
           ],
           "exclude": ["**/bin/**", "**/obj/**"],
