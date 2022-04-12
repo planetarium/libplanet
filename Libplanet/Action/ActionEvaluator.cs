@@ -479,14 +479,6 @@ namespace Libplanet.Action
                 // FIXME: This is dependant on when the returned value is enumerated.
                 TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                string? actionType = tx.Actions.FirstOrDefault()?.ToString()!.Replace(
-                        "Libplanet.Action.PolymorphicAction<Nekoyume.Action.",
-                        string.Empty)
-                    .Remove(tx.Actions.FirstOrDefault()?.ToString()
-                        ?.Replace(
-                        "Libplanet.Action.PolymorphicAction<Nekoyume.Action.",
-                        string.Empty).Length - 1 ?? 0);
-
                 _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration")
@@ -494,7 +486,7 @@ namespace Libplanet.Action
                         "{ActionCount} {ActionType} actions in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
                         tx.Actions.Count,
-                        actionType,
+                        tx.Actions.FirstOrDefault(),
                         tx.Id,
                         tx.Signer,
                         tx.Timestamp.ToString(
