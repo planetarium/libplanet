@@ -5,8 +5,9 @@
         {
           "files": [
             "Libplanet/Libplanet.csproj",
-            "Libplanet.Stun/Libplanet.Stun.csproj",
-            "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj"
+            "Libplanet.Net/Libplanet.Net.csproj",
+            "Libplanet.RocksDBStore/Libplanet.RocksDBStore.csproj",
+            "Libplanet.Stun/Libplanet.Stun.csproj"
           ],
           "exclude": ["**/bin/**", "**/obj/**"],
           "src": "../"
