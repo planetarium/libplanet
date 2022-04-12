@@ -482,7 +482,8 @@ namespace Libplanet.Action
                 string? actionType = tx.Actions.FirstOrDefault()?.ToString()!.Replace(
                         "Libplanet.Action.PolymorphicAction<Nekoyume.Action.",
                         string.Empty)
-                    .Remove(tx.Actions.FirstOrDefault()?.ToString()!.Replace(
+                    .Remove(tx.Actions.FirstOrDefault()?.ToString()
+                        ?.Replace(
                         "Libplanet.Action.PolymorphicAction<Nekoyume.Action.",
                         string.Empty).Length - 1 ?? 0);
 
