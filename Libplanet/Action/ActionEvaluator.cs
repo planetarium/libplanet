@@ -483,7 +483,7 @@ namespace Libplanet.Action
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration")
                     .Debug(
-                        "{ActionCount} {ActionType} actions in transaction {TxId} by {Signer} " +
+                        "{ActionCount} actions {ActionType} in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
                         tx.Actions.Count,
                         tx.Actions.FirstOrDefault(),
