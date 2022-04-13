@@ -1,0 +1,436 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MessageValidator
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MessageValidator
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.58.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Messages.MessageValidator">
+  
+  
+  <h1 id="Libplanet_Net_Messages_MessageValidator" data-uid="Libplanet.Net.Messages.MessageValidator" class="text-break">Class MessageValidator
+  </h1>
+  <div class="markdown level0 summary"><p>A helper class for an <a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html">IMessageCodec&lt;T&gt;</a> to validate
+a decoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">MessageValidator</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MessageValidator : object</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_Apv.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.Apv%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L47">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_Apv_" data-uid="Libplanet.Net.Messages.MessageValidator.Apv*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_Apv" data-uid="Libplanet.Net.Messages.MessageValidator.Apv">Apv</h4>
+  <div class="markdown level1 summary"><p>
+The local <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> used for
+<a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_">Encode(Message, PrivateKey, Peer, DateTimeOffset)</a> and <a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode__0_System_Boolean_">Decode(T, Boolean)</a> methods.
+</p>
+<p>
+In particular, this is used in the following cases:
+<ul><li>
+        When encoding, this value is attached to the encoded output.
+</li><li>
+    When decoding, the encoded message&apos;s <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> must
+    match this value.
+</li></ul>
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AppProtocolVersion Apv { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.DifferentApvEncountered%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L80">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered_" data-uid="Libplanet.Net.Messages.MessageValidator.DifferentApvEncountered*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered" data-uid="Libplanet.Net.Messages.MessageValidator.DifferentApvEncountered">DifferentApvEncountered</h4>
+  <div class="markdown level1 summary"><p>A callback method that gets invoked when a an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
+by a <em>trusted</em> signer that is different from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a> is encountered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DifferentAppProtocolVersionEncountered DifferentApvEncountered { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html">DifferentAppProtocolVersionEncountered</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <code>null</code>, no action is taken.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_MessageTimestampBuffer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.MessageTimestampBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L101">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_MessageTimestampBuffer_" data-uid="Libplanet.Net.Messages.MessageValidator.MessageTimestampBuffer*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_MessageTimestampBuffer" data-uid="Libplanet.Net.Messages.MessageValidator.MessageTimestampBuffer">MessageTimestampBuffer</h4>
+  <div class="markdown level1 summary"><p>
+The <see cref="!:TimeSpan"></see> to use as a buffer when decoding <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.
+</p>
+<p>
+Whether a decoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is valid or not depends on this value:
+<ul><li>
+        If <code>null</code>, there is no restriction on <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp">Timestamp</a>
+        for received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.
+</li><li>
+    If not <code>null</code>, the absolute difference between the timestamp of
+    a received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> and current time should be less than
+    this value.
+</li></ul>
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan? MessageTimestampBuffer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_TrustedApvSigners.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.TrustedApvSigners%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L71">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_TrustedApvSigners_" data-uid="Libplanet.Net.Messages.MessageValidator.TrustedApvSigners*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_TrustedApvSigners" data-uid="Libplanet.Net.Messages.MessageValidator.TrustedApvSigners">TrustedApvSigners</h4>
+  <div class="markdown level1 summary"><p>
+An <see cref="!:IImmutableSet&lt;T>"></see> of <a class="xref" href="Libplanet.Address.html">Address</a>es to trust as a signer
+when a different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is encountered.
+</p>
+<p>
+Whether to trust an unknown <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>, i.e.
+an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different
+from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>, depends on this value:
+<ul><li>
+        If <code>null</code>, the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> in question is trusted
+        regardless of its signer.
+</li><li>
+    If not <code>null</code>, an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted if it is
+    signed by one of the signers in the set.  In particular, if the set is empty,
+    no <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted.
+</li></ul>
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IImmutableSet&lt;PublicKey&gt;? TrustedApvSigners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer%2CSystem.Byte%5B%5D%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L125">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion)">ValidateAppProtocolVersion(Peer, Byte[], AppProtocolVersion)</h4>
+  <div class="markdown level1 summary"><p>Validates an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> against <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>.
+Any <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a> is
+considered invalid and an <a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionException.html">DifferentAppProtocolVersionException</a> will be
+thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ValidateAppProtocolVersion(Peer peer, byte[] identity, AppProtocolVersion peerAppProtocolVersion)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that has sent the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
+with <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">identity</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> attached to the
+<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">peerAppProtocolVersion</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> to validate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code> is not valid but is signed by
+a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered">DifferentApvEncountered</a> is called.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionException.html">DifferentAppProtocolVersionException</a></td>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code> is different from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a></div>
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_TrustedApvSigners">TrustedApvSigners</a></div>
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered">DifferentApvEncountered</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer%2CDateTimeOffset%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L144">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateTimestamp*"></a>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer,DateTimeOffset,DateTimeOffset)">ValidateTimestamp(Peer, DateTimeOffset, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Validates a <see cref="!:DateTimeOffset"></see> timestamp against current timestamp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ValidateTimestamp(Peer peer, DateTimeOffset currentTimestamp, DateTimeOffset messageTimestamp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that has sent the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
+with <code data-dev-comment-type="paramref" class="paramref">messageTimestamp</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">currentTimestamp</span></td>
+        <td><p>Current timestamp.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">messageTimestamp</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp">Timestamp</a> of
+the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> in question.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_MessageTimestampBuffer">MessageTimestampBuffer</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2018–2022 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
