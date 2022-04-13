@@ -287,12 +287,13 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportA);
                 await InitializeAsync(transportB);
 
-                await Assert.ThrowsAsync<TimeoutException>(
+                var e = await Assert.ThrowsAsync<CommunicationFailException>(
                     async () => await transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
                         new Ping(),
                         TimeSpan.FromSeconds(3),
                         CancellationToken.None));
+                Assert.True(e.InnerException is TimeoutException ie);
             }
             finally
             {
@@ -325,8 +326,9 @@ namespace Libplanet.Net.Tests.Transports
                     TimeSpan.FromSeconds(5),
                     default);
 
-                // Sending request to the invalid peer throws TimeoutException.
-                await Assert.ThrowsAsync<TimeoutException>(async () => await task);
+                // TcpTransport and NetMQTransport fail for different reasons, i.e.
+                // a thrown exception for each case has a different inner exception.
+                await Assert.ThrowsAsync<CommunicationFailException>(async () => await task);
             }
             finally
             {

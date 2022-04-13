@@ -4,18 +4,36 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Transports
 {
+    /// <summary>
+    /// An <see cref="Exception"/> thrown when fail to complete a sending and receiving messages
+    /// cycle via <see cref="ITransport"/> for one of the expected reasons such as normal timeout,
+    /// receiving a invalid reply, etc.
+    /// </summary>
     [Serializable]
-    public class MessageSendFailedException : Exception
+    public class CommunicationFailException : Exception
     {
-        public MessageSendFailedException(
-            string message, Message.MessageType messageType, BoundPeer peer)
+        public CommunicationFailException(
+            string message,
+            Message.MessageType messageType,
+            BoundPeer peer)
             : base(message)
         {
             Peer = peer;
             MessageType = messageType;
         }
 
-        public MessageSendFailedException(SerializationInfo info, StreamingContext context)
+        public CommunicationFailException(
+            string message,
+            Message.MessageType messageType,
+            BoundPeer peer,
+            Exception innerException)
+            : base(message, innerException)
+        {
+            Peer = peer;
+            MessageType = messageType;
+        }
+
+        public CommunicationFailException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Peer = info.GetValue(nameof(Peer), typeof(BoundPeer)) is BoundPeer peer

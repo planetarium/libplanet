@@ -389,7 +389,11 @@ namespace Libplanet.Net.Transports
                     "Failed to send and receive replies from {Peer} for request " +
                     "{Message} {RequestId}.";
                 _logger.Error(e, errMsg, peer, message, reqId);
-                throw;
+                throw new CommunicationFailException(
+                    $"Failed to send and receive replies from {peer} for request {message}.",
+                    message.Type,
+                    peer,
+                    e);
             }
             finally
             {

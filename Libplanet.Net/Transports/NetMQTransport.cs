@@ -391,7 +391,6 @@ namespace Libplanet.Net.Transports
                 throw;
             }
             catch (Exception e) when (
-                e is MessageSendFailedException ||
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||
                 e is DifferentAppProtocolVersionException ||
@@ -401,7 +400,11 @@ namespace Libplanet.Net.Transports
                     "Failed to send and receive replies from {Peer} for request " +
                     "{Message} {RequestId}.";
                 _logger.Error(e, errMsg, peer, message, reqId);
-                throw;
+                throw new CommunicationFailException(
+                    $"Failed to send and receive replies from {peer} for request {message}.",
+                    message.Type,
+                    peer,
+                    e);
             }
             catch (Exception e)
             {
@@ -730,10 +733,7 @@ namespace Libplanet.Net.Transports
                         req.Id,
                         req.Peer);
 
-                    throw new MessageSendFailedException(
-                        $"Failed to send {req.Message} to {req.Peer}.",
-                        req.Message.Type,
-                        req.Peer);
+                    throw new TimeoutException($"Failed to send {req.Message} to {req.Peer}.");
                 }
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
@@ -818,7 +818,6 @@ namespace Libplanet.Net.Transports
                 tcs.TrySetResult(result);
             }
             catch (Exception e) when (
-                e is MessageSendFailedException ||
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||
                 e is DifferentAppProtocolVersionException ||

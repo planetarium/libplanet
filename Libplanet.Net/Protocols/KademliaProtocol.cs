@@ -86,10 +86,6 @@ namespace Libplanet.Net.Protocols
                             findNeighborsTimeout,
                             cancellationToken));
                 }
-                catch (DifferentAppProtocolVersionException)
-                {
-                    _logger.Error("Version is different from seed peer.");
-                }
                 catch (PingTimeoutException)
                 {
                     _logger.Warning("A timeout exception occurred connecting to seed peer.");
@@ -148,30 +144,19 @@ namespace Libplanet.Net.Protocols
                 await Task.WhenAll(tasks);
                 _logger.Verbose("Update complete.");
             }
-            catch (DifferentAppProtocolVersionException e)
+            catch (PingTimeoutException e)
             {
-                _logger.Debug(
-                    e,
-                    "Different version encountered during {FName}().",
-                    nameof(AddPeersAsync));
-            }
-            catch (TimeoutException e)
-            {
-                const string msg =
-                    "Timeout occurred during " + nameof(AddPeersAsync) + "() after {Timeout}.";
-                _logger.Debug(e, msg, timeout);
-                throw;
+                _logger.Debug(e, "Ping timed out.");
             }
             catch (TaskCanceledException e)
             {
-                const string msg = "Task is cancelled during " + nameof(AddPeersAsync) + "().";
-                _logger.Debug(e, msg);
+                _logger.Debug(
+                    e, "Task cancelled during {FName}().", nameof(AddPeersAsync));
             }
             catch (Exception e)
             {
-                const string msg = "Unexpected exception occurred during " +
-                                   nameof(AddPeersAsync) + "().";
-                _logger.Error(e, msg);
+                _logger.Error(
+                    e, "Unexpected exception occurred during {FName}()", nameof(AddPeersAsync));
                 throw;
             }
         }
@@ -440,7 +425,7 @@ namespace Libplanet.Net.Protocols
 
                 AddPeer(peer);
             }
-            catch (MessageSendFailedException)
+            catch (CommunicationFailException)
             {
                 throw new PingTimeoutException(
                     peer,
