@@ -9,7 +9,7 @@ if ! [[ -f "$SOLUTION" ]]; then
 fi
 
 list-projects() {
-  dotnet sln "$SOLUTION" list | grep $'\\...proj\r$' | sed 's/[/\].*//'
+  dotnet sln "$SOLUTION" list | grep -E $'\\...proj\r?$' | sed 's/[/\].*//'
 }
 
 # shellcheck source=.github/bin/constants.sh
@@ -33,10 +33,21 @@ check-contributing() {
   fi
 }
 
+check-docfx() {
+  if ! grep "$1" Docs/docfx.json > /dev/null; then
+    echo "The project $1 is not listed in the Docs/docfx.json file." \
+      > /dev/stderr
+    exit 1
+  fi
+}
+
 for project in $(list-projects); do
   if ! [[ "$project" = *.Tests || "$project" = *.UnitTests \
        || "$project" = *.Benchmarks ]]; then
     check-github-actions "$project" || exit 1
+    if [[ "$project" != *.Executable ]]; then
+      check-docfx "$project" || exit 1
+    fi
   fi
   check-contributing "$project" || exit 1
 done

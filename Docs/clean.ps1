@@ -1,4 +1,4 @@
-#!/usr/local/bin/pwsh
+#!/usr/bin/env pwsh
 $ErrorActionPreference = "SilentlyContinue"
 Remove-Item api/*.manifest
 Remove-Item api/*.yml

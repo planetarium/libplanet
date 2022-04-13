@@ -1,4 +1,4 @@
-#!/usr/local/bin/pwsh
+#!/usr/bin/env pwsh
 # This PowerShell script builds the docs using DocFX.
 #
 # If you are on Linux or macOS you need to install PowerShell and Mono first.
