@@ -4,7 +4,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Serialization;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// An exception that is thrown when the signature of an encoded <see cref="Message"/> is

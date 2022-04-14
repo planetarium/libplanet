@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Bencodex;
 using Libplanet.Crypto;
+using Libplanet.Net.Transports;
 
 namespace Libplanet.Net.Messages
 {

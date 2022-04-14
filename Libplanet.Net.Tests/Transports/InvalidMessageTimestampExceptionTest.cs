@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Xunit;
 
-namespace Libplanet.Net.Tests
+namespace Libplanet.Net.Transports.Tests
 {
     public class InvalidMessageTimestampExceptionTest
     {
