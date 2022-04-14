@@ -279,7 +279,8 @@ namespace Libplanet.Net.Transports
                     // SocketException is thrown on .Net core when the given peer is invalid.
                     // To match with NetMQTransport implementation, convert to TimeoutException
                     // when failed to find the peer to send message.
-                    throw new TimeoutException($"Failed to send {message} {reqId} to {peer}.");
+                    throw new SendMessageFailException(
+                        $"Failed to send {message} {reqId} to {peer}.", peer, e);
                 }
 
                 var replies = new List<Message>();
@@ -379,6 +380,7 @@ namespace Libplanet.Net.Transports
                 return replies;
             }
             catch (Exception e) when (
+                e is SendMessageFailException ||
                 e is InvalidMagicCookieException ||
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||

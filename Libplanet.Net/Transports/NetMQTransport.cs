@@ -391,6 +391,7 @@ namespace Libplanet.Net.Transports
                 throw;
             }
             catch (Exception e) when (
+                e is SendMessageFailException ||
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||
                 e is DifferentAppProtocolVersionException ||
@@ -733,7 +734,8 @@ namespace Libplanet.Net.Transports
                         req.Id,
                         req.Peer);
 
-                    throw new TimeoutException($"Failed to send {req.Message} to {req.Peer}.");
+                    throw new SendMessageFailException(
+                        $"Failed to send {req.Message} to {req.Peer}.", req.Peer);
                 }
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
@@ -818,6 +820,7 @@ namespace Libplanet.Net.Transports
                 tcs.TrySetResult(result);
             }
             catch (Exception e) when (
+                e is SendMessageFailException ||
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||
                 e is DifferentAppProtocolVersionException ||
