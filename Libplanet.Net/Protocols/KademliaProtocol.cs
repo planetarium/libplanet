@@ -431,24 +431,6 @@ namespace Libplanet.Net.Protocols
                     peer,
                     $"Failed to send Ping to {peer}.");
             }
-            catch (TimeoutException)
-            {
-                throw new PingTimeoutException(
-                    peer,
-                    $"Timeout occurred during dial to {peer}.");
-            }
-            catch (InvalidMessageTimestampException)
-            {
-                throw new PingTimeoutException(
-                    peer,
-                    $"Received Pong from {peer} has invalid timestamp.");
-            }
-            catch (DifferentAppProtocolVersionException)
-            {
-                _logger.Error(
-                    $"Different AppProtocolVersion encountered at {nameof(PingAsync)}().");
-                throw;
-            }
         }
 
         private async Task ProcessMessageHandler(Message message)
@@ -624,13 +606,10 @@ namespace Libplanet.Net.Protocols
 
                 return neighbors.Found;
             }
-            catch (InvalidMessageTimestampException)
+            catch (CommunicationFailException cfe)
             {
-                _logger.Debug($"Reply of {nameof(GetNeighbors)}'s timestamp is stale.");
-                return ImmutableArray<BoundPeer>.Empty;
-            }
-            catch (TimeoutException)
-            {
+                _logger.Debug(
+                    cfe, "Failed to get neighbors from {Peer}.", target);
                 RemovePeer(peer);
                 return ImmutableArray<BoundPeer>.Empty;
             }
