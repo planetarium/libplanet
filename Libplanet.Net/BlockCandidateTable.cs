@@ -85,7 +85,7 @@ namespace Libplanet.Net
             // if OldTip is equals to BranchPoint, means it is not reorg.
             if (path.OldTip.Equals(path.BranchPoint))
             {
-                foreach (var branch in Branches)
+                foreach (CandidateBranch<T> branch in Branches)
                 {
                     if (!predicate(branch.Tip))
                     {
@@ -105,6 +105,42 @@ namespace Libplanet.Net
             }
             else
             {
+                foreach (CandidateBranch<T> branch in Branches)
+                {
+                    if (!predicate(branch.Tip))
+                    {
+                        continue;
+                    }
+
+                    var newBlocks = branch.Blocks;
+                    Block<T> index = branch.Root;
+                    while (index.PreviousHash != null &&
+                           path.Blocks.Contains(index))
+                    {
+                        try
+                        {
+                            index = path.Blocks.Single(x => x.Hash.Equals(index.PreviousHash));
+                            newBlocks.Insert(0, index);
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (newBlocks.First().PreviousHash.Equals(path.OldTip.Hash))
+                    {
+                        newBlocks.Insert(0, path.BranchPoint);
+                    }
+
+                    var newBranch = new CandidateBranch<T>(
+                        newBlocks,
+                        newBlocks.First(),
+                        newBlocks.Last());
+
+                    longestBranch ??= newBranch;
+                    longestBranch = CompareBranch(longestBranch, newBranch);
+                }
             }
 
             if (longestBranch is { })

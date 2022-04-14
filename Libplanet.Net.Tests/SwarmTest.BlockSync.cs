@@ -9,7 +9,6 @@ using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
-
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Net.Tests
@@ -193,6 +192,94 @@ namespace Libplanet.Net.Tests
             Assert.Equal(chainB.Tip.Hash, bestBranch?.Root.PreviousHash);
             Assert.Equal(branchA.Tip.Hash, bestBranch?.Tip.Hash);
             Assert.Equal(1, table.Count);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task FillUpPreviousBlocksWhenItsReorg()
+        {
+            var minerKey = new PrivateKey();
+            var policy = new NullBlockPolicy<DumbAction>();
+            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var miner = MakeBlockChain(policy, fx.Store, fx.StateStore);
+            var branchBlocksBetweenB = new List<Block<DumbAction>>();
+            var blocksForPath = new List<Block<DumbAction>>();
+            var table = new BlockCandidateTable<DumbAction>();
+
+            Block<DumbAction> branchpoint = null;
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                Block<DumbAction> block = await miner.MineBlock(minerKey);
+                if (i == 5)
+                {
+                    branchpoint = block;
+                }
+            }
+
+            BlockChain<DumbAction> chainA = miner.Fork(branchpoint.Hash);
+            BlockChain<DumbAction> chainB = miner.Fork(miner.Tip.Hash);
+            Block<DumbAction> oldTip = miner.Tip;
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                Block<DumbAction> block = await chainA.MineBlock(minerKey);
+                blocksForPath.Add(block);
+            }
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                Block<DumbAction> block = await chainB.MineBlock(minerKey);
+                branchBlocksBetweenB.Add(block);
+            }
+
+            // Finding branchpoint without branchpoint
+            Block<DumbAction> index = chainB[branchBlocksBetweenB.First().PreviousHash.Value];
+            while (index.PreviousHash != null &&
+                   !index.Hash.Equals(branchpoint.Hash))
+            {
+                branchBlocksBetweenB.Insert(0, index);
+                if (index.PreviousHash != null)
+                {
+                    index = chainB[index.PreviousHash.Value];
+                }
+            }
+
+            // Path building for chainA
+            index = miner.Tip;
+            while (branchpoint.PreviousHash != null &&
+                   !index.Hash.Equals(branchpoint.PreviousHash.Value))
+            {
+                blocksForPath.Insert(0, index);
+                if (index.PreviousHash is { })
+                {
+                    index = miner[index.PreviousHash.Value];
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            var mergedAPath = new UpdatePath<DumbAction>(
+                blocksForPath,
+                oldTip,
+                branchpoint,
+                blocksForPath.Last());
+
+            var branchBtoA = new CandidateBranch<DumbAction>(
+                branchBlocksBetweenB,
+                branchBlocksBetweenB.First(),
+                branchBlocksBetweenB.Last()
+            );
+
+            table.Add(branchBtoA);
+            table.Update(
+                mergedAPath,
+                block => block.TotalDifficulty > chainA.Tip.TotalDifficulty);
+            CandidateBranch<DumbAction> bestBranch = table.BestBranch;
+
+            Assert.Equal(chainB.Tip.Hash, bestBranch.Tip.Hash);
+            Assert.Equal(branchpoint.Hash, bestBranch.Root.Hash);
         }
     }
 }
