@@ -13,7 +13,7 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class InvalidMessageSignatureException : Exception
     {
-        public InvalidMessageSignatureException(
+        internal InvalidMessageSignatureException(
             string message,
             Peer peer,
             PublicKey publicKey,

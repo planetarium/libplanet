@@ -13,7 +13,7 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class InvalidCredentialException : Exception
     {
-        public InvalidCredentialException(
+        internal InvalidCredentialException(
             string message,
             PublicKey expected,
             PublicKey actual)

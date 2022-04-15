@@ -10,7 +10,7 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class SendMessageFailException : Exception
     {
-        public SendMessageFailException(
+        internal SendMessageFailException(
             string message,
             BoundPeer peer)
             : base(message)
@@ -18,7 +18,7 @@ namespace Libplanet.Net.Transports
             Peer = peer;
         }
 
-        public SendMessageFailException(
+        internal SendMessageFailException(
             string message,
             BoundPeer peer,
             Exception innerException)
@@ -27,7 +27,7 @@ namespace Libplanet.Net.Transports
             Peer = peer;
         }
 
-        public SendMessageFailException(SerializationInfo info, StreamingContext context)
+        protected SendMessageFailException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Peer = info.GetValue(nameof(Peer), typeof(BoundPeer)) is BoundPeer peer
