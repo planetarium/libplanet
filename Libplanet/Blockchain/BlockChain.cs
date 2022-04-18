@@ -660,8 +660,7 @@ namespace Libplanet.Blockchain
                     transaction.Id,
                     Genesis.Hash,
                     transaction.GenesisHash,
-                    msg,
-                    null);
+                    msg);
             }
 
             return StagePolicy.Stage(this, transaction);
@@ -891,8 +890,7 @@ namespace Libplanet.Blockchain
                     {
                         throw new TxPolicyViolationException(
                             tx1.Id,
-                            "According to BlockPolicy, this transaction is not valid.",
-                            tpve);
+                            "According to BlockPolicy, this transaction is not valid.");
                     }
 
                     Address txSigner = tx1.Signer;
@@ -907,8 +905,7 @@ namespace Libplanet.Blockchain
                             tx1.Id,
                             expectedNonce,
                             tx1.Nonce,
-                            "Transaction nonce is invalid.",
-                            null
+                            "Transaction nonce is invalid."
                         );
                     }
 

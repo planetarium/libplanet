@@ -634,7 +634,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
                     "to verify.";
-                throw new InvalidTxSignatureException(Id, message, null);
+                throw new InvalidTxSignatureException(Id, message);
             }
 
             if (!new Address(PublicKey).Equals(Signer))
@@ -642,7 +642,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
                     $"is not matched to the address ({Signer}).";
-                throw new InvalidTxPublicKeyException(Id, message, null);
+                throw new InvalidTxPublicKeyException(Id, message);
             }
         }
 

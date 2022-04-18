@@ -24,8 +24,6 @@ namespace Libplanet.Tx
         /// <param name="improperNonce">The actual
         /// <see cref="Transaction{T}.Nonce"/>.</param>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="inner">A Inner-exception.
-        /// </param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
@@ -34,14 +32,12 @@ namespace Libplanet.Tx
             TxId txid,
             long expectedNonce,
             long improperNonce,
-            string message,
-            Exception? inner)
+            string message)
             : base(
                 txid,
                 $"{message}\n" +
                 $"Expected nonce: {expectedNonce}\n" +
-                $"Improper nonce: {improperNonce}",
-                inner)
+                $"Improper nonce: {improperNonce}")
         {
             ExpectedNonce = expectedNonce;
             ImproperNonce = improperNonce;

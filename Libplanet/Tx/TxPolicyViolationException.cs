@@ -18,13 +18,10 @@ namespace Libplanet.Tx
         /// Gets prepended to <paramref name="message"/>.</param>
         /// <param name="message">A description for the reason of violation
         /// given by an implementation of <see cref="IBlockPolicy{T}"/>.
-        /// </param> <param name="inner">A Inner-exception.
         /// </param>
-#nullable enable
-        public TxPolicyViolationException(TxId txid, string message, Exception? inner)
-            : base(txid, message, inner)
+        public TxPolicyViolationException(TxId txid, string message)
+            : base(txid, message)
         {
         }
-#nullable disable
     }
 }

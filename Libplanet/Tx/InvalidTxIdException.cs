@@ -19,10 +19,9 @@ namespace Libplanet.Tx
         /// It is automatically included to the <see cref="Exception.Message"/>
         /// string.</param>
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.
-        /// </param> <param name="inner">A Inner-exception.
         /// </param>
-        public InvalidTxIdException(TxId txid, string message, Exception? inner)
-            : base(txid, message, inner)
+        public InvalidTxIdException(TxId txid, string message)
+            : base(txid, message)
         {
         }
     }

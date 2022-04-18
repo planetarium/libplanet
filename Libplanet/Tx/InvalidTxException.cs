@@ -15,15 +15,13 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="message">A descriptive error message for programmers.
-        /// </param> <param name="inner">A Inner-exception.
         /// </param>
-#nullable enable
-        protected InvalidTxException(TxId txid, string message, Exception? inner)
-            : base($"{txid.ToHex()}: {message}", inner)
+        protected InvalidTxException(TxId txid, string message)
+            : base($"{txid.ToHex()}: {message}")
         {
             TxId = txid;
         }
-#nullable disable
+
         /// <summary>
         /// The <see cref="TxId"/> of the invalid <see cref="Transaction{T}"/>.
         /// </summary>
