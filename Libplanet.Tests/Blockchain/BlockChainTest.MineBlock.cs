@@ -279,7 +279,7 @@ namespace Libplanet.Tests.Blockchain
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException(tx.Id, "invalid signer", null);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
