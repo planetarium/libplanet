@@ -197,7 +197,8 @@ namespace Libplanet.Blocks
                                 tx.Id,
                                 g,
                                 tx.GenesisHash,
-                                $"Transactions in the block #{Index} are inconsistent."
+                                $"Transactions in the block #{Index} are inconsistent.",
+                                null
                             );
                         }
 

@@ -25,6 +25,8 @@ namespace Libplanet.Tx
         /// <param name="improperGenesisHash">The actual
         /// <see cref="Transaction{T}.GenesisHash"/>.  This can be <c>null</c>.</param>
         /// <param name="message">The message that describes the error.</param>
+        /// <param name="inner">A Inner-exception.
+        /// </param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
@@ -33,12 +35,14 @@ namespace Libplanet.Tx
             TxId txid,
             BlockHash expectedGenesisHash,
             BlockHash? improperGenesisHash,
-            string message)
+            string message,
+            Exception? inner)
             : base(
                 txid,
                 $"{message}\n" +
                 $"Expected genesis hash: {expectedGenesisHash}\n" +
-                $"Improper genesis hash: {improperGenesisHash}")
+                $"Improper genesis hash: {improperGenesisHash}",
+                inner)
         {
             ExpectedGenesisHash = expectedGenesisHash;
             ImproperGenesisHash = improperGenesisHash;

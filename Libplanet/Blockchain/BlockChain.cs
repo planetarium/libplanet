@@ -660,7 +660,8 @@ namespace Libplanet.Blockchain
                     transaction.Id,
                     Genesis.Hash,
                     transaction.GenesisHash,
-                    msg);
+                    msg,
+                    null);
             }
 
             return StagePolicy.Stage(this, transaction);
