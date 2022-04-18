@@ -22,7 +22,7 @@ namespace Libplanet.Tests
             {
                 tx.Validate();
             }
-            catch (InvalidTxSignatureException)
+            catch (InvalidTxSignatureException e)
             {
                 if (!privateKey.ToAddress().Equals(tx.PublicKey.ToAddress()))
                 {
@@ -39,7 +39,8 @@ namespace Libplanet.Tests
                     "The transaction's signature is invalid.  " +
                     "Suggest you to change it to the valid one instead.\n" +
                     $"Actual invalid signature:  {ByteUtil.Hex(tx.Signature)}\n" +
-                    $"Suggested valid signature: {ByteUtil.Hex(validSignature)}"
+                    $"Suggested valid signature: {ByteUtil.Hex(validSignature)}",
+                    e
                 );
             }
         }

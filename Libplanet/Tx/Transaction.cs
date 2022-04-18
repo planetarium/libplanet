@@ -634,7 +634,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
                     "to verify.";
-                throw new InvalidTxSignatureException(Id, message);
+                throw new InvalidTxSignatureException(Id, message, null);
             }
 
             if (!new Address(PublicKey).Equals(Signer))

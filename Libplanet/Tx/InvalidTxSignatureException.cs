@@ -16,9 +16,10 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.
+        /// </param> <param name="inner">A Inner-exception.
         /// </param>
-        public InvalidTxSignatureException(TxId txid, string message)
-            : base(txid, message)
+        public InvalidTxSignatureException(TxId txid, string message, Exception? inner)
+            : base(txid, message, inner)
         {
         }
     }
