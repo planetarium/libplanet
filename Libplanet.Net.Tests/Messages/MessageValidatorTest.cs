@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Transports;
 using Xunit;
 
 namespace Libplanet.Net.Tests.Messages

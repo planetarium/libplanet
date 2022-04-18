@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Libplanet.Net.Messages;
 using Libplanet.Serialization;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// The exception that is thrown when the version of the

@@ -11,28 +11,17 @@ namespace Libplanet.Net.Transports
     [Serializable]
     public class InvalidMagicCookieException : Exception
     {
-        public InvalidMagicCookieException(IEnumerable<byte> expected, IEnumerable<byte> actual)
+        internal InvalidMagicCookieException(IEnumerable<byte> expected, IEnumerable<byte> actual)
         {
             Expected = expected.ToImmutableArray();
             Actual = actual.ToImmutableArray();
         }
 
-        public InvalidMagicCookieException(
+        internal InvalidMagicCookieException(
             string message,
             IEnumerable<byte> expected,
             IEnumerable<byte> actual)
             : base(message)
-        {
-            Expected = expected.ToImmutableArray();
-            Actual = actual.ToImmutableArray();
-        }
-
-        public InvalidMagicCookieException(
-            string message,
-            IEnumerable<byte> expected,
-            IEnumerable<byte> actual,
-            Exception innerException)
-            : base(message, innerException)
         {
             Expected = expected.ToImmutableArray();
             Actual = actual.ToImmutableArray();

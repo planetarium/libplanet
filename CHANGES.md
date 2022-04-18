@@ -27,6 +27,17 @@ To be released.
  -  (Libplanet.Net) Both `MessageValidator.ValidateTimestamp()` and
     `MessageValidator.ValidateAppProtocolVersion()` now only accepts single
     `Message` type parameter.  [[#1906]]
+ -  (Libplanet.Net) `SendMessageFailedException` changed to
+    `SendMessageFailException`.  [[#1911]]
+ -  (Libplanet.Net) `ITransport` exception handling overhauled.  [[#1911]]
+     -  `ITransport.SendMessageAsync()` now only throws
+        `CommunicationFailException` for a normal failure of sending and
+        receiving `Message`s; old exceptions such as `TimeoutException`,
+        `InvalidMessageSignatureException`, etc. are attached to
+        `InnerException` property to a thrown `CommunicationFailException`.
+     -  `InvalidCredentialException`, `InvalidMagicCookieException`,
+        `InvalidMessageSignatureException`, `SendMessageFailException` no longer
+        have public constructors.
 
 ### Backward-incompatible network protocol changes
 
@@ -36,6 +47,7 @@ To be released.
 
  -  (Libplanet.Net) `InvalidCredentialException` class added.
     [[#1904], [#1905]]
+ -  (Libplanet.Net) `CommunicationFailException` class added.  [[#1911]]
 
 ### Behavioral changes
 
@@ -58,6 +70,7 @@ To be released.
 [#1904]: https://github.com/planetarium/libplanet/issues/1904
 [#1905]: https://github.com/planetarium/libplanet/pull/1905
 [#1906]: https://github.com/planetarium/libplanet/pull/1906
+[#1911]: https://github.com/planetarium/libplanet/pull/1911
 
 
 Version 0.32.1

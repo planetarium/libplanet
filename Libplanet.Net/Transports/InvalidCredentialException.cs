@@ -4,7 +4,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Serialization;
 
-namespace Libplanet.Net
+namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// An <see cref="Exception"/> that is thrown when a provided credential is invalid
@@ -13,7 +13,7 @@ namespace Libplanet.Net
     [Serializable]
     public class InvalidCredentialException : Exception
     {
-        public InvalidCredentialException(
+        internal InvalidCredentialException(
             string message,
             PublicKey expected,
             PublicKey actual)

@@ -407,8 +407,10 @@ namespace Libplanet.Net.Tests.Protocols
                         message,
                         message.Identity,
                         timeout ?? TimeSpan.MaxValue);
-                    throw new TimeoutException(
-                        $"Timeout occurred during {nameof(SendMessageAsync)}().");
+                    throw new CommunicationFailException(
+                        $"Timeout occurred during {nameof(SendMessageAsync)}().",
+                        message.Type,
+                        peer);
                 }
 
                 await Task.Delay(10, cancellationToken);

@@ -85,8 +85,10 @@ namespace Libplanet.Net.Transports
         /// operation should be canceled.</param>
         /// <returns>The replies of the <paramref name="message"/>
         /// sent by <paramref name="peer"/>.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
+        /// <exception cref="CommunicationFailException">Thrown when fail send or receive
+        /// a <see cref="Message"/>.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
+        /// is already disposed.</exception>
         Task<Message> SendMessageAsync(
             BoundPeer peer,
             Message message,
@@ -108,6 +110,8 @@ namespace Libplanet.Net.Transports
         /// operation should be canceled.</param>
         /// <returns>The replies of the <paramref name="message"/>
         /// sent by <paramref name="peer"/>.</returns>
+        /// <exception cref="CommunicationFailException">Thrown when fail send or receive
+        /// a <see cref="Message"/>.</exception>
         /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
         /// is already disposed.</exception>
         Task<IEnumerable<Message>> SendMessageAsync(

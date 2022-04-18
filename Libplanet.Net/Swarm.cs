@@ -1211,15 +1211,10 @@ namespace Libplanet.Net
             {
                 switch (task.Exception?.InnerException)
                 {
-                    case TimeoutException te:
+                    case CommunicationFailException cfe:
                         _logger.Debug(
-                            "TimeoutException occurred while dialing ({Peer}).",
-                            peer);
-                        break;
-                    case DifferentAppProtocolVersionException dapve:
-                        _logger.Error(
-                            dapve,
-                            "Protocol Version is different ({Peer}).",
+                            cfe,
+                            "Failed to dail {Peer}.",
                             peer);
                         break;
                     case Exception e:

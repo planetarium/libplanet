@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using NetMQ;
 using Xunit;
