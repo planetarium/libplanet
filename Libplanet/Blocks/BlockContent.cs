@@ -183,7 +183,12 @@ namespace Libplanet.Blocks
                             string msg = nonce <= lastNonce
                                 ? $"The signer {s}'s nonce {nonce} was already consumed before."
                                 : $"The signer {s}'s nonce {lastNonce} has to be added first.";
-                            throw new InvalidTxNonceException(tx.Id, lastNonce + 1, tx.Nonce, msg);
+                            throw new InvalidTxNonceException(
+                                tx.Id,
+                                lastNonce + 1,
+                                tx.Nonce,
+                                msg,
+                                null);
                         }
 
                         if (genesisHash is { } g && !tx.GenesisHash.Equals(g))

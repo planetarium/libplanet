@@ -906,7 +906,8 @@ namespace Libplanet.Blockchain
                             tx1.Id,
                             expectedNonce,
                             tx1.Nonce,
-                            "Transaction nonce is invalid."
+                            "Transaction nonce is invalid.",
+                            null
                         );
                     }
 
