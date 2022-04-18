@@ -101,7 +101,7 @@ a decoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
   <h4 id="Libplanet_Net_Messages_MessageValidator_Apv" data-uid="Libplanet.Net.Messages.MessageValidator.Apv">Apv</h4>
   <div class="markdown level1 summary"><p>
 The local <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> used for
-<a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_">Encode(Message, PrivateKey, Peer, DateTimeOffset)</a> and <a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode__0_System_Boolean_">Decode(T, Boolean)</a> methods.
+<a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_Peer_DateTimeOffset_">Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)</a> and <a class="xref" href="Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Decode__0_System_Boolean_">Decode(T, Boolean)</a> methods.
 </p>
 <p>
 In particular, this is used in the following cases:
@@ -263,13 +263,13 @@ from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplane
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer%2CSystem.Byte%5B%5D%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L122">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion)">ValidateAppProtocolVersion(Peer, Byte[], AppProtocolVersion)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Messages.Message)">ValidateAppProtocolVersion(Message)</h4>
   <div class="markdown level1 summary"><p>Validates an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> against <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>.
 Any <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a> is
 considered invalid and an <a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionException.html">DifferentAppProtocolVersionException</a> will be
@@ -278,7 +278,7 @@ thrown.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ValidateAppProtocolVersion(Peer peer, byte[] identity, AppProtocolVersion peerAppProtocolVersion)</code></pre>
+    <pre><code class="lang-csharp hljs">public void ValidateAppProtocolVersion(Message message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,30 +291,16 @@ thrown.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
-        <td><span class="parametername">peer</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that has sent the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
-with <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><span class="parametername">identity</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Identity">Identity</a> attached to the
-<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> with <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
-        <td><span class="parametername">peerAppProtocolVersion</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> to validate.</p>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to validate.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code> is not valid but is signed by
-a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered">DifferentApvEncountered</a> is called.</p>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Messages_Message__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Version">Version</a> of <code data-dev-comment-type="paramref" class="paramref">message</code> is not valid but
+is signed by a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered">DifferentApvEncountered</a> is called.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -328,12 +314,13 @@ a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValid
       <tr>
         <td><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionException.html">DifferentAppProtocolVersionException</a></td>
         <td><p>Thrown when
-<code data-dev-comment-type="paramref" class="paramref">peerAppProtocolVersion</code> is different from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>.</p>
+local version does not match with given <code data-dev-comment-type="paramref" class="paramref">message</code>'s
+<a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Version">Version</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion__seealso">See Also</h5>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Messages_Message__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a></div>
       <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_TrustedApvSigners">TrustedApvSigners</a></div>
@@ -341,19 +328,19 @@ a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValid
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer%2CDateTimeOffset%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L144">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/MessageValidator.cs/#L132">View Source</a>
   </span>
   <a id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateTimestamp*"></a>
-  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer,DateTimeOffset,DateTimeOffset)">ValidateTimestamp(Peer, DateTimeOffset, DateTimeOffset)</h4>
+  <h4 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Messages.Message)">ValidateTimestamp(Message)</h4>
   <div class="markdown level1 summary"><p>Validates a <see cref="!:DateTimeOffset"></see> timestamp against current timestamp.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ValidateTimestamp(Peer peer, DateTimeOffset currentTimestamp, DateTimeOffset messageTimestamp)</code></pre>
+    <pre><code class="lang-csharp hljs">public void ValidateTimestamp(Message message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -366,28 +353,31 @@ a trusted signer, then <a class="xref" href="Libplanet.Net.Messages.MessageValid
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
-        <td><span class="parametername">peer</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that has sent the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>
-with <code data-dev-comment-type="paramref" class="paramref">messageTimestamp</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
-        <td><span class="parametername">currentTimestamp</span></td>
-        <td><p>Current timestamp.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
-        <td><span class="parametername">messageTimestamp</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp">Timestamp</a> of
-the <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> in question.</p>
+        <td><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> to validate.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset__seealso">See Also</h5>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.InvalidMessageTimestampException.html">InvalidMessageTimestampException</a></td>
+        <td><p>Thrown when the timestamp of
+<code data-dev-comment-type="paramref" class="paramref">message</code> is invalid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Messages_Message__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_MessageTimestampBuffer">MessageTimestampBuffer</a></div>
   </div>

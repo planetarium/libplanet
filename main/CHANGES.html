@@ -66,6 +66,31 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Net) <code>IMessageCodec</code> and its implementations <code>NetMQMessageCodec</code>
+and <code>TcpMessageCodec</code> overhauled.  [<a href="https://github.com/planetarium/libplanet/pull/1906">#1906</a>]
+<ul>
+<li><code>AppProtocolVersion</code> type parameter added to <code>IMessageCodec.Encode()</code>.</li>
+<li>Both <code>NetMQMessageCodec()</code> and <code>TcpMessageCodec()</code> constructors are
+made parameterless.</li>
+<li><code>IMessageCodec.Decode()</code> no longer throws
+<code>InvalidMessageTimestampException</code> or
+<code>DifferentAppProtocolVersionException</code>.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Irrelevant context related properties removed from
+<code>InvalidMessageTimestampException</code> and
+<code>DifferentAppProtocolVersionException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1906">#1906</a>]
+<ul>
+<li><code>InvalidMessageTimestampException.Peer</code> property removed.</li>
+<li><code>DifferentAppProtocolVersionException.Peer</code> property removed.</li>
+<li><code>DifferentAppProtocolVersionException.Identity</code> property removed.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Both <code>MessageValidator.ValidateTimestamp()</code> and
+<code>MessageValidator.ValidateAppProtocolVersion()</code> now only accepts single
+<code>Message</code> type parameter.  [<a href="https://github.com/planetarium/libplanet/pull/1906">#1906</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -83,8 +108,8 @@
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
-<li>No longer depend on <em>Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
-<li>No longer depend on <em>Equals.Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
+<li>No longer depends on <em>Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
+<li>No longer depends on <em>Equals.Fody</em>.  [<a href="https://github.com/planetarium/libplanet/issues/1866">#1866</a>, <a href="https://github.com/planetarium/libplanet/pull/1891">#1891</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-0321">Version 0.32.1</h2>

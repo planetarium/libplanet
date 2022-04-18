@@ -14066,15 +14066,12 @@ references:
   commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
   fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
   nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
-  name: DifferentAppProtocolVersionException(String, Peer, Byte[], AppProtocolVersion, AppProtocolVersion, Boolean)
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_System_Boolean_
-  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
-  name.vb: DifferentAppProtocolVersionException(String, Peer, Byte(), AppProtocolVersion, AppProtocolVersion, Boolean)
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.Peer, System.Byte[], Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion, System.Boolean)
-  fullName.vb: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.Peer, System.Byte(), Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion, System.Boolean)
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, Peer, Byte[], AppProtocolVersion, AppProtocolVersion, Boolean)
-  nameWithType.vb: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, Peer, Byte(), AppProtocolVersion, AppProtocolVersion, Boolean)
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
+  name: DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_System_Boolean_
+  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion, System.Boolean)
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
 - uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor*
   name: DifferentAppProtocolVersionException
   href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_
@@ -14121,32 +14118,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData
   nameWithType: DifferentAppProtocolVersionException.GetObjectData
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Identity
-  name: Identity
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Identity
-  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.Identity
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Identity
-  nameWithType: DifferentAppProtocolVersionException.Identity
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Identity*
-  name: Identity
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Identity_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.Identity
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Identity
-  nameWithType: DifferentAppProtocolVersionException.Identity
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Peer
-  name: Peer
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Peer
-  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.Peer
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Peer
-  nameWithType: DifferentAppProtocolVersionException.Peer
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Peer*
-  name: Peer
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Peer_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.Peer
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Peer
-  nameWithType: DifferentAppProtocolVersionException.Peer
 - uid: Libplanet.Net.DifferentAppProtocolVersionException.Trusted
   name: Trusted
   href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Trusted
@@ -14638,14 +14609,14 @@ references:
   fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Decode
   nameWithType: IMessageCodec<T>.Decode
   nameWithType.vb: IMessageCodec(Of T).Decode
-- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  name: Encode(Message, PrivateKey, Peer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset)
-  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset)
-  nameWithType: IMessageCodec<T>.Encode(Message, PrivateKey, Peer, DateTimeOffset)
-  nameWithType.vb: IMessageCodec(Of T).Encode(Message, PrivateKey, Peer, DateTimeOffset)
+- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  name: Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
+  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_Peer_DateTimeOffset_
+  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.Peer, DateTimeOffset)
+  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.Peer, DateTimeOffset)
+  nameWithType: IMessageCodec<T>.Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
+  nameWithType.vb: IMessageCodec(Of T).Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
 - uid: Libplanet.Net.Messages.IMessageCodec`1.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_
@@ -14935,15 +14906,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.MessageValidator.TrustedApvSigners
   nameWithType: MessageValidator.TrustedApvSigners
-- uid: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion)
-  name: ValidateAppProtocolVersion(Peer, Byte[], AppProtocolVersion)
-  href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Peer_System_Byte___Libplanet_Net_AppProtocolVersion_
-  commentId: M:Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer,System.Byte[],Libplanet.Net.AppProtocolVersion)
-  name.vb: ValidateAppProtocolVersion(Peer, Byte(), AppProtocolVersion)
-  fullName: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer, System.Byte[], Libplanet.Net.AppProtocolVersion)
-  fullName.vb: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Peer, System.Byte(), Libplanet.Net.AppProtocolVersion)
-  nameWithType: MessageValidator.ValidateAppProtocolVersion(Peer, Byte[], AppProtocolVersion)
-  nameWithType.vb: MessageValidator.ValidateAppProtocolVersion(Peer, Byte(), AppProtocolVersion)
+- uid: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Messages.Message)
+  name: ValidateAppProtocolVersion(Message)
+  href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_Libplanet_Net_Messages_Message_
+  commentId: M:Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Messages.Message)
+  fullName: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion(Libplanet.Net.Messages.Message)
+  nameWithType: MessageValidator.ValidateAppProtocolVersion(Message)
 - uid: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion*
   name: ValidateAppProtocolVersion
   href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateAppProtocolVersion_
@@ -14951,12 +14919,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.MessageValidator.ValidateAppProtocolVersion
   nameWithType: MessageValidator.ValidateAppProtocolVersion
-- uid: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer,DateTimeOffset,DateTimeOffset)
-  name: ValidateTimestamp(Peer, DateTimeOffset, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Peer_DateTimeOffset_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer,DateTimeOffset,DateTimeOffset)
-  fullName: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Peer, DateTimeOffset, DateTimeOffset)
-  nameWithType: MessageValidator.ValidateTimestamp(Peer, DateTimeOffset, DateTimeOffset)
+- uid: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Messages.Message)
+  name: ValidateTimestamp(Message)
+  href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_Libplanet_Net_Messages_Message_
+  commentId: M:Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Messages.Message)
+  fullName: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp(Libplanet.Net.Messages.Message)
+  nameWithType: MessageValidator.ValidateTimestamp(Message)
 - uid: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp*
   name: ValidateTimestamp
   href: api/Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_ValidateTimestamp_
@@ -15040,15 +15008,12 @@ references:
   commentId: T:Libplanet.Net.Messages.NetMQMessageCodec
   fullName: Libplanet.Net.Messages.NetMQMessageCodec
   nameWithType: NetMQMessageCodec
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor(Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name: NetMQMessageCodec(AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor_Libplanet_Net_AppProtocolVersion_System_Nullable_IImmutableSet_Libplanet_Crypto_PublicKey___Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.#ctor(Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name.vb: NetMQMessageCodec(AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec(Libplanet.Net.AppProtocolVersion, System.Nullable<IImmutableSet<Libplanet.Crypto.PublicKey>>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec(Libplanet.Net.AppProtocolVersion, System.Nullable(Of IImmutableSet(Of Libplanet.Crypto.PublicKey)), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
-  nameWithType: NetMQMessageCodec.NetMQMessageCodec(AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQMessageCodec.NetMQMessageCodec(AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor
+  name: NetMQMessageCodec()
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.#ctor
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.NetMQMessageCodec()
+  nameWithType: NetMQMessageCodec.NetMQMessageCodec()
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.#ctor*
   name: NetMQMessageCodec
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec__ctor_
@@ -15069,12 +15034,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Decode
   nameWithType: NetMQMessageCodec.Decode
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  name: Encode(Message, PrivateKey, Peer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset)
-  nameWithType: NetMQMessageCodec.Encode(Message, PrivateKey, Peer, DateTimeOffset)
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  name: Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_Peer_DateTimeOffset_
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.Peer, DateTimeOffset)
+  nameWithType: NetMQMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_
@@ -15152,15 +15117,12 @@ references:
   commentId: T:Libplanet.Net.Messages.TcpMessageCodec
   fullName: Libplanet.Net.Messages.TcpMessageCodec
   nameWithType: TcpMessageCodec
-- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor(Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name: TcpMessageCodec(AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor_Libplanet_Net_AppProtocolVersion_System_Nullable_IImmutableSet_Libplanet_Crypto_PublicKey___Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.#ctor(Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name.vb: TcpMessageCodec(AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec(Libplanet.Net.AppProtocolVersion, System.Nullable<IImmutableSet<Libplanet.Crypto.PublicKey>>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec(Libplanet.Net.AppProtocolVersion, System.Nullable(Of IImmutableSet(Of Libplanet.Crypto.PublicKey)), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
-  nameWithType: TcpMessageCodec.TcpMessageCodec(AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  nameWithType.vb: TcpMessageCodec.TcpMessageCodec(AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor
+  name: TcpMessageCodec()
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor
+  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.#ctor
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec()
+  nameWithType: TcpMessageCodec.TcpMessageCodec()
 - uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor*
   name: TcpMessageCodec
   href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor_
@@ -15184,12 +15146,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.TcpMessageCodec.Decode
   nameWithType: TcpMessageCodec.Decode
-- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  name: Encode(Message, PrivateKey, Peer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_Peer_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.Peer,DateTimeOffset)
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.Peer, DateTimeOffset)
-  nameWithType: TcpMessageCodec.Encode(Message, PrivateKey, Peer, DateTimeOffset)
+- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  name: Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
+  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_Peer_DateTimeOffset_
+  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
+  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.Peer, DateTimeOffset)
+  nameWithType: TcpMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
 - uid: Libplanet.Net.Messages.TcpMessageCodec.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_
