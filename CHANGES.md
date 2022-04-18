@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.33.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on April 19th, 2022.
 
 ### Backward-incompatible API changes
 
@@ -39,10 +37,6 @@ To be released.
         `InvalidMessageSignatureException`, `SendMessageFailException` no longer
         have public constructors.
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Net) `InvalidCredentialException` class added.
@@ -55,8 +49,6 @@ To be released.
     [[#1866], [#1891]]
  -  (Libplanet.Net) `IMessageCodec.Encode()` now requires a *matching*
     `PrivateKey` to be provided for `Peer`.  [[#1904], [#1905]]
-
-### Bug fixes
 
 ### Dependencies
 
