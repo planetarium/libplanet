@@ -35,6 +35,8 @@ namespace Libplanet.Net.Transports
 
         private readonly IList<IceServer>? _iceServers;
         private readonly ILogger _logger;
+        private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly MessageValidator _messageValidator;
         private readonly TcpMessageCodec _messageCodec;
 
         private readonly ConcurrentDictionary<Guid, ReplyStream> _streams;
@@ -76,11 +78,13 @@ namespace Libplanet.Net.Transports
             _privateKey = privateKey;
             _host = host;
             _iceServers = iceServers.ToList();
-            _messageCodec = new TcpMessageCodec(
+            _appProtocolVersion = appProtocolVersion;
+            _messageValidator = new MessageValidator(
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
+            _messageCodec = new TcpMessageCodec();
             _streams = new ConcurrentDictionary<Guid, ReplyStream>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
@@ -255,18 +259,28 @@ namespace Libplanet.Net.Transports
             var client = new TcpClient { LingerState = new LingerOption(true, 1) };
             try
             {
-                await client.ConnectAsync(peer.EndPoint.Host, peer.EndPoint.Port);
-                _logger.Verbose(
-                    "SendMessageAsync client: {EndPoint}",
-                    (IPEndPoint)client.Client.LocalEndPoint);
-                client.ReceiveTimeout = timeout?.Milliseconds ?? 0;
-                await WriteMessageAsync(message, client, linkedTokenSource.Token);
-                _logger.Verbose(
-                    "Successfully sent request {RequestId} to {Peer}: {Message}.",
-                    reqId,
-                    peer,
-                    message
-                );
+                try
+                {
+                    await client.ConnectAsync(peer.EndPoint.Host, peer.EndPoint.Port);
+                    _logger.Verbose(
+                        "SendMessageAsync client: {EndPoint}",
+                        (IPEndPoint)client.Client.LocalEndPoint);
+                    client.ReceiveTimeout = timeout?.Milliseconds ?? 0;
+                    await WriteMessageAsync(message, client, linkedTokenSource.Token);
+                    _logger.Verbose(
+                        "Successfully sent request {RequestId} to {Peer}: {Message}.",
+                        reqId,
+                        peer,
+                        message);
+                }
+                catch (Exception e) when (e is ArgumentException || e is SocketException)
+                {
+                    // ArgumentException is thrown on .NET framework and
+                    // SocketException is thrown on .Net core when the given peer is invalid.
+                    // To match with NetMQTransport implementation, convert to TimeoutException
+                    // when failed to find the peer to send message.
+                    throw new TimeoutException($"Failed to send {message} {reqId} to {peer}.");
+                }
 
                 var replies = new List<Message>();
                 using var timeoutCts = new CancellationTokenSource();
@@ -284,14 +298,47 @@ namespace Libplanet.Net.Transports
                 {
                     try
                     {
-                        Message received = await ReadMessageAsync(
-                            client,
-                            timeoutTokenSource.Token);
+                        Message reply = await ReadMessageAsync(client, timeoutTokenSource.Token);
                         _logger.Verbose(
                             "Received message was {Message}. Total: {Count}",
-                            received,
+                            reply,
                             replies.Count);
-                        replies.Add(received);
+
+                        try
+                        {
+                            _messageValidator.ValidateTimestamp(reply);
+                            _messageValidator.ValidateAppProtocolVersion(reply);
+                        }
+                        catch (InvalidMessageTimestampException imte)
+                        {
+                            const string dbgMsg =
+                                "Received reply {Reply} from {Peer} to request {Message} " +
+                                "{RequestId} has an invalid timestamp.";
+                            _logger.Debug(
+                                imte,
+                                dbgMsg,
+                                reply,
+                                reply.Remote,
+                                message,
+                                reqId);
+                            throw;
+                        }
+                        catch (DifferentAppProtocolVersionException dapve)
+                        {
+                            const string dbgMsg =
+                                "Received reply {Reply} from {Peer} to request {Message} " +
+                                "{RequestId} has an invalid APV.";
+                            _logger.Debug(
+                                dapve,
+                                dbgMsg,
+                                reply,
+                                reply.Remote,
+                                message,
+                                reqId);
+                            throw;
+                        }
+
+                        replies.Add(reply);
                         expectedResponses--;
                     }
                     catch (TaskCanceledException)
@@ -313,7 +360,8 @@ namespace Libplanet.Net.Transports
                                 break;
                             }
 
-                            throw new TimeoutException();
+                            throw new TimeoutException(
+                                $"The operation was canceled due to timeout {timeout}.");
                         }
 
                         throw;
@@ -330,47 +378,17 @@ namespace Libplanet.Net.Transports
 
                 return replies;
             }
-            catch (DifferentAppProtocolVersionException e)
+            catch (Exception e) when (
+                e is InvalidMagicCookieException ||
+                e is InvalidMessageSignatureException ||
+                e is InvalidMessageTimestampException ||
+                e is DifferentAppProtocolVersionException ||
+                e is TimeoutException)
             {
-                _logger.Error(
-                    e,
-                    "{Peer} sent a reply to {RequestId} with a different app protocol version.",
-                    peer,
-                    reqId);
-                throw;
-            }
-            catch (ArgumentException e)
-            {
-                // This exception is thrown on .NET framework when the given peer is invalid.
-                _logger.Error(
-                    e,
-                    "ArgumentException occurred during {FName} to {RequestId}.",
-                    nameof(SendMessageAsync),
-                    reqId);
-
-                // To match with previous implementation, throws TimeoutException when it failed to
-                // find peer to send message.
-                throw new TimeoutException($"Cannot find peer {peer}.", e);
-            }
-            catch (SocketException e)
-            {
-                // This exception is thrown on .NET core when the given peer is invalid.
-                _logger.Error(
-                    e,
-                    "SocketException occurred during {FName} to {Peer}.",
-                    nameof(SendMessageAsync),
-                    peer);
-
-                // To match with previous implementation, throws TimeoutException when it failed to
-                // find peer to send message.
-                throw new TimeoutException($"Cannot find peer {peer}.", e);
-            }
-            catch (InvalidMagicCookieException e)
-            {
-                _logger.Verbose(
-                    "Magic cookie mismatch, ignored. (Expected: {Expected}, Actual: {Actual})",
-                    e.Expected,
-                    e.Actual);
+                const string errMsg =
+                    "Failed to send and receive replies from {Peer} for request " +
+                    "{Message} {RequestId}.";
+                _logger.Error(e, errMsg, peer, message, reqId);
                 throw;
             }
             finally
@@ -490,6 +508,7 @@ namespace Libplanet.Net.Transports
             byte[] serialized = _messageCodec.Encode(
                 message,
                 _privateKey,
+                _appProtocolVersion,
                 AsPeer,
                 DateTimeOffset.UtcNow);
             int length = serialized.Length;
@@ -587,10 +606,10 @@ namespace Libplanet.Net.Transports
             _logger.Verbose("Received {Bytes} bytes from network stream.", content.Count);
 
             Message message = _messageCodec.Decode(content.ToArray(), false);
-
             _logger.Verbose(
                 "ReadMessageAsync success. Received message {Message} from network stream.",
                 message);
+
             return message;
         }
 
@@ -644,6 +663,35 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Verbose("Trying to receive message");
                 Message message = await ReadMessageAsync(client, cancellationToken);
+                try
+                {
+                    _messageValidator.ValidateTimestamp(message);
+                    _messageValidator.ValidateAppProtocolVersion(message);
+                }
+                catch (InvalidMessageTimestampException imte)
+                {
+                    _logger.Debug(
+                        imte,
+                        "Received request {Message} from {Peer} has an invalid timestamp.",
+                        message,
+                        message.Remote);
+                    return;
+                }
+                catch (DifferentAppProtocolVersionException dapve)
+                {
+                    _logger.Debug(
+                        dapve,
+                        "Received request {Message} from {Peer} has an invalid APV.",
+                        message,
+                        message.Remote);
+                    var differentVersion = new DifferentVersion() { Identity = message.Identity };
+                    _logger.Debug(
+                        "Replying to {Peer} with {Reply}.",
+                        differentVersion);
+                    await WriteMessageAsync(differentVersion, client, cancellationToken);
+                    return;
+                }
+
                 LastMessageTimestamp = DateTimeOffset.UtcNow;
                 _logger.Debug(
                     "A message has parsed: {Message}, from {Remove}",
@@ -661,25 +709,17 @@ namespace Libplanet.Net.Transports
                 await TryAddStreamAsync(id, client, cancellationToken);
                 await ProcessMessageHandler.InvokeAsync(message);
             }
-            catch (DifferentAppProtocolVersionException dapve)
+            catch (IOException ioe)
             {
-                _logger.Debug("Message from peer with different version received.");
-                var differentVersion = new DifferentVersion
-                {
-                    Identity = dapve.Identity,
-                };
-                await WriteMessageAsync(differentVersion, client, cancellationToken);
+                _logger.Verbose(ioe, "Connection is lost.");
             }
-            catch (IOException)
-            {
-                _logger.Verbose("Connection is lost.");
-            }
-            catch (InvalidMagicCookieException e)
+            catch (InvalidMagicCookieException imce)
             {
                 _logger.Verbose(
+                    imce,
                     "Magic cookie mismatch, ignored. (Expected: {Expected}, Actual: {Actual})",
-                    e.Expected,
-                    e.Actual);
+                    imce.Expected,
+                    imce.Actual);
             }
             catch (Exception e)
             {

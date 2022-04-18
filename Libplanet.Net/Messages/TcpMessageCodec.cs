@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,38 +13,20 @@ namespace Libplanet.Net.Messages
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private readonly Codec _codec;
-        private readonly MessageValidator _messageValidator;
 
         /// <summary>
         /// Creates a <see cref="TcpMessageCodec"/> instance.
         /// </summary>
-        /// <param name="appProtocolVersion">The <see cref="AppProtocolVersion"/> to use
-        /// when encoding and decoding.</param>
-        /// <param name="trustedAppProtocolVersionSigners">The set of signers to trust when
-        /// decoding a message.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A callback method that gets
-        /// invoked when an <see cref="AppProtocolVersion"/> by a <em>trusted</em> signer that is
-        /// different from <paramref name="appProtocolVersion"/> is encountered.</param>
-        /// <param name="messageTimestampBuffer">A <see cref="TimeSpan"/> to use as a buffer
-        /// when decoding <see cref="Message"/>s.</param>
-        public TcpMessageCodec(
-            AppProtocolVersion appProtocolVersion = default,
-            IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners = null,
-            DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered = null,
-            TimeSpan? messageTimestampBuffer = null)
+        public TcpMessageCodec()
         {
             _codec = new Codec();
-            _messageValidator = new MessageValidator(
-                appProtocolVersion,
-                trustedAppProtocolVersionSigners,
-                differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
         }
 
         /// <inheritdoc/>
         public byte[] Encode(
             Message message,
             PrivateKey privateKey,
+            AppProtocolVersion appProtocolVersion,
             Peer peer,
             DateTimeOffset timestamp)
         {
@@ -71,7 +52,7 @@ namespace Libplanet.Net.Messages
             frames.Insert(0, BitConverter.GetBytes(timestamp.Ticks));
             frames.Insert(0, _codec.Encode(peer.ToBencodex()));
             frames.Insert(0, BitConverter.GetBytes((int)message.Type));
-            frames.Insert(0, Encoding.ASCII.GetBytes(_messageValidator.Apv.Token));
+            frames.Insert(0, Encoding.ASCII.GetBytes(appProtocolVersion.Token));
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(
@@ -105,10 +86,10 @@ namespace Libplanet.Net.Messages
             }
 
             using var stream = new MemoryStream(encoded);
-            var buffer = new byte[sizeof(int)];
+            byte[] buffer = new byte[sizeof(int)];
             stream.Read(buffer, 0, sizeof(int));
             int frameCount = BitConverter.ToInt32(buffer, 0);
-            var frames = new List<byte[]>();
+            List<byte[]> frames = new List<byte[]>();
             for (var i = 0; i < frameCount; i++)
             {
                 buffer = new byte[sizeof(int)];
@@ -138,11 +119,6 @@ namespace Libplanet.Net.Messages
                 remotePeer = new Peer(dictionary);
             }
 
-            _messageValidator.ValidateAppProtocolVersion(
-                remotePeer,
-                reply ? new byte[] { } : frames[0],
-                remoteVersion);
-
             var type =
                 (Message.MessageType)BitConverter.ToInt32(
                     remains[(int)Message.MessageFrame.Type],
@@ -150,7 +126,6 @@ namespace Libplanet.Net.Messages
             long ticks = BitConverter.ToInt64(remains[(int)Message.MessageFrame.Timestamp], 0);
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
             var currentTime = DateTimeOffset.UtcNow;
-            _messageValidator.ValidateTimestamp(remotePeer, currentTime, timestamp);
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign];
 

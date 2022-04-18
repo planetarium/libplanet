@@ -36,6 +36,7 @@ namespace Libplanet.Net.Transports
             NetMQMessage request = netMQMessageCodec.Encode(
                 ping,
                 privateKey,
+                default,
                 new Peer(privateKey.PublicKey),
                 DateTimeOffset.UtcNow);
 
@@ -100,6 +101,7 @@ namespace Libplanet.Net.Transports
             byte[] serialized = messageCodec.Encode(
                 ping,
                 privateKey,
+                default,
                 new Peer(privateKey.PublicKey),
                 DateTimeOffset.UtcNow);
             int length = serialized.Length;

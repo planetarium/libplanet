@@ -440,6 +440,12 @@ namespace Libplanet.Net.Protocols
 
                 AddPeer(peer);
             }
+            catch (MessageSendFailedException)
+            {
+                throw new PingTimeoutException(
+                    peer,
+                    $"Failed to send Ping to {peer}.");
+            }
             catch (TimeoutException)
             {
                 throw new PingTimeoutException(

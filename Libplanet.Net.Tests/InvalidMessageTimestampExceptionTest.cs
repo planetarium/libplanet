@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Libplanet.Crypto;
 using Xunit;
 
 namespace Libplanet.Net.Tests
@@ -21,7 +20,6 @@ namespace Libplanet.Net.Tests
         {
             var e1 = new InvalidMessageTimestampException(
                 "An error message",
-                new Peer(new PrivateKey().PublicKey),
                 DateTimeOffset.UtcNow,
                 buffer,
                 DateTimeOffset.UtcNow + TimeSpan.FromSeconds(1));

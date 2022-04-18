@@ -10,6 +10,24 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) `IMessageCodec` and its implementations `NetMQMessageCodec`
+    and `TcpMessageCodec` overhauled.  [[#1906]]
+     -  `AppProtocolVersion` type parameter added to `IMessageCodec.Encode()`.
+     -  Both `NetMQMessageCodec()` and `TcpMessageCodec()` constructors are
+        made parameterless.
+     -  `IMessageCodec.Decode()` no longer throws
+        `InvalidMessageTimestampException` or
+        `DifferentAppProtocolVersionException`.
+ -  (Libplanet.Net) Irrelevant context related properties removed from
+    `InvalidMessageTimestampException` and
+    `DifferentAppProtocolVersionException`.  [[#1906]]
+     -  `InvalidMessageTimestampException.Peer` property removed.
+     -  `DifferentAppProtocolVersionException.Peer` property removed.
+     -  `DifferentAppProtocolVersionException.Identity` property removed.
+ -  (Libplanet.Net) Both `MessageValidator.ValidateTimestamp()` and
+    `MessageValidator.ValidateAppProtocolVersion()` now only accepts single
+    `Message` type parameter.  [[#1906]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -30,8 +48,8 @@ To be released.
 
 ### Dependencies
 
- -  No longer depend on *Fody*.  [[#1866], [#1891]]
- -  No longer depend on *Equals.Fody*.  [[#1866], [#1891]]
+ -  No longer depends on *Fody*.  [[#1866], [#1891]]
+ -  No longer depends on *Equals.Fody*.  [[#1866], [#1891]]
 
 ### CLI tools
 
@@ -39,6 +57,7 @@ To be released.
 [#1891]: https://github.com/planetarium/libplanet/pull/1891
 [#1904]: https://github.com/planetarium/libplanet/issues/1904
 [#1905]: https://github.com/planetarium/libplanet/pull/1905
+[#1906]: https://github.com/planetarium/libplanet/pull/1906
 
 
 Version 0.32.1

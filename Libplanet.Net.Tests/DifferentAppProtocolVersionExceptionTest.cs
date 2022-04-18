@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Xunit;
@@ -30,8 +29,6 @@ namespace Libplanet.Net.Tests
 
             var e1 = new DifferentAppProtocolVersionException(
                 "An error message",
-                new Peer(publicKey),
-                identity,
                 apv1,
                 apv2,
                 false);
@@ -46,8 +43,6 @@ namespace Libplanet.Net.Tests
             }
 
             Assert.Equal(e1.Message, e2.Message);
-            Assert.Equal(e1.Peer, e2.Peer);
-            Assert.True(e1.Identity.SequenceEqual(e2.Identity));
             Assert.Equal(e1.ExpectedApv, e2.ExpectedApv);
             Assert.Equal(e1.ActualApv, e2.ActualApv);
             Assert.Equal(e1.Trusted, e2.Trusted);

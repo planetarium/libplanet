@@ -106,89 +106,75 @@ namespace Libplanet.Net.Messages
         /// considered invalid and an <see cref="DifferentAppProtocolVersionException"/> will be
         /// thrown.
         /// </summary>
-        /// <param name="peer">The <see cref="Peer"/> that has sent the <see cref="Message"/>
-        /// with <paramref name="peerAppProtocolVersion"/>.</param>
-        /// <param name="identity">The <see cref="Message.Identity"/> attached to the
-        /// <see cref="Message"/> with <paramref name="peerAppProtocolVersion"/>.</param>
-        /// <param name="peerAppProtocolVersion">The <see cref="AppProtocolVersion"/> to validate.
-        /// </param>
-        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
-        /// <paramref name="peerAppProtocolVersion"/> is different from <see cref="Apv"/>.
-        /// </exception>
+        /// <param name="message">The <see cref="Message"/> to validate.</param>
         /// <remarks>
-        /// If <paramref name="peerAppProtocolVersion"/> is not valid but is signed by
-        /// a trusted signer, then <see cref="DifferentApvEncountered"/> is called.
+        /// If <see cref="Message.Version"/> of <paramref name="message"/> is not valid but
+        /// is signed by a trusted signer, then <see cref="DifferentApvEncountered"/> is called.
         /// </remarks>
+        /// <exception cref="NullReferenceException">Thrown when <see cref="Message.Remote"/> is
+        /// <c>null</c> for <paramref name="message"/>.</exception>
+        /// <exception cref="DifferentAppProtocolVersionException">Thrown when
+        /// local version does not match with given <paramref name="message"/>'s
+        /// <see cref="Message.Version"/>.</exception>
         /// <seealso cref="Apv"/>
         /// <seealso cref="TrustedApvSigners"/>
         /// <seealso cref="DifferentApvEncountered"/>
-        public void ValidateAppProtocolVersion(
-            Peer peer, byte[] identity, AppProtocolVersion peerAppProtocolVersion) =>
-            ValidateAppProtocolVersionTemplate(
-                Apv,
-                TrustedApvSigners,
-                DifferentApvEncountered,
-                peer,
-                identity,
-                peerAppProtocolVersion);
+        public void ValidateAppProtocolVersion(Message message) =>
+            ValidateAppProtocolVersion(Apv, TrustedApvSigners, DifferentApvEncountered, message);
 
         /// <summary>
         /// Validates a <see cref="DateTimeOffset"/> timestamp against current timestamp.
         /// </summary>
-        /// <param name="peer">The <see cref="Peer"/> that has sent the <see cref="Message"/>
-        /// with <paramref name="messageTimestamp"/>.</param>
-        /// <param name="currentTimestamp">Current timestamp.</param>
-        /// <param name="messageTimestamp">The <see cref="Message.Timestamp"/> of
-        /// the <see cref="Message"/> in question.</param>
+        /// <param name="message">The <see cref="Message"/> to validate.</param>
+        /// <exception cref="InvalidMessageTimestampException">Thrown when the timestamp of
+        /// <paramref name="message"/> is invalid.</exception>
         /// <seealso cref="MessageTimestampBuffer"/>.
-        public void ValidateTimestamp(
-            Peer peer, DateTimeOffset currentTimestamp, DateTimeOffset messageTimestamp) =>
-            ValidateTimestampTemplate(
-                MessageTimestampBuffer,
-                peer,
-                currentTimestamp,
-                messageTimestamp);
+        public void ValidateTimestamp(Message message) =>
+            ValidateTimestamp(MessageTimestampBuffer, DateTimeOffset.UtcNow, message.Timestamp);
 
-        private static void ValidateAppProtocolVersionTemplate(
+        private static void ValidateAppProtocolVersion(
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey>? trustedAppProtocolVersionSigners,
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
-            Peer peer,
-            byte[] identity,
-            AppProtocolVersion peerAppProtocolVersion)
+            Message message)
         {
-            if (peerAppProtocolVersion.Equals(appProtocolVersion))
+            if (message.Remote is { } peer)
             {
-                return;
-            }
+                if (message.Version.Equals(appProtocolVersion))
+                {
+                    return;
+                }
 
-            bool trusted = !(
-                trustedAppProtocolVersionSigners is { } tapvs &&
-                tapvs.All(publicKey => !peerAppProtocolVersion.Verify(publicKey)));
-            if (trusted && differentAppProtocolVersionEncountered is { } dapve)
+                bool trusted = !(
+                    trustedAppProtocolVersionSigners is { } tapvs &&
+                    tapvs.All(publicKey => !message.Version.Verify(publicKey)));
+                if (trusted && differentAppProtocolVersionEncountered is { } dapve)
+                {
+                    dapve(peer, message.Version, appProtocolVersion);
+                }
+
+                throw new DifferentAppProtocolVersionException(
+                    $"The APV of a received message is invalid:\n" +
+                    $"Expected: APV {appProtocolVersion} with " +
+                    $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
+                    $"signer {appProtocolVersion.Signer}\n" +
+                    $"Actual: APV {message.Version} with " +
+                    $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
+                    $"signer: {message.Version.Signer}\n" +
+                    $"Signed by a trusted signer: {trusted}",
+                    appProtocolVersion,
+                    message.Version,
+                    trusted);
+            }
+            else
             {
-                dapve(peer, peerAppProtocolVersion, appProtocolVersion);
+                throw new NullReferenceException(
+                    $"Property {nameof(message.Remote)} of {nameof(message)} cannot be null.");
             }
-
-            throw new DifferentAppProtocolVersionException(
-                $"The APV of a received message is invalid; " +
-                $"Local: APV {appProtocolVersion} " +
-                $"with signature {ByteUtil.Hex(appProtocolVersion.Signature)} " +
-                $"by signer {appProtocolVersion.Signer}\n" +
-                $"Remote: APV {peerAppProtocolVersion} " +
-                $"with signature {ByteUtil.Hex(peerAppProtocolVersion.Signature)} " +
-                $"by signer {peerAppProtocolVersion.Signer}\n" +
-                $"Signed by a trusted signer: {trusted}",
-                peer,
-                identity,
-                appProtocolVersion,
-                peerAppProtocolVersion,
-                trusted);
         }
 
-        private static void ValidateTimestampTemplate(
+        private static void ValidateTimestamp(
             TimeSpan? timestampBuffer,
-            Peer peer,
             DateTimeOffset currentTimestamp,
             DateTimeOffset messageTimestamp)
         {
@@ -203,7 +189,6 @@ namespace Libplanet.Net.Messages
                     $"{currentTimestamp.ToString(TimestampFormat, cultureInfo)}\n" +
                     $"Message timestamp: " +
                     $"{messageTimestamp.ToString(TimestampFormat, cultureInfo)}",
-                    peer,
                     messageTimestamp,
                     buffer,
                     currentTimestamp);
