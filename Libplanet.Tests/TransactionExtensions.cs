@@ -28,7 +28,8 @@ namespace Libplanet.Tests
                 {
                     throw new InvalidTxPublicKeyException(
                         tx.Id,
-                        "The given private key does not correspond to the transaction's public key."
+                        "The given private key does not correspond to the transaction's public key.",
+                        e
                     );
                 }
 

@@ -642,7 +642,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
                     $"is not matched to the address ({Signer}).";
-                throw new InvalidTxPublicKeyException(Id, message);
+                throw new InvalidTxPublicKeyException(Id, message, null);
             }
         }
 
