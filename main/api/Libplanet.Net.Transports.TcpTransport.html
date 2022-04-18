@@ -325,7 +325,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_TcpTransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable%7BLibplanet.Net.BoundPeer%7D%2CLibplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/TcpTransport.cs/#L413">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/TcpTransport.cs/#L419">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_TcpTransport_BroadcastMessage_" data-uid="Libplanet.Net.Transports.TcpTransport.BroadcastMessage*"></a>
   <h4 id="Libplanet_Net_Transports_TcpTransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)">BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, Message)</h4>
@@ -377,7 +377,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_TcpTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/TcpTransport.cs/#L428">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Transports/TcpTransport.cs/#L434">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_TcpTransport_ReplyMessageAsync_" data-uid="Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_TcpTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)">ReplyMessageAsync(Message, CancellationToken)</h4>
@@ -495,6 +495,23 @@ sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Transports.CommunicationFailException.html">CommunicationFailException</a></td>
+        <td><p>Thrown when fail send or receive
+a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Transports_TcpTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -575,6 +592,23 @@ operation should be canceled.</p>
         <td><span class="xref">Task</span>&lt;<span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>&gt;&gt;</td>
         <td><p>The replies of the <code data-dev-comment-type="paramref" class="paramref">message</code>
 sent by <code data-dev-comment-type="paramref" class="paramref">peer</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Transports.CommunicationFailException.html">CommunicationFailException</a></td>
+        <td><p>Thrown when fail send or receive
+a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </td>
       </tr>
     </tbody>

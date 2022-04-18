@@ -14054,83 +14054,6 @@ references:
   commentId: T:Libplanet.Net.DifferentAppProtocolVersionEncountered
   fullName: Libplanet.Net.DifferentAppProtocolVersionEncountered
   nameWithType: DifferentAppProtocolVersionEncountered
-- uid: Libplanet.Net.DifferentAppProtocolVersionException
-  name: DifferentAppProtocolVersionException
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html
-  commentId: T:Libplanet.Net.DifferentAppProtocolVersionException
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException
-  nameWithType: DifferentAppProtocolVersionException
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
-  name: DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
-  name: DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_System_Boolean_
-  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion, System.Boolean)
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor*
-  name: DifferentAppProtocolVersionException
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.ActualApv
-  name: ActualApv
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ActualApv
-  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.ActualApv
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ActualApv
-  nameWithType: DifferentAppProtocolVersionException.ActualApv
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.ActualApv*
-  name: ActualApv
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ActualApv_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.ActualApv
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ActualApv
-  nameWithType: DifferentAppProtocolVersionException.ActualApv
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv
-  name: ExpectedApv
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ExpectedApv
-  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv
-  nameWithType: DifferentAppProtocolVersionException.ExpectedApv
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv*
-  name: ExpectedApv
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ExpectedApv_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedApv
-  nameWithType: DifferentAppProtocolVersionException.ExpectedApv
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_GetObjectData_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.GetObjectData
-  nameWithType: DifferentAppProtocolVersionException.GetObjectData
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Trusted
-  name: Trusted
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Trusted
-  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.Trusted
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Trusted
-  nameWithType: DifferentAppProtocolVersionException.Trusted
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.Trusted*
-  name: Trusted
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_Trusted_
-  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.Trusted
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.Trusted
-  nameWithType: DifferentAppProtocolVersionException.Trusted
 - uid: Libplanet.Net.IceServer
   name: IceServer
   href: api/Libplanet.Net.IceServer.html
@@ -14220,70 +14143,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.IceServerException.IceServerException
   nameWithType: IceServerException.IceServerException
-- uid: Libplanet.Net.InvalidCredentialException
-  name: InvalidCredentialException
-  href: api/Libplanet.Net.InvalidCredentialException.html
-  commentId: T:Libplanet.Net.InvalidCredentialException
-  fullName: Libplanet.Net.InvalidCredentialException
-  nameWithType: InvalidCredentialException
-- uid: Libplanet.Net.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidCredentialException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidCredentialException.#ctor(System.String,Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
-  name: InvalidCredentialException(String, PublicKey, PublicKey)
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException__ctor_System_String_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.Net.InvalidCredentialException.#ctor(System.String,Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
-  fullName: Libplanet.Net.InvalidCredentialException.InvalidCredentialException(System.String, Libplanet.Crypto.PublicKey, Libplanet.Crypto.PublicKey)
-  nameWithType: InvalidCredentialException.InvalidCredentialException(String, PublicKey, PublicKey)
-- uid: Libplanet.Net.InvalidCredentialException.#ctor*
-  name: InvalidCredentialException
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidCredentialException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidCredentialException.InvalidCredentialException
-  nameWithType: InvalidCredentialException.InvalidCredentialException
-- uid: Libplanet.Net.InvalidCredentialException.Actual
-  name: Actual
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_Actual
-  commentId: P:Libplanet.Net.InvalidCredentialException.Actual
-  fullName: Libplanet.Net.InvalidCredentialException.Actual
-  nameWithType: InvalidCredentialException.Actual
-- uid: Libplanet.Net.InvalidCredentialException.Actual*
-  name: Actual
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_Actual_
-  commentId: Overload:Libplanet.Net.InvalidCredentialException.Actual
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidCredentialException.Actual
-  nameWithType: InvalidCredentialException.Actual
-- uid: Libplanet.Net.InvalidCredentialException.Expected
-  name: Expected
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_Expected
-  commentId: P:Libplanet.Net.InvalidCredentialException.Expected
-  fullName: Libplanet.Net.InvalidCredentialException.Expected
-  nameWithType: InvalidCredentialException.Expected
-- uid: Libplanet.Net.InvalidCredentialException.Expected*
-  name: Expected
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_Expected_
-  commentId: Overload:Libplanet.Net.InvalidCredentialException.Expected
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidCredentialException.Expected
-  nameWithType: InvalidCredentialException.Expected
-- uid: Libplanet.Net.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidCredentialException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.InvalidCredentialException.html#Libplanet_Net_InvalidCredentialException_GetObjectData_
-  commentId: Overload:Libplanet.Net.InvalidCredentialException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidCredentialException.GetObjectData
-  nameWithType: InvalidCredentialException.GetObjectData
 - uid: Libplanet.Net.InvalidMessageException
   name: InvalidMessageException
   href: api/Libplanet.Net.InvalidMessageException.html
@@ -14316,131 +14175,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.GetObjectData
   nameWithType: InvalidMessageException.GetObjectData
-- uid: Libplanet.Net.InvalidMessageSignatureException
-  name: InvalidMessageSignatureException
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html
-  commentId: T:Libplanet.Net.InvalidMessageSignatureException
-  fullName: Libplanet.Net.InvalidMessageSignatureException
-  nameWithType: InvalidMessageSignatureException
-- uid: Libplanet.Net.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageSignatureException.#ctor(System.String,Libplanet.Net.Peer,Libplanet.Crypto.PublicKey,System.Byte[],System.Byte[])
-  name: InvalidMessageSignatureException(String, Peer, PublicKey, Byte[], Byte[])
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException__ctor_System_String_Libplanet_Net_Peer_Libplanet_Crypto_PublicKey_System_Byte___System_Byte___
-  commentId: M:Libplanet.Net.InvalidMessageSignatureException.#ctor(System.String,Libplanet.Net.Peer,Libplanet.Crypto.PublicKey,System.Byte[],System.Byte[])
-  name.vb: InvalidMessageSignatureException(String, Peer, PublicKey, Byte(), Byte())
-  fullName: Libplanet.Net.InvalidMessageSignatureException.InvalidMessageSignatureException(System.String, Libplanet.Net.Peer, Libplanet.Crypto.PublicKey, System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Net.InvalidMessageSignatureException.InvalidMessageSignatureException(System.String, Libplanet.Net.Peer, Libplanet.Crypto.PublicKey, System.Byte(), System.Byte())
-  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException(String, Peer, PublicKey, Byte[], Byte[])
-  nameWithType.vb: InvalidMessageSignatureException.InvalidMessageSignatureException(String, Peer, PublicKey, Byte(), Byte())
-- uid: Libplanet.Net.InvalidMessageSignatureException.#ctor*
-  name: InvalidMessageSignatureException
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.InvalidMessageSignatureException
-  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException
-- uid: Libplanet.Net.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageSignatureException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_GetObjectData_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.GetObjectData
-  nameWithType: InvalidMessageSignatureException.GetObjectData
-- uid: Libplanet.Net.InvalidMessageSignatureException.MessageToVerify
-  name: MessageToVerify
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_MessageToVerify
-  commentId: P:Libplanet.Net.InvalidMessageSignatureException.MessageToVerify
-  fullName: Libplanet.Net.InvalidMessageSignatureException.MessageToVerify
-  nameWithType: InvalidMessageSignatureException.MessageToVerify
-- uid: Libplanet.Net.InvalidMessageSignatureException.MessageToVerify*
-  name: MessageToVerify
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_MessageToVerify_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.MessageToVerify
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.MessageToVerify
-  nameWithType: InvalidMessageSignatureException.MessageToVerify
-- uid: Libplanet.Net.InvalidMessageSignatureException.Peer
-  name: Peer
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_Peer
-  commentId: P:Libplanet.Net.InvalidMessageSignatureException.Peer
-  fullName: Libplanet.Net.InvalidMessageSignatureException.Peer
-  nameWithType: InvalidMessageSignatureException.Peer
-- uid: Libplanet.Net.InvalidMessageSignatureException.Peer*
-  name: Peer
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_Peer_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.Peer
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.Peer
-  nameWithType: InvalidMessageSignatureException.Peer
-- uid: Libplanet.Net.InvalidMessageSignatureException.PublicKey
-  name: PublicKey
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_PublicKey
-  commentId: P:Libplanet.Net.InvalidMessageSignatureException.PublicKey
-  fullName: Libplanet.Net.InvalidMessageSignatureException.PublicKey
-  nameWithType: InvalidMessageSignatureException.PublicKey
-- uid: Libplanet.Net.InvalidMessageSignatureException.PublicKey*
-  name: PublicKey
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_PublicKey_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.PublicKey
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.PublicKey
-  nameWithType: InvalidMessageSignatureException.PublicKey
-- uid: Libplanet.Net.InvalidMessageSignatureException.Signature
-  name: Signature
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_Signature
-  commentId: P:Libplanet.Net.InvalidMessageSignatureException.Signature
-  fullName: Libplanet.Net.InvalidMessageSignatureException.Signature
-  nameWithType: InvalidMessageSignatureException.Signature
-- uid: Libplanet.Net.InvalidMessageSignatureException.Signature*
-  name: Signature
-  href: api/Libplanet.Net.InvalidMessageSignatureException.html#Libplanet_Net_InvalidMessageSignatureException_Signature_
-  commentId: Overload:Libplanet.Net.InvalidMessageSignatureException.Signature
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageSignatureException.Signature
-  nameWithType: InvalidMessageSignatureException.Signature
-- uid: Libplanet.Net.InvalidMessageTimestampException
-  name: InvalidMessageTimestampException
-  href: api/Libplanet.Net.InvalidMessageTimestampException.html
-  commentId: T:Libplanet.Net.InvalidMessageTimestampException
-  fullName: Libplanet.Net.InvalidMessageTimestampException
-  nameWithType: InvalidMessageTimestampException
-- uid: Libplanet.Net.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageTimestampException.html#Libplanet_Net_InvalidMessageTimestampException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageTimestampException.#ctor*
-  name: InvalidMessageTimestampException
-  href: api/Libplanet.Net.InvalidMessageTimestampException.html#Libplanet_Net_InvalidMessageTimestampException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidMessageTimestampException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageTimestampException.InvalidMessageTimestampException
-  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException
-- uid: Libplanet.Net.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageTimestampException.html#Libplanet_Net_InvalidMessageTimestampException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageTimestampException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.InvalidMessageTimestampException.html#Libplanet_Net_InvalidMessageTimestampException_GetObjectData_
-  commentId: Overload:Libplanet.Net.InvalidMessageTimestampException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageTimestampException.GetObjectData
-  nameWithType: InvalidMessageTimestampException.GetObjectData
 - uid: Libplanet.Net.InvalidStateTargetException
   name: InvalidStateTargetException
   href: api/Libplanet.Net.InvalidStateTargetException.html
@@ -17074,45 +16808,223 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp
   nameWithType: BoundPeerExtensions.QueryAppProtocolVersionTcp
+- uid: Libplanet.Net.Transports.CommunicationFailException
+  name: CommunicationFailException
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html
+  commentId: T:Libplanet.Net.Transports.CommunicationFailException
+  fullName: Libplanet.Net.Transports.CommunicationFailException
+  nameWithType: CommunicationFailException
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(SerializationInfo,StreamingContext)
+  name: CommunicationFailException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(SerializationInfo, StreamingContext)
+  nameWithType: CommunicationFailException.CommunicationFailException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
+  name: CommunicationFailException(String, Message.MessageType, BoundPeer)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_Message_MessageType_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.Message.MessageType, Libplanet.Net.BoundPeer)
+  nameWithType: CommunicationFailException.CommunicationFailException(String, Message.MessageType, BoundPeer)
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer,Exception)
+  name: CommunicationFailException(String, Message.MessageType, BoundPeer, Exception)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_Message_MessageType_Libplanet_Net_BoundPeer_Exception_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer,Exception)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(System.String, Libplanet.Net.Messages.Message.MessageType, Libplanet.Net.BoundPeer, Exception)
+  nameWithType: CommunicationFailException.CommunicationFailException(String, Message.MessageType, BoundPeer, Exception)
+- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor*
+  name: CommunicationFailException
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.CommunicationFailException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException
+  nameWithType: CommunicationFailException.CommunicationFailException
+- uid: Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: CommunicationFailException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.CommunicationFailException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.CommunicationFailException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.CommunicationFailException.GetObjectData
+  nameWithType: CommunicationFailException.GetObjectData
+- uid: Libplanet.Net.Transports.CommunicationFailException.MessageType
+  name: MessageType
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_MessageType
+  commentId: P:Libplanet.Net.Transports.CommunicationFailException.MessageType
+  fullName: Libplanet.Net.Transports.CommunicationFailException.MessageType
+  nameWithType: CommunicationFailException.MessageType
+- uid: Libplanet.Net.Transports.CommunicationFailException.MessageType*
+  name: MessageType
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_MessageType_
+  commentId: Overload:Libplanet.Net.Transports.CommunicationFailException.MessageType
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.CommunicationFailException.MessageType
+  nameWithType: CommunicationFailException.MessageType
+- uid: Libplanet.Net.Transports.CommunicationFailException.Peer
+  name: Peer
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_Peer
+  commentId: P:Libplanet.Net.Transports.CommunicationFailException.Peer
+  fullName: Libplanet.Net.Transports.CommunicationFailException.Peer
+  nameWithType: CommunicationFailException.Peer
+- uid: Libplanet.Net.Transports.CommunicationFailException.Peer*
+  name: Peer
+  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_Peer_
+  commentId: Overload:Libplanet.Net.Transports.CommunicationFailException.Peer
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.CommunicationFailException.Peer
+  nameWithType: CommunicationFailException.Peer
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException
+  name: DifferentAppProtocolVersionException
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html
+  commentId: T:Libplanet.Net.Transports.DifferentAppProtocolVersionException
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException
+  nameWithType: DifferentAppProtocolVersionException
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
+  name: DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
+  name: DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_System_Boolean_
+  commentId: M:Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion, System.Boolean)
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor*
+  name: DifferentAppProtocolVersionException
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv
+  name: ActualApv
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_ActualApv
+  commentId: P:Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv
+  nameWithType: DifferentAppProtocolVersionException.ActualApv
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv*
+  name: ActualApv
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_ActualApv_
+  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ActualApv
+  nameWithType: DifferentAppProtocolVersionException.ActualApv
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
+  name: ExpectedApv
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_ExpectedApv
+  commentId: P:Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
+  nameWithType: DifferentAppProtocolVersionException.ExpectedApv
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv*
+  name: ExpectedApv
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_ExpectedApv_
+  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
+  nameWithType: DifferentAppProtocolVersionException.ExpectedApv
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData
+  nameWithType: DifferentAppProtocolVersionException.GetObjectData
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
+  name: Trusted
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_Trusted
+  commentId: P:Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
+  nameWithType: DifferentAppProtocolVersionException.Trusted
+- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted*
+  name: Trusted
+  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_Trusted_
+  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
+  nameWithType: DifferentAppProtocolVersionException.Trusted
+- uid: Libplanet.Net.Transports.InvalidCredentialException
+  name: InvalidCredentialException
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html
+  commentId: T:Libplanet.Net.Transports.InvalidCredentialException
+  fullName: Libplanet.Net.Transports.InvalidCredentialException
+  nameWithType: InvalidCredentialException
+- uid: Libplanet.Net.Transports.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidCredentialException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidCredentialException.#ctor*
+  name: InvalidCredentialException
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.InvalidCredentialException
+  nameWithType: InvalidCredentialException.InvalidCredentialException
+- uid: Libplanet.Net.Transports.InvalidCredentialException.Actual
+  name: Actual
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_Actual
+  commentId: P:Libplanet.Net.Transports.InvalidCredentialException.Actual
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.Actual
+  nameWithType: InvalidCredentialException.Actual
+- uid: Libplanet.Net.Transports.InvalidCredentialException.Actual*
+  name: Actual
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_Actual_
+  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.Actual
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.Actual
+  nameWithType: InvalidCredentialException.Actual
+- uid: Libplanet.Net.Transports.InvalidCredentialException.Expected
+  name: Expected
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_Expected
+  commentId: P:Libplanet.Net.Transports.InvalidCredentialException.Expected
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.Expected
+  nameWithType: InvalidCredentialException.Expected
+- uid: Libplanet.Net.Transports.InvalidCredentialException.Expected*
+  name: Expected
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_Expected_
+  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.Expected
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.Expected
+  nameWithType: InvalidCredentialException.Expected
+- uid: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData
+  nameWithType: InvalidCredentialException.GetObjectData
 - uid: Libplanet.Net.Transports.InvalidMagicCookieException
   name: InvalidMagicCookieException
   href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html
   commentId: T:Libplanet.Net.Transports.InvalidMagicCookieException
   fullName: Libplanet.Net.Transports.InvalidMagicCookieException
   nameWithType: InvalidMagicCookieException
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte})
-  name: InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_IEnumerable_System_Byte__IEnumerable_System_Byte__
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(IEnumerable{System.Byte},IEnumerable{System.Byte})
-  name.vb: InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte))
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<System.Byte>, IEnumerable<System.Byte>)
-  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of System.Byte), IEnumerable(Of System.Byte))
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable<Byte>, IEnumerable<Byte>)
-  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(IEnumerable(Of Byte), IEnumerable(Of Byte))
 - uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
   name: InvalidMagicCookieException(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_SerializationInfo_StreamingContext_
   commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
   fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
   nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte})
-  name: InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_System_String_IEnumerable_System_Byte__IEnumerable_System_Byte__
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte})
-  name.vb: InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte))
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable<System.Byte>, IEnumerable<System.Byte>)
-  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable(Of System.Byte), IEnumerable(Of System.Byte))
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>)
-  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte))
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte},Exception)
-  name: InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>, Exception)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_System_String_IEnumerable_System_Byte__IEnumerable_System_Byte__Exception_
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(System.String,IEnumerable{System.Byte},IEnumerable{System.Byte},Exception)
-  name.vb: InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte), Exception)
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable<System.Byte>, IEnumerable<System.Byte>, Exception)
-  fullName.vb: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(System.String, IEnumerable(Of System.Byte), IEnumerable(Of System.Byte), Exception)
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable<Byte>, IEnumerable<Byte>, Exception)
-  nameWithType.vb: InvalidMagicCookieException.InvalidMagicCookieException(String, IEnumerable(Of Byte), IEnumerable(Of Byte), Exception)
 - uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor*
   name: InvalidMagicCookieException
   href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_
@@ -17159,6 +17071,122 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData
   nameWithType: InvalidMagicCookieException.GetObjectData
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException
+  name: InvalidMessageSignatureException
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html
+  commentId: T:Libplanet.Net.Transports.InvalidMessageSignatureException
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException
+  nameWithType: InvalidMessageSignatureException
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidMessageSignatureException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor*
+  name: InvalidMessageSignatureException
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.InvalidMessageSignatureException
+  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData
+  nameWithType: InvalidMessageSignatureException.GetObjectData
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
+  name: MessageToVerify
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_MessageToVerify
+  commentId: P:Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
+  nameWithType: InvalidMessageSignatureException.MessageToVerify
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify*
+  name: MessageToVerify
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_MessageToVerify_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
+  nameWithType: InvalidMessageSignatureException.MessageToVerify
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.Peer
+  name: Peer
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_Peer
+  commentId: P:Libplanet.Net.Transports.InvalidMessageSignatureException.Peer
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.Peer
+  nameWithType: InvalidMessageSignatureException.Peer
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.Peer*
+  name: Peer
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_Peer_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.Peer
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.Peer
+  nameWithType: InvalidMessageSignatureException.Peer
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_PublicKey
+  commentId: P:Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey
+  nameWithType: InvalidMessageSignatureException.PublicKey
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_PublicKey_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.PublicKey
+  nameWithType: InvalidMessageSignatureException.PublicKey
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.Signature
+  name: Signature
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_Signature
+  commentId: P:Libplanet.Net.Transports.InvalidMessageSignatureException.Signature
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.Signature
+  nameWithType: InvalidMessageSignatureException.Signature
+- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.Signature*
+  name: Signature
+  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_Signature_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.Signature
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.Signature
+  nameWithType: InvalidMessageSignatureException.Signature
+- uid: Libplanet.Net.Transports.InvalidMessageTimestampException
+  name: InvalidMessageTimestampException
+  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html
+  commentId: T:Libplanet.Net.Transports.InvalidMessageTimestampException
+  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException
+  nameWithType: InvalidMessageTimestampException
+- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidMessageTimestampException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor*
+  name: InvalidMessageTimestampException
+  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.InvalidMessageTimestampException
+  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException
+- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData
+  nameWithType: InvalidMessageTimestampException.GetObjectData
 - uid: Libplanet.Net.Transports.ITransport
   name: ITransport
   href: api/Libplanet.Net.Transports.ITransport.html
@@ -17310,70 +17338,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.ITransport.WaitForRunningAsync
   nameWithType: ITransport.WaitForRunningAsync
-- uid: Libplanet.Net.Transports.MessageSendFailedException
-  name: MessageSendFailedException
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html
-  commentId: T:Libplanet.Net.Transports.MessageSendFailedException
-  fullName: Libplanet.Net.Transports.MessageSendFailedException
-  nameWithType: MessageSendFailedException
-- uid: Libplanet.Net.Transports.MessageSendFailedException.#ctor(SerializationInfo,StreamingContext)
-  name: MessageSendFailedException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.MessageSendFailedException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.MessageSendFailedException(SerializationInfo, StreamingContext)
-  nameWithType: MessageSendFailedException.MessageSendFailedException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.MessageSendFailedException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
-  name: MessageSendFailedException(String, Message.MessageType, BoundPeer)
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException__ctor_System_String_Libplanet_Net_Messages_Message_MessageType_Libplanet_Net_BoundPeer_
-  commentId: M:Libplanet.Net.Transports.MessageSendFailedException.#ctor(System.String,Libplanet.Net.Messages.Message.MessageType,Libplanet.Net.BoundPeer)
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.MessageSendFailedException(System.String, Libplanet.Net.Messages.Message.MessageType, Libplanet.Net.BoundPeer)
-  nameWithType: MessageSendFailedException.MessageSendFailedException(String, Message.MessageType, BoundPeer)
-- uid: Libplanet.Net.Transports.MessageSendFailedException.#ctor*
-  name: MessageSendFailedException
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.MessageSendFailedException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.MessageSendFailedException
-  nameWithType: MessageSendFailedException.MessageSendFailedException
-- uid: Libplanet.Net.Transports.MessageSendFailedException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.MessageSendFailedException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: MessageSendFailedException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.MessageSendFailedException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.MessageSendFailedException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.GetObjectData
-  nameWithType: MessageSendFailedException.GetObjectData
-- uid: Libplanet.Net.Transports.MessageSendFailedException.MessageType
-  name: MessageType
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_MessageType
-  commentId: P:Libplanet.Net.Transports.MessageSendFailedException.MessageType
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.MessageType
-  nameWithType: MessageSendFailedException.MessageType
-- uid: Libplanet.Net.Transports.MessageSendFailedException.MessageType*
-  name: MessageType
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_MessageType_
-  commentId: Overload:Libplanet.Net.Transports.MessageSendFailedException.MessageType
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.MessageType
-  nameWithType: MessageSendFailedException.MessageType
-- uid: Libplanet.Net.Transports.MessageSendFailedException.Peer
-  name: Peer
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_Peer
-  commentId: P:Libplanet.Net.Transports.MessageSendFailedException.Peer
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.Peer
-  nameWithType: MessageSendFailedException.Peer
-- uid: Libplanet.Net.Transports.MessageSendFailedException.Peer*
-  name: Peer
-  href: api/Libplanet.Net.Transports.MessageSendFailedException.html#Libplanet_Net_Transports_MessageSendFailedException_Peer_
-  commentId: Overload:Libplanet.Net.Transports.MessageSendFailedException.Peer
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.MessageSendFailedException.Peer
-  nameWithType: MessageSendFailedException.Peer
 - uid: Libplanet.Net.Transports.NetMQTransport
   name: NetMQTransport
   href: api/Libplanet.Net.Transports.NetMQTransport.html
@@ -17554,6 +17518,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.WaitForRunningAsync
   nameWithType: NetMQTransport.WaitForRunningAsync
+- uid: Libplanet.Net.Transports.SendMessageFailException
+  name: SendMessageFailException
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html
+  commentId: T:Libplanet.Net.Transports.SendMessageFailException
+  fullName: Libplanet.Net.Transports.SendMessageFailException
+  nameWithType: SendMessageFailException
+- uid: Libplanet.Net.Transports.SendMessageFailException.#ctor(SerializationInfo,StreamingContext)
+  name: SendMessageFailException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.SendMessageFailException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.SendMessageFailException.SendMessageFailException(SerializationInfo, StreamingContext)
+  nameWithType: SendMessageFailException.SendMessageFailException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.SendMessageFailException.#ctor*
+  name: SendMessageFailException
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException__ctor_
+  commentId: Overload:Libplanet.Net.Transports.SendMessageFailException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.SendMessageFailException.SendMessageFailException
+  nameWithType: SendMessageFailException.SendMessageFailException
+- uid: Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: SendMessageFailException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Transports.SendMessageFailException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_GetObjectData_
+  commentId: Overload:Libplanet.Net.Transports.SendMessageFailException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.SendMessageFailException.GetObjectData
+  nameWithType: SendMessageFailException.GetObjectData
+- uid: Libplanet.Net.Transports.SendMessageFailException.Peer
+  name: Peer
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_Peer
+  commentId: P:Libplanet.Net.Transports.SendMessageFailException.Peer
+  fullName: Libplanet.Net.Transports.SendMessageFailException.Peer
+  nameWithType: SendMessageFailException.Peer
+- uid: Libplanet.Net.Transports.SendMessageFailException.Peer*
+  name: Peer
+  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_Peer_
+  commentId: Overload:Libplanet.Net.Transports.SendMessageFailException.Peer
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.SendMessageFailException.Peer
+  nameWithType: SendMessageFailException.Peer
 - uid: Libplanet.Net.Transports.TcpTransport
   name: TcpTransport
   href: api/Libplanet.Net.Transports.TcpTransport.html

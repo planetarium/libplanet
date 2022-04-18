@@ -80,12 +80,35 @@
       <h4><a class="xref" href="Libplanet.Net.Transports.BoundPeerExtensions.html">BoundPeerExtensions</a></h4>
       <section><p>This extension class activates transport-oriented methods on <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.CommunicationFailException.html">CommunicationFailException</a></h4>
+      <section><p>An <see cref="!:Exception"></see> thrown when fail to complete a sending and receiving messages
+cycle via <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> for one of the expected reasons such as normal timeout,
+receiving a invalid reply, etc.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.DifferentAppProtocolVersionException.html">DifferentAppProtocolVersionException</a></h4>
+      <section><p>The exception that is thrown when the version of the
+<a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> that <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> received
+is different.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.InvalidCredentialException.html">InvalidCredentialException</a></h4>
+      <section><p>An <see cref="!:Exception"></see> that is thrown when a provided credential is invalid
+when signing an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Net.Transports.InvalidMagicCookieException.html">InvalidMagicCookieException</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Net.Transports.MessageSendFailedException.html">MessageSendFailedException</a></h4>
-      <section></section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.InvalidMessageSignatureException.html">InvalidMessageSignatureException</a></h4>
+      <section><p>An exception that is thrown when the signature of an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is
+invalid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.InvalidMessageTimestampException.html">InvalidMessageTimestampException</a></h4>
+      <section><p>An exception that is thrown when the timestamp of an encoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is
+invalid.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Net.Transports.NetMQTransport.html">NetMQTransport</a></h4>
       <section><p>Implementation of <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> interface using NetMQ.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Transports.SendMessageFailException.html">SendMessageFailException</a></h4>
+      <section><p>An <see cref="!:Exception"></see> thrown when fail to send a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Net.Transports.TcpTransport.html">TcpTransport</a></h4>
       <section></section>

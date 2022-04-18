@@ -90,6 +90,20 @@ made parameterless.</li>
 <li>(Libplanet.Net) Both <code>MessageValidator.ValidateTimestamp()</code> and
 <code>MessageValidator.ValidateAppProtocolVersion()</code> now only accepts single
 <code>Message</code> type parameter.  [<a href="https://github.com/planetarium/libplanet/pull/1906">#1906</a>]</li>
+<li>(Libplanet.Net) <code>SendMessageFailedException</code> changed to
+<code>SendMessageFailException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1911">#1911</a>]</li>
+<li>(Libplanet.Net) <code>ITransport</code> exception handling overhauled.  [<a href="https://github.com/planetarium/libplanet/pull/1911">#1911</a>]
+<ul>
+<li><code>ITransport.SendMessageAsync()</code> now only throws
+<code>CommunicationFailException</code> for a normal failure of sending and
+receiving <code>Message</code>s; old exceptions such as <code>TimeoutException</code>,
+<code>InvalidMessageSignatureException</code>, etc. are attached to
+<code>InnerException</code> property to a thrown <code>CommunicationFailException</code>.</li>
+<li><code>InvalidCredentialException</code>, <code>InvalidMagicCookieException</code>,
+<code>InvalidMessageSignatureException</code>, <code>SendMessageFailException</code> no longer
+have public constructors.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -97,6 +111,7 @@ made parameterless.</li>
 <ul>
 <li>(Libplanet.Net) <code>InvalidCredentialException</code> class added.
 [<a href="https://github.com/planetarium/libplanet/issues/1904">#1904</a>, <a href="https://github.com/planetarium/libplanet/pull/1905">#1905</a>]</li>
+<li>(Libplanet.Net) <code>CommunicationFailException</code> class added.  [<a href="https://github.com/planetarium/libplanet/pull/1911">#1911</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
