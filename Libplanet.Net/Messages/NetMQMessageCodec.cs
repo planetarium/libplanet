@@ -177,6 +177,12 @@ namespace Libplanet.Net.Messages
                     return new ChainStatus(dataframes);
                 case Message.MessageType.DifferentVersion:
                     return new DifferentVersion();
+                case Message.MessageType.ConsensusPropose:
+                    return new ConsensusPropose(dataframes);
+                case Message.MessageType.ConsensusVote:
+                    return new ConsensusVote(dataframes);
+                case Message.MessageType.ConsensusVote23:
+                    return new ConsensusVote23(dataframes);
                 default:
                     throw new InvalidCastException($"Given type {type} is not a valid message.");
             }
