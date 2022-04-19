@@ -2005,10 +2005,82 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
 
+        [Fact]
+        private void CheckIfTxPolicyExceptionHasInnerException()
+        {
+            IValue value = null;
+            var policy = new NullPolicyButTxPolicyAlwaysThrows<DumbAction>(
+                c =>
+                {
+                    // ReSharper disable AccessToModifiedClosure
+                    // The following method calls should not throw any exceptions:
+                    c?.GetStates(new[] { default(Address) });
+                    value = c?.GetState(default);
+                    // ReSharper restore AccessToModifiedClosure
+                });
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            Block<DumbAction> genesisWithTx = MineGenesis(
+                policy.GetHashAlgorithm,
+                GenesisMiner.PublicKey,
+                new[]
+                {
+                    Transaction<DumbAction>.Create(
+                        0,
+                        new PrivateKey(),
+                        null,
+                        Array.Empty<DumbAction>()
+                    ),
+                }
+            ).Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+
+            try
+            {
+                var chain = new BlockChain<DumbAction>(
+                    policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    store,
+                    stateStore,
+                    genesisWithTx
+                );
+            }
+            catch (TxPolicyViolationException e)
+            {
+                Assert.NotNull(e.InnerException);
+
+                // This is visual representation of the test.
+                // In actual use-case, this debugging lines do
+                // not show.
+                _logger.Debug(e.ToString());
+                _logger.Debug(e.InnerException.ToString());
+            }
+        }
+
+        private class
+            NullPolicyButTxPolicyAlwaysThrows<T> : NullPolicyForGetStatesOnUninitializedBlockChain<
+                T>
+            where T : IAction, new()
+        {
+            public NullPolicyButTxPolicyAlwaysThrows(
+                Action<BlockChain<T>> hook)
+                : base(hook)
+            {
+            }
+
+            public override TxPolicyViolationException ValidateNextBlockTx(
+                BlockChain<T> blockChain,
+                Transaction<T> transaction
+            )
+            {
+                _hook(blockChain);
+                return new TxPolicyViolationException(transaction.Id, "Test Message");
+            }
+        }
+
         private class NullPolicyForGetStatesOnUninitializedBlockChain<T> : NullBlockPolicy<T>
             where T : IAction, new()
         {
-            private readonly Action<BlockChain<T>> _hook;
+            protected readonly Action<BlockChain<T>> _hook;
 
             public NullPolicyForGetStatesOnUninitializedBlockChain(
                 Action<BlockChain<T>> hook
