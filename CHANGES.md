@@ -63,16 +63,18 @@ Released on April 19th, 2022.
 
 ### Added APIs
 
- -  (Libplanet.Net) `InvalidCredentialException` class added.
+ - (Libplanet.Net) `InvalidCredentialException` class added.
     [[#1904], [#1905]]
- -  (Libplanet.Net) `CommunicationFailException` class added.  [[#1911]]
+ - (Libplanet.Net) `CommunicationFailException` class added.  [[#1911]]
 
 ### Behavioral changes
 
- -  Inner logic of `ByteUtil.CalculateHashCode(byte[] bytes)` has modified.
+ - Inner logic of `ByteUtil.CalculateHashCode(byte[] bytes)` has modified.
     [[#1866], [#1891]]
- -  (Libplanet.Net) `IMessageCodec.Encode()` now requires a *matching*
+ - (Libplanet.Net) `IMessageCodec.Encode()` now requires a *matching*
     `PrivateKey` to be provided for `Peer`.  [[#1904], [#1905]]
+ - `TxPolicyViolationException` and `InvalidTxException` now have a new constructor
+    that takes an `Exception` as their `Exception.InnerException`.  [[#1830], [#1912]]
 
 ### Dependencies
 
