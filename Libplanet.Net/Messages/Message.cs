@@ -108,9 +108,19 @@ namespace Libplanet.Net.Messages
             ConsensusVote = 0x41,
 
             /// <summary>
-            /// Consensus commit message.
+            /// Consensus vote finish message.
             /// </summary>
             ConsensusVote23 = 0x42,
+
+            /// <summary>
+            /// Consensus commit message.
+            /// </summary>
+            ConsensusCommit = 0x43,
+
+            /// <summary>
+            /// Consensus commit finish message.
+            /// </summary>
+            ConsensusCommit23 = 0x44,
         }
 
         public enum MessageFrame
