@@ -25153,6 +25153,12 @@ references:
   commentId: M:Libplanet.Tx.InvalidTxException.#ctor(Libplanet.Tx.TxId,System.String)
   fullName: Libplanet.Tx.InvalidTxException.InvalidTxException(Libplanet.Tx.TxId, System.String)
   nameWithType: InvalidTxException.InvalidTxException(TxId, String)
+- uid: Libplanet.Tx.InvalidTxException.#ctor(Libplanet.Tx.TxId,System.String,Exception)
+  name: InvalidTxException(TxId, String, Exception)
+  href: api/Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException__ctor_Libplanet_Tx_TxId_System_String_Exception_
+  commentId: M:Libplanet.Tx.InvalidTxException.#ctor(Libplanet.Tx.TxId,System.String,Exception)
+  fullName: Libplanet.Tx.InvalidTxException.InvalidTxException(Libplanet.Tx.TxId, System.String, Exception)
+  nameWithType: InvalidTxException.InvalidTxException(TxId, String, Exception)
 - uid: Libplanet.Tx.InvalidTxException.#ctor*
   name: InvalidTxException
   href: api/Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException__ctor_
@@ -25978,6 +25984,12 @@ references:
   commentId: M:Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String)
   fullName: Libplanet.Tx.TxPolicyViolationException.TxPolicyViolationException(Libplanet.Tx.TxId, System.String)
   nameWithType: TxPolicyViolationException.TxPolicyViolationException(TxId, String)
+- uid: Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String,Exception)
+  name: TxPolicyViolationException(TxId, String, Exception)
+  href: api/Libplanet.Tx.TxPolicyViolationException.html#Libplanet_Tx_TxPolicyViolationException__ctor_Libplanet_Tx_TxId_System_String_Exception_
+  commentId: M:Libplanet.Tx.TxPolicyViolationException.#ctor(Libplanet.Tx.TxId,System.String,Exception)
+  fullName: Libplanet.Tx.TxPolicyViolationException.TxPolicyViolationException(Libplanet.Tx.TxId, System.String, Exception)
+  nameWithType: TxPolicyViolationException.TxPolicyViolationException(TxId, String, Exception)
 - uid: Libplanet.Tx.TxPolicyViolationException.#ctor*
   name: TxPolicyViolationException
   href: api/Libplanet.Tx.TxPolicyViolationException.html#Libplanet_Tx_TxPolicyViolationException__ctor_
