@@ -157,6 +157,53 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
+        public void ValidateNextBlockTxWithInnerException()
+        {
+            var validKey = new PrivateKey();
+            var invalidKey = new PrivateKey();
+
+            TxPolicyViolationException IsSignerValid(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+            }
+
+            //Invalid Transaction with inner-exception
+            TxPolicyViolationException IsSignerValidWithInnerException(
+                BlockChain<DumbAction> chain, Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress)
+                    ? null
+                    : new TxPolicyViolationException(
+                        tx.Id,
+                        "invalid signer",
+                        new InvalidTxSignatureException(tx.Id, "Invalid Signature"));
+            }
+
+            // Invalid Transaction without Inner-exception
+            var policy = new BlockPolicy<DumbAction>(
+                validateNextBlockTx: IsSignerValid);
+
+            var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
+            var expected = policy.ValidateNextBlockTx(_chain, invalidTx);
+            Assert.NotNull(expected);
+            Assert.Null(expected.InnerException);
+
+            // Invalid Transaction with Inner-exception.
+            policy = new BlockPolicy<DumbAction>(
+                validateNextBlockTx: IsSignerValidWithInnerException);
+
+            invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
+            expected = policy.ValidateNextBlockTx(_chain, invalidTx);
+            Assert.NotNull(expected);
+            Assert.NotNull(expected.InnerException);
+        }
+
+        [Fact]
         public async Task GetNextBlockDifficulty()
         {
             var store = new MemoryStore();

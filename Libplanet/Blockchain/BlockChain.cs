@@ -890,7 +890,8 @@ namespace Libplanet.Blockchain
                     {
                         throw new TxPolicyViolationException(
                             tx1.Id,
-                            "According to BlockPolicy, this transaction is not valid.");
+                            "According to BlockPolicy, this transaction is not valid.",
+                            tpve);
                     }
 
                     Address txSigner = tx1.Signer;

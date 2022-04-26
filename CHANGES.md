@@ -18,12 +18,19 @@ To be released.
 
 ### Behavioral changes
 
+ -  `TxPolicyViolationException` and `InvalidTxException` now have a new
+    constructor that takes an `Exception` as their `Exception.InnerException`.
+    [[#1830], [#1912], [#1916]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[#1830]: https://github.com/planetarium/libplanet/issues/1830
+[#1912]: https://github.com/planetarium/libplanet/pull/1912
+[#1916]: https://github.com/planetarium/libplanet/pull/1916
 
 Version 0.33.0
 --------------
