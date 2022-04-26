@@ -165,6 +165,22 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
+        [Command(Description = "Sign a message.")]
+        public void Sign(
+            [Argument("KEY-ID", Description = "A key UUID to sign.")]
+            Guid keyId,
+            [Argument(
+                "MESSAGE",
+                Description = "A message encoded by base64 encoding to sign."
+            )]
+            string message,
+            PassphraseParameters passphrase
+        )
+        {
+            PrivateKey key = UnprotectKey(keyId, passphrase);
+            Console.WriteLine(Convert.ToBase64String(key.Sign(Convert.FromBase64String(message))));
+        }
+
         public PrivateKey UnprotectKey(
             Guid keyId,
             PassphraseParameters passphrase,
