@@ -323,19 +323,19 @@ namespace Libplanet.Blockchain
                     break;
                 }
 
-                if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
-                {
-                    _logger.Debug(
-                        "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy.",
-                        i,
-                        stagedTransactions.Count,
-                        tx.Id);
-                    StagePolicy.Ignore(this, tx.Id);
-                    continue;
-                }
-
                 if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
                 {
+                    if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
+                    {
+                        _logger.Debug(
+                            "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy.",
+                            i,
+                            stagedTransactions.Count,
+                            tx.Id);
+                        StagePolicy.Ignore(this, tx.Id);
+                        continue;
+                    }
+
                     Dictionary txAddedBlockEncoding =
                         AppendTxToMarshaledBlock(estimatedEncoding, tx);
                     if (txAddedBlockEncoding.EncodingLength > maxBlockBytes)
@@ -379,23 +379,25 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
-                        "as it has lower nonce than the stored nonce: {Nonce}",
+                        "as it has lower nonce {Actual} than the expected nonce {Expected}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
                         tx.Signer,
-                        tx.Nonce);
+                        tx.Nonce,
+                        storedNonces[tx.Signer]);
                 }
                 else
                 {
                     _logger.Debug(
                         "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
-                        "as it has higher nonce than expected: {Nonce}",
+                        "as it has higher nonce {Actual} than the expected nonce {Expected}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
                         tx.Signer,
-                        tx.Nonce);
+                        tx.Nonce,
+                        storedNonces[tx.Signer]);
                 }
 
                 if (timeout < DateTimeOffset.UtcNow)
