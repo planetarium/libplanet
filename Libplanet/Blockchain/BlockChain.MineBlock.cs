@@ -379,25 +379,25 @@ namespace Libplanet.Blockchain
                 {
                     _logger.Debug(
                         "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
-                        "as it has lower nonce {Actual} than the expected nonce {Expected}",
+                        "as it has lower nonce {Actual} than expected nonce {Expected}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
                         tx.Signer,
                         tx.Nonce,
-                        storedNonces[tx.Signer]);
+                        nextNonces[tx.Signer]);
                 }
                 else
                 {
                     _logger.Debug(
                         "Ignoring tx {Iter}/{Total} {TxId} by {Signer} " +
-                        "as it has higher nonce {Actual} than the expected nonce {Expected}",
+                        "as it has higher nonce {Actual} than expected nonce {Expected}",
                         i,
                         stagedTransactions.Count,
                         tx.Id,
                         tx.Signer,
                         tx.Nonce,
-                        storedNonces[tx.Signer]);
+                        nextNonces[tx.Signer]);
                 }
 
                 if (timeout < DateTimeOffset.UtcNow)
