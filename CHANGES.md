@@ -6,6 +6,14 @@ Version 0.33.1
 
 To be released.
 
+### Behavioral changes
+
+ -  `Transaction<T>`'s relatively heavy policy validation is deferred until
+    after its nonce validation in order to speed up gathering `Transaction<T>`s
+    when mining.  [[#1924]]
+
+[#1924]: https://github.com/planetarium/libplanet/pull/1924
+
 
 Version 0.33.0
 --------------
