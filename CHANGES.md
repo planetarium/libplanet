@@ -32,6 +32,21 @@ To be released.
 [#1912]: https://github.com/planetarium/libplanet/pull/1912
 [#1916]: https://github.com/planetarium/libplanet/pull/1916
 
+
+Version 0.33.1
+--------------
+
+Released on April 28th, 2022.
+
+### Behavioral changes
+
+ -  `Transaction<T>`'s relatively heavy policy validation is deferred until
+    after its nonce validation in order to speed up gathering `Transaction<T>`s
+    when mining.  [[#1924]]
+
+[#1924]: https://github.com/planetarium/libplanet/pull/1924
+
+
 Version 0.33.0
 --------------
 
