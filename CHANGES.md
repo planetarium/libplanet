@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.33.1
 --------------
 
-To be released.
+Released on April 28th, 2022.
 
 ### Behavioral changes
 
