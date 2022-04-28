@@ -2048,9 +2048,7 @@ namespace Libplanet.Tests.Blockchain
                 catch (TxPolicyViolationException e)
                 {
                     Assert.NotNull(e.InnerException);
-
-                    _logger.Debug("Exception: {Exception}", e.ToString());
-                    _logger.Debug("InnerException: {InnerException}", e.InnerException.ToString());
+                    throw;
                 }
             });
         }
