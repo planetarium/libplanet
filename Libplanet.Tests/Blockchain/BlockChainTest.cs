@@ -2048,13 +2048,7 @@ namespace Libplanet.Tests.Blockchain
                 catch (TxPolicyViolationException e)
                 {
                     Assert.NotNull(e.InnerException);
-
-                    // This is visual representation of the test.
-                    // In actual use-case, this debugging lines do
-                    // not show.
-                    _logger.Debug("Exception: {Exception}", e.ToString());
-                    _logger.Debug("InnerException: {InnerException}", e.InnerException.ToString());
-                    throw e;
+                    throw;
                 }
             });
         }
