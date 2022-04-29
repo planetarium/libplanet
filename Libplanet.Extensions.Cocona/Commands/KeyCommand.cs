@@ -175,7 +175,13 @@ namespace Libplanet.Extensions.Cocona.Commands
                               "it will receive the message to sign from stdin."
             )]
             string path,
-            PassphraseParameters passphrase
+            PassphraseParameters passphrase,
+            [Option(Description = "A path of the file to save the signature. " +
+                                  "If you pass '-' dash character, it will print to stdout " +
+                                  "as raw bytes not hexadecimal string or else. " +
+                                  "If this option isn't given, it will print hexadecimal string " +
+                                  "to stdout as default behaviour.")]
+            string? binaryOutput = null
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
@@ -197,7 +203,20 @@ namespace Libplanet.Extensions.Cocona.Commands
                 message = File.ReadAllBytes(path);
             }
 
-            Console.WriteLine(Convert.ToBase64String(key.Sign(message)));
+            var signature = key.Sign(message);
+            if (binaryOutput is null)
+            {
+                Console.WriteLine(ByteUtil.Hex(signature));
+            }
+            else if (binaryOutput == "-")
+            {
+                using Stream stdout = Console.OpenStandardOutput();
+                stdout.Write(signature, 0, signature.Length);
+            }
+            else
+            {
+                File.WriteAllBytes(binaryOutput, signature);
+            }
         }
 
         public PrivateKey UnprotectKey(
