@@ -170,15 +170,34 @@ namespace Libplanet.Extensions.Cocona.Commands
             [Argument("KEY-ID", Description = "A key UUID to sign.")]
             Guid keyId,
             [Argument(
-                "MESSAGE",
-                Description = "A message encoded by base64 encoding to sign."
+                "FILE",
+                Description = "A path of the file to sign. If you pass '-' dash character, " +
+                              "it will receive the message to sign from stdin."
             )]
-            string message,
+            string path,
             PassphraseParameters passphrase
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
-            Console.WriteLine(Convert.ToBase64String(key.Sign(Convert.FromBase64String(message))));
+
+            byte[] message;
+            if (path == "-")
+            {
+                // Stream for stdin does not support .Seek()
+                using MemoryStream buffer = new MemoryStream();
+                using (Stream stream = Console.OpenStandardInput())
+                {
+                    stream.CopyTo(buffer);
+                }
+
+                message = buffer.ToArray();
+            }
+            else
+            {
+                message = File.ReadAllBytes(path);
+            }
+
+            Console.WriteLine(Convert.ToBase64String(key.Sign(message)));
         }
 
         public PrivateKey UnprotectKey(
