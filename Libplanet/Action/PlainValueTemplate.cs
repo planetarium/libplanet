@@ -76,30 +76,48 @@ namespace Libplanet.Action
 
         private static Bencodex.Types.List GetListIValue(IList list)
         {
-            return new Bencodex.Types.List(list.Cast<object?>().Select(x => GetIValue(x)));
+            Type type = list.GetType();
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableList<>))
+            {
+                return new Bencodex.Types.List(list.Cast<object?>().Select(x => GetIValue(x)));
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid type encountered for {nameof(list)}: {list}");
+            }
         }
 
         private static Bencodex.Types.Dictionary GetDictionaryIValue(IDictionary dict)
         {
-            Type[] types = dict.GetType().GetGenericArguments();
-            Type keyType = types[0];
-            if (keyType == typeof(string) || keyType == typeof(ImmutableArray<byte>))
+            Type type = dict.GetType();
+            if (type.IsGenericType &&
+                type.GetGenericTypeDefinition() == typeof(ImmutableDictionary<,>))
             {
-                return new Bencodex.Types.Dictionary(dict
-                    .Cast<object>()
-                    .Select(kv =>
-                        {
-                            PropertyInfo[] properties = kv.GetType().GetProperties();
-                            object? key = properties[0].GetValue(kv);
-                            object? value = properties[1].GetValue(kv);
-                            return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
-                                GetIKey(key), GetIValue(value));
-                        }));
+                Type[] genericTypes = dict.GetType().GetGenericArguments();
+                Type keyType = genericTypes[0];
+                if (keyType == typeof(string) || keyType == typeof(ImmutableArray<byte>))
+                {
+                    return new Bencodex.Types.Dictionary(dict
+                        .Cast<object>()
+                        .Select(kv =>
+                            {
+                                PropertyInfo[] properties = kv.GetType().GetProperties();
+                                object? key = properties[0].GetValue(kv);
+                                object? value = properties[1].GetValue(kv);
+                                return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
+                                    GetIKey(key), GetIValue(value));
+                            }));
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"Invalid key type {keyType} encountered for {nameof(dict)}: {dict}");
+                }
             }
             else
             {
                 throw new ArgumentException(
-                    $"Invalid key type encountered for {nameof(dict)}: {dict}");
+                    $"Invalid type encountered for {nameof(dict)}: {dict}");
             }
         }
 
