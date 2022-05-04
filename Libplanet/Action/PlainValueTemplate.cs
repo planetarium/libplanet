@@ -79,7 +79,18 @@ namespace Libplanet.Action
             Type type = list.GetType();
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableList<>))
             {
-                return new Bencodex.Types.List(list.Cast<object?>().Select(x => GetIValue(x)));
+                Type[] genericTypes = type.GetGenericArguments();
+                Type genericType = genericTypes[0];
+                if (genericType.IsGenericType &&
+                    (genericType.GetGenericTypeDefinition() == typeof(ImmutableList<>) ||
+                        genericType.GetGenericTypeDefinition() == typeof(ImmutableDictionary<,>)))
+                {
+                    throw new NotSupportedException($"Nested collection is not supported: {type}");
+                }
+                else
+                {
+                    return new Bencodex.Types.List(list.Cast<object?>().Select(x => GetIValue(x)));
+                }
             }
             else
             {
@@ -95,18 +106,31 @@ namespace Libplanet.Action
             {
                 Type[] genericTypes = dict.GetType().GetGenericArguments();
                 Type keyType = genericTypes[0];
+                Type valueType = genericTypes[1];
                 if (keyType == typeof(string) || keyType == typeof(ImmutableArray<byte>))
                 {
-                    return new Bencodex.Types.Dictionary(dict
-                        .Cast<object>()
-                        .Select(kv =>
-                            {
-                                PropertyInfo[] properties = kv.GetType().GetProperties();
-                                object? key = properties[0].GetValue(kv);
-                                object? value = properties[1].GetValue(kv);
-                                return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
-                                    GetIKey(key), GetIValue(value));
-                            }));
+                    if (valueType.IsGenericType &&
+                        (valueType.GetGenericTypeDefinition() == typeof(ImmutableList<>) ||
+                            valueType.GetGenericTypeDefinition() == typeof(ImmutableDictionary<,>)))
+                    {
+                        throw new NotSupportedException(
+                            $"Nested collection is not supported: {type}");
+                    }
+#pragma warning disable MEN002
+                    else
+                    {
+                        return new Bencodex.Types.Dictionary(dict
+                            .Cast<object>()
+                            .Select(kv =>
+                                {
+                                    PropertyInfo[] properties = kv.GetType().GetProperties();
+                                    object? key = properties[0].GetValue(kv);
+                                    object? value = properties[1].GetValue(kv);
+                                    return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
+                                        GetIKey(key), GetIValue(value));
+                                }));
+                    }
+#pragma warning restore MEN002
                 }
                 else
                 {
@@ -131,8 +155,8 @@ namespace Libplanet.Action
                         $"Argument {nameof(key)} cannot be null");
                 case string s:
                     return new Bencodex.Types.Text(s);
-                case IList<byte> bs:
-                    return new Bencodex.Types.Binary(bs.ToArray());
+                case ImmutableArray<byte> bs:
+                    return new Bencodex.Types.Binary(bs);
                 default:
                     // TODO: Allow Address type.
                     throw new ArgumentException(
