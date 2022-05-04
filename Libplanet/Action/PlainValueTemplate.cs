@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -24,7 +25,7 @@ namespace Libplanet.Action
         {
             object instance = Activator.CreateInstance(typeof(T), encoded)
                 ?? throw new NullReferenceException(
-                    $"Failed to decode {nameof(encoded)}: encoded");
+                    $"Failed to decode {nameof(encoded)}: {encoded}");
             return (T)instance;
         }
 
@@ -57,9 +58,8 @@ namespace Libplanet.Action
                     return new Bencodex.Types.Integer(l);
                 case BigInteger bi:
                     return new Bencodex.Types.Integer(bi);
-                case IList<byte> bs:
-                    // FIXME: Bencodex should accept List<byte>.
-                    return new Bencodex.Types.Binary(bs.ToArray());
+                case ImmutableArray<byte> bs:
+                    return new Bencodex.Types.Binary(bs);
                 case string s:
                     return new Bencodex.Types.Text(s);
                 case PlainValueTemplate am:
@@ -83,7 +83,7 @@ namespace Libplanet.Action
         {
             Type[] types = dict.GetType().GetGenericArguments();
             Type keyType = types[0];
-            if (keyType == typeof(string) || keyType.GetInterfaces().Contains(typeof(IList<byte>)))
+            if (keyType == typeof(string) || keyType == typeof(ImmutableArray<byte>))
             {
                 return new Bencodex.Types.Dictionary(dict
                     .Cast<object>()
