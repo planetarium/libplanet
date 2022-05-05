@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,21 +34,31 @@ namespace Libplanet.Action
             PropertyInfo[] properties = this.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
+                Type type = property.PropertyType;
                 dynamic? value = property.GetValue(this, null);
+                if (type == typeof(bool?)
+                    || type == typeof(int?)
+                    || type == typeof(long?)
+                    || type == typeof(BigInteger?)
+                    || type == typeof(ImmutableArray<byte>?))
+                {
+                    throw new NotSupportedException(
+                        $"Nullable value type is not supported: {type}");
+                }
 
                 // NOTE: Additional IValue casting is needed for this to work.
-                result = result.Add(property.Name, (Bencodex.Types.IValue)GetIValue(value));
+                result = result.Add(property.Name, (Bencodex.Types.IValue)EncodeToIValue(value));
             }
 
             return result;
         }
 
-        private static Bencodex.Types.IValue GetIValue(object? value)
+        private static Bencodex.Types.IValue EncodeToIValue(object? value)
         {
             switch (value)
             {
                 case null:
-                    return Bencodex.Types.Null.Value;
+                    throw new NotSupportedException($"Null value is not supported");
                 case bool b:
                     return new Bencodex.Types.Boolean(b);
                 case int i:
@@ -62,19 +71,19 @@ namespace Libplanet.Action
                     return new Bencodex.Types.Binary(bs);
                 case string s:
                     return new Bencodex.Types.Text(s);
-                case PlainValueTemplate am:
-                    return am.Encode();
+                case PlainValueTemplate pvt:
+                    return pvt.Encode();
                 case IList list:
-                    return GetListIValue(list);
+                    return EncodeToListIValue(list);
                 case IDictionary dict:
-                    return GetDictionaryIValue(dict);
+                    return EncodeToDictionaryIValue(dict);
                 default:
                     throw new ArgumentException(
                         $"Invalid type encountered for {nameof(value)}: {value}");
             }
         }
 
-        private static Bencodex.Types.List GetListIValue(IList list)
+        private static Bencodex.Types.List EncodeToListIValue(IList list)
         {
             Type type = list.GetType();
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableList<>))
@@ -87,18 +96,29 @@ namespace Libplanet.Action
                 {
                     throw new NotSupportedException($"Nested collection is not supported: {type}");
                 }
+                else if (genericType == typeof(bool?)
+                    || genericType == typeof(int?)
+                    || genericType == typeof(long?)
+                    || genericType == typeof(BigInteger?)
+                    || genericType == typeof(ImmutableArray<byte>?))
+                {
+                    throw new NotSupportedException(
+                        $"Nullable value type is not supported: {genericType}");
+                }
                 else
                 {
-                    return new Bencodex.Types.List(list.Cast<object?>().Select(x => GetIValue(x)));
+                    return new Bencodex.Types.List(
+                        list.Cast<object?>().Select(x => EncodeToIValue(x)));
                 }
             }
             else
             {
-                throw new ArgumentException($"Invalid type encountered for {nameof(list)}: {list}");
+                throw new ArgumentException(
+                    $"Invalid type encountered for {nameof(list)}: {list}");
             }
         }
 
-        private static Bencodex.Types.Dictionary GetDictionaryIValue(IDictionary dict)
+        private static Bencodex.Types.Dictionary EncodeToDictionaryIValue(IDictionary dict)
         {
             Type type = dict.GetType();
             if (type.IsGenericType &&
@@ -116,6 +136,20 @@ namespace Libplanet.Action
                         throw new NotSupportedException(
                             $"Nested collection is not supported: {type}");
                     }
+                    else if (keyType == typeof(ImmutableArray<byte>?))
+                    {
+                        throw new NotSupportedException(
+                            $"Nullable value type is not supported: {keyType}");
+                    }
+                    else if (valueType == typeof(bool?)
+                        || valueType == typeof(int?)
+                        || valueType == typeof(long?)
+                        || valueType == typeof(BigInteger?)
+                        || valueType == typeof(ImmutableArray<byte>?))
+                    {
+                        throw new NotSupportedException(
+                            $"Nullable value type is not supported: {valueType}");
+                    }
 #pragma warning disable MEN002
                     else
                     {
@@ -127,7 +161,7 @@ namespace Libplanet.Action
                                     object? key = properties[0].GetValue(kv);
                                     object? value = properties[1].GetValue(kv);
                                     return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
-                                        GetIKey(key), GetIValue(value));
+                                        EncodeToIKey(key), EncodeToIValue(value));
                                 }));
                     }
 #pragma warning restore MEN002
@@ -145,7 +179,7 @@ namespace Libplanet.Action
             }
         }
 
-        private static Bencodex.Types.IKey GetIKey(object? key)
+        private static Bencodex.Types.IKey EncodeToIKey(object? key)
         {
             switch (key)
             {
