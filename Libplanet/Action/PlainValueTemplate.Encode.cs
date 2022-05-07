@@ -82,10 +82,21 @@ namespace Libplanet.Action
                     throw new NotSupportedException(
                         $"Nullable value type is not supported: {genericType}");
                 }
-                else
+                else if (genericType == typeof(bool)
+                    || genericType == typeof(int)
+                    || genericType == typeof(long)
+                    || genericType == typeof(BigInteger)
+                    || genericType == typeof(ImmutableArray<byte>)
+                    || genericType == typeof(string))
                 {
                     return new BTypes.List(
                         list.Cast<object>().Select(x => EncodeToIValue(x)));
+                }
+                else
+                {
+                        throw new ArgumentException(
+                            $"Invalid value type {genericType} encountered " +
+                            $"for {nameof(list)}: {list}");
                 }
             }
             else
@@ -127,7 +138,12 @@ namespace Libplanet.Action
                         throw new NotSupportedException(
                             $"Nullable value type is not supported: {valueType}");
                     }
-                    else
+                    else if (valueType == typeof(bool)
+                        || valueType == typeof(int)
+                        || valueType == typeof(long)
+                        || valueType == typeof(BigInteger)
+                        || valueType == typeof(ImmutableArray<byte>)
+                        || valueType == typeof(string))
                     {
                         return new BTypes.Dictionary(dict
                             .Cast<object>()
@@ -139,6 +155,12 @@ namespace Libplanet.Action
                                     return new KeyValuePair<BTypes.IKey, BTypes.IValue>(
                                         EncodeToIKey(key), EncodeToIValue(value));
                                 }));
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"Invalid value type {valueType} encountered " +
+                            $"for {nameof(dict)}: {dict}");
                     }
                 }
                 else
