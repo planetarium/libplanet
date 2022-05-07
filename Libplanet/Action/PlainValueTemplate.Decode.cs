@@ -4,45 +4,46 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
     public abstract partial class PlainValueTemplate
     {
-        private static object DecodeFromIValue(Bencodex.Types.IValue value, Type type)
+        private static object DecodeFromIValue(BTypes.IValue value, Type type)
         {
             switch (value)
             {
-                case Bencodex.Types.Null _:
+                case BTypes.Null _:
                     throw new NotSupportedException($"Null value is not supported: {value}");
-                case Bencodex.Types.Boolean b:
+                case BTypes.Boolean b:
                     return b.Value;
-                case Bencodex.Types.Integer i when type == typeof(int):
+                case BTypes.Integer i when type == typeof(int):
                     return (int)i.Value;
-                case Bencodex.Types.Integer l when type == typeof(long):
+                case BTypes.Integer l when type == typeof(long):
                     return (long)l.Value;
-                case Bencodex.Types.Integer bi when type == typeof(BigInteger):
-                    return bi.Value;
-                case Bencodex.Types.Binary bs when type == typeof(ImmutableArray<byte>):
-                    return bs.ByteArray;
-                case Bencodex.Types.Text s when type == typeof(string):
+                case BTypes.Integer bigInteger when type == typeof(BigInteger):
+                    return bigInteger.Value;
+                case BTypes.Binary bytes when type == typeof(ImmutableArray<byte>):
+                    return bytes.ByteArray;
+                case BTypes.Text s when type == typeof(string):
                     return s.Value;
-                case Bencodex.Types.Dictionary pvt when
+                case BTypes.Dictionary pvt when
                     type.IsSubclassOf(typeof(PlainValueTemplate)):
                     object instance = Activator.CreateInstance(type, pvt)
                         ?? throw new NullReferenceException(
                             $"Failed to decode {value} to target type {type}");
                     return instance;
-                case Bencodex.Types.List list:
+                case BTypes.List list:
                     return DecodeFromListIValue(list, type);
-                case Bencodex.Types.Dictionary dict:
+                case BTypes.Dictionary dict:
                     return DecodeFromDictionaryIValue(dict, type);
                 default:
                     throw new ArgumentException($"Failed to decode {value} to target type {type}");
             }
         }
 
-        private static object DecodeFromListIValue(Bencodex.Types.List list, Type type)
+        private static object DecodeFromListIValue(BTypes.List list, Type type)
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableList<>))
             {
@@ -52,7 +53,7 @@ namespace Libplanet.Action
                 {
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Boolean b
+                            => x is BTypes.Boolean b
                                 ? b.Value
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
@@ -62,7 +63,7 @@ namespace Libplanet.Action
                 {
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Integer i
+                            => x is BTypes.Integer i
                                 ? (int)i.Value
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
@@ -72,7 +73,7 @@ namespace Libplanet.Action
                 {
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Integer l
+                            => x is BTypes.Integer l
                                 ? (long)l.Value
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
@@ -82,8 +83,8 @@ namespace Libplanet.Action
                 {
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Integer bi
-                                ? bi.Value
+                            => x is BTypes.Integer bigInteger
+                                ? bigInteger.Value
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
                         .ToImmutableList();
@@ -92,8 +93,8 @@ namespace Libplanet.Action
                 {
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Binary bs
-                                ? bs.ByteArray
+                            => x is BTypes.Binary bytes
+                                ? bytes.ByteArray
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
                         .ToImmutableList();
@@ -103,7 +104,7 @@ namespace Libplanet.Action
                     // FIXME: Reference type nullability should be inferred from attributes.
                     return list
                         .Select(x
-                            => x is Bencodex.Types.Text s
+                            => x is BTypes.Text s
                                 ? s.Value
                                 : throw new ArgumentException(
                                     $"Invalid encoded type {x.GetType()} encountered."))
@@ -122,7 +123,7 @@ namespace Libplanet.Action
             }
         }
 
-        private static object DecodeFromDictionaryIValue(Bencodex.Types.Dictionary dict, Type type)
+        private static object DecodeFromDictionaryIValue(BTypes.Dictionary dict, Type type)
         {
             if (type.IsGenericType &&
                 type.GetGenericTypeDefinition() == typeof(ImmutableDictionary<,>))
@@ -246,20 +247,20 @@ namespace Libplanet.Action
             }
         }
 
-        private static IEnumerable DecodedKeys(Bencodex.Types.Dictionary dict, Type keyType)
+        private static IEnumerable DecodedKeys(BTypes.Dictionary dict, Type keyType)
         {
             if (keyType == typeof(ImmutableArray<byte>))
             {
                 return dict.Select(kv =>
-                    kv.Key is Bencodex.Types.Binary bs
-                        ? bs.ByteArray
+                    kv.Key is BTypes.Binary bytes
+                        ? bytes.ByteArray
                         : throw new ArgumentException(
                             $"Invalid encoded key type {kv.Key.GetType()} encountered."));
             }
             else if (keyType == typeof(string))
             {
                 return dict.Select(kv =>
-                    kv.Key is Bencodex.Types.Text s
+                    kv.Key is BTypes.Text s
                         ? s.Value
                         : throw new ArgumentException(
                             $"Invalid encoded key type {kv.Key.GetType()} encountered."));
@@ -271,12 +272,12 @@ namespace Libplanet.Action
             }
         }
 
-        private static IEnumerable DecodedValues(Bencodex.Types.Dictionary dict, Type valueType)
+        private static IEnumerable DecodedValues(BTypes.Dictionary dict, Type valueType)
         {
             if (valueType == typeof(bool))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Boolean b
+                    kv.Value is BTypes.Boolean b
                         ? b.Value
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
@@ -284,7 +285,7 @@ namespace Libplanet.Action
             else if (valueType == typeof(int))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Integer i
+                    kv.Value is BTypes.Integer i
                         ? (int)i.Value
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
@@ -292,7 +293,7 @@ namespace Libplanet.Action
             else if (valueType == typeof(long))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Integer l
+                    kv.Value is BTypes.Integer l
                         ? (long)l.Value
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
@@ -300,23 +301,23 @@ namespace Libplanet.Action
             else if (valueType == typeof(BigInteger))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Integer bi
-                        ? bi.Value
+                    kv.Value is BTypes.Integer bigInteger
+                        ? bigInteger.Value
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
             }
             else if (valueType == typeof(ImmutableArray<byte>))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Binary bs
-                        ? bs.ByteArray
+                    kv.Value is BTypes.Binary bytes
+                        ? bytes.ByteArray
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
             }
             else if (valueType == typeof(string))
             {
                 return dict.Select(kv =>
-                    kv.Value is Bencodex.Types.Text s
+                    kv.Value is BTypes.Text s
                         ? s.Value
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));

@@ -5,12 +5,13 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
     public abstract partial class PlainValueTemplate
     {
-        private static Bencodex.Types.IKey EncodeToIKey(object? key)
+        private static BTypes.IKey EncodeToIKey(object? key)
         {
             switch (key)
             {
@@ -19,9 +20,9 @@ namespace Libplanet.Action
                     throw new NullReferenceException(
                         $"Argument {nameof(key)} cannot be null");
                 case string s:
-                    return new Bencodex.Types.Text(s);
-                case ImmutableArray<byte> bs:
-                    return new Bencodex.Types.Binary(bs);
+                    return new BTypes.Text(s);
+                case ImmutableArray<byte> bytes:
+                    return new BTypes.Binary(bytes);
                 default:
                     // TODO: Allow Address type.
                     throw new ArgumentException(
@@ -29,24 +30,24 @@ namespace Libplanet.Action
             }
         }
 
-        private static Bencodex.Types.IValue EncodeToIValue(object? value)
+        private static BTypes.IValue EncodeToIValue(object? value)
         {
             switch (value)
             {
                 case null:
                     throw new NotSupportedException($"Null value is not supported");
                 case bool b:
-                    return new Bencodex.Types.Boolean(b);
+                    return new BTypes.Boolean(b);
                 case int i:
-                    return new Bencodex.Types.Integer(i);
+                    return new BTypes.Integer(i);
                 case long l:
-                    return new Bencodex.Types.Integer(l);
-                case BigInteger bi:
-                    return new Bencodex.Types.Integer(bi);
-                case ImmutableArray<byte> bs:
-                    return new Bencodex.Types.Binary(bs);
+                    return new BTypes.Integer(l);
+                case BigInteger bigInteger:
+                    return new BTypes.Integer(bigInteger);
+                case ImmutableArray<byte> bytes:
+                    return new BTypes.Binary(bytes);
                 case string s:
-                    return new Bencodex.Types.Text(s);
+                    return new BTypes.Text(s);
                 case PlainValueTemplate pvt:
                     return pvt.Encode();
                 case IList list:
@@ -59,7 +60,7 @@ namespace Libplanet.Action
             }
         }
 
-        private static Bencodex.Types.List EncodeToListIValue(IList list)
+        private static BTypes.List EncodeToListIValue(IList list)
         {
             Type type = list.GetType();
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableList<>))
@@ -83,7 +84,7 @@ namespace Libplanet.Action
                 }
                 else
                 {
-                    return new Bencodex.Types.List(
+                    return new BTypes.List(
                         list.Cast<object>().Select(x => EncodeToIValue(x)));
                 }
             }
@@ -94,7 +95,7 @@ namespace Libplanet.Action
             }
         }
 
-        private static Bencodex.Types.Dictionary EncodeToDictionaryIValue(IDictionary dict)
+        private static BTypes.Dictionary EncodeToDictionaryIValue(IDictionary dict)
         {
             Type type = dict.GetType();
             if (type.IsGenericType &&
@@ -126,21 +127,19 @@ namespace Libplanet.Action
                         throw new NotSupportedException(
                             $"Nullable value type is not supported: {valueType}");
                     }
-#pragma warning disable MEN002
                     else
                     {
-                        return new Bencodex.Types.Dictionary(dict
+                        return new BTypes.Dictionary(dict
                             .Cast<object>()
                             .Select(kv =>
                                 {
                                     PropertyInfo[] properties = kv.GetType().GetProperties();
                                     object? key = properties[0].GetValue(kv);
                                     object? value = properties[1].GetValue(kv);
-                                    return new KeyValuePair<Bencodex.Types.IKey, Bencodex.Types.IValue>(
+                                    return new KeyValuePair<BTypes.IKey, BTypes.IValue>(
                                         EncodeToIKey(key), EncodeToIValue(value));
                                 }));
                     }
-#pragma warning restore MEN002
                 }
                 else
                 {

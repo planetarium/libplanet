@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Reflection;
+using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -11,18 +12,18 @@ namespace Libplanet.Action
         {
         }
 
-        protected PlainValueTemplate(Bencodex.Types.Dictionary encoded)
+        protected PlainValueTemplate(BTypes.Dictionary encoded)
         {
             PropertyInfo[] properties = this.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 Type type = property.PropertyType;
-                Bencodex.Types.IValue value = encoded[property.Name];
+                BTypes.IValue value = encoded[property.Name];
                 property.SetValue(this, DecodeFromIValue(value, type));
             }
         }
 
-        public static PlainValueTemplate Decode<T>(Bencodex.Types.Dictionary encoded)
+        public static PlainValueTemplate Decode<T>(BTypes.Dictionary encoded)
             where T : PlainValueTemplate, new()
         {
             object instance = Activator.CreateInstance(typeof(T), encoded)
@@ -31,9 +32,9 @@ namespace Libplanet.Action
             return (T)instance;
         }
 
-        public Bencodex.Types.Dictionary Encode()
+        public BTypes.Dictionary Encode()
         {
-            Bencodex.Types.Dictionary result = Bencodex.Types.Dictionary.Empty;
+            BTypes.Dictionary result = BTypes.Dictionary.Empty;
             PropertyInfo[] properties = this.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
@@ -50,7 +51,7 @@ namespace Libplanet.Action
 
                 // NOTE: Additional IValue casting is needed for this to work.
                 dynamic? value = property.GetValue(this, null);
-                result = result.Add(property.Name, (Bencodex.Types.IValue)EncodeToIValue(value));
+                result = result.Add(property.Name, (BTypes.IValue)EncodeToIValue(value));
             }
 
             return result;
