@@ -13,7 +13,13 @@ namespace Libplanet.Action
 
         protected PlainValueTemplate(Bencodex.Types.Dictionary encoded)
         {
-            throw new NotSupportedException();
+            PropertyInfo[] properties = this.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                Type type = property.PropertyType;
+                Bencodex.Types.IValue value = encoded[property.Name];
+                property.SetValue(this, DecodeFromIValue(value, type));
+            }
         }
 
         public static PlainValueTemplate Decode<T>(Bencodex.Types.Dictionary encoded)
