@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -48,6 +49,9 @@ namespace Libplanet.Tests.Action
                 root.Bytes,
                 ((BTypes.Binary)rootEncoded[nameof(root.Bytes)]).ToByteArray());
             Assert.Equal(
+                root.Addr,
+                new Address(((BTypes.Binary)rootEncoded[nameof(root.Addr)]).ToByteArray()));
+            Assert.Equal(
                 root.Str,
                 ((BTypes.Text)rootEncoded[nameof(root.Str)]).Value);
             Assert.Empty(
@@ -72,6 +76,10 @@ namespace Libplanet.Tests.Action
                 root.ListBytes,
                 ((BTypes.List)rootEncoded[nameof(root.ListBytes)])
                     .Select(x => ((BTypes.Binary)x).ByteArray));
+            Assert.Equal(
+                root.ListAddr,
+                ((BTypes.List)rootEncoded[nameof(root.ListAddr)])
+                    .Select(x => new Address(((BTypes.Binary)x).ByteArray)));
             Assert.Equal(
                 root.ListStr,
                 ((BTypes.List)rootEncoded[nameof(root.ListStr)])
@@ -129,6 +137,17 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(kv.Value, dictionaryBytesBytes[kv.Key]);
             }
 
+            var dictionaryBytesAddr =
+                ((BTypes.Dictionary)rootEncoded[nameof(root.DictBytesAddr)])
+                    .Select(x => new KeyValuePair<ImmutableArray<byte>, Address>(
+                        ((BTypes.Binary)x.Key).ByteArray,
+                        new Address(((BTypes.Binary)x.Value).ByteArray)))
+                .ToImmutableDictionary();
+            foreach (var kv in root.DictBytesAddr)
+            {
+                Assert.Equal(kv.Value, dictionaryBytesAddr[kv.Key]);
+            }
+
             var dictionaryBytesString =
                 ((BTypes.Dictionary)rootEncoded[nameof(root.DictBytesStr)])
                     .Select(x => new KeyValuePair<ImmutableArray<byte>, string>(
@@ -137,6 +156,17 @@ namespace Libplanet.Tests.Action
             foreach (var kv in root.DictBytesStr)
             {
                 Assert.Equal(kv.Value, dictionaryBytesString[kv.Key]);
+            }
+
+            var dictionaryAddrStr =
+                ((BTypes.Dictionary)rootEncoded[nameof(root.DictAddrStr)])
+                    .Select(x => new KeyValuePair<Address, string>(
+                        new Address(((BTypes.Binary)x.Key).ByteArray),
+                        ((BTypes.Text)x.Value).Value))
+                .ToImmutableDictionary();
+            foreach (var kv in root.DictAddrStr)
+            {
+                Assert.Equal(kv.Value, dictionaryAddrStr[kv.Key]);
             }
 
             var dictionaryStringString =
@@ -203,6 +233,8 @@ namespace Libplanet.Tests.Action
                 () => new HasNullableBigIntegerType().Encode());
             Assert.Throws<NotSupportedException>(
                 () => new HasNullableBytesType().Encode());
+            Assert.Throws<NotSupportedException>(
+                () => new HasNullableAddressType().Encode());
 
             Assert.Throws<NotSupportedException>(
                 () => new HasNullableListValueType().Encode());
@@ -285,6 +317,9 @@ namespace Libplanet.Tests.Action
                 () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(encoded));
             Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
             exception = Assert.Throws<TargetInvocationException>(
+                () => (IntWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
+            Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
+            exception = Assert.Throws<TargetInvocationException>(
                 () => (IntWrapper)PlainValueTemplate.Decode<StrWrapper>(encoded));
             Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
 
@@ -295,9 +330,22 @@ namespace Libplanet.Tests.Action
                 () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
+                .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Text("bar"));
+            exception = Assert.Throws<TargetInvocationException>(
+                () => (AddressWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
+            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            encoded = BTypes.Dictionary.Empty
                 .Add(nameof(StrWrapper.Value), (BTypes.IValue)new BTypes.Integer(2));
             exception = Assert.Throws<TargetInvocationException>(
                 () => (StrWrapper)PlainValueTemplate.Decode<StrWrapper>(encoded));
+            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+
+            // Try bad data; Address specifically requires length Address.Size bytes.
+            Assert.NotEqual(Address.Size, randBytes.Length);
+            encoded = BTypes.Dictionary.Empty
+                .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
+            exception = Assert.Throws<TargetInvocationException>(
+                () => (AddressWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
 
             // Try assigning null to inner collection.
@@ -333,6 +381,7 @@ namespace Libplanet.Tests.Action
             int randInt = random.Next();
             string randStr = Guid.NewGuid().ToString();
             ImmutableArray<byte> randBytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
+            Address randAddress = new PrivateKey().ToAddress();
 
             BTypes.Dictionary encoded;
             Exception exception;
@@ -364,6 +413,11 @@ namespace Libplanet.Tests.Action
             exception = Assert.Throws<TargetInvocationException>(
                 () => (HasNullableBytesType)PlainValueTemplate.Decode<HasNullableBytesType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+            encoded = BTypes.Dictionary.Empty
+                .Add(nameof(HasNullableBytesType.Value), (BTypes.IValue)new BTypes.Binary(randAddress.ByteArray));
+            exception = Assert.Throws<TargetInvocationException>(
+                () => (HasNullableBytesType)PlainValueTemplate.Decode<HasNullableAddressType>(encoded));
+            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
 #pragma warning restore MEN002
         }
 
@@ -378,6 +432,7 @@ namespace Libplanet.Tests.Action
                 Long = (long)random.Next();
                 BigInt = (BigInteger)random.Next();
                 Bytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
+                Addr = new PrivateKey().ToAddress();
                 Str = Guid.NewGuid().ToString();
 
                 ListEmpty = ImmutableList<int>.Empty;
@@ -400,6 +455,10 @@ namespace Libplanet.Tests.Action
                 ListBytes = Enumerable
                     .Range(0, 2)
                     .Select(_ => Guid.NewGuid().ToByteArray().ToImmutableArray())
+                    .ToImmutableList();
+                ListAddr = Enumerable
+                    .Range(0, 2)
+                    .Select(_ => new PrivateKey().ToAddress())
                     .ToImmutableList();
                 ListStr = Enumerable
                     .Range(0, 2)
@@ -437,10 +496,22 @@ namespace Libplanet.Tests.Action
                         Guid.NewGuid().ToByteArray().ToImmutableArray(),
                         Guid.NewGuid().ToByteArray().ToImmutableArray()))
                     .ToImmutableDictionary();
+                DictBytesAddr = Enumerable
+                    .Range(0, 2)
+                    .Select(_ => new KeyValuePair<ImmutableArray<byte>, Address>(
+                        Guid.NewGuid().ToByteArray().ToImmutableArray(),
+                        new PrivateKey().ToAddress()))
+                    .ToImmutableDictionary();
                 DictBytesStr = Enumerable
                     .Range(0, 2)
                     .Select(_ => new KeyValuePair<ImmutableArray<byte>, string>(
                         Guid.NewGuid().ToByteArray().ToImmutableArray(),
+                        Guid.NewGuid().ToString()))
+                    .ToImmutableDictionary();
+                DictAddrStr = Enumerable
+                    .Range(0, 2)
+                    .Select(_ => new KeyValuePair<Address, string>(
+                        new PrivateKey().ToAddress(),
                         Guid.NewGuid().ToString()))
                     .ToImmutableDictionary();
                 DictStrStr = Enumerable
@@ -469,6 +540,8 @@ namespace Libplanet.Tests.Action
 
             public ImmutableArray<byte> Bytes { get; private set; }
 
+            public Address Addr { get; private set; }
+
             public string Str { get; private set; }
 
             public ImmutableList<int> ListEmpty { get; private set; }
@@ -482,6 +555,8 @@ namespace Libplanet.Tests.Action
             public ImmutableList<BigInteger> ListBigInt { get; private set; }
 
             public ImmutableList<ImmutableArray<byte>> ListBytes { get; private set; }
+
+            public ImmutableList<Address> ListAddr { get; private set; }
 
             public ImmutableList<string> ListStr { get; private set; }
 
@@ -503,8 +578,14 @@ namespace Libplanet.Tests.Action
             public ImmutableDictionary<ImmutableArray<byte>, ImmutableArray<byte>>
                 DictBytesBytes { get; private set; }
 
+            public ImmutableDictionary<ImmutableArray<byte>, Address>
+                DictBytesAddr { get; private set; }
+
             public ImmutableDictionary<ImmutableArray<byte>, string>
                 DictBytesStr { get; private set; }
+
+            public ImmutableDictionary<Address, string>
+                DictAddrStr { get; private set; }
 
             public ImmutableDictionary<string, string>
                 DictStrStr { get; private set; }
@@ -661,6 +742,22 @@ namespace Libplanet.Tests.Action
             public ImmutableArray<byte>? Value { get; private set; }
         }
 
+        private class HasNullableAddressType : PlainValueTemplate
+        {
+            public HasNullableAddressType()
+                : base()
+            {
+                Value = new Address("0000000000000000000000000000000000000001");
+            }
+
+            public HasNullableAddressType(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public Address? Value { get; private set; }
+        }
+
         private class HasNullableListValueType : PlainValueTemplate
         {
             public HasNullableListValueType()
@@ -803,6 +900,22 @@ namespace Libplanet.Tests.Action
             }
 
             public int Value { get; private set; }
+        }
+
+        private class AddressWrapper : PlainValueTemplate
+        {
+            public AddressWrapper(Address value)
+                : base()
+            {
+                Value = value;
+            }
+
+            public AddressWrapper(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public Address Value { get; private set; }
         }
 
         private class StrWrapper : PlainValueTemplate
