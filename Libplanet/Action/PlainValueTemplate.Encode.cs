@@ -19,10 +19,12 @@ namespace Libplanet.Action
                 case null:
                     throw new NullReferenceException(
                         $"Argument {nameof(key)} cannot be null");
-                case string s:
-                    return new BTypes.Text(s);
                 case ImmutableArray<byte> bytes:
                     return new BTypes.Binary(bytes);
+                case Address address:
+                    return new BTypes.Binary(address.ByteArray);
+                case string s:
+                    return new BTypes.Text(s);
                 default:
                     // TODO: Allow Address type.
                     throw new ArgumentException(
@@ -46,6 +48,8 @@ namespace Libplanet.Action
                     return new BTypes.Integer(bigInteger);
                 case ImmutableArray<byte> bytes:
                     return new BTypes.Binary(bytes);
+                case Address address:
+                    return new BTypes.Binary(address.ByteArray);
                 case string s:
                     return new BTypes.Text(s);
                 case PlainValueTemplate pvt:
@@ -77,7 +81,8 @@ namespace Libplanet.Action
                     || genericType == typeof(int?)
                     || genericType == typeof(long?)
                     || genericType == typeof(BigInteger?)
-                    || genericType == typeof(ImmutableArray<byte>?))
+                    || genericType == typeof(ImmutableArray<byte>?)
+                    || genericType == typeof(Address?))
                 {
                     throw new NotSupportedException(
                         $"Nullable value type is not supported: {genericType}");
@@ -87,6 +92,7 @@ namespace Libplanet.Action
                     || genericType == typeof(long)
                     || genericType == typeof(BigInteger)
                     || genericType == typeof(ImmutableArray<byte>)
+                    || genericType == typeof(Address)
                     || genericType == typeof(string))
                 {
                     return new BTypes.List(
@@ -115,7 +121,9 @@ namespace Libplanet.Action
                 Type[] genericTypes = dict.GetType().GetGenericArguments();
                 Type keyType = genericTypes[0];
                 Type valueType = genericTypes[1];
-                if (keyType == typeof(string) || keyType == typeof(ImmutableArray<byte>))
+                if (keyType == typeof(string)
+                    || keyType == typeof(ImmutableArray<byte>)
+                    || keyType == typeof(Address))
                 {
                     if (valueType.IsGenericType &&
                         (valueType.GetGenericTypeDefinition() == typeof(ImmutableList<>) ||
@@ -124,7 +132,9 @@ namespace Libplanet.Action
                         throw new NotSupportedException(
                             $"Nested collection is not supported: {type}");
                     }
-                    else if (keyType == typeof(ImmutableArray<byte>?))
+                    else if (
+                        keyType == typeof(ImmutableArray<byte>?)
+                        || keyType == typeof(Address?))
                     {
                         throw new NotSupportedException(
                             $"Nullable value type is not supported: {keyType}");
@@ -133,7 +143,8 @@ namespace Libplanet.Action
                         || valueType == typeof(int?)
                         || valueType == typeof(long?)
                         || valueType == typeof(BigInteger?)
-                        || valueType == typeof(ImmutableArray<byte>?))
+                        || valueType == typeof(ImmutableArray<byte>?)
+                        || valueType == typeof(Address?))
                     {
                         throw new NotSupportedException(
                             $"Nullable value type is not supported: {valueType}");
@@ -143,6 +154,7 @@ namespace Libplanet.Action
                         || valueType == typeof(long)
                         || valueType == typeof(BigInteger)
                         || valueType == typeof(ImmutableArray<byte>)
+                        || valueType == typeof(Address)
                         || valueType == typeof(string))
                     {
                         return new BTypes.Dictionary(dict

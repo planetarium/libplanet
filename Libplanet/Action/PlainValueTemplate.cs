@@ -24,7 +24,8 @@ namespace Libplanet.Action
                     || type == typeof(int?)
                     || type == typeof(long?)
                     || type == typeof(BigInteger?)
-                    || type == typeof(ImmutableArray<byte>?))
+                    || type == typeof(ImmutableArray<byte>?)
+                    || type == typeof(Address?))
                 {
                     throw new NotSupportedException(
                         $"Nullable value type is not supported: {type}");
@@ -56,7 +57,8 @@ namespace Libplanet.Action
                     || type == typeof(int?)
                     || type == typeof(long?)
                     || type == typeof(BigInteger?)
-                    || type == typeof(ImmutableArray<byte>?))
+                    || type == typeof(ImmutableArray<byte>?)
+                    || type == typeof(Address?))
                 {
                     throw new NotSupportedException(
                         $"Nullable value type is not supported: {type}");

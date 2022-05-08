@@ -26,6 +26,8 @@ namespace Libplanet.Action
                     return bigInteger.Value;
                 case BTypes.Binary bytes when type == typeof(ImmutableArray<byte>):
                     return bytes.ByteArray;
+                case BTypes.Binary bytes when type == typeof(Address):
+                    return new Address(bytes.ByteArray);
                 case BTypes.Text s when type == typeof(string):
                     return s.Value;
                 case BTypes.Dictionary pvt when
@@ -99,6 +101,16 @@ namespace Libplanet.Action
                                     $"Invalid encoded type {x.GetType()} encountered."))
                         .ToImmutableList();
                 }
+                else if (genericType == typeof(Address))
+                {
+                    return list
+                        .Select(x
+                            => x is BTypes.Binary address
+                                ? new Address(address.ByteArray)
+                                : throw new ArgumentException(
+                                    $"Invalid encoded type {x.GetType()} encoutnered."))
+                        .ToImmutableList();
+                }
                 else if (genericType == typeof(string))
                 {
                     // FIXME: Reference type nullability should be inferred from attributes.
@@ -170,11 +182,75 @@ namespace Libplanet.Action
                                 (ImmutableArray<byte>)first, (ImmutableArray<byte>)second))
                             .ToImmutableDictionary();
                     }
+                    else if (valueType == typeof(Address))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<ImmutableArray<byte>, Address>(
+                                (ImmutableArray<byte>)first, (Address)second))
+                            .ToImmutableDictionary();
+                    }
                     else if (valueType == typeof(string))
                     {
                         return keys.Zip(values, (first, second) =>
                             new KeyValuePair<ImmutableArray<byte>, string>(
                                 (ImmutableArray<byte>)first, (string)second))
+                            .ToImmutableDictionary();
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"Invalid target value type {valueType} encountered.");
+                    }
+                }
+                else if (keyType == typeof(Address))
+                {
+                    if (valueType == typeof(bool))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, bool>(
+                                (Address)first, (bool)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(int))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, int>(
+                                (Address)first, (int)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(long))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, long>(
+                                (Address)first, (long)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(BigInteger))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, BigInteger>(
+                                (Address)first, (BigInteger)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(ImmutableArray<byte>))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, ImmutableArray<byte>>(
+                                (Address)first, (ImmutableArray<byte>)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(Address))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, Address>(
+                                (Address)first, (Address)second))
+                            .ToImmutableDictionary();
+                    }
+                    else if (valueType == typeof(string))
+                    {
+                        return keys.Zip(values, (first, second) =>
+                            new KeyValuePair<Address, string>(
+                                (Address)first, (string)second))
                             .ToImmutableDictionary();
                     }
                     else
@@ -222,6 +298,14 @@ namespace Libplanet.Action
                                     (string)first, (ImmutableArray<byte>)second))
                             .ToImmutableDictionary();
                     }
+                    else if (valueType == typeof(Address))
+                    {
+                        return keys
+                            .Zip(values, (first, second) =>
+                                new KeyValuePair<string, Address>(
+                                    (string)first, (Address)second))
+                            .ToImmutableDictionary();
+                    }
                     else if (valueType == typeof(string))
                     {
                         return keys.Zip(values, (first, second) =>
@@ -254,6 +338,14 @@ namespace Libplanet.Action
                 return dict.Select(kv =>
                     kv.Key is BTypes.Binary bytes
                         ? bytes.ByteArray
+                        : throw new ArgumentException(
+                            $"Invalid encoded key type {kv.Key.GetType()} encountered."));
+            }
+            else if (keyType == typeof(Address))
+            {
+                return dict.Select(kv =>
+                    kv.Key is BTypes.Binary address
+                        ? new Address(address.ByteArray)
                         : throw new ArgumentException(
                             $"Invalid encoded key type {kv.Key.GetType()} encountered."));
             }
@@ -311,6 +403,14 @@ namespace Libplanet.Action
                 return dict.Select(kv =>
                     kv.Value is BTypes.Binary bytes
                         ? bytes.ByteArray
+                        : throw new ArgumentException(
+                            $"Invalid encoded type {kv.Value.GetType()} encountered."));
+            }
+            else if (valueType == typeof(Address))
+            {
+                return dict.Select(kv =>
+                    kv.Value is BTypes.Binary address
+                        ? new Address(address.ByteArray)
                         : throw new ArgumentException(
                             $"Invalid encoded type {kv.Value.GetType()} encountered."));
             }
