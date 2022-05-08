@@ -19,12 +19,25 @@ namespace Libplanet.Action
             {
                 Type type = property.PropertyType;
                 BTypes.IValue value = encoded[property.Name];
-                property.SetValue(this, DecodeFromIValue(value, type));
+
+                if (type == typeof(bool?)
+                    || type == typeof(int?)
+                    || type == typeof(long?)
+                    || type == typeof(BigInteger?)
+                    || type == typeof(ImmutableArray<byte>?))
+                {
+                    throw new NotSupportedException(
+                        $"Nullable value type is not supported: {type}");
+                }
+                else
+                {
+                    property.SetValue(this, DecodeFromIValue(value, type));
+                }
             }
         }
 
         public static PlainValueTemplate Decode<T>(BTypes.Dictionary encoded)
-            where T : PlainValueTemplate, new()
+            where T : PlainValueTemplate
         {
             object instance = Activator.CreateInstance(typeof(T), encoded)
                 ?? throw new NullReferenceException(
