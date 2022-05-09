@@ -1,9 +1,9 @@
-﻿namespace Libplanet.Net.Messages
+namespace Libplanet.Net.Messages
 {
     public class ConsensusCommit : ConsensusMessage
     {
-         public ConsensusCommit(long nodeId, long round, byte[] data)
-         : base(nodeId, round, data)
+         public ConsensusCommit(long nodeId, long height, long round, byte[] data)
+         : base(nodeId, height, round, data)
          {
          }
 
