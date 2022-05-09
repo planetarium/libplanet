@@ -26,7 +26,6 @@ namespace Libplanet.Action
                 case string s:
                     return new BTypes.Text(s);
                 default:
-                    // TODO: Allow Address type.
                     throw new ArgumentException(
                         $"Invalid type encountered for {nameof(key)}: {key}");
             }

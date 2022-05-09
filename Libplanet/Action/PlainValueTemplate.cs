@@ -40,10 +40,18 @@ namespace Libplanet.Action
         public static PlainValueTemplate Decode<T>(BTypes.Dictionary encoded)
             where T : PlainValueTemplate
         {
-            object instance = Activator.CreateInstance(typeof(T), encoded)
-                ?? throw new NullReferenceException(
-                    $"Failed to decode {nameof(encoded)}: {encoded}");
-            return (T)instance;
+            if (encoded is BTypes.Dictionary e)
+            {
+                object instance = Activator.CreateInstance(typeof(T), encoded)
+                    ?? throw new NullReferenceException(
+                        $"Failed to decode {nameof(encoded)}: {encoded}");
+                return (T)instance;
+            }
+            else
+            {
+                throw new NullReferenceException(
+                    $"Argument {nameof(encoded)} cannot be null");
+            }
         }
 
         public BTypes.Dictionary Encode()

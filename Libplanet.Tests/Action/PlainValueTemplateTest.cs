@@ -311,6 +311,10 @@ namespace Libplanet.Tests.Action
                 = (DictStrIntWrapper)PlainValueTemplate.Decode<DictStrIntWrapper>(encoded);
             Assert.Equal(randInt, decodedDictStrIntWrapper.Value[randStr]);
 
+            // Try null.
+            Assert.Throws<NullReferenceException>(
+                () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(null));
+
             // Try missing data.
             encoded = BTypes.Dictionary.Empty;
             exception = Assert.Throws<TargetInvocationException>(
