@@ -8,7 +8,7 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
-    public abstract partial class PlainValueTemplate
+    public abstract partial class DataModel
     {
         private static object DecodeFromIValue(BTypes.IValue value, Type type)
         {
@@ -31,7 +31,7 @@ namespace Libplanet.Action
                 case BTypes.Text s when type == typeof(string):
                     return s.Value;
                 case BTypes.Dictionary pvt when
-                    type.IsSubclassOf(typeof(PlainValueTemplate)):
+                    type.IsSubclassOf(typeof(DataModel)):
                     object instance = Activator.CreateInstance(type, pvt)
                         ?? throw new NullReferenceException(
                             $"Failed to decode {value} to target type {type}");

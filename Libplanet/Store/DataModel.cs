@@ -6,13 +6,13 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
-    public abstract partial class PlainValueTemplate
+    public abstract partial class DataModel
     {
-        protected PlainValueTemplate()
+        protected DataModel()
         {
         }
 
-        protected PlainValueTemplate(BTypes.Dictionary encoded)
+        protected DataModel(BTypes.Dictionary encoded)
         {
             PropertyInfo[] properties = this.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
@@ -37,8 +37,8 @@ namespace Libplanet.Action
             }
         }
 
-        public static PlainValueTemplate Decode<T>(BTypes.Dictionary encoded)
-            where T : PlainValueTemplate
+        public static DataModel Decode<T>(BTypes.Dictionary encoded)
+            where T : DataModel
         {
             if (encoded is BTypes.Dictionary e)
             {

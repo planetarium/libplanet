@@ -13,11 +13,11 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Tests.Action
 {
-    public class PlainValueTemplateTest
+    public class DataModelTest
     {
         private readonly ILogger _logger;
 
-        public PlainValueTemplateTest(ITestOutputHelper output)
+        public DataModelTest(ITestOutputHelper output)
         {
             Log.Logger = _logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
@@ -211,13 +211,13 @@ namespace Libplanet.Tests.Action
 
             Assert.Equal(
                 root.Encode(),
-                ((RootModel)PlainValueTemplate.Decode<RootModel>(root.Encode())).Encode());
+                ((RootModel)DataModel.Decode<RootModel>(root.Encode())).Encode());
             Assert.Equal(
                 mid.Encode(),
-                ((MidModel)PlainValueTemplate.Decode<MidModel>(mid.Encode())).Encode());
+                ((MidModel)DataModel.Decode<MidModel>(mid.Encode())).Encode());
             Assert.Equal(
                 leaf.Encode(),
-                ((LeafModel)PlainValueTemplate.Decode<LeafModel>(leaf.Encode())).Encode());
+                ((LeafModel)DataModel.Decode<LeafModel>(leaf.Encode())).Encode());
         }
 
         [Fact]
@@ -273,24 +273,24 @@ namespace Libplanet.Tests.Action
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBoolType.Value), BTypes.Null.Value);
             exception = Assert.Throws<TargetInvocationException>(
-                () => PlainValueTemplate.Decode<HasNullableBoolType>(encoded));
+                () => DataModel.Decode<HasNullableBoolType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullReferencePropertyValue.Value), BTypes.Null.Value);
             exception = Assert.Throws<TargetInvocationException>(
-                () => PlainValueTemplate.Decode<HasNullReferencePropertyValue>(encoded));
+                () => DataModel.Decode<HasNullReferencePropertyValue>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
 
             // Sanity check
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(IntWrapper.Value), (BTypes.IValue)new BTypes.Integer(randInt));
             IntWrapper decodedIntWrapper
-                = (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(encoded);
+                = (IntWrapper)DataModel.Decode<IntWrapper>(encoded);
             Assert.Equal(randInt, decodedIntWrapper.Value);
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(StrWrapper.Value), (BTypes.IValue)new BTypes.Text(randStr));
             StrWrapper decodedStrWrapper
-                = (StrWrapper)PlainValueTemplate.Decode<StrWrapper>(encoded);
+                = (StrWrapper)DataModel.Decode<StrWrapper>(encoded);
             Assert.Equal(randStr, decodedStrWrapper.Value);
             encoded = BTypes.Dictionary.Empty
                 .Add(
@@ -298,7 +298,7 @@ namespace Libplanet.Tests.Action
                     (BTypes.IValue)BTypes.List.Empty
                         .Add((BTypes.IValue)new BTypes.Integer(randInt)));
             ListIntWrapper decodedListIntWrapper
-                = (ListIntWrapper)PlainValueTemplate.Decode<ListIntWrapper>(encoded);
+                = (ListIntWrapper)DataModel.Decode<ListIntWrapper>(encoded);
             Assert.Equal(randInt, decodedListIntWrapper.Value[0]);
             encoded = BTypes.Dictionary.Empty
                 .Add(
@@ -308,40 +308,40 @@ namespace Libplanet.Tests.Action
                             (BTypes.IKey)new BTypes.Text(randStr),
                             (BTypes.IValue)new BTypes.Integer(randInt)));
             DictStrIntWrapper decodedDictStrIntWrapper
-                = (DictStrIntWrapper)PlainValueTemplate.Decode<DictStrIntWrapper>(encoded);
+                = (DictStrIntWrapper)DataModel.Decode<DictStrIntWrapper>(encoded);
             Assert.Equal(randInt, decodedDictStrIntWrapper.Value[randStr]);
 
             // Try null.
             Assert.Throws<NullReferenceException>(
-                () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(null));
+                () => (IntWrapper)DataModel.Decode<IntWrapper>(null));
 
             // Try missing data.
             encoded = BTypes.Dictionary.Empty;
             exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(encoded));
+                () => (IntWrapper)DataModel.Decode<IntWrapper>(encoded));
             Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
             exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
+                () => (IntWrapper)DataModel.Decode<AddressWrapper>(encoded));
             Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
             exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)PlainValueTemplate.Decode<StrWrapper>(encoded));
+                () => (IntWrapper)DataModel.Decode<StrWrapper>(encoded));
             Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
 
             // Try type mismatch.
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(IntWrapper.Value), (BTypes.IValue)new BTypes.Text("foo"));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)PlainValueTemplate.Decode<IntWrapper>(encoded));
+                () => (IntWrapper)DataModel.Decode<IntWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Text("bar"));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (AddressWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
+                () => (AddressWrapper)DataModel.Decode<AddressWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(StrWrapper.Value), (BTypes.IValue)new BTypes.Integer(2));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (StrWrapper)PlainValueTemplate.Decode<StrWrapper>(encoded));
+                () => (StrWrapper)DataModel.Decode<StrWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
 
             // Try bad data; Address specifically requires length Address.Size bytes.
@@ -349,7 +349,7 @@ namespace Libplanet.Tests.Action
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (AddressWrapper)PlainValueTemplate.Decode<AddressWrapper>(encoded));
+                () => (AddressWrapper)DataModel.Decode<AddressWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
 
             // Try assigning null to inner collection.
@@ -360,7 +360,7 @@ namespace Libplanet.Tests.Action
                         .Add((BTypes.IValue)new BTypes.Integer(5))
                         .Add(BTypes.Null.Value));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (ListIntWrapper)PlainValueTemplate.Decode<ListIntWrapper>(encoded));
+                () => (ListIntWrapper)DataModel.Decode<ListIntWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(
@@ -373,7 +373,7 @@ namespace Libplanet.Tests.Action
                             (BTypes.IKey)new BTypes.Text("bar"),
                             (BTypes.IValue)BTypes.Null.Value));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (DictStrIntWrapper)PlainValueTemplate.Decode<DictStrIntWrapper>(encoded));
+                () => (DictStrIntWrapper)DataModel.Decode<DictStrIntWrapper>(encoded));
             Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
         }
 
@@ -395,37 +395,37 @@ namespace Libplanet.Tests.Action
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBoolType.Value), (BTypes.IValue)new BTypes.Boolean(randBool));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBoolType)PlainValueTemplate.Decode<HasNullableBoolType>(encoded));
+                () => (HasNullableBoolType)DataModel.Decode<HasNullableBoolType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableIntType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableIntType)PlainValueTemplate.Decode<HasNullableIntType>(encoded));
+                () => (HasNullableIntType)DataModel.Decode<HasNullableIntType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableLongType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableLongType)PlainValueTemplate.Decode<HasNullableLongType>(encoded));
+                () => (HasNullableLongType)DataModel.Decode<HasNullableLongType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBigIntegerType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBigIntegerType)PlainValueTemplate.Decode<HasNullableBigIntegerType>(encoded));
+                () => (HasNullableBigIntegerType)DataModel.Decode<HasNullableBigIntegerType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBytesType.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBytesType)PlainValueTemplate.Decode<HasNullableBytesType>(encoded));
+                () => (HasNullableBytesType)DataModel.Decode<HasNullableBytesType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBytesType.Value), (BTypes.IValue)new BTypes.Binary(randAddress.ByteArray));
             exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBytesType)PlainValueTemplate.Decode<HasNullableAddressType>(encoded));
+                () => (HasNullableBytesType)DataModel.Decode<HasNullableAddressType>(encoded));
             Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
 #pragma warning restore MEN002
         }
 
-        private class RootModel : PlainValueTemplate
+        private class RootModel : DataModel
         {
             public RootModel()
                 : base()
@@ -599,7 +599,7 @@ namespace Libplanet.Tests.Action
             public LeafModel Leaf { get; private set; }
         }
 
-        private class MidModel : PlainValueTemplate
+        private class MidModel : DataModel
         {
             public MidModel()
                 : base()
@@ -632,7 +632,7 @@ namespace Libplanet.Tests.Action
             public LeafModel Leaf { get; private set; }
         }
 
-        private class LeafModel : PlainValueTemplate
+        private class LeafModel : DataModel
         {
             public LeafModel()
                 : base()
@@ -666,7 +666,7 @@ namespace Libplanet.Tests.Action
             }
         }
 
-        private class HasNullableBoolType : PlainValueTemplate
+        private class HasNullableBoolType : DataModel
         {
             public HasNullableBoolType()
                 : base()
@@ -682,7 +682,7 @@ namespace Libplanet.Tests.Action
             public bool? Value { get; private set; }
         }
 
-        private class HasNullableIntType : PlainValueTemplate
+        private class HasNullableIntType : DataModel
         {
             public HasNullableIntType()
                 : base()
@@ -698,7 +698,7 @@ namespace Libplanet.Tests.Action
             public int? Value { get; private set; }
         }
 
-        private class HasNullableLongType : PlainValueTemplate
+        private class HasNullableLongType : DataModel
         {
             public HasNullableLongType()
                 : base()
@@ -714,7 +714,7 @@ namespace Libplanet.Tests.Action
             public long? Value { get; private set; }
         }
 
-        private class HasNullableBigIntegerType : PlainValueTemplate
+        private class HasNullableBigIntegerType : DataModel
         {
             public HasNullableBigIntegerType()
                 : base()
@@ -730,7 +730,7 @@ namespace Libplanet.Tests.Action
             public BigInteger? Value { get; private set; }
         }
 
-        private class HasNullableBytesType : PlainValueTemplate
+        private class HasNullableBytesType : DataModel
         {
             public HasNullableBytesType()
                 : base()
@@ -746,7 +746,7 @@ namespace Libplanet.Tests.Action
             public ImmutableArray<byte>? Value { get; private set; }
         }
 
-        private class HasNullableAddressType : PlainValueTemplate
+        private class HasNullableAddressType : DataModel
         {
             public HasNullableAddressType()
                 : base()
@@ -762,7 +762,7 @@ namespace Libplanet.Tests.Action
             public Address? Value { get; private set; }
         }
 
-        private class HasNullableListValueType : PlainValueTemplate
+        private class HasNullableListValueType : DataModel
         {
             public HasNullableListValueType()
                 : base()
@@ -778,7 +778,7 @@ namespace Libplanet.Tests.Action
             public ImmutableList<int?> Value { get; private set; }
         }
 
-        private class HasInvalidListValueType : PlainValueTemplate
+        private class HasInvalidListValueType : DataModel
         {
             public HasInvalidListValueType()
                 : base()
@@ -798,7 +798,7 @@ namespace Libplanet.Tests.Action
             public ImmutableList<MidModel> Value { get; private set; }
         }
 
-        private class HasInvalidDictionaryKeyType : PlainValueTemplate
+        private class HasInvalidDictionaryKeyType : DataModel
         {
             public HasInvalidDictionaryKeyType()
                 : base()
@@ -818,7 +818,7 @@ namespace Libplanet.Tests.Action
             public ImmutableDictionary<int, int> Value { get; private set; }
         }
 
-        private class HasNullableDictionaryValueType : PlainValueTemplate
+        private class HasNullableDictionaryValueType : DataModel
         {
             public HasNullableDictionaryValueType()
                 : base()
@@ -838,7 +838,7 @@ namespace Libplanet.Tests.Action
             public ImmutableDictionary<string, int?> Value { get; private set; }
         }
 
-        private class HasInvalidDictionaryValueType : PlainValueTemplate
+        private class HasInvalidDictionaryValueType : DataModel
         {
             public HasInvalidDictionaryValueType()
                 : base()
@@ -858,7 +858,7 @@ namespace Libplanet.Tests.Action
             public ImmutableDictionary<string, MidModel> Value { get; private set; }
         }
 
-        private class HasNullReferencePropertyValue : PlainValueTemplate
+        private class HasNullReferencePropertyValue : DataModel
         {
             public HasNullReferencePropertyValue()
                 : base()
@@ -874,7 +874,7 @@ namespace Libplanet.Tests.Action
             public string Value { get; private set; }
         }
 
-        private class HasNullReferenceListValue : PlainValueTemplate
+        private class HasNullReferenceListValue : DataModel
         {
             public HasNullReferenceListValue()
                 : base()
@@ -890,7 +890,7 @@ namespace Libplanet.Tests.Action
             public ImmutableList<string> Value { get; private set; }
         }
 
-        private class IntWrapper : PlainValueTemplate
+        private class IntWrapper : DataModel
         {
             public IntWrapper(int value)
                 : base()
@@ -906,7 +906,7 @@ namespace Libplanet.Tests.Action
             public int Value { get; private set; }
         }
 
-        private class AddressWrapper : PlainValueTemplate
+        private class AddressWrapper : DataModel
         {
             public AddressWrapper(Address value)
                 : base()
@@ -922,7 +922,7 @@ namespace Libplanet.Tests.Action
             public Address Value { get; private set; }
         }
 
-        private class StrWrapper : PlainValueTemplate
+        private class StrWrapper : DataModel
         {
             public StrWrapper(string value)
                 : base()
@@ -938,7 +938,7 @@ namespace Libplanet.Tests.Action
             public string Value { get; private set; }
         }
 
-        private class ListIntWrapper : PlainValueTemplate
+        private class ListIntWrapper : DataModel
         {
             public ListIntWrapper(List<int> value)
                 : base()
@@ -954,7 +954,7 @@ namespace Libplanet.Tests.Action
             public ImmutableList<int> Value { get; private set; }
         }
 
-        private class DictStrIntWrapper : PlainValueTemplate
+        private class DictStrIntWrapper : DataModel
         {
             public DictStrIntWrapper(Dictionary<string, int> value)
                 : base()

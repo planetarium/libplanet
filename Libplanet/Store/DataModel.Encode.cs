@@ -9,7 +9,7 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
-    public abstract partial class PlainValueTemplate
+    public abstract partial class DataModel
     {
         private static BTypes.IKey EncodeToIKey(object? key)
         {
@@ -51,7 +51,7 @@ namespace Libplanet.Action
                     return new BTypes.Binary(address.ByteArray);
                 case string s:
                     return new BTypes.Text(s);
-                case PlainValueTemplate pvt:
+                case DataModel pvt:
                     return pvt.Encode();
                 case IList list:
                     return EncodeToListIValue(list);
