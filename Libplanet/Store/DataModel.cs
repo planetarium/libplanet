@@ -1,11 +1,146 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Reflection;
 using BTypes = Bencodex.Types;
 
 namespace Libplanet.Action
 {
+    /// <summary>
+    /// <para>
+    /// A <c>class</c> representing an abstract data model that can be easily
+    /// <see cref="Encode"/>ed and <see cref="Decode"/>ed to and from
+    /// a <see cref="BTypes.Dictionary"/>.
+    /// </para>
+    /// <para>
+    /// Inheriting this class and simply declaring properties allows an instance of the child class
+    /// to encode its data into a <see cref="BTypes.Dictionary"/> where the encoded
+    /// <see cref="BTypes.Dictionary"/> has the concrete class'es each property name as its key and
+    /// the each corresponding property value as its value.
+    /// </para>
+    /// <para>
+    /// However, there are certain restrictions that apply when using this <c>class</c>:
+    /// <list type="bullet">
+    ///     <item><description>
+    ///         The complete list of allowed property types are as follows:
+    ///         <list type="bullet">
+    ///             <item><description>
+    ///                 Primitive types: <c>bool</c>, <c>int</c>, <c>long</c>, <c>BigInteger</c>,
+    ///                 <c><![CDATA[ImmutableArray<byte>]]></c>, <c>Address</c>, and <c>string</c>.
+    ///             </description></item>
+    ///             <item><description>
+    ///                 Special types: Any type inherited from <see cref="DataModel"/>.
+    ///             </description></item>
+    ///             <item><description>
+    ///                 Collective types:
+    ///                 <list type="bullet">
+    ///                     <item><description>
+    ///                         <see cref="ImmutableList{T}"/> where <c>T</c> is a primitive type.
+    ///                     </description></item>
+    ///                     <item><description>
+    ///                         <see cref="ImmutableDictionary{TKey,TValue}"/> where
+    ///                         <list type="bullet">
+    ///                             <item><description>
+    ///                                 <c>TKey</c> is one of
+    ///                                 <c><![CDATA[ImmutableArray<byte>]]></c>, <c>Address</c>,
+    ///                                 and <c>string</c>.
+    ///                             </description></item>
+    ///                             <item><description>
+    ///                                 <c>TValue</c> is a primitive type.
+    ///                             </description></item>
+    ///                         </list>
+    ///                     </description></item>
+    ///                 </list>
+    ///             </description></item>
+    ///         </list>
+    ///     </description></item>
+    ///     <item><description>
+    ///         Value types are not allowed to be declared as <c>nullable</c>, not even as
+    ///         a generic type parameter.  That is, types such as <c>bool?</c>, <c>Address?</c>,
+    ///         and <c><![CDATA[ImmutableList<int?>]]></c>are not allowed.
+    ///     </description></item>
+    ///     <item><description>
+    ///         Reference types are not allowed to be assigned <c>null</c>.  This will result
+    ///         in an <see cref="Exception"/> when <see cref="Encode"/> is called.
+    ///     </description></item>
+    ///     <item><description>
+    ///         Trying to assign <c>null</c> to any property or to a part of a collection will
+    ///         result in an <see cref="Exception"/> when <see cref="Decode"/> is called.
+    ///     </description></item>
+    /// </list>
+    /// </para>
+    /// </summary>
+    /// <example>
+    /// The following example shows how this class can be used:
+    /// <code><![CDATA[
+    /// public class CharacterData : DataModel
+    /// {
+    ///     /// <summary>
+    ///     /// Name of the character.
+    ///     /// </summary>
+    ///     public string Name { get; private set; }
+    ///
+    ///     /// <summary>
+    ///     /// Current level of the character.
+    ///     /// </summary>
+    ///     public int Level { get; private set; }
+    ///
+    ///     public CharacterData(string name, int level)
+    ///         : base()
+    ///     {
+    ///         Name = name;
+    ///         Level = level;
+    ///     }
+    ///
+    ///     public CharacterData(Bencodex.Types.Dictionary encoded)
+    ///         : base(encoded)
+    ///     {
+    ///     }
+    /// }
+    /// ]]></code>
+    /// Then the concrete model defined above can be used as shown below:
+    /// <code><![CDATA[
+    /// CharacterData characterData = new CharacterData("John", 5);
+    /// Bencodex.Types.Dictionary encoded = characterData.Encode()
+    /// ]]></code>
+    /// This would result in <c>encoded</c> in the following format:
+    /// <code><![CDATA[
+    /// Bencodex.Types.Dictionary {
+    ///   "Name": "John",
+    ///   "Level": 5,
+    /// }
+    /// ]]></code>
+    /// To decode this back into an instance, simply use it as shown below:
+    /// <code><![CDATA[
+    /// ConcreteModel decodedModel = (ConcreteModel)DataModel.Decode<ConcreteModel>(encoded);
+    /// ]]></code>
+    /// Note that in the example above, an additional casting to a decoded
+    /// <see cref="DataModel"/> object is required.
+    /// </example>
+    /// <remarks>
+    /// There are certain caveats for using this class:
+    /// <list type="bullet">
+    ///     <item><description>
+    ///         Encoded data type is fixed to <see cref="BTypes.Dictionary"/>.  As each
+    ///         property name is encoded into <see cref="BTypes.Text"/> as a key, it is
+    ///         advisable to give short names for properties.  For example, <c>int HP</c> is better
+    ///         than <c>int HealthPoint</c> to reduce storage size and/or network traffic.
+    ///         As seen in the example above, actively use documented properties instead.
+    ///     </description></item>
+    ///     <item><description>
+    ///         Property type of <see cref="ImmutableDictionary{TKey,TValue}"/> is inefficient
+    ///         to encode and decode.  Additional caution is needed when declaring
+    ///         <see cref="ImmutableDictionary{TKey,TValue}"/> property type.
+    ///     </description></item>
+    ///     <item><description>
+    ///         As supported types are limited, in particular, nullable types and nested
+    ///         collection types, if a custom data model that isn't supported by this class
+    ///         is needed, manual implementation of encoding and decoding should be done
+    ///         separately.
+    ///     </description></item>
+    /// </list>
+    /// </remarks>
     public abstract partial class DataModel
     {
         protected DataModel()
@@ -37,6 +172,23 @@ namespace Libplanet.Action
             }
         }
 
+        /// <summary>
+        /// Decodes a <see cref="BTypes.Dictionary"/> data into an instance
+        /// of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The <c>type</c> to instantiate when decoding
+        /// <paramref name="encoded"/>.  Should be a concrete <c>type</c> inherited from
+        /// <see cref="DataModel"/>.</typeparam>
+        /// <param name="encoded">The <see cref="BTypes.Dictionary"/> instance to decode.</param>
+        /// <returns>A decoded instance of type <typeparamref name="T"/> as
+        /// <see cref="DataModel"/>.  Additional casting to <typeparamref name="T"/> may be
+        /// necessary.</returns>
+        /// <exception cref="TargetInvocationException">Thrown when failed to create an
+        /// instance of type <typeparamref name="T"/> with <paramref name="encoded"/>.
+        /// Its reason for failure is stored in thrown <see cref="TargetInvocationException"/>'s
+        /// <see cref="Exception.InnerException"/>.</exception>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="encoded"/> is
+        /// <c>null</c> or <c>null</c> reference is returned by inner instantiation.</exception>
         public static DataModel Decode<T>(BTypes.Dictionary encoded)
             where T : DataModel
         {
@@ -54,6 +206,15 @@ namespace Libplanet.Action
             }
         }
 
+        /// <summary>
+        /// Encodes an instance into a <see cref="BTypes.Dictionary"/>.
+        /// </summary>
+        /// <returns>An encoded <see cref="BTypes.Dictionary"/> instance.</returns>
+        /// <exception cref="NotSupportedException">Thrown when <c>nullable</c> value type property
+        /// or <c>null</c> value inside a reference type is encountered.</exception>
+        /// <exception cref="ArgumentException">Thrown when an unknown invalid property type is
+        /// encountered.</exception>
+        [Pure]
         public BTypes.Dictionary Encode()
         {
             BTypes.Dictionary result = BTypes.Dictionary.Empty;
