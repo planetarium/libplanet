@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Reflection;
 using BTypes = Bencodex.Types;
 
-namespace Libplanet.Action
+namespace Libplanet.Store
 {
     /// <summary>
     /// <para>
@@ -86,11 +86,17 @@ namespace Libplanet.Action
     ///     /// </summary>
     ///     public int Level { get; private set; }
     ///
-    ///     public CharacterData(string name, int level)
+    ///     /// <summary>
+    ///     /// Inventory of the character.
+    ///     /// </summary>
+    ///     public InventoryData Inv { get; private set; }
+    ///
+    ///     public CharacterData(string name, int level, InventoryData inv)
     ///         : base()
     ///     {
     ///         Name = name;
     ///         Level = level;
+    ///         Inv = inv;
     ///     }
     ///
     ///     public CharacterData(Bencodex.Types.Dictionary encoded)
@@ -98,23 +104,47 @@ namespace Libplanet.Action
     ///     {
     ///     }
     /// }
+    ///
+    /// public class InventoryData : DataModel
+    /// {
+    ///     /// <summary>
+    ///     /// The amount of gold in the inventory.
+    ///     /// </summary>
+    ///     public int Gold { get; private set; }
+    ///
+    ///     public InventoryData(int gold)
+    ///         : base()
+    ///     {
+    ///         Gold = gold;
+    ///     }
+    ///
+    ///     public InventoryData(Bencodex.Types.Dictionary encoded)
+    ///         : base(encoded)
+    ///     {
+    ///     }
+    /// }
     /// ]]></code>
     /// Then the concrete model defined above can be used as shown below:
     /// <code><![CDATA[
-    /// CharacterData characterData = new CharacterData("John", 5);
+    /// CharacterData characterData = new CharacterData("John", 5, new InventoryData(100));
     /// Bencodex.Types.Dictionary encoded = characterData.Encode()
     /// ]]></code>
-    /// This would result in <c>encoded</c> in the following format:
+    /// This would result in <c>encoded</c> in a following format:
     /// <code><![CDATA[
     /// Bencodex.Types.Dictionary {
     ///   "Name": "John",
     ///   "Level": 5,
+    ///   "Inv": {
+    ///       "Gold": 100,
+    ///   },
     /// }
     /// ]]></code>
     /// To decode this back into an instance, simply use it as shown below:
     /// <code><![CDATA[
-    /// ConcreteModel decodedModel = (ConcreteModel)DataModel.Decode<ConcreteModel>(encoded);
+    /// CharacterData decoded = (CharacterData)DataModel.Decode<CharacterData>(encoded);
     /// ]]></code>
+    /// Then <c>decoded.Name</c>, <c>decoded.Level</c>, and <c>decoded.Inv.Gold</c> will have
+    /// values <c>"John"</c>, <c>5</c>, and <c>100</c> respectively.
     /// Note that in the example above, an additional casting to a decoded
     /// <see cref="DataModel"/> object is required.
     /// </example>

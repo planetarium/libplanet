@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Reflection;
 using BTypes = Bencodex.Types;
 
-namespace Libplanet.Action
+namespace Libplanet.Store
 {
     public abstract partial class DataModel
     {
