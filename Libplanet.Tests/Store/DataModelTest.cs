@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Reflection;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Serilog;
@@ -209,15 +208,9 @@ namespace Libplanet.Tests.Action
             MidModel mid = new MidModel();
             LeafModel leaf = new LeafModel();
 
-            Assert.Equal(
-                root.Encode(),
-                ((RootModel)DataModel.Decode<RootModel>(root.Encode())).Encode());
-            Assert.Equal(
-                mid.Encode(),
-                ((MidModel)DataModel.Decode<MidModel>(mid.Encode())).Encode());
-            Assert.Equal(
-                leaf.Encode(),
-                ((LeafModel)DataModel.Decode<LeafModel>(leaf.Encode())).Encode());
+            Assert.Equal(root.Encode(), new RootModel(root.Encode()).Encode());
+            Assert.Equal(mid.Encode(), new MidModel(mid.Encode()).Encode());
+            Assert.Equal(leaf.Encode(), new LeafModel(leaf.Encode()).Encode());
         }
 
         [Fact]
@@ -267,38 +260,30 @@ namespace Libplanet.Tests.Action
             ImmutableArray<byte> randBytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
 
             BTypes.Dictionary encoded;
-            Exception exception;
 
             // Try assigning null.
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullableBoolType.Value), BTypes.Null.Value);
-            exception = Assert.Throws<TargetInvocationException>(
-                () => DataModel.Decode<HasNullableBoolType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+            Assert.Throws<NotSupportedException>(() => new HasNullableBoolType(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(HasNullReferencePropertyValue.Value), BTypes.Null.Value);
-            exception = Assert.Throws<TargetInvocationException>(
-                () => DataModel.Decode<HasNullReferencePropertyValue>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+            Assert.Throws<NotSupportedException>(() => new HasNullReferencePropertyValue(encoded));
 
             // Sanity check
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(IntWrapper.Value), (BTypes.IValue)new BTypes.Integer(randInt));
-            IntWrapper decodedIntWrapper
-                = (IntWrapper)DataModel.Decode<IntWrapper>(encoded);
+            IntWrapper decodedIntWrapper = new IntWrapper(encoded);
             Assert.Equal(randInt, decodedIntWrapper.Value);
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(StrWrapper.Value), (BTypes.IValue)new BTypes.Text(randStr));
-            StrWrapper decodedStrWrapper
-                = (StrWrapper)DataModel.Decode<StrWrapper>(encoded);
+            StrWrapper decodedStrWrapper = new StrWrapper(encoded);
             Assert.Equal(randStr, decodedStrWrapper.Value);
             encoded = BTypes.Dictionary.Empty
                 .Add(
                     nameof(ListIntWrapper.Value),
                     (BTypes.IValue)BTypes.List.Empty
                         .Add((BTypes.IValue)new BTypes.Integer(randInt)));
-            ListIntWrapper decodedListIntWrapper
-                = (ListIntWrapper)DataModel.Decode<ListIntWrapper>(encoded);
+            ListIntWrapper decodedListIntWrapper = new ListIntWrapper(encoded);
             Assert.Equal(randInt, decodedListIntWrapper.Value[0]);
             encoded = BTypes.Dictionary.Empty
                 .Add(
@@ -307,50 +292,51 @@ namespace Libplanet.Tests.Action
                         .Add(
                             (BTypes.IKey)new BTypes.Text(randStr),
                             (BTypes.IValue)new BTypes.Integer(randInt)));
-            DictStrIntWrapper decodedDictStrIntWrapper
-                = (DictStrIntWrapper)DataModel.Decode<DictStrIntWrapper>(encoded);
+            DictStrIntWrapper decodedDictStrIntWrapper = new DictStrIntWrapper(encoded);
             Assert.Equal(randInt, decodedDictStrIntWrapper.Value[randStr]);
 
             // Try null.
             Assert.Throws<NullReferenceException>(
-                () => (IntWrapper)DataModel.Decode<IntWrapper>(null));
+                () => new IntWrapper(null));
 
             // Try missing data.
             encoded = BTypes.Dictionary.Empty;
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)DataModel.Decode<IntWrapper>(encoded));
-            Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)DataModel.Decode<AddressWrapper>(encoded));
-            Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)DataModel.Decode<StrWrapper>(encoded));
-            Assert.Equal(typeof(KeyNotFoundException), exception.InnerException.GetType());
+            Assert.Throws<KeyNotFoundException>(() => new IntWrapper(encoded));
+            Assert.Throws<KeyNotFoundException>(() => new AddressWrapper(encoded));
+            Assert.Throws<KeyNotFoundException>(() => new StrWrapper(encoded));
+            Assert.Throws<KeyNotFoundException>(() => new ListIntWrapper(encoded));
+            Assert.Throws<KeyNotFoundException>(() => new DictStrIntWrapper(encoded));
 
             // Try type mismatch.
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(IntWrapper.Value), (BTypes.IValue)new BTypes.Text("foo"));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (IntWrapper)DataModel.Decode<IntWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new IntWrapper(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Text("bar"));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (AddressWrapper)DataModel.Decode<AddressWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new AddressWrapper(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(StrWrapper.Value), (BTypes.IValue)new BTypes.Integer(2));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (StrWrapper)DataModel.Decode<StrWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new StrWrapper(encoded));
+            encoded = BTypes.Dictionary.Empty
+                .Add(
+                    nameof(ListIntWrapper.Value),
+                    (BTypes.IValue)BTypes.List.Empty
+                        .Add((BTypes.IValue)new BTypes.Text("foo")));
+            Assert.Throws<ArgumentException>(() => new ListIntWrapper(encoded));
+            encoded = BTypes.Dictionary.Empty
+                .Add(
+                    nameof(DictStrIntWrapper.Value),
+                    (BTypes.IValue)BTypes.Dictionary.Empty
+                        .Add(
+                            (BTypes.IKey)new BTypes.Text("foo"),
+                            (BTypes.IValue)new BTypes.Text("bar")));
+            Assert.Throws<ArgumentException>(() => new DictStrIntWrapper(encoded));
 
             // Try bad data; Address specifically requires length Address.Size bytes.
             Assert.NotEqual(Address.Size, randBytes.Length);
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (AddressWrapper)DataModel.Decode<AddressWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new AddressWrapper(encoded));
 
             // Try assigning null to inner collection.
             encoded = BTypes.Dictionary.Empty
@@ -359,9 +345,7 @@ namespace Libplanet.Tests.Action
                     (BTypes.IValue)BTypes.List.Empty
                         .Add((BTypes.IValue)new BTypes.Integer(5))
                         .Add(BTypes.Null.Value));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (ListIntWrapper)DataModel.Decode<ListIntWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new ListIntWrapper(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(
                     nameof(DictStrIntWrapper.Value),
@@ -372,9 +356,7 @@ namespace Libplanet.Tests.Action
                         .Add(
                             (BTypes.IKey)new BTypes.Text("bar"),
                             (BTypes.IValue)BTypes.Null.Value));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (DictStrIntWrapper)DataModel.Decode<DictStrIntWrapper>(encoded));
-            Assert.Equal(typeof(ArgumentException), exception.InnerException.GetType());
+            Assert.Throws<ArgumentException>(() => new DictStrIntWrapper(encoded));
         }
 
         [Fact]
@@ -388,41 +370,38 @@ namespace Libplanet.Tests.Action
             Address randAddress = new PrivateKey().ToAddress();
 
             BTypes.Dictionary encoded;
-            Exception exception;
 
-#pragma warning disable MEN002
             // Try decoding to invalid class.
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableBoolType.Value), (BTypes.IValue)new BTypes.Boolean(randBool));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBoolType)DataModel.Decode<HasNullableBoolType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+                .Add(
+                    nameof(HasNullableBoolType.Value),
+                    (BTypes.IValue)new BTypes.Boolean(randBool));
+            Assert.Throws<NotSupportedException>(() => new HasNullableBoolType(encoded));
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableIntType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableIntType)DataModel.Decode<HasNullableIntType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+                .Add(
+                    nameof(HasNullableIntType.Value),
+                    (BTypes.IValue)new BTypes.Integer(randInt));
+            Assert.Throws<NotSupportedException>(() => new HasNullableIntType(encoded));
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableLongType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableLongType)DataModel.Decode<HasNullableLongType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+                .Add(
+                    nameof(HasNullableLongType.Value),
+                    (BTypes.IValue)new BTypes.Integer(randInt));
+            Assert.Throws<NotSupportedException>(() => new HasNullableLongType(encoded));
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableBigIntegerType.Value), (BTypes.IValue)new BTypes.Integer(randInt));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBigIntegerType)DataModel.Decode<HasNullableBigIntegerType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+                .Add(
+                    nameof(HasNullableBigIntegerType.Value),
+                    (BTypes.IValue)new BTypes.Integer(randInt));
+            Assert.Throws<NotSupportedException>(() => new HasNullableBigIntegerType(encoded));
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableBytesType.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBytesType)DataModel.Decode<HasNullableBytesType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
+                .Add(
+                    nameof(HasNullableBytesType.Value),
+                    (BTypes.IValue)new BTypes.Binary(randBytes));
+            Assert.Throws<NotSupportedException>(() => new HasNullableBytesType(encoded));
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(HasNullableBytesType.Value), (BTypes.IValue)new BTypes.Binary(randAddress.ByteArray));
-            exception = Assert.Throws<TargetInvocationException>(
-                () => (HasNullableBytesType)DataModel.Decode<HasNullableAddressType>(encoded));
-            Assert.Equal(typeof(NotSupportedException), exception.InnerException.GetType());
-#pragma warning restore MEN002
+                .Add(
+                    nameof(HasNullableBytesType.Value),
+                    (BTypes.IValue)new BTypes.Binary(randAddress.ByteArray));
+            Assert.Throws<NotSupportedException>(() => new HasNullableBytesType(encoded));
         }
 
         private class RootModel : DataModel

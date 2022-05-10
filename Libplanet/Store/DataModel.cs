@@ -10,8 +10,7 @@ namespace Libplanet.Store
     /// <summary>
     /// <para>
     /// A <c>class</c> representing an abstract data model that can be easily
-    /// <see cref="Encode"/>ed and <see cref="Decode"/>ed to and from
-    /// a <see cref="BTypes.Dictionary"/>.
+    /// encoded and decoded to and from a <see cref="BTypes.Dictionary"/>.
     /// </para>
     /// <para>
     /// Inheriting this class and simply declaring properties allows an instance of the child class
@@ -66,7 +65,8 @@ namespace Libplanet.Store
     ///     </description></item>
     ///     <item><description>
     ///         Trying to assign <c>null</c> to any property or to a part of a collection will
-    ///         result in an <see cref="Exception"/> when <see cref="Decode"/> is called.
+    ///         result in an <see cref="Exception"/> when
+    ///         <see cref="DataModel(BTypes.Dictionary)"/> is called.
     ///     </description></item>
     /// </list>
     /// </para>
@@ -141,7 +141,7 @@ namespace Libplanet.Store
     /// ]]></code>
     /// To decode this back into an instance, simply use it as shown below:
     /// <code><![CDATA[
-    /// CharacterData decoded = (CharacterData)DataModel.Decode<CharacterData>(encoded);
+    /// CharacterData decoded = new CharacterData(encoded);
     /// ]]></code>
     /// Then <c>decoded.Name</c>, <c>decoded.Level</c>, and <c>decoded.Inv.Gold</c> will have
     /// values <c>"John"</c>, <c>5</c>, and <c>100</c> respectively.
@@ -177,62 +177,46 @@ namespace Libplanet.Store
         {
         }
 
-        protected DataModel(BTypes.Dictionary encoded)
-        {
-            PropertyInfo[] properties = this.GetType().GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                Type type = property.PropertyType;
-                BTypes.IValue value = encoded[property.Name];
-
-                if (type == typeof(bool?)
-                    || type == typeof(int?)
-                    || type == typeof(long?)
-                    || type == typeof(BigInteger?)
-                    || type == typeof(ImmutableArray<byte>?)
-                    || type == typeof(Address?))
-                {
-                    throw new NotSupportedException(
-                        $"Nullable value type is not supported: {type}");
-                }
-                else
-                {
-                    property.SetValue(this, DecodeFromIValue(value, type));
-                }
-            }
-        }
-
         /// <summary>
-        /// Decodes a <see cref="BTypes.Dictionary"/> data into an instance
-        /// of <typeparamref name="T"/>.
+        /// Decodes a <see cref="BTypes.Dictionary"/> data into an instance.
         /// </summary>
-        /// <typeparam name="T">The <c>type</c> to instantiate when decoding
-        /// <paramref name="encoded"/>.  Should be a concrete <c>type</c> inherited from
-        /// <see cref="DataModel"/>.</typeparam>
         /// <param name="encoded">The <see cref="BTypes.Dictionary"/> instance to decode.</param>
-        /// <returns>A decoded instance of type <typeparamref name="T"/> as
-        /// <see cref="DataModel"/>.  Additional casting to <typeparamref name="T"/> may be
-        /// necessary.</returns>
-        /// <exception cref="TargetInvocationException">Thrown when failed to create an
-        /// instance of type <typeparamref name="T"/> with <paramref name="encoded"/>.
-        /// Its reason for failure is stored in thrown <see cref="TargetInvocationException"/>'s
-        /// <see cref="Exception.InnerException"/>.</exception>
+        /// <returns>A decoded instance from <paramref name="encoded"/>.</returns>
+        /// <exception cref="NotSupportedException">Thrown when <c>null</c> value is encountered
+        /// while decoding.</exception>
+        /// <exception cref="ArgumentException">Thrown when invalid encoded type is encountered.
+        /// </exception>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="encoded"/> is
         /// <c>null</c> or <c>null</c> reference is returned by inner instantiation.</exception>
-        public static DataModel Decode<T>(BTypes.Dictionary encoded)
-            where T : DataModel
+        protected DataModel(BTypes.Dictionary encoded)
         {
             if (encoded is BTypes.Dictionary e)
             {
-                object instance = Activator.CreateInstance(typeof(T), encoded)
-                    ?? throw new NullReferenceException(
-                        $"Failed to decode {nameof(encoded)}: {encoded}");
-                return (T)instance;
+                PropertyInfo[] properties = this.GetType().GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    Type type = property.PropertyType;
+                    BTypes.IValue value = e[property.Name];
+
+                    if (type == typeof(bool?)
+                        || type == typeof(int?)
+                        || type == typeof(long?)
+                        || type == typeof(BigInteger?)
+                        || type == typeof(ImmutableArray<byte>?)
+                        || type == typeof(Address?))
+                    {
+                        throw new NotSupportedException(
+                            $"Nullable value type is not supported: {type}");
+                    }
+                    else
+                    {
+                        property.SetValue(this, DecodeFromIValue(value, type));
+                    }
+                }
             }
             else
             {
-                throw new NullReferenceException(
-                    $"Argument {nameof(encoded)} cannot be null");
+                throw new NullReferenceException($"Argument {nameof(encoded)} cannot be null.");
             }
         }
 
