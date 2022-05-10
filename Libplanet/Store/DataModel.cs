@@ -173,6 +173,8 @@ namespace Libplanet.Store
     /// </remarks>
     public abstract partial class DataModel
     {
+        private PropertyInfo[]? _propertyInfos = null;
+
         protected DataModel()
         {
         }
@@ -192,8 +194,7 @@ namespace Libplanet.Store
         {
             if (encoded is BTypes.Dictionary e)
             {
-                PropertyInfo[] properties = this.GetType().GetProperties();
-                foreach (PropertyInfo property in properties)
+                foreach (PropertyInfo property in PropertyInfos)
                 {
                     Type type = property.PropertyType;
                     BTypes.IValue value = e[property.Name];
@@ -221,6 +222,12 @@ namespace Libplanet.Store
         }
 
         /// <summary>
+        /// Cached property info for performance.
+        /// </summary>
+        private PropertyInfo[] PropertyInfos => _propertyInfos
+            ?? (_propertyInfos = this.GetType().GetProperties());
+
+        /// <summary>
         /// Encodes an instance into a <see cref="BTypes.Dictionary"/>.
         /// </summary>
         /// <returns>An encoded <see cref="BTypes.Dictionary"/> instance.</returns>
@@ -232,8 +239,7 @@ namespace Libplanet.Store
         public BTypes.Dictionary Encode()
         {
             BTypes.Dictionary result = BTypes.Dictionary.Empty;
-            PropertyInfo[] properties = this.GetType().GetProperties();
-            foreach (PropertyInfo property in properties)
+            foreach (PropertyInfo property in PropertyInfos)
             {
                 Type type = property.PropertyType;
                 if (type == typeof(bool?)
