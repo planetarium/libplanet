@@ -32,7 +32,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        private void HandleTimeout(IState beforeRoundContext)
+        private void SetTimeoutByState(IState beforeRoundContext)
         {
             switch (beforeRoundContext)
             {
