@@ -80,7 +80,7 @@ namespace Libplanet.Net.Consensus
                 throw;
             }
 
-            HandleTimeout(beforeRoundContext);
+            SetTimeoutByState(beforeRoundContext);
 
             if (res == null)
             {
