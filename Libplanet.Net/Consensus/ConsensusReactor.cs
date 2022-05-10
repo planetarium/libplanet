@@ -59,13 +59,26 @@ namespace Libplanet.Net.Consensus
         public void HandleMessage(ConsensusMessage message)
         {
             Log.Debug(
+                "NodeID: {Id}, Height: {Height}, Round: {Round}, " +
                 "State: {State}, HandleMessage: {@Message},",
+                _context.NodeId,
+                _context.Height,
+                _context.Round,
                 _context.CurrentRoundContext.State.GetType().ToString(),
                 message);
 
             var beforeRoundContext = _context.CurrentRoundContext.State;
 
-            ConsensusMessage? res = _context.CurrentRoundContext.State.Handle(_context, message);
+            ConsensusMessage? res;
+            try
+            {
+                res = _context.CurrentRoundContext.State.Handle(_context, message);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Handle throws exception: {E}", e);
+                throw;
+            }
 
             HandleTimeout(beforeRoundContext);
 
@@ -85,6 +98,12 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
+            Log.Debug(
+                "Propose Data: {Data}, Proposer: {NodeId}, Height: {Height}, Round: {Round}",
+                data,
+                _context.NodeId,
+                _context.Height,
+                _context.Round);
             _context.CurrentRoundContext.Data = data;
             var propose = new ConsensusPropose(
                 _context.NodeId,
@@ -114,6 +133,8 @@ namespace Libplanet.Net.Consensus
             switch (message)
             {
                 case ConsensusMessage consensusMessage:
+                    var pong = new Pong { Identity = message.Identity };
+                    await _transport.ReplyMessageAsync(pong, CancellationToken.None);
                     await ReceivedMessage(consensusMessage);
                     break;
             }

@@ -62,7 +62,14 @@ namespace Libplanet.Net.Consensus
 
         public long Vote(Address? address)
         {
-            Log.Debug("Vote in node id {Id} of round {Round}", NodeId, Round);
+            Log.Debug(
+                "Vote({Before}/{Total}) NodeID: {Id}, Height: {Height}, Round: {Round}",
+                _votes.Count,
+                _numberOfValidator,
+                NodeId,
+                Height,
+                Round);
+
             if (address is null)
             {
                 throw new ArgumentNullException(nameof(address));
@@ -73,6 +80,14 @@ namespace Libplanet.Net.Consensus
                 if (!_votes.Contains(address.Value))
                 {
                     _votes.Add(address.Value);
+                    Log.Debug(
+                        "Vote Success({After}/{Total}) NodeID: {Id}, " +
+                        "Height: {Height}, Round: {Round}",
+                        _votes.Count,
+                        _numberOfValidator,
+                        NodeId,
+                        Height,
+                        Round);
                 }
             }
 

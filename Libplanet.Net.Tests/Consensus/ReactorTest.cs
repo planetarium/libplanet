@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
@@ -45,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
             List<Address> validators = null!);
 
         [Fact(Timeout = (int)TimerTestTimeout)]
-        public void VoteCommitTimeout()
+        public async void VoteCommitTimeout()
         {
             // For preventing one man Vote-Commit-newHeight.
             var fakeKey = new PrivateKey();
@@ -61,7 +62,7 @@ namespace Libplanet.Net.Tests.Consensus
             var reactor = CreateReactor(key, port: 11001, validators: validators);
 
             reactor.Propose(Array.Empty<byte>());
-            Thread.Sleep(proposeProcessWaitTime);
+            await Task.Delay(proposeProcessWaitTime);
 
             var json =
                 JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -72,7 +73,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0L, json["height"].GetInt32());
             Assert.Equal("PreVoteState", json["step"].GetString());
 
-            Thread.Sleep((int)ConsensusReactor.TimeoutMillisecond);
+            await Task.Delay((int)ConsensusReactor.TimeoutMillisecond);
 
             json =
                 JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -174,7 +175,7 @@ namespace Libplanet.Net.Tests.Consensus
                     // a worker's sending/receiving queue. For now, Test Transport runs with 13
                     // ((3 * 4) + 1 , Propose, Vote, Commit) workers
                     var isPolka = new bool[count];
-                    Thread.Sleep(3000);
+                    await Task.Delay(3000);
 
                     for (var node = 0; node < count; ++node)
                     {
