@@ -28,7 +28,7 @@ namespace Libplanet.Net.Tests.Consensus
                 key,
                 TestUtils.AppProtocolVersion,
                 null,
-                13,
+                8,
                 host,
                 port,
                 Array.Empty<IceServer>(),

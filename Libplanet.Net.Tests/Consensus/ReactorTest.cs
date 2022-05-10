@@ -18,7 +18,8 @@ namespace Libplanet.Net.Tests.Consensus
     public abstract class ReactorTest
     {
         private const int Timeout = 60 * 1000;
-        private const long TimerTestTimeout = ConsensusReactor.TimeoutMillisecond + 2000;
+        private const int TimerTestTimeout = (int)ConsensusReactor.TimeoutMillisecond;
+        private const int TimerTestMargin = 500;
 
         private ILogger _logger;
         private ITestOutputHelper _output;
@@ -45,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
             long id = 0,
             List<Address> validators = null!);
 
-        [Fact(Timeout = (int)TimerTestTimeout)]
+        [Fact(Timeout = (TimerTestTimeout * 2) + TimerTestMargin)]
         public async void VoteCommitTimeout()
         {
             // For preventing one man Vote-Commit-newHeight.
@@ -118,6 +119,10 @@ namespace Libplanet.Net.Tests.Consensus
         public async void Propose()
         {
             const int count = 4;
+            // INFO : This test uses local ports 6000 to 6003.
+            const int startPort = 6000;
+
+            const int propagationDelay = 4000;
             var keys = new PrivateKey[count];
             var tables = new RoutingTable[count];
             var reactors = new IReactor[count];
@@ -130,13 +135,12 @@ namespace Libplanet.Net.Tests.Consensus
                 validators.Add(keys[i].ToAddress());
             }
 
-            // FIXME: using port 11000 since it cause conflicts with other tests.
             for (var i = 0; i < count; i++)
             {
                 reactors[i] = CreateReactor(
                     key: keys[i],
                     table: tables[i],
-                    port: 11000 + i,
+                    port: startPort + i,
                     id: i,
                     validators: validators);
             }
@@ -162,7 +166,7 @@ namespace Libplanet.Net.Tests.Consensus
                         tables[i].AddPeer(
                             new BoundPeer(
                                 keys[j].PublicKey,
-                                new DnsEndPoint("localhost", 11000 + j)));
+                                new DnsEndPoint("localhost", startPort + j)));
                     }
                 }
 
@@ -171,11 +175,10 @@ namespace Libplanet.Net.Tests.Consensus
                 for (var proposeNode = 0; proposeNode < count; proposeNode++)
                 {
                     reactors[proposeNode].Propose(data);
-                    // INFO : Transport waits a reply for 1000ms, it seems Message timeout blocks
-                    // a worker's sending/receiving queue. For now, Test Transport runs with 13
-                    // ((3 * 4) + 1 , Propose, Vote, Commit) workers
+
+                    // For test accuracy, this test should not run in parallel.
+                    Thread.Sleep(propagationDelay);
                     var isPolka = new bool[count];
-                    await Task.Delay(3000);
 
                     for (var node = 0; node < count; ++node)
                     {
