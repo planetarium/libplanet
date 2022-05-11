@@ -28,9 +28,13 @@ To be released.
 
 ### CLI tools
 
+ - Added `planet key sign` to sign a message.  [[#1920]]
+
 [#1830]: https://github.com/planetarium/libplanet/issues/1830
 [#1912]: https://github.com/planetarium/libplanet/pull/1912
 [#1916]: https://github.com/planetarium/libplanet/pull/1916
+[#1920]: https://github.com/planetarium/libplanet/pull/1920
+
 
 
 Version 0.33.1
