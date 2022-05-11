@@ -10678,6 +10678,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove
   nameWithType: KeyCommand.Remove
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.String)
+  name: Sign(Guid, String, PassphraseParameters, String)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_System_Guid_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.String)
+  nameWithType: KeyCommand.Sign(Guid, String, PassphraseParameters, String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign*
+  name: Sign
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign
+  nameWithType: KeyCommand.Sign
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
   name: UnprotectKey(Guid, PassphraseParameters, Boolean)
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_UnprotectKey_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
