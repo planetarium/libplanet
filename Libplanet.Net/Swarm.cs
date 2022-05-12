@@ -103,7 +103,6 @@ namespace Libplanet.Net
                 .ForContext("SwarmId", loggerId);
 
             Options = options ?? new SwarmOptions();
-            _minimumBroadcastTarget = Options.MinimumBroadcastTarget;
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = InitializeTransport(
@@ -1148,7 +1147,7 @@ namespace Libplanet.Net
         private void BroadcastMessage(Address? except, Message message)
         {
             Transport.BroadcastMessage(
-                RoutingTable.PeersToBroadcast(except, _minimumBroadcastTarget),
+                RoutingTable.PeersToBroadcast(except, Options.MinimumBroadcastTarget),
                 message);
         }
 

@@ -12,8 +12,6 @@ namespace Libplanet.Net
 {
     public partial class Swarm<T>
     {
-        private readonly int _minimumBroadcastTarget;
-
         private async Task ProcessMessageHandlerAsync(Message message)
         {
             switch (message)
