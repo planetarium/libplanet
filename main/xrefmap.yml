@@ -19995,6 +19995,44 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.ChainIdNotFoundException.ChainId
   nameWithType: ChainIdNotFoundException.ChainId
+- uid: Libplanet.Store.DataModel
+  name: DataModel
+  href: api/Libplanet.Store.DataModel.html
+  commentId: T:Libplanet.Store.DataModel
+  fullName: Libplanet.Store.DataModel
+  nameWithType: DataModel
+- uid: Libplanet.Store.DataModel.#ctor
+  name: DataModel()
+  href: api/Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor
+  commentId: M:Libplanet.Store.DataModel.#ctor
+  fullName: Libplanet.Store.DataModel.DataModel()
+  nameWithType: DataModel.DataModel()
+- uid: Libplanet.Store.DataModel.#ctor(Bencodex.Types.Dictionary)
+  name: DataModel(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Store.DataModel.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Store.DataModel.DataModel(Bencodex.Types.Dictionary)
+  nameWithType: DataModel.DataModel(Bencodex.Types.Dictionary)
+- uid: Libplanet.Store.DataModel.#ctor*
+  name: DataModel
+  href: api/Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_
+  commentId: Overload:Libplanet.Store.DataModel.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.DataModel.DataModel
+  nameWithType: DataModel.DataModel
+- uid: Libplanet.Store.DataModel.Encode
+  name: Encode()
+  href: api/Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode
+  commentId: M:Libplanet.Store.DataModel.Encode
+  fullName: Libplanet.Store.DataModel.Encode()
+  nameWithType: DataModel.Encode()
+- uid: Libplanet.Store.DataModel.Encode*
+  name: Encode
+  href: api/Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode_
+  commentId: Overload:Libplanet.Store.DataModel.Encode
+  isSpec: "True"
+  fullName: Libplanet.Store.DataModel.Encode
+  nameWithType: DataModel.Encode
 - uid: Libplanet.Store.DefaultStore
   name: DefaultStore
   href: api/Libplanet.Store.DefaultStore.html

@@ -88,6 +88,55 @@
       <section><p>The exception that is thrown when a chain ID does not exist in
 an <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> object.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a></h4>
+      <section><p>
+A <code>class</code> representing an abstract data model that can be easily
+encoded and decoded to and from a <see cref="!:BTypes.Dictionary"></see>.
+</p>
+<p>
+Inheriting this class and simply declaring properties allows an instance of the child class
+to encode its data into a <see cref="!:BTypes.Dictionary"></see> where the encoded
+<see cref="!:BTypes.Dictionary"></see> has the concrete class&apos;es each property name as its key and
+the each corresponding property value as its value.
+</p>
+<p>
+However, there are certain restrictions that apply when using this <code>class</code>:
+<ul><li>
+        The complete list of allowed property types are as follows:
+<ul><li>
+        Primitive types: <code>bool</code>, <code>int</code>, <code>long</code>, <code>BigInteger</code>,
+<code>ImmutableArray&lt;byte></code>, <code>Address</code>, and <code>string</code>.
+</li><li>
+    Special types: Any type inherited from <a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a>.
+</li><li>
+    Collective types:
+<ul><li>
+<see cref="!:ImmutableList&lt;T>"></see> where <code>T</code> is a primitive type.
+</li><li>
+<see cref="!:ImmutableDictionary&lt;TKey,TValue>"></see> where
+<ul><li>
+<code>TKey</code> is one of
+<code>ImmutableArray&lt;byte></code>, <code>Address</code>,
+and <code>string</code>.
+</li><li>
+<code>TValue</code> is a primitive type.
+</li></ul>
+</li></ul>
+</li></ul>
+</li><li>
+    Value types are not allowed to be declared as <code>nullable</code>, not even as
+    a generic type parameter.  That is, types such as <code>bool?</code>, <code>Address?</code>,
+    and <code>ImmutableList&lt;int?></code>are not allowed.
+</li><li>
+    Reference types are not allowed to be assigned <code>null</code>.  This will result
+    in an <see cref="!:Exception"></see> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+</li><li>
+    Trying to assign <code>null</code> to any property or to a part of a collection will
+    result in an <see cref="!:Exception"></see> when
+<a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Bencodex.Types.Dictionary)</a> is called.
+</li></ul>
+</p>
+</section>
       <h4><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a></h4>
       <section><p>The default built-in <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation.  This stores data in
 the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
