@@ -361,14 +361,8 @@ namespace Libplanet.Net
                 tasks.Add(Transport.StartAsync(_cancellationToken));
                 tasks.Add(BroadcastBlockAsync(broadcastBlockInterval, _cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(
-                    FillBlocksAsync(
-                        dialTimeout,
-                        Options.MaximumPollPeers,
-                        _cancellationToken));
-                tasks.Add(ConsumeBlockCandidates(
-                    dialTimeout,
-                    _cancellationToken));
+                tasks.Add(FillBlocksAsync(dialTimeout, _cancellationToken));
+                tasks.Add(ConsumeBlockCandidates(dialTimeout, _cancellationToken));
                 tasks.Add(
                     PollBlocksAsync(
                         dialTimeout,
