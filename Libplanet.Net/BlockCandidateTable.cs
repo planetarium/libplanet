@@ -92,13 +92,22 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    var newBlocks =
-                        branch.Blocks.ToList().FindAll(x => x.Index > path.NewTip.Index)
-                            .ToList();
-                    var newBranch = new CandidateBranch<T>(newBlocks);
+                    try
+                    {
+                        var newBlocks =
+                            branch.Blocks.ToList().FindAll(x => x.Index > path.NewTip.Index)
+                                .ToList();
+                        var newBranch = new CandidateBranch<T>(newBlocks);
 
-                    longestBranch ??= newBranch;
-                    longestBranch = CompareBranch(longestBranch, newBranch);
+                        longestBranch ??= newBranch;
+                        longestBranch = CompareBranch(longestBranch, newBranch);
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        // FIXME: This has to be done to prevent stopping Update() by
+                        // exception thrown from FindAll().
+                        continue;
+                    }
                 }
             }
             else
@@ -120,7 +129,9 @@ namespace Libplanet.Net
                             index = path.Blocks.Single(x => x.Hash.Equals(index.PreviousHash));
                             newBlocks.Insert(0, index);
                         }
-                        catch (ArgumentNullException)
+                        catch (Exception e) when (
+                            e is ArgumentException ||
+                            e is InvalidOperationException)
                         {
                             break;
                         }

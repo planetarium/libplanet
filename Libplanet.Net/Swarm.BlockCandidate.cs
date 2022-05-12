@@ -234,7 +234,8 @@ namespace Libplanet.Net
                 {
                     newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
                 }
-                catch (ArgumentNullException)
+                catch (Exception e) when (e is ArgumentNullException ||
+                                          e is InvalidOperationException)
                 {
                     newTip = BlockChain[bPrev];
                 }
@@ -263,7 +264,8 @@ namespace Libplanet.Net
                     {
                         newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
                     }
-                    catch (ArgumentNullException)
+                    catch (Exception e) when (e is ArgumentNullException ||
+                                              e is InvalidOperationException)
                     {
                         newTip = BlockChain[bPrev];
                     }
