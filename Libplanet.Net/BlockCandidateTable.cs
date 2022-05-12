@@ -143,10 +143,14 @@ namespace Libplanet.Net
                         }
                     }
 
-                    var newBranch = new CandidateBranch<T>(newBlocks);
+                    if (newBlocks.First().Hash.Equals(path.OldTip.Hash) ||
+                        newBlocks.First().Hash.Equals(path.BranchPoint.Hash))
+                    {
+                        var newBranch = new CandidateBranch<T>(newBlocks);
 
-                    longestBranch ??= newBranch;
-                    longestBranch = CompareBranch(newBranch, longestBranch);
+                        longestBranch ??= newBranch;
+                        longestBranch = CompareBranch(newBranch, longestBranch);
+                    }
                 }
             }
 
