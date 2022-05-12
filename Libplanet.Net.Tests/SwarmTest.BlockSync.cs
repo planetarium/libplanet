@@ -46,17 +46,9 @@ namespace Libplanet.Net.Tests
                 branchBlocksBetweenA.Add(block);
             }
 
-            var branchBetweenA = new CandidateBranch<DumbAction>(
-                branchBlocksBetweenA,
-                branchBlocksBetweenA.First(),
-                branchBlocksBetweenA.Last()
-            );
+            var branchBetweenA = new CandidateBranch<DumbAction>(branchBlocksBetweenA);
 
-            var branchBetweenB = new CandidateBranch<DumbAction>(
-                branchBlocksBetweenB,
-                branchBlocksBetweenB.First(),
-                branchBlocksBetweenB.Last()
-            );
+            var branchBetweenB = new CandidateBranch<DumbAction>(branchBlocksBetweenB);
 
             var table = new BlockCandidateTable<DumbAction>();
             table.Add(branchBetweenA);
@@ -94,17 +86,9 @@ namespace Libplanet.Net.Tests
                 blocksForBranch.Add(block);
             }
 
-            var path = new UpdatePath<DumbAction>(
-                blocksForPath,
-                blocksForPath.First(),
-                blocksForPath.First(),
-                blocksForPath.Last());
+            var path = new UpdatePath<DumbAction>(blocksForPath, blocksForPath.First());
 
-            var branch = new CandidateBranch<DumbAction>(
-                blocksForBranch,
-                blocksForBranch.First(),
-                blocksForBranch.Last()
-            );
+            var branch = new CandidateBranch<DumbAction>(blocksForBranch);
 
             var table = new BlockCandidateTable<DumbAction>();
             table.Add(branch);
@@ -157,23 +141,11 @@ namespace Libplanet.Net.Tests
                 branchBlocksBetweenA.Add(block);
             }
 
-            var path = new UpdatePath<DumbAction>(
-                blocksForPath,
-                blocksForPath.First(),
-                blocksForPath.First(),
-                blocksForPath.Last());
+            var path = new UpdatePath<DumbAction>(blocksForPath, blocksForPath.First());
 
-            var branchA = new CandidateBranch<DumbAction>(
-                branchBlocksBetweenA,
-                branchBlocksBetweenA.First(),
-                branchBlocksBetweenA.Last()
-            );
+            var branchA = new CandidateBranch<DumbAction>(branchBlocksBetweenA);
 
-            var branchB = new CandidateBranch<DumbAction>(
-                branchBlocksBetweenB,
-                branchBlocksBetweenB.First(),
-                branchBlocksBetweenB.Last()
-            );
+            var branchB = new CandidateBranch<DumbAction>(branchBlocksBetweenB);
 
             var table = new BlockCandidateTable<DumbAction>();
             table.Add(branchA);
@@ -260,17 +232,9 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            var mergedAPath = new UpdatePath<DumbAction>(
-                blocksForPath,
-                oldTip,
-                branchpoint,
-                blocksForPath.Last());
+            var mergedAPath = new UpdatePath<DumbAction>(blocksForPath, oldTip);
 
-            var branchBtoA = new CandidateBranch<DumbAction>(
-                branchBlocksBetweenB,
-                branchBlocksBetweenB.First(),
-                branchBlocksBetweenB.Last()
-            );
+            var branchBtoA = new CandidateBranch<DumbAction>(branchBlocksBetweenB);
 
             table.Add(branchBtoA);
             table.Update(

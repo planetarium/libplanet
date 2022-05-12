@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -14,14 +15,12 @@ namespace Libplanet.Net
     public class CandidateBranch<T>
         where T : IAction, new()
     {
+        private readonly List<Block<T>> _blocks;
+
         public CandidateBranch(
-            List<Block<T>> blocks,
-            Block<T> root,
-            Block<T> tip)
+            List<Block<T>> blocks)
         {
-            Blocks = blocks;
-            Root = root;
-            Tip = tip;
+            _blocks = blocks;
         }
 
         /// <summary>
@@ -30,16 +29,16 @@ namespace Libplanet.Net
         /// <see cref="Block{T}"/> in the list, except for the first <see cref="Block{T}"/>
         /// in the list.
         /// </summary>
-        public List<Block<T>> Blocks { get; }
+        public IEnumerable<Block<T>> Blocks => _blocks;
 
         /// <summary>
         /// The root of this branch. The same as the first element in <see cref="Blocks"/>.
         /// </summary>
-        public Block<T> Root { get; }
+        public Block<T> Root => Blocks.First();
 
         /// <summary>
         /// The tip of this branch. The same as the last element in <see cref="Blocks"/>.
         /// </summary>
-        public Block<T> Tip { get; }
+        public Block<T> Tip => Blocks.Last();
     }
 }

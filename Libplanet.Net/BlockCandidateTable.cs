@@ -93,11 +93,9 @@ namespace Libplanet.Net
                     }
 
                     var newBlocks =
-                        branch.Blocks.FindAll(x => x.Index > path.NewTip.Index).ToList();
-                    var newBranch = new CandidateBranch<T>(
-                        newBlocks,
-                        newBlocks.First(),
-                        newBlocks.Last());
+                        branch.Blocks.ToList().FindAll(x => x.Index > path.NewTip.Index)
+                            .ToList();
+                    var newBranch = new CandidateBranch<T>(newBlocks);
 
                     longestBranch ??= newBranch;
                     longestBranch = CompareBranch(longestBranch, newBranch);
@@ -112,7 +110,7 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    var newBlocks = branch.Blocks;
+                    var newBlocks = branch.Blocks.ToList();
                     Block<T> index = branch.Root;
                     while (index.PreviousHash != null &&
                            path.Blocks.Contains(index))
@@ -128,15 +126,7 @@ namespace Libplanet.Net
                         }
                     }
 
-                    if (newBlocks.First().PreviousHash.Equals(path.OldTip.Hash))
-                    {
-                        newBlocks.Insert(0, path.BranchPoint);
-                    }
-
-                    var newBranch = new CandidateBranch<T>(
-                        newBlocks,
-                        newBlocks.First(),
-                        newBlocks.Last());
+                    var newBranch = new CandidateBranch<T>(newBlocks);
 
                     longestBranch ??= newBranch;
                     longestBranch = CompareBranch(longestBranch, newBranch);

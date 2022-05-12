@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -37,16 +38,10 @@ namespace Libplanet.Net
     public class UpdatePath<T>
         where T : IAction, new()
     {
-        public UpdatePath(
-            IEnumerable<Block<T>> blocks,
-            Block<T> oldTip,
-            Block<T> branchPoint,
-            Block<T> newTip)
+        public UpdatePath(IEnumerable<Block<T>> blocks, Block<T> oldTip)
         {
             Blocks = blocks;
             OldTip = oldTip;
-            BranchPoint = branchPoint;
-            NewTip = newTip;
         }
 
         /// <summary>
@@ -56,19 +51,20 @@ namespace Libplanet.Net
 
         /// <summary>
         /// The old <see cref="BlockChain{T}.Tip"/> before the update of
-        /// a <see cref="BlockChain{T}"/>. The same as the first element in <see cref="Blocks"/>.
+        /// a <see cref="BlockChain{T}"/>.
         /// </summary>
         public Block<T> OldTip { get; }
 
         /// <summary>
-        /// The branchpoint used when updating a <see cref="BlockChain{T}"/>.
+        /// The branchpoint used when updating a <see cref="BlockChain{T}"/>. The same as the first
+        /// element in <see cref="Blocks"/>.
         /// </summary>
-        public Block<T> BranchPoint { get; }
+        public Block<T> BranchPoint => Blocks.First();
 
         /// <summary>
         /// The old <see cref="BlockChain{T}.Tip"/> after the update of
         /// a <see cref="BlockChain{T}"/>. The same as the last element in <see cref="Blocks"/>.
         /// </summary>
-        public Block<T> NewTip { get; }
+        public Block<T> NewTip => Blocks.Last();
     }
 }
