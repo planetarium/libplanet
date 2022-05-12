@@ -16,6 +16,10 @@ To be released.
 
 ### Added APIs
 
+ -  Class `DataModel` added.  When inherited, this class assists in automatic
+    encoding and decoding to and from `Bencodex.Types.Dictionary`.
+    [[#1932], [#1935]]
+
 ### Behavioral changes
 
  -  `TxPolicyViolationException` and `InvalidTxException` now have a new
@@ -34,7 +38,8 @@ To be released.
 [#1912]: https://github.com/planetarium/libplanet/pull/1912
 [#1916]: https://github.com/planetarium/libplanet/pull/1916
 [#1920]: https://github.com/planetarium/libplanet/pull/1920
-
+[#1932]: https://github.com/planetarium/libplanet/issues/1932
+[#1935]: https://github.com/planetarium/libplanet/pull/1935
 
 
 Version 0.33.1
