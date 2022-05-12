@@ -11,10 +11,6 @@ namespace Libplanet.Net.Consensus
 {
     public partial class ConsensusReactor : IReactor
     {
-        public const long TimeoutMillisecond = 10 * 1000;
-
-        private readonly TimeoutTicker _timoutTicker;
-
         private RoutingTable _routingTable;
         private ITransport _transport;
         private ConsensusContext _context;
@@ -33,8 +29,6 @@ namespace Libplanet.Net.Consensus
                 .ForContext<ConsensusReactor>()
                 .ForContext("Source", nameof(ConsensusReactor));
             _context = new ConsensusContext(nodeId, validators, store);
-
-            _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
         }
 
         public async Task<Task> StartAsync(CancellationToken ctx)
@@ -67,20 +61,7 @@ namespace Libplanet.Net.Consensus
                 _context.CurrentRoundContext.State.GetType().ToString(),
                 message);
 
-            var beforeRoundContext = _context.CurrentRoundContext.State;
-
-            ConsensusMessage? res;
-            try
-            {
-                res = _context.CurrentRoundContext.State.Handle(_context, message);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Handle throws exception: {E}", e);
-                throw;
-            }
-
-            SetTimeoutByState(beforeRoundContext);
+            ConsensusMessage? res = _context.HandleMessage(message);
 
             if (res == null)
             {
