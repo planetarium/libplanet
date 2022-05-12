@@ -18,7 +18,7 @@ namespace Libplanet.Net.Tests.Consensus
     public abstract class ReactorTest
     {
         private const int Timeout = 60 * 1000;
-        private const int TimerTestTimeout = (int)ConsensusReactor.TimeoutMillisecond;
+        private const int TimerTestTimeout = (int)ConsensusContext.TimeoutMillisecond;
         private const int TimerTestMargin = 500;
 
         private ILogger _logger;
@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0L, json["height"].GetInt32());
             Assert.Equal("PreVoteState", json["step"].GetString());
 
-            await Task.Delay((int)ConsensusReactor.TimeoutMillisecond);
+            await Task.Delay((int)ConsensusContext.TimeoutMillisecond);
 
             json =
                 JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -94,7 +94,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0L, json["height"].GetInt32());
             Assert.Equal("PreCommitState", json["step"].GetString());
 
-            Thread.Sleep((int)ConsensusReactor.TimeoutMillisecond);
+            Thread.Sleep((int)ConsensusContext.TimeoutMillisecond);
 
             json =
                 JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
