@@ -62,57 +62,64 @@ namespace Libplanet.Net.Tests.Consensus
 
             var reactor = CreateReactor(key, port: 11001, validators: validators);
 
-            reactor.Propose(Array.Empty<byte>());
-            await Task.Delay(proposeProcessWaitTime);
-
-            var json =
-                JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                    reactor.ToString());
-
-            Assert.Equal(0L, json["node_id"].GetInt32());
-            Assert.Equal(0L, json["round"].GetInt32());
-            Assert.Equal(0L, json["height"].GetInt32());
-            Assert.Equal("PreVoteState", json["step"].GetString());
-
-            await Task.Delay((int)ConsensusContext.TimeoutMillisecond);
-
-            json =
-                JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                    reactor.ToString());
-
-            if (json["step"].GetString() != "PreCommitState")
+            try
             {
-                Thread.Sleep(yieldTime);
+                reactor.Propose(Array.Empty<byte>());
+                await Task.Delay(proposeProcessWaitTime);
+
+                var json =
+                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        reactor.ToString());
+
+                Assert.Equal(0L, json["node_id"].GetInt32());
+                Assert.Equal(0L, json["round"].GetInt32());
+                Assert.Equal(0L, json["height"].GetInt32());
+                Assert.Equal("PreVoteState", json["step"].GetString());
+
+                await Task.Delay((int)ConsensusContext.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
                         reactor.ToString());
-            }
 
-            Assert.Equal(0L, json["node_id"].GetInt32());
-            Assert.Equal(0L, json["round"].GetInt32());
-            Assert.Equal(0L, json["height"].GetInt32());
-            Assert.Equal("PreCommitState", json["step"].GetString());
+                if (json["step"].GetString() != "PreCommitState")
+                {
+                    Thread.Sleep(yieldTime);
 
-            Thread.Sleep((int)ConsensusContext.TimeoutMillisecond);
+                    json =
+                        JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                            reactor.ToString());
+                }
 
-            json =
-                JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                    reactor.ToString());
+                Assert.Equal(0L, json["node_id"].GetInt32());
+                Assert.Equal(0L, json["round"].GetInt32());
+                Assert.Equal(0L, json["height"].GetInt32());
+                Assert.Equal("PreCommitState", json["step"].GetString());
 
-            if (json["step"].GetString() != "DefaultState")
-            {
-                Thread.Sleep(yieldTime);
+                Thread.Sleep((int)ConsensusContext.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
                         reactor.ToString());
-            }
 
-            Assert.Equal(0L, json["node_id"].GetInt32());
-            Assert.Equal(1L, json["round"].GetInt32());
-            Assert.Equal(0L, json["height"].GetInt32());
-            Assert.Equal("DefaultState", json["step"].GetString());
+                if (json["step"].GetString() != "DefaultState")
+                {
+                    Thread.Sleep(yieldTime);
+
+                    json =
+                        JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                            reactor.ToString());
+                }
+
+                Assert.Equal(0L, json["node_id"].GetInt32());
+                Assert.Equal(1L, json["round"].GetInt32());
+                Assert.Equal(0L, json["height"].GetInt32());
+                Assert.Equal("DefaultState", json["step"].GetString());
+            }
+            finally
+            {
+                reactor.Dispose();
+            }
         }
 
         [Fact(Timeout = Timeout)]
@@ -217,6 +224,7 @@ namespace Libplanet.Net.Tests.Consensus
                 foreach (var reactor in reactors)
                 {
                     await reactor.StopAsync(default);
+                    reactor.Dispose();
                 }
             }
         }
