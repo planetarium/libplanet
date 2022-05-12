@@ -364,7 +364,6 @@ namespace Libplanet.Net
                 tasks.Add(
                     FillBlocksAsync(
                         dialTimeout,
-                        Options.PollInterval,
                         Options.MaximumPollPeers,
                         _cancellationToken));
                 tasks.Add(ConsumeBlockCandidates(

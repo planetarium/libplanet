@@ -229,7 +229,6 @@ namespace Libplanet.Net
 
         private async Task FillBlocksAsync(
             TimeSpan timeout,
-            TimeSpan pollInterval,
             int maximumPollPeers,
             CancellationToken cancellationToken
         )
