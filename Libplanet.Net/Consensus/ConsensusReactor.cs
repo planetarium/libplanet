@@ -31,6 +31,11 @@ namespace Libplanet.Net.Consensus
             _context = new ConsensusContext(nodeId, validators, store);
         }
 
+        public void Dispose()
+        {
+            _transport.Dispose();
+        }
+
         public async Task<Task> StartAsync(CancellationToken ctx)
         {
             _transport.ProcessMessageHandler.Register(ProcessMessageHandler);

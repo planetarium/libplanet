@@ -1,10 +1,11 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public interface IReactor
+    public interface IReactor : IDisposable
     {
         public Task ReceivedMessage(ConsensusMessage message);
 
