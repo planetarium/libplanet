@@ -21,8 +21,11 @@ To be released.
 
 ### Added APIs
 
+ -  Added `StoreLoader` delegate.  [[#1953], [#1955]]
+ -  Added `StoreLoaderAttribute` class.  [[#1953], [#1955]]
+ -  Added `TrieStateStore.Secure` property.  [[#1955]]
+ -  Added `TimeSpanExtensions.Multiply()` static method.  [[#1966]]
  -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
- -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
 
 ### Behavioral changes
 
@@ -32,6 +35,8 @@ To be released.
 
 ### CLI tools
 
+[#1953]: https://github.com/planetarium/libplanet/issues/1953
+[#1955]: https://github.com/planetarium/libplanet/pull/1955
 [#1959]: https://github.com/planetarium/libplanet/issues/1959
 [#1960]: https://github.com/planetarium/libplanet/pull/1960
 [#1961]: https://github.com/planetarium/libplanet/pull/1961

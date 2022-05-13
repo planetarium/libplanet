@@ -14,7 +14,6 @@ namespace Libplanet.Store
     public class TrieStateStore : IStateStore
     {
         private readonly IKeyValueStore _stateKeyValueStore;
-        private readonly bool _secure;
         private readonly ILogger _logger;
         private bool _disposed = false;
 
@@ -30,9 +29,15 @@ namespace Libplanet.Store
             bool secure = false)
         {
             _stateKeyValueStore = stateKeyValueStore;
-            _secure = secure;
+            Secure = secure;
             _logger = Log.ForContext<TrieStateStore>();
         }
+
+        /// <summary>
+        /// <see langword="true"/> if the <see cref="MerkleTrie"/> is in secure mode.
+        /// In secure mode, keys are hashed under the hood.
+        /// </summary>
+        public bool Secure { get; }
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
@@ -48,7 +53,7 @@ namespace Libplanet.Store
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
                     new HashNode(stateRootHash),
-                    _secure
+                    Secure
                 );
                 _logger.Debug("Started to iterate hash nodes.");
                 stopwatch.Start();
@@ -110,7 +115,7 @@ namespace Libplanet.Store
                 var stateTrie = new MerkleTrie(
                     _stateKeyValueStore,
                     new HashNode(stateRootHash),
-                    _secure
+                    Secure
                 );
 
                 foreach (var (key, value) in stateTrie.IterateNodeKeyValuePairs())
@@ -131,7 +136,7 @@ namespace Libplanet.Store
             new MerkleTrie(
                 _stateKeyValueStore,
                 stateRootHash is { } hash ? new HashNode(hash) : null,
-                _secure
+                Secure
             );
 
         /// <inheritdoc cref="System.IDisposable.Dispose()"/>
