@@ -4,15 +4,7 @@ Libplanet changelog
 Version 0.34.0
 --------------
 
-To be released.
-
-### Deprecated APIs
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+Released on May 13th, 2022.
 
 ### Added APIs
 
@@ -25,10 +17,6 @@ To be released.
  -  `TxPolicyViolationException` and `InvalidTxException` now have a new
     constructor that takes an `Exception` as their `Exception.InnerException`.
     [[#1830], [#1912], [#1916]]
-
-### Bug fixes
-
-### Dependencies
 
 ### CLI tools
 
