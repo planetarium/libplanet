@@ -10,7 +10,7 @@ using Xunit;
 using Xunit.Abstractions;
 using BTypes = Bencodex.Types;
 
-namespace Libplanet.Tests.Action
+namespace Libplanet.Tests.Store
 {
     public class DataModelTest
     {
@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Action
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output)
                 .CreateLogger()
-                .ForContext<ActionEvaluationTest>();
+                .ForContext<DataModelTest>();
         }
 
         [Fact]
