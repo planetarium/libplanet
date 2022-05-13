@@ -21,6 +21,7 @@ To be released.
 
 ### Added APIs
 
+ -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
  -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
 
 ### Behavioral changes
@@ -31,6 +32,8 @@ To be released.
 
 ### CLI tools
 
+[#1959]: https://github.com/planetarium/libplanet/issues/1959
+[#1960]: https://github.com/planetarium/libplanet/pull/1960
 [#1961]: https://github.com/planetarium/libplanet/pull/1961
 [#1966]: https://github.com/planetarium/libplanet/pull/1966
 
