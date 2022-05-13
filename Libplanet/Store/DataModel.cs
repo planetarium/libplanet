@@ -254,8 +254,8 @@ namespace Libplanet.Store
                 }
 
                 // NOTE: Additional IValue casting is needed for this to work.
-                dynamic? value = property.GetValue(this, null);
-                result = result.Add(property.Name, (BTypes.IValue)EncodeToIValue(value));
+                object? value = property.GetValue(this, null);
+                result = result.Add(property.Name, EncodeToIValue(value));
             }
 
             return result;
