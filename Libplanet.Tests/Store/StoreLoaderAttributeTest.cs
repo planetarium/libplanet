@@ -34,6 +34,7 @@ namespace Libplanet.Tests.Store
             Assert.IsAssignableFrom<TrieStateStore>(pair.Value.StateStore);
             stateStore = (TrieStateStore)pair.Value.StateStore;
             Assert.True(stateStore.Secure);
+            Assert.IsAssignableFrom<MemoryKeyValueStore>(stateStore.StateKeyValueStore);
         }
 
         [StoreLoader("test")]

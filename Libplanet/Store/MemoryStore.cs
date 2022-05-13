@@ -3,9 +3,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Web;
 using ImmutableTrie;
 using Libplanet.Blocks;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
 namespace Libplanet.Store
@@ -14,6 +17,13 @@ namespace Libplanet.Store
     /// Volatile in-memory store.
     /// <para>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
     /// game logic.</para>
+    /// <para><see cref="MemoryStore"/> and <see cref="MemoryKeyValueStore"/>-backed
+    /// <see cref="TrieStateStore"/> can be instantiated from a URI with <c>memory:</c> scheme
+    /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
+    /// <list type="bullet">
+    /// <item><description><c>memory:</c></description></item>
+    /// <item><description><c>memory://?secure=true</c> (trie keys are hashed)</description></item>
+    /// </list>
     /// </summary>
     public sealed class MemoryStore : IStore
     {
@@ -281,6 +291,18 @@ namespace Libplanet.Store
             {
                 ((IStore)this).DeleteChainId(id);
             }
+        }
+
+        [StoreLoader("memory")]
+        private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
+        {
+            NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
+            string secure = query.Get("secure")?.ToLowerInvariant();
+            bool isSecure = secure == "1" || secure == "t" || secure == "true" ||
+                secure == "y" || secure == "yes";
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore(), isSecure);
+            return (store, stateStore);
         }
     }
 }

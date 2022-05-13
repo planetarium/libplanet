@@ -9,6 +9,13 @@ namespace Libplanet.Store.Trie
     /// Volatile in-memory key-value store.
     /// <para>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
     /// game logic.</para>
+    /// <para><see cref="MemoryStore"/> and <see cref="MemoryKeyValueStore"/>-backed
+    /// <see cref="TrieStateStore"/> can be instantiated from a URI with <c>memory:</c> scheme
+    /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
+    /// <list type="bullet">
+    /// <item><description><c>memory:</c></description></item>
+    /// <item><description><c>memory://?secure=true</c> (trie keys are hashed)</description></item>
+    /// </list>
     /// </summary>
     public sealed class MemoryKeyValueStore : IKeyValueStore
     {

@@ -29,6 +29,10 @@ To be released.
 
 ### Behavioral changes
 
+ -  `MemoryStore` and `MemoryKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `memory:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1953], [#1955]]
+
 ### Bug fixes
 
 ### Dependencies

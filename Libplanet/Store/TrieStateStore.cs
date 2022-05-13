@@ -13,7 +13,6 @@ namespace Libplanet.Store
     /// </summary>
     public class TrieStateStore : IStateStore
     {
-        private readonly IKeyValueStore _stateKeyValueStore;
         private readonly ILogger _logger;
         private bool _disposed = false;
 
@@ -28,7 +27,7 @@ namespace Libplanet.Store
             IKeyValueStore stateKeyValueStore,
             bool secure = false)
         {
-            _stateKeyValueStore = stateKeyValueStore;
+            StateKeyValueStore = stateKeyValueStore;
             Secure = secure;
             _logger = Log.ForContext<TrieStateStore>();
         }
@@ -38,6 +37,8 @@ namespace Libplanet.Store
         /// In secure mode, keys are hashed under the hood.
         /// </summary>
         public bool Secure { get; }
+
+        internal IKeyValueStore StateKeyValueStore { get; }
 
         /// <inheritdoc cref="IStateStore.PruneStates(IImmutableSet{HashDigest{SHA256}})"/>
         public void PruneStates(IImmutableSet<HashDigest<SHA256>> survivingStateRootHashes)
@@ -51,7 +52,7 @@ namespace Libplanet.Store
             foreach (HashDigest<SHA256> stateRootHash in survivingStateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
-                    _stateKeyValueStore,
+                    StateKeyValueStore,
                     new HashNode(stateRootHash),
                     Secure
                 );
@@ -74,7 +75,7 @@ namespace Libplanet.Store
             long deleteCount = 0;
             _logger.Debug("Started to clean up states.");
             stopwatch.Restart();
-            foreach (var stateKey in _stateKeyValueStore.ListKeys())
+            foreach (var stateKey in StateKeyValueStore.ListKeys())
             {
                 // FIXME: Bencodex fingerprints also should be tracked.
                 //        https://github.com/planetarium/libplanet/issues/1653
@@ -84,7 +85,7 @@ namespace Libplanet.Store
                     continue;
                 }
 
-                _stateKeyValueStore.Delete(stateKey);
+                StateKeyValueStore.Delete(stateKey);
                 ++deleteCount;
             }
 
@@ -105,7 +106,7 @@ namespace Libplanet.Store
         public void CopyStates(
             IImmutableSet<HashDigest<SHA256>> stateRootHashes, TrieStateStore targetStateStore)
         {
-            IKeyValueStore targetKeyValueStore = targetStateStore._stateKeyValueStore;
+            IKeyValueStore targetKeyValueStore = targetStateStore.StateKeyValueStore;
             var stopwatch = new Stopwatch();
             _logger.Verbose($"Started {nameof(CopyStates)}()");
             stopwatch.Start();
@@ -113,7 +114,7 @@ namespace Libplanet.Store
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
             {
                 var stateTrie = new MerkleTrie(
-                    _stateKeyValueStore,
+                    StateKeyValueStore,
                     new HashNode(stateRootHash),
                     Secure
                 );
@@ -134,7 +135,7 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?)"/>
         public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
             new MerkleTrie(
-                _stateKeyValueStore,
+                StateKeyValueStore,
                 stateRootHash is { } hash ? new HashNode(hash) : null,
                 Secure
             );
@@ -144,7 +145,7 @@ namespace Libplanet.Store
         {
             if (!_disposed)
             {
-                _stateKeyValueStore?.Dispose();
+                StateKeyValueStore?.Dispose();
                 _disposed = true;
             }
         }
