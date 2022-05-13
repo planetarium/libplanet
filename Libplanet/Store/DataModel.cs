@@ -26,7 +26,8 @@ namespace Libplanet.Store
     ///         <list type="bullet">
     ///             <item><description>
     ///                 Primitive types: <c>bool</c>, <c>int</c>, <c>long</c>, <c>BigInteger</c>,
-    ///                 <c><![CDATA[ImmutableArray<byte>]]></c>, <c>Address</c>, and <c>string</c>.
+    ///                 <c><![CDATA[ImmutableArray<byte>]]></c>, <c>Guid</c>, <c>Address</c>,
+    ///                 and <c>string</c>.
     ///             </description></item>
     ///             <item><description>
     ///                 Special types: Any type inherited from <see cref="DataModel"/>.
@@ -43,7 +44,7 @@ namespace Libplanet.Store
     ///                             <item><description>
     ///                                 <c>TKey</c> is one of
     ///                                 <c><![CDATA[ImmutableArray<byte>]]></c>, <c>Address</c>,
-    ///                                 and <c>string</c>.
+    ///                                 <c>Guid</c>, and <c>string</c>.
     ///                             </description></item>
     ///                             <item><description>
     ///                                 <c>TValue</c> is a primitive type.
@@ -145,8 +146,6 @@ namespace Libplanet.Store
     /// ]]></code>
     /// Then <c>decoded.Name</c>, <c>decoded.Level</c>, and <c>decoded.Inv.Gold</c> will have
     /// values <c>"John"</c>, <c>5</c>, and <c>100</c> respectively.
-    /// Note that in the example above, an additional casting to a decoded
-    /// <see cref="DataModel"/> object is required.
     /// </example>
     /// <remarks>
     /// There are certain caveats for using this class:
@@ -165,9 +164,9 @@ namespace Libplanet.Store
     ///     </description></item>
     ///     <item><description>
     ///         As supported types are limited, in particular, nullable types and nested
-    ///         collection types, if a custom data model that isn't supported by this class
-    ///         is needed, manual implementation of encoding and decoding should be done
-    ///         separately.
+    ///         collection types not being allowed, if a custom data model that isn't supported
+    ///         by this class is needed, manual implementation of encoding and decoding
+    ///         should be done separately.
     ///     </description></item>
     /// </list>
     /// </remarks>
