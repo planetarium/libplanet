@@ -228,7 +228,6 @@ namespace Libplanet.Net
         }
 
         private async Task FillBlocksAsync(
-            TimeSpan timeout,
             CancellationToken cancellationToken
         )
         {
@@ -246,7 +245,6 @@ namespace Libplanet.Net
                         BlockDemandTable.Remove(blockDemand.Peer);
                         _ = ProcessBlockDemandAsync(
                             blockDemand,
-                            timeout,
                             cancellationToken);
                     }
                 }
