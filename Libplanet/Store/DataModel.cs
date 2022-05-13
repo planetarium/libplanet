@@ -204,6 +204,7 @@ namespace Libplanet.Store
                         || type == typeof(long?)
                         || type == typeof(BigInteger?)
                         || type == typeof(ImmutableArray<byte>?)
+                        || type == typeof(Guid?)
                         || type == typeof(Address?))
                     {
                         throw new NotSupportedException(
@@ -247,6 +248,7 @@ namespace Libplanet.Store
                     || type == typeof(long?)
                     || type == typeof(BigInteger?)
                     || type == typeof(ImmutableArray<byte>?)
+                    || type == typeof(Guid?)
                     || type == typeof(Address?))
                 {
                     throw new NotSupportedException(
