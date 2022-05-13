@@ -48,6 +48,9 @@ namespace Libplanet.Tests.Store
                 root.Bytes,
                 ((BTypes.Binary)rootEncoded[nameof(root.Bytes)]).ToByteArray());
             Assert.Equal(
+                root.Guid,
+                new Guid(((BTypes.Binary)rootEncoded[nameof(root.Guid)]).ToByteArray()));
+            Assert.Equal(
                 root.Addr,
                 new Address(((BTypes.Binary)rootEncoded[nameof(root.Addr)]).ToByteArray()));
             Assert.Equal(
@@ -75,6 +78,10 @@ namespace Libplanet.Tests.Store
                 root.ListBytes,
                 ((BTypes.List)rootEncoded[nameof(root.ListBytes)])
                     .Select(x => ((BTypes.Binary)x).ByteArray));
+            Assert.Equal(
+                root.ListGuid,
+                ((BTypes.List)rootEncoded[nameof(root.ListGuid)])
+                    .Select(x => new Guid(((BTypes.Binary)x).ToByteArray())));
             Assert.Equal(
                 root.ListAddr,
                 ((BTypes.List)rootEncoded[nameof(root.ListAddr)])
@@ -157,6 +164,17 @@ namespace Libplanet.Tests.Store
                 Assert.Equal(kv.Value, dictionaryBytesString[kv.Key]);
             }
 
+            var dictionaryGuidStr =
+                ((BTypes.Dictionary)rootEncoded[nameof(root.DictGuidStr)])
+                    .Select(x => new KeyValuePair<Guid, string>(
+                        new Guid(((BTypes.Binary)x.Key).ToByteArray()),
+                        ((BTypes.Text)x.Value).Value))
+                .ToImmutableDictionary();
+            foreach (var kv in root.DictGuidStr)
+            {
+                Assert.Equal(kv.Value, dictionaryGuidStr[kv.Key]);
+            }
+
             var dictionaryAddrStr =
                 ((BTypes.Dictionary)rootEncoded[nameof(root.DictAddrStr)])
                     .Select(x => new KeyValuePair<Address, string>(
@@ -227,6 +245,8 @@ namespace Libplanet.Tests.Store
             Assert.Throws<NotSupportedException>(
                 () => new HasNullableBytesType().Encode());
             Assert.Throws<NotSupportedException>(
+                () => new HasNullableGuidType().Encode());
+            Assert.Throws<NotSupportedException>(
                 () => new HasNullableAddressType().Encode());
 
             Assert.Throws<NotSupportedException>(
@@ -248,6 +268,8 @@ namespace Libplanet.Tests.Store
                 () => new HasNullReferencePropertyValue().Encode());
             Assert.Throws<NotSupportedException>(
                 () => new HasNullReferenceListValue().Encode());
+            Assert.Throws<NotSupportedException>(
+                () => new HasNullReferenceDictValue().Encode());
         }
 
         [Fact]
@@ -257,7 +279,11 @@ namespace Libplanet.Tests.Store
             bool randBool = random.NextDouble() < 0.5;
             int randInt = random.Next();
             string randStr = Guid.NewGuid().ToString();
-            ImmutableArray<byte> randBytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
+            byte[] buffer = new byte[10];
+            random.NextBytes(buffer);
+            ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
+            Guid randGuid = Guid.NewGuid();
+            Address randAddress = new PrivateKey().ToAddress();
 
             BTypes.Dictionary encoded;
 
@@ -302,6 +328,7 @@ namespace Libplanet.Tests.Store
             // Try missing data.
             encoded = BTypes.Dictionary.Empty;
             Assert.Throws<KeyNotFoundException>(() => new IntWrapper(encoded));
+            Assert.Throws<KeyNotFoundException>(() => new GuidWrapper(encoded));
             Assert.Throws<KeyNotFoundException>(() => new AddressWrapper(encoded));
             Assert.Throws<KeyNotFoundException>(() => new StrWrapper(encoded));
             Assert.Throws<KeyNotFoundException>(() => new ListIntWrapper(encoded));
@@ -311,6 +338,9 @@ namespace Libplanet.Tests.Store
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(IntWrapper.Value), (BTypes.IValue)new BTypes.Text("foo"));
             Assert.Throws<ArgumentException>(() => new IntWrapper(encoded));
+            encoded = BTypes.Dictionary.Empty
+                .Add(nameof(GuidWrapper.Value), (BTypes.IValue)new BTypes.Text("bar"));
+            Assert.Throws<ArgumentException>(() => new GuidWrapper(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Text("bar"));
             Assert.Throws<ArgumentException>(() => new AddressWrapper(encoded));
@@ -332,10 +362,19 @@ namespace Libplanet.Tests.Store
                             (BTypes.IValue)new BTypes.Text("bar")));
             Assert.Throws<ArgumentException>(() => new DictStrIntWrapper(encoded));
 
-            // Try bad data; Address specifically requires length Address.Size bytes.
+            // Try bad data; Address specifically requires length Address.Size bytes
+            // and Guid specifically requires length 16 bytes.
             Assert.NotEqual(Address.Size, randBytes.Length);
+            Assert.NotEqual(randGuid.ToByteArray().Length, randBytes.Length);
             encoded = BTypes.Dictionary.Empty
-                .Add(nameof(AddressWrapper.Value), (BTypes.IValue)new BTypes.Binary(randBytes));
+                .Add(
+                    nameof(GuidWrapper.Value),
+                    (BTypes.IValue)new BTypes.Binary(randBytes));
+            Assert.Throws<ArgumentException>(() => new GuidWrapper(encoded));
+            encoded = BTypes.Dictionary.Empty
+                .Add(
+                    nameof(AddressWrapper.Value),
+                    (BTypes.IValue)new BTypes.Binary(randBytes));
             Assert.Throws<ArgumentException>(() => new AddressWrapper(encoded));
 
             // Try assigning null to inner collection.
@@ -366,7 +405,10 @@ namespace Libplanet.Tests.Store
             bool randBool = random.NextDouble() < 0.5;
             int randInt = random.Next();
             string randStr = Guid.NewGuid().ToString();
-            ImmutableArray<byte> randBytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
+            byte[] buffer = new byte[10];
+            random.NextBytes(buffer);
+            ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
+            Guid randGuid = Guid.NewGuid();
             Address randAddress = new PrivateKey().ToAddress();
 
             BTypes.Dictionary encoded;
@@ -399,6 +441,11 @@ namespace Libplanet.Tests.Store
             Assert.Throws<NotSupportedException>(() => new HasNullableBytesType(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(
+                    nameof(HasNullableGuidType.Value),
+                    (BTypes.IValue)new BTypes.Binary(randGuid.ToByteArray()));
+            Assert.Throws<NotSupportedException>(() => new HasNullableBytesType(encoded));
+            encoded = BTypes.Dictionary.Empty
+                .Add(
                     nameof(HasNullableBytesType.Value),
                     (BTypes.IValue)new BTypes.Binary(randAddress.ByteArray));
             Assert.Throws<NotSupportedException>(() => new HasNullableBytesType(encoded));
@@ -414,7 +461,10 @@ namespace Libplanet.Tests.Store
                 Int = random.Next();
                 Long = (long)random.Next();
                 BigInt = (BigInteger)random.Next();
-                Bytes = Guid.NewGuid().ToByteArray().ToImmutableArray();
+                byte[] buffer = new byte[10];
+                random.NextBytes(buffer);
+                Bytes = buffer.ToImmutableArray();
+                Guid = Guid.NewGuid();
                 Addr = new PrivateKey().ToAddress();
                 Str = Guid.NewGuid().ToString();
 
@@ -438,6 +488,10 @@ namespace Libplanet.Tests.Store
                 ListBytes = Enumerable
                     .Range(0, 2)
                     .Select(_ => Guid.NewGuid().ToByteArray().ToImmutableArray())
+                    .ToImmutableList();
+                ListGuid = Enumerable
+                    .Range(0, 2)
+                    .Select(_ => Guid.NewGuid())
                     .ToImmutableList();
                 ListAddr = Enumerable
                     .Range(0, 2)
@@ -491,6 +545,12 @@ namespace Libplanet.Tests.Store
                         Guid.NewGuid().ToByteArray().ToImmutableArray(),
                         Guid.NewGuid().ToString()))
                     .ToImmutableDictionary();
+                DictGuidStr = Enumerable
+                    .Range(0, 2)
+                    .Select(_ => new KeyValuePair<Guid, string>(
+                        Guid.NewGuid(),
+                        Guid.NewGuid().ToString()))
+                    .ToImmutableDictionary();
                 DictAddrStr = Enumerable
                     .Range(0, 2)
                     .Select(_ => new KeyValuePair<Address, string>(
@@ -523,6 +583,8 @@ namespace Libplanet.Tests.Store
 
             public ImmutableArray<byte> Bytes { get; private set; }
 
+            public Guid Guid { get; private set; }
+
             public Address Addr { get; private set; }
 
             public string Str { get; private set; }
@@ -538,6 +600,8 @@ namespace Libplanet.Tests.Store
             public ImmutableList<BigInteger> ListBigInt { get; private set; }
 
             public ImmutableList<ImmutableArray<byte>> ListBytes { get; private set; }
+
+            public ImmutableList<Guid> ListGuid { get; private set; }
 
             public ImmutableList<Address> ListAddr { get; private set; }
 
@@ -566,6 +630,9 @@ namespace Libplanet.Tests.Store
 
             public ImmutableDictionary<ImmutableArray<byte>, string>
                 DictBytesStr { get; private set; }
+
+            public ImmutableDictionary<Guid, string>
+                DictGuidStr { get; private set; }
 
             public ImmutableDictionary<Address, string>
                 DictAddrStr { get; private set; }
@@ -725,6 +792,22 @@ namespace Libplanet.Tests.Store
             public ImmutableArray<byte>? Value { get; private set; }
         }
 
+        private class HasNullableGuidType : DataModel
+        {
+            public HasNullableGuidType()
+                : base()
+            {
+                Value = Guid.NewGuid();
+            }
+
+            public HasNullableGuidType(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public Guid? Value { get; private set; }
+        }
+
         private class HasNullableAddressType : DataModel
         {
             public HasNullableAddressType()
@@ -869,6 +952,26 @@ namespace Libplanet.Tests.Store
             public ImmutableList<string> Value { get; private set; }
         }
 
+        private class HasNullReferenceDictValue : DataModel
+        {
+            public HasNullReferenceDictValue()
+                : base()
+            {
+                Value = new Dictionary<string, string>()
+                {
+                    { "foo", "bar" },
+                    { "lorem", null },
+                }.ToImmutableDictionary();
+            }
+
+            public HasNullReferenceDictValue(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public ImmutableDictionary<string, string> Value { get; private set; }
+        }
+
         private class IntWrapper : DataModel
         {
             public IntWrapper(int value)
@@ -883,6 +986,38 @@ namespace Libplanet.Tests.Store
             }
 
             public int Value { get; private set; }
+        }
+
+        private class BytesWrapper : DataModel
+        {
+            public BytesWrapper(ImmutableArray<byte> value)
+                : base()
+            {
+                Value = value;
+            }
+
+            public BytesWrapper(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public ImmutableArray<byte> Value { get; private set; }
+        }
+
+        private class GuidWrapper : DataModel
+        {
+            public GuidWrapper(Guid value)
+                : base()
+            {
+                Value = value;
+            }
+
+            public GuidWrapper(BTypes.Dictionary encoded)
+                : base(encoded)
+            {
+            }
+
+            public Guid Value { get; private set; }
         }
 
         private class AddressWrapper : DataModel
