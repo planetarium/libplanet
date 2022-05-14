@@ -264,7 +264,8 @@ namespace Libplanet.Net
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
+            BlockCandidateTable = new BlockCandidateTable<T>(
+                BlockChain.Policy.CanonicalChainComparer);
             _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
@@ -334,7 +335,8 @@ namespace Libplanet.Net
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
-            BlockCandidateTable = new BlockCandidateTable<T>();
+            BlockCandidateTable = new BlockCandidateTable<T>(
+                BlockChain.Policy.CanonicalChainComparer);
             if (Transport.Running)
             {
                 throw new SwarmException("Swarm is already running.");

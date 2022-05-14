@@ -37,7 +37,7 @@ namespace Libplanet.Net
                                 branch,
                                 cancellationToken);
                             BlockAppended.Set();
-                            BlockCandidateTable.Update(path, IsBlockNeeded);
+                            BlockCandidateTable.Update(path);
                         }
                         catch (Exception)
                         {

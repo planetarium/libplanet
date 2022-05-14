@@ -17,14 +17,19 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        public BlockCandidateTable()
+        private readonly IComparer<IBlockExcerpt> _canonicalChainComparer;
+
+        public BlockCandidateTable(IComparer<IBlockExcerpt> canonicalChainComparer)
         {
             Branches = new ConcurrentBag<CandidateBranch<T>>();
+            _canonicalChainComparer = canonicalChainComparer;
         }
 
         /// <summary>
         /// Retrieves the <see cref="CandidateBranch{T}"/> with the best Tip, i.e.
         /// the highest <see cref="Block{T}.TotalDifficulty"/>.
+        /// If <see cref="BlockCandidateTable{T}.Update"/> is not called, this value is the best
+        /// branch in <see cref="BlockCandidateTable{T}.Branches"/> without any reduction.
         /// </summary>
         public CandidateBranch<T>? BestBranch { get; private set; }
 
@@ -46,7 +51,10 @@ namespace Libplanet.Net
         /// <param name="branch">The <see cref="CandidateBranch{T}"/>
         /// to add to <see cref="Branches"/>.
         /// </param>
-        public void Add(CandidateBranch<T> branch)
+        /// <param name="currentTip">The topmost <see cref="BlockChain{T}.Tip"/> for
+        /// determining whether branch has higher comparer value.
+        /// </param>
+        public void Add(CandidateBranch<T> branch, IBlockHeader currentTip)
         {
             BestBranch ??= branch;
             BestBranch = CompareBranch(BestBranch, branch);
@@ -60,8 +68,6 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="path">The <see cref="UpdatePath{T}"/> representing a path from the previous
         /// Tip to the newly changed Tip.</param>
-        /// <param name="predicate"><see cref="Func{TResult}"/> for predicate which
-        /// <see cref="Branches"/> are no more needed.</param>
         /// <remarks>
         /// <para>
         /// In order for this to be kept concurrent with the local <see cref="BlockChain{T}"/>,
@@ -71,13 +77,13 @@ namespace Libplanet.Net
         /// <para>
         /// Also, while updating each <see cref="CandidateBranch{T}"/>,
         /// if an <see cref="CandidateBranch{T}"/> is no longer needed,
-        /// i.e. if <see cref="CandidateBranch{T}.Tip"/>'s
+        /// e.g. if <see cref="CandidateBranch{T}.Tip"/>'s
         /// <see cref="Block{T}.TotalDifficulty"/> is
         /// no longer higher than that of <see cref="UpdatePath{T}.NewTip"/>,
         /// it should be discarded.
         /// </para>
         /// </remarks>
-        public void Update(UpdatePath<T> path, Func<IBlockExcerpt, bool> predicate)
+        public void Update(UpdatePath<T> path)
         {
             var newBag = new ConcurrentBag<CandidateBranch<T>>();
             CandidateBranch<T>? longestBranch = null;
@@ -87,7 +93,7 @@ namespace Libplanet.Net
             {
                 foreach (CandidateBranch<T> branch in Branches)
                 {
-                    if (!predicate(branch.Tip))
+                    if (!IsBlockNeeded(branch.Tip, path.NewTip))
                     {
                         continue;
                     }
@@ -100,7 +106,7 @@ namespace Libplanet.Net
                         var newBranch = new CandidateBranch<T>(newBlocks);
 
                         longestBranch ??= newBranch;
-                        longestBranch = CompareBranch(longestBranch, newBranch);
+                        longestBranch = CompareBranch(newBranch, longestBranch);
                     }
                     catch (ArgumentNullException)
                     {
@@ -114,7 +120,7 @@ namespace Libplanet.Net
             {
                 foreach (CandidateBranch<T> branch in Branches)
                 {
-                    if (!predicate(branch.Tip))
+                    if (!IsBlockNeeded(branch.Tip, path.NewTip))
                     {
                         continue;
                     }
@@ -140,7 +146,7 @@ namespace Libplanet.Net
                     var newBranch = new CandidateBranch<T>(newBlocks);
 
                     longestBranch ??= newBranch;
-                    longestBranch = CompareBranch(longestBranch, newBranch);
+                    longestBranch = CompareBranch(newBranch, longestBranch);
                 }
             }
 
@@ -164,7 +170,53 @@ namespace Libplanet.Net
 
         public bool Any() => Branches.Any();
 
-        private CandidateBranch<T> CompareBranch(CandidateBranch<T> lf, CandidateBranch<T> rf)
-            => lf.Tip.TotalDifficulty < rf.Tip.TotalDifficulty ? rf : lf;
+        /// <summary>
+        /// Check every blocks are continuous by <see cref="Block{T}.PreviousHash"/>-wise each
+        /// other.
+        /// <remarks>
+        /// This method does not check whether branch is appendable to <see cref="BlockChain{T}"/>.
+        /// </remarks>
+        /// </summary>
+        /// <param name="branch">A series of <see cref="Block{T}"/>.
+        /// </param>
+        /// <returns>
+        /// returns true if <paramref name="branch"/> is continuous or its count is 1; returns false
+        /// if <paramref name="branch"/> is not continuous or its count is 0.
+        /// </returns>
+        private static bool AreBlocksContinuous(IEnumerable<Block<T>> branch)
+        {
+            var enumerable = branch as Block<T>[] ?? branch.ToArray();
+
+            if (!enumerable.Any())
+            {
+                return false;
+            }
+
+            if (enumerable.Count() == 1)
+            {
+                return true;
+            }
+
+            var precedingBlocks = enumerable.Skip(1);
+            foreach (var block in precedingBlocks)
+            {
+                if (!enumerable.Any(x => block.PreviousHash != null &&
+                                         x.Hash.Equals(block.PreviousHash.Value)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // FIXME: This method is duplicated with Swarm<T>.IsBlockNeeded()
+        private bool IsBlockNeeded(IBlockExcerpt block, IBlockExcerpt tip) =>
+            _canonicalChainComparer.Compare(block, tip) > 0;
+
+        private CandidateBranch<T> CompareBranch(
+            CandidateBranch<T> lf,
+            CandidateBranch<T> rf)
+            => _canonicalChainComparer.Compare(lf.Tip, rf.Tip) > 0 ? lf : rf;
     }
 }
