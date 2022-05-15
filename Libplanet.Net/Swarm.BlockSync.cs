@@ -137,7 +137,6 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        singleSessionTimeout: Options.MaxTimeout,
                         cancellationToken: cancellationToken
                     );
 
@@ -389,7 +388,6 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        singleSessionTimeout: Options.MaxTimeout,
                         cancellationToken: cancellationToken
                     );
 
