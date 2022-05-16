@@ -8,6 +8,7 @@ namespace Libplanet.Benchmarks
         private RootModel _rootModel;
         private LeafModel _leafModel;
         private PlainValueLeaf _plainValueLeaf;
+
         private BTypes.Dictionary _encodedRootModel;
         private BTypes.Dictionary _encodedLeafModel;
 
