@@ -564,7 +564,8 @@ namespace Libplanet.Net.Tests
             Swarm<DumbAction> swarm1 = CreateSwarm();
             Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(1000);
+            receiverSwarm.Options.TimeoutOptions.GetBlockHashesTimeout
+                = TimeSpan.FromMilliseconds(1000);
 
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;

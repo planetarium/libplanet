@@ -229,7 +229,10 @@ If omitted (default) explorer only the local blockchain store.")]
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
                     {
-                        MaxTimeout = TimeSpan.FromSeconds(10),
+                        TimeoutOptions = new TimeoutOptions
+                        {
+                            MaxTimeout = TimeSpan.FromSeconds(10),
+                        },
                     };
 
                     swarm = new Swarm<NullAction>(

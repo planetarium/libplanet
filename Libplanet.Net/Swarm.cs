@@ -723,9 +723,10 @@ namespace Libplanet.Net
             int subSessionId = logSessionIds is (_, int j) ? j : sessionRandom.Next();
             var request = new GetBlockHashes(locator, stop);
 
-            TimeSpan transportTimeout = timeout is { } t && t > Options.BlockHashRecvTimeout
-                ? t
-                : Options.BlockHashRecvTimeout;
+            TimeSpan transportTimeout = timeout is { } t
+                && t > Options.TimeoutOptions.GetBlockHashesTimeout
+                    ? t
+                    : Options.TimeoutOptions.GetBlockHashesTimeout;
             const string sendMsg =
                 "{SessionId}/{SubSessionId}: Sending a {MessageType} " +
                 "message with locator [{LocatorHead}, ...] (stop: {Stop})...";
@@ -796,11 +797,11 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            TimeSpan blockRecvTimeout = Options.BlockRecvTimeout
-                                        + TimeSpan.FromSeconds(hashCount);
-            if (blockRecvTimeout > Options.MaxTimeout)
+            TimeSpan blockRecvTimeout = Options.TimeoutOptions.GetBlocksBaseTimeout
+                + Options.TimeoutOptions.GetBlocksPerBlockHashTimeout.Multiply(hashCount);
+            if (blockRecvTimeout > Options.TimeoutOptions.MaxTimeout)
             {
-                blockRecvTimeout = Options.MaxTimeout;
+                blockRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageAsync(
@@ -862,10 +863,11 @@ namespace Libplanet.Net
 
             _logger.Debug("Required tx count: {Count}.", txCount);
 
-            var txRecvTimeout = Options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
-            if (txRecvTimeout > Options.MaxTimeout)
+            var txRecvTimeout = Options.TimeoutOptions.GetTxsBaseTimeout
+                + Options.TimeoutOptions.GetTxsPerTxIdTimeout.Multiply(txCount);
+            if (txRecvTimeout > Options.TimeoutOptions.MaxTimeout)
             {
-                txRecvTimeout = Options.MaxTimeout;
+                txRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageAsync(

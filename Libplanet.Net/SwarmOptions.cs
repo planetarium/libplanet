@@ -30,27 +30,8 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// The maximum timeout used in <see cref="Swarm{T}"/>.
-        /// </summary>
-        public TimeSpan MaxTimeout { get; set; } = TimeSpan.FromSeconds(150);
-
-        /// <summary>
-        /// The base timeout used to receive the block hashes from other peers.
-        /// </summary>
-        public TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
-
-        /// <summary>
-        /// The base timeout used to receive <see cref="Block{T}"/> from other peers.
-        /// </summary>
-        public TimeSpan BlockRecvTimeout { get; set; } = TimeSpan.FromSeconds(15);
-
-        /// <summary>
-        /// The base timeout used to receive <see cref="Transaction{T}"/> from other peers.
-        /// </summary>
-        public TimeSpan TxRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
-
-        /// <summary>
-        /// The timeout used to block download in preloading.
+        /// The overall timeout used when downloading <see cref="Blocks"/> during
+        /// a preloading stage.
         /// </summary>
         public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
 
@@ -136,5 +117,11 @@ namespace Libplanet.Net
         /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
         /// </summary>
         public TransportType Type { get; set; } = TransportType.TcpTransport;
+
+        /// <summary>
+        /// Various timeout options for sending and receiving <see cref="Message"/>s through
+        /// an <see cref="ITransport"/>.
+        /// </summary>
+        public TimeoutOptions TimeoutOptions { get; set; } = new TimeoutOptions();
     }
 }
