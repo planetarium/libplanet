@@ -1,13 +1,11 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
-using Libplanet.Tx;
 
 namespace Libplanet.Net
 {
@@ -88,14 +86,22 @@ namespace Libplanet.Net
         /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMessage"/>
         /// to its peers.
         /// </summary>
-        public TimeSpan BlockHeaderMessageBroadcastInterval { get; set; }
+        /// <remarks>
+        /// Broadcasts are also made whenever <see cref="BlockChain{T}.Tip"/> changes in addition
+        /// to regular broadcasts determined by this option.
+        /// </remarks>
+        public TimeSpan BlockBroadcastInterval { get; set; }
             = TimeSpan.FromMilliseconds(15_000);
 
         /// <summary>
         /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIds"/>
         /// to its peers.
         /// </summary>
-        public TimeSpan TxIdsBroadcastInterval { get; set; }
+        /// <remarks>
+        /// Broadcasts are also made whenever <see cref="Transaction{T}"/> is staged in addition
+        /// to regular broadcasts determined by this option.
+        /// </remarks>
+        public TimeSpan TxBroadcastInterval { get; set; }
             = TimeSpan.FromMilliseconds(5_000);
 
         /// <summary>
