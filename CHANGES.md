@@ -11,7 +11,9 @@ To be released.
 ### Backward-incompatible API changes
 
  -  `BlockCompletion<TPeer, TAction>.Complete()` no longer accepts
-    an argument to regulate a single session.  [[#1961]]
+    neither parmeter `TimeSpan singleSessionTimeout` nor
+    `int millisecondsSingleSessionTimeout` to regulate a single session length.
+    [[#1961]]
 
 ### Backward-incompatible network protocol changes
 

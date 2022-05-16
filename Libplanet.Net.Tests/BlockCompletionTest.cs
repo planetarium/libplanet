@@ -337,7 +337,7 @@ namespace Libplanet.Net.Tests
                     // Peer A does not respond and Peer B does respond.
                     if (peer == 'A')
                     {
-                        int transportTimeout = 3_000;
+                        const int transportTimeout = 3_000;
                         await Task.Delay(transportTimeout, yield.CancellationToken);
 
                         // Technically this should throw CommunicationException, but that would
