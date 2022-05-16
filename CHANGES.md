@@ -16,6 +16,8 @@ To be released.
 
 ### Added APIs
 
+ -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1966]: https://github.com/planetarium/libplanet/pull/1966
 
 
 Version 0.34.0
