@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using ImmutableTrie;
 using Libplanet.Blocks;
+using Libplanet.Misc;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -297,11 +298,11 @@ namespace Libplanet.Store
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
-            string secure = query.Get("secure")?.ToLowerInvariant();
-            bool isSecure = secure == "1" || secure == "t" || secure == "true" ||
-                secure == "y" || secure == "yes";
             var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore(), isSecure);
+            var stateStore = new TrieStateStore(
+                new MemoryKeyValueStore(),
+                query.GetBoolean("secure")
+            );
             return (store, stateStore);
         }
     }

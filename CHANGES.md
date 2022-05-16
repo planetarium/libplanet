@@ -24,6 +24,7 @@ To be released.
  -  Added `StoreLoader` delegate.  [[#1953], [#1955]]
  -  Added `StoreLoaderAttribute` class.  [[#1953], [#1955]]
  -  Added `TrieStateStore.Secure` property.  [[#1955]]
+ -  Added `NameValueCollectionExtensions` static class.  [[#1955]]
  -  Added `TimeSpanExtensions.Multiply()` static method.  [[#1966]]
  -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
 

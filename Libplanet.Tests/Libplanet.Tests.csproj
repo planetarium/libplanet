@@ -27,6 +27,12 @@
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="DiffPlex" Version="1.7.0" />

@@ -17,7 +17,7 @@ namespace Libplanet.Store
     /// private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
     /// {
     ///     NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
-    ///     int cache = Convert.ToInt32(query.Get("cache") ?? "128");
+    ///     int cache = query.GetInt32("cache", 128);
     ///     var store = new SampleStore(storeUri.LocalPath, cache);
     ///     var stateStore = new SampleStateStore(storeUri.LocalPath, cache);
     ///     return (store, stateStore);

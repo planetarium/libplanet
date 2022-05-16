@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using Libplanet.Misc;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Xunit;
@@ -41,11 +42,10 @@ namespace Libplanet.Tests.Store
         private static (IStore Store, IStateStore StateStore) TestLoader(Uri storeUri)
         {
             NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
-            string secure = query.Get("secure")?.ToLowerInvariant();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(
                 new MemoryKeyValueStore(),
-                secure: secure == "t" || secure == "true"
+                query.GetBoolean("secure")
             );
             return (store, stateStore);
         }
