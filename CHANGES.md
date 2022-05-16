@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BlockCompletion<TPeer, TAction>.Complete()` no longer accepts
+    neither parmeter `TimeSpan singleSessionTimeout` nor
+    `int millisecondsSingleSessionTimeout` to regulate a single session length.
+    [[#1961]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -26,6 +31,7 @@ To be released.
 
 ### CLI tools
 
+[#1961]: https://github.com/planetarium/libplanet/pull/1961
 [#1966]: https://github.com/planetarium/libplanet/pull/1966
 
 

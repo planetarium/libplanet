@@ -137,7 +137,6 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        singleSessionTimeout: Options.MaxTimeout,
                         cancellationToken: cancellationToken
                     );
 
@@ -228,7 +227,6 @@ namespace Libplanet.Net
         }
 
         private async Task FillBlocksAsync(
-            TimeSpan timeout,
             CancellationToken cancellationToken
         )
         {
@@ -246,7 +244,6 @@ namespace Libplanet.Net
                         BlockDemandTable.Remove(blockDemand.Peer);
                         _ = ProcessBlockDemandAsync(
                             blockDemand,
-                            timeout,
                             cancellationToken);
                     }
                 }
@@ -391,7 +388,6 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        singleSessionTimeout: Options.MaxTimeout,
                         cancellationToken: cancellationToken
                     );
 

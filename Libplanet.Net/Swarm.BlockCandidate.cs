@@ -12,7 +12,6 @@ namespace Libplanet.Net
     public partial class Swarm<T>
     {
         private async Task ConsumeBlockCandidates(
-            TimeSpan timeout,
             CancellationToken cancellationToken)
         {
             var checkInterval = TimeSpan.FromMilliseconds(10);
@@ -36,7 +35,6 @@ namespace Libplanet.Net
                             BlockCandidateTable.Count);
                         _ = BlockCandidateProcess(
                             blocks,
-                            timeout,
                             cancellationToken);
                         BlockAppended.Set();
                     }
@@ -53,7 +51,6 @@ namespace Libplanet.Net
 
         private bool BlockCandidateProcess(
             SortedList<long, Block<T>> candidate,
-            TimeSpan timeout,
             CancellationToken cancellationToken)
         {
             BlockChain<T> synced = null;
@@ -70,7 +67,6 @@ namespace Libplanet.Net
                 synced = AppendPreviousBlocks(
                     blockChain: BlockChain,
                     candidate: candidate,
-                    timeout: timeout,
                     evaluateActions: true);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
@@ -119,7 +115,6 @@ namespace Libplanet.Net
         private BlockChain<T> AppendPreviousBlocks(
             BlockChain<T> blockChain,
             SortedList<long, Block<T>> candidate,
-            TimeSpan timeout,
             bool evaluateActions)
         {
              BlockChain<T> workspace = blockChain;
@@ -285,7 +280,6 @@ namespace Libplanet.Net
 
         private async Task<bool> ProcessBlockDemandAsync(
             BlockDemand demand,
-            TimeSpan timeout,
             CancellationToken cancellationToken)
         {
             var sessionRandom = new Random();
@@ -320,7 +314,6 @@ namespace Libplanet.Net
                     peer: peer,
                     blockChain: BlockChain,
                     stop: demand.Header,
-                    timeout: timeout,
                     logSessionId: sessionId,
                     cancellationToken: cancellationToken);
 
@@ -370,7 +363,6 @@ namespace Libplanet.Net
             BoundPeer peer,
             BlockChain<T> blockChain,
             BlockHeader stop,
-            TimeSpan timeout,
             int logSessionId,
             CancellationToken cancellationToken)
         {
@@ -383,7 +375,7 @@ namespace Libplanet.Net
                 peer: peer,
                 locator: locator,
                 stop: stop.Hash,
-                timeout: timeout,
+                timeout: null,
                 logSessionIds: (logSessionId, subSessionId),
                 cancellationToken: cancellationToken);
             IEnumerable<Tuple<long, BlockHash>> hashes = await hashesAsync.ToArrayAsync();

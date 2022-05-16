@@ -180,9 +180,6 @@ namespace Libplanet.Net
         /// <param name="peers">A list of peers to download blocks.</param>
         /// <param name="blockFetcher">A function to take demands and a peer, and then
         /// download corresponding blocks.</param>
-        /// <param name="singleSessionTimeout">A maximum time to wait each single call of
-        /// <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied demands
-        /// are automatically retried to fetch from other peers.</param>
         /// <param name="cancellationToken">A cancellation token to observe while waiting
         /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
@@ -190,7 +187,6 @@ namespace Libplanet.Net
         public async IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher,
-            TimeSpan singleSessionTimeout,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
@@ -217,7 +213,6 @@ namespace Libplanet.Net
                             CreateEnqueuing(
                                 blockHashes,
                                 blockFetcher,
-                                singleSessionTimeout,
                                 cancellationToken,
                                 queue
                             ),
@@ -256,34 +251,6 @@ namespace Libplanet.Net
 
             await producer;
         }
-
-        /// <summary>
-        /// Downloads blocks from <paramref name="peers"/> in parallel,
-        /// using the given <paramref name="blockFetcher"/> function.
-        /// </summary>
-        /// <param name="peers">A list of peers to download blocks.</param>
-        /// <param name="blockFetcher">A function to take demands and a peer, and then
-        /// download corresponding blocks.</param>
-        /// <param name="millisecondsSingleSessionTimeout">A maximum time in milliseconds to wait
-        /// each single call of <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied
-        /// demands are automatically retried to fetch from other peers.  10 seconds by default.
-        /// </param>
-        /// <param name="cancellationToken">A cancellation token to observe while waiting
-        /// for the task to complete.</param>
-        /// <returns>An async enumerable that yields pairs of a fetched block and its source
-        /// peer.  It terminates when all demands are satisfied.</returns>
-        public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
-            IReadOnlyList<TPeer> peers,
-            BlockFetcher blockFetcher,
-            int millisecondsSingleSessionTimeout = 10000,
-            CancellationToken cancellationToken = default
-        ) =>
-            Complete(
-                peers,
-                blockFetcher,
-                TimeSpan.FromMilliseconds(millisecondsSingleSessionTimeout),
-                cancellationToken
-            );
 
         private bool Demand(BlockHash blockHash, bool retry)
         {
@@ -324,7 +291,6 @@ namespace Libplanet.Net
         private Func<TPeer, CancellationToken, Task> CreateEnqueuing(
             IList<BlockHash> blockHashes,
             BlockFetcher blockFetcher,
-            TimeSpan singleSessionTimeout,
             CancellationToken cancellationToken,
             AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>> queue
         ) =>
@@ -339,22 +305,12 @@ namespace Libplanet.Net
                         blockHashes.Count,
                         peer
                     );
-                    using var timeout = new CancellationTokenSource(singleSessionTimeout);
-                    CancellationToken timeoutToken = timeout.Token;
-                    using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(
-                        timeoutToken,
-                        ct
-                    );
-                    using CancellationTokenRegistration ctr = timeoutToken.Register(() =>
-                        _logger.Debug("Timed out while waiting for a response from {Peer}.", peer)
-                    );
-                    CancellationToken linkedToken = linkedTokenSource.Token;
 
                     try
                     {
                         ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
-                            blockFetcher(peer, blockHashes, linkedToken)
-                                .WithCancellation(linkedToken);
+                            blockFetcher(peer, blockHashes, cancellationToken)
+                                .WithCancellation(cancellationToken);
                         await foreach (Block<TAction> block in blocks)
                         {
                             _logger.Debug(
