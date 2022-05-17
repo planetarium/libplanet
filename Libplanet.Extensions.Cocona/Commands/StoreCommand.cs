@@ -15,15 +15,7 @@ namespace Libplanet.Extensions.Cocona.Commands
     {
         private const string StoreArgumentDescription =
             "The URI denotes the type and path of concrete class for " + nameof(IStore) + "."
-            + "<store-type>://<store-path> (e.g., rocksdb:///path/to/store)";
-
-        private readonly IImmutableDictionary<string, Func<string, IStore>>
-            _storeConstructors =
-                new Dictionary<string, Func<string, IStore>>
-                {
-                    ["default"] = storePath => new DefaultStore(storePath),
-                    ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
-                }.ToImmutableSortedDictionary();
+            + "<store-type>://<store-path> (e.g., rocksdb+file:///path/to/store)";
 
         [Command(Description = "Build an index for transaction id and block hash.")]
         public void BuildIndexTxBlock(
@@ -35,7 +27,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             int limit
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            IStore store = Utils.LoadStoreFromUri(home);
             var prev = DateTimeOffset.UtcNow;
             foreach (var index in BuildTxIdBlockHashIndex(store, offset, limit))
             {
@@ -54,7 +46,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string strTxId
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            IStore store = Utils.LoadStoreFromUri(home);
             var blockHashes = store.IterateTxIdBlockHashIndex(new TxId(ByteUtil.ParseHex(strTxId)))
                 .ToImmutableArray();
             Console.WriteLine(Utils.SerializeHumanReadable(blockHashes));
@@ -69,7 +61,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string strTxId
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            using IStore store = Utils.LoadStoreFromUri(home);
             var txId = new TxId(ByteUtil.ParseHex(strTxId));
             if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } ))
             {
@@ -79,8 +71,6 @@ namespace Libplanet.Extensions.Cocona.Commands
             var blocks = IterateBlocks<Utils.DummyAction>(store, txId).ToImmutableList();
 
             Console.WriteLine(Utils.SerializeHumanReadable(blocks));
-
-            store?.Dispose();
         }
 
         [Command(Description = "Query a block by index.")]
@@ -91,11 +81,10 @@ namespace Libplanet.Extensions.Cocona.Commands
             int blockIndex
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            using IStore store = Utils.LoadStoreFromUri(home);
             var blockHash = GetBlockHash(store, blockIndex);
             var block = GetBlock<Utils.DummyAction>(store, blockHash);
             Console.WriteLine(Utils.SerializeHumanReadable(block));
-            store?.Dispose();
         }
 
         [Command(Description = "Query a block by hash.")]
@@ -106,10 +95,9 @@ namespace Libplanet.Extensions.Cocona.Commands
             string blockHash
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            using IStore store = Utils.LoadStoreFromUri(home);
             var block = GetBlock<Utils.DummyAction>(store, BlockHash.FromString(blockHash));
             Console.WriteLine(Utils.SerializeHumanReadable(block));
-            store?.Dispose();
         }
 
         [Command(Description = "Query a transaction by tx id.")]
@@ -120,7 +108,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string strTxId
         )
         {
-            IStore store = LoadStoreFromUri(home);
+            IStore store = Utils.LoadStoreFromUri(home);
             var tx = GetTransaction<Utils.DummyAction>(store, new TxId(ByteUtil.ParseHex(strTxId)));
             Console.WriteLine(Utils.SerializeHumanReadable(tx));
             store?.Dispose();
@@ -211,41 +199,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                     store.PutTxIdBlockHashIndex(txId, blockHash);
                 }
             }
-        }
-
-        private IStore LoadStoreFromUri(string rawUri)
-        {
-            // FIXME: This method basically does the same thing to StatsCommand.LoadStoreFromUri()
-            // method and Libplanet.Explorer.Executable's Program.LoadStore() method.
-            // The duplicate code should be extract to a shared common method.
-            // https://github.com/planetarium/libplanet/issues/1573
-            var uri = new Uri(rawUri);
-            var scheme = uri.Scheme;
-            var splitScheme = scheme.Split('+');
-            if (splitScheme.Length <= 0 || splitScheme.Length > 2)
-            {
-                const string? exceptionMessage = "A key-value store URI must have a scheme, " +
-                                                 "e.g., default://, rocksdb+file://.";
-                throw new ArgumentException(exceptionMessage, nameof(rawUri));
-            }
-
-            if (!_storeConstructors.TryGetValue(
-                splitScheme[0],
-                out var constructor))
-            {
-                throw new NotSupportedException(
-                    $"No store backend supports the such scheme: {splitScheme[0]}.");
-            }
-
-            // NOTE: Actually, there is only File scheme support and it will work to check only.
-            if (splitScheme.Length == 2
-                && !Enum.TryParse<SchemeType>(splitScheme[1], ignoreCase: true, out _))
-            {
-                throw new NotSupportedException(
-                    $"No store backend supports the such scheme: {splitScheme[1]}.");
-            }
-
-            return constructor(uri.AbsolutePath);
         }
     }
 }

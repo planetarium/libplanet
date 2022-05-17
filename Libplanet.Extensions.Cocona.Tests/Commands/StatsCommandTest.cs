@@ -62,7 +62,7 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                         header: true,
                         offset: 0,
                         limit: 1));
-                Assert.Throws<NotSupportedException>(() =>
+                Assert.Throws<ArgumentException>(() =>
                     _command.Summary(
                         path: badPathScheme,
                         header: true,

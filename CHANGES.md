@@ -46,6 +46,12 @@ To be released.
 
 ### CLI tools
 
+ -  The following store URI schemes are deprecated:  [[#1573], [#1955]]
+
+     - `default`: Use `default+file` instead.
+     - `rocksdb`: Use `rocksdb+file` instead.
+
+[#1573]: https://github.com/planetarium/libplanet/issues/1573
 [#1953]: https://github.com/planetarium/libplanet/issues/1953
 [#1955]: https://github.com/planetarium/libplanet/pull/1955
 [#1959]: https://github.com/planetarium/libplanet/issues/1959

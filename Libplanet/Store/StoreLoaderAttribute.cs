@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -50,11 +51,21 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="storeUri">A URI referring to a store.</param>
         /// <returns>A pair of loaded <see cref="IStore"/> and <see cref="IStateStore"/>.</returns>
-        public static (IStore Store, IStateStore StateStore)? LoadStore(Uri storeUri) =>
-            ((IStore, IStateStore)?)FindStoreLoader(storeUri.Scheme)?.Invoke(
+        public static (IStore Store, IStateStore StateStore)? LoadStore(Uri storeUri)
+        {
+            const BindingFlags flags =
+                BindingFlags.Public |
+                BindingFlags.NonPublic |
+                BindingFlags.Static |
+                (BindingFlags)0x2000000;  // BindingFlags.DoNotWrapExceptions
+            return ((IStore, IStateStore)?)FindStoreLoader(storeUri.Scheme)?.Invoke(
                 null,
-                new object[] { storeUri }
+                flags,
+                null,
+                new object[] { storeUri },
+                CultureInfo.CurrentCulture
             );
+        }
 
         /// <summary>
         /// Lists all registered store loaders.

@@ -1315,10 +1315,8 @@ namespace Libplanet.RocksDBStore
                 blockEpochUnitSeconds,
                 dbConnectionCacheSize
             );
-            var stateStore = new TrieStateStore(
-                new RocksDBKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)),
-                secure
-            );
+            string statesDirPath = Path.Combine(storeUri.LocalPath, statesKvPath);
+            var stateStore = new TrieStateStore(new RocksDBKeyValueStore(statesDirPath), secure);
             return (store, stateStore);
         }
 

@@ -98,12 +98,12 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                     "rocksdb+file+file://" + "/blah",
                     "dummy"
                 ));
-            Assert.Throws<NotSupportedException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new StoreCommand().BlockByHash(
                     "rocksdb+memory://" + "/blah",
                     "dummy"
                 ));
-            Assert.Throws<NotSupportedException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new StoreCommand().BlockByHash(
                     "leveldb://" + "/blah",
                     "dummy"
