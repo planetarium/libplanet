@@ -1,9 +1,13 @@
+using Libplanet.Action;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public interface IState
+    public interface IState<T>
+        where T : IAction, new()
     {
-        public ConsensusMessage? Handle(ConsensusContext context, ConsensusMessage message);
+        public string Name { get; }
+
+        public ConsensusMessage? Handle(ConsensusContext<T> context, ConsensusMessage message);
     }
 }

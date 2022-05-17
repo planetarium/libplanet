@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
 using Xunit;
 
 namespace Libplanet.Net.Tests.Consensus
@@ -13,7 +16,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void RoundContext()
         {
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new RoundContext(0, new List<Address>(), 0, 0));
+                () => new RoundContext<DumbAction>(0, new List<Address>(), 0, 0));
         }
 
         [Fact]
@@ -21,7 +24,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             Address duplicatedAddress = new PrivateKey().ToAddress();
             Address uniqueAddress = new PrivateKey().ToAddress();
-            RoundContext context = TestUtils.CreateRoundContext();
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext();
             long initialVoteCount = context.VoteCount;
             context.Vote(duplicatedAddress);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
@@ -35,7 +38,7 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void ResetVote()
         {
-            RoundContext context = TestUtils.CreateRoundContext();
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext();
             context.Vote(new PrivateKey().ToAddress());
             context.ResetVote();
             Assert.Equal(0, context.VoteCount);
@@ -45,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void HasTwoThirdsAny()
         {
             List<Address> validator = new Address[3].ToList();
-            RoundContext context = TestUtils.CreateRoundContext(validator);
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validator);
             // 0 > 2
             Assert.False(context.HasTwoThirdsAny());
             context.Vote(new PrivateKey().ToAddress());
@@ -64,7 +67,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void LeaderElection()
         {
             List<Address> validator = new Address[3].ToList();
-            RoundContext context = TestUtils.CreateRoundContext(validator, round: 0);
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validator, round: 0);
             Assert.Equal(0, context.Round);
             Assert.Equal(0, context.LeaderElection());
             Assert.Equal(validator[0], context.Proposer());
@@ -85,7 +88,8 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void ToStringTest()
         {
-            byte[] data = { 0x01, 0x02 };
+            var fx = new MemoryStoreFixture();
+            BlockHash blockHash = fx.Block1.Hash;
             const long id = 3;
             const long height = 8;
             const long round = 20;
@@ -93,13 +97,13 @@ namespace Libplanet.Net.Tests.Consensus
             const long numberOfValidators = 7;
             const string step = "PreCommitState";
             const int voteCount = 2;
-            RoundContext context = TestUtils.CreateRoundContext(
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(
                 id: id,
                 validators: validators,
                 height: height,
                 round: round);
-            context.State = new PreCommitState();
-            context.Data = data;
+            context.State = new PreCommitState<DumbAction>();
+            context.BlockHash = blockHash;
             for (int i = 0; i < voteCount; i++)
             {
                 context.Vote(new PrivateKey().ToAddress());
@@ -108,7 +112,8 @@ namespace Libplanet.Net.Tests.Consensus
             // replace data field with encoding
             Assert.Equal(
                 $"{{\"node_id\":{id},\"number_of_validator\":{numberOfValidators}," +
-                $"\"height\":{height},\"round\":{round},\"step\":\"{step}\",\"data\":\"AQI=\"," +
+                $"\"height\":{height},\"round\":{round},\"step\":\"{step}\"," +
+                $"\"target_block\":\"{blockHash.ToString()}\"," +
                 $"\"vote_count\":{voteCount},\"current_election\":{context.LeaderElection()}}}",
                 context.ToString());
         }

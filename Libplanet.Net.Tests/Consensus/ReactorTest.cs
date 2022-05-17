@@ -1,28 +1,34 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
-using ILogger = Serilog.ILogger;
 
 namespace Libplanet.Net.Tests.Consensus
 {
     public abstract class ReactorTest
     {
         private const int Timeout = 60 * 1000;
-        private const int TimerTestTimeout = (int)ConsensusContext.TimeoutMillisecond;
+        private const int TimerTestTimeout = (int)ConsensusContext<DumbAction>.TimeoutMillisecond;
         private const int TimerTestMargin = 500;
 
+        private readonly StoreFixture _fx;
+
         private ILogger _logger;
-        private ITestOutputHelper _output;
 
         protected ReactorTest(ITestOutputHelper output)
         {
@@ -35,10 +41,11 @@ namespace Libplanet.Net.Tests.Consensus
                 .ForContext<ReactorTest>();
 
             _logger = Log.ForContext<ReactorTest>();
-            _output = output;
+            _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
         }
 
         public abstract IReactor CreateReactor(
+            BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
             RoutingTable? table = null,
             string host = "localhost",
@@ -60,11 +67,17 @@ namespace Libplanet.Net.Tests.Consensus
             const int proposeProcessWaitTime = 100;
             const int yieldTime = 200;
 
-            var reactor = CreateReactor(key, port: 11001, validators: validators);
+            var blockChain = new BlockChain<DumbAction>(
+                TestUtils.Policy,
+                new VolatileStagePolicy<DumbAction>(),
+                _fx.Store,
+                _fx.StateStore,
+                _fx.GenesisBlock);
+            var reactor = CreateReactor(blockChain, key, port: 11001, validators: validators);
 
             try
             {
-                reactor.Propose(Array.Empty<byte>());
+                reactor.Propose(_fx.Block1.Hash);
                 await Task.Delay(proposeProcessWaitTime);
 
                 var json =
@@ -76,7 +89,7 @@ namespace Libplanet.Net.Tests.Consensus
                 Assert.Equal(0L, json["height"].GetInt32());
                 Assert.Equal("PreVoteState", json["step"].GetString());
 
-                await Task.Delay((int)ConsensusContext.TimeoutMillisecond);
+                await Task.Delay((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -96,7 +109,7 @@ namespace Libplanet.Net.Tests.Consensus
                 Assert.Equal(0L, json["height"].GetInt32());
                 Assert.Equal("PreCommitState", json["step"].GetString());
 
-                Thread.Sleep((int)ConsensusContext.TimeoutMillisecond);
+                Thread.Sleep((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -134,25 +147,33 @@ namespace Libplanet.Net.Tests.Consensus
             var tables = new RoutingTable[count];
             var reactors = new IReactor[count];
             var validators = new List<Address>();
+            var stores = new IStore[count];
+            var blockChains = new BlockChain<DumbAction>[count];
 
             for (var i = 0; i < count; i++)
             {
                 keys[i] = new PrivateKey();
                 tables[i] = new RoutingTable(keys[i].ToAddress());
                 validators.Add(keys[i].ToAddress());
+                stores[i] = new MemoryStore();
+                blockChains[i] = new BlockChain<DumbAction>(
+                    TestUtils.Policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    stores[i],
+                    new TrieStateStore(new MemoryKeyValueStore()),
+                    _fx.GenesisBlock);
             }
 
             for (var i = 0; i < count; i++)
             {
                 reactors[i] = CreateReactor(
+                    blockChain: blockChains[i],
                     key: keys[i],
                     table: tables[i],
                     port: startPort + i,
                     id: i,
                     validators: validators);
             }
-
-            byte[] data = { 0x01, 0x02 };
 
             try
             {
@@ -181,7 +202,15 @@ namespace Libplanet.Net.Tests.Consensus
 
                 for (var proposeNode = 0; proposeNode < count; proposeNode++)
                 {
-                    reactors[proposeNode].Propose(data);
+                    Block<DumbAction> block = await blockChains[proposeNode].MineBlock(
+                        keys[proposeNode],
+                        append: false);
+                    foreach (IStore store in stores)
+                    {
+                        store.PutBlock(block);
+                    }
+
+                    reactors[proposeNode].Propose(block.Hash);
 
                     // For test accuracy, this test should not run in parallel.
                     Thread.Sleep(propagationDelay);

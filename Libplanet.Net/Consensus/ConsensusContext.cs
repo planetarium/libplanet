@@ -1,30 +1,32 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text;
 using System.Text.Json;
 using System.Timers;
+using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
-    public class ConsensusContext
+    public class ConsensusContext<T>
+        where T : IAction, new()
     {
         public const long TimeoutMillisecond = 10 * 1000;
 
+        private readonly BlockChain<T> _blockChain;
+        private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
         private readonly List<Address> _validators;
 
-        private ConcurrentDictionary<long, RoundContext> _roundContexts;
-        private BaseStore<string> _store;
-        private ILogger _logger;
+        private ConcurrentDictionary<long, RoundContext<T>> _roundContexts;
 
         public ConsensusContext(
             long nodeId,
             List<Address> validators,
-            BaseStore<string> store)
+            BlockChain<T> blockChain)
         {
             if (validators.Count <= 0)
             {
@@ -34,17 +36,17 @@ namespace Libplanet.Net.Consensus
             }
 
             NodeId = nodeId;
-            _store = store;
+            _blockChain = blockChain;
             _validators = validators;
-            _roundContexts = new ConcurrentDictionary<long, RoundContext>
+            _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>
             {
-                [0] = new RoundContext(NodeId, validators, Height, Round),
+                [0] = new RoundContext<T>(NodeId, validators, Height, Round),
             };
 
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
             _logger = Log
-                .ForContext<ConsensusReactor>()
-                .ForContext("Source", nameof(ConsensusReactor));
+                .ForContext<ConsensusContext<T>>()
+                .ForContext("Source", nameof(ConsensusContext<T>));
         }
 
         /// <summary>
@@ -62,23 +64,18 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public long NodeId { get; internal set; }
 
-        public RoundContext CurrentRoundContext => RoundContextOf(Round);
+        public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
-        // TODO: Add block to its argument.
-        public void CommitBlock()
+        public void CommitBlock(BlockHash hash)
         {
             Height++;
-            StoreData(CurrentRoundContext.Data);
+            Block<T> block = _blockChain.Store.GetBlock<T>(
+                _blockChain.Policy.GetHashAlgorithm,
+                hash);
+            _blockChain.Append(block);
             Round = 0;
-            _roundContexts = new ConcurrentDictionary<long, RoundContext>();
+            _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
         }
-
-        public void StoreData(byte[] data)
-        {
-            _store.Add(Encoding.Default.GetString(data).TrimEnd('\0'));
-        }
-
-        public ImmutableArray<string> LoadData() => _store.ToImmutableArray();
 
         public long NextRound()
         {
@@ -88,7 +85,7 @@ namespace Libplanet.Net.Consensus
             // FIXME: Should not re-create RoundContext. Instead, use new vote set.
             if (!_roundContexts.ContainsKey(Round))
             {
-                _roundContexts[Round] = new RoundContext(
+                _roundContexts[Round] = new RoundContext<T>(
                     NodeId,
                     _validators,
                     Height,
@@ -98,11 +95,11 @@ namespace Libplanet.Net.Consensus
             return Round;
         }
 
-        public RoundContext RoundContextOf(long round)
+        public RoundContext<T> RoundContextOf(long round)
         {
             if (!_roundContexts.ContainsKey(round))
             {
-                _roundContexts[round] = new RoundContext(
+                _roundContexts[round] = new RoundContext<T>(
                     NodeId,
                     _validators,
                     Height,
@@ -138,7 +135,7 @@ namespace Libplanet.Net.Consensus
                 { "number_of_validator", _validators.Count },
                 { "height", Height },
                 { "round", Round },
-                { "step", CurrentRoundContext.State.GetType().Name },
+                { "step", CurrentRoundContext.State.Name },
             };
             return JsonSerializer.Serialize(message);
         }
@@ -153,35 +150,35 @@ namespace Libplanet.Net.Consensus
                 NodeId,
                 CurrentRoundContext.Height,
                 CurrentRoundContext.Round,
-                CurrentRoundContext.State.GetType().Name,
+                CurrentRoundContext.State.Name,
                 Round,
                 Height);
 
             switch (CurrentRoundContext.State)
             {
-                case PreVoteState _:
-                    CurrentRoundContext.State = new PreCommitState();
+                case PreVoteState<T> _:
+                    CurrentRoundContext.State = new PreCommitState<T>();
                     StartTimeout();
                     break;
-                case PreCommitState _:
+                case PreCommitState<T> _:
                     NextRound();
                     StopTimeout();
                     break;
             }
         }
 
-        private void SetTimeoutByState(IState beforeRoundContext)
+        private void SetTimeoutByState(IState<T> beforeRoundContext)
         {
             switch (beforeRoundContext)
             {
-                case DefaultState _
-                    when CurrentRoundContext.State is PreVoteState:
-                case PreVoteState _
-                    when CurrentRoundContext.State is PreCommitState:
+                case DefaultState<T> _
+                    when CurrentRoundContext.State is PreVoteState<T>:
+                case PreVoteState<T> _
+                    when CurrentRoundContext.State is PreCommitState<T>:
                     StartTimeout();
                     break;
-                case PreCommitState _
-                    when CurrentRoundContext.State is DefaultState:
+                case PreCommitState<T> _
+                    when CurrentRoundContext.State is DefaultState<T>:
                     StopTimeout();
                     break;
             }
@@ -196,7 +193,7 @@ namespace Libplanet.Net.Consensus
                 CurrentRoundContext.NodeId,
                 CurrentRoundContext.Height,
                 CurrentRoundContext.Round,
-                CurrentRoundContext.State.GetType().Name,
+                CurrentRoundContext.State.Name,
                 DateTimeOffset.UtcNow.AddMilliseconds(TimeoutMillisecond));
             _timoutTicker.Set();
         }
@@ -209,7 +206,7 @@ namespace Libplanet.Net.Consensus
                 NodeId,
                 CurrentRoundContext.Height,
                 CurrentRoundContext.Round,
-                CurrentRoundContext.State.GetType().Name);
+                CurrentRoundContext.State.Name);
             _timoutTicker.Stop();
         }
     }

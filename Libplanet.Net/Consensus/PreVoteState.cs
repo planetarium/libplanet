@@ -1,10 +1,14 @@
+using Libplanet.Action;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public class PreVoteState : IState
+    public class PreVoteState<T> : IState<T>
+        where T : IAction, new()
     {
-        public ConsensusMessage? Handle(ConsensusContext context, ConsensusMessage message)
+        public string Name { get; } = "PreVoteState";
+
+        public ConsensusMessage? Handle(ConsensusContext<T> context, ConsensusMessage message)
         {
             return message switch
             {
@@ -13,7 +17,7 @@ namespace Libplanet.Net.Consensus
             };
         }
 
-        private ConsensusMessage? HandleVote(ConsensusContext context, ConsensusVote vote)
+        private ConsensusMessage? HandleVote(ConsensusContext<T> context, ConsensusVote vote)
         {
             if (context.Height != vote.Height)
             {
@@ -25,7 +29,12 @@ namespace Libplanet.Net.Consensus
                 throw new UnexpectedRoundProposeException(vote);
             }
 
-            RoundContext roundContext = context.CurrentRoundContext;
+            if (!context.CurrentRoundContext.BlockHash.Equals(vote.BlockHash))
+            {
+                throw new UnexpectedBlockHashException(vote);
+            }
+
+            RoundContext<T> roundContext = context.CurrentRoundContext;
             roundContext.Vote(vote.Remote?.Address);
 
             if (!roundContext.HasTwoThirdsAny())
@@ -34,12 +43,12 @@ namespace Libplanet.Net.Consensus
             }
 
             roundContext.ResetVote();
-            roundContext.State = new PreCommitState();
+            roundContext.State = new PreCommitState<T>();
             return new ConsensusCommit(
                 context.NodeId,
                 context.Height,
                 context.Round,
-                roundContext.Data);
+                roundContext.BlockHash);
         }
     }
 }

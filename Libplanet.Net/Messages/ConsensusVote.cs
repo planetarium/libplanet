@@ -1,9 +1,11 @@
+using Libplanet.Blocks;
+
 namespace Libplanet.Net.Messages
 {
     public class ConsensusVote : ConsensusMessage
     {
-        public ConsensusVote(long nodeId, long height, long round, byte[] data)
-            : base(nodeId, height, round, data)
+        public ConsensusVote(long nodeId, long height, long round, BlockHash blockHash)
+            : base(nodeId, height, round, blockHash)
         {
         }
 
