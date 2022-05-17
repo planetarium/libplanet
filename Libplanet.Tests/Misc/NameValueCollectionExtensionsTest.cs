@@ -30,6 +30,27 @@ namespace Libplanet.Tests.Misc
         }
 
         [Fact]
+        public void GetUInt64()
+        {
+            NameValueCollection c = HttpUtility.ParseQueryString(
+                "foo=12&bar=345&baz=-1&qux=0&quux=9999999999999999999999999999999999&quuz=invalid");
+            Assert.Equal(12UL, c.GetUInt64("foo"));
+            Assert.Equal(12UL, c.GetUInt64("foo", 11223344UL));
+            Assert.Equal(345UL, c.GetUInt64("bar"));
+            Assert.Equal(345UL, c.GetUInt64("bar", 11223344UL));
+            Assert.Throws<OverflowException>(() => c.GetUInt64("baz"));
+            Assert.Equal(11223344UL, c.GetUInt64("baz", 11223344UL));
+            Assert.Equal(0UL, c.GetUInt64("qux"));
+            Assert.Equal(0UL, c.GetUInt64("qux", 11223344UL));
+            Assert.Throws<OverflowException>(() => c.GetUInt64("quux"));
+            Assert.Equal(11223344UL, c.GetUInt64("quux", 11223344UL));
+            Assert.Throws<FormatException>(() => c.GetUInt64("quuz"));
+            Assert.Equal(11223344UL, c.GetUInt64("quuz", 11223344UL));
+            Assert.Null(c.GetUInt64("non-existent"));
+            Assert.Equal(11223344UL, c.GetUInt64("non-existent", 11223344UL));
+        }
+
+        [Fact]
         public void GetBoolean()
         {
             NameValueCollection c = HttpUtility.ParseQueryString(
