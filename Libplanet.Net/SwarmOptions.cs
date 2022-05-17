@@ -2,10 +2,10 @@ using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Blockchain;
-using Libplanet.Tx;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
+using Libplanet.Tx;
 
 namespace Libplanet.Net
 {

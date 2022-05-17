@@ -14,6 +14,23 @@ To be released.
     neither parmeter `TimeSpan singleSessionTimeout` nor
     `int millisecondsSingleSessionTimeout` to regulate a single session length.
     [[#1961]]
+ -  (Libplanet.Net) General API changes made to `Swarm<T>.BootstrapAsync()`,
+    `Swarm<T>.PreloadAsync()`, and `Swarm<T>.StartAsync()`.  [[#1962]]
+     -  `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, double, double,
+        int, CancellationToken)` replaced with
+        `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, int, CancellationToken)`
+        which uses default values provided by `SwarmOptions` for
+        `pingSeedTimeout` and `findPeerTimeout`.
+     -  `Swarm<T>.StartAsync(int, int, int CancellationToken)`
+        replaced with `Swarm<T>.StartAsync(CancellationToken)`
+        which uses default values provided by `SwarmOptions` for
+        `millisecondsDialTimeout`, `millisecondsBroadcastBlockInterval`
+        and `millisecondsBroadcastTxInterval`.
+     -  `Swarm<T>.PreloadAsync(IProgress<PreloadState>,
+        bool, long, CancellationToken)` overload method added and
+        `Swarm<T>.PreloadAsync(TimeSpan?, IProgress<PreloadState>, bool
+        long, CancellationToken)` changed to `Swarm<T>.PreloadAsync(
+        TimeSpan, IProgress<PreloadState>, bool, long, CancellationToken)`
 
 ### Backward-incompatible network protocol changes
 
@@ -27,6 +44,10 @@ To be released.
  -  Added `NameValueCollectionExtensions` static class.  [[#1955]]
  -  Added `TimeSpanExtensions.Multiply()` static method.  [[#1966]]
  -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
+ -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
+ -  `TimeoutOptions` class added.  [[#1957], [#1962]]
+ -  `SwarmOptions.BlockBroadcastInterval` and `SwarmOptions.TxBroadcastInterval`
+    properties added.  [[#1962]]
 
 ### Behavioral changes
 
@@ -48,21 +69,16 @@ To be released.
 
  -  The following store URI schemes are deprecated:  [[#1573], [#1955]]
 
-     - `default`: Use `default+file` instead.
-     - `rocksdb`: Use `rocksdb+file` instead.
-
 [#1359]: https://github.com/planetarium/libplanet/issues/1359
 [#1573]: https://github.com/planetarium/libplanet/issues/1573
 [#1953]: https://github.com/planetarium/libplanet/issues/1953
 [#1955]: https://github.com/planetarium/libplanet/pull/1955
-[#1959]: https://github.com/planetarium/libplanet/issues/1959
+[#1957]: https://github.com/planetarium/libplanet/issues/1957
 [#1960]: https://github.com/planetarium/libplanet/pull/1960
-[#1961]: https://github.com/planetarium/libplanet/pull/1961
 [#1966]: https://github.com/planetarium/libplanet/pull/1966
 
 
 Version 0.34.0
---------------
 
 Released on May 13th, 2022.
 
