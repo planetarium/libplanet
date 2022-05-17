@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -82,16 +83,51 @@ namespace Libplanet.Store
             var paramType = typeof(Uri);
             var retType = typeof((IStore, IStateStore));
             return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
+                .SelectMany(a =>
+                {
+                    try
+                    {
+                        return a.GetTypes();
+                    }
+                    catch (Exception e)
+                        when (e is TypeLoadException ||
+                              e is ReflectionTypeLoadException ||
+                              e is FileNotFoundException)
+                    {
+                        return Enumerable.Empty<Type>();
+                    }
+                })
                 .SelectMany(t =>
-                    t.GetMethods(BindingFlags.Static |
-                        BindingFlags.NonPublic | BindingFlags.Public))
+                {
+                    try
+                    {
+                        return t.GetMethods(BindingFlags.Static |
+                            BindingFlags.NonPublic | BindingFlags.Public);
+                    }
+                    catch (Exception e)
+                        when (e is TypeLoadException ||
+                              e is ReflectionTypeLoadException ||
+                              e is FileNotFoundException)
+                    {
+                        return Enumerable.Empty<MethodInfo>();
+                    }
+                })
                 .Where(m =>
                 {
-                    ParameterInfo[] parameters = m.GetParameters();
-                    return parameters.Length == 1 &&
-                           paramType.IsAssignableFrom(parameters[0].ParameterType) &&
-                           retType.IsAssignableFrom(m.ReturnType);
+                    try
+                    {
+                        ParameterInfo[] parameters = m.GetParameters();
+                        return parameters.Length == 1 &&
+                               paramType.IsAssignableFrom(parameters[0].ParameterType) &&
+                               retType.IsAssignableFrom(m.ReturnType);
+                    }
+                    catch (Exception e)
+                        when (e is TypeLoadException ||
+                              e is ReflectionTypeLoadException ||
+                              e is FileNotFoundException)
+                    {
+                        return false;
+                    }
                 })
                 .SelectMany(m =>
                 {
