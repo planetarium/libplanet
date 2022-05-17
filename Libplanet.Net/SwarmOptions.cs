@@ -85,6 +85,20 @@ namespace Libplanet.Net
         public int MinimumBroadcastTarget { get; set; } = 10;
 
         /// <summary>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMessage"/>
+        /// to its peers.
+        /// </summary>
+        public TimeSpan BlockHeaderMessageBroadcastInterval { get; set; }
+            = TimeSpan.FromMilliseconds(15_000);
+
+        /// <summary>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIds"/>
+        /// to its peers.
+        /// </summary>
+        public TimeSpan TxIdsBroadcastInterval { get; set; }
+            = TimeSpan.FromMilliseconds(5_000);
+
+        /// <summary>
         /// The number of buckets of the Kademlia based routing table.
         /// </summary>
         /// <seealso cref="RoutingTable"/>
