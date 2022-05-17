@@ -1,11 +1,14 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web;
 using Bencodex;
 using Libplanet.Blocks;
+using Libplanet.Misc;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LruCacheNet;
@@ -18,6 +21,72 @@ namespace Libplanet.RocksDBStore
     /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IStore"/> implementation,
     /// which is more production-ready than <see cref="DefaultStore"/>.
     /// This stores data in the RocksDB with multiple partitions under the hood.
+    /// <para><see cref="RocksDBStore"/> and <see cref="RocksDBKeyValueStore"/>-backed
+    /// <see cref="TrieStateStore"/> can be instantiated from a URI with <c>rocksdb+file:</c> scheme
+    /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
+    /// <list type="bullet">
+    /// <item><description><c>rocksdb+file:///var/data/planet/</c></description></item>
+    /// <item><description><c>rocksdb+file:///c:/Users/john/AppData/Local/planet/</c></description>
+    /// </item>
+    /// <item><description><c>rocksdb+file:///var/data/planet/?secure=true</c>
+    /// (trie keys are hashed)</description></item>
+    /// </list>
+    /// <para>The following query string parameters are supported:</para>
+    /// <list type="table">
+    /// <item>
+    /// <term><c>block-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>blockCacheSize</c> parameter.  512 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>tx-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>txCacheSize</c> parameter.  1024 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>max-total-wal-size</c></term>
+    /// <description>Corresponds to RocksDB's <c>max_total_wal_size</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>keep-log-file-num</c></term>
+    /// <description>Corresponds to RocksDB's <c>keep_log_file_num</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>max_log_file_size</c></term>
+    /// <description>Corresponds to RocksDB's <c>max_log_file_size</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>tx-epoch-unit-secs</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>txEpochUnitSeconds</c> parameter.  86400 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>block-epoch-unit-secs</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>blockEpochUnitSeconds</c> parameter.  86400 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>connection-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>dbConnectionCacheSize</c> parameter.  100 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>states-dir</c></term>
+    /// <description>Corresponds to <see cref="RocksDBKeyValueStore(string)"/>'s <c>path</c>
+    /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>secure</c></term>
+    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <see cref="TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s <c>secure</c>
+    /// parameter.</description>
+    /// </item>
+    /// </list>
     /// </summary>
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
@@ -30,6 +99,7 @@ namespace Libplanet.RocksDBStore
         private const string TxExecutionDbName = "txexec";
         private const string TxIdBlockHashIndexDbName = "txbindex";
         private const string ChainDbName = "chain";
+        private const string StatesKvPathDefault = "states";
         private const int ForkWriteBatchSize = 100000;
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
@@ -1218,6 +1288,38 @@ namespace Libplanet.RocksDBStore
 
             _chainDb.Write(batch);
             batch.Clear();
+        }
+
+        [StoreLoader("rocksdb+file")]
+        private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
+        {
+            NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
+            int blockCacheSize = query.GetInt32("block-cache", 512);
+            int txCacheSize = query.GetInt32("tx-cache", 1024);
+            ulong? maxTotalWalSize = query.GetUInt64("max-total-wal-size");
+            ulong? keepLogFileNum = query.GetUInt64("keep-log-file-num");
+            ulong? maxLogFileSize = query.GetUInt64("max-log-file-size");
+            int txEpochUnitSeconds = query.GetInt32("tx-epoch-unit-secs", 86400);
+            int blockEpochUnitSeconds = query.GetInt32("block-epoch-unit-secs", 86400);
+            int dbConnectionCacheSize = query.GetInt32("connection-cache", 100);
+            string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
+            bool secure = query.GetBoolean("secure");
+            var store = new RocksDBStore(
+                storeUri.LocalPath,
+                blockCacheSize,
+                txCacheSize,
+                maxTotalWalSize,
+                keepLogFileNum,
+                maxLogFileSize,
+                txEpochUnitSeconds,
+                blockEpochUnitSeconds,
+                dbConnectionCacheSize
+            );
+            var stateStore = new TrieStateStore(
+                new RocksDBKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)),
+                secure
+            );
+            return (store, stateStore);
         }
 
         private static byte[] DeletedChainKey(Guid chainId)

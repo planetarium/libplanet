@@ -36,6 +36,9 @@ To be released.
  -  `MemoryStore` and `MemoryKeyValueStore`-backed `TrieStateStore` now can be
     instantiated with URI scheme `memory:` using
     `StoreLoaderAttribute.LoadStore()` method.  [[#1953], [#1955]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore`-backed
+    `TrieStateStore` now can be instantiated with URI scheme `rocksdb+file:`
+    using `StoreLoaderAttribute.LoadStore()` method.  [[#1953], [#1955]]
 
 ### Bug fixes
 
