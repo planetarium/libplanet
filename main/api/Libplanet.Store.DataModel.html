@@ -89,7 +89,8 @@ However, there are certain restrictions that apply when using this <code>class</
         The complete list of allowed property types are as follows:
 <ul><li>
         Primitive types: <code>bool</code>, <code>int</code>, <code>long</code>, <code>BigInteger</code>,
-<code>ImmutableArray&lt;byte></code>, <code>Address</code>, and <code>string</code>.
+<code>ImmutableArray&lt;byte></code>, <code>Guid</code>, <code>Address</code>,
+and <code>string</code>.
 </li><li>
     Special types: Any type inherited from <a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a>.
 </li><li>
@@ -101,7 +102,7 @@ However, there are certain restrictions that apply when using this <code>class</
 <ul><li>
 <code>TKey</code> is one of
 <code>ImmutableArray&lt;byte></code>, <code>Address</code>,
-and <code>string</code>.
+<code>Guid</code>, and <code>string</code>.
 </li><li>
 <code>TValue</code> is a primitive type.
 </li></ul>
@@ -147,9 +148,9 @@ and <code>string</code>.
 <see cref="!:ImmutableDictionary&lt;TKey,TValue>"></see> property type.
 </li><li>
     As supported types are limited, in particular, nullable types and nested
-    collection types, if a custom data model that isn&apos;t supported by this class
-    is needed, manual implementation of encoding and decoding should be done
-    separately.
+    collection types not being allowed, if a custom data model that isn&apos;t supported
+    by this class is needed, manual implementation of encoding and decoding
+    should be done separately.
 </li></ul>
 </div>
   <h5 id="Libplanet_Store_DataModel_examples"><strong>Examples</strong></h5>
@@ -217,9 +218,7 @@ Bencodex.Types.Dictionary encoded = characterData.Encode()</code></pre>
 <p>To decode this back into an instance, simply use it as shown below:</p>
 <pre><code>CharacterData decoded = new CharacterData(encoded);</code></pre>
 <p>Then <code>decoded.Name</code>, <code>decoded.Level</code>, and <code>decoded.Inv.Gold</code> will have
-values <code>&quot;John&quot;</code>, <code>5</code>, and <code>100</code> respectively.
-Note that in the example above, an additional casting to a decoded
-<a class="xref" href="Libplanet.Store.DataModel.html">DataModel</a> object is required.</p>
+values <code>&quot;John&quot;</code>, <code>5</code>, and <code>100</code> respectively.</p>
 
   <h3 id="constructors">Constructors
   </h3>
@@ -228,7 +227,7 @@ Note that in the example above, an additional casting to a decoded
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DataModel__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Store.DataModel.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DataModel.cs/#L178">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DataModel.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Store_DataModel__ctor_" data-uid="Libplanet.Store.DataModel.#ctor*"></a>
   <h4 id="Libplanet_Store_DataModel__ctor" data-uid="Libplanet.Store.DataModel.#ctor">DataModel()</h4>
@@ -243,7 +242,7 @@ Note that in the example above, an additional casting to a decoded
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Store.DataModel.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DataModel.cs/#L193">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/DataModel.cs/#L192">View Source</a>
   </span>
   <a id="Libplanet_Store_DataModel__ctor_" data-uid="Libplanet.Store.DataModel.#ctor*"></a>
   <h4 id="Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Store.DataModel.#ctor(Bencodex.Types.Dictionary)">DataModel(Bencodex.Types.Dictionary)</h4>
