@@ -56,7 +56,29 @@ namespace Libplanet.Net
         /// </param>
         public void Add(CandidateBranch<T> branch, IBlockHeader currentTip)
         {
-            BestBranch ??= branch;
+            if (!IsBlockNeeded(branch.Tip, currentTip))
+            {
+                return;
+            }
+
+            // If BestBranch is not initialized, set incoming branch as BestBranch.
+            if (BestBranch is null)
+            {
+                if (AreBlocksContinuous(branch.Blocks))
+                {
+                    BestBranch = branch;
+                    Branches.Add(branch);
+                }
+
+                return;
+            }
+
+            // Check if branch has continuous blocks
+            if (!AreBlocksContinuous(branch.Blocks))
+            {
+                return;
+            }
+
             BestBranch = CompareBranch(BestBranch, branch);
 
             Branches.Add(branch);

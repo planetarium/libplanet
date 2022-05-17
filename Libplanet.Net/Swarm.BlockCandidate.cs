@@ -396,7 +396,7 @@ namespace Libplanet.Net
                 cancellationToken);
             var blocks = await blocksAsync.ToArrayAsync(cancellationToken);
             var branch = new CandidateBranch<T>(blocks.ToList());
-            BlockCandidateTable.Add(branch);
+            BlockCandidateTable.Add(branch, blockChain.Tip);
             return true;
         }
     }
