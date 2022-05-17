@@ -27,12 +27,6 @@
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.Services" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="DiffPlex" Version="1.7.0" />
@@ -67,6 +61,7 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="Mono.HttpUtility" Version="1.0.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">

@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Specialized;
-using System.Web;
+#if !NETFRAMEWORK
+using static System.Web.HttpUtility;
+#endif
 using Libplanet.Misc;
+#if NETFRAMEWORK
+using static Mono.Web.HttpUtility;
+#endif
 using Xunit;
 
 namespace Libplanet.Tests.Misc
@@ -11,7 +16,7 @@ namespace Libplanet.Tests.Misc
         [Fact]
         public void GetInt32()
         {
-            NameValueCollection c = HttpUtility.ParseQueryString(
+            NameValueCollection c = ParseQueryString(
                 "foo=12&bar=345&baz=-1&qux=0&quux=9999999999999999&quuz=invalid");
             Assert.Equal(12, c.GetInt32("foo"));
             Assert.Equal(12, c.GetInt32("foo", -123));
@@ -32,7 +37,7 @@ namespace Libplanet.Tests.Misc
         [Fact]
         public void GetUInt64()
         {
-            NameValueCollection c = HttpUtility.ParseQueryString(
+            NameValueCollection c = ParseQueryString(
                 "foo=12&bar=345&baz=-1&qux=0&quux=9999999999999999999999999999999999&quuz=invalid");
             Assert.Equal(12UL, c.GetUInt64("foo"));
             Assert.Equal(12UL, c.GetUInt64("foo", 11223344UL));
@@ -53,7 +58,7 @@ namespace Libplanet.Tests.Misc
         [Fact]
         public void GetBoolean()
         {
-            NameValueCollection c = HttpUtility.ParseQueryString(
+            NameValueCollection c = ParseQueryString(
                 "num-f=0&num-t=1&yn-f=n&yn-t=y&yesno-f=no&yesno-t=yes&tf-t=t&tf-f=f&" +
                 "truefalse-t=true&truefalse-f=false&onoff-t=on&onoff-f=off&invalid=xyz"
             );

@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Specialized;
-using System.Web;
+#if !NETFRAMEWORK
+using static System.Web.HttpUtility;
+#endif
 using Libplanet.Misc;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+#if NETFRAMEWORK
+using static Mono.Web.HttpUtility;
+#endif
 using Xunit;
 
 namespace Libplanet.Tests.Store
@@ -55,7 +60,7 @@ namespace Libplanet.Tests.Store
         [StoreLoader("test")]
         private static (IStore Store, IStateStore StateStore) TestLoader(Uri storeUri)
         {
-            NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
+            NameValueCollection query = ParseQueryString(storeUri.Query);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(
                 new MemoryKeyValueStore(),
