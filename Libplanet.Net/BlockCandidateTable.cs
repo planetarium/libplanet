@@ -33,10 +33,7 @@ namespace Libplanet.Net
         /// </summary>
         public CandidateBranch<T>? BestBranch { get; private set; }
 
-        public long Count
-        {
-            get => Branches.Count;
-        }
+        public long Count => Branches.Count;
 
         /// <summary>
         /// An <see cref="IEnumerable{T}"/> of
@@ -46,7 +43,7 @@ namespace Libplanet.Net
         private ConcurrentBag<CandidateBranch<T>> Branches { get; set; }
 
         /// <summary>
-        /// Adds an <see cref="CandidateBranch{T}"/> to <see cref="Branches"/>.
+        /// Adds a <see cref="CandidateBranch{T}"/> to <see cref="Branches"/>.
         /// </summary>
         /// <param name="branch">The <see cref="CandidateBranch{T}"/>
         /// to add to <see cref="Branches"/>.
@@ -61,7 +58,6 @@ namespace Libplanet.Net
                 return;
             }
 
-            // If BestBranch is not initialized, set incoming branch as BestBranch.
             if (BestBranch is null)
             {
                 if (AreBlocksContinuous(branch.Blocks))
@@ -73,7 +69,6 @@ namespace Libplanet.Net
                 return;
             }
 
-            // Check if branch has continuous blocks
             if (!AreBlocksContinuous(branch.Blocks))
             {
                 return;
