@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -55,9 +56,18 @@ namespace Libplanet.Store
                 new object[] { storeUri }
             );
 
-        private static MethodInfo? FindStoreLoader(string uriScheme)
+        /// <summary>
+        /// Lists all registered store loaders.
+        /// </summary>
+        /// <returns>Pairs of registered URI scheme and declaring type.</returns>
+        public static IEnumerable<(string UriScheme, Type DeclaringType)> ListStoreLoaders() =>
+            ListStoreLoaderMethods().SelectMany(pair =>
+                pair.Loader.DeclaringType is { } declType
+                    ? new[] { (pair.UriScheme, declType) }
+                    : Enumerable.Empty<(string, Type)>());
+
+        private static IEnumerable<(string UriScheme, MethodInfo Loader)> ListStoreLoaderMethods()
         {
-            uriScheme = uriScheme.ToLowerInvariant();
             var paramType = typeof(Uri);
             var retType = typeof((IStore, IStateStore));
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -65,21 +75,25 @@ namespace Libplanet.Store
                 .SelectMany(t =>
                     t.GetMethods(BindingFlags.Static |
                         BindingFlags.NonPublic | BindingFlags.Public))
-                .FirstOrDefault(m =>
+                .Where(m =>
                 {
-                    var attrMatched = m.GetCustomAttributes<StoreLoaderAttribute>()
-                        .Any(attr => attr.UriScheme.Equals(
-                            uriScheme,
-                            StringComparison.InvariantCulture));
-                    if (!(attrMatched && retType.IsAssignableFrom(m.ReturnType)))
-                    {
-                        return false;
-                    }
-
                     ParameterInfo[] parameters = m.GetParameters();
                     return parameters.Length == 1 &&
-                           paramType.IsAssignableFrom(parameters[0].ParameterType);
+                           paramType.IsAssignableFrom(parameters[0].ParameterType) &&
+                           retType.IsAssignableFrom(m.ReturnType);
+                })
+                .SelectMany(m =>
+                {
+                    return m.GetCustomAttributes<StoreLoaderAttribute>()
+                        .Select(attr => (attr.UriScheme, m));
                 });
         }
+
+        private static MethodInfo? FindStoreLoader(string uriScheme) =>
+            ListStoreLoaderMethods()
+                .Cast<(string, MethodInfo)?>()
+                .FirstOrDefault(pair =>
+                    pair?.Item1?.Equals(uriScheme, StringComparison.InvariantCulture) == true)
+                ?.Item2;
     }
 }

@@ -18,6 +18,20 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void ListStoreLoaders()
+        {
+            Assert.Contains(
+                StoreLoaderAttribute.ListStoreLoaders(),
+                pair => pair.UriScheme == "test" &&
+                    pair.DeclaringType == typeof(StoreLoaderAttributeTest)
+            );
+            Assert.DoesNotContain(
+                StoreLoaderAttribute.ListStoreLoaders(),
+                pair => pair.UriScheme == "non-existent"
+            );
+        }
+
+        [Fact]
         public void LoadStore()
         {
             Assert.Null(StoreLoaderAttribute.LoadStore(new Uri("non-existent+test://")));
