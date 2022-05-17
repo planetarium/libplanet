@@ -30,6 +30,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `DefaultStore` and `DefaultKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `default+file:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1953], [#1955]]
  -  `MemoryStore` and `MemoryKeyValueStore`-backed `TrieStateStore` now can be
     instantiated with URI scheme `memory:` using
     `StoreLoaderAttribute.LoadStore()` method.  [[#1953], [#1955]]
