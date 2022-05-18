@@ -9,7 +9,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Consensus
 {
     /// <summary>
-    /// Represents a any vote from validators for consensus.
+    /// Represents any vote from validators for consensus.
     /// </summary>
     public readonly struct Vote : IEquatable<Vote>
     {
@@ -24,7 +24,7 @@ namespace Libplanet.Consensus
         private const string SignatureKey = "signature";
 
         /// <summary>
-        /// Create vote instance.
+        /// Create a vote instance.
         /// </summary>
         /// <param name="height">Height of the vote target block.</param>
         /// <param name="round">Round of the vote in given height.</param>
@@ -58,7 +58,7 @@ namespace Libplanet.Consensus
         }
 
         /// <summary>
-        /// Create vote instance.
+        /// Create a vote instance.
         /// </summary>
         /// <param name="marshaled">Marshaled value of the vote. <seealso cref="ByteArray"/></param>
         /// <exception cref="ArgumentException">

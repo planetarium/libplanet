@@ -1,5 +1,8 @@
 namespace Libplanet.Consensus
 {
+    /// <summary>
+    /// A State about <see cref="Vote"/>.
+    /// </summary>
     public enum VoteFlag
     {
         /// <summary>
@@ -8,12 +11,12 @@ namespace Libplanet.Consensus
         Unknown = 0,
 
         /// <summary>
-        /// Vote.
+        /// Vote. but not commit.
         /// </summary>
         Absent = 1,
 
         /// <summary>
-        /// Commit.
+        /// Vote and Commit.
         /// </summary>
         Commit = 2,
 
