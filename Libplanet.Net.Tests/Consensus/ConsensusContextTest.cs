@@ -1,58 +1,61 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
 using Xunit;
 
 namespace Libplanet.Net.Tests.Consensus
 {
     public class ConsensusContextTest
     {
+        private readonly StoreFixture _fx;
+        private readonly BlockChain<DumbAction> _blockChain;
+
+        public ConsensusContextTest()
+        {
+            _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
+            _blockChain = new BlockChain<DumbAction>(
+                TestUtils.Policy,
+                new VolatileStagePolicy<DumbAction>(),
+                _fx.Store,
+                _fx.StateStore,
+                _fx.GenesisBlock);
+        }
+
         [Fact]
         public void ConsensusContext()
         {
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new ConsensusContext(0, new List<Address>(), new BaseStore<string>()));
+                () => new ConsensusContext<DumbAction>(
+                    0,
+                    new List<Address>(),
+                    _blockChain));
         }
 
         [Fact]
-        public void CommitBlock()
+        public async void CommitBlock()
         {
-            ConsensusContext context = TestUtils.CreateConsensusContext();
+            Block<DumbAction> block =
+                await _blockChain.MineBlock(new PrivateKey(), append: false);
+            _fx.Store.PutBlock(block);
+            ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
             context.Round = 3;
             long prevHeight = context.Height;
-            context.CommitBlock();
+            context.CommitBlock(block.Hash);
             Assert.Equal(prevHeight + 1, context.Height);
             Assert.Equal(0, context.Round);
         }
 
         [Fact]
-        public void StoreLoadData()
-        {
-            byte[] data1 = { 0x01, 0x02 };
-            byte[] data2 = { 0x02, 0x03 };
-            ConsensusContext context = TestUtils.CreateConsensusContext();
-            context.StoreData(data1);
-            Assert.Single(context.LoadData());
-            Assert.Equal(
-                new[] { Encoding.Default.GetString(data1).TrimEnd('\0') }.ToHashSet(),
-                context.LoadData().ToHashSet());
-            context.StoreData(data2);
-            Assert.Equal(2, context.LoadData().Length);
-            Assert.Equal(
-                new[]
-                {
-                    Encoding.Default.GetString(data1).TrimEnd('\0'),
-                    Encoding.Default.GetString(data2).TrimEnd('\0'),
-                }.ToHashSet(),
-                context.LoadData().ToHashSet());
-        }
-
-        [Fact]
         public void NextRound()
         {
-            ConsensusContext context = TestUtils.CreateConsensusContext();
+            ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
             context.NextRound();
             Assert.Equal(1, context.Round);
         }
@@ -60,7 +63,7 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void RoundContextOf()
         {
-            ConsensusContext context = TestUtils.CreateConsensusContext();
+            ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
             context.NextRound();
             Assert.Equal(0, context.RoundContextOf(0).Round);
             Assert.Equal(1, context.RoundContextOf(1).Round);
@@ -75,7 +78,8 @@ namespace Libplanet.Net.Tests.Consensus
             long height = 6;
             long round = 5;
             string step = "DefaultState";
-            ConsensusContext context = TestUtils.CreateConsensusContext(validators, nodeId);
+            ConsensusContext<DumbAction> context =
+                TestUtils.CreateConsensusContext(validators, _blockChain, nodeId);
             context.Height = height;
             context.Round = round;
             Assert.Equal(

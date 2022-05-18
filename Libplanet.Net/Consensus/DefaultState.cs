@@ -1,10 +1,14 @@
+using Libplanet.Action;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
-    public class DefaultState : IState
+    public class DefaultState<T> : IState<T>
+        where T : IAction, new()
     {
-        public ConsensusMessage Handle(ConsensusContext context, ConsensusMessage message)
+        public string Name { get; } = "DefaultState";
+
+        public ConsensusMessage Handle(ConsensusContext<T> context, ConsensusMessage message)
         {
             return message switch
             {
@@ -13,7 +17,9 @@ namespace Libplanet.Net.Consensus
             };
         }
 
-        private ConsensusMessage HandlePropose(ConsensusContext context, ConsensusPropose propose)
+        private ConsensusMessage HandlePropose(
+            ConsensusContext<T> context,
+            ConsensusPropose propose)
         {
             if (context.Height != propose.Height)
             {
@@ -25,7 +31,7 @@ namespace Libplanet.Net.Consensus
                 throw new UnexpectedRoundProposeException(propose);
             }
 
-            RoundContext roundContext = context.CurrentRoundContext;
+            RoundContext<T> roundContext = context.CurrentRoundContext;
             if (roundContext.LeaderElection() != propose.NodeId)
             {
                 throw new UnexpectedLeaderProposeException(propose);
@@ -36,13 +42,13 @@ namespace Libplanet.Net.Consensus
                 throw new UnexpectedLeaderProposeException(propose);
             }
 
-            roundContext.Data = propose.Data;
-            roundContext.State = new PreVoteState();
+            roundContext.BlockHash = propose.BlockHash;
+            roundContext.State = new PreVoteState<T>();
             return new ConsensusVote(
                 context.NodeId,
                 context.Height,
                 context.Round,
-                roundContext.Data);
+                roundContext.BlockHash);
         }
     }
 }

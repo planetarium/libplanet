@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -9,26 +12,27 @@ using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
-    public partial class ConsensusReactor : IReactor
+    public class ConsensusReactor<T> : IReactor
+        where T : IAction, new()
     {
         private RoutingTable _routingTable;
         private ITransport _transport;
-        private ConsensusContext _context;
+        private ConsensusContext<T> _context;
         private ILogger _logger;
 
         public ConsensusReactor(
             RoutingTable routingTable,
             ITransport transport,
-            BaseStore<string> store,
+            BlockChain<T> blockChain,
             long nodeId,
             List<Address> validators)
         {
             _routingTable = routingTable;
             _transport = transport;
             _logger = Log
-                .ForContext<ConsensusReactor>()
-                .ForContext("Source", nameof(ConsensusReactor));
-            _context = new ConsensusContext(nodeId, validators, store);
+                .ForContext<ConsensusReactor<T>>()
+                .ForContext("Source", nameof(ConsensusReactor<T>));
+            _context = new ConsensusContext<T>(nodeId, validators, blockChain);
         }
 
         public void Dispose()
@@ -77,7 +81,7 @@ namespace Libplanet.Net.Consensus
             BroadcastMessage(res);
         }
 
-        public void Propose(byte[] data)
+        public void Propose(BlockHash blockHash)
         {
             if (_context.CurrentRoundContext.LeaderElection() != _context.NodeId)
             {
@@ -85,17 +89,17 @@ namespace Libplanet.Net.Consensus
             }
 
             Log.Debug(
-                "Propose Data: {Data}, Proposer: {NodeId}, Height: {Height}, Round: {Round}",
-                data,
+                "Propose Block: {Hash}, Proposer: {NodeId}, Height: {Height}, Round: {Round}",
+                blockHash,
                 _context.NodeId,
                 _context.Height,
                 _context.Round);
-            _context.CurrentRoundContext.Data = data;
+            _context.CurrentRoundContext.BlockHash = blockHash;
             var propose = new ConsensusPropose(
                 _context.NodeId,
                 _context.Height,
                 _context.Round,
-                _context.CurrentRoundContext.Data)
+                blockHash)
             {
                 Remote = _transport.AsPeer,
             };

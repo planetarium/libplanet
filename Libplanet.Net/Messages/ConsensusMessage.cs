@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
     public abstract class ConsensusMessage : Message
     {
-        protected ConsensusMessage(long nodeId, long height, long round, byte[] data)
+        protected ConsensusMessage(long nodeId, long height, long round, BlockHash blockHash)
         {
             Round = round;
             Height = height;
-            Data = data;
+            BlockHash = blockHash;
             NodeId = nodeId;
         }
 
@@ -18,7 +19,7 @@ namespace Libplanet.Net.Messages
             NodeId = BitConverter.ToInt64(dataframes[0], 0);
             Height = BitConverter.ToInt64(dataframes[1], 0);
             Round = BitConverter.ToInt64(dataframes[2], 0);
-            Data = dataframes[2];
+            BlockHash = new BlockHash(dataframes[3]);
         }
 
         public long Height { get; }
@@ -27,14 +28,14 @@ namespace Libplanet.Net.Messages
 
         public long NodeId { get; }
 
-        public byte[] Data { get; }
+        public BlockHash BlockHash { get; }
 
         public override IEnumerable<byte[]> DataFrames => new[]
         {
             BitConverter.GetBytes(NodeId),
             BitConverter.GetBytes(Height),
             BitConverter.GetBytes(Round),
-            Data,
+            BlockHash.ToByteArray(),
         };
     }
 }

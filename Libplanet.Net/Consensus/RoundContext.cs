@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using Libplanet.Action;
+using Libplanet.Blocks;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
-    public class RoundContext
+    public class RoundContext<T>
+        where T : IAction, new()
     {
         private readonly object _lock;
         private readonly long _numberOfValidator;
@@ -30,15 +33,15 @@ namespace Libplanet.Net.Consensus
 
             NodeId = nodeId;
             _numberOfValidator = validators.Count;
-            State = new DefaultState();
-            Data = Array.Empty<byte>();
+            State = new DefaultState<T>();
+            BlockHash = default;
             Height = height;
             Round = round;
             _votes = new List<Address>();
             _lock = new object();
         }
 
-        public IState State { get; internal set; }
+        public IState<T> State { get; internal set; }
 
         public long NodeId { get; }
 
@@ -47,7 +50,7 @@ namespace Libplanet.Net.Consensus
 
         public long Round { get; }
 
-        public byte[] Data { get; internal set; }
+        public BlockHash BlockHash { get; internal set; }
 
         public long VoteCount
         {
@@ -129,8 +132,8 @@ namespace Libplanet.Net.Consensus
                 { "number_of_validator", _numberOfValidator },
                 { "height", Height },
                 { "round", Round },
-                { "step", State.GetType().Name },
-                { "data", Data },
+                { "step", State.Name },
+                { "target_block", BlockHash.ToString() },
                 { "vote_count", VoteCount },
                 { "current_election", LeaderElection() },
             };
