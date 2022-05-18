@@ -6,23 +6,23 @@ namespace Libplanet.Consensus
     public enum VoteFlag
     {
         /// <summary>
+        /// Error.
+        /// </summary>
+        Null = 0,
+
+        /// <summary>
         /// No response.
         /// </summary>
-        Unknown = 0,
+        Unknown = 1,
 
         /// <summary>
         /// Vote. but not commit.
         /// </summary>
-        Absent = 1,
+        Absent = 2,
 
         /// <summary>
         /// Vote and Commit.
         /// </summary>
-        Commit = 2,
-
-        /// <summary>
-        /// Error.
-        /// </summary>
-        Null = 3,
+        Commit = 3,
     }
 }

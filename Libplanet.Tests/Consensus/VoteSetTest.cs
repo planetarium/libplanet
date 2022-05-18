@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Store;
@@ -14,15 +15,17 @@ namespace Libplanet.Tests.Consensus
          [Fact]
          public void AddVoteTest()
          {
+             var fx = new MemoryStoreFixture();
+             BlockHash targetBlockHash = fx.Hash1;
              var validators = Enumerable.Range(0, 4)
                  .Select(x => new PrivateKey())
                  .ToArray();
              var voteSet = new VoteSet(
                  1,
                  2,
+                 targetBlockHash,
                  validators.Select(x => x.PublicKey).ToImmutableArray());
 
-             var fx = new MemoryStoreFixture();
              var now = DateTimeOffset.UtcNow;
 
              Assert.False(voteSet.HasTwoThirdAny());
@@ -34,7 +37,7 @@ namespace Libplanet.Tests.Consensus
                  var vote = new Vote(
                      1,
                      2,
-                     fx.Hash1,
+                     targetBlockHash,
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
@@ -50,6 +53,7 @@ namespace Libplanet.Tests.Consensus
              voteSet = new VoteSet(
                  1,
                  2,
+                 targetBlockHash,
                  validators.Select(x => x.PublicKey));
 
              for (int i = 0; i < 3; i++)
@@ -72,17 +76,19 @@ namespace Libplanet.Tests.Consensus
          }
 
          [Fact]
-         public void AddWrongVoteTest()
+         public void AddWrongRoundVoteTest()
          {
+             var fx = new MemoryStoreFixture();
+             BlockHash targetBlockHash = fx.Hash1;
              var validators = Enumerable.Range(0, 4)
                  .Select(x => new PrivateKey())
                  .ToArray();
              var voteSet = new VoteSet(
                  1,
                  2,
+                 targetBlockHash,
                  validators.Select(x => x.PublicKey).ToImmutableArray());
 
-             var fx = new MemoryStoreFixture();
              var now = DateTimeOffset.UtcNow;
 
              Assert.False(voteSet.HasTwoThirdAny());
@@ -94,7 +100,7 @@ namespace Libplanet.Tests.Consensus
                  var vote = new Vote(
                      1,
                      1,
-                     fx.Hash1,
+                     targetBlockHash,
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
