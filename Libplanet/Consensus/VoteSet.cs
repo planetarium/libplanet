@@ -52,6 +52,11 @@ namespace Libplanet.Consensus
 
         public long Sum { get; }
 
+        public ImmutableArray<Vote> Votes
+        {
+            get => _votes.ToImmutableArray();
+        }
+
         public bool Add(Vote vote)
         {
             lock (_lock)
