@@ -6,15 +6,15 @@ using Libplanet.Store;
 
 namespace Libplanet.Benchmarks
 {
-    public partial class BenchDataModel
+    public partial class DataModelBenchmark
     {
-        private class RootModel : DataModel
+        private class MidModel : DataModel
         {
-            public RootModel()
+            public MidModel()
                 : base()
             {
                 System.Random random = new System.Random();
-                MidModel = new MidModel();
+                LeafModel = new LeafModel();
                 BigList = Enumerable
                     .Range(0, 1000)
                     .Select(_ => random.Next())
@@ -27,12 +27,12 @@ namespace Libplanet.Benchmarks
                     .ToImmutableDictionary();
             }
 
-            public RootModel(Bencodex.Types.Dictionary encoded)
+            public MidModel(Bencodex.Types.Dictionary encoded)
                 : base(encoded)
             {
             }
 
-            public MidModel MidModel { get; private set; }
+            public LeafModel LeafModel { get; private set; }
 
             public ImmutableList<int> BigList { get; private set; }
 

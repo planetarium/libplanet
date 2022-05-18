@@ -3,7 +3,7 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Benchmarks
 {
-    public partial class BenchDataModel
+    public partial class DataModelBenchmark
     {
         private RootModel _rootModel;
         private LeafModel _leafModel;
@@ -12,7 +12,7 @@ namespace Libplanet.Benchmarks
         private BTypes.Dictionary _encodedRootModel;
         private BTypes.Dictionary _encodedLeafModel;
 
-        public BenchDataModel()
+        public DataModelBenchmark()
         {
             _rootModel = new RootModel();
             _leafModel = new LeafModel();

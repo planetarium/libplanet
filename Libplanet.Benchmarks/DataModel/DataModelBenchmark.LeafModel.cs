@@ -7,7 +7,7 @@ using BTypes = Bencodex.Types;
 
 namespace Libplanet.Benchmarks
 {
-    public partial class BenchDataModel
+    public partial class DataModelBenchmark
     {
         private class LeafModel : DataModel
         {
