@@ -143,6 +143,8 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlock.TxHash;
 
+        public BlockCommit? LastCommit { get; }
+
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
 

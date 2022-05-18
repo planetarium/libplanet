@@ -96,6 +96,8 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _metadata.TxHash;
 
+        public BlockCommit? LastCommit => _metadata.LastCommit;
+
         /// <summary>
         /// The block hash.
         /// </summary>
