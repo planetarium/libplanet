@@ -1,7 +1,7 @@
 using BenchmarkDotNet.Attributes;
 using BTypes = Bencodex.Types;
 
-namespace Libplanet.Benchmarks
+namespace Libplanet.Benchmarks.DataModel
 {
     public partial class DataModelBenchmark
     {

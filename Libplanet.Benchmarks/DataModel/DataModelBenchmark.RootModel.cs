@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Crypto;
-using Libplanet.Store;
+using StoreDataModel = Libplanet.Store.DataModel;
 
-namespace Libplanet.Benchmarks
+namespace Libplanet.Benchmarks.DataModel
 {
     public partial class DataModelBenchmark
     {
-        private class RootModel : DataModel
+        private class RootModel : StoreDataModel
         {
             public RootModel()
                 : base()

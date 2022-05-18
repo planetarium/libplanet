@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Crypto;
-using Libplanet.Store;
 using BTypes = Bencodex.Types;
+using StoreDataModel = Libplanet.Store.DataModel;
 
-namespace Libplanet.Benchmarks
+namespace Libplanet.Benchmarks.DataModel
 {
     public partial class DataModelBenchmark
     {
-        private class LeafModel : DataModel
+        private class LeafModel : StoreDataModel
         {
             public LeafModel()
                 : base()
