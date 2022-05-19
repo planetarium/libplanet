@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Libplanet.Misc
+    <title>Delegate StoreLoader
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Libplanet.Misc
+    <meta name="title" content="Delegate StoreLoader
    | Libplanet ">
     <meta name="generator" content="docfx 2.58.2.0">
     
@@ -68,24 +68,55 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Misc">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.StoreLoader">
   
-  <h1 id="Libplanet_Misc" data-uid="Libplanet.Misc" class="text-break">Namespace Libplanet.Misc
+  
+  <h1 id="Libplanet_Store_StoreLoader" data-uid="Libplanet.Store.StoreLoader" class="text-break">Delegate StoreLoader
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A function that parses a URI and returns a pair of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and
+<a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
-      <h4><a class="xref" href="Libplanet.Misc.ArrayEqualityComparer-1.html">ArrayEqualityComparer&lt;T&gt;</a></h4>
-      <section><p>An <see cref="!:IEqualityComparer&lt;T>"></see> implementation to compare two arrays of the same
-element type.  This compares the elements in the order of the array.</p>
-<p>The way to compare each element can be customized by specifying
-the <a class="xref" href="Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_Misc_ArrayEqualityComparer_1_ElementComparer">ElementComparer</a>.</p>
-</section>
-      <h4><a class="xref" href="Libplanet.Misc.NameValueCollectionExtensions.html">NameValueCollectionExtensions</a></h4>
-      <section><p>Useful extension methods for <see cref="!:NameValueCollection"></see>.</p>
-</section>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_StoreLoader_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public delegate (IStore Store, IStateStore StateStore) StoreLoader(Uri storeUri);</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">storeUri</span></td>
+        <td><p>A URI referring to a store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetuple-2">(, )</a>&lt;<a class="xref" href="Libplanet.Store.IStore.html">IStore</a>, <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>&gt;</td>
+        <td><p>A pair of loaded <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> and <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> instances.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -93,6 +124,12 @@ the <a class="xref" href="Libplanet.Misc.ArrayEqualityComparer-1.html#Libplanet_
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_StoreLoader.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreLoader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/StoreLoader.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

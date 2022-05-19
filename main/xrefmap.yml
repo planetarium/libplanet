@@ -11293,6 +11293,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Utils.Error
   nameWithType: Utils.Error
+- uid: Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri(System.String)
+  name: LoadStoreFromUri(String)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_LoadStoreFromUri_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri(System.String)
+  fullName: Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri(System.String)
+  nameWithType: Utils.LoadStoreFromUri(String)
+- uid: Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri*
+  name: LoadStoreFromUri
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_LoadStoreFromUri_
+  commentId: Overload:Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Utils.LoadStoreFromUri
+  nameWithType: Utils.LoadStoreFromUri
 - uid: Libplanet.Extensions.Cocona.Utils.PrintTable*
   name: PrintTable
   href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable_
@@ -12828,6 +12841,63 @@ references:
   fullName.vb: Libplanet.Misc.ArrayEqualityComparer(Of T).GetHashCode
   nameWithType: ArrayEqualityComparer<T>.GetHashCode
   nameWithType.vb: ArrayEqualityComparer(Of T).GetHashCode
+- uid: Libplanet.Misc.NameValueCollectionExtensions
+  name: NameValueCollectionExtensions
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html
+  commentId: T:Libplanet.Misc.NameValueCollectionExtensions
+  fullName: Libplanet.Misc.NameValueCollectionExtensions
+  nameWithType: NameValueCollectionExtensions
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(NameValueCollection,System.String,System.Boolean)
+  name: GetBoolean(NameValueCollection, String, Boolean)
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetBoolean_NameValueCollection_System_String_System_Boolean_
+  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(NameValueCollection,System.String,System.Boolean)
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean(NameValueCollection, System.String, System.Boolean)
+  nameWithType: NameValueCollectionExtensions.GetBoolean(NameValueCollection, String, Boolean)
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean*
+  name: GetBoolean
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetBoolean_
+  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetBoolean
+  isSpec: "True"
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetBoolean
+  nameWithType: NameValueCollectionExtensions.GetBoolean
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String)
+  name: GetInt32(NameValueCollection, String)
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_
+  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String)
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String)
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String,System.Int32)
+  name: GetInt32(NameValueCollection, String, Int32)
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_System_Int32_
+  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String,System.Int32)
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32(NameValueCollection, System.String, System.Int32)
+  nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String, Int32)
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetInt32*
+  name: GetInt32
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetInt32_
+  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetInt32
+  isSpec: "True"
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetInt32
+  nameWithType: NameValueCollectionExtensions.GetInt32
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String)
+  name: GetUInt64(NameValueCollection, String)
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_
+  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String)
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection, System.String)
+  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String)
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String,System.UInt64)
+  name: GetUInt64(NameValueCollection, String, UInt64)
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_System_UInt64_
+  commentId: M:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String,System.UInt64)
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64(NameValueCollection, System.String, System.UInt64)
+  nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String, UInt64)
+- uid: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64*
+  name: GetUInt64
+  href: api/Libplanet.Misc.NameValueCollectionExtensions.html#Libplanet_Misc_NameValueCollectionExtensions_GetUInt64_
+  commentId: Overload:Libplanet.Misc.NameValueCollectionExtensions.GetUInt64
+  isSpec: "True"
+  fullName: Libplanet.Misc.NameValueCollectionExtensions.GetUInt64
+  nameWithType: NameValueCollectionExtensions.GetUInt64
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html
@@ -21790,6 +21860,70 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StoreExtensions.GetStateRootHash
   nameWithType: StoreExtensions.GetStateRootHash
+- uid: Libplanet.Store.StoreLoader
+  name: StoreLoader
+  href: api/Libplanet.Store.StoreLoader.html
+  commentId: T:Libplanet.Store.StoreLoader
+  fullName: Libplanet.Store.StoreLoader
+  nameWithType: StoreLoader
+- uid: Libplanet.Store.StoreLoaderAttribute
+  name: StoreLoaderAttribute
+  href: api/Libplanet.Store.StoreLoaderAttribute.html
+  commentId: T:Libplanet.Store.StoreLoaderAttribute
+  fullName: Libplanet.Store.StoreLoaderAttribute
+  nameWithType: StoreLoaderAttribute
+- uid: Libplanet.Store.StoreLoaderAttribute.#ctor(System.String)
+  name: StoreLoaderAttribute(String)
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute__ctor_System_String_
+  commentId: M:Libplanet.Store.StoreLoaderAttribute.#ctor(System.String)
+  fullName: Libplanet.Store.StoreLoaderAttribute.StoreLoaderAttribute(System.String)
+  nameWithType: StoreLoaderAttribute.StoreLoaderAttribute(String)
+- uid: Libplanet.Store.StoreLoaderAttribute.#ctor*
+  name: StoreLoaderAttribute
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute__ctor_
+  commentId: Overload:Libplanet.Store.StoreLoaderAttribute.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.StoreLoaderAttribute.StoreLoaderAttribute
+  nameWithType: StoreLoaderAttribute.StoreLoaderAttribute
+- uid: Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders
+  name: ListStoreLoaders()
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_ListStoreLoaders
+  commentId: M:Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders
+  fullName: Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders()
+  nameWithType: StoreLoaderAttribute.ListStoreLoaders()
+- uid: Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders*
+  name: ListStoreLoaders
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_ListStoreLoaders_
+  commentId: Overload:Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders
+  isSpec: "True"
+  fullName: Libplanet.Store.StoreLoaderAttribute.ListStoreLoaders
+  nameWithType: StoreLoaderAttribute.ListStoreLoaders
+- uid: Libplanet.Store.StoreLoaderAttribute.LoadStore(Uri)
+  name: LoadStore(Uri)
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_
+  commentId: M:Libplanet.Store.StoreLoaderAttribute.LoadStore(Uri)
+  fullName: Libplanet.Store.StoreLoaderAttribute.LoadStore(Uri)
+  nameWithType: StoreLoaderAttribute.LoadStore(Uri)
+- uid: Libplanet.Store.StoreLoaderAttribute.LoadStore*
+  name: LoadStore
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_
+  commentId: Overload:Libplanet.Store.StoreLoaderAttribute.LoadStore
+  isSpec: "True"
+  fullName: Libplanet.Store.StoreLoaderAttribute.LoadStore
+  nameWithType: StoreLoaderAttribute.LoadStore
+- uid: Libplanet.Store.StoreLoaderAttribute.UriScheme
+  name: UriScheme
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_UriScheme
+  commentId: P:Libplanet.Store.StoreLoaderAttribute.UriScheme
+  fullName: Libplanet.Store.StoreLoaderAttribute.UriScheme
+  nameWithType: StoreLoaderAttribute.UriScheme
+- uid: Libplanet.Store.StoreLoaderAttribute.UriScheme*
+  name: UriScheme
+  href: api/Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_UriScheme_
+  commentId: Overload:Libplanet.Store.StoreLoaderAttribute.UriScheme
+  isSpec: "True"
+  fullName: Libplanet.Store.StoreLoaderAttribute.UriScheme
+  nameWithType: StoreLoaderAttribute.UriScheme
 - uid: Libplanet.Store.Trie
   name: Libplanet.Store.Trie
   href: api/Libplanet.Store.Trie.html
@@ -22830,6 +22964,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.TrieStateStore.PruneStates
   nameWithType: TrieStateStore.PruneStates
+- uid: Libplanet.Store.TrieStateStore.Secure
+  name: Secure
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Secure
+  commentId: P:Libplanet.Store.TrieStateStore.Secure
+  fullName: Libplanet.Store.TrieStateStore.Secure
+  nameWithType: TrieStateStore.Secure
+- uid: Libplanet.Store.TrieStateStore.Secure*
+  name: Secure
+  href: api/Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore_Secure_
+  commentId: Overload:Libplanet.Store.TrieStateStore.Secure
+  isSpec: "True"
+  fullName: Libplanet.Store.TrieStateStore.Secure
+  nameWithType: TrieStateStore.Secure
 - uid: Libplanet.Stun
   name: Libplanet.Stun
   href: api/Libplanet.Stun.html

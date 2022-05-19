@@ -83,6 +83,24 @@
       <h4><a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a></h4>
       <section><p>The default built-in <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a> implementation. This stores data in
 the file system or in memory.</p>
+<p><a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a> and <a class="xref" href="Libplanet.Store.Trie.DefaultKeyValueStore.html">DefaultKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>default+file:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li><li><code>default+file:///var/data/planet/?secure=true</code>
+(trie keys are hashed)</li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>journal</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
+parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
+parameter.</td></tr><tr><td><code>readonly</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
+parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:DefaultKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+<a class="xref" href="Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_">TrieStateStore(IKeyValueStore, Boolean)</a>&apos;s <code>secure</code> parameter.</td></tr></tbody></table>
 </section>
       <h4><a class="xref" href="Libplanet.Store.Trie.InvalidTrieNodeException.html">InvalidTrieNodeException</a></h4>
       <section></section>
@@ -90,6 +108,10 @@ the file system or in memory.</p>
       <section><p>Volatile in-memory key-value store.</p>
 <p>It is useful for storing temporal small chains, e.g., fixtures for unit tests of
 game logic.</p>
+<p><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a> and <a class="xref" href="Libplanet.Store.Trie.MemoryKeyValueStore.html">MemoryKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>memory:</code> scheme
+using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_Store_StoreLoaderAttribute_LoadStore_Uri_">LoadStore(Uri)</a>, e.g.:</p>
+<ul><li><code>memory:</code></li><li><code>memory://?secure=true</code> (trie keys are hashed)</li></ul>
 </section>
       <h4><a class="xref" href="Libplanet.Store.Trie.MerkleTrie.html">MerkleTrie</a></h4>
       <section><p>An <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> implementation implemented

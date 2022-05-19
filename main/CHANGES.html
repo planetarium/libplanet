@@ -76,13 +76,36 @@ neither parmeter <code>TimeSpan singleSessionTimeout</code> nor
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>StoreLoader</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li>Added <code>StoreLoaderAttribute</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li>Added <code>TrieStateStore.Secure</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li>Added <code>NameValueCollectionExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li>Added <code>TimeSpanExtensions.Multiply()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1966">#1966</a>]</li>
 <li>Type support for <code>Guid</code> added to <code>DataModel</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1959">#1959</a>, <a href="https://github.com/planetarium/libplanet/pull/1960">#1960</a>]</li>
-<li><code>TimeSpanExtensions.Multiply()</code> method added.  [<a href="https://github.com/planetarium/libplanet/pull/1966">#1966</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>DefaultStore</code> and <code>DefaultKeyValueStore</code>-backed <code>TrieStateStore</code> now can be
+instantiated with URI scheme <code>default+file:</code> using
+<code>StoreLoaderAttribute.LoadStore()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li><code>MemoryStore</code> and <code>MemoryKeyValueStore</code>-backed <code>TrieStateStore</code> now can be
+instantiated with URI scheme <code>memory:</code> using
+<code>StoreLoaderAttribute.LoadStore()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+<li>(Libplanet.RocksDBStore) <code>RocksDBStore</code> and <code>RocksDBKeyValueStore</code>-backed
+<code>TrieStateStore</code> now can be instantiated with URI scheme <code>rocksdb+file:</code>
+using <code>StoreLoaderAttribute.LoadStore()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li><p>The following store URI schemes are deprecated:  [<a href="https://github.com/planetarium/libplanet/issues/1573">#1573</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</p>
+<ul>
+<li><code>default</code>: Use <code>default+file</code> instead.</li>
+<li><code>rocksdb</code>: Use <code>rocksdb+file</code> instead.</li>
+</ul>
+</li>
+</ul>
 <h2 id="version-0340">Version 0.34.0</h2>
 <p>Released on May 13th, 2022.</p>
 <h3 id="added-apis-1">Added APIs</h3>
