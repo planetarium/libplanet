@@ -66,10 +66,12 @@ namespace Libplanet.Net.Consensus
         public long Vote(Address? address)
         {
             Log.Debug(
-                "Vote({Before}/{Total}) NodeID: {Id}, Height: {Height}, Round: {Round}",
+                "Vote({Before}/{Total}) NodeID: {Id}, Validator: {Address}, " +
+                "Height: {Height}, Round: {Round}",
                 _votes.Count,
                 _numberOfValidator,
                 NodeId,
+                address,
                 Height,
                 Round);
 
@@ -85,10 +87,11 @@ namespace Libplanet.Net.Consensus
                     _votes.Add(address.Value);
                     Log.Debug(
                         "Vote Success({After}/{Total}) NodeID: {Id}, " +
-                        "Height: {Height}, Round: {Round}",
+                        "Validator: {Address}, Height: {Height}, Round: {Round}",
                         _votes.Count,
                         _numberOfValidator,
                         NodeId,
+                        address,
                         Height,
                         Round);
                 }

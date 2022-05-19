@@ -20,6 +20,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
         private readonly List<Address> _validators;
+        private readonly object _commitLock;
 
         private ConcurrentDictionary<long, RoundContext<T>> _roundContexts;
 
@@ -38,6 +39,7 @@ namespace Libplanet.Net.Consensus
             NodeId = nodeId;
             _blockChain = blockChain;
             _validators = validators;
+            _commitLock = new object();
             _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>
             {
                 [0] = new RoundContext<T>(NodeId, validators, Height, Round),
@@ -66,19 +68,47 @@ namespace Libplanet.Net.Consensus
 
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
-        public void CommitBlock(BlockHash hash)
+        public void CommitBlock(long height, BlockHash hash)
         {
-            Height++;
-            Block<T> block = _blockChain.Store.GetBlock<T>(
-                _blockChain.Policy.GetHashAlgorithm,
-                hash);
-            _blockChain.Append(block);
-            Round = 0;
-            _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
+            // Unlike round, lock is required because block append may take time.
+            lock (_commitLock)
+            {
+                if (height != Height)
+                {
+                    // Duplicated or invalid commit attempt, do nothing.
+                    return;
+                }
+
+                _logger.Debug(
+                    "Commit block {Hash} from #{Before} to #{After} in node id {Id}.",
+                    Height,
+                    Height + 1,
+                    hash,
+                    NodeId);
+
+                Block<T> block = _blockChain.Store.GetBlock<T>(
+                    _blockChain.Policy.GetHashAlgorithm,
+                    hash);
+                _blockChain.Append(block);
+                Height++;
+                Round = 0;
+                _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
+            }
         }
 
-        public long NextRound()
+        public long NextRound(long round)
         {
+            if (round != Round)
+            {
+                // Duplicated or invalid attempt, do nothing.
+                return Round;
+            }
+
+            _logger.Debug(
+                "Increase round from {Before} to {After} in node id {Id}",
+                Round,
+                Round + 1,
+                NodeId);
             Round += 1;
 
             // NOTE: Reusing existing round context is valid?
@@ -161,7 +191,7 @@ namespace Libplanet.Net.Consensus
                     StartTimeout();
                     break;
                 case PreCommitState<T> _:
-                    NextRound();
+                    NextRound(Round);
                     StopTimeout();
                     break;
             }
@@ -186,7 +216,7 @@ namespace Libplanet.Net.Consensus
 
         private void StartTimeout()
         {
-            _logger.Debug(
+            _logger.Verbose(
                 "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
                           "State: {State}, TimeoutTicker: Timer Started. " +
                           "Timeout will be occurred in {Time}",
@@ -200,7 +230,7 @@ namespace Libplanet.Net.Consensus
 
         private void StopTimeout()
         {
-            _logger.Debug(
+            _logger.Verbose(
                 "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
                           "State: {State}, TimeoutTicker: Timer Stopped.",
                 NodeId,
