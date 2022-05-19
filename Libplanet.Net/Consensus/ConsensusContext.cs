@@ -79,6 +79,13 @@ namespace Libplanet.Net.Consensus
                     return;
                 }
 
+                _logger.Debug(
+                    "Commit block {Hash} from #{Before} to #{After} in node id {Id}.",
+                    Height,
+                    Height + 1,
+                    hash,
+                    NodeId);
+
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
@@ -97,6 +104,11 @@ namespace Libplanet.Net.Consensus
                 return Round;
             }
 
+            _logger.Debug(
+                "Increase round from {Before} to {After} in node id {Id}",
+                Round,
+                Round + 1,
+                NodeId);
             Round += 1;
 
             // NOTE: Reusing existing round context is valid?
@@ -204,7 +216,7 @@ namespace Libplanet.Net.Consensus
 
         private void StartTimeout()
         {
-            _logger.Debug(
+            _logger.Verbose(
                 "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
                           "State: {State}, TimeoutTicker: Timer Started. " +
                           "Timeout will be occurred in {Time}",
@@ -218,7 +230,7 @@ namespace Libplanet.Net.Consensus
 
         private void StopTimeout()
         {
-            _logger.Debug(
+            _logger.Verbose(
                 "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
                           "State: {State}, TimeoutTicker: Timer Stopped.",
                 NodeId,
