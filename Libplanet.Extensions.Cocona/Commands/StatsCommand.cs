@@ -11,17 +11,8 @@ namespace Libplanet.Extensions.Cocona.Commands
     public class StatsCommand
     {
         private const string StoreArgumentDescription =
-            "The URI denoting the type and the path of a concrete class for " +
-            nameof(IStore) + "; " +
-            "given as <store-type>://<store-path>";
-
-        private readonly IImmutableDictionary<string, Func<string, IStore>>
-            _storeConstructors =
-                new Dictionary<string, Func<string, IStore>>
-                {
-                    ["default"] = storePath => new DefaultStore(storePath),
-                    ["rocksdb"] = storePath => new RocksDBStore.RocksDBStore(storePath),
-                }.ToImmutableSortedDictionary();
+            "The URI denotes the type and path of concrete class for " + nameof(IStore) + "."
+            + "<store-type>://<store-path> (e.g., rocksdb+file:///path/to/store)";
 
         [Command(Description = "Outputs a summary of a stored chain in a CSV format.")]
         public void Summary(
@@ -37,7 +28,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                 "Maximum number of results to return; " +
                 "no limit by default")]
             long? limit = null) => Summary(
-                store: LoadStoreFromUri(path),
+                store: Utils.LoadStoreFromUri(path),
                 header: header,
                 offset: offset,
                 limit: limit);
@@ -92,41 +83,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                     $"{blockHeader.Timestamp.ToUnixTimeMilliseconds()}," +
                     $"{perceivedTime?.ToUnixTimeMilliseconds()}");
             }
-        }
-
-        private IStore LoadStoreFromUri(string rawUri)
-        {
-            // FIXME: This method basically does the same thing to StoreCommand.LoadStoreFromUri()
-            // method and Libplanet.Explorer.Executable's Program.LoadStore() method.
-            // The duplicate code should be extract to a shared common method.
-            // https://github.com/planetarium/libplanet/issues/1573
-            var uri = new Uri(rawUri);
-            var scheme = uri.Scheme;
-            var splitScheme = scheme.Split('+');
-            if (splitScheme.Length <= 0 || splitScheme.Length > 2)
-            {
-                const string? exceptionMessage = "A key-value store URI must have a scheme, " +
-                                                 "e.g., default://, rocksdb+file://.";
-                throw new ArgumentException(exceptionMessage, nameof(rawUri));
-            }
-
-            if (!_storeConstructors.TryGetValue(
-                splitScheme[0],
-                out var constructor))
-            {
-                throw new NotSupportedException(
-                    $"No store backend supports the such scheme: {splitScheme[0]}.");
-            }
-
-            // NOTE: Actually, there is only File scheme support and it will work to check only.
-            if (splitScheme.Length == 2
-                && !Enum.TryParse<SchemeType>(splitScheme[1], ignoreCase: true, out _))
-            {
-                throw new NotSupportedException(
-                    $"No store backend supports the such scheme: {splitScheme[1]}.");
-            }
-
-            return constructor(uri.AbsolutePath);
         }
     }
 }

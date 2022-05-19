@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Store;
@@ -41,6 +42,29 @@ namespace Libplanet.RocksDBStore.Tests
         public void Dispose()
         {
             _fx?.Dispose();
+        }
+
+        [SkippableFact]
+        public void Loader()
+        {
+            // TODO: Test query parameters as well.
+            string tempDirPath = Path.GetTempFileName();
+            File.Delete(tempDirPath);
+            var uri = new Uri(tempDirPath, UriKind.Absolute);
+            Assert.StartsWith("file://", uri.ToString());
+            uri = new Uri("rocksdb+" + uri);
+            (IStore Store, IStateStore StateStore)? pair = StoreLoaderAttribute.LoadStore(uri);
+            Assert.NotNull(pair);
+            IStore store = pair.Value.Store;
+            Assert.IsAssignableFrom<RocksDBStore>(store);
+            var stateStore = (TrieStateStore)pair.Value.StateStore;
+            var kvStore = typeof(TrieStateStore)
+                .GetProperty(
+                    "StateKeyValueStore",
+                    BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.Instance)
+                ?.GetMethod
+                ?.Invoke(stateStore, Array.Empty<object>());
+            Assert.IsAssignableFrom<RocksDBKeyValueStore>(kvStore);
         }
 
         [SkippableFact]

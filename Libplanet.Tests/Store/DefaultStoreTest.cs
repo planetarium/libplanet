@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Xunit;
 using Xunit.Abstractions;
@@ -62,6 +63,22 @@ namespace Libplanet.Tests.Store
                 Fx.Transaction2,
                 identicalStore.GetTransaction<DumbAction>(Fx.Transaction2.Id)
             );
+        }
+
+        [Fact]
+        public void Loader()
+        {
+            // TODO: Test query parameters as well.
+            string tempDirPath = Path.GetTempFileName();
+            File.Delete(tempDirPath);
+            var uri = new Uri(tempDirPath, UriKind.Absolute);
+            uri = new Uri("default+" + uri);
+            (IStore Store, IStateStore StateStore)? pair = StoreLoaderAttribute.LoadStore(uri);
+            Assert.NotNull(pair);
+            IStore store = pair.Value.Store;
+            Assert.IsAssignableFrom<DefaultStore>(store);
+            var stateStore = (TrieStateStore)pair.Value.StateStore;
+            Assert.IsAssignableFrom<DefaultKeyValueStore>(stateStore.StateKeyValueStore);
         }
     }
 }

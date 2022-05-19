@@ -21,10 +21,24 @@ To be released.
 
 ### Added APIs
 
+ -  Added `StoreLoader` delegate.  [[#1359], [#1953], [#1955]]
+ -  Added `StoreLoaderAttribute` class.  [[#1359], [#1953], [#1955]]
+ -  Added `TrieStateStore.Secure` property.  [[#1955]]
+ -  Added `NameValueCollectionExtensions` static class.  [[#1955]]
+ -  Added `TimeSpanExtensions.Multiply()` static method.  [[#1966]]
  -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
- -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
 
 ### Behavioral changes
+
+ -  `DefaultStore` and `DefaultKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `default+file:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1359], [#1953], [#1955]]
+ -  `MemoryStore` and `MemoryKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `memory:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1359], [#1953], [#1955]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore`-backed
+    `TrieStateStore` now can be instantiated with URI scheme `rocksdb+file:`
+    using `StoreLoaderAttribute.LoadStore()` method. [[#1359], [#1953], [#1955]]
 
 ### Bug fixes
 
@@ -32,6 +46,15 @@ To be released.
 
 ### CLI tools
 
+ -  The following store URI schemes are deprecated:  [[#1573], [#1955]]
+
+     - `default`: Use `default+file` instead.
+     - `rocksdb`: Use `rocksdb+file` instead.
+
+[#1359]: https://github.com/planetarium/libplanet/issues/1359
+[#1573]: https://github.com/planetarium/libplanet/issues/1573
+[#1953]: https://github.com/planetarium/libplanet/issues/1953
+[#1955]: https://github.com/planetarium/libplanet/pull/1955
 [#1959]: https://github.com/planetarium/libplanet/issues/1959
 [#1960]: https://github.com/planetarium/libplanet/pull/1960
 [#1961]: https://github.com/planetarium/libplanet/pull/1961

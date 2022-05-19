@@ -11,13 +11,16 @@ using Libplanet.Tests;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Extensions.Cocona.Tests.Commands
 {
     public class StoreCommandTest : IDisposable
     {
         private readonly ImmutableArray<StoreFixture> _storeFixtures;
-        private readonly TextWriter _originalWriter;
+        private readonly ITestOutputHelper _testOutput;
+        private readonly TextWriter _originalOut;
+        private readonly TextWriter _originalError;
         private readonly Block<Utils.DummyAction> _genesisBlock;
         private readonly Block<Utils.DummyAction> _block1;
         private readonly Block<Utils.DummyAction> _block2;
@@ -29,9 +32,11 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
         private readonly Transaction<Utils.DummyAction> _transaction3;
         private readonly Transaction<Utils.DummyAction> _transaction4;
 
-        public StoreCommandTest()
+        public StoreCommandTest(ITestOutputHelper testOutput)
         {
-            _originalWriter = Console.Out;
+            _testOutput = testOutput;
+            _originalOut = Console.Out;
+            _originalError = Console.Error;
 
             try
             {
@@ -98,12 +103,12 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                     "rocksdb+file+file://" + "/blah",
                     "dummy"
                 ));
-            Assert.Throws<NotSupportedException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new StoreCommand().BlockByHash(
                     "rocksdb+memory://" + "/blah",
                     "dummy"
                 ));
-            Assert.Throws<NotSupportedException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new StoreCommand().BlockByHash(
                     "leveldb://" + "/blah",
                     "dummy"
@@ -144,20 +149,30 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
 
             foreach (var fx in _storeFixtures)
             {
-                using var sw = new StringWriter();
-                Console.SetOut(sw);
+                using var stdout = new StringWriter();
+                using var stderr = new StringWriter();
+                Console.SetOut(stdout);
+                Console.SetError(stderr);
                 new StoreCommand().BlocksByTxId(
                     fx.Scheme + fx.Path,
                     _transaction3.Id.ToString()
                 );
-                var actual = sw.ToString();
+                var actual = stdout.ToString();
+                _testOutput.WriteLine($"stdout:\n  {actual.Replace("\n", "\n  ")}\n");
+                _testOutput.WriteLine($"stderr:\n  {stderr.ToString().Replace("\n", "\n  ")}\n");
                 var expected = Utils.SerializeHumanReadable(new[] { _block3, _block4 });
                 if (expected.TrimEnd() != actual.TrimEnd())
                 {
                     expected = Utils.SerializeHumanReadable(new[] { _block4, _block3 });
                 }
 
-                Assert.Equal(expected.TrimEnd(), actual.TrimEnd());
+                _testOutput.WriteLine($"expected:\n  {expected.Replace("\n", "\n  ")}\n");
+                Assert.Equal(
+                    expected.TrimEnd(),
+                    actual.TrimEnd(),
+                    ignoreLineEndingDifferences: true,
+                    ignoreWhiteSpaceDifferences: true
+                );
             }
         }
 
@@ -313,7 +328,8 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
 
         public void Dispose()
         {
-            Console.SetOut(_originalWriter);
+            Console.SetOut(_originalOut);
+            Console.SetError(_originalError);
         }
 
         private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
