@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus
             ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
             context.Round = 3;
             long prevHeight = context.Height;
-            context.CommitBlock(block.Hash);
+            context.CommitBlock(context.Height, block.Hash);
             Assert.Equal(prevHeight + 1, context.Height);
             Assert.Equal(0, context.Round);
         }
@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void NextRound()
         {
             ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
-            context.NextRound();
+            context.NextRound(context.Round);
             Assert.Equal(1, context.Round);
         }
 
@@ -64,7 +64,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void RoundContextOf()
         {
             ConsensusContext<DumbAction> context = TestUtils.CreateConsensusContext(_blockChain);
-            context.NextRound();
+            context.NextRound(0);
             Assert.Equal(0, context.RoundContextOf(0).Round);
             Assert.Equal(1, context.RoundContextOf(1).Round);
             Assert.Equal(1, context.CurrentRoundContext.Round);
