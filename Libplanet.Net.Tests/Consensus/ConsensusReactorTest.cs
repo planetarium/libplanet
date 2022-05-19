@@ -6,15 +6,23 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
+using NetMQ;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    public class ConsensusReactorTest : ReactorTest
+    [Collection("NetMQConfiguration")]
+    public class ConsensusReactorTest : ReactorTest, IDisposable
     {
         public ConsensusReactorTest(ITestOutputHelper output)
             : base(output)
         {
+        }
+
+        public void Dispose()
+        {
+            NetMQConfig.Cleanup(false);
         }
 
         public override IReactor CreateReactor(
