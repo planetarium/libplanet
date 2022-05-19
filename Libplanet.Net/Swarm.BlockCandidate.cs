@@ -41,7 +41,11 @@ namespace Libplanet.Net
                         }
                         catch (Exception)
                         {
+                            UpdatePath<T> path = new UpdatePath<T>(
+                                new[] { BlockChain.Tip },
+                                BlockChain.Tip);
                             FillBlocksAsyncFailed.Set();
+                            BlockCandidateTable.Update(path);
                         }
                     }
                 }
