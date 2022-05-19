@@ -224,7 +224,10 @@ namespace Libplanet.Net
                 }
 
                 ProcessFillBlocksFinished.Set();
-                _logger.Debug($"{nameof(PullBlocksAsync)}() has finished successfully.");
+                _logger.Debug(
+                    "{MethodName}() has finished successfully with #{TipIndex}",
+                    nameof(PullBlocksAsync),
+                    tempTip.Index);
             }
         }
 

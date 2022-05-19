@@ -25,12 +25,13 @@ namespace Libplanet.Net
                     {
                         _logger.Debug(
                             "{MethodName} has started. Excerpt: #{BlockIndex} {BlockHash} " +
-                            "Count of {BlockCandidateTable}: {Count}",
+                            "Count of {BlockCandidateTable}: {Count}. Blocks: {Blocks}",
                             nameof(ConsumeBlockCandidates),
                             branch.Tip.Index,
                             branch.Tip.Hash,
                             nameof(BlockCandidateTable),
-                            BlockCandidateTable.Count);
+                            BlockCandidateTable.Count,
+                            branch.Blocks);
                         try
                         {
                             UpdatePath<T> path = BlockCandidateProcess(
@@ -39,8 +40,13 @@ namespace Libplanet.Net
                             BlockAppended.Set();
                             BlockCandidateTable.Update(path);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
+                            _logger.Error(
+                                "{MethodName} failed. Excerpt: #{Block}, Exception: {Exception}",
+                                nameof(ConsumeBlockCandidates),
+                                branch.Tip.Index,
+                                e.ToString());
                             UpdatePath<T> path = new UpdatePath<T>(
                                 new[] { BlockChain.Tip },
                                 BlockChain.Tip);
@@ -399,6 +405,11 @@ namespace Libplanet.Net
                 hashes.Select(pair => pair.Item2),
                 cancellationToken);
             var blocks = await blocksAsync.ToArrayAsync(cancellationToken);
+            _logger.Debug(
+                "{MethodName}: Requesting candidate blocks finished. " +
+                "with Index: {TipIndex}",
+                nameof(BlockCandidateDownload),
+                tip.Index);
             var branch = new CandidateBranch<T>(blocks.ToList());
             BlockCandidateTable.Add(branch, blockChain.Tip);
             return true;
