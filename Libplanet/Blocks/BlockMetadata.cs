@@ -67,6 +67,7 @@ namespace Libplanet.Blocks
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
         {
+            LastCommit = metadata.LastCommit;
             ProtocolVersion = metadata.ProtocolVersion;
             Index = metadata.Index;
             Timestamp = metadata.Timestamp;
@@ -234,6 +235,8 @@ namespace Libplanet.Blocks
             get => _txHash;
             set => _txHash = value;
         }
+
+        public BlockCommit? LastCommit { get; set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.

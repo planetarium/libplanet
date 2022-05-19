@@ -150,6 +150,8 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlockHeader.TxHash;
 
+        public BlockCommit? LastCommit => _preEvaluationBlockHeader.LastCommit;
+
         /// <inheritdoc cref="IBlockHeader.Signature"/>
         public ImmutableArray<byte>? Signature { get; }
 

@@ -66,5 +66,10 @@ namespace Libplanet.Blocks
         /// transactions.
         /// </summary>
         HashDigest<SHA256>? TxHash { get; }
+
+        /// <summary>
+        /// The <see cref="BlockCommit"/> about previous block's vote information.
+        /// </summary>
+        BlockCommit? LastCommit { get; }
     }
 }

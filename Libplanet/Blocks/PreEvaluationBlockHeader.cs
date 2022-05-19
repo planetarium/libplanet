@@ -276,6 +276,8 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
+        public BlockCommit? LastCommit => Metadata.LastCommit;
+
         /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
         public HashAlgorithmType HashAlgorithm { get; }
 
