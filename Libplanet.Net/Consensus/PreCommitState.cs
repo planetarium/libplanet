@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Serilog;
 
@@ -40,7 +41,7 @@ namespace Libplanet.Net.Consensus
 
             RoundContext<T> roundContext = context.CurrentRoundContext;
 
-            roundContext.Vote(commit.Remote?.Address);
+            roundContext.Vote(commit.CommitVote);
 
             if (!roundContext.HasTwoThirdsAny())
             {
@@ -65,7 +66,7 @@ namespace Libplanet.Net.Consensus
             }
 
             RoundContext<T> targetContext = context.RoundContextOf(vote.Round);
-            targetContext.Vote(vote.Remote?.Address);
+            targetContext.Vote(vote.ProposeVote);
 
             if (!targetContext.HasTwoThirdsAny())
             {
@@ -74,11 +75,7 @@ namespace Libplanet.Net.Consensus
 
             context.Round = vote.Round;
             targetContext.BlockHash = vote.BlockHash;
-            return new ConsensusCommit(
-                context.NodeId,
-                context.Height,
-                context.Round,
-                targetContext.BlockHash);
+            return new ConsensusCommit(targetContext.Voting(VoteFlag.Commit));
         }
     }
 }

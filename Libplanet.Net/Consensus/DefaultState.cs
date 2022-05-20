@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -44,11 +45,7 @@ namespace Libplanet.Net.Consensus
 
             roundContext.BlockHash = propose.BlockHash;
             roundContext.State = new PreVoteState<T>();
-            return new ConsensusVote(
-                context.NodeId,
-                context.Height,
-                context.Round,
-                roundContext.BlockHash);
+            return new ConsensusVote(roundContext.Voting(VoteFlag.Absent));
         }
     }
 }

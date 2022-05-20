@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -12,14 +17,14 @@ namespace Libplanet.Net.Consensus
     {
         private readonly object _lock;
         private readonly long _numberOfValidator;
-        private readonly List<Address> _validators;
+        private readonly List<PublicKey> _validators;
 
         // FIXME: Should be thread-safe
-        private List<Address> _votes;
+        private VoteSet _voteSet;
 
         public RoundContext(
             long nodeId,
-            List<Address> validators,
+            List<PublicKey> validators,
             long height,
             long round)
         {
@@ -37,7 +42,7 @@ namespace Libplanet.Net.Consensus
             BlockHash = default;
             Height = height;
             Round = round;
-            _votes = new List<Address>();
+            _voteSet = new VoteSet(Height, Round, BlockHash, validators.ToImmutableArray());
             _lock = new object();
         }
 
@@ -52,46 +57,69 @@ namespace Libplanet.Net.Consensus
 
         public BlockHash BlockHash { get; internal set; }
 
+        public PublicKey CurrentNodePublicKey => _validators[(int)NodeId];
+
         public long VoteCount
         {
             get
             {
                 lock (_lock)
                 {
-                    return _votes.Count;
+                    return _voteSet.Votes.Count(x => x.Flag == VoteFlag.Absent);
                 }
             }
         }
 
-        public long Vote(Address? address)
+        public long CommitCount
         {
-            Log.Debug(
-                "Vote({Before}/{Total}) NodeID: {Id}, Validator: {Address}, " +
-                "Height: {Height}, Round: {Round}",
-                _votes.Count,
-                _numberOfValidator,
-                NodeId,
-                address,
-                Height,
-                Round);
-
-            if (address is null)
+            get
             {
-                throw new ArgumentNullException(nameof(address));
+                lock (_lock)
+                {
+                    return _voteSet.Votes.Count(x => x.Flag == VoteFlag.Commit);
+                }
+            }
+        }
+
+        public Vote Voting(VoteFlag flag)
+        {
+            return new Vote(
+                Height,
+                Round,
+                BlockHash,
+                DateTimeOffset.Now,
+                CurrentNodePublicKey,
+                flag,
+                NodeId,
+                Encoding.Default.GetBytes("sign").ToImmutableArray());
+        }
+
+        public long Vote(Vote vote)
+        {
+            lock (_lock)
+            {
+                Log.Debug(
+                    "Vote({Before}/{Total}) NodeID: {Id}, Validator: {Address}, " +
+                    "Height: {Height}, Round: {Round}",
+                    _voteSet.Votes.Length,
+                    _numberOfValidator,
+                    NodeId,
+                    vote.Validator.ToAddress(),
+                    Height,
+                    Round);
             }
 
             lock (_lock)
             {
-                if (!_votes.Contains(address.Value))
+                if (_voteSet.Add(vote))
                 {
-                    _votes.Add(address.Value);
                     Log.Debug(
                         "Vote Success({After}/{Total}) NodeID: {Id}, " +
                         "Validator: {Address}, Height: {Height}, Round: {Round}",
-                        _votes.Count,
+                        _voteSet.Votes.Length,
                         _numberOfValidator,
                         NodeId,
-                        address,
+                        vote.Validator.ToAddress(),
                         Height,
                         Round);
                 }
@@ -104,7 +132,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                _votes = new List<Address>();
+                _voteSet = new VoteSet(Height, Round, BlockHash, _validators);
             }
         }
 
@@ -112,7 +140,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                return VoteCount > _numberOfValidator * 2.0 / 3.0;
+                return _voteSet.HasTwoThirdAny();
             }
         }
 
@@ -124,7 +152,7 @@ namespace Libplanet.Net.Consensus
 
         public Address Proposer()
         {
-            return _validators[(int)LeaderElection()];
+            return _voteSet.ValidatorSet[(int)LeaderElection()].ToAddress();
         }
 
         public override string ToString()
