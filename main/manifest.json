@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "QJUsJItJlj36KQrvfaRvhjxlwhvrpLTpRFejw2A1q6k="
+          "hash": "tTiIzHqsgbSZPNTvHW4OY71b1A5IPllblkKt0ZcBvRQ="
         }
       },
       "is_incremental": false,
@@ -2601,7 +2601,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "lDA4ExM2JT8hUBhe1Z3/MHC/122Csh6IGTLWiRpzJlg="
+          "hash": "AyB9VM2EfEz3od8UhYekvzT9VTPgd9YG6xse9FWF2ug="
         }
       },
       "is_incremental": false,
@@ -2625,7 +2625,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmOptions.TransportType.html",
-          "hash": "ZzVhKO5kwvmn+puFQ0Ul4XJilJ0ofSCh115rZ7kuRso="
+          "hash": "eSbJKAHdvi+tZz6QGs0binU9EpJ7JInpafcKbe6s40E="
         }
       },
       "is_incremental": false,
@@ -2637,7 +2637,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmOptions.html",
-          "hash": "qAzoGRF8pMRwNc+JSOGuSrvJZTtPybyMvvxLwVeKIXc="
+          "hash": "53avA/JGoo6LmN/SgO7WkiAvEFS+/VmmF5o55qwwtA4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.TimeoutOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.TimeoutOptions.html",
+          "hash": "jc8jBjjD3sE3G1OFrgDNooFE6zrY03F1tofLGiwUACw="
         }
       },
       "is_incremental": false,
@@ -2841,7 +2853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "rIxUjcjfleQa8NoFUv99wZuW0dK3uY8ghPVC399q+iM="
+          "hash": "HQctkmXjHcfsYklFfy/bpXUkTWgFChfnIdEbfMiBLZs="
         }
       },
       "is_incremental": false,
@@ -3933,7 +3945,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "WhBViCgnxozxVLwMsGzNU7/GldlU7WOWwwrdr3rQYog="
+          "hash": "Xmp0tMBdwmqZ0L66mSAMxflAo9n4dyNxe8VEVI5LEZg="
         }
       },
       "is_incremental": false,
@@ -4042,7 +4054,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 317,
+          "total_file_count": 318,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

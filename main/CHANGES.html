@@ -65,12 +65,35 @@
 <h2 id="version-0350">Version 0.35.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet.Net) Unused property <code>SwarmOptions.PollInterval</code> removed.
+[<a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
 <li><code>BlockCompletion&lt;TPeer, TAction&gt;.Complete()</code> no longer accepts
 neither parmeter <code>TimeSpan singleSessionTimeout</code> nor
 <code>int millisecondsSingleSessionTimeout</code> to regulate a single session length.
 [<a href="https://github.com/planetarium/libplanet/pull/1961">#1961</a>]</li>
+<li>(Libplanet.Net) General API changes made to <code>Swarm&lt;T&gt;.BootstrapAsync()</code>,
+<code>Swarm&lt;T&gt;.PreloadAsync()</code>, and <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]
+<ul>
+<li><code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, double, double, int, CancellationToken)</code> replaced with
+<code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, int, CancellationToken)</code>
+which uses default values provided by <code>SwarmOptions</code> for
+<code>pingSeedTimeout</code> and <code>findPeerTimeout</code>.</li>
+<li><code>Swarm&lt;T&gt;.StartAsync(int, int, int CancellationToken)</code>
+replaced with <code>Swarm&lt;T&gt;.StartAsync(CancellationToken)</code>
+which uses default values provided by <code>SwarmOptions</code> for
+<code>millisecondsDialTimeout</code>, <code>millisecondsBroadcastBlockInterval</code>
+and <code>millisecondsBroadcastTxInterval</code>.</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, bool, long, CancellationToken)</code> overload method added and
+<code>Swarm&lt;T&gt;.PreloadAsync(TimeSpan?, IProgress&lt;PreloadState&gt;, bool long, CancellationToken)</code> changed to <code>Swarm&lt;T&gt;.PreloadAsync( TimeSpan, IProgress&lt;PreloadState&gt;, bool, long, CancellationToken)</code></li>
+</ul>
+</li>
+<li>(Libplanet.Net) <code>TimeoutOptions</code> property added to <code>SwarmOptions</code> with
+all timeout related options moved from <code>SwarmOptions</code> to <code>TimeoutOptions</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/1957">#1957</a>, <a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -80,8 +103,11 @@ neither parmeter <code>TimeSpan singleSessionTimeout</code> nor
 <li>Added <code>StoreLoaderAttribute</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/1359">#1359</a>, <a href="https://github.com/planetarium/libplanet/issues/1953">#1953</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
 <li>Added <code>TrieStateStore.Secure</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
 <li>Added <code>NameValueCollectionExtensions</code> static class.  [<a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</li>
-<li>Added <code>TimeSpanExtensions.Multiply()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1966">#1966</a>]</li>
 <li>Type support for <code>Guid</code> added to <code>DataModel</code>.  [<a href="https://github.com/planetarium/libplanet/issues/1959">#1959</a>, <a href="https://github.com/planetarium/libplanet/pull/1960">#1960</a>]</li>
+<li><code>TimeoutOptions</code> class added.  [<a href="https://github.com/planetarium/libplanet/issues/1957">#1957</a>, <a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]</li>
+<li><code>SwarmOptions.BlockBroadcastInterval</code> and <code>SwarmOptions.TxBroadcastInterval</code>
+properties added.  [<a href="https://github.com/planetarium/libplanet/pull/1962">#1962</a>]</li>
+<li><code>TimeSpanExtensions.Multiply()</code> method added.  [<a href="https://github.com/planetarium/libplanet/pull/1966">#1966</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -99,7 +125,7 @@ using <code>StoreLoaderAttribute.LoadStore()</code> method. [<a href="https://gi
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
-<li><p>The following store URI schemes are deprecated:  [<a href="https://github.com/planetarium/libplanet/issues/1573">#1573</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]</p>
+<li>The following store URI schemes are deprecated:  [<a href="https://github.com/planetarium/libplanet/issues/1573">#1573</a>, <a href="https://github.com/planetarium/libplanet/pull/1955">#1955</a>]
 <ul>
 <li><code>default</code>: Use <code>default+file</code> instead.</li>
 <li><code>rocksdb</code>: Use <code>rocksdb+file</code> instead.</li>

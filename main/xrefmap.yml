@@ -16201,15 +16201,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemandTable
   nameWithType: Swarm<T>.BlockDemandTable
   nameWithType.vb: Swarm(Of T).BlockDemandTable
-- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<Peer>, Double, Double, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of Peer), Double, Double, Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Double, System.Double, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Double, System.Double, System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Double, Double, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Double, Double, Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<Peer>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of Peer), Int32, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Int32, CancellationToken)
+  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Int32, CancellationToken)
+  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Int32, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
   name: BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
@@ -16420,15 +16420,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name: PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name.vb: PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<TimeSpan>, IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Int64, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of TimeSpan), IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Int64, CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
+  name: PreloadAsync(IProgress<PreloadState>, Boolean, Int64, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
+  name.vb: PreloadAsync(IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Int64, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Int64, CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, Boolean, Int64, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(TimeSpan,IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
+  name: PreloadAsync(TimeSpan, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_TimeSpan_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(TimeSpan,IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
+  name.vb: PreloadAsync(TimeSpan, IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(TimeSpan, IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Int64, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(TimeSpan, IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Int64, CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(TimeSpan, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(TimeSpan, IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
@@ -16455,14 +16464,14 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Running
   nameWithType: Swarm<T>.Running
   nameWithType.vb: Swarm(Of T).Running
-- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Int32,CancellationToken)
-  name: StartAsync(Int32, Int32, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Int32,CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.StartAsync(Int32, Int32, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(CancellationToken)
+  name: StartAsync(CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(CancellationToken)
 - uid: Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,TimeSpan,CancellationToken)
   name: StartAsync(TimeSpan, TimeSpan, TimeSpan, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_TimeSpan_CancellationToken_
@@ -16582,6 +16591,19 @@ references:
   commentId: T:Libplanet.Net.SwarmOptions
   fullName: Libplanet.Net.SwarmOptions
   nameWithType: SwarmOptions
+- uid: Libplanet.Net.SwarmOptions.BlockBroadcastInterval
+  name: BlockBroadcastInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockBroadcastInterval
+  commentId: P:Libplanet.Net.SwarmOptions.BlockBroadcastInterval
+  fullName: Libplanet.Net.SwarmOptions.BlockBroadcastInterval
+  nameWithType: SwarmOptions.BlockBroadcastInterval
+- uid: Libplanet.Net.SwarmOptions.BlockBroadcastInterval*
+  name: BlockBroadcastInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockBroadcastInterval_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BlockBroadcastInterval
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BlockBroadcastInterval
+  nameWithType: SwarmOptions.BlockBroadcastInterval
 - uid: Libplanet.Net.SwarmOptions.BlockDemandLifespan
   name: BlockDemandLifespan
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDemandLifespan
@@ -16608,32 +16630,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BlockDownloadTimeout
   nameWithType: SwarmOptions.BlockDownloadTimeout
-- uid: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
-  name: BlockHashRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockHashRecvTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
-  fullName: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
-  nameWithType: SwarmOptions.BlockHashRecvTimeout
-- uid: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout*
-  name: BlockHashRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockHashRecvTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.BlockHashRecvTimeout
-  nameWithType: SwarmOptions.BlockHashRecvTimeout
-- uid: Libplanet.Net.SwarmOptions.BlockRecvTimeout
-  name: BlockRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockRecvTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.BlockRecvTimeout
-  fullName: Libplanet.Net.SwarmOptions.BlockRecvTimeout
-  nameWithType: SwarmOptions.BlockRecvTimeout
-- uid: Libplanet.Net.SwarmOptions.BlockRecvTimeout*
-  name: BlockRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockRecvTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.BlockRecvTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.BlockRecvTimeout
-  nameWithType: SwarmOptions.BlockRecvTimeout
 - uid: Libplanet.Net.SwarmOptions.BranchpointThreshold
   name: BranchpointThreshold
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BranchpointThreshold
@@ -16673,19 +16669,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MaximumPollPeers
   nameWithType: SwarmOptions.MaximumPollPeers
-- uid: Libplanet.Net.SwarmOptions.MaxTimeout
-  name: MaxTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.MaxTimeout
-  fullName: Libplanet.Net.SwarmOptions.MaxTimeout
-  nameWithType: SwarmOptions.MaxTimeout
-- uid: Libplanet.Net.SwarmOptions.MaxTimeout*
-  name: MaxTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.MaxTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.MaxTimeout
-  nameWithType: SwarmOptions.MaxTimeout
 - uid: Libplanet.Net.SwarmOptions.MessageTimestampBuffer
   name: MessageTimestampBuffer
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MessageTimestampBuffer
@@ -16712,19 +16695,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
   nameWithType: SwarmOptions.MinimumBroadcastTarget
-- uid: Libplanet.Net.SwarmOptions.PollInterval
-  name: PollInterval
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PollInterval
-  commentId: P:Libplanet.Net.SwarmOptions.PollInterval
-  fullName: Libplanet.Net.SwarmOptions.PollInterval
-  nameWithType: SwarmOptions.PollInterval
-- uid: Libplanet.Net.SwarmOptions.PollInterval*
-  name: PollInterval
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PollInterval_
-  commentId: Overload:Libplanet.Net.SwarmOptions.PollInterval
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.PollInterval
-  nameWithType: SwarmOptions.PollInterval
 - uid: Libplanet.Net.SwarmOptions.RefreshLifespan
   name: RefreshLifespan
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshLifespan
@@ -16790,6 +16760,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.TableSize
   nameWithType: SwarmOptions.TableSize
+- uid: Libplanet.Net.SwarmOptions.TimeoutOptions
+  name: TimeoutOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TimeoutOptions
+  commentId: P:Libplanet.Net.SwarmOptions.TimeoutOptions
+  fullName: Libplanet.Net.SwarmOptions.TimeoutOptions
+  nameWithType: SwarmOptions.TimeoutOptions
+- uid: Libplanet.Net.SwarmOptions.TimeoutOptions*
+  name: TimeoutOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TimeoutOptions_
+  commentId: Overload:Libplanet.Net.SwarmOptions.TimeoutOptions
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.TimeoutOptions
+  nameWithType: SwarmOptions.TimeoutOptions
 - uid: Libplanet.Net.SwarmOptions.TipLifespan
   name: TipLifespan
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TipLifespan
@@ -16821,19 +16804,19 @@ references:
   commentId: F:Libplanet.Net.SwarmOptions.TransportType.TcpTransport
   fullName: Libplanet.Net.SwarmOptions.TransportType.TcpTransport
   nameWithType: SwarmOptions.TransportType.TcpTransport
-- uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
-  name: TxRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.TxRecvTimeout
-  fullName: Libplanet.Net.SwarmOptions.TxRecvTimeout
-  nameWithType: SwarmOptions.TxRecvTimeout
-- uid: Libplanet.Net.SwarmOptions.TxRecvTimeout*
-  name: TxRecvTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.TxRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.TxBroadcastInterval
+  name: TxBroadcastInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxBroadcastInterval
+  commentId: P:Libplanet.Net.SwarmOptions.TxBroadcastInterval
+  fullName: Libplanet.Net.SwarmOptions.TxBroadcastInterval
+  nameWithType: SwarmOptions.TxBroadcastInterval
+- uid: Libplanet.Net.SwarmOptions.TxBroadcastInterval*
+  name: TxBroadcastInterval
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxBroadcastInterval_
+  commentId: Overload:Libplanet.Net.SwarmOptions.TxBroadcastInterval
   isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.TxRecvTimeout
-  nameWithType: SwarmOptions.TxRecvTimeout
+  fullName: Libplanet.Net.SwarmOptions.TxBroadcastInterval
+  nameWithType: SwarmOptions.TxBroadcastInterval
 - uid: Libplanet.Net.SwarmOptions.Type
   name: Type
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_Type
@@ -16847,6 +16830,183 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.Type
   nameWithType: SwarmOptions.Type
+- uid: Libplanet.Net.TimeoutOptions
+  name: TimeoutOptions
+  href: api/Libplanet.Net.TimeoutOptions.html
+  commentId: T:Libplanet.Net.TimeoutOptions
+  fullName: Libplanet.Net.TimeoutOptions
+  nameWithType: TimeoutOptions
+- uid: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
+  name: BootstrapDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_BootstrapDialTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
+  nameWithType: TimeoutOptions.BootstrapDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout*
+  name: BootstrapDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_BootstrapDialTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
+  nameWithType: TimeoutOptions.BootstrapDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
+  name: DefaultBootstrapDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultBootstrapDialTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
+  nameWithType: TimeoutOptions.DefaultBootstrapDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultDialTimeout
+  name: DefaultDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultDialTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultDialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultDialTimeout
+  nameWithType: TimeoutOptions.DefaultDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultGetBlockHashesTimeout
+  name: DefaultGetBlockHashesTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlockHashesTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultGetBlockHashesTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultGetBlockHashesTimeout
+  nameWithType: TimeoutOptions.DefaultGetBlockHashesTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultGetBlocksBaseTimeout
+  name: DefaultGetBlocksBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlocksBaseTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultGetBlocksBaseTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultGetBlocksBaseTimeout
+  nameWithType: TimeoutOptions.DefaultGetBlocksBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultGetBlocksPerBlockHashTimeout
+  name: DefaultGetBlocksPerBlockHashTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlocksPerBlockHashTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultGetBlocksPerBlockHashTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultGetBlocksPerBlockHashTimeout
+  nameWithType: TimeoutOptions.DefaultGetBlocksPerBlockHashTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultGetTxsBaseTimeout
+  name: DefaultGetTxsBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetTxsBaseTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultGetTxsBaseTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultGetTxsBaseTimeout
+  nameWithType: TimeoutOptions.DefaultGetTxsBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultGetTxsPerTxIdTimeout
+  name: DefaultGetTxsPerTxIdTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetTxsPerTxIdTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultGetTxsPerTxIdTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultGetTxsPerTxIdTimeout
+  nameWithType: TimeoutOptions.DefaultGetTxsPerTxIdTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultMaxTimeout
+  name: DefaultMaxTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultMaxTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultMaxTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultMaxTimeout
+  nameWithType: TimeoutOptions.DefaultMaxTimeout
+- uid: Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
+  name: DefaultPreloadDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultPreloadDialTimeout
+  commentId: F:Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
+  nameWithType: TimeoutOptions.DefaultPreloadDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DialTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.DialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.DialTimeout
+  nameWithType: TimeoutOptions.DialTimeout
+- uid: Libplanet.Net.TimeoutOptions.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DialTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.DialTimeout
+  nameWithType: TimeoutOptions.DialTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout
+  name: GetBlockHashesTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlockHashesTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout
+  fullName: Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout
+  nameWithType: TimeoutOptions.GetBlockHashesTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout*
+  name: GetBlockHashesTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlockHashesTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout
+  nameWithType: TimeoutOptions.GetBlockHashesTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout
+  name: GetBlocksBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlocksBaseTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout
+  fullName: Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout
+  nameWithType: TimeoutOptions.GetBlocksBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout*
+  name: GetBlocksBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlocksBaseTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout
+  nameWithType: TimeoutOptions.GetBlocksBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout
+  name: GetBlocksPerBlockHashTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlocksPerBlockHashTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout
+  fullName: Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout
+  nameWithType: TimeoutOptions.GetBlocksPerBlockHashTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout*
+  name: GetBlocksPerBlockHashTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetBlocksPerBlockHashTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout
+  nameWithType: TimeoutOptions.GetBlocksPerBlockHashTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout
+  name: GetTxsBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetTxsBaseTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout
+  fullName: Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout
+  nameWithType: TimeoutOptions.GetTxsBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout*
+  name: GetTxsBaseTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetTxsBaseTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout
+  nameWithType: TimeoutOptions.GetTxsBaseTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout
+  name: GetTxsPerTxIdTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetTxsPerTxIdTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout
+  fullName: Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout
+  nameWithType: TimeoutOptions.GetTxsPerTxIdTimeout
+- uid: Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout*
+  name: GetTxsPerTxIdTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_GetTxsPerTxIdTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout
+  nameWithType: TimeoutOptions.GetTxsPerTxIdTimeout
+- uid: Libplanet.Net.TimeoutOptions.MaxTimeout
+  name: MaxTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_MaxTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.MaxTimeout
+  fullName: Libplanet.Net.TimeoutOptions.MaxTimeout
+  nameWithType: TimeoutOptions.MaxTimeout
+- uid: Libplanet.Net.TimeoutOptions.MaxTimeout*
+  name: MaxTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_MaxTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.MaxTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.MaxTimeout
+  nameWithType: TimeoutOptions.MaxTimeout
+- uid: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
+  name: PreloadDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_PreloadDialTimeout
+  commentId: P:Libplanet.Net.TimeoutOptions.PreloadDialTimeout
+  fullName: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
+  nameWithType: TimeoutOptions.PreloadDialTimeout
+- uid: Libplanet.Net.TimeoutOptions.PreloadDialTimeout*
+  name: PreloadDialTimeout
+  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_PreloadDialTimeout_
+  commentId: Overload:Libplanet.Net.TimeoutOptions.PreloadDialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
+  nameWithType: TimeoutOptions.PreloadDialTimeout
 - uid: Libplanet.Net.Transports
   name: Libplanet.Net.Transports
   href: api/Libplanet.Net.Transports.html
