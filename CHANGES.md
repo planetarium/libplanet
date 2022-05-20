@@ -74,7 +74,10 @@ To be released.
 [#1953]: https://github.com/planetarium/libplanet/issues/1953
 [#1955]: https://github.com/planetarium/libplanet/pull/1955
 [#1957]: https://github.com/planetarium/libplanet/issues/1957
+[#1959]: https://github.com/planetarium/libplanet/issues/1959
 [#1960]: https://github.com/planetarium/libplanet/pull/1960
+[#1961]: https://github.com/planetarium/libplanet/pull/1961
+[#1962]: https://github.com/planetarium/libplanet/pull/1962
 [#1966]: https://github.com/planetarium/libplanet/pull/1966
 
 
