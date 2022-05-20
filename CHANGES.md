@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.35.0
 --------------
 
-To be released.
+Released on May 20th, 2022.
 
 ### Deprecated APIs
 
@@ -38,10 +38,6 @@ To be released.
     all timeout related options moved from `SwarmOptions` to `TimeoutOptions`.
     [[#1957], [#1962]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  Added `StoreLoader` delegate.  [[#1359], [#1953], [#1955]]
@@ -65,10 +61,6 @@ To be released.
  -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore`-backed
     `TrieStateStore` now can be instantiated with URI scheme `rocksdb+file:`
     using `StoreLoaderAttribute.LoadStore()` method. [[#1359], [#1953], [#1955]]
-
-### Bug fixes
-
-### Dependencies
 
 ### CLI tools
 
