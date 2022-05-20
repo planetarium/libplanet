@@ -99,24 +99,22 @@ namespace Libplanet.Net.Consensus
             lock (_lock)
             {
                 Log.Debug(
-                    "Vote({Before}/{Total}) NodeID: {Id}, Validator: {Address}, " +
-                    "Height: {Height}, Round: {Round}",
-                    _voteSet.Votes.Length,
+                    "Vote({Vote}/{Commit}/{Total}) NodeID: {Id}, " +
+                    "Validator: {Address}, Height: {Height}, Round: {Round}",
+                    VoteCount,
+                    CommitCount,
                     _numberOfValidator,
                     NodeId,
                     vote.Validator.ToAddress(),
                     Height,
                     Round);
-            }
-
-            lock (_lock)
-            {
                 if (_voteSet.Add(vote))
                 {
                     Log.Debug(
-                        "Vote Success({After}/{Total}) NodeID: {Id}, " +
+                        "Vote Success({Vote}/{Commit}/{Total}) NodeID: {Id}, " +
                         "Validator: {Address}, Height: {Height}, Round: {Round}",
-                        _voteSet.Votes.Length,
+                        VoteCount,
+                        CommitCount,
                         _numberOfValidator,
                         NodeId,
                         vote.Validator.ToAddress(),
