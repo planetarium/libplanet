@@ -2,6 +2,7 @@ using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -32,7 +33,9 @@ namespace Libplanet.Net.Tests.Consensus.States
         {
             BlockHash validBlockHash = _fx.Block1.Hash;
             BlockHash invalidBlockHash = _fx.Block2.Hash;
-            var validators = new Address[6].ToList();
+            var validators = Enumerable.Range(0, 6)
+                                             .Select(x => new PrivateKey().PublicKey)
+                                             .ToList();
             ConsensusContext<DumbAction> contextAlreadyVoted =
                 TestUtils.CreateConsensusContext(validators, _blockChain);
             contextAlreadyVoted.CurrentRoundContext.BlockHash = validBlockHash;
@@ -41,7 +44,8 @@ namespace Libplanet.Net.Tests.Consensus.States
             context.CurrentRoundContext.BlockHash = validBlockHash;
             for (int i = 0; i < 5; i++)
             {
-                contextAlreadyVoted.CurrentRoundContext.Vote(new PrivateKey().ToAddress());
+                contextAlreadyVoted.CurrentRoundContext.Vote(
+                    TestUtils.CreateVote(validators[i], VoteFlag.Absent, id: i));
             }
 
             var state = new PreVoteState<DumbAction>();
@@ -52,24 +56,46 @@ namespace Libplanet.Net.Tests.Consensus.States
             Assert.Throws<UnexpectedRoundProposeException>(
                 () => state.Handle(
                     context,
-                    new ConsensusVote(0, 0, 1, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusVote(
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 0, 1))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedHeightProposeException>(
                 () => state.Handle(
                     context,
-                    new ConsensusVote(0, 1, 0, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusVote(
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 1, 0))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedBlockHashException>(
                 () => state.Handle(
                     context,
-                    new ConsensusVote(0, 0, 0, invalidBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusVote(
+                            TestUtils.CreateVote(invalidBlockHash, VoteFlag.Absent, 0, 0, 0))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Equal(0, context.CurrentRoundContext.VoteCount);
             Assert.Null(
                 state.Handle(
                     context,
-                    new ConsensusVote(0, 0, 0, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusVote(
+                            TestUtils.CreateVote(
+                                validBlockHash,
+                                VoteFlag.Absent,
+                                0,
+                                0,
+                                0,
+                                validators[0]))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Equal(1, context.CurrentRoundContext.VoteCount);
             ConsensusMessage? res = state.Handle(
                 contextAlreadyVoted,
-                new ConsensusVote(0, 0, 0, validBlockHash) { Remote = TestUtils.Peer0 });
+                new ConsensusVote(
+                        TestUtils.CreateVote(
+                            validBlockHash,
+                            VoteFlag.Absent,
+                            5,
+                            0,
+                            0,
+                            validators[5]))
+                    { Remote = TestUtils.Peer0 });
             Assert.NotNull(res);
             Assert.IsType<ConsensusCommit>(res);
             Assert.IsType<PreCommitState<DumbAction>>(

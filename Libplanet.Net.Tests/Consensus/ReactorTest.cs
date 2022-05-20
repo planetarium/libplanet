@@ -51,7 +51,7 @@ namespace Libplanet.Net.Tests.Consensus
             string host = "localhost",
             int port = 5001,
             long id = 0,
-            List<Address> validators = null!);
+            List<PublicKey> validators = null!);
 
         [Fact(Timeout = (TimerTestTimeout * 2) + TimerTestMargin)]
         public async void VoteCommitTimeout()
@@ -59,10 +59,10 @@ namespace Libplanet.Net.Tests.Consensus
             // For preventing one man Vote-Commit-newHeight.
             var fakeKey = new PrivateKey();
             var key = new PrivateKey();
-            var validators = new List<Address>
+            var validators = new List<PublicKey>
             {
-                key.ToAddress(),
-                fakeKey.ToAddress(),
+                key.PublicKey,
+                fakeKey.PublicKey,
             };
             const int proposeProcessWaitTime = 100;
             const int yieldTime = 200;
@@ -146,7 +146,7 @@ namespace Libplanet.Net.Tests.Consensus
             var keys = new PrivateKey[count];
             var tables = new RoutingTable[count];
             var reactors = new IReactor[count];
-            var validators = new List<Address>();
+            var validators = new List<PublicKey>();
             var stores = new IStore[count];
             var blockChains = new BlockChain<DumbAction>[count];
 
@@ -154,7 +154,7 @@ namespace Libplanet.Net.Tests.Consensus
             {
                 keys[i] = new PrivateKey();
                 tables[i] = new RoutingTable(keys[i].ToAddress());
-                validators.Add(keys[i].ToAddress());
+                validators.Add(keys[i].PublicKey);
                 stores[i] = new MemoryStore();
                 blockChains[i] = new BlockChain<DumbAction>(
                     TestUtils.Policy,

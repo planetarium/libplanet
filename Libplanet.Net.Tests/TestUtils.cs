@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
@@ -15,9 +19,13 @@ namespace Libplanet.Net.Tests
                 ByteUtil.ParseHex(
                     "0204b09e833560269d0dc1100c221442b9969e74a3949ca306aecda20a6a2afba4")));
 
-        public static readonly List<Address> Validators = new List<Address>
+        public static readonly BlockHash BlockHash0 =
+            BlockHash.FromString(
+                "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
+
+        public static readonly List<PublicKey> Validators = new List<PublicKey>
         {
-            Peer0.Address,
+            Peer0.PublicKey,
         };
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
@@ -35,7 +43,7 @@ namespace Libplanet.Net.Tests
             CreateConsensusContext(Validators, blockChain, id);
 
         public static ConsensusContext<DumbAction> CreateConsensusContext(
-            List<Address> validator,
+            List<PublicKey> validator,
             BlockChain<DumbAction> blockChain,
             long id = 0) =>
             new ConsensusContext<DumbAction>(
@@ -50,11 +58,59 @@ namespace Libplanet.Net.Tests
             new RoundContext<DumbAction>(id, Validators, height, round);
 
         public static RoundContext<DumbAction> CreateRoundContext(
-            List<Address> validators,
+            List<PublicKey> validators,
             long id = 0,
             long height = 0,
             long round = 0) =>
             new RoundContext<DumbAction>(id, validators, height, round);
+
+        public static Vote CreateVote(
+            PublicKey publicKey,
+            VoteFlag flag = VoteFlag.Null,
+            long id = 0,
+            long height = 0,
+            long round = 0) =>
+            new Vote(
+                height,
+                round,
+                BlockHash0,
+                DateTimeOffset.Now,
+                publicKey,
+                flag,
+                id,
+                ImmutableArray<byte>.Empty);
+
+        public static Vote CreateVote(
+            BlockHash hash,
+            VoteFlag flag = VoteFlag.Null,
+            long id = 0,
+            long height = 0,
+            long round = 0,
+            PublicKey? publicKey = null) =>
+            new Vote(
+                height,
+                round,
+                hash,
+                DateTimeOffset.Now,
+                publicKey ?? Peer0.PublicKey,
+                flag,
+                id,
+                ImmutableArray<byte>.Empty);
+
+        public static Vote CreateVote(
+            VoteFlag flag = VoteFlag.Null,
+            long id = 0,
+            long height = 0,
+            long round = 0) =>
+            new Vote(
+                height,
+                round,
+                BlockHash0,
+                DateTimeOffset.Now,
+                new PrivateKey().PublicKey,
+                flag,
+                id,
+                ImmutableArray<byte>.Empty);
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
         {
