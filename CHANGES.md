@@ -29,6 +29,10 @@ To be released.
 
 ### Added APIs
 
+ -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
+ -  `Transaction<T>` now implements `ITxMetadata` interface.
+    [[#1164], [#1974], [#1978]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -37,6 +41,8 @@ To be released.
 
 ### CLI tools
 
+[#1974]: https://github.com/planetarium/libplanet/issues/1974
+[#1978]: https://github.com/planetarium/libplanet/pull/1978
 [#1981]: https://github.com/planetarium/libplanet/issues/1981
 [#1982]: https://github.com/planetarium/libplanet/pull/1982
 [#1990]: https://github.com/planetarium/libplanet/pull/1990

@@ -26,7 +26,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public sealed class Transaction<T> : IEquatable<Transaction<T>>
+    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITxMetadata
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -184,24 +184,13 @@ namespace Libplanet.Tx
             }
         }
 
-        /// <summary>
-        /// The number of previous <see cref="Transaction{T}"/>s committed by
-        /// the <see cref="Signer"/> of this transaction.
-        /// </summary>
+        /// <inheritdoc cref="ITxMetadata.Nonce"/>
         public long Nonce { get; }
 
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this transaction.
-        /// This is derived from the <see cref="PublicKey"/>.
-        /// </summary>
+        /// <inheritdoc cref="ITxMetadata.Signer"/>
         public Address Signer { get; }
 
-        /// <summary>
-        /// <see cref="Address"/>es whose states affected by
-        /// <see cref="Actions"/>.
-        /// </summary>
-        // TODO: We should remove this property.
-        // See also https://github.com/planetarium/libplanet/issues/368
+        /// <inheritdoc cref="ITxMetadata.UpdatedAddresses"/>
         public IImmutableSet<Address> UpdatedAddresses { get; }
 
         /// <summary>
@@ -235,25 +224,13 @@ namespace Libplanet.Tx
         /// </summary>
         public IImmutableList<T> Actions { get; }
 
-        /// <summary>
-        /// The time this <see cref="Transaction{T}"/> is created and signed.
-        /// </summary>
+        /// <inheritdoc cref="ITxMetadata.Timestamp"/>
         public DateTimeOffset Timestamp { get; }
 
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this
-        /// <see cref="Transaction{T}"/>.
-        /// The <see cref="Signer"/> address is always corresponding to this
-        /// for each transaction.  This cannot be <c>null</c>.
-        /// </summary>
+        /// <inheritdoc cref="ITxMetadata.PublicKey"/>
         public PublicKey PublicKey { get; }
 
-        /// <summary>
-        /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this
-        /// <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
-        /// in the genesis block.
-        /// </summary>
+        /// <inheritdoc cref="ITxMetadata.GenesisHash"/>
         public BlockHash? GenesisHash { get; }
 
         /// <summary>
