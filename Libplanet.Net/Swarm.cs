@@ -265,15 +265,6 @@ namespace Libplanet.Net
         /// <summary>
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
-        /// <param name="millisecondsDialTimeout">
-        /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
-        /// the dial-up is cancelled after this timeout, and it tries another peer.
-        /// If <c>null</c> is given it never gives up dial-ups.
-        /// </param>
-        /// <param name="millisecondsBroadcastBlockInterval">Time interval between each broadcast
-        /// of chain tip.</param>
-        /// <param name="millisecondsBroadcastTxInterval">Time interval between each broadcast
-        /// of staged transactions.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -286,19 +277,16 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
-        public async Task StartAsync(
-            int millisecondsDialTimeout = 15000,
-            int millisecondsBroadcastBlockInterval = 15000,
-            int millisecondsBroadcastTxInterval = 5000,
-            CancellationToken cancellationToken = default(CancellationToken))
+        /// these actions in the behind blocks use
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, long, CancellationToken)"/>
+        /// method too.</remarks>
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             await StartAsync(
-                TimeSpan.FromMilliseconds(millisecondsDialTimeout),
-                TimeSpan.FromMilliseconds(millisecondsBroadcastBlockInterval),
-                TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
-                cancellationToken
-            );
+                Options.TimeoutOptions.DialTimeout,
+                Options.BlockBroadcastInterval,
+                Options.TxBroadcastInterval,
+                cancellationToken);
         }
 
         /// <summary>
@@ -325,7 +313,9 @@ namespace Libplanet.Net
         /// this tries to render <em>all</em> actions in the behind blocks so that there are
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
-        /// these actions in the behind blocks use <see cref="PreloadAsync"/> method too.</remarks>
+        /// these actions in the behind blocks use
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, long, CancellationToken)"/>
+        /// method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastBlockInterval,
@@ -398,19 +388,28 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Join to the peer-to-peer network using seed peers.
+        /// </summary>
+        /// <param name="seedPeers">List of seed peers.</param>
+        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
+        /// from seed peers.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(
-           IEnumerable<Peer> seedPeers,
-           double pingSeedTimeout,
-           double findPeerTimeout,
-           int depth = Kademlia.MaxDepth,
-           CancellationToken cancellationToken = default(CancellationToken))
+            IEnumerable<Peer> seedPeers,
+            int depth = Kademlia.MaxDepth,
+            CancellationToken cancellationToken = default)
         {
             await BootstrapAsync(
-                seedPeers,
-                TimeSpan.FromMilliseconds(pingSeedTimeout),
-                TimeSpan.FromMilliseconds(findPeerTimeout),
-                depth,
-                cancellationToken);
+                seedPeers: seedPeers,
+                pingSeedTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
+                findNeighborsTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
+                depth: depth,
+                cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -513,6 +512,45 @@ namespace Libplanet.Net
         /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
+        /// <param name="progress">
+        /// An instance that receives progress updates for block downloads.
+        /// </param>
+        /// <param name="render">
+        /// The value indicates whether to render blocks and actions while preloading.</param>
+        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
+        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
+        /// peers by more than this threshold after a preloading is once done, the preloading
+        /// is repeated.  25 by default.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>
+        /// A task without value.
+        /// You only can <c>await</c> until the method is completed.
+        /// </returns>
+        /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
+        /// </remarks>
+        /// <exception cref="AggregateException">Thrown when the given the block downloading is
+        /// failed.</exception>
+        public async Task PreloadAsync(
+            IProgress<PreloadState> progress = null,
+            bool render = false,
+            long tipDeltaThreshold = 25L,
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
+        {
+            await PreloadAsync(
+                Options.TimeoutOptions.PreloadDialTimeout,
+                progress,
+                render,
+                tipDeltaThreshold,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// </summary>
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
@@ -540,7 +578,7 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
         public async Task PreloadAsync(
-            TimeSpan? dialTimeout = null,
+            TimeSpan dialTimeout,
             IProgress<PreloadState> progress = null,
             bool render = false,
             long tipDeltaThreshold = 25L,
@@ -723,9 +761,10 @@ namespace Libplanet.Net
             int subSessionId = logSessionIds is (_, int j) ? j : sessionRandom.Next();
             var request = new GetBlockHashes(locator, stop);
 
-            TimeSpan transportTimeout = timeout is { } t && t > Options.BlockHashRecvTimeout
-                ? t
-                : Options.BlockHashRecvTimeout;
+            TimeSpan transportTimeout = timeout is { } t
+                && t > Options.TimeoutOptions.GetBlockHashesTimeout
+                    ? t
+                    : Options.TimeoutOptions.GetBlockHashesTimeout;
             const string sendMsg =
                 "{SessionId}/{SubSessionId}: Sending a {MessageType} " +
                 "message with locator [{LocatorHead}, ...] (stop: {Stop})...";
@@ -796,11 +835,11 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            TimeSpan blockRecvTimeout = Options.BlockRecvTimeout
-                                        + TimeSpan.FromSeconds(hashCount);
-            if (blockRecvTimeout > Options.MaxTimeout)
+            TimeSpan blockRecvTimeout = Options.TimeoutOptions.GetBlocksBaseTimeout
+                + Options.TimeoutOptions.GetBlocksPerBlockHashTimeout.Multiply(hashCount);
+            if (blockRecvTimeout > Options.TimeoutOptions.MaxTimeout)
             {
-                blockRecvTimeout = Options.MaxTimeout;
+                blockRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageAsync(
@@ -862,10 +901,11 @@ namespace Libplanet.Net
 
             _logger.Debug("Required tx count: {Count}.", txCount);
 
-            var txRecvTimeout = Options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
-            if (txRecvTimeout > Options.MaxTimeout)
+            var txRecvTimeout = Options.TimeoutOptions.GetTxsBaseTimeout
+                + Options.TimeoutOptions.GetTxsPerTxIdTimeout.Multiply(txCount);
+            if (txRecvTimeout > Options.TimeoutOptions.MaxTimeout)
             {
-                txRecvTimeout = Options.MaxTimeout;
+                txRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageAsync(
