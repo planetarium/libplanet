@@ -42,12 +42,11 @@ To be released.
  -  Added `StoreLoaderAttribute` class.  [[#1359], [#1953], [#1955]]
  -  Added `TrieStateStore.Secure` property.  [[#1955]]
  -  Added `NameValueCollectionExtensions` static class.  [[#1955]]
- -  Added `TimeSpanExtensions.Multiply()` static method.  [[#1966]]
  -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
- -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
  -  `TimeoutOptions` class added.  [[#1957], [#1962]]
  -  `SwarmOptions.BlockBroadcastInterval` and `SwarmOptions.TxBroadcastInterval`
     properties added.  [[#1962]]
+ -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
 
 ### Behavioral changes
 
@@ -68,6 +67,8 @@ To be released.
 ### CLI tools
 
  -  The following store URI schemes are deprecated:  [[#1573], [#1955]]
+     - `default`: Use `default+file` instead.
+     - `rocksdb`: Use `rocksdb+file` instead.
 
 [#1359]: https://github.com/planetarium/libplanet/issues/1359
 [#1573]: https://github.com/planetarium/libplanet/issues/1573
@@ -82,6 +83,7 @@ To be released.
 
 
 Version 0.34.0
+--------------
 
 Released on May 13th, 2022.
 
