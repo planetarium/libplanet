@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -253,5 +254,7 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
+
+        public IEnumerable<PublicKey> GetValidators() => new List<PublicKey>();
     }
 }

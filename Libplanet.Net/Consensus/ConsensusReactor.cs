@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -25,14 +27,17 @@ namespace Libplanet.Net.Consensus
             ITransport transport,
             BlockChain<T> blockChain,
             long nodeId,
-            List<Address> validators)
+            List<PublicKey>? validators)
         {
             _routingTable = routingTable;
             _transport = transport;
             _logger = Log
                 .ForContext<ConsensusReactor<T>>()
                 .ForContext("Source", nameof(ConsensusReactor<T>));
-            _context = new ConsensusContext<T>(nodeId, validators, blockChain);
+            _context = new ConsensusContext<T>(
+                nodeId,
+                validators ?? blockChain.Policy.GetValidators().ToList(),
+                blockChain);
         }
 
         public void Dispose()

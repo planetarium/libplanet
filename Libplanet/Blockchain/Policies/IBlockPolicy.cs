@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -141,5 +142,12 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
+
+        /// <summary>
+        /// Gets <see cref="IEnumerable{T}"/> of validator.
+        /// </summary>
+        /// <returns><see cref="IEnumerable{T}"/> of validator.</returns>
+        [Pure]
+        IEnumerable<PublicKey> GetValidators();
     }
 }

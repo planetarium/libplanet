@@ -6,6 +6,7 @@ using System.Timers;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
 
@@ -19,14 +20,14 @@ namespace Libplanet.Net.Consensus
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
-        private readonly List<Address> _validators;
+        private readonly List<PublicKey> _validators;
         private readonly object _commitLock;
 
         private ConcurrentDictionary<long, RoundContext<T>> _roundContexts;
 
         public ConsensusContext(
             long nodeId,
-            List<Address> validators,
+            List<PublicKey> validators,
             BlockChain<T> blockChain)
         {
             if (validators.Count <= 0)

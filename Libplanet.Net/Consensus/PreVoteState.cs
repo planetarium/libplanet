@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -35,20 +36,15 @@ namespace Libplanet.Net.Consensus
             }
 
             RoundContext<T> roundContext = context.CurrentRoundContext;
-            roundContext.Vote(vote.Remote?.Address);
+            roundContext.Vote(vote.ProposeVote);
 
             if (!roundContext.HasTwoThirdsAny())
             {
                 return null;
             }
 
-            roundContext.ResetVote();
             roundContext.State = new PreCommitState<T>();
-            return new ConsensusCommit(
-                context.NodeId,
-                context.Height,
-                context.Round,
-                roundContext.BlockHash);
+            return new ConsensusCommit(roundContext.Voting(VoteFlag.Commit));
         }
     }
 }

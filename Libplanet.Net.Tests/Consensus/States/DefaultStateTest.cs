@@ -1,6 +1,7 @@
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
@@ -34,7 +35,8 @@ namespace Libplanet.Net.Tests.Consensus.States
             Assert.Throws<TryUnexpectedMessageHandleException>(
                 () => state.Handle(
                     context,
-                    new ConsensusCommit(0, 0, 0, blockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusCommit(TestUtils.CreateVote(blockHash, VoteFlag.Commit, 0, 0, 0))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedRoundProposeException>(
                 () => state.Handle(
                     context,

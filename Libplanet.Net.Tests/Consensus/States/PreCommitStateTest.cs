@@ -2,6 +2,7 @@ using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -45,7 +46,9 @@ namespace Libplanet.Net.Tests.Consensus.States
             _fx.Store.PutBlock(block);
             BlockHash validBlockHash = block.Hash;
             BlockHash invalidBlockHash = _fx.Block2.Hash;
-            var validators = new Address[6].ToList();
+            var validators = Enumerable.Range(0, 6)
+                                             .Select(x => new PrivateKey().PublicKey)
+                                             .ToList();
             ConsensusContext<DumbAction> contextAlreadyVoted =
                 TestUtils.CreateConsensusContext(validators, _blockChain);
             contextAlreadyVoted.CurrentRoundContext.BlockHash = validBlockHash;
@@ -54,31 +57,54 @@ namespace Libplanet.Net.Tests.Consensus.States
             context.CurrentRoundContext.BlockHash = validBlockHash;
             for (int i = 0; i < 5; i++)
             {
-                contextAlreadyVoted.CurrentRoundContext.Vote(new PrivateKey().ToAddress());
+                contextAlreadyVoted.CurrentRoundContext.Vote(
+                    TestUtils.CreateVote(validators[i], VoteFlag.Commit, id: i));
             }
 
             var state = new PreCommitState<DumbAction>();
             Assert.Throws<UnexpectedRoundProposeException>(
                 () => state.Handle(
                     context,
-                    new ConsensusCommit(0, 0, 1, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusCommit(
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Commit, 0, 0, 1))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedHeightProposeException>(
                 () => state.Handle(
                     context,
-                    new ConsensusCommit(0, 1, 0, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusCommit(
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Commit, 0, 1, 0))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedBlockHashException>(
                 () => state.Handle(
                     context,
-                    new ConsensusCommit(0, 0, 0, invalidBlockHash) { Remote = TestUtils.Peer0 }));
-            Assert.Equal(0, context.CurrentRoundContext.VoteCount);
+                    new ConsensusCommit(
+                            TestUtils.CreateVote(invalidBlockHash, VoteFlag.Commit, 0, 0, 0))
+                        { Remote = TestUtils.Peer0 }));
+            Assert.Equal(0, context.CurrentRoundContext.CommitCount);
             Assert.Null(
                 state.Handle(
                     context,
-                    new ConsensusCommit(0, 0, 0, validBlockHash) { Remote = TestUtils.Peer0 }));
-            Assert.Equal(1, context.CurrentRoundContext.VoteCount);
+                    new ConsensusCommit(
+                            TestUtils.CreateVote(
+                                validBlockHash,
+                                VoteFlag.Commit,
+                                0,
+                                0,
+                                0,
+                                validators[0]))
+                        { Remote = TestUtils.Peer0 }));
+            Assert.Equal(1, context.CurrentRoundContext.CommitCount);
             ConsensusMessage? res = state.Handle(
                 contextAlreadyVoted,
-                new ConsensusCommit(0, 0, 0, validBlockHash) { Remote = TestUtils.Peer0 });
+                new ConsensusCommit(
+                        TestUtils.CreateVote(
+                            validBlockHash,
+                            VoteFlag.Commit,
+                            5,
+                            0,
+                            0,
+                            validators[5]))
+                    { Remote = TestUtils.Peer0 });
             Assert.Null(res);
             Assert.Equal(0, contextAlreadyVoted.Round);
             Assert.Equal(1, contextAlreadyVoted.Height);
@@ -96,17 +122,20 @@ namespace Libplanet.Net.Tests.Consensus.States
             Assert.Null(
                 state.Handle(
                     context,
-                    new ConsensusVote(0, 0, 0, blockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusVote(TestUtils.CreateVote(blockHash, VoteFlag.Absent, 0, 0, 0))
+                        { Remote = TestUtils.Peer0 }));
             ConsensusMessage? res = state.Handle(
                 context,
-                new ConsensusVote(0, 0, 2, blockHash) { Remote = TestUtils.Peer0 });
+                new ConsensusVote(TestUtils.CreateVote(blockHash, VoteFlag.Absent, 0, 0, 2))
+                    { Remote = TestUtils.Peer0 });
             Assert.NotNull(res);
             Assert.IsType<ConsensusCommit>(res);
             Assert.Equal(2, context.Round);
             Assert.Equal(blockHash, context.CurrentRoundContext.BlockHash);
             res = state.Handle(
                 context,
-                new ConsensusVote(0, 1, 3, blockHash) { Remote = TestUtils.Peer0 });
+                new ConsensusVote(TestUtils.CreateVote(blockHash, VoteFlag.Absent, 0, 1, 3))
+                    { Remote = TestUtils.Peer0 });
             Assert.Null(res);
         }
     }

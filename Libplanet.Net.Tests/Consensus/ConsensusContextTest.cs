@@ -34,7 +34,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => new ConsensusContext<DumbAction>(
                     0,
-                    new List<Address>(),
+                    new List<PublicKey>(),
                     _blockChain));
         }
 
@@ -74,7 +74,9 @@ namespace Libplanet.Net.Tests.Consensus
         public void ToStringTest()
         {
             long nodeId = 3;
-            var validators = new Address[4].ToList();
+            var validators = Enumerable.Range(0, 7)
+                                             .Select(x => new PrivateKey().PublicKey)
+                                             .ToList();
             long height = 6;
             long round = 5;
             string step = "DefaultState";

@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests.Consensus
             string host = "localhost",
             int port = 5001,
             long id = 0,
-            List<Address> validators = null!)
+            List<PublicKey> validators = null!)
         {
             key ??= new PrivateKey();
             var transport = new NetMQTransport(
