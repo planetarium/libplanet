@@ -8,6 +8,9 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Net) Unused property `SwarmOptions.PollInterval` removed.
+    [[#1962]]
+
 ### Backward-incompatible API changes
 
  -  `BlockCompletion<TPeer, TAction>.Complete()` no longer accepts
@@ -31,6 +34,9 @@ To be released.
         `Swarm<T>.PreloadAsync(TimeSpan?, IProgress<PreloadState>, bool
         long, CancellationToken)` changed to `Swarm<T>.PreloadAsync(
         TimeSpan, IProgress<PreloadState>, bool, long, CancellationToken)`
+ -  (Libplanet.Net) `TimeoutOptions` property added to `SwarmOptions` with
+    all timeout related options moved from `SwarmOptions` to `TimeoutOptions`.
+    [[#1957], [#1962]]
 
 ### Backward-incompatible network protocol changes
 
