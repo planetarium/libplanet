@@ -138,14 +138,17 @@ namespace Libplanet.Store
                             $"Invalid target property type {type} encountered.");
                 }
 
-                var keys = DecodeFromListIValue(new BTypes.List(dict.Keys), keyType);
+                Type keysType = typeof(ImmutableList<>).MakeGenericType(keyType);
+                Type valuesType = typeof(ImmutableList<>).MakeGenericType(valueType);
+
+                var keys = DecodeFromListIValue(new BTypes.List(dict.Keys), keysType);
 #pragma warning disable CS0618
-                var values = DecodeFromListIValue(new BTypes.List(dict.Values), valueType);
+                var values = DecodeFromListIValue(new BTypes.List(dict.Values), valuesType);
 #pragma warning restore CS0618
 
-                if (keys is List listKeys)
+                if (keys is ImmutableList<object> listKeys)
                 {
-                    if (values is List listValues)
+                    if (values is ImmutableList<object> listValues)
                     {
                         return listKeys.Zip(listValues, (k, v) => new { k, v })
                             .ToDictionary(x => x.k, x => x.v);
@@ -153,13 +156,13 @@ namespace Libplanet.Store
                     else
                     {
                         throw new ArgumentException(
-                            $"Invalid target property type {type} encountered.");
+                            $"Invalid target property type {values.GetType()} encountered.");
                     }
                 }
                 else
                 {
                     throw new ArgumentException(
-                        $"Invalid target property type {type} encountered.");
+                        $"Invalid target property type {keys.GetType()} encountered.");
                 }
             }
             else
