@@ -32,12 +32,18 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Net) `BlockCandidateTable<T>` updated for reducing the chance
+    of dropping the possible longest chain while `ProcessBlockDemandAsync()`
+    and `PullBlocksAsync()` are in progress. [[#1892], [#1917]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
 
+[#1892]: https://github.com/planetarium/libplanet/issues/1892
+[#1917]: https://github.com/planetarium/libplanet/pull/1917
 [#2024]: https://github.com/planetarium/libplanet/pull/2024
 
 
