@@ -10,6 +10,18 @@ namespace Libplanet.Store
 {
     public abstract partial class DataModel
     {
+        private static readonly Dictionary<Type, int> TYPEDICT = new Dictionary<Type, int>
+        {
+            { typeof(bool), 0 },
+            { typeof(int), 1 },
+            { typeof(long), 2 },
+            { typeof(ImmutableArray<byte>), 3 },
+            { typeof(BigInteger), 4 },
+            { typeof(Guid), 5 },
+            { typeof(Address), 6 },
+            { typeof(string), 7 },
+        };
+
         private static object DecodeFromIValue(BTypes.IValue value, Type type)
         {
             switch (value)
@@ -96,8 +108,38 @@ namespace Libplanet.Store
                 Type keyType = genericTypes[0];
                 Type valueType = genericTypes[1];
 
+                switch (TYPEDICT[keyType])
+                {
+                    case 3:
+                    case 5:
+                    case 6:
+                    case 7:
+                        break;
+                    default:
+                        throw new ArgumentException(
+                            $"Invalid target property type {type} encountered.");
+                }
+
+                switch (TYPEDICT[valueType])
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        break;
+                    default:
+                        throw new ArgumentException(
+                            $"Invalid target property type {type} encountered.");
+                }
+
                 var keys = DecodeFromListIValue(new BTypes.List(dict.Keys), keyType);
+#pragma warning disable CS0618
                 var values = DecodeFromListIValue(new BTypes.List(dict.Values), valueType);
+#pragma warning restore CS0618
 
                 if (keys is List listKeys)
                 {
