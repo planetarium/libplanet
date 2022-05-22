@@ -70,22 +70,24 @@ namespace Libplanet.Store
                     .Select(x => DecodeFromIValue(x, genericType))
                     .ToList();
 
-                switch (decodedList)
+                switch (TYPEDICT[genericType])
                 {
-                    case List<object> listBool when genericType == typeof(bool):
-                        return listBool.Cast<bool>().ToImmutableList();
-                    case List<object> listInt when genericType == typeof(int):
-                        return listInt.Cast<int>().ToImmutableList();
-                    case List<object> listLong when genericType == typeof(long):
-                        return listLong.Cast<long>().ToImmutableList();
-                    case List<object> listBigInteger when genericType == typeof(BigInteger):
-                        return listBigInteger.Cast<BigInteger>().ToImmutableList();
-                    case List<object> listBytes when genericType == typeof(ImmutableArray<byte>):
-                        return listBytes.Cast<ImmutableArray<byte>>().ToImmutableList();
-                    case List<object> listAddress when genericType == typeof(Address):
-                        return listAddress.Cast<Address>().ToImmutableList();
-                    case List<object> listString when genericType == typeof(string):
-                        return listString.Cast<string>().ToImmutableList();
+                    case 0:
+                        return decodedList.Cast<bool>().ToImmutableList();
+                    case 1:
+                        return decodedList.Cast<int>().ToImmutableList();
+                    case 2:
+                        return decodedList.Cast<long>().ToImmutableList();
+                    case 3:
+                        return decodedList.Cast<ImmutableArray<byte>>().ToImmutableList();
+                    case 4:
+                        return decodedList.Cast<BigInteger>().ToImmutableList();
+                    case 5:
+                        return decodedList.Cast<Guid>().ToImmutableList();
+                    case 6:
+                        return decodedList.Cast<Address>().ToImmutableList();
+                    case 7:
+                        return decodedList.Cast<string>().ToImmutableList();
                     default:
                         throw new ArgumentException(
                             $"Invalid target property type {type} encountered.");
