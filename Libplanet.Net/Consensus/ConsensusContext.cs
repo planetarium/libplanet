@@ -67,6 +67,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public long NodeId { get; internal set; }
 
+        public HashAlgorithmGetter HashAlgorithm => _blockChain.Policy.GetHashAlgorithm;
+
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
         public void CommitBlock(long height, BlockHash hash)
@@ -96,6 +98,12 @@ namespace Libplanet.Net.Consensus
                 _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
             }
         }
+
+        public Block<T> GetBlockFromStore(BlockHash blockHash) =>
+            _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
+
+        public void PutBlockToStore(Block<T> block) =>
+            _blockChain.Store.PutBlock(block);
 
         public long NextRound(long round)
         {
