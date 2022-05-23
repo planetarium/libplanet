@@ -6,6 +6,13 @@ Version 0.35.1
 
 To be released.
 
+### Bug fixes
+
+-  (Libplanet.Net) Wrongly assigned default value to
+   `TimeoutOptions.PreloadDialTimeout` fixed.  [[#1983]]
+
+[#1983]: https://github.com/planetarium/libplanet/pull/1983
+
 
 Version 0.35.0
 --------------
