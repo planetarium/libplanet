@@ -58,7 +58,7 @@ namespace Libplanet.Tx
         /// Creates a <see cref="TxMetadata"/> from a Bencodex <paramref name="dictionary"/>.
         /// </summary>
         /// <param name="dictionary">A Bencodex dictionary made using
-        /// <see cref="ToBencodex(IReadOnlyList{IValue}, ImmutableArray{byte}?)"/> method.</param>
+        /// <see cref="ToBencodex(IEnumerable{IValue}, ImmutableArray{byte}?)"/> method.</param>
         /// <exception cref="KeyNotFoundException">Thrown when the given
         /// <paramref name="dictionary"/> lacks some fields.</exception>
         /// <exception cref="InvalidCastException">Thrown when the given
@@ -110,7 +110,7 @@ namespace Libplanet.Tx
         /// present when you make a <see cref="TxId"/>.</param>
         /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
         public Bencodex.Types.Dictionary ToBencodex(
-            IReadOnlyList<IValue> actions,
+            IEnumerable<IValue> actions,
             ImmutableArray<byte>? signature = null
         )
         {

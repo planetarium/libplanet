@@ -10,6 +10,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `InvalidTxPublicKeyException` class.  [[#1164], [#1978]]
  -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
     [[#1981], [#1982]]
  -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?,
@@ -33,8 +34,16 @@ To be released.
  -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
  -  `Transaction<T>` now implements `ITxMetadata` interface.
     [[#1164], [#1974], [#1978]]
+ -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
+    [[#1164], [#1978]]
 
 ### Behavioral changes
+
+ -  `Transaction<T>(long, Address, PublicKey, BlockHash?,
+    IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])` constructor
+    became to ignore its second parameter `Address signer`.  Instead,
+    `Transaction<T>.Signer` property is now automatically derived from its
+    `PublicKey`.  [[#1164], [#1978]]
 
 ### Bug fixes
 
