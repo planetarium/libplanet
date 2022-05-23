@@ -62,7 +62,6 @@ namespace Libplanet.Net.Protocols
         public async Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
             int depth,
             CancellationToken cancellationToken)
         {
@@ -83,7 +82,7 @@ namespace Libplanet.Net.Protocols
                             _address,
                             peer,
                             depth,
-                            findNeighborsTimeout,
+                            pingSeedTimeout,
                             cancellationToken));
                 }
                 catch (PingTimeoutException)

@@ -20,10 +20,6 @@ namespace Libplanet.Net.Protocols
         /// message sent to seed <see cref="Peer"/>.
         /// If <c>null</c> is given, the task never halts by itself
         /// even no any response was given from the the target seed.</param>
-        /// <param name="findNeighborsTimeout">A timeout of waiting for the reply of
-        /// <see cref="FindNeighbors"/> message sent to seed <see cref="Peer"/>.
-        /// If <c>null</c> is given, task never halts by itself
-        /// even the target seed gives no any response.</param>
         /// <param name="depth">Recursive operation depth to search peers from network.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -32,7 +28,6 @@ namespace Libplanet.Net.Protocols
         Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
             int depth,
             CancellationToken cancellationToken);
 
