@@ -47,6 +47,43 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void CopyConstructor()
+        {
+            var meta1 = new TxMetadata(_key1.PublicKey)
+            {
+                Nonce = 123L,
+                Timestamp = new DateTimeOffset(2022, 5, 23, 10, 2, 0, default),
+            };
+            var copy1 = new TxMetadata(meta1);
+            Assert.Equal(meta1.Nonce, copy1.Nonce);
+            AssertBytesEqual(meta1.Signer, copy1.Signer);
+            Assert.Equal(meta1.UpdatedAddresses, copy1.UpdatedAddresses);
+            Assert.Equal(meta1.Timestamp, copy1.Timestamp);
+            Assert.Equal(meta1.PublicKey, copy1.PublicKey);
+            AssertBytesEqual(meta1.GenesisHash, copy1.GenesisHash);
+
+            var meta2 = new TxMetadata(_key2.PublicKey)
+            {
+                Nonce = 0L,
+                UpdatedAddresses = new[]
+                {
+                    _key1.ToAddress(),
+                    _key2.ToAddress(),
+                }.ToImmutableHashSet(),
+                Timestamp = new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
+                GenesisHash = BlockHash.FromString(
+                    "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
+            };
+            var copy2 = new TxMetadata(meta2);
+            Assert.Equal(meta2.Nonce, copy2.Nonce);
+            AssertBytesEqual(meta2.Signer, copy2.Signer);
+            Assert.Equal(meta2.UpdatedAddresses, copy2.UpdatedAddresses);
+            Assert.Equal(meta2.Timestamp, copy2.Timestamp);
+            Assert.Equal(meta2.PublicKey, copy2.PublicKey);
+            AssertBytesEqual(meta2.GenesisHash, copy2.GenesisHash);
+        }
+
+        [Fact]
         public void Deserialize()
         {
             Bencodex.Types.Dictionary dict1 = Dictionary.Empty

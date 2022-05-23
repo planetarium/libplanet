@@ -38,6 +38,23 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
+        /// Creates a <see cref="TxMetadata"/> instance by copying fields from the specified
+        /// <paramref name="metadata"/>.
+        /// </summary>
+        /// <param name="metadata">The transaction metadata whose data to copy.</param>
+        /// <remarks><see cref="ITxMetadata.Signer"/> from the specified <paramref name="metadata"/>
+        /// is ignored.  <see cref="Signer"/> field is automatically derived from
+        /// <see cref="PublicKey"/> instead.</remarks>
+        public TxMetadata(ITxMetadata metadata)
+        {
+            Nonce = metadata.Nonce;
+            GenesisHash = metadata.GenesisHash;
+            UpdatedAddresses = metadata.UpdatedAddresses;
+            PublicKey = metadata.PublicKey;
+            Timestamp = metadata.Timestamp;
+        }
+
+        /// <summary>
         /// Creates a <see cref="TxMetadata"/> from a Bencodex <paramref name="dictionary"/>.
         /// </summary>
         /// <param name="dictionary">A Bencodex dictionary made using
