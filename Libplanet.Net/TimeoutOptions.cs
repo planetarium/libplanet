@@ -52,7 +52,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <seealso cref="DialTimeout"/>
         public TimeSpan PreloadDialTimeout { get; set; }
-            = TimeSpan.FromSeconds(DefaultBootstrapDialTimeout);
+            = TimeSpan.FromSeconds(DefaultPreloadDialTimeout);
 
         /// <summary>
         /// Determines how long an <see cref="ITransport"/> should wait before timing out

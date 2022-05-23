@@ -24,6 +24,18 @@ To be released.
 
 ### CLI tools
 
+Version 0.35.1
+--------------
+
+Released on May 23rd, 2022.
+
+### Bug fixes
+
+-  (Libplanet.Net) Wrongly assigned default value to
+   `TimeoutOptions.PreloadDialTimeout` fixed.  [[#1983]]
+
+[#1983]: https://github.com/planetarium/libplanet/pull/1983
+
 
 Version 0.35.0
 --------------
