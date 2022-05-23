@@ -30,6 +30,7 @@ To be released.
 ### Added APIs
 
  -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
  -  `Transaction<T>` now implements `ITxMetadata` interface.
     [[#1164], [#1974], [#1978]]
 
