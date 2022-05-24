@@ -30,6 +30,7 @@ To be released.
 
 ### Added APIs
 
+ -  Introduced *Libplanet.Node* package.  [[#1974], [#1978]]
  -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
  -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
  -  Added `ITxExcerpt` interface.  [[#1164], [#1974], [#1978]]
@@ -39,6 +40,7 @@ To be released.
  -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
     [[#1164], [#1978]]
  -  Added `TxId.FromString()` static method.  [[#1978]]
+ -  (Libplanet.Node) Added `UntypedTransaction` class.  [[#1974], [#1978]]
 
 ### Behavioral changes
 
