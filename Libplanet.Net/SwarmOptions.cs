@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Threading;
 using Libplanet.Blockchain;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -26,12 +25,6 @@ namespace Libplanet.Net
             /// </summary>
             TcpTransport = 0x02,
         }
-
-        /// <summary>
-        /// The overall timeout used when downloading <see cref="Blocks"/> during
-        /// a preloading stage.
-        /// </summary>
-        public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
 
         /// <summary>
         /// The lifespan of block demand.
