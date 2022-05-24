@@ -87,11 +87,9 @@ namespace Libplanet
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="bytes"/> is <c>null</c>.</exception>
         [Pure]
         public static string Hex(in ImmutableArray<byte> bytes) =>
-            Hex(bytes.ToArray());
+            bytes.IsDefaultOrEmpty ? string.Empty : Hex(bytes.ToArray());
 
         /// <summary>
         /// Calculates a deterministic hash code from a given

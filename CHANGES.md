@@ -50,6 +50,9 @@ To be released.
  -  Fixed `InvalidOperationException` thrown by `PublicKey.Verify()` method
     if `signature` is a `default(ImmutableArray<byte>)`.  Instead, it silently
     returns `false` now.  [[#1978]]
+ -  Fixed `NullReferenceException` thrown by `ByteUtil.Hex(in
+    ImmutabelArray<byte>)` method if a `default(ImmutableArray<byte>)` is
+    present.  Instead, it silently returns an empty string now.  [[#1978]]
 
 ### Dependencies
 
