@@ -16,6 +16,10 @@ namespace Libplanet.Blocks
     /// </summary>
     public static class BlockMarshaler
     {
+        // Block fields:
+        internal static readonly byte[] HeaderKey = { 0x48 }; // 'H'
+        internal static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         // Header fields:
@@ -33,10 +37,6 @@ namespace Libplanet.Blocks
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
-
-        // Block fields:
-        private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
-        private static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
