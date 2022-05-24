@@ -16617,19 +16617,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BlockDemandLifespan
   nameWithType: SwarmOptions.BlockDemandLifespan
-- uid: Libplanet.Net.SwarmOptions.BlockDownloadTimeout
-  name: BlockDownloadTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDownloadTimeout
-  commentId: P:Libplanet.Net.SwarmOptions.BlockDownloadTimeout
-  fullName: Libplanet.Net.SwarmOptions.BlockDownloadTimeout
-  nameWithType: SwarmOptions.BlockDownloadTimeout
-- uid: Libplanet.Net.SwarmOptions.BlockDownloadTimeout*
-  name: BlockDownloadTimeout
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockDownloadTimeout_
-  commentId: Overload:Libplanet.Net.SwarmOptions.BlockDownloadTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.BlockDownloadTimeout
-  nameWithType: SwarmOptions.BlockDownloadTimeout
 - uid: Libplanet.Net.SwarmOptions.BranchpointThreshold
   name: BranchpointThreshold
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BranchpointThreshold
