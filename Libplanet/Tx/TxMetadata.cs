@@ -138,5 +138,21 @@ namespace Libplanet.Tx
 
             return dict;
         }
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
+        {
+            return nameof(TxMetadata) + " {\n" +
+                $"  {nameof(Nonce)} = {Nonce},\n" +
+                $"  {nameof(Signer)} = {Signer},\n" +
+                $"  {nameof(UpdatedAddresses)} = ({UpdatedAddresses.Count})" +
+                (UpdatedAddresses.Any()
+                    ? $"\n    {string.Join("\n    ", UpdatedAddresses)};\n"
+                    : ";\n") +
+                $"  {nameof(PublicKey)} = {PublicKey},\n" +
+                $"  {nameof(Timestamp)} = {Timestamp},\n" +
+                $"  {nameof(GenesisHash)} = {GenesisHash?.ToString() ?? "(null)"},\n" +
+                "}";
+        }
     }
 }
