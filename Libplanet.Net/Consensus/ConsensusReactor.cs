@@ -112,7 +112,8 @@ namespace Libplanet.Net.Consensus
                 Remote = _transport.AsPeer,
             };
 
-            BroadcastBlock(_context.GetBlockFromStore(blockHash));
+            // TODO: Prepare block before broadcast.
+            BroadcastBlock(_context.GetBlockFromStore(blockHash)!);
             BroadcastMessage(propose);
         }
 
@@ -129,47 +130,82 @@ namespace Libplanet.Net.Consensus
 
         private void BroadcastBlock(Block<T> block)
         {
-            // TODO: Broadcast to minimal amount of peers
-            // TODO: 2/3 of peers?
-            var marshaled = _codec.Encode(block.MarshalBlock());
-            var listBLock = new List<byte[]>()
+            // TODO: Replace with gossip protocol-ish?
+            var message = new Messages.Blocks(new List<byte[]>()
             {
-                marshaled,
-            };
+                _codec.Encode(block.MarshalBlock()),
+            });
 
-            var message = new Messages.Blocks(listBLock);
-
+            // TODO: Broadcast to minimal amount of peers (i.e., 2/3)
             _transport.BroadcastMessage(_routingTable.Peers, message);
         }
 
         private async Task ProcessMessageHandler(Message message)
         {
+            await ReplyPongAsync(message);
+
             switch (message)
             {
-                // TODO: Check store with proposed block, if there's none, Ask block from neighbors.
-                // TODO: This has to be implemented. if not, proposer would be overloaded with
-                // TODO: requests, and PutBlockToStore needs to be synced with Propose handling.
-                // TODO: It is essential for validating block.
                 case Messages.Blocks block:
-                    await ReplyPongAsync(block);
-                    _context.PutBlockToStore(UnmarshalBlock(block));
-                    _logger.Debug(
-                        "{NodeId} receives Block",
-                        _context.NodeId);
+                    // TODO: Postpone the vote until block receives (lock needed)
+                    StoreProposedBlock(block);
+                    break;
+                case GetBlocks hashes:
+                    await SendBlockAsync(hashes);
                     break;
                 case ConsensusMessage consensusMessage:
-                    await ReplyPongAsync(message);
+                    if (consensusMessage is ConsensusPropose consensusPropose &&
+                        !_context.ContainBlock(consensusPropose.BlockHash))
+                    {
+                        RequestBlockAsync(consensusPropose);
+                    }
+
                     await ReceivedMessage(consensusMessage);
                     break;
             }
         }
 
-        // TODO: In my opinion block should wrap into message and
-        // TODO: push it into the context.
+        // FIXME: Hide methods and messages into Context.
+        private void StoreProposedBlock(Messages.Blocks block)
+        {
+            _context.PutBlockToStore(UnmarshalBlock(block));
+            _logger.Debug("{NodeId} receives Block", _context.NodeId);
+        }
+
         private Block<T> UnmarshalBlock(Messages.Blocks message) =>
             BlockMarshaler.UnmarshalBlock<T>(
                 _context.HashAlgorithm,
                 (Bencodex.Types.Dictionary)_codec.Decode(message.DataFrames.Last()));
+
+        private async Task SendBlockAsync(GetBlocks hashes)
+        {
+            var block = _context.GetBlockFromStore(hashes.BlockHashes.First());
+            if (block == null)
+            {
+                await ReplyPongAsync(hashes);
+                return;
+            }
+
+            var message = new Messages.Blocks(new List<byte[]>()
+            {
+                _codec.Encode(block.MarshalBlock()),
+            });
+
+            await _transport.SendMessageAsync(
+                _routingTable.GetPeer(hashes.Remote!.Address),
+                message,
+                TimeSpan.Zero,
+                1,
+                true,
+                CancellationToken.None);
+        }
+
+        private void RequestBlockAsync(ConsensusPropose consensusPropose)
+        {
+            var message = new Messages.GetBlocks(new[] { consensusPropose.BlockHash });
+
+            _transport.BroadcastMessage(_routingTable.Peers, message);
+        }
 
         private async Task ReplyPongAsync(Message message)
         {

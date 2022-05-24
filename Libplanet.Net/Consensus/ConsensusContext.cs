@@ -99,7 +99,10 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        public Block<T> GetBlockFromStore(BlockHash blockHash) =>
+        public bool ContainBlock(BlockHash blockHash) =>
+            _blockChain.Store.ContainsBlock(blockHash);
+
+        public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
             _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
 
         public void PutBlockToStore(Block<T> block) =>
