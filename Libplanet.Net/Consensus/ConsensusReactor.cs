@@ -131,9 +131,15 @@ namespace Libplanet.Net.Consensus
         {
             // TODO: Broadcast to minimal amount of peers
             // TODO: 2/3 of peers?
-            _transport.BroadcastMessage(
-                _routingTable.PeersToBroadcast(null, 2),
-                new Messages.Blocks(new[] { _codec.Encode(block.MarshalBlock()) }));
+            var marshaled = _codec.Encode(block.MarshalBlock());
+            var listBLock = new List<byte[]>()
+            {
+                marshaled,
+            };
+
+            var message = new Messages.Blocks(listBLock);
+
+            _transport.BroadcastMessage(_routingTable.Peers, message);
         }
 
         private async Task ProcessMessageHandler(Message message)
@@ -147,6 +153,9 @@ namespace Libplanet.Net.Consensus
                 case Messages.Blocks block:
                     await ReplyPongAsync(block);
                     _context.PutBlockToStore(UnmarshalBlock(block));
+                    _logger.Debug(
+                        "{NodeId} receives Block",
+                        _context.NodeId);
                     break;
                 case ConsensusMessage consensusMessage:
                     await ReplyPongAsync(message);
@@ -155,12 +164,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // TODO: In my opinion, the most good practice is wrap the message with block and
+        // TODO: In my opinion block should wrap into message and
         // TODO: push it into the context.
         private Block<T> UnmarshalBlock(Messages.Blocks message) =>
             BlockMarshaler.UnmarshalBlock<T>(
                 _context.HashAlgorithm,
-                (Bencodex.Types.Dictionary)_codec.Decode(message.Payloads.First()));
+                (Bencodex.Types.Dictionary)_codec.Decode(message.DataFrames.Last()));
 
         private async Task ReplyPongAsync(Message message)
         {
