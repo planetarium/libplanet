@@ -77,6 +77,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             try
             {
+                _fx.Store.PutBlock(_fx.Block1);
                 reactor.Propose(_fx.Block1.Hash);
                 await Task.Delay(proposeProcessWaitTime);
 
