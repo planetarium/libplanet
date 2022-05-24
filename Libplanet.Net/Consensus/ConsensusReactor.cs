@@ -112,7 +112,7 @@ namespace Libplanet.Net.Consensus
                 Remote = _transport.AsPeer,
             };
 
-            // TODO: Prepare block before broadcast.
+            // TODO: Make sure block is prepared before broadcasting.
             BroadcastBlock(_context.GetBlockFromStore(blockHash)!);
             BroadcastMessage(propose);
         }
@@ -148,6 +148,7 @@ namespace Libplanet.Net.Consensus
             {
                 case Messages.Blocks block:
                     // TODO: Postpone the vote until block receives (lock needed)
+                    // FIXME: In this stage, node cannot validate block.
                     StoreProposedBlock(block);
                     break;
                 case GetBlocks hashes:
@@ -157,7 +158,7 @@ namespace Libplanet.Net.Consensus
                     if (consensusMessage is ConsensusPropose consensusPropose &&
                         !_context.ContainBlock(consensusPropose.BlockHash))
                     {
-                        RequestBlockAsync(consensusPropose);
+                        await RequestBlockAsync(consensusPropose);
                     }
 
                     await ReceivedMessage(consensusMessage);
@@ -200,11 +201,18 @@ namespace Libplanet.Net.Consensus
                 CancellationToken.None);
         }
 
-        private void RequestBlockAsync(ConsensusPropose consensusPropose)
+        private async Task RequestBlockAsync(ConsensusPropose consensusPropose)
         {
-            var message = new Messages.GetBlocks(new[] { consensusPropose.BlockHash });
+            var message = new GetBlocks(new[] { consensusPropose.BlockHash });
+            message.Remote = _transport.AsPeer;
 
-            _transport.BroadcastMessage(_routingTable.Peers, message);
+            await _transport.SendMessageAsync(
+                _routingTable.GetPeer(consensusPropose.Remote!.Address),
+                message,
+                TimeSpan.Zero,
+                1,
+                true,
+                CancellationToken.None);
         }
 
         private async Task ReplyPongAsync(Message message)
