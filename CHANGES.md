@@ -32,7 +32,9 @@ To be released.
 
  -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
  -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
- -  `Transaction<T>` now implements `ITxMetadata` interface.
+ -  Added `ITxExcerpt` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxExcerptExtensions` static class.  [[#1164], [#1974], [#1978]]
+ -  `Transaction<T>` now implements `ITxExcerpt` interface.
     [[#1164], [#1974], [#1978]]
  -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
     [[#1164], [#1978]]

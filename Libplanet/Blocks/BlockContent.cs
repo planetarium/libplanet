@@ -156,41 +156,12 @@ namespace Libplanet.Blocks
             get => _transactions;
             set
             {
-                IEnumerable<IGrouping<Address, Transaction<T>>> signerTxs =
-                    value.OrderBy(tx => tx.Nonce).GroupBy(tx => tx.Signer);
-                BlockHash? genesisHash = null;
-                foreach (IGrouping<Address, Transaction<T>> txs in signerTxs)
+                value.ValidateTxNonces(Index);
+                foreach (Transaction<T> tx in value)
                 {
-                    long lastNonce = -1L;
-                    foreach (Transaction<T> tx in txs)
-                    {
-                        // FIXME: Transaction<T> should disallow illegal states to be represented
-                        // as its instances.  https://github.com/planetarium/libplanet/issues/1164
-                        tx.Validate();
-
-                        long nonce = tx.Nonce;
-                        if (lastNonce >= 0 && lastNonce + 1 != nonce)
-                        {
-                            Address s = tx.Signer;
-                            string msg = nonce <= lastNonce
-                                ? $"The signer {s}'s nonce {nonce} was already consumed before."
-                                : $"The signer {s}'s nonce {lastNonce} has to be added first.";
-                            throw new InvalidTxNonceException(tx.Id, lastNonce + 1, tx.Nonce, msg);
-                        }
-
-                        if (genesisHash is { } g && !tx.GenesisHash.Equals(g))
-                        {
-                            throw new InvalidTxGenesisHashException(
-                                tx.Id,
-                                g,
-                                tx.GenesisHash,
-                                $"Transactions in the block #{Index} are inconsistent."
-                            );
-                        }
-
-                        lastNonce = nonce;
-                        genesisHash = tx.GenesisHash;
-                    }
+                    // FIXME: Transaction<T> should disallow illegal states to be represented
+                    // as its instances.  https://github.com/planetarium/libplanet/issues/1164
+                    tx.Validate();
                 }
 
                 _transactions = value.OrderBy(tx => tx.Id).ToImmutableArray();
