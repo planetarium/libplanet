@@ -53,6 +53,8 @@ To be released.
  -  Fixed `NullReferenceException` thrown by `ByteUtil.Hex(in
     ImmutabelArray<byte>)` method if a `default(ImmutableArray<byte>)` is
     present.  Instead, it silently returns an empty string now.  [[#1978]]
+ -  Fixed a `TxId(byte[])` constructor's bug where `ParamName` and `Message` of
+    `ArgumentOutOfRangeException` it had thrown had been reversed.  [[#1978]]
 
 ### Dependencies
 

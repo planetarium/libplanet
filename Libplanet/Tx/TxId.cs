@@ -51,8 +51,8 @@ namespace Libplanet.Tx
             if (txid.Length != Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"TxId must be {Size} bytes.",
-                    nameof(txid)
+                    nameof(txid),
+                    $"{nameof(TxId)} must be {Size} bytes."
                 );
             }
 
