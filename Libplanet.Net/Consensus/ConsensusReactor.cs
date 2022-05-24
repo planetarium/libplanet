@@ -61,13 +61,43 @@ namespace Libplanet.Net.Consensus
             await _transport.StopAsync(TimeSpan.FromMilliseconds(10), ctx);
         }
 
-        public async Task ReceivedMessage(ConsensusMessage message)
+        public async Task ReceivedMessage(Message message)
         {
-             HandleMessage(message);
-             await Task.Yield();
+            if (message is ConsensusMessage consensusMessage)
+            {
+                HandleConsensusMessage(consensusMessage);
+            }
+            else
+            {
+                HandleMessage(message);
+            }
+
+            await Task.Yield();
         }
 
-        public void HandleMessage(ConsensusMessage message)
+        public void HandleConsensusMessage(ConsensusMessage message)
+        {
+            Log.Debug(
+                "NodeID: {Id}, Height: {Height}, Round: {Round}, " +
+                "State: {State}, HandleConsensusMessage: {@Message},",
+                _context.NodeId,
+                _context.Height,
+                _context.Round,
+                _context.CurrentRoundContext.State.GetType().ToString(),
+                message);
+
+            ConsensusMessage? res = _context.HandleMessage(message) as ConsensusMessage;
+
+            if (res == null)
+            {
+                return;
+            }
+
+            res.Remote = _transport.AsPeer;
+            BroadcastMessage(res);
+        }
+
+        public void HandleMessage(Message message)
         {
             Log.Debug(
                 "NodeID: {Id}, Height: {Height}, Round: {Round}, " +
@@ -78,7 +108,7 @@ namespace Libplanet.Net.Consensus
                 _context.CurrentRoundContext.State.GetType().ToString(),
                 message);
 
-            ConsensusMessage? res = _context.HandleMessage(message);
+            Message? res = _context.HandleMessage(message);
 
             if (res == null)
             {
@@ -86,7 +116,7 @@ namespace Libplanet.Net.Consensus
             }
 
             res.Remote = _transport.AsPeer;
-            BroadcastMessage(res);
+            BroadcastMessage(message);
         }
 
         public void Propose(BlockHash blockHash)
@@ -125,18 +155,27 @@ namespace Libplanet.Net.Consensus
         private void BroadcastMessage(ConsensusMessage message)
         {
             _transport.BroadcastMessage(_routingTable.Peers, message);
-            HandleMessage(message);
+            HandleConsensusMessage(message);
         }
 
+        private void BroadcastMessage(Message message)
+        {
+            _transport.BroadcastMessage(_routingTable.Peers, message);
+        }
+
+        /// <summary>
+        /// Wraps <see cref="Block{T}"/> as <see cref="Messages.Blocks"/> and broadcast to known
+        /// peers in <see cref="RoutingTable"/>.
+        /// </summary>
+        /// <param name="block">A block to broadcast.</param>
         private void BroadcastBlock(Block<T> block)
         {
-            // TODO: Replace with gossip protocol-ish?
             var message = new Messages.Blocks(new List<byte[]>()
             {
                 _codec.Encode(block.MarshalBlock()),
             });
 
-            // TODO: Broadcast to minimal amount of peers (i.e., 2/3)
+            // TODO: Broadcast to minimal amount of peers (eg.. 2/3 of peers)
             _transport.BroadcastMessage(_routingTable.Peers, message);
         }
 
@@ -147,9 +186,9 @@ namespace Libplanet.Net.Consensus
             switch (message)
             {
                 case Messages.Blocks block:
-                    // TODO: Postpone the vote until block receives (lock needed)
-                    // FIXME: In this stage, node cannot validate block.
-                    StoreProposedBlock(block);
+                    // TODO: Postpone the vote until receives target blocks (lock needed)
+                    // FIXME: In the current stage of development, node cannot validate block.
+                    await ReceivedMessage(block);
                     break;
                 case GetBlocks hashes:
                     await SendBlockAsync(hashes);
@@ -166,23 +205,24 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        // FIXME: Hide methods and messages into Context.
-        private void StoreProposedBlock(Messages.Blocks block)
-        {
-            _context.PutBlockToStore(UnmarshalBlock(block));
-            _logger.Debug("{NodeId} receives Block", _context.NodeId);
-        }
-
-        private Block<T> UnmarshalBlock(Messages.Blocks message) =>
-            BlockMarshaler.UnmarshalBlock<T>(
-                _context.HashAlgorithm,
-                (Bencodex.Types.Dictionary)_codec.Decode(message.DataFrames.Last()));
-
+        /// <summary>
+        /// Responding to <see cref="Messages.GetBlocks"/>.
+        /// </summary>
+        /// <param name="hashes">A message that received from remote.</param>
+        /// <remarks>If requested <see cref="Block{T}"/> is not found in store, methods calls
+        /// <see cref="ReplyPongAsync"/>.</remarks>
         private async Task SendBlockAsync(GetBlocks hashes)
         {
             var block = _context.GetBlockFromStore(hashes.BlockHashes.First());
             if (block == null)
             {
+                _logger.Debug(
+                    "{MethodName}: Request from {Remote} accepted, " +
+                    "However found no matching block {BlockHash} from store",
+                    nameof(SendBlockAsync),
+                    hashes.Remote,
+                    hashes.BlockHashes.First());
+
                 await ReplyPongAsync(hashes);
                 return;
             }
@@ -191,6 +231,13 @@ namespace Libplanet.Net.Consensus
             {
                 _codec.Encode(block.MarshalBlock()),
             });
+
+            _logger.Debug(
+                "{MethodName}: Request from {Remote} accepted, " +
+                "found matching block {BlockHash} from store",
+                nameof(SendBlockAsync),
+                hashes.Remote,
+                hashes.BlockHashes.First());
 
             await _transport.SendMessageAsync(
                 _routingTable.GetPeer(hashes.Remote!.Address),
@@ -201,10 +248,30 @@ namespace Libplanet.Net.Consensus
                 CancellationToken.None);
         }
 
+        /// <summary>
+        /// Request proposed block <see cref="Block{T}"/> in <see cref="ConsensusPropose"/> from
+        /// remote.
+        /// </summary>
+        /// <param name="consensusPropose">A received block proposal from current round leader.
+        /// </param>
+        /// <remarks>
+        /// <see cref=
+        /// "ITransport.SendMessageAsync(BoundPeer,Message,TimeSpan?,int,bool,CancellationToken)"/>
+        /// is used for neither waiting for reply nor retrying message.
+        /// </remarks>
         private async Task RequestBlockAsync(ConsensusPropose consensusPropose)
         {
-            var message = new GetBlocks(new[] { consensusPropose.BlockHash });
-            message.Remote = _transport.AsPeer;
+            var message = new GetBlocks(new[] { consensusPropose.BlockHash })
+            {
+                Remote = _transport.AsPeer,
+            };
+
+            _logger.Debug(
+                "{MethodName}: Requesting corresponding block " +
+                "with {@Message} to {Remote}",
+                nameof(RequestBlockAsync),
+                consensusPropose,
+                consensusPropose.Remote);
 
             await _transport.SendMessageAsync(
                 _routingTable.GetPeer(consensusPropose.Remote!.Address),

@@ -8,7 +8,7 @@ namespace Libplanet.Net.Consensus
 {
     public interface IReactor : IDisposable
     {
-        public Task ReceivedMessage(ConsensusMessage message);
+        public Task ReceivedMessage(Message message);
 
         public void Propose(BlockHash blockHash);
 

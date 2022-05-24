@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Timers;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -17,6 +19,7 @@ namespace Libplanet.Net.Consensus
     {
         public const long TimeoutMillisecond = 10 * 1000;
 
+        private readonly Codec _codec = new Codec();
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
@@ -105,9 +108,6 @@ namespace Libplanet.Net.Consensus
         public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
             _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
 
-        public void PutBlockToStore(Block<T> block) =>
-            _blockChain.Store.PutBlock(block);
-
         public long NextRound(long round)
         {
             if (round != Round)
@@ -151,21 +151,15 @@ namespace Libplanet.Net.Consensus
             return _roundContexts[round];
         }
 
-        public ConsensusMessage? HandleMessage(ConsensusMessage message)
+        public Message? HandleMessage(Message message)
         {
-            var beforeRoundContext = CurrentRoundContext.State;
-
-            ConsensusMessage? res = null;
-            try
+            Message? res = message switch
             {
-                res = CurrentRoundContext.State.Handle(this, message);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Handle throws exception: {E}", e);
-            }
+                ConsensusMessage consensusMessage => HandleConsensusMessage(consensusMessage),
+                Messages.Blocks blocks => PutBlockToStore(blocks),
+                _ => null,
+            };
 
-            SetTimeoutByState(beforeRoundContext);
             return res;
         }
 
@@ -180,6 +174,43 @@ namespace Libplanet.Net.Consensus
                 { "step", CurrentRoundContext.State.Name },
             };
             return JsonSerializer.Serialize(message);
+        }
+
+        private ConsensusMessage? HandleConsensusMessage(ConsensusMessage consensusMessage)
+        {
+            var beforeRoundContext = CurrentRoundContext.State;
+
+            ConsensusMessage? res = null;
+            try
+            {
+                res = CurrentRoundContext.State.Handle(this, consensusMessage);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Handle throws exception: {E}", e);
+            }
+
+            SetTimeoutByState(beforeRoundContext);
+
+            return res;
+        }
+
+        private Message? PutBlockToStore(Messages.Blocks message)
+        {
+            var block = BlockMarshaler.UnmarshalBlock<T>(
+                HashAlgorithm,
+                (Bencodex.Types.Dictionary)_codec.Decode(message.DataFrames.Last()));
+
+            _blockChain.Store.PutBlock(block);
+
+            _logger.Debug(
+                "{MethodName}: Received block {BlockHash} from {Remote}." +
+                " putting block into store...",
+                nameof(PutBlockToStore),
+                block.Hash,
+                message.Remote);
+
+            return null;
         }
 
         private void TimerTimeoutCallback(object? sender, ElapsedEventArgs eventArgs)
