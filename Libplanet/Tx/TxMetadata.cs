@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
@@ -109,6 +110,7 @@ namespace Libplanet.Tx
         /// <see langword="null"/> (which is the default) when you make a signature, and should be
         /// present when you make a <see cref="TxId"/>.</param>
         /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
+        [Pure]
         public Bencodex.Types.Dictionary ToBencodex(
             IEnumerable<IValue> actions,
             ImmutableArray<byte>? signature = null
@@ -140,6 +142,7 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc cref="object.ToString()"/>
+        [Pure]
         public override string ToString()
         {
             return nameof(TxMetadata) + " {\n" +
