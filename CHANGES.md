@@ -47,6 +47,10 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed `InvalidOperationException` thrown by `PublicKey.Verify()` method
+    if `signature` is a `default(ImmutableArray<byte>)`.  Instead, it silently
+    returns `false` now.  [[#1978]]
+
 ### Dependencies
 
 ### CLI tools
