@@ -36,6 +36,7 @@ To be released.
     [[#1164], [#1974], [#1978]]
  -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
     [[#1164], [#1978]]
+ -  Added `TxId.FromString()` static method.  [[#1978]]
 
 ### Behavioral changes
 
