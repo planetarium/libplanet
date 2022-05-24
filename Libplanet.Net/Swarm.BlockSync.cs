@@ -393,15 +393,9 @@ namespace Libplanet.Net
 
                 BlockDownloadStarted.Set();
 
-                using var timeoutCts = new CancellationTokenSource(Options.BlockDownloadTimeout);
-                using var blockDownloadCts = CancellationTokenSource.CreateLinkedTokenSource(
-                    timeoutCts.Token,
-                    cancellationToken
-                );
-
                 await foreach (
                     (Block<T> block, BoundPeer sourcePeer)
-                        in completedBlocks.WithCancellation(blockDownloadCts.Token))
+                        in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
                         "Got #{BlockIndex} {BlockHash} from {Peer}.",

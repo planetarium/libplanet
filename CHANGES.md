@@ -8,6 +8,9 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
+    [[#1981], [#1982]]
+
 ### Backward-incompatible API changes
 
 ### Backward-incompatible network protocol changes
@@ -23,6 +26,10 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1981]: https://github.com/planetarium/libplanet/issues/1981
+[#1982]: https://github.com/planetarium/libplanet/pull/1982
+
 
 Version 0.35.1
 --------------
