@@ -78,6 +78,10 @@ namespace Libplanet.Net.Consensus
 
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
+        public bool IsVoteOnHold =>
+            CurrentRoundContext.State is PreVoteState<T> &&
+            CurrentRoundContext.CurrentNodeVoteFlag is VoteFlag.Null;
+
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
 
@@ -99,6 +103,8 @@ namespace Libplanet.Net.Consensus
                     hash,
                     NodeId);
 
+                // TODO: There's no coping mechanism when the proposed block is not present
+                // in commit stage.
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);

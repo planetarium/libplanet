@@ -52,6 +52,11 @@ namespace Libplanet.Net.Tests.Consensus.States
             ConsensusMessage? res = state.Handle(
                 context,
                 new ConsensusPropose(0, 0, 0, blockHash) { Remote = TestUtils.Peer0 });
+            Assert.Null(res);
+            _fx.Store.PutBlock(_fx.Block1);
+            res = state.Handle(
+                context,
+                new ConsensusPropose(0, 0, 0, blockHash) { Remote = TestUtils.Peer0 });
             Assert.NotNull(res);
             Assert.IsType<ConsensusVote>(res);
             Assert.Equal(blockHash, context.CurrentRoundContext.BlockHash);
