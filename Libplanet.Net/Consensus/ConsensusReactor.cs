@@ -20,12 +20,14 @@ namespace Libplanet.Net.Consensus
         private RoutingTable _routingTable;
         private ITransport _transport;
         private ConsensusContext<T> _context;
+        private PrivateKey _privateKey;
         private ILogger _logger;
 
         public ConsensusReactor(
             RoutingTable routingTable,
             ITransport transport,
             BlockChain<T> blockChain,
+            PrivateKey privateKey,
             long nodeId,
             List<PublicKey>? validators)
         {
@@ -34,8 +36,10 @@ namespace Libplanet.Net.Consensus
             _logger = Log
                 .ForContext<ConsensusReactor<T>>()
                 .ForContext("Source", nameof(ConsensusReactor<T>));
+            _privateKey = privateKey;
             _context = new ConsensusContext<T>(
                 nodeId,
+                privateKey,
                 validators ?? blockChain.Policy.GetValidators().ToList(),
                 blockChain);
         }

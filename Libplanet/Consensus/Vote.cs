@@ -160,6 +160,9 @@ namespace Libplanet.Consensus
             }
         }
 
+        public Vote RemoveSignature =>
+            new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, NodeId, null);
+
         public bool Equals(Vote other)
         {
             return Height == other.Height &&

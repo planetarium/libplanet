@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Timers;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -22,11 +24,13 @@ namespace Libplanet.Net.Consensus
         private readonly TimeoutTicker _timoutTicker;
         private readonly List<PublicKey> _validators;
         private readonly object _commitLock;
+        private readonly PrivateKey _privateKey;
 
         private ConcurrentDictionary<long, RoundContext<T>> _roundContexts;
 
         public ConsensusContext(
             long nodeId,
+            PrivateKey privateKey,
             List<PublicKey> validators,
             BlockChain<T> blockChain)
         {
@@ -40,6 +44,7 @@ namespace Libplanet.Net.Consensus
             NodeId = nodeId;
             _blockChain = blockChain;
             _validators = validators;
+            _privateKey = privateKey;
             _commitLock = new object();
             _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>
             {
@@ -138,6 +143,21 @@ namespace Libplanet.Net.Consensus
             }
 
             return _roundContexts[round];
+        }
+
+        public Vote SignVote(Vote vote)
+        {
+            Vote voteWithoutSign = vote.RemoveSignature;
+            byte[] sign = _privateKey.Sign(voteWithoutSign.ByteArray);
+            return new Vote(
+                vote.Height,
+                vote.Round,
+                vote.BlockHash,
+                vote.Timestamp,
+                vote.Validator,
+                vote.Flag,
+                vote.NodeId,
+                sign.ToImmutableArray());
         }
 
         public ConsensusMessage? HandleMessage(ConsensusMessage message)

@@ -75,7 +75,7 @@ namespace Libplanet.Net.Consensus
 
             context.Round = vote.Round;
             targetContext.BlockHash = vote.BlockHash;
-            return new ConsensusCommit(targetContext.Voting(VoteFlag.Commit));
+            return new ConsensusCommit(context.SignVote(targetContext.Voting(VoteFlag.Commit)));
         }
     }
 }
