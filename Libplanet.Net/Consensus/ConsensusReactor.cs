@@ -230,6 +230,10 @@ namespace Libplanet.Net.Consensus
 
                 await _transport.ReplyMessageAsync(sending, CancellationToken.None);
             }
+            else
+            {
+                await ReplyPongAsync(message);
+            }
         }
 
         private async Task ReplyPongAsync(Message message)
