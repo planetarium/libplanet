@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.36.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on May 25th, 2022.
 
 ### Backward-incompatible API changes
 
@@ -23,10 +21,6 @@ To be released.
     IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
     `dialTimeout` now gets used for both old `pingSeedTimeout` and
     `findNeigborsTimeout`.  [[#1990]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -61,8 +55,6 @@ To be released.
     present.  Instead, it silently returns an empty string now.  [[#1978]]
  -  Fixed a `TxId(byte[])` constructor's bug where `ParamName` and `Message` of
     `ArgumentOutOfRangeException` it had thrown had been reversed.  [[#1978]]
-
-### Dependencies
 
 ### CLI tools
 
