@@ -79,6 +79,7 @@ namespace Libplanet.Net.Tests.Consensus
             try
             {
                 reactor.Propose(_fx.Block1.Hash);
+                _fx.Store.PutBlock(_fx.Block1);
                 await Task.Delay(proposeProcessWaitTime);
 
                 var json =
@@ -206,10 +207,8 @@ namespace Libplanet.Net.Tests.Consensus
                     Block<DumbAction> block = await blockChains[proposeNode].MineBlock(
                         keys[proposeNode],
                         append: false);
-                    foreach (IStore store in stores)
-                    {
-                        store.PutBlock(block);
-                    }
+
+                    stores[proposeNode].PutBlock(block);
 
                     reactors[proposeNode].Propose(block.Hash);
 
