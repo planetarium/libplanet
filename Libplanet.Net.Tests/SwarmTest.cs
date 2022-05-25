@@ -1812,7 +1812,7 @@ namespace Libplanet.Net.Tests
         {
             await swarm.BootstrapAsync(
                 seeds,
-                pingSeedTimeout: TimeSpan.FromSeconds(3),
+                dialTimeout: TimeSpan.FromSeconds(3),
                 cancellationToken: cancellationToken);
         }
 

@@ -12,6 +12,16 @@ To be released.
 
  -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
     [[#1981], [#1982]]
+ -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?,
+    TimeSpan?, int, CancellationToken)` changed to `Swarm<T>.BoostrapAsync(
+    IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
+    `dialTimeout` now gets used for both old `pingSeedTimeout` and
+    `findNeigborsTimeout`.  [[#1990]]
+ -  (Libplanet.Net) `IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, TimeSpan?,
+    TimeSpan?, int, CancellationToken)` changed to `IProtocol.BootstrapAsync(
+    IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
+    `dialTimeout` now gets used for both old `pingSeedTimeout` and
+    `findNeigborsTimeout`.  [[#1990]]
 
 ### Backward-incompatible network protocol changes
 
@@ -29,6 +39,7 @@ To be released.
 
 [#1981]: https://github.com/planetarium/libplanet/issues/1981
 [#1982]: https://github.com/planetarium/libplanet/pull/1982
+[#1990]: https://github.com/planetarium/libplanet/pull/1990
 
 
 Version 0.35.1

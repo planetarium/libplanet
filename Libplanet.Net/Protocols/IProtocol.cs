@@ -16,8 +16,8 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="Peer"/>s
         /// to bootstrap.</param>
-        /// <param name="pingSeedTimeout">A timeout of waiting for the reply of <see cref="Ping"/>
-        /// message sent to seed <see cref="Peer"/>.
+        /// <param name="dialTimeout">The timeout used when waiting a reply for either
+        /// <see cref="Ping"/> or <see cref="FindNeighbors"/>.
         /// If <c>null</c> is given, the task never halts by itself
         /// even no any response was given from the the target seed.</param>
         /// <param name="depth">Recursive operation depth to search peers from network.</param>
@@ -27,7 +27,7 @@ namespace Libplanet.Net.Protocols
         /// <returns>An awaitable task without value.</returns>
         Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
-            TimeSpan? pingSeedTimeout,
+            TimeSpan? dialTimeout,
             int depth,
             CancellationToken cancellationToken);
 
