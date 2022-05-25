@@ -34,6 +34,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => new ConsensusContext<DumbAction>(
                     0,
+                    new PrivateKey(),
                     new List<PublicKey>(),
                     _blockChain));
         }
@@ -75,13 +76,17 @@ namespace Libplanet.Net.Tests.Consensus
         {
             long nodeId = 3;
             var validators = Enumerable.Range(0, 7)
-                                             .Select(x => new PrivateKey().PublicKey)
+                                             .Select(x => new PrivateKey())
                                              .ToList();
             long height = 6;
             long round = 5;
             string step = "DefaultState";
             ConsensusContext<DumbAction> context =
-                TestUtils.CreateConsensusContext(validators, _blockChain, nodeId);
+                TestUtils.CreateConsensusContext(
+                    validators.Select(x => x.PublicKey).ToList(),
+                    validators[(int)nodeId],
+                    _blockChain,
+                    nodeId);
             context.Height = height;
             context.Round = round;
             Assert.Equal(
