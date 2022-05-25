@@ -42,6 +42,8 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
@@ -55,6 +57,7 @@ namespace Libplanet.Blockchain
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
+            BlockCommit? lastCommit = null,
             CancellationToken? cancellationToken = null) =>
 #pragma warning disable SA1118
                 await MineBlock(
@@ -68,6 +71,7 @@ namespace Libplanet.Blockchain
                     maxTransactionsPerSigner: maxTransactionsPerSigner
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     txPriority: txPriority,
+                    lastCommit: lastCommit,
                     cancellationToken: cancellationToken ?? default(CancellationToken));
 #pragma warning restore SA1118
 
@@ -87,6 +91,8 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
@@ -100,6 +106,7 @@ namespace Libplanet.Blockchain
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
+            BlockCommit? lastCommit = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             using var cts = new CancellationTokenSource();
@@ -135,6 +142,7 @@ namespace Libplanet.Blockchain
 
             HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
 
+            // TODO: Should validate LastCommit somewhere?
             var metadata = new BlockMetadata
             {
                 Index = index,
@@ -143,6 +151,7 @@ namespace Libplanet.Blockchain
                 PublicKey = miner.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
+                LastCommit = lastCommit,
             };
 
             var transactionsToMine = GatherTransactionsToMine(

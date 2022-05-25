@@ -372,7 +372,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             long difficulty = 1,
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            BlockCommit? lastCommit = null
         )
             where T : IAction, new()
         {
@@ -387,6 +388,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
                 Transactions = txs ?? Array.Empty<Transaction<T>>(),
                 ProtocolVersion = protocolVersion,
+                LastCommit = lastCommit,
             };
 
             HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
@@ -407,7 +409,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             long difficulty = 1,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
-            HashDigest<SHA256> stateRootHash = default
+            HashDigest<SHA256> stateRootHash = default,
+            BlockCommit? lastCommit = null
         )
             where T : IAction, new()
         {
@@ -419,7 +422,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 difficulty,
                 miner?.PublicKey,
                 blockInterval,
-                protocolVersion
+                protocolVersion,
+                lastCommit
             );
             return protocolVersion < 2
                 ? new Block<T>(preEval, stateRootHash, null)

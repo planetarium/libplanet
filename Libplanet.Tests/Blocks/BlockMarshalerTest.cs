@@ -32,6 +32,7 @@ namespace Libplanet.Tests
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
+        private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
 
         // Block fields:
         private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
@@ -84,7 +85,8 @@ namespace Libplanet.Tests
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.Next.Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Integer)_fx.Next.TotalDifficulty)
-                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
+                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true))
+                .Add(LastCommitKey, _fx.Next.LastCommit.Value.ByteArray);
             var expectedNextHeader = _marshaledNextMetadata
                 .Add(NonceKey, _fx.Next.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
@@ -104,7 +106,8 @@ namespace Libplanet.Tests
                 .Add(DifficultyKey, _fx.HasTx.Difficulty)
                 .Add(TotalDifficultyKey, (IValue)(Integer)_fx.HasTx.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
-                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray);
+                .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
+                .Add(LastCommitKey, _fx.HasTx.LastCommit.Value.ByteArray);
             var expectedHasTxHeader = _marshaledHasTxMetadata
                 .Add(NonceKey, _fx.HasTx.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)

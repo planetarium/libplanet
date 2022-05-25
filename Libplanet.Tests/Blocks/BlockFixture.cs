@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Tx;
@@ -32,7 +34,23 @@ namespace Libplanet.Tests.Blocks
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
-                    "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa")
+                    "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa"),
+                lastCommit: new BlockCommit(
+                    height: Genesis.Index,
+                    round: 0,
+                    hash: Genesis.Hash,
+                    votes: new[]
+                    {
+                        new Vote(
+                            Genesis.Index,
+                            0,
+                            Genesis.Hash,
+                            Genesis.Timestamp,
+                            Miner.PublicKey,
+                            VoteFlag.Commit,
+                            0,
+                            null),
+                    }.ToImmutableArray())
             );
             byte[] hasTxNonce =
             {
@@ -49,7 +67,23 @@ namespace Libplanet.Tests.Blocks
                 nonce: hasTxNonce,
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
-                    "aaeda4f1a6a4aee7fc9a29014cff005109176e83a8e5d28876f2d889680e6421")
+                    "aaeda4f1a6a4aee7fc9a29014cff005109176e83a8e5d28876f2d889680e6421"),
+                lastCommit: new BlockCommit(
+                    height: Next.Index,
+                    round: 0,
+                    hash: Next.Hash,
+                    votes: new[]
+                    {
+                        new Vote(
+                            Next.Index,
+                            0,
+                            Next.Hash,
+                            Next.Timestamp,
+                            Miner.PublicKey,
+                            VoteFlag.Commit,
+                            0,
+                            null),
+                    }.ToImmutableArray())
             );
         }
 
