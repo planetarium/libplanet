@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Timers;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -18,6 +19,7 @@ namespace Libplanet.Net.Consensus
     {
         public const long TimeoutMillisecond = 10 * 1000;
 
+        private readonly Codec _codec = new Codec();
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
@@ -113,8 +115,8 @@ namespace Libplanet.Net.Consensus
         public bool ContainsBlock(BlockHash blockHash) =>
             _blockChain.Store.ContainsBlock(blockHash);
 
-        public Block<T> GetBlockFromStore(BlockHash blockHash) =>
-            _blockChain.Store.GetBlock<T>(_blockChain.Policy.GetHashAlgorithm, blockHash);
+        public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
+            _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
 
         public void PutBlockToStore(Block<T> block) =>
             _blockChain.Store.PutBlock(block);
