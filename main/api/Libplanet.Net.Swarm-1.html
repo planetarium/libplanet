@@ -581,7 +581,7 @@ It can be <code>null</code> if no message has been arrived yet.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AddPeersAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L731">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L727">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_AddPeersAsync_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -723,19 +723,19 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L428">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L426">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BootstrapAsync_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, Nullable&lt;TimeSpan&gt;, Int32, CancellationToken)</h4>
+  <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Int32_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Join to the peer-to-peer network using seed peers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, TimeSpan? pingSeedTimeout, TimeSpan? findNeighborsTimeout, int depth = null, CancellationToken cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task BootstrapAsync(IEnumerable&lt;Peer&gt; seedPeers, TimeSpan? dialTimeout, int depth = null, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -755,14 +755,8 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
-        <td><span class="parametername">pingSeedTimeout</span></td>
-        <td><p>Timeout for connecting to seed peers.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">TimeSpan</span>&gt;</td>
-        <td><span class="parametername">findNeighborsTimeout</span></td>
-        <td><p>Timeout for requesting neighbors.</p>
+        <td><span class="parametername">dialTimeout</span></td>
+        <td><p>Timeout for connecting to peers.</p>
 </td>
       </tr>
       <tr>
@@ -819,7 +813,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastBlock_Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastBlock(Libplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L475">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L471">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BroadcastBlock_" data-uid="Libplanet.Net.Swarm`1.BroadcastBlock*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BroadcastBlock_Libplanet_Blocks_Block__0__" data-uid="Libplanet.Net.Swarm`1.BroadcastBlock(Libplanet.Blocks.Block{`0})">BroadcastBlock(Block&lt;T&gt;)</h4>
@@ -860,7 +854,7 @@ immediately broadcasts updates if anything changes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastTxs_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastTxs(IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L480">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L476">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BroadcastTxs_" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BroadcastTxs_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs(IEnumerable{Libplanet.Tx.Transaction{`0}})">BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
@@ -892,7 +886,7 @@ immediately broadcasts updates if anything changes.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.CheckAllPeersAsync(System.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L710">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L706">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_CheckAllPeersAsync_" data-uid="Libplanet.Net.Swarm`1.CheckAllPeersAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)">CheckAllPeersAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -980,7 +974,7 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.FindSpecificPeerAsync(Libplanet.Address%2CSystem.Int32%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L688">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L684">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_FindSpecificPeerAsync_" data-uid="Libplanet.Net.Swarm`1.FindSpecificPeerAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)">FindSpecificPeerAsync(Address, Int32, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -1054,7 +1048,7 @@ Returns <code>null</code> if the peer with address does not exist.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_GetPeerChainStateAsync_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.GetPeerChainStateAsync(System.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L498">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L494">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_GetPeerChainStateAsync_" data-uid="Libplanet.Net.Swarm`1.GetPeerChainStateAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_GetPeerChainStateAsync_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.GetPeerChainStateAsync(System.Nullable{TimeSpan},CancellationToken)">GetPeerChainStateAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -1113,7 +1107,7 @@ operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_PreloadAsync_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PreloadAsync(IProgress%7BLibplanet.Net.PreloadState%7D%2CSystem.Boolean%2CSystem.Int64%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L536">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L532">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_PreloadAsync_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_PreloadAsync_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)">PreloadAsync(IProgress&lt;PreloadState&gt;, Boolean, Int64, CancellationToken)</h4>
@@ -1189,7 +1183,7 @@ You only can <code>await</code> until the method is completed.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Swarm_1_PreloadAsync_TimeSpan_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PreloadAsync(TimeSpan%2CIProgress%7BLibplanet.Net.PreloadState%7D%2CSystem.Boolean%2CSystem.Int64%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L580">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Swarm.cs/#L576">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_PreloadAsync_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_PreloadAsync_TimeSpan_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync(TimeSpan,IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)">PreloadAsync(TimeSpan, IProgress&lt;PreloadState&gt;, Boolean, Int64, CancellationToken)</h4>

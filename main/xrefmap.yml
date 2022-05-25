@@ -15463,15 +15463,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.IProtocol.AddPeersAsync
   nameWithType: IProtocol.AddPeersAsync
-- uid: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: IProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.IProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: IProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
 - uid: Libplanet.Net.Protocols.IProtocol.BootstrapAsync*
   name: BootstrapAsync
   href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_BootstrapAsync_
@@ -15641,15 +15641,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync
   nameWithType: KademliaProtocol.AddPeersAsync
-- uid: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: KademliaProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: KademliaProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: KademliaProtocol.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: KademliaProtocol.BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
 - uid: Libplanet.Net.Protocols.KademliaProtocol.BootstrapAsync*
   name: BootstrapAsync
   href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_BootstrapAsync_
@@ -16210,15 +16210,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Int32, CancellationToken)
   nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Int32, CancellationToken)
   nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Int32, CancellationToken)
-- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Int32, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync*
   name: BootstrapAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_

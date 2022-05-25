@@ -69,6 +69,12 @@
 <ul>
 <li>(Libplanet.Net) Property <code>SwarmOptions.BlockDownloadTimeout</code> removed.
 [<a href="https://github.com/planetarium/libplanet/issues/1981">#1981</a>, <a href="https://github.com/planetarium/libplanet/pull/1982">#1982</a>]</li>
+<li>(Libplanet.Net) <code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, TimeSpan?, TimeSpan?, int, CancellationToken)</code> changed to <code>Swarm&lt;T&gt;.BoostrapAsync( IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code>.  Parameter
+<code>dialTimeout</code> now gets used for both old <code>pingSeedTimeout</code> and
+<code>findNeigborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
+<li>(Libplanet.Net) <code>IProtocol.BootstrapAsync(IEnumerable&lt;BoundPeer&gt;, TimeSpan?, TimeSpan?, int, CancellationToken)</code> changed to <code>IProtocol.BootstrapAsync( IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code>.  Parameter
+<code>dialTimeout</code> now gets used for both old <code>pingSeedTimeout</code> and
+<code>findNeigborsTimeout</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1990">#1990</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
