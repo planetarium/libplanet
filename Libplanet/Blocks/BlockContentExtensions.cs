@@ -33,8 +33,6 @@ namespace Libplanet.Blocks
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
-        /// from its its public key.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,

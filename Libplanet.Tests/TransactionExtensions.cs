@@ -24,14 +24,6 @@ namespace Libplanet.Tests
             }
             catch (InvalidTxSignatureException)
             {
-                if (!privateKey.ToAddress().Equals(tx.PublicKey.ToAddress()))
-                {
-                    throw new InvalidTxPublicKeyException(
-                        tx.Id,
-                        "The given private key does not correspond to the transaction's public key."
-                    );
-                }
-
                 byte[] serialized = tx.Serialize(false);
                 byte[] validSignature = privateKey.Sign(serialized);
                 throw new InvalidTxSignatureException(

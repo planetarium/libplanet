@@ -164,7 +164,7 @@ namespace Libplanet.Crypto
                 throw new ArgumentNullException(nameof(signature));
             }
 
-            if (!signature.Any())
+            if (signature is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !signature.Any())
             {
                 return false;
             }

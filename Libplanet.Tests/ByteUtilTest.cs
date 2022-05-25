@@ -17,6 +17,7 @@ namespace Libplanet.Tests
             const string expectedHex = "45a22187e2d8850bb357886958bc3e8560929ccc";
             Assert.Equal(expectedHex, ByteUtil.Hex(bs));
             Assert.Equal(expectedHex, ByteUtil.Hex(ImmutableArray.Create(bs)));
+            Assert.Empty(ByteUtil.Hex(default(ImmutableArray<byte>)));
         }
 
         [Fact]

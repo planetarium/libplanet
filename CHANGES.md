@@ -10,6 +10,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `InvalidTxPublicKeyException` class.  [[#1164], [#1978]]
  -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
     [[#1981], [#1982]]
  -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?,
@@ -29,14 +30,44 @@ To be released.
 
 ### Added APIs
 
+ -  Introduced *Libplanet.Node* package.  [[#1974], [#1978]]
+ -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
+ -  Added `ITxExcerpt` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxExcerptExtensions` static class.  [[#1164], [#1974], [#1978]]
+ -  `Transaction<T>` now implements `ITxExcerpt` interface.
+    [[#1164], [#1974], [#1978]]
+ -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
+    [[#1164], [#1978]]
+ -  Added `TxId.FromString()` static method.  [[#1978]]
+ -  (Libplanet.Node) Added `UntypedTransaction` class.  [[#1974], [#1978]]
+ -  (Libplanet.Node) Added `UntypedBlock` class.  [[#1974], [#1978]]
+
 ### Behavioral changes
 
+ -  `Transaction<T>(long, Address, PublicKey, BlockHash?,
+    IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])` constructor
+    became to ignore its second parameter `Address signer`.  Instead,
+    `Transaction<T>.Signer` property is now automatically derived from its
+    `PublicKey`.  [[#1164], [#1978]]
+
 ### Bug fixes
+
+ -  Fixed `InvalidOperationException` thrown by `PublicKey.Verify()` method
+    if `signature` is a `default(ImmutableArray<byte>)`.  Instead, it silently
+    returns `false` now.  [[#1978]]
+ -  Fixed `NullReferenceException` thrown by `ByteUtil.Hex(in
+    ImmutabelArray<byte>)` method if a `default(ImmutableArray<byte>)` is
+    present.  Instead, it silently returns an empty string now.  [[#1978]]
+ -  Fixed a `TxId(byte[])` constructor's bug where `ParamName` and `Message` of
+    `ArgumentOutOfRangeException` it had thrown had been reversed.  [[#1978]]
 
 ### Dependencies
 
 ### CLI tools
 
+[#1974]: https://github.com/planetarium/libplanet/issues/1974
+[#1978]: https://github.com/planetarium/libplanet/pull/1978
 [#1981]: https://github.com/planetarium/libplanet/issues/1981
 [#1982]: https://github.com/planetarium/libplanet/pull/1982
 [#1990]: https://github.com/planetarium/libplanet/pull/1990
