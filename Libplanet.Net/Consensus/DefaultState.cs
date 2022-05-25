@@ -9,7 +9,7 @@ namespace Libplanet.Net.Consensus
     {
         public string Name { get; } = "DefaultState";
 
-        public ConsensusMessage Handle(ConsensusContext<T> context, ConsensusMessage message)
+        public ConsensusMessage? Handle(ConsensusContext<T> context, ConsensusMessage message)
         {
             return message switch
             {
@@ -18,7 +18,7 @@ namespace Libplanet.Net.Consensus
             };
         }
 
-        private ConsensusMessage HandlePropose(
+        private ConsensusMessage? HandlePropose(
             ConsensusContext<T> context,
             ConsensusPropose propose)
         {
@@ -45,7 +45,11 @@ namespace Libplanet.Net.Consensus
 
             roundContext.BlockHash = propose.BlockHash;
             roundContext.State = new PreVoteState<T>();
-            return new ConsensusVote(context.SignVote(roundContext.Voting(VoteFlag.Absent)));
+
+            return context.ContainsBlock(propose.BlockHash) ?
+                new ConsensusVote(
+                    context.SignVote(
+                    roundContext.Voting(VoteFlag.Absent))) : null;
         }
     }
 }
