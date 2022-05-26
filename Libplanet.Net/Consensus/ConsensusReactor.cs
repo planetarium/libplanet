@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -47,6 +48,17 @@ namespace Libplanet.Net.Consensus
         public void Dispose()
         {
             _transport.Dispose();
+        }
+
+        public VoteSet? VoteSetOf(long height)
+        {
+            Dictionary<long, VoteSet?> voteSets = _context.VoteSets;
+            if (voteSets.ContainsKey(height))
+            {
+                return voteSets[height];
+            }
+
+            return null;
         }
 
         public async Task<Task> StartAsync(CancellationToken ctx)
