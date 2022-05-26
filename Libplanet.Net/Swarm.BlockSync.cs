@@ -217,10 +217,22 @@ namespace Libplanet.Net
             {
                 if (blocks.Count != 0)
                 {
-                    var branch = new CandidateBranch<T>(blocks);
+                    try
+                    {
+                        var branch = new CandidateBranch<T>(blocks);
+                        BlockCandidateTable.Add(branch, BlockChain.Tip);
+                        BlockReceived.Set();
+                    }
+                    catch (CreateCandidateBranchException e)
+                    {
+                        _logger.Error(
+                            "{MethodName}: Failed to create a CandidateTable. " +
+                            "Exception : {Exception}",
+                            nameof(FillBlocksAsync),
+                            e.ToString());
 
-                    BlockCandidateTable.Add(branch, BlockChain.Tip);
-                    BlockReceived.Set();
+                        FillBlocksAsyncFailed.Set();
+                    }
                 }
 
                 ProcessFillBlocksFinished.Set();

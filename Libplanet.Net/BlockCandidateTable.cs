@@ -60,17 +60,8 @@ namespace Libplanet.Net
 
             if (BestBranch is null)
             {
-                if (AreBlocksContinuous(branch.Blocks))
-                {
-                    BestBranch = branch;
-                    Branches.Add(branch);
-                }
-
-                return;
-            }
-
-            if (!AreBlocksContinuous(branch.Blocks))
-            {
+                BestBranch = branch;
+                Branches.Add(branch);
                 return;
             }
 
@@ -191,52 +182,12 @@ namespace Libplanet.Net
 
         public bool Any() => Branches.Any();
 
-        /// <summary>
-        /// Check every blocks are continuous by <see cref="Block{T}.PreviousHash"/>-wise each
-        /// other.
-        /// <remarks>
-        /// This method does not check whether branch is appendable to <see cref="BlockChain{T}"/>.
-        /// </remarks>
-        /// </summary>
-        /// <param name="branch">A series of <see cref="Block{T}"/>.
-        /// </param>
-        /// <returns>
-        /// returns true if <paramref name="branch"/> is continuous or its count is 1; returns false
-        /// if <paramref name="branch"/> is not continuous or its count is 0.
-        /// </returns>
-        private static bool AreBlocksContinuous(IEnumerable<Block<T>> branch)
-        {
-            var enumerable = branch as Block<T>[] ?? branch.ToArray();
-
-            if (!enumerable.Any())
-            {
-                return false;
-            }
-
-            if (enumerable.Count() == 1)
-            {
-                return true;
-            }
-
-            var precedingBlocks = enumerable.Skip(1);
-            foreach (var block in precedingBlocks)
-            {
-                if (!enumerable.Any(x => block.PreviousHash != null &&
-                                         x.Hash.Equals(block.PreviousHash.Value)))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         // FIXME: This method is duplicated with Swarm<T>.IsBlockNeeded()
         private bool IsBlockNeeded(IBlockExcerpt block, IBlockExcerpt tip) =>
             _canonicalChainComparer.Compare(block, tip) > 0;
 
         /// <summary>
-        /// Comparing two <see cref="CandidateBranch{T}"/>.
+        /// Comparing two <see cref="CandidateBranch{T}"/>s.
         /// </summary>
         /// <param name="source">
         /// a <see cref="CandidateBranch{T}"/> to be compared.

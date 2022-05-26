@@ -129,8 +129,7 @@ namespace Libplanet.Net
 
              Block<T> oldTip = workspace.Tip;
              Block<T> newTip = branch.Tip;
-             List<Block<T>> blocks = branch.Blocks.ToList();
-             Block<T> branchpoint = FindBranchpoint(oldTip, newTip, blocks);
+             Block<T> branchpoint = FindBranchpoint(oldTip, newTip, branch.Blocks.ToList());
              UpdatePath<T> path = null;
 
              if (oldTip is null || branchpoint.Equals(oldTip))
@@ -141,7 +140,7 @@ namespace Libplanet.Net
                  );
                  if (oldTip is { })
                  {
-                     path = new UpdatePath<T>(blocks, oldTip);
+                     path = new UpdatePath<T>(branch.Blocks, oldTip);
                  }
              }
              else if (!workspace.ContainsBlock(branchpoint.Hash))
@@ -175,18 +174,20 @@ namespace Libplanet.Net
                      "Fork finished. at {MethodName}",
                      nameof(AppendPreviousBlocks)
                  );
-                 path = new UpdatePath<T>(blocks, oldTip);
+                 path = new UpdatePath<T>(branch.Blocks, oldTip);
              }
 
+             var appendingBlocks = new List<Block<T>>();
+
              if (!(workspace.Tip is null) &&
-                 !workspace.Tip.Hash.Equals(blocks.First().PreviousHash))
+                 !workspace.Tip.Hash.Equals(branch.Root.PreviousHash))
              {
-                 blocks = blocks.Skip(1).ToList();
+                  appendingBlocks = branch.Blocks.Skip(1).ToList();
              }
 
              try
              {
-                 foreach (var block in blocks)
+                 foreach (var block in appendingBlocks)
                  {
                      workspace.Append(
                          block,
@@ -409,9 +410,23 @@ namespace Libplanet.Net
                 "with Index: {TipIndex}",
                 nameof(BlockCandidateDownload),
                 tip.Index);
-            var branch = new CandidateBranch<T>(blocks.ToList());
-            BlockCandidateTable.Add(branch, blockChain.Tip);
-            return true;
+
+            try
+            {
+                var branch = new CandidateBranch<T>(blocks.ToList());
+                BlockCandidateTable.Add(branch, blockChain.Tip);
+                return true;
+            }
+            catch (CreateCandidateBranchException e)
+            {
+                _logger.Error(
+                    "{MethodName}: Failed to create a CandidateTable. " +
+                    "Exception : {Exception}",
+                    nameof(BlockCandidateDownload),
+                    e.ToString());
+
+                return false;
+            }
         }
     }
 }

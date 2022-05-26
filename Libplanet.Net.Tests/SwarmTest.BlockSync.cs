@@ -309,14 +309,8 @@ namespace Libplanet.Net.Tests
 
             branchBlocksBetweenA.RemoveAt(5);
 
-            var branchA = new CandidateBranch<DumbAction>(branchBlocksBetweenA);
-
-            var table = new BlockCandidateTable<DumbAction>(chainA.Policy.CanonicalChainComparer);
-            table.Add(branchA, chainA.Tip);
-
-            CandidateBranch<DumbAction> bestBranch = table.BestBranch;
-            Assert.Null(bestBranch);
-            Assert.Equal(0, table.Count);
+            Assert.Throws<CreateCandidateBranchException>(
+                () => new CandidateBranch<DumbAction>(branchBlocksBetweenA));
         }
 
         [Fact(Timeout = Timeout)]
