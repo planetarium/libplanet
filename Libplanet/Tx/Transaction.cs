@@ -142,7 +142,10 @@ namespace Libplanet.Tx
             Actions = dict.GetValue<List>(TxMetadata.ActionsKey)
                 .Select(ToAction)
                 .ToImmutableList();
-            _signature = dict.GetValue<Binary>(TxMetadata.SignatureKey).ToByteArray();
+            _signature
+                = dict.TryGetValue((Binary)TxMetadata.SignatureKey, out IValue s) && s is Binary sig
+                ? sig.ToByteArray()
+                : Array.Empty<byte>();
         }
 
         private Transaction(

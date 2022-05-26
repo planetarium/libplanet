@@ -108,6 +108,19 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void CreateUnsignedFromBencodex()
+        {
+            var expected = Transaction<PolymorphicAction<BaseAction>>.CreateUnsigned(
+                0,
+                _fx.PublicKey1,
+                null,
+                _fx.TxWithActions.Actions);
+            Bencodex.Types.Dictionary dict = expected.ToBencodex(false);
+            var actual = new Transaction<PolymorphicAction<BaseAction>>(dict);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
             Transaction<DumbAction> emptyTx = Transaction<DumbAction>.Create(
