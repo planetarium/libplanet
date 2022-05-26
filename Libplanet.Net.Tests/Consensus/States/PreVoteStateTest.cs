@@ -46,9 +46,9 @@ namespace Libplanet.Net.Tests.Consensus.States
             for (int i = 0; i < 5; i++)
             {
                 contextAlreadyVoted.CurrentRoundContext.Vote(
-                    TestUtils.SignVote(
-                        TestUtils.CreateVote(validatorsPubKey[i], VoteFlag.Absent, id: i),
-                        validators[i]));
+                        TestUtils
+                            .CreateVote(validatorsPubKey[i], VoteFlag.Absent, id: i)
+                            .Sign(validators[i]));
             }
 
             var state = new PreVoteState<DumbAction>();
@@ -79,28 +79,26 @@ namespace Libplanet.Net.Tests.Consensus.States
                 state.Handle(
                     context,
                     new ConsensusVote(
-                            TestUtils.SignVote(
                                 TestUtils.CreateVote(
                                     validBlockHash,
                                     VoteFlag.Absent,
                                     0,
                                     0,
                                     0,
-                                    validatorsPubKey[0]),
+                                    validatorsPubKey[0]).Sign(
                                 validators[0]))
                         { Remote = TestUtils.Peer0 }));
             Assert.Equal(1, context.CurrentRoundContext.VoteCount);
             ConsensusMessage? res = state.Handle(
                 contextAlreadyVoted,
                 new ConsensusVote(
-                        TestUtils.SignVote(
                             TestUtils.CreateVote(
                                 validBlockHash,
                                 VoteFlag.Absent,
                                 5,
                                 0,
                                 0,
-                                validatorsPubKey[5]), validators[5]))
+                                validatorsPubKey[5]).Sign(validators[5]))
                     { Remote = TestUtils.Peer0 });
             Assert.NotNull(res);
             Assert.IsType<ConsensusCommit>(res);

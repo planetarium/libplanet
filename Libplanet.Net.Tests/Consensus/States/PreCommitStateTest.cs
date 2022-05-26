@@ -59,9 +59,9 @@ namespace Libplanet.Net.Tests.Consensus.States
             for (int i = 0; i < 5; i++)
             {
                 contextAlreadyVoted.CurrentRoundContext.Vote(
-                    TestUtils.SignVote(
-                        TestUtils.CreateVote(validatorsPubKey[i], VoteFlag.Commit, id: i),
-                        validators[i])
+                        TestUtils
+                            .CreateVote(validatorsPubKey[i], VoteFlag.Commit, id: i)
+                            .Sign(validators[i])
                 );
             }
 
@@ -89,27 +89,25 @@ namespace Libplanet.Net.Tests.Consensus.States
                 state.Handle(
                     context,
                     new ConsensusCommit(
-                            TestUtils.SignVote(
                                 TestUtils.CreateVote(
                                     validBlockHash,
                                     VoteFlag.Commit,
                                     0,
                                     0,
                                     0,
-                                    validatorsPubKey[0]), validators[0]))
+                                    validatorsPubKey[0]).Sign(validators[0]))
                         { Remote = TestUtils.Peer0 }));
             Assert.Equal(1, context.CurrentRoundContext.CommitCount);
             ConsensusMessage? res = state.Handle(
                 contextAlreadyVoted,
                 new ConsensusCommit(
-                        TestUtils.SignVote(
                             TestUtils.CreateVote(
                                 validBlockHash,
                                 VoteFlag.Commit,
                                 5,
                                 0,
                                 0,
-                                validatorsPubKey[5]), validators[5]))
+                                validatorsPubKey[5]).Sign(validators[5]))
                     { Remote = TestUtils.Peer0 });
             Assert.Null(res);
             Assert.Equal(0, contextAlreadyVoted.Round);

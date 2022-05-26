@@ -104,36 +104,6 @@ namespace Libplanet.Net.Tests
                 id,
                 ImmutableArray<byte>.Empty);
 
-        public static Vote CreateVote(
-            VoteFlag flag = VoteFlag.Null,
-            long id = 0,
-            long height = 0,
-            long round = 0) =>
-            new Vote(
-                height,
-                round,
-                BlockHash0,
-                DateTimeOffset.Now,
-                new PrivateKey().PublicKey,
-                flag,
-                id,
-                ImmutableArray<byte>.Empty);
-
-        public static Vote SignVote(Vote vote, PrivateKey privateKey)
-        {
-            Vote voteWithoutSign = vote.RemoveSignature;
-            byte[] sign = privateKey.Sign(voteWithoutSign.ByteArray);
-            return new Vote(
-                vote.Height,
-                vote.Round,
-                vote.BlockHash,
-                vote.Timestamp,
-                vote.Validator,
-                vote.Flag,
-                vote.NodeId,
-                sign.ToImmutableArray());
-        }
-
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
         {
             var table = new RoutingTable(tableAddress);

@@ -27,10 +27,12 @@ namespace Libplanet.Net.Tests.Consensus
                 .Select(x => new PrivateKey())
                 .ToList();
             var validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
-            Vote duplicatedVote = TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0), validators[0]);
-            Vote uniqueVote = TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1), validators[1]);
+            Vote duplicatedVote =
+                TestUtils.CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0)
+                    .Sign(validators[0]);
+            Vote uniqueVote =
+                TestUtils.CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
+                    .Sign(validators[1]);
             RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
             long initialVoteCount = context.VoteCount;
             context.Vote(duplicatedVote);
@@ -61,20 +63,28 @@ namespace Libplanet.Net.Tests.Consensus
             RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
             // 0 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0), validators[0]));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0)
+                    .Sign(validators[0]));
             // 1 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1), validators[1]));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
+                    .Sign(validators[1]));
             // 2 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[2], VoteFlag.Absent, id: 2), validators[2]));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[2], VoteFlag.Absent, id: 2)
+                    .Sign(validators[2]));
             // 3 > 2
             Assert.True(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.SignVote(
-                TestUtils.CreateVote(validatorsPubKey[3], VoteFlag.Absent, id: 3), validators[3]));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[3], VoteFlag.Absent, id: 3)
+                    .Sign(validators[3]));
         }
 
         [Fact]
@@ -126,14 +136,12 @@ namespace Libplanet.Net.Tests.Consensus
             for (int i = 0; i < voteCount; i++)
             {
                 context.Vote(
-                    TestUtils.SignVote(
                         TestUtils.CreateVote(
                             validatorsPubKey[i],
                             VoteFlag.Absent,
                             i,
                             height,
-                            round),
-                        validators[i]));
+                            round).Sign(validators[i]));
             }
 
             // replace data field with encoding

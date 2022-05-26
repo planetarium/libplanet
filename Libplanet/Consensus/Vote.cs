@@ -163,6 +163,21 @@ namespace Libplanet.Consensus
         public Vote RemoveSignature =>
             new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, NodeId, null);
 
+        public Vote Sign(PrivateKey privateKey)
+        {
+            Vote voteWithoutSign = RemoveSignature;
+            byte[] sign = privateKey.Sign(voteWithoutSign.ByteArray);
+            return new Vote(
+                Height,
+                Round,
+                BlockHash,
+                Timestamp,
+                Validator,
+                Flag,
+                NodeId,
+                sign.ToImmutableArray());
+        }
+
         public bool Equals(Vote other)
         {
             return Height == other.Height &&

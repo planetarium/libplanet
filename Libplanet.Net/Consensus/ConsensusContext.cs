@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Text.Json;
 using System.Timers;
 using Libplanet.Action;
@@ -147,17 +146,7 @@ namespace Libplanet.Net.Consensus
 
         public Vote SignVote(Vote vote)
         {
-            Vote voteWithoutSign = vote.RemoveSignature;
-            byte[] sign = _privateKey.Sign(voteWithoutSign.ByteArray);
-            return new Vote(
-                vote.Height,
-                vote.Round,
-                vote.BlockHash,
-                vote.Timestamp,
-                vote.Validator,
-                vote.Flag,
-                vote.NodeId,
-                sign.ToImmutableArray());
+            return vote.Sign(_privateKey);
         }
 
         public ConsensusMessage? HandleMessage(ConsensusMessage message)
