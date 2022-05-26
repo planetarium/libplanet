@@ -74,7 +74,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            BestBranch = CompareBranch(BestBranch, branch);
+            BestBranch = CompareSourceBranch(BestBranch, branch);
 
             Branches.Add(branch);
         }
@@ -123,7 +123,7 @@ namespace Libplanet.Net
                         var newBranch = new CandidateBranch<T>(newBlocks);
 
                         longestBranch ??= newBranch;
-                        longestBranch = CompareBranch(newBranch, longestBranch);
+                        longestBranch = CompareSourceBranch(longestBranch, newBranch);
                     }
                     catch (ArgumentNullException)
                     {
@@ -166,7 +166,7 @@ namespace Libplanet.Net
                         var newBranch = new CandidateBranch<T>(newBlocks);
 
                         longestBranch ??= newBranch;
-                        longestBranch = CompareBranch(newBranch, longestBranch);
+                        longestBranch = CompareSourceBranch(longestBranch, newBranch);
                     }
                 }
             }
@@ -235,9 +235,25 @@ namespace Libplanet.Net
         private bool IsBlockNeeded(IBlockExcerpt block, IBlockExcerpt tip) =>
             _canonicalChainComparer.Compare(block, tip) > 0;
 
-        private CandidateBranch<T> CompareBranch(
-            CandidateBranch<T> lf,
-            CandidateBranch<T> rf)
-            => _canonicalChainComparer.Compare(lf.Tip, rf.Tip) > 0 ? lf : rf;
+        /// <summary>
+        /// Comparing two <see cref="CandidateBranch{T}"/>.
+        /// </summary>
+        /// <param name="source">
+        /// a <see cref="CandidateBranch{T}"/> to be compared.
+        /// </param>
+        /// <param name="relative">
+        /// a <see cref="CandidateBranch{T}"/> to compare with the <paramref name="source"/>.
+        /// </param>
+        /// <returns>
+        /// returns <see cref="CandidateBranch{T}"/> with the higher comparer value between two.
+        /// </returns>
+        /// <remarks>
+        /// If the comparer value of <paramref name="relative"/> is same as source, then
+        /// <paramref name="source"/> will be returned as the comparison result.
+        /// </remarks>
+        private CandidateBranch<T> CompareSourceBranch(
+            CandidateBranch<T> source,
+            CandidateBranch<T> relative) =>
+            _canonicalChainComparer.Compare(source.Tip, relative.Tip) > 0 ? source : relative;
     }
 }
