@@ -51,8 +51,8 @@ namespace Libplanet.Tx
             if (txid.Length != Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"TxId must be {Size} bytes.",
-                    nameof(txid)
+                    nameof(txid),
+                    $"{nameof(TxId)} must be {Size} bytes."
                 );
             }
 
@@ -89,6 +89,41 @@ namespace Libplanet.Tx
         public static bool operator ==(TxId left, TxId right) => left.Equals(right);
 
         public static bool operator !=(TxId left, TxId right) => !left.Equals(right);
+
+        /// <summary>
+        /// Creates a <see cref="TxId"/> value from a <paramref name="hex"/> string.
+        /// </summary>
+        /// <param name="hex">A hexadecimal string which encodes a <see cref="TxId"/>.
+        /// This has to contain 64 hexadecimal digits and must not be <see langword="null"/>
+        /// This is usually made by <see cref="ToHex()"/> method.</param>
+        /// <returns>A corresponding <see cref="TxId"/> value.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
+        /// string is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="hex"/> is shorter or longer than 64 characters.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
+        /// not a valid hexadecimal string.</exception>
+        /// <seealso cref="ToHex()"/>
+        public static TxId FromHex(string hex)
+        {
+            if (hex is null)
+            {
+                throw new ArgumentNullException(nameof(hex));
+            }
+
+            byte[] bytes = ByteUtil.ParseHex(hex);
+            try
+            {
+                return new TxId(bytes);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(hex),
+                    $"Expected {Size * 2} characters, but {hex.Length} characters given."
+                );
+            }
+        }
 
         public bool Equals(TxId other) => ByteArray.SequenceEqual(other.ByteArray);
 

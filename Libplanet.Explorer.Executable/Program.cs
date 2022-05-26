@@ -370,7 +370,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 await swarm.BootstrapAsync(
                     seeds,
                     TimeSpan.FromMilliseconds(5000),
-                    TimeSpan.FromMilliseconds(5000),
                     cancellationToken: cancellationToken
                 );
             }

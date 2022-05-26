@@ -225,7 +225,6 @@ namespace Libplanet.Net.Tests
                 await Assert.ThrowsAsync<PeerDiscoveryException>(
                     () => swarmB.BootstrapAsync(
                         new[] { swarmA.AsPeer },
-                        TimeSpan.FromMilliseconds(3000),
                         TimeSpan.FromMilliseconds(3000)));
 
                 await StartAsync(swarmA);
@@ -1813,8 +1812,7 @@ namespace Libplanet.Net.Tests
         {
             await swarm.BootstrapAsync(
                 seeds,
-                null,
-                findNeighborsTimeout: TimeSpan.FromSeconds(3),
+                dialTimeout: TimeSpan.FromSeconds(3),
                 cancellationToken: cancellationToken);
         }
 

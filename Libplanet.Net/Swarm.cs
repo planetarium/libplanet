@@ -406,8 +406,7 @@ namespace Libplanet.Net
         {
             await BootstrapAsync(
                 seedPeers: seedPeers,
-                pingSeedTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
-                findNeighborsTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
+                dialTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
                 depth: depth,
                 cancellationToken: cancellationToken);
         }
@@ -416,8 +415,7 @@ namespace Libplanet.Net
         /// Join to the peer-to-peer network using seed peers.
         /// </summary>
         /// <param name="seedPeers">List of seed peers.</param>
-        /// <param name="pingSeedTimeout">Timeout for connecting to seed peers.</param>
-        /// <param name="findNeighborsTimeout">Timeout for requesting neighbors.</param>
+        /// <param name="dialTimeout">Timeout for connecting to peers.</param>
         /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
         /// from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
@@ -427,8 +425,7 @@ namespace Libplanet.Net
         /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(
             IEnumerable<Peer> seedPeers,
-            TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
+            TimeSpan? dialTimeout,
             int depth = Kademlia.MaxDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -442,13 +439,12 @@ namespace Libplanet.Net
 
             if (Options.StaticPeers.Any())
             {
-                await AddPeersAsync(Options.StaticPeers, pingSeedTimeout, cancellationToken);
+                await AddPeersAsync(Options.StaticPeers, dialTimeout, cancellationToken);
             }
 
             await PeerDiscovery.BootstrapAsync(
                 peers,
-                pingSeedTimeout,
-                findNeighborsTimeout,
+                dialTimeout,
                 depth,
                 cancellationToken);
 
