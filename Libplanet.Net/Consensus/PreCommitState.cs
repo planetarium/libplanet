@@ -43,7 +43,7 @@ namespace Libplanet.Net.Consensus
 
             roundContext.Vote(commit.CommitVote);
 
-            if (!roundContext.HasTwoThirdsAny())
+            if (!roundContext.VoteSet.HasTwoThirdCommit())
             {
                 return null;
             }
@@ -68,7 +68,7 @@ namespace Libplanet.Net.Consensus
             RoundContext<T> targetContext = context.RoundContextOf(vote.Round);
             targetContext.Vote(vote.ProposeVote);
 
-            if (!targetContext.HasTwoThirdsAny())
+            if (!targetContext.VoteSet.HasTwoThirdPrevote())
             {
                 return null;
             }

@@ -51,6 +51,7 @@ namespace Libplanet.Net.Consensus
             };
 
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
+            VoteSets = new Dictionary<long, VoteSet?>();
             _logger = Log
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
@@ -72,6 +73,9 @@ namespace Libplanet.Net.Consensus
         public long NodeId { get; internal set; }
 
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
+
+        // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
+        public Dictionary<long, VoteSet?> VoteSets { get; }
 
         public void CommitBlock(long height, BlockHash hash)
         {
@@ -95,6 +99,9 @@ namespace Libplanet.Net.Consensus
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
                 _blockChain.Append(block);
+
+                // FIXME: Gets voteset by reference, it can be modified in other place.
+                VoteSets.Add(Height, CurrentRoundContext.VoteSet);
                 Height++;
                 Round = 0;
                 _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();

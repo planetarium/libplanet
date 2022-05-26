@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
@@ -245,6 +246,18 @@ namespace Libplanet.Net.Tests.Consensus
                         Assert.Equal(proposeNode + 1, json["height"].GetInt32());
                         Assert.Equal(0L, json["round"].GetInt32());
                         Assert.Equal("DefaultState", json["step"].GetString());
+                        VoteSet? voteSet = reactors[node].VoteSetOf(proposeNode);
+                        if (voteSet is null)
+                        {
+                            Assert.NotNull(voteSet);
+                        }
+                        else
+                        {
+                            Assert.Equal(proposeNode, voteSet.Height);
+                            int a = voteSet.Votes.Count(v => v.Flag == VoteFlag.Commit);
+                            int b = count / 3 * 2;
+                            Assert.True(a >= b, $"Commit count: {a}, TwoThirds: {b}");
+                        }
                     }
                 }
             }
@@ -256,6 +269,27 @@ namespace Libplanet.Net.Tests.Consensus
                     reactor.Dispose();
                 }
             }
+        }
+
+        // Non-null case is in Propose().
+        [Fact]
+        public void VoteSetOfNull()
+        {
+            var key1 = new PrivateKey();
+            var key2 = new PrivateKey();
+            var validators = new List<PublicKey>
+            {
+                key1.PublicKey,
+                key2.PublicKey,
+            };
+            var blockChain = new BlockChain<DumbAction>(
+                TestUtils.Policy,
+                new VolatileStagePolicy<DumbAction>(),
+                _fx.Store,
+                _fx.StateStore,
+                _fx.GenesisBlock);
+            IReactor reactor = CreateReactor(blockChain, key1, port: 5123, validators: validators);
+            Assert.Null(reactor.VoteSetOf(0));
         }
     }
 }
