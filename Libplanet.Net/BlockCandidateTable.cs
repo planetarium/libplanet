@@ -99,7 +99,7 @@ namespace Libplanet.Net
         {
             lock (_lock)
             {
-                var newBag = new ConcurrentBag<CandidateBranch<T>>();
+                var newBranches = new List<CandidateBranch<T>>();
                 CandidateBranch<T>? longestBranch = null;
 
                 // if OldTip is equals to BranchPoint, means it is not reorg.
@@ -170,11 +170,11 @@ namespace Libplanet.Net
 
                 if (longestBranch is { })
                 {
-                    newBag.Add(longestBranch);
+                    newBranches.Add(longestBranch);
                     BestBranch = longestBranch;
                 }
 
-                Branches = newBag;
+                Branches = new ConcurrentBag<CandidateBranch<T>>(newBranches);
             }
         }
 
