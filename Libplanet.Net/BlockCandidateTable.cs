@@ -18,6 +18,7 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private readonly IComparer<IBlockExcerpt> _canonicalChainComparer;
+        private readonly object _lock = new object();
 
         public BlockCandidateTable(IComparer<IBlockExcerpt> canonicalChainComparer)
         {
@@ -53,21 +54,24 @@ namespace Libplanet.Net
         /// </param>
         public void Add(CandidateBranch<T> branch, IBlockHeader currentTip)
         {
-            if (!IsBlockNeeded(branch.Tip, currentTip))
+            lock (_lock)
             {
-                return;
-            }
+                if (!IsBlockNeeded(branch.Tip, currentTip))
+                {
+                    return;
+                }
 
-            if (BestBranch is null)
-            {
-                BestBranch = branch;
+                if (BestBranch is null)
+                {
+                    BestBranch = branch;
+                    Branches.Add(branch);
+                    return;
+                }
+
+                BestBranch = CompareSourceBranch(BestBranch, branch);
+
                 Branches.Add(branch);
-                return;
             }
-
-            BestBranch = CompareSourceBranch(BestBranch, branch);
-
-            Branches.Add(branch);
         }
 
         /// <summary>
@@ -93,82 +97,85 @@ namespace Libplanet.Net
         /// </remarks>
         public void Update(UpdatePath<T> path)
         {
-            var newBag = new ConcurrentBag<CandidateBranch<T>>();
-            CandidateBranch<T>? longestBranch = null;
-
-            // if OldTip is equals to BranchPoint, means it is not reorg.
-            if (path.OldTip.Equals(path.BranchPoint))
+            lock (_lock)
             {
-                foreach (CandidateBranch<T> branch in Branches)
+                var newBag = new ConcurrentBag<CandidateBranch<T>>();
+                CandidateBranch<T>? longestBranch = null;
+
+                // if OldTip is equals to BranchPoint, means it is not reorg.
+                if (path.OldTip.Equals(path.BranchPoint))
                 {
-                    if (!IsBlockNeeded(branch.Tip, path.NewTip))
+                    foreach (CandidateBranch<T> branch in Branches)
                     {
-                        continue;
-                    }
+                        if (!IsBlockNeeded(branch.Tip, path.NewTip))
+                        {
+                            continue;
+                        }
 
-                    try
-                    {
-                        var newBlocks =
-                            branch.Blocks.ToList().FindAll(x => x.Index > path.NewTip.Index)
-                                .ToList();
-                        var newBranch = new CandidateBranch<T>(newBlocks);
-
-                        longestBranch ??= newBranch;
-                        longestBranch = CompareSourceBranch(longestBranch, newBranch);
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        // FIXME: This has to be done to prevent stopping Update() by
-                        // exception thrown from FindAll().
-                        continue;
-                    }
-                }
-            }
-            else
-            {
-                foreach (CandidateBranch<T> branch in Branches)
-                {
-                    if (!IsBlockNeeded(branch.Tip, path.NewTip))
-                    {
-                        continue;
-                    }
-
-                    var newBlocks = branch.Blocks.ToList();
-                    Block<T> index = branch.Root;
-                    while (index.PreviousHash != null &&
-                           path.Blocks.Contains(index))
-                    {
                         try
                         {
-                            index = path.Blocks.Single(x => x.Hash.Equals(index.PreviousHash));
-                            newBlocks.Insert(0, index);
+                            var newBlocks =
+                                branch.Blocks.ToList().FindAll(x => x.Index > path.NewTip.Index)
+                                    .ToList();
+                            var newBranch = new CandidateBranch<T>(newBlocks);
+
+                            longestBranch ??= newBranch;
+                            longestBranch = CompareSourceBranch(longestBranch, newBranch);
                         }
-                        catch (Exception e) when (
-                            e is ArgumentException ||
-                            e is InvalidOperationException)
+                        catch (ArgumentNullException)
                         {
-                            break;
+                            // FIXME: This has to be done to prevent stopping Update() by
+                            // exception thrown from FindAll().
+                            continue;
                         }
-                    }
-
-                    if (newBlocks.First().Hash.Equals(path.OldTip.Hash) ||
-                        newBlocks.First().Hash.Equals(path.BranchPoint.Hash))
-                    {
-                        var newBranch = new CandidateBranch<T>(newBlocks);
-
-                        longestBranch ??= newBranch;
-                        longestBranch = CompareSourceBranch(longestBranch, newBranch);
                     }
                 }
-            }
+                else
+                {
+                    foreach (CandidateBranch<T> branch in Branches)
+                    {
+                        if (!IsBlockNeeded(branch.Tip, path.NewTip))
+                        {
+                            continue;
+                        }
 
-            if (longestBranch is { })
-            {
-                newBag.Add(longestBranch);
-                BestBranch = longestBranch;
-            }
+                        var newBlocks = branch.Blocks.ToList();
+                        Block<T> index = branch.Root;
+                        while (index.PreviousHash != null &&
+                               path.Blocks.Contains(index))
+                        {
+                            try
+                            {
+                                index = path.Blocks.Single(x => x.Hash.Equals(index.PreviousHash));
+                                newBlocks.Insert(0, index);
+                            }
+                            catch (Exception e) when (
+                                e is ArgumentException ||
+                                e is InvalidOperationException)
+                            {
+                                break;
+                            }
+                        }
 
-            Branches = newBag;
+                        if (newBlocks.First().Hash.Equals(path.OldTip.Hash) ||
+                            newBlocks.First().Hash.Equals(path.BranchPoint.Hash))
+                        {
+                            var newBranch = new CandidateBranch<T>(newBlocks);
+
+                            longestBranch ??= newBranch;
+                            longestBranch = CompareSourceBranch(longestBranch, newBranch);
+                        }
+                    }
+                }
+
+                if (longestBranch is { })
+                {
+                    newBag.Add(longestBranch);
+                    BestBranch = longestBranch;
+                }
+
+                Branches = newBag;
+            }
         }
 
         /// <summary>
