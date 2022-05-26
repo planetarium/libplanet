@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                             TestUtils.CreateVote(
                                 validBlockHash,
                                 VoteFlag.Absent,
-                                0,
+                                1,
                                 0,
                                 0,
                                 validatorsPubKey[0]).Sign(
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                             TestUtils.CreateVote(
                                 validBlockHash,
                                 VoteFlag.Absent,
-                                0,
+                                1,
                                 0,
                                 0,
                                 validatorsPubKey[0]).Sign(
@@ -109,7 +109,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                                 TestUtils.CreateVote(
                                     validBlockHash,
                                     VoteFlag.Absent,
-                                    0,
+                                    1,
                                     0,
                                     0,
                                     validatorsPubKey[0]).Sign(
