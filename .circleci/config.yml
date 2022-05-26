@@ -312,9 +312,9 @@ commands:
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
           excluded_classes=(
-            "Libplanet.Tests.Net.Protocols.ProtocolTest"
-            "Libplanet.Tests.Net.SwarmTest"
-            "Libplanet.Tests.Net.Transports.NetMQTransportTest"
+            "Libplanet.Net.Tests.Protocols.ProtocolTest"
+            "Libplanet.Net.Tests.SwarmTest"
+            "Libplanet.Net.Tests.Transports.NetMQTransportTest"
           )
           args=(
             "--hang-seconds=60"
