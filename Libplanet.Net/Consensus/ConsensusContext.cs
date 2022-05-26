@@ -103,8 +103,8 @@ namespace Libplanet.Net.Consensus
                     hash,
                     NodeId);
 
-                // TODO: There's no coping mechanism when the proposed block is not present
-                // in commit stage.
+                // TODO: Needs additional block synchronization and recommit sequence if proposed
+                // block is not present in commit stage.
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);

@@ -200,7 +200,8 @@ namespace Libplanet.Net.Consensus
                     if (_context.IsVoteOnHold)
                     {
                         HandleMessage(
-                            new ConsensusVote(_context.CurrentRoundContext.Voting(VoteFlag.Absent)));
+                            new ConsensusVote(
+                                _context.CurrentRoundContext.Voting(VoteFlag.Absent)));
                     }
                 }
             }
