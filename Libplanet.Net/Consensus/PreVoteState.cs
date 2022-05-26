@@ -44,7 +44,7 @@ namespace Libplanet.Net.Consensus
             }
 
             roundContext.State = new PreCommitState<T>();
-            return new ConsensusCommit(roundContext.Voting(VoteFlag.Commit));
+            return new ConsensusCommit(context.SignVote(roundContext.Voting(VoteFlag.Commit)));
         }
     }
 }

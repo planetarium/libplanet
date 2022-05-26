@@ -23,12 +23,17 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void Vote()
         {
-            var validator = Enumerable.Range(0, 2)
-                .Select(x => new PrivateKey().PublicKey)
+            var validators = Enumerable.Range(0, 2)
+                .Select(x => new PrivateKey())
                 .ToList();
-            Vote duplicatedVote = TestUtils.CreateVote(validator[0], VoteFlag.Absent, id: 0);
-            Vote uniqueVote = TestUtils.CreateVote(validator[1], VoteFlag.Absent, id: 1);
-            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validator);
+            var validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
+            Vote duplicatedVote =
+                TestUtils.CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0)
+                    .Sign(validators[0]);
+            Vote uniqueVote =
+                TestUtils.CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
+                    .Sign(validators[1]);
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
             long initialVoteCount = context.VoteCount;
             context.Vote(duplicatedVote);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
@@ -51,22 +56,35 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void HasTwoThirdsAny()
         {
-            List<PublicKey> validator = Enumerable.Range(0, 4)
-                .Select(x => new PrivateKey().PublicKey)
+            List<PrivateKey> validators = Enumerable.Range(0, 4)
+                .Select(x => new PrivateKey())
                 .ToList();
-            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validator);
+            List<PublicKey> validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
+            RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
             // 0 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.CreateVote(validator[0], VoteFlag.Absent, id: 0));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0)
+                    .Sign(validators[0]));
             // 1 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.CreateVote(validator[1], VoteFlag.Absent, id: 1));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
+                    .Sign(validators[1]));
             // 2 > 2
             Assert.False(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.CreateVote(validator[2], VoteFlag.Absent, id: 2));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[2], VoteFlag.Absent, id: 2)
+                    .Sign(validators[2]));
             // 3 > 2
             Assert.True(context.HasTwoThirdsAny());
-            context.Vote(TestUtils.CreateVote(validator[3], VoteFlag.Absent, id: 3));
+            context.Vote(
+                TestUtils
+                    .CreateVote(validatorsPubKey[3], VoteFlag.Absent, id: 3)
+                    .Sign(validators[3]));
         }
 
         [Fact]
@@ -101,15 +119,16 @@ namespace Libplanet.Net.Tests.Consensus
             const long id = 3;
             const long height = 8;
             const long round = 20;
-            List<PublicKey> validators = Enumerable.Range(0, 7)
-                .Select(x => new PrivateKey().PublicKey)
+            List<PrivateKey> validators = Enumerable.Range(0, 7)
+                .Select(x => new PrivateKey())
                 .ToList();
+            List<PublicKey> validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
             const long numberOfValidators = 7;
             const string step = "PreCommitState";
             const int voteCount = 2;
             RoundContext<DumbAction> context = TestUtils.CreateRoundContext(
                 id: id,
-                validators: validators,
+                validators: validatorsPubKey,
                 height: height,
                 round: round);
             context.State = new PreCommitState<DumbAction>();
@@ -117,7 +136,12 @@ namespace Libplanet.Net.Tests.Consensus
             for (int i = 0; i < voteCount; i++)
             {
                 context.Vote(
-                    TestUtils.CreateVote(validators[i], VoteFlag.Absent, i, height, round));
+                        TestUtils.CreateVote(
+                            validatorsPubKey[i],
+                            VoteFlag.Absent,
+                            i,
+                            height,
+                            round).Sign(validators[i]));
             }
 
             // replace data field with encoding

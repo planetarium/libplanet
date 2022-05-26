@@ -14,10 +14,15 @@ namespace Libplanet.Net.Tests
 {
     public static class TestUtils
     {
-        public static readonly Peer Peer0 = new Peer(
-            new PublicKey(
+        public static readonly PrivateKey Peer0Priv =
+            new PrivateKey(
                 ByteUtil.ParseHex(
-                    "0204b09e833560269d0dc1100c221442b9969e74a3949ca306aecda20a6a2afba4")));
+                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
+
+        public static readonly Peer Peer0 = new Peer(
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550")).PublicKey);
 
         public static readonly BlockHash BlockHash0 =
             BlockHash.FromString(
@@ -40,14 +45,16 @@ namespace Libplanet.Net.Tests
         public static ConsensusContext<DumbAction> CreateConsensusContext(
             BlockChain<DumbAction> blockChain,
             long id = 0) =>
-            CreateConsensusContext(Validators, blockChain, id);
+            CreateConsensusContext(Validators, Peer0Priv, blockChain, id);
 
         public static ConsensusContext<DumbAction> CreateConsensusContext(
             List<PublicKey> validator,
+            PrivateKey privateKey,
             BlockChain<DumbAction> blockChain,
             long id = 0) =>
             new ConsensusContext<DumbAction>(
                 id,
+                privateKey,
                 validator,
                 blockChain);
 
@@ -93,21 +100,6 @@ namespace Libplanet.Net.Tests
                 hash,
                 DateTimeOffset.Now,
                 publicKey ?? Peer0.PublicKey,
-                flag,
-                id,
-                ImmutableArray<byte>.Empty);
-
-        public static Vote CreateVote(
-            VoteFlag flag = VoteFlag.Null,
-            long id = 0,
-            long height = 0,
-            long round = 0) =>
-            new Vote(
-                height,
-                round,
-                BlockHash0,
-                DateTimeOffset.Now,
-                new PrivateKey().PublicKey,
                 flag,
                 id,
                 ImmutableArray<byte>.Empty);

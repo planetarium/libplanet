@@ -34,18 +34,21 @@ namespace Libplanet.Net.Tests.Consensus.States
             BlockHash validBlockHash = _fx.Block1.Hash;
             BlockHash invalidBlockHash = _fx.Block2.Hash;
             var validators = Enumerable.Range(0, 6)
-                                             .Select(x => new PrivateKey().PublicKey)
+                                             .Select(x => new PrivateKey())
                                              .ToList();
+            var validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
             ConsensusContext<DumbAction> contextAlreadyVoted =
-                TestUtils.CreateConsensusContext(validators, _blockChain);
+                TestUtils.CreateConsensusContext(validatorsPubKey, validators[0], _blockChain, 0);
             contextAlreadyVoted.CurrentRoundContext.BlockHash = validBlockHash;
             ConsensusContext<DumbAction> context =
-                TestUtils.CreateConsensusContext(validators, _blockChain);
+                TestUtils.CreateConsensusContext(validatorsPubKey, validators[1], _blockChain, 1);
             context.CurrentRoundContext.BlockHash = validBlockHash;
             for (int i = 0; i < 5; i++)
             {
                 contextAlreadyVoted.CurrentRoundContext.Vote(
-                    TestUtils.CreateVote(validators[i], VoteFlag.Absent, id: i));
+                        TestUtils
+                            .CreateVote(validatorsPubKey[i], VoteFlag.Absent, id: i)
+                            .Sign(validators[i]));
             }
 
             var state = new PreVoteState<DumbAction>();
@@ -76,25 +79,26 @@ namespace Libplanet.Net.Tests.Consensus.States
                 state.Handle(
                     context,
                     new ConsensusVote(
-                            TestUtils.CreateVote(
-                                validBlockHash,
-                                VoteFlag.Absent,
-                                0,
-                                0,
-                                0,
+                                TestUtils.CreateVote(
+                                    validBlockHash,
+                                    VoteFlag.Absent,
+                                    0,
+                                    0,
+                                    0,
+                                    validatorsPubKey[0]).Sign(
                                 validators[0]))
                         { Remote = TestUtils.Peer0 }));
             Assert.Equal(1, context.CurrentRoundContext.VoteCount);
             ConsensusMessage? res = state.Handle(
                 contextAlreadyVoted,
                 new ConsensusVote(
-                        TestUtils.CreateVote(
-                            validBlockHash,
-                            VoteFlag.Absent,
-                            5,
-                            0,
-                            0,
-                            validators[5]))
+                            TestUtils.CreateVote(
+                                validBlockHash,
+                                VoteFlag.Absent,
+                                5,
+                                0,
+                                0,
+                                validatorsPubKey[5]).Sign(validators[5]))
                     { Remote = TestUtils.Peer0 });
             Assert.NotNull(res);
             Assert.IsType<ConsensusCommit>(res);

@@ -49,6 +49,7 @@ namespace Libplanet.Net.Tests.Consensus
                 table ?? new RoutingTable(key.ToAddress()),
                 transport,
                 blockChain,
+                key,
                 id,
                 validators);
         }

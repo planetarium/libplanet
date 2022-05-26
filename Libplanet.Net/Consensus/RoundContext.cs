@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -91,7 +90,7 @@ namespace Libplanet.Net.Consensus
                 CurrentNodePublicKey,
                 flag,
                 NodeId,
-                Encoding.Default.GetBytes("sign").ToImmutableArray());
+                null);
         }
 
         public long Vote(Vote vote)

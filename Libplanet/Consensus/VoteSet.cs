@@ -93,6 +93,19 @@ namespace Libplanet.Consensus
 
         private bool IsVoteValid(Vote vote)
         {
+            if (vote.Signature is null)
+            {
+                return false;
+            }
+
+            Vote voteWithoutSign = vote.RemoveSignature;
+            if (!vote.Validator.Verify(
+                voteWithoutSign.ByteArray.ToImmutableArray(),
+                vote.Signature))
+            {
+                return false;
+            }
+
             if (vote.Height != Height)
             {
                 return false;
@@ -114,7 +127,6 @@ namespace Libplanet.Consensus
                 return false;
             }
 
-            // TODO: Should check signature :)
             return true;
         }
     }
