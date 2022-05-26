@@ -187,8 +187,15 @@ namespace Libplanet.Net
         /// </summary>
         public BlockChain<T> BlockChain { get; private set; }
 
+        /// <summary>
+        /// <see cref="PublicKey"/>s of parties who signed <see cref="AppProtocolVersion"/>s to
+        /// trust.  In case of <see langword="null"/>, any parties are trusted.
+        /// </summary>
         public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
 
+        /// <summary>
+        /// The application protocol version to comply.
+        /// </summary>
         public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
