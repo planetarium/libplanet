@@ -47,7 +47,10 @@ namespace Libplanet.Net
                                 branch.Tip.Index,
                                 e.ToString());
                             UpdatePath<T> path = new UpdatePath<T>(
-                                new[] { BlockChain.Tip },
+                                new CandidateBranch<T>(new List<Block<T>>()
+                                {
+                                    BlockChain.Tip,
+                                }),
                                 BlockChain.Tip);
                             FillBlocksAsyncFailed.Set();
                             BlockCandidateTable.Update(path);
@@ -140,7 +143,7 @@ namespace Libplanet.Net
                  );
                  if (oldTip is { })
                  {
-                     path = new UpdatePath<T>(branch.Blocks, oldTip);
+                     path = new UpdatePath<T>(branch, oldTip);
                  }
              }
              else if (!workspace.ContainsBlock(branchpoint.Hash))
@@ -174,15 +177,15 @@ namespace Libplanet.Net
                      "Fork finished. at {MethodName}",
                      nameof(AppendPreviousBlocks)
                  );
-                 path = new UpdatePath<T>(branch.Blocks, oldTip);
+                 path = new UpdatePath<T>(branch, oldTip);
              }
 
-             var appendingBlocks = new List<Block<T>>();
+             var appendingBlocks = branch.Blocks;
 
              if (!(workspace.Tip is null) &&
                  !workspace.Tip.Hash.Equals(branch.Root.PreviousHash))
              {
-                  appendingBlocks = branch.Blocks.Skip(1).ToList();
+                 appendingBlocks = branch.Blocks.Skip(1).ToList();
              }
 
              try

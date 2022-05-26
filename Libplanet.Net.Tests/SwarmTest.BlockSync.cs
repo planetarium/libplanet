@@ -87,7 +87,9 @@ namespace Libplanet.Net.Tests
                 blocksForBranch.Add(block);
             }
 
-            var path = new UpdatePath<DumbAction>(blocksForPath, blocksForPath.First());
+            var previousBranch = new CandidateBranch<DumbAction>(blocksForPath);
+
+            var path = new UpdatePath<DumbAction>(previousBranch, previousBranch.Root);
 
             var branch = new CandidateBranch<DumbAction>(blocksForBranch);
 
@@ -145,7 +147,9 @@ namespace Libplanet.Net.Tests
                 branchBlocksBetweenA.Add(block);
             }
 
-            var path = new UpdatePath<DumbAction>(blocksForPath, blocksForPath.First());
+            var previousBranch = new CandidateBranch<DumbAction>(blocksForPath);
+
+            var path = new UpdatePath<DumbAction>(previousBranch, previousBranch.Root);
 
             var branchA = new CandidateBranch<DumbAction>(branchBlocksBetweenA);
 
@@ -379,7 +383,9 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            var mergedAPath = new UpdatePath<DumbAction>(blocksForPath, oldTip);
+            var previousBranch = new CandidateBranch<DumbAction>(blocksForPath);
+
+            var mergedAPath = new UpdatePath<DumbAction>(previousBranch, oldTip);
 
             var branchBtoA = new CandidateBranch<DumbAction>(branchBlocksBetweenB);
 
