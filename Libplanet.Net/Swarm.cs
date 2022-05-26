@@ -59,15 +59,14 @@ namespace Libplanet.Net
         /// <param name="iceServers">
         /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
         /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
-        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
-        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
-        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <c>false</c> an encountered peer is ignored.  If this callback
-        /// is omitted all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when this
+        /// node encounters a peer with one different from <paramref name="appProtocolVersion"/>,
+        /// and their version is signed by a trusted party (i.e.,
+        /// <paramref name="trustedAppProtocolVersionSigners"/>).
         /// </param>
-        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
-        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <c>null</c>, which is default.</param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties who
+        /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
+        /// <see langword="null"/>, which is the default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
