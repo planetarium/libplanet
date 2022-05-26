@@ -11,6 +11,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -549,6 +550,29 @@ namespace Libplanet.Tests.Blockchain
                 txsA.Concat(txsB.Take(2)).Select(tx => tx.Id).ToHashSet(),
                 block.Transactions.Select(tx => tx.Id).ToHashSet()
             );
+        }
+
+        // TODO: Should add test with invalid commits.
+        [Fact]
+        public async Task MineBlockWithLastCommit()
+        {
+            var keyA = new PrivateKey();
+            var keyB = new PrivateKey();
+            var keyC = new PrivateKey();
+
+            var voteSet = new VoteSet(
+                _blockChain.Count,
+                0,
+                _blockChain.Tip.Hash,
+                new[] { keyA.PublicKey, keyB.PublicKey, keyC.PublicKey });
+            var blockCommit = new BlockCommit(voteSet, _blockChain.Tip.Hash);
+
+            Block<DumbAction> block = await _blockChain.MineBlock(
+                new PrivateKey(),
+                lastCommit: blockCommit);
+
+            Assert.NotNull(block.LastCommit);
+            AssertBytesEqual(block.LastCommit.Value.ByteArray, blockCommit.ByteArray);
         }
 
         [RetryFact]
