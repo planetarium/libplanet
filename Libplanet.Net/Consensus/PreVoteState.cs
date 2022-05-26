@@ -38,7 +38,7 @@ namespace Libplanet.Net.Consensus
             RoundContext<T> roundContext = context.CurrentRoundContext;
             roundContext.Vote(vote.ProposeVote);
 
-            if (!roundContext.HasTwoThirdsAny())
+            if (!roundContext.VoteSet.HasTwoThirdPrevote())
             {
                 return null;
             }

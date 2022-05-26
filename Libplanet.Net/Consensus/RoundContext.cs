@@ -133,14 +133,6 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        public bool HasTwoThirdsAny()
-        {
-            lock (_lock)
-            {
-                return VoteSet.HasTwoThirdAny();
-            }
-        }
-
         public long LeaderElection()
         {
             // FIXME: Not correct, should be changed

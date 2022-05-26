@@ -34,13 +34,24 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
                     .Sign(validators[1]);
             RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
+            Assert.Equal(context.VoteSet.Height, context.Height);
+            Assert.Equal(context.VoteSet.Round, context.Round);
             long initialVoteCount = context.VoteCount;
             context.Vote(duplicatedVote);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
+            Assert.Equal(
+                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
+                new[] { duplicatedVote }.ToHashSet());
             context.Vote(duplicatedVote);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
+            Assert.Equal(
+                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
+                new[] { duplicatedVote }.ToHashSet());
             context.Vote(uniqueVote);
             Assert.Equal(initialVoteCount + 2, context.VoteCount);
+            Assert.Equal(
+                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
+                new[] { uniqueVote, duplicatedVote }.ToHashSet());
         }
 
         [Fact]
@@ -51,10 +62,11 @@ namespace Libplanet.Net.Tests.Consensus
             context.Vote(vote);
             context.ResetVote();
             Assert.Equal(0, context.VoteCount);
+            Assert.Empty(context.VoteSet.Votes.Where(v => v.Flag != VoteFlag.Null));
         }
 
         [Fact]
-        public void HasTwoThirdsAny()
+        public void HasTwoThirdAny()
         {
             List<PrivateKey> validators = Enumerable.Range(0, 4)
                 .Select(x => new PrivateKey())
@@ -62,25 +74,25 @@ namespace Libplanet.Net.Tests.Consensus
             List<PublicKey> validatorsPubKey = validators.Select(x => x.PublicKey).ToList();
             RoundContext<DumbAction> context = TestUtils.CreateRoundContext(validatorsPubKey);
             // 0 > 2
-            Assert.False(context.HasTwoThirdsAny());
+            Assert.False(context.VoteSet.HasTwoThirdAny());
             context.Vote(
                 TestUtils
                     .CreateVote(validatorsPubKey[0], VoteFlag.Absent, id: 0)
                     .Sign(validators[0]));
             // 1 > 2
-            Assert.False(context.HasTwoThirdsAny());
+            Assert.False(context.VoteSet.HasTwoThirdAny());
             context.Vote(
                 TestUtils
                     .CreateVote(validatorsPubKey[1], VoteFlag.Absent, id: 1)
                     .Sign(validators[1]));
             // 2 > 2
-            Assert.False(context.HasTwoThirdsAny());
+            Assert.False(context.VoteSet.HasTwoThirdAny());
             context.Vote(
                 TestUtils
                     .CreateVote(validatorsPubKey[2], VoteFlag.Absent, id: 2)
                     .Sign(validators[2]));
             // 3 > 2
-            Assert.True(context.HasTwoThirdsAny());
+            Assert.True(context.VoteSet.HasTwoThirdAny());
             context.Vote(
                 TestUtils
                     .CreateVote(validatorsPubKey[3], VoteFlag.Absent, id: 3)
