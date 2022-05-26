@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.36.1
 --------------
 
-To be released.
+Released on May 26th, 2022.
 
  -  Fixed `Transaction<T>()` constructor's bug that it had thrown
     `KeyNotFoundException` when a Bencodex dictionary without
