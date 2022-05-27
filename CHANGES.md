@@ -16,6 +16,8 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2013]: https://github.com/planetarium/libplanet/pull/2013
 
 
 Version 0.37.0
