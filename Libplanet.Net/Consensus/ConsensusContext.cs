@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Timers;
+using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -18,6 +19,7 @@ namespace Libplanet.Net.Consensus
     {
         public const long TimeoutMillisecond = 10 * 1000;
 
+        private readonly Codec _codec = new Codec();
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
@@ -72,7 +74,13 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public long NodeId { get; internal set; }
 
+        public HashAlgorithmGetter HashAlgorithm => _blockChain.Policy.GetHashAlgorithm;
+
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
+
+        public bool IsVoteOnHold =>
+            CurrentRoundContext.State is PreVoteState<T> &&
+            CurrentRoundContext.CurrentNodeVoteFlag is VoteFlag.Null;
 
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
@@ -95,6 +103,8 @@ namespace Libplanet.Net.Consensus
                     hash,
                     NodeId);
 
+                // TODO: Needs additional block synchronization and recommit sequence if proposed
+                // block is not present in commit stage.
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
@@ -107,6 +117,15 @@ namespace Libplanet.Net.Consensus
                 _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
             }
         }
+
+        public bool ContainsBlock(BlockHash blockHash) =>
+            _blockChain.Store.ContainsBlock(blockHash);
+
+        public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
+            _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
+
+        public void PutBlockToStore(Block<T> block) =>
+            _blockChain.Store.PutBlock(block);
 
         public long NextRound(long round)
         {

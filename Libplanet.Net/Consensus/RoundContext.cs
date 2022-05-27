@@ -55,6 +55,8 @@ namespace Libplanet.Net.Consensus
 
         public PublicKey CurrentNodePublicKey => _validators[(int)NodeId];
 
+        public VoteFlag CurrentNodeVoteFlag => VoteSet.Votes[(int)NodeId].Flag;
+
         // FIXME: Should be thread-safe
         public VoteSet VoteSet { get; private set; }
 

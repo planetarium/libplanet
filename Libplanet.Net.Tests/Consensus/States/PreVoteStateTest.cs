@@ -75,6 +75,33 @@ namespace Libplanet.Net.Tests.Consensus.States
                             TestUtils.CreateVote(invalidBlockHash, VoteFlag.Absent, 0, 0, 0))
                         { Remote = TestUtils.Peer0 }));
             Assert.Equal(0, context.CurrentRoundContext.VoteCount);
+            Assert.Throws<VoteBlockNotExistsException>(
+                () => state.Handle(
+                    context,
+                    new ConsensusVote(
+                            TestUtils.CreateVote(
+                                validBlockHash,
+                                VoteFlag.Absent,
+                                1,
+                                0,
+                                0,
+                                validatorsPubKey[0]).Sign(
+                                validators[0]))
+                        { Remote = TestUtils.Peer0 }));
+            _fx.Store.PutBlock(_fx.Block1);
+            Assert.NotNull(
+                state.Handle(
+                    context,
+                    new ConsensusVote(
+                            TestUtils.CreateVote(
+                                validBlockHash,
+                                VoteFlag.Absent,
+                                1,
+                                0,
+                                0,
+                                validatorsPubKey[0]).Sign(
+                                validators[0]))
+                        { Remote = TestUtils.Peer0 }));
             Assert.Null(
                 state.Handle(
                     context,
@@ -82,7 +109,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                                 TestUtils.CreateVote(
                                     validBlockHash,
                                     VoteFlag.Absent,
-                                    0,
+                                    1,
                                     0,
                                     0,
                                     validatorsPubKey[0]).Sign(
