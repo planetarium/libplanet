@@ -27,6 +27,7 @@ To be released.
 ### CLI tools
 
 [#2015]: https://github.com/planetarium/libplanet/issues/2015
+[#2018]: https://github.com/planetarium/libplanet/pull/2018
 
 Version 0.36.1
 --------------
