@@ -320,13 +320,14 @@ namespace Libplanet
                 throw new ArgumentNullException(nameof(hex));
             }
 
-            int pos = hex.IndexOf('x');
-
-            if (pos >= 0)
+            if (hex.Length == 42)
             {
-                hex = hex.Remove(0, pos + 1);
+                int pos = hex.IndexOf('x');
+                if (pos >= 0)
+                {
+                    hex = hex.Remove(0, pos + 1);
+                }
             }
-
             if (hex.Length != 40)
             {
                 throw new ArgumentException(
