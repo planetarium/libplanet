@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -168,5 +169,33 @@ namespace Libplanet.Node
         public static (IStore Store, IStateStore StateStore) LoadStore(Uri uri)
             => StoreLoaderAttribute.LoadStore(uri)
                 ?? throw new ArgumentException($"Invalid URI was given: {uri}", nameof(uri));
+
+        /// <summary>
+        /// Loads a <see cref="PrivateKey"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The location of which a <see cref="PrivateKey"/> is saved.</param>
+        /// <returns>A <see cref="PrivateKey"/> loaded from <paramref name="path"/>.</returns>
+        public static PrivateKey LoadPrivateKey(string path)
+        {
+            using (StreamReader stream = new StreamReader(path, Encoding.UTF8))
+            {
+                string privateKeyString = stream.ReadLine();
+                return new PrivateKey(ByteUtil.ParseHex(privateKeyString));
+            }
+        }
+
+        /// <summary>
+        /// Saves a <see cref="PrivateKey"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The location of which a <see cref="PrivateKey"/> is to be saved.
+        /// </param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to save.</param>
+        public static void SavePrivateKey(string path, PrivateKey privateKey)
+        {
+            using (StreamWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                stream.WriteLine(ByteUtil.Hex(privateKey.ByteArray));
+            }
+        }
     }
 }
