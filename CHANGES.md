@@ -18,7 +18,7 @@ To be released.
 
 ### Behavioral changes
  - Allow `0x` prefix for `Address` class constructor.
-   `DeriveAddress` method will remove '0x' prefix string. [[#2015]] 
+    `DeriveAddress` method will remove '0x' prefix string. [[#2015], [#2018]]
 
 ### Bug fixes
 
