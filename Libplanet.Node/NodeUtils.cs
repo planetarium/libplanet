@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -63,7 +64,10 @@ namespace Libplanet.Node
             PrivateKey privateKey,
             IBlockPolicy<T> blockPolicy)
         {
-            return new BlockContent<T>()
+            return new BlockContent<T>(new BlockMetadata()
+                {
+                    PublicKey = privateKey.PublicKey,
+                })
                 .Mine(blockPolicy.GetHashAlgorithm(0L))
                 .Evaluate(
                     privateKey,
@@ -120,13 +124,19 @@ namespace Libplanet.Node
         /// is to be saved. </param>
         /// <param name="genesisBlock">The genesis <see cref="Block{T}"/> to save.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="genesisBlock"/>
-        /// is not a genesis <see cref="Block{T}"/>, i.e. does not have an index of 0.</exception>
+        /// is not a genesis <see cref="Block{T}"/>, i.e. does not have an index of 0, or
+        /// a file already exists at <paramref name="path"/>.</exception>
         public static void SaveGenesisBlock(string path, Block<T> genesisBlock)
         {
             if (genesisBlock.Index != 0L)
             {
                 throw new ArgumentException(
-                    $"A genesis block should have an index of 0.", nameof(genesisBlock));
+                    "A genesis block should have an index of 0.", nameof(genesisBlock));
+            }
+            else if (File.Exists(path))
+            {
+                throw new ArgumentException(
+                    $"File already exists at {path}.", nameof(path));
             }
             else
             {
@@ -168,5 +178,43 @@ namespace Libplanet.Node
         public static (IStore Store, IStateStore StateStore) LoadStore(Uri uri)
             => StoreLoaderAttribute.LoadStore(uri)
                 ?? throw new ArgumentException($"Invalid URI was given: {uri}", nameof(uri));
+
+        /// <summary>
+        /// Loads a <see cref="PrivateKey"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The location of which a <see cref="PrivateKey"/> is saved.</param>
+        /// <returns>A <see cref="PrivateKey"/> loaded from <paramref name="path"/>.</returns>
+        public static PrivateKey LoadPrivateKey(string path)
+        {
+            using (StreamReader stream = new StreamReader(path, Encoding.UTF8))
+            {
+                string privateKeyString = stream.ReadLine();
+                return new PrivateKey(ByteUtil.ParseHex(privateKeyString));
+            }
+        }
+
+        /// <summary>
+        /// Saves a <see cref="PrivateKey"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The location of which a <see cref="PrivateKey"/> is to be saved.
+        /// </param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to save.</param>
+        /// <exception cref="ArgumentException">Thrown when a file already exists
+        /// at <paramref name="path"/>.</exception>
+        public static void SavePrivateKey(string path, PrivateKey privateKey)
+        {
+            if (File.Exists(path))
+            {
+                throw new ArgumentException(
+                    $"File already exists at {path}.", nameof(path));
+            }
+            else
+            {
+                using (StreamWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+                {
+                    stream.WriteLine(ByteUtil.Hex(privateKey.ByteArray));
+                }
+            }
+        }
     }
 }
