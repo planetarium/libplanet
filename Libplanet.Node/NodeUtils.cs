@@ -121,13 +121,19 @@ namespace Libplanet.Node
         /// is to be saved. </param>
         /// <param name="genesisBlock">The genesis <see cref="Block{T}"/> to save.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="genesisBlock"/>
-        /// is not a genesis <see cref="Block{T}"/>, i.e. does not have an index of 0.</exception>
+        /// is not a genesis <see cref="Block{T}"/>, i.e. does not have an index of 0, or
+        /// a file already exists at <paramref name="path"/>.</exception>
         public static void SaveGenesisBlock(string path, Block<T> genesisBlock)
         {
             if (genesisBlock.Index != 0L)
             {
                 throw new ArgumentException(
-                    $"A genesis block should have an index of 0.", nameof(genesisBlock));
+                    "A genesis block should have an index of 0.", nameof(genesisBlock));
+            }
+            else if (File.Exists(path))
+            {
+                throw new ArgumentException(
+                    $"File already exists at {path}.", nameof(path));
             }
             else
             {
@@ -190,11 +196,21 @@ namespace Libplanet.Node
         /// <param name="path">The location of which a <see cref="PrivateKey"/> is to be saved.
         /// </param>
         /// <param name="privateKey">The <see cref="PrivateKey"/> to save.</param>
+        /// <exception cref="ArgumentException">Thrown when a file already exists
+        /// at <paramref name="path"/>.</exception>
         public static void SavePrivateKey(string path, PrivateKey privateKey)
         {
-            using (StreamWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+            if (File.Exists(path))
             {
-                stream.WriteLine(ByteUtil.Hex(privateKey.ByteArray));
+                throw new ArgumentException(
+                    $"File already exists at {path}.", nameof(path));
+            }
+            else
+            {
+                using (StreamWriter stream = new StreamWriter(path, false, Encoding.UTF8))
+                {
+                    stream.WriteLine(ByteUtil.Hex(privateKey.ByteArray));
+                }
             }
         }
     }
