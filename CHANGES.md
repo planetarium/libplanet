@@ -17,7 +17,7 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
- -  Added `PrivateKey(string)` constructor for hexadecimal string. [[#2012]]
+ -  Added `PrivateKey(string)` constructor for hexadecimal string. [[#2012, #2022]]
 
 ### Bug fixes
 
@@ -26,6 +26,7 @@ To be released.
 ### CLI tools
 
 [#2012]: https://github.com/planetarium/libplanet/issues/2012
+[#2022]: https://github.com/planetarium/libplanet/pull/2022
 
 Version 0.36.1
 --------------
