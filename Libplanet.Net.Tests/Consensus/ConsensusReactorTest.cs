@@ -53,5 +53,24 @@ namespace Libplanet.Net.Tests.Consensus
                 id,
                 validators);
         }
+
+        public override ConsensusReactor<DumbAction> CreateConcreteReactor(
+            BlockChain<DumbAction> blockChain,
+            PrivateKey? key = null,
+            RoutingTable? table = null,
+            string host = "localhost",
+            int port = 5001,
+            long id = 0,
+            List<PublicKey> validators = null!)
+        {
+            return (ConsensusReactor<DumbAction>)CreateReactor(
+                blockChain,
+                key,
+                table,
+                host,
+                port,
+                id,
+                validators);
+        }
     }
 }
