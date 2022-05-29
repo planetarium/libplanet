@@ -164,6 +164,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Send a <see cref="Messages.GetBlocks"/> request for proposed <see cref="Block{T}"/> in
+        /// <see cref="ConsensusContext{T}.CurrentRoundContext"/> to neighbors.
+        /// </summary>
+        /// <returns>returns null if neighbors also don't have block or any network failure (e.g.
+        /// Timeout) or returns the unmarshalled <see cref="Block{T}"/>.</returns>
         private async Task<Block<T>?> RequestCurrentRoundBlock()
         {
             var neighbors = _routingTable.PeersToBroadcast(null);
@@ -211,6 +217,13 @@ namespace Libplanet.Net.Consensus
             return block;
         }
 
+        /// <summary>
+        /// A <see cref="Task"/> for requesting block while the state of node is in
+        /// <see cref="PreVoteState{T}"/>, however, node does not have the proposed
+        /// <see cref="Block{T}"/> to validate and vote.
+        /// </summary>
+        /// <remarks>This <see cref="Task"/> will be triggered when the
+        /// <see cref="ConsensusContext{T}.VoteHolding"/> is set.</remarks>
         private async Task RequestBlockInVoteHolding()
         {
             while (true)
@@ -234,6 +247,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// A <see cref="Task"/> for requesting failed commit block from neighbors and recommit.
+        /// </summary>
+        /// <remarks>This <see cref="Task"/> will be triggered when the
+        /// <see cref="ConsensusContext{T}.CommitFailed"/> is set.</remarks>
         private async Task RecommittingFailedRound()
         {
             while (true)
@@ -253,6 +271,7 @@ namespace Libplanet.Net.Consensus
                 var targetHash = _context.CurrentRoundContext.BlockHash;
                 var targetHeight = _context.CurrentRoundContext.Height;
 
+                // This order is intended to test recommitting in Unit Test.
                 if (_context.ContainsBlock(targetHash))
                 {
                     block = _context.GetBlockFromStore(targetHash);

@@ -77,10 +77,17 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public long NodeId { get; internal set; }
 
+        /// <summary>
+        /// The HashAlgorithm used in <see cref="BlockChain{T}"/>.
+        /// </summary>
         public HashAlgorithmGetter HashAlgorithm => _blockChain.Policy.GetHashAlgorithm;
 
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
+        /// <summary>
+        /// A <see cref="AsyncManualResetEvent"/> whether A vote is in hold for waiting
+        /// <see cref="CurrentRoundContext"/> block.
+        /// </summary>
         public AsyncManualResetEvent VoteHolding { get; }
 
         /// <summary>
@@ -135,9 +142,15 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <inheritdoc cref="IStore.ContainsBlock"/>
         public bool ContainsBlock(BlockHash blockHash) =>
             _blockChain.Store.ContainsBlock(blockHash);
 
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
+        public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
+            _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
+
+        /// <inheritdoc cref="IStore.PutBlock{T}"/>
         public void PutBlockToStore(Block<T> block) =>
             _blockChain.Store.PutBlock(block);
 
