@@ -41,6 +41,7 @@ namespace Libplanet.Net.Consensus
                 vote.BlockHash.Equals(roundContext.BlockHash) &&
                 !context.ContainsBlock(vote.BlockHash))
             {
+                context.VoteHolding.Set();
                 throw new VoteBlockNotExistsException(vote);
             }
 
@@ -49,6 +50,7 @@ namespace Libplanet.Net.Consensus
                 vote.BlockHash.Equals(roundContext.BlockHash) &&
                 context.ContainsBlock(vote.BlockHash))
             {
+                context.VoteHolding.Reset();
                 roundContext.Vote(vote.ProposeVote);
                 return new ConsensusVote(roundContext.Voting(VoteFlag.Absent));
             }

@@ -12,6 +12,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -48,6 +49,8 @@ namespace Libplanet.Net.Consensus
                 blockChain);
         }
 
+        internal AsyncManualResetEvent GetVoteHoldingHandle => _context.VoteHolding;
+
         public void Dispose()
         {
             _transport.Dispose();
@@ -64,12 +67,15 @@ namespace Libplanet.Net.Consensus
             return null;
         }
 
-        public async Task<Task> StartAsync(CancellationToken ctx)
+        public async Task<List<Task>> StartAsync(CancellationToken ctx)
         {
+            var tasks = new List<Task>();
             _transport.ProcessMessageHandler.Register(ProcessMessageHandler);
-            Task task = _transport.StartAsync(ctx);
+            tasks.Add(_transport.StartAsync(ctx));
             await _transport.WaitForRunningAsync();
-            return task;
+            tasks.Add(RequestBlockInVoteHolding(_transport, _routingTable));
+
+            return tasks;
         }
 
         public async Task StopAsync(CancellationToken ctx)
@@ -146,94 +152,67 @@ namespace Libplanet.Net.Consensus
         {
             switch (message)
             {
-                case GetBlocks hashes:
-                    await ResponseBlockAsync(hashes);
-                    break;
                 case ConsensusMessage consensusMessage:
                     await ReplyPongAsync(consensusMessage);
-                    await RequestBlockNotExistsAsync(consensusMessage);
                     await ReceivedMessage(consensusMessage);
                     break;
             }
         }
 
-        private async Task RequestBlockNotExistsAsync(ConsensusMessage consensusMessage)
+        private async Task RequestBlockInVoteHolding(
+            ITransport transport,
+            RoutingTable routingTable)
         {
-            if (!_context.ContainsBlock(consensusMessage.BlockHash))
+            while (true)
             {
-                var hashList = new List<BlockHash>
+                await _context.VoteHolding.WaitAsync();
+
+                var neighbors = routingTable.PeersToBroadcast(null);
+                Message? blockMessage = null;
+
+                foreach (var peer in neighbors)
                 {
-                    consensusMessage.BlockHash,
-                };
-                var message = new GetBlocks(hashList)
-                {
-                    Remote = _transport.AsPeer,
-                };
-
-                _logger.Debug(
-                    "{MethodName}: Requesting Block {BlockHash} derived from {@Message}",
-                    nameof(RequestBlockNotExistsAsync),
-                    consensusMessage.BlockHash,
-                    consensusMessage);
-
-                var blockMessage = await _transport.SendMessageAsync(
-                    _routingTable.GetPeer(consensusMessage.Remote!.Address),
-                    message,
-                    TimeSpan.FromSeconds(1),
-                    CancellationToken.None);
-
-                if (blockMessage is Messages.Blocks)
-                {
-                    var unmarshalBlock = BlockMarshaler.UnmarshalBlock<T>(
-                        _context.HashAlgorithm,
-                        (Bencodex.Types.Dictionary)_codec.Decode(blockMessage.DataFrames.Last())
-                    );
-
-                    _context.PutBlockToStore(unmarshalBlock);
-
-                    _logger.Debug(
-                        "{MethodName}: Received Block {BlockHash} from {Remote}",
-                        nameof(RequestBlockNotExistsAsync),
-                        unmarshalBlock.Hash,
-                        message.Remote);
-
-                    if (_context.IsVoteOnHold)
+                    try
                     {
-                        HandleMessage(
-                            new ConsensusVote(
-                                _context.CurrentRoundContext.Voting(VoteFlag.Absent)));
+                        blockMessage = await transport.SendMessageAsync(
+                            peer,
+                            new GetBlocks(new List<BlockHash>()
+                            {
+                                _context.CurrentRoundContext.BlockHash,
+                            }),
+                            TimeSpan.FromSeconds(1),
+                            CancellationToken.None);
+
+                        if (blockMessage is Messages.Blocks)
+                        {
+                            break;
+                        }
+                    }
+                    catch (CommunicationFailException)
+                    {
+                        blockMessage = null;
+                        continue;
                     }
                 }
-            }
-        }
 
-        private async Task ResponseBlockAsync(GetBlocks message)
-        {
-            var block = _context.GetBlockFromStore(message.BlockHashes.Last());
-            if (block != null)
-            {
-                var listBlock = new List<byte[]>
+                if (!(blockMessage is Messages.Blocks))
                 {
-                    _codec.Encode(block.MarshalBlock()),
-                };
+                    continue;
+                }
 
-                var sending = new Messages.Blocks(listBlock)
-                {
-                    Identity = message.Identity,
-                    Remote = _transport.AsPeer,
-                };
+                var marshaled = blockMessage.DataFrames.Last();
+                var block =
+                    BlockMarshaler.UnmarshalBlock<T>(
+                        _context.HashAlgorithm,
+                        (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
 
-                _logger.Debug(
-                    "{MethodName}: Received Block request {BlockHash} from {Remote}",
-                    nameof(RequestBlockNotExistsAsync),
-                    message.BlockHashes.First(),
-                    message.Remote);
+                _context.PutBlockToStore(block);
 
-                await _transport.ReplyMessageAsync(sending, CancellationToken.None);
-            }
-            else
-            {
-                await ReplyPongAsync(message);
+                HandleMessage(new ConsensusVote(
+                    _context.SignVote(
+                        _context.CurrentRoundContext.Voting(VoteFlag.Absent))));
+
+                _context.VoteHolding.Reset();
             }
         }
 
