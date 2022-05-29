@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -33,6 +34,10 @@ namespace Libplanet.Net.Tests.Transports
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var apvKey = new PrivateKey();
             var swarmKey = new PrivateKey();
+            var validators = new List<PublicKey>()
+            {
+                swarmKey.PublicKey,
+            };
             AppProtocolVersion apv = AppProtocolVersion.Sign(apvKey, 1);
 
             string host = IPAddress.Loopback.ToString();
@@ -47,6 +52,8 @@ namespace Libplanet.Net.Tests.Transports
                 blockchain,
                 swarmKey,
                 apv,
+                nodeId: 0,
+                validators: validators,
                 host: host,
                 listenPort: port,
                 options: option))

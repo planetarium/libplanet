@@ -72,7 +72,12 @@ namespace Libplanet.Benchmarks
                     _blockChains[i],
                     _keys[i],
                     _appProtocolVersion,
-                    host: IPAddress.Loopback.ToString());
+                    host: IPAddress.Loopback.ToString(),
+                    nodeId: i,
+                    validators: new List<PublicKey>()
+                    {
+                        _keys[i].PublicKey,
+                    });
                 tasks.Add(StartAsync(_swarms[i]));
             }
 

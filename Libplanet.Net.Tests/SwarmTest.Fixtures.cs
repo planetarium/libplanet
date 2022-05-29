@@ -69,6 +69,8 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
+            long nodeId = 0,
+            List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
@@ -90,6 +92,8 @@ namespace Libplanet.Net.Tests
             return CreateSwarm(
                 blockchain,
                 privateKey,
+                nodeId,
+                validators,
                 appProtocolVersion,
                 host,
                 listenPort,
@@ -102,6 +106,8 @@ namespace Libplanet.Net.Tests
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
+            long nodeId = 0,
+            List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
@@ -130,10 +136,18 @@ namespace Libplanet.Net.Tests
                     break;
             }
 
+            privateKey ??= new PrivateKey();
+            validators ??= new List<PublicKey>()
+            {
+                privateKey.PublicKey,
+            };
+
             var swarm = new Swarm<T>(
                 blockChain,
-                privateKey ?? new PrivateKey(),
+                privateKey,
                 appProtocolVersion ?? DefaultAppProtocolVersion,
+                nodeId,
+                validators,
                 5,
                 host,
                 listenPort,
