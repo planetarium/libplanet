@@ -371,6 +371,118 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
+        [Fact]
+        public async Task RecommitFailedBlockWoNet()
+        {
+            const int count = 4;
+            // INFO : This test uses local ports 8000 to 8003.
+            const int startPort = 8000;
+
+            var keys = new PrivateKey[count];
+            var tables = new RoutingTable[count];
+            var reactors = new ConsensusReactor<DumbAction>[count];
+            var validators = new List<PublicKey>();
+            var stores = new IStore[count];
+            var blockChains = new BlockChain<DumbAction>[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                keys[i] = new PrivateKey();
+                tables[i] = new RoutingTable(keys[i].ToAddress());
+                validators.Add(keys[i].PublicKey);
+                stores[i] = new MemoryStore();
+                blockChains[i] = new BlockChain<DumbAction>(
+                    TestUtils.Policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    stores[i],
+                    new TrieStateStore(new MemoryKeyValueStore()),
+                    _fx.GenesisBlock);
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                reactors[i] = CreateConcreteReactor(
+                    blockChain: blockChains[i],
+                    key: keys[i],
+                    table: tables[i],
+                    port: startPort + i,
+                    id: i,
+                    validators: validators);
+            }
+
+            try
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StartAsync(default);
+                }
+
+                for (var i = 0; i < count; i++)
+                {
+                    for (var j = 0; j < count; j++)
+                    {
+                        if (i == j)
+                        {
+                            continue;
+                        }
+
+                        tables[i].AddPeer(
+                            new BoundPeer(
+                                keys[j].PublicKey,
+                                new DnsEndPoint("localhost", startPort + j)));
+                    }
+                }
+
+                var proposeNode = 0;
+                var recommitNode = 1;
+
+                Dictionary<string, JsonElement> json;
+
+                Block<DumbAction> block = await blockChains[proposeNode].MineBlock(
+                    keys[0],
+                    append: false);
+
+                stores[proposeNode].PutBlock(block);
+                stores[2].PutBlock(block);
+                stores[3].PutBlock(block);
+                reactors[proposeNode].Propose(block.Hash);
+
+                await reactors[recommitNode].GetRecommitFailedHandle.WaitAsync();
+                stores[recommitNode].PutBlock(block);
+
+                await Task.Delay(((count - 1) * 1000) + 500);
+
+                json =
+                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        reactors[recommitNode].ToString());
+
+                Assert.Equal(recommitNode, json["node_id"].GetInt32());
+                Assert.Equal(1, json["height"].GetInt32());
+                Assert.Equal(0L, json["round"].GetInt32());
+                Assert.Equal("DefaultState", json["step"].GetString());
+                VoteSet? voteSet = reactors[recommitNode].VoteSetOf(proposeNode);
+                if (voteSet is null)
+                {
+                    Assert.NotNull(voteSet);
+                }
+                else
+                {
+                    Assert.Equal(proposeNode, voteSet.Height);
+                    int a = voteSet.Votes.Count(v => v.Flag == VoteFlag.Commit);
+                    int b = count / 3 * 2;
+                    Assert.True(a >= b, $"Commit count: {a}, TwoThirds: {b}");
+                }
+            }
+            finally
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StopAsync(default);
+                    reactor.Dispose();
+                }
+            }
+        }
+
         // Non-null case is in Propose().
         [Fact]
         public void VoteSetOfNull()

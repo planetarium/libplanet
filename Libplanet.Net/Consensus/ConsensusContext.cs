@@ -9,6 +9,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
 using Nito.AsyncEx;
 using Serilog;
 
@@ -58,6 +59,7 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(ConsensusContext<T>));
 
             VoteHolding = new AsyncManualResetEvent(false);
+            CommitFailed = new AsyncManualResetEvent(false);
         }
 
         /// <summary>
@@ -81,6 +83,12 @@ namespace Libplanet.Net.Consensus
 
         public AsyncManualResetEvent VoteHolding { get; }
 
+        /// <summary>
+        /// A <see cref="AsyncManualResetEvent"/> whether A commit has been failed in
+        /// <see cref="CurrentRoundContext"/>.
+        /// </summary>
+        public AsyncManualResetEvent CommitFailed { get; }
+
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
 
@@ -102,12 +110,22 @@ namespace Libplanet.Net.Consensus
                     hash,
                     NodeId);
 
-                // TODO: Needs additional block synchronization and recommit sequence if proposed
-                // block is not present in commit stage.
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
-                _blockChain.Append(block);
+
+                // TODO: So if the validation of block is done in vote, then treating the
+                // BlockPolicyException, InvalidBlockException, InvalidTxNonceException is not
+                // needed?
+                try
+                {
+                    _blockChain.Append(block);
+                }
+                catch (NullReferenceException)
+                {
+                    CommitFailed.Set();
+                    throw new CommitBlockNotExistsException(CurrentRoundContext.VoteSet);
+                }
 
                 // FIXME: Gets voteset by reference, it can be modified in other place.
                 VoteSets.Add(Height, CurrentRoundContext.VoteSet);

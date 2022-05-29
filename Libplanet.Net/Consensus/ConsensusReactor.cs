@@ -20,6 +20,8 @@ namespace Libplanet.Net.Consensus
     public class ConsensusReactor<T> : IReactor
         where T : IAction, new()
     {
+        private readonly int requestBlockTimeoutSeconds = 1;
+
         private readonly Codec _codec = new Codec();
 
         private RoutingTable _routingTable;
@@ -51,6 +53,8 @@ namespace Libplanet.Net.Consensus
 
         internal AsyncManualResetEvent GetVoteHoldingHandle => _context.VoteHolding;
 
+        internal AsyncManualResetEvent GetRecommitFailedHandle => _context.CommitFailed;
+
         public void Dispose()
         {
             _transport.Dispose();
@@ -73,7 +77,8 @@ namespace Libplanet.Net.Consensus
             _transport.ProcessMessageHandler.Register(ProcessMessageHandler);
             tasks.Add(_transport.StartAsync(ctx));
             await _transport.WaitForRunningAsync();
-            tasks.Add(RequestBlockInVoteHolding(_transport, _routingTable));
+            tasks.Add(RequestBlockInVoteHolding());
+            tasks.Add(RecommittingFailedRound());
 
             return tasks;
         }
@@ -159,52 +164,65 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        private async Task RequestBlockInVoteHolding(
-            ITransport transport,
-            RoutingTable routingTable)
+        private async Task<Block<T>?> RequestCurrentRoundBlock()
+        {
+            var neighbors = _routingTable.PeersToBroadcast(null);
+            Message? blockMessage = null;
+            var sendingMessage = new GetBlocks(new List<BlockHash>()
+            {
+                _context.CurrentRoundContext.BlockHash,
+            })
+            {
+                Remote = _transport.AsPeer,
+            };
+
+            foreach (var peer in neighbors)
+            {
+                try
+                {
+                    blockMessage = await _transport.SendMessageAsync(
+                        peer,
+                        sendingMessage,
+                        TimeSpan.FromSeconds(requestBlockTimeoutSeconds),
+                        CancellationToken.None);
+
+                    if (blockMessage is Messages.Blocks)
+                    {
+                        break;
+                    }
+                }
+                catch (CommunicationFailException)
+                {
+                    blockMessage = null;
+                }
+            }
+
+            if (!(blockMessage is Messages.Blocks))
+            {
+                return null;
+            }
+
+            var marshaled = blockMessage.DataFrames.Last();
+            var block =
+                BlockMarshaler.UnmarshalBlock<T>(
+                    _context.HashAlgorithm,
+                    (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
+
+            return block;
+        }
+
+        private async Task RequestBlockInVoteHolding()
         {
             while (true)
             {
                 await _context.VoteHolding.WaitAsync();
 
-                var neighbors = routingTable.PeersToBroadcast(null);
-                Message? blockMessage = null;
+                var block = await RequestCurrentRoundBlock();
 
-                foreach (var peer in neighbors)
-                {
-                    try
-                    {
-                        blockMessage = await transport.SendMessageAsync(
-                            peer,
-                            new GetBlocks(new List<BlockHash>()
-                            {
-                                _context.CurrentRoundContext.BlockHash,
-                            }),
-                            TimeSpan.FromSeconds(1),
-                            CancellationToken.None);
-
-                        if (blockMessage is Messages.Blocks)
-                        {
-                            break;
-                        }
-                    }
-                    catch (CommunicationFailException)
-                    {
-                        blockMessage = null;
-                        continue;
-                    }
-                }
-
-                if (!(blockMessage is Messages.Blocks))
+                if (block is null)
                 {
                     continue;
                 }
-
-                var marshaled = blockMessage.DataFrames.Last();
-                var block =
-                    BlockMarshaler.UnmarshalBlock<T>(
-                        _context.HashAlgorithm,
-                        (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
 
                 _context.PutBlockToStore(block);
 
@@ -213,6 +231,49 @@ namespace Libplanet.Net.Consensus
                         _context.CurrentRoundContext.Voting(VoteFlag.Absent))));
 
                 _context.VoteHolding.Reset();
+            }
+        }
+
+        private async Task RecommittingFailedRound()
+        {
+            while (true)
+            {
+                await _context.CommitFailed.WaitAsync();
+
+                _logger.Error(
+                    "{MethodName}: Caught Commit failure. In Round #{Round}, " +
+                    "Height #{Height}, with Block {BlockHash}. Attempt to getting block " +
+                    "from neighbors...",
+                    nameof(RecommittingFailedRound),
+                    _context.CurrentRoundContext.Round,
+                    _context.CurrentRoundContext.Height,
+                    _context.CurrentRoundContext.BlockHash);
+
+                Block<T>? block;
+                var targetHash = _context.CurrentRoundContext.BlockHash;
+                var targetHeight = _context.CurrentRoundContext.Height;
+
+                if (_context.ContainsBlock(targetHash))
+                {
+                    block = _context.GetBlockFromStore(targetHash);
+                }
+                else
+                {
+                    block = await RequestCurrentRoundBlock();
+                }
+
+                if (block is null)
+                {
+                    continue;
+                }
+
+                _context.PutBlockToStore(block);
+
+                _context.CommitBlock(
+                    targetHeight,
+                    targetHash);
+
+                _context.CommitFailed.Reset();
             }
         }
 
