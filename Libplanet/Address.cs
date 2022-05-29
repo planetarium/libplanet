@@ -328,6 +328,7 @@ namespace Libplanet
                     hex = hex.Remove(0, pos + 1);
                 }
             }
+
             if (hex.Length != 40)
             {
                 throw new ArgumentException(
