@@ -178,15 +178,6 @@ namespace Libplanet.Net
             }
         }
 
-        /// <summary>
-        /// Removes every <see cref="CandidateBranch{T}"/> in <see cref="Branches"/>.
-        /// </summary>
-        public void Clear()
-        {
-            Branches = new ConcurrentBag<CandidateBranch<T>>();
-            BestBranch = null;
-        }
-
         public bool Any() => Branches.Any();
 
         // FIXME: This method is duplicated with Swarm<T>.IsBlockNeeded()
