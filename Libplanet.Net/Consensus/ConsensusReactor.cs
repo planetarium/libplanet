@@ -230,6 +230,14 @@ namespace Libplanet.Net.Consensus
             {
                 await _context.VoteHolding.WaitAsync();
 
+                _logger.Debug(
+                    "{MethodName}: Waiting for Block for voting... Requesting" +
+                    " Round #{Round}, Height #{Height} Block #{Block} from neighbors...",
+                    nameof(RequestBlockInVoteHolding),
+                    _context.CurrentRoundContext.Round,
+                    _context.CurrentRoundContext.Height,
+                    _context.CurrentRoundContext.BlockHash);
+
                 var block = await RequestCurrentRoundBlock();
 
                 if (block is null)
