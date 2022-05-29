@@ -17,6 +17,8 @@ To be released.
 ### Added APIs
 
  -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
+ -  (Libplanet.Node) Added `SwarmConfig`, `InitConfig`, `BootstrapConfig`
+    `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
 
 ### Behavioral changes
 
@@ -27,6 +29,7 @@ To be released.
 ### CLI tools
 
 [#2013]: https://github.com/planetarium/libplanet/pull/2013
+[#2021]: https://github.com/planetarium/libplanet/pull/2021
 
 
 Version 0.37.0
