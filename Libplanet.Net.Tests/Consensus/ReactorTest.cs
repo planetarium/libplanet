@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -108,7 +107,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 if (json["step"].GetString() != "PreCommitState")
                 {
-                    Thread.Sleep(yieldTime);
+                    await Task.Delay(yieldTime);
 
                     json =
                         JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -120,7 +119,7 @@ namespace Libplanet.Net.Tests.Consensus
                 Assert.Equal(0L, json["height"].GetInt32());
                 Assert.Equal("PreCommitState", json["step"].GetString());
 
-                Thread.Sleep((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
+                await Task.Delay((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -128,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 if (json["step"].GetString() != "DefaultState")
                 {
-                    Thread.Sleep(yieldTime);
+                    await Task.Delay(yieldTime);
 
                     json =
                         JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -225,7 +224,7 @@ namespace Libplanet.Net.Tests.Consensus
                     reactors[proposeNode].Propose(block.Hash);
 
                     // For test accuracy, this test should not run in parallel.
-                    Thread.Sleep(propagationDelay);
+                    await Task.Delay(propagationDelay);
                     var isPolka = new bool[count];
 
                     for (var node = 0; node < count; ++node)
