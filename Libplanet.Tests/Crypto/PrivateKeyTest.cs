@@ -294,5 +294,36 @@ namespace Libplanet.Tests.Crypto
             Assert.False(key1 != key2);
             Assert.True(key2 != key3);
         }
+
+        [Fact]
+        public void HexStringConstructor()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PrivateKey(string.Empty));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PrivateKey("a"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PrivateKey("870912"));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new PrivateKey(
+                    "00000000000000000000000000000000000000000000000000000000870912"
+                )
+            );
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new PrivateKey(
+                    "000000000000000000000000000000000000000000000000000000000000870912"
+                )
+            );
+            Assert.Throws<FormatException>(() => new PrivateKey("zz"));
+            PrivateKey actual = new PrivateKey(
+                "e07107ca4b0d19147fa1152a0f2c7884705d59cbb6318e2f901bd28dd9ff78e3"
+            );
+            AssertBytesEqual(
+                new byte[]
+                {
+                    0xe0, 0x71, 0x07, 0xca, 0x4b, 0x0d, 0x19, 0x14, 0x7f, 0xa1, 0x15,
+                    0x2a, 0x0f, 0x2c, 0x78, 0x84, 0x70, 0x5d, 0x59, 0xcb, 0xb6, 0x31,
+                    0x8e, 0x2f, 0x90, 0x1b, 0xd2, 0x8d, 0xd9, 0xff, 0x78, 0xe3,
+                },
+                actual.ToByteArray()
+            );
+        }
     }
 }
