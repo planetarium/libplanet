@@ -10,6 +10,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
+using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 
@@ -121,9 +122,6 @@ namespace Libplanet.Net.Consensus
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
 
-                // TODO: So if the validation of block is done in vote, then treating the
-                // BlockPolicyException, InvalidBlockException, InvalidTxNonceException is not
-                // needed?
                 try
                 {
                     _blockChain.Append(block);
@@ -132,6 +130,22 @@ namespace Libplanet.Net.Consensus
                 {
                     CommitFailed.Set();
                     throw new CommitBlockNotExistsException(CurrentRoundContext.VoteSet);
+                }
+                catch (Exception e) when (e is BlockPolicyViolationException ||
+                                          e is InvalidBlockException ||
+                                          e is InvalidTxNonceException)
+                {
+                    _logger.Error(
+                        "{MethodName}: Invalid block {BlockHash} is locked for current " +
+                        "Round {Round} and Height {Height} passed into the commit stage",
+                        nameof(CommitBlock),
+                        CurrentRoundContext.BlockHash,
+                        Round,
+                        Height);
+
+                    throw new ArgumentException(
+                        "Invalid block is locked for current round and passed into the " +
+                        "commit stage.");
                 }
 
                 // FIXME: Gets voteset by reference, it can be modified in other place.
