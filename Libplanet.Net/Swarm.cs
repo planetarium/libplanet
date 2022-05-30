@@ -284,7 +284,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, long, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
@@ -320,7 +320,7 @@ namespace Libplanet.Net
         /// a lot of calls to methods of <see cref="BlockChain{T}.Renderers"/> in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use
-        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, long, CancellationToken)"/>
+        /// <see cref="PreloadAsync(IProgress{PreloadState}, bool, CancellationToken)"/>
         /// method too.</remarks>
         public async Task StartAsync(
             TimeSpan dialTimeout,
@@ -397,23 +397,17 @@ namespace Libplanet.Net
         /// <summary>
         /// Join to the peer-to-peer network using seed peers.
         /// </summary>
-        /// <param name="seedPeers">List of seed peers.</param>
-        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
-        /// from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
         /// not <see cref="Running"/>.</exception>
-        public async Task BootstrapAsync(
-            IEnumerable<Peer> seedPeers,
-            int depth = Kademlia.MaxDepth,
-            CancellationToken cancellationToken = default)
+        public async Task BootstrapAsync(CancellationToken cancellationToken = default)
         {
             await BootstrapAsync(
-                seedPeers: seedPeers,
-                dialTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
-                depth: depth,
+                seedPeers: Options.BootstrapOptions.SeedPeers,
+                dialTimeout: Options.BootstrapOptions.DialTimeout,
+                searchDepth: Options.BootstrapOptions.SearchDepth,
                 cancellationToken: cancellationToken);
         }
 
@@ -422,8 +416,8 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="dialTimeout">Timeout for connecting to peers.</param>
-        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
-        /// from seed peers.</param>
+        /// <param name="searchDepth">Maximum recursion depth when finding neighbors of
+        /// current <see cref="Peer"/> from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -432,7 +426,7 @@ namespace Libplanet.Net
         public async Task BootstrapAsync(
             IEnumerable<Peer> seedPeers,
             TimeSpan? dialTimeout,
-            int depth = Kademlia.MaxDepth,
+            int searchDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (seedPeers is null)
@@ -451,7 +445,7 @@ namespace Libplanet.Net
             await PeerDiscovery.BootstrapAsync(
                 peers,
                 dialTimeout,
-                depth,
+                searchDepth,
                 cancellationToken);
 
             if (!Transport.Running)
@@ -519,10 +513,6 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="render">
         /// The value indicates whether to render blocks and actions while preloading.</param>
-        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
-        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
-        /// peers by more than this threshold after a preloading is once done, the preloading
-        /// is repeated.  25 by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -538,15 +528,13 @@ namespace Libplanet.Net
         public async Task PreloadAsync(
             IProgress<PreloadState> progress = null,
             bool render = false,
-            long tipDeltaThreshold = 25L,
-            CancellationToken cancellationToken = default(CancellationToken)
-        )
+            CancellationToken cancellationToken = default)
         {
             await PreloadAsync(
-                Options.TimeoutOptions.PreloadDialTimeout,
+                Options.PreloadOptions.DialTimeout,
+                Options.PreloadOptions.TipDeltaThreshold,
                 progress,
                 render,
-                tipDeltaThreshold,
                 cancellationToken);
         }
 
@@ -558,15 +546,15 @@ namespace Libplanet.Net
         /// the dial-up is cancelled after this timeout, and it tries another peer.
         /// If <c>null</c> is given it never gives up dial-ups.
         /// </param>
+        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
+        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
+        /// peers by more than this threshold after a preloading is once done, the preloading
+        /// is repeated.</param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
         /// <param name="render">
         /// The value indicates whether to render blocks and actions while preloading.</param>
-        /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
-        /// among peers and the local tip.  If the local tip is still behind the topmost tip among
-        /// peers by more than this threshold after a preloading is once done, the preloading
-        /// is repeated.  25 by default.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -580,12 +568,11 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed.</exception>
         public async Task PreloadAsync(
-            TimeSpan dialTimeout,
+            TimeSpan? dialTimeout,
+            long tipDeltaThreshold,
             IProgress<PreloadState> progress = null,
             bool render = false,
-            long tipDeltaThreshold = 25L,
-            CancellationToken cancellationToken = default(CancellationToken)
-        )
+            CancellationToken cancellationToken = default)
         {
             using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
