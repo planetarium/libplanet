@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Stun;
 using Serilog;
@@ -40,23 +39,24 @@ namespace Libplanet.Net
         {
             foreach (IceServer server in iceServers)
             {
-                if (server.Url.Scheme != "turn")
+                Uri url = server.Url;
+                if (url.Scheme != "turn")
                 {
-                    throw new ArgumentException($"{server.Url} is not a valid TURN url.");
+                    throw new ArgumentException($"{url} is not a valid TURN url.");
                 }
 
-                int port = server.Url.IsDefaultPort
+                int port = url.IsDefaultPort
                     ? TurnClient.TurnDefaultPort
-                    : server.Url.Port;
+                    : url.Port;
                 var turnClient = new TurnClient(
-                    server.Url.Host,
+                    url.Host,
                     server.Username,
                     server.Credential,
                     port);
 
                 if (await turnClient.IsConnectable())
                 {
-                    Log.Debug("TURN client created: {Host}:{Port}", server.Url.Host, server.Url.Port);
+                    Log.Debug("TURN client created: {Host}:{Port}", url.Host, url.Port);
                     return turnClient;
                 }
             }
