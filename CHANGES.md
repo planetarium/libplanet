@@ -19,6 +19,8 @@ To be released.
     CancellationToken)` and made non-optional.  [[#2024]]
  -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, depth,
     CancellationToken)` removed.  [[#2024]]
+ -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
+    and no longer accepts multiple Urls for single instance. [[#2026]]
 
 ### Backward-incompatible network protocol changes
 
