@@ -379,10 +379,7 @@ If omitted (default) explorer only the local blockchain store.")]
             }
 
             Console.Error.WriteLine("Starts preloading.");
-            await swarm.PreloadAsync(
-                dialTimeout: TimeSpan.FromSeconds(15),
-                cancellationToken: cancellationToken
-            );
+            await swarm.PreloadAsync(cancellationToken: cancellationToken);
             Console.Error.WriteLine("Finished preloading.");
             Startup.PreloadedSingleton = true;
 
