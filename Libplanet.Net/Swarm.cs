@@ -397,23 +397,17 @@ namespace Libplanet.Net
         /// <summary>
         /// Join to the peer-to-peer network using seed peers.
         /// </summary>
-        /// <param name="seedPeers">List of seed peers.</param>
-        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
-        /// from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
         /// not <see cref="Running"/>.</exception>
-        public async Task BootstrapAsync(
-            IEnumerable<Peer> seedPeers,
-            int depth = Kademlia.MaxDepth,
-            CancellationToken cancellationToken = default)
+        public async Task BootstrapAsync(CancellationToken cancellationToken = default)
         {
             await BootstrapAsync(
-                seedPeers: seedPeers,
-                dialTimeout: Options.TimeoutOptions.BootstrapDialTimeout,
-                depth: depth,
+                seedPeers: Options.BootstrapOptions.SeedPeers,
+                dialTimeout: Options.BootstrapOptions.DialTimeout,
+                searchDepth: Options.BootstrapOptions.SearchDepth,
                 cancellationToken: cancellationToken);
         }
 
@@ -422,8 +416,8 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="dialTimeout">Timeout for connecting to peers.</param>
-        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
-        /// from seed peers.</param>
+        /// <param name="searchDepth">Maximum recursion depth when finding neighbors of
+        /// current <see cref="Peer"/> from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -432,7 +426,7 @@ namespace Libplanet.Net
         public async Task BootstrapAsync(
             IEnumerable<Peer> seedPeers,
             TimeSpan? dialTimeout,
-            int depth = Kademlia.MaxDepth,
+            int searchDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (seedPeers is null)
@@ -451,7 +445,7 @@ namespace Libplanet.Net
             await PeerDiscovery.BootstrapAsync(
                 peers,
                 dialTimeout,
-                depth,
+                searchDepth,
                 cancellationToken);
 
             if (!Transport.Running)

@@ -17,6 +17,7 @@ using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -370,6 +371,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 await swarm.BootstrapAsync(
                     seeds,
                     TimeSpan.FromMilliseconds(5000),
+                    Kademlia.MaxDepth,
                     cancellationToken: cancellationToken
                 );
             }
