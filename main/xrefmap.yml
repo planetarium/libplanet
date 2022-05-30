@@ -15400,6 +15400,50 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerState.Peer
   nameWithType: PeerState.Peer
+- uid: Libplanet.Net.PreloadOptions
+  name: PreloadOptions
+  href: api/Libplanet.Net.PreloadOptions.html
+  commentId: T:Libplanet.Net.PreloadOptions
+  fullName: Libplanet.Net.PreloadOptions
+  nameWithType: PreloadOptions
+- uid: Libplanet.Net.PreloadOptions.DefaultDialTimeout
+  name: DefaultDialTimeout
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_DefaultDialTimeout
+  commentId: F:Libplanet.Net.PreloadOptions.DefaultDialTimeout
+  fullName: Libplanet.Net.PreloadOptions.DefaultDialTimeout
+  nameWithType: PreloadOptions.DefaultDialTimeout
+- uid: Libplanet.Net.PreloadOptions.DefaultTipDeltaThreshold
+  name: DefaultTipDeltaThreshold
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_DefaultTipDeltaThreshold
+  commentId: F:Libplanet.Net.PreloadOptions.DefaultTipDeltaThreshold
+  fullName: Libplanet.Net.PreloadOptions.DefaultTipDeltaThreshold
+  nameWithType: PreloadOptions.DefaultTipDeltaThreshold
+- uid: Libplanet.Net.PreloadOptions.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_DialTimeout
+  commentId: P:Libplanet.Net.PreloadOptions.DialTimeout
+  fullName: Libplanet.Net.PreloadOptions.DialTimeout
+  nameWithType: PreloadOptions.DialTimeout
+- uid: Libplanet.Net.PreloadOptions.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_DialTimeout_
+  commentId: Overload:Libplanet.Net.PreloadOptions.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.PreloadOptions.DialTimeout
+  nameWithType: PreloadOptions.DialTimeout
+- uid: Libplanet.Net.PreloadOptions.TipDeltaThreshold
+  name: TipDeltaThreshold
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_TipDeltaThreshold
+  commentId: P:Libplanet.Net.PreloadOptions.TipDeltaThreshold
+  fullName: Libplanet.Net.PreloadOptions.TipDeltaThreshold
+  nameWithType: PreloadOptions.TipDeltaThreshold
+- uid: Libplanet.Net.PreloadOptions.TipDeltaThreshold*
+  name: TipDeltaThreshold
+  href: api/Libplanet.Net.PreloadOptions.html#Libplanet_Net_PreloadOptions_TipDeltaThreshold_
+  commentId: Overload:Libplanet.Net.PreloadOptions.TipDeltaThreshold
+  isSpec: "True"
+  fullName: Libplanet.Net.PreloadOptions.TipDeltaThreshold
+  nameWithType: PreloadOptions.TipDeltaThreshold
 - uid: Libplanet.Net.PreloadState
   name: PreloadState
   href: api/Libplanet.Net.PreloadState.html
@@ -16470,24 +16514,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Peers
   nameWithType: Swarm<T>.Peers
   nameWithType.vb: Swarm(Of T).Peers
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name: PreloadAsync(IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name.vb: PreloadAsync(IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Int64, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Int64, CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(TimeSpan,IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name: PreloadAsync(TimeSpan, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_TimeSpan_IProgress_Libplanet_Net_PreloadState__System_Boolean_System_Int64_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(TimeSpan,IProgress{Libplanet.Net.PreloadState},System.Boolean,System.Int64,CancellationToken)
-  name.vb: PreloadAsync(TimeSpan, IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(TimeSpan, IProgress<Libplanet.Net.PreloadState>, System.Boolean, System.Int64, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(TimeSpan, IProgress(Of Libplanet.Net.PreloadState), System.Boolean, System.Int64, CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(TimeSpan, IProgress<PreloadState>, Boolean, Int64, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(TimeSpan, IProgress(Of PreloadState), Boolean, Int64, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,CancellationToken)
+  name: PreloadAsync(IProgress<PreloadState>, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_IProgress_Libplanet_Net_PreloadState__System_Boolean_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(IProgress{Libplanet.Net.PreloadState},System.Boolean,CancellationToken)
+  name.vb: PreloadAsync(IProgress(Of PreloadState), Boolean, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(IProgress<Libplanet.Net.PreloadState>, System.Boolean, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(IProgress(Of Libplanet.Net.PreloadState), System.Boolean, CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(IProgress<PreloadState>, Boolean, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of PreloadState), Boolean, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},System.Int64,IProgress{Libplanet.Net.PreloadState},System.Boolean,CancellationToken)
+  name: PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, Boolean, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__System_Int64_IProgress_Libplanet_Net_PreloadState__System_Boolean_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},System.Int64,IProgress{Libplanet.Net.PreloadState},System.Boolean,CancellationToken)
+  name.vb: PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), Boolean, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<TimeSpan>, System.Int64, IProgress<Libplanet.Net.PreloadState>, System.Boolean, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of TimeSpan), System.Int64, IProgress(Of Libplanet.Net.PreloadState), System.Boolean, CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, Int64, IProgress<PreloadState>, Boolean, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), Int64, IProgress(Of PreloadState), Boolean, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
@@ -16745,6 +16789,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.MinimumBroadcastTarget
   nameWithType: SwarmOptions.MinimumBroadcastTarget
+- uid: Libplanet.Net.SwarmOptions.PreloadOptions
+  name: PreloadOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PreloadOptions
+  commentId: P:Libplanet.Net.SwarmOptions.PreloadOptions
+  fullName: Libplanet.Net.SwarmOptions.PreloadOptions
+  nameWithType: SwarmOptions.PreloadOptions
+- uid: Libplanet.Net.SwarmOptions.PreloadOptions*
+  name: PreloadOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_PreloadOptions_
+  commentId: Overload:Libplanet.Net.SwarmOptions.PreloadOptions
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.PreloadOptions
+  nameWithType: SwarmOptions.PreloadOptions
 - uid: Libplanet.Net.SwarmOptions.RefreshLifespan
   name: RefreshLifespan
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RefreshLifespan
@@ -16928,12 +16985,6 @@ references:
   commentId: F:Libplanet.Net.TimeoutOptions.DefaultMaxTimeout
   fullName: Libplanet.Net.TimeoutOptions.DefaultMaxTimeout
   nameWithType: TimeoutOptions.DefaultMaxTimeout
-- uid: Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
-  name: DefaultPreloadDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultPreloadDialTimeout
-  commentId: F:Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
-  fullName: Libplanet.Net.TimeoutOptions.DefaultPreloadDialTimeout
-  nameWithType: TimeoutOptions.DefaultPreloadDialTimeout
 - uid: Libplanet.Net.TimeoutOptions.DialTimeout
   name: DialTimeout
   href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DialTimeout
@@ -17025,19 +17076,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.TimeoutOptions.MaxTimeout
   nameWithType: TimeoutOptions.MaxTimeout
-- uid: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
-  name: PreloadDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_PreloadDialTimeout
-  commentId: P:Libplanet.Net.TimeoutOptions.PreloadDialTimeout
-  fullName: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
-  nameWithType: TimeoutOptions.PreloadDialTimeout
-- uid: Libplanet.Net.TimeoutOptions.PreloadDialTimeout*
-  name: PreloadDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_PreloadDialTimeout_
-  commentId: Overload:Libplanet.Net.TimeoutOptions.PreloadDialTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.TimeoutOptions.PreloadDialTimeout
-  nameWithType: TimeoutOptions.PreloadDialTimeout
 - uid: Libplanet.Net.Transports
   name: Libplanet.Net.Transports
   href: api/Libplanet.Net.Transports.html

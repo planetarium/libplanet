@@ -74,6 +74,11 @@ which utilizes values stored in <code>BootstrapOptions</code>.  [<a href="https:
 <li>(Libplanet.Net) Parameter name <code>depth</code> changed to <code>searchDepth</code> for
 <code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, TimeSpan?, int, CancellationToken)</code> and made non-optional.  [<a href="https://github.com/planetarium/libplanet/pull/2024">#2024</a>]</li>
 <li>(Libplanet.Net) <code>Swarm&lt;T&gt;.BootstrapAsync(IEnumerable&lt;Peer&gt;, depth, CancellationToken)</code> removed.  [<a href="https://github.com/planetarium/libplanet/pull/2024">#2024</a>]</li>
+<li>(Libplanet.Net) Removed <code>SwarmOptions.PreloadDialTimeout</code>.
+Use <code>SwarmOptions.PreloadOptions.DialTimeout</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
+<li>(Libplanet.Net) Added <code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, bool, CancellationToken)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
+<li>(Libplanet.Net) Changed the order of parameters from <code>Swarm&lt;T&gt;(TimeSpan, IProgresss&lt;PreloadState&gt;, bool, long, CancellationToken)</code> to <code>Swarm&lt;T&gt;( TimeSpan?, long, IProgress&lt;PreloadState&gt;, bool, CancellationToken)</code>
+with default value for <code>tipDeltaThreshold</code> removed.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
 <li>(Libplanet.Net) Parameter name <code>Urls</code> changed to <code>Url</code> for <code>IceServer</code>
 and no longer accepts multiple Urls for single instance. [<a href="https://github.com/planetarium/libplanet/pull/2026">#2026</a>]</li>
 </ul>
@@ -84,6 +89,9 @@ and no longer accepts multiple Urls for single instance. [<a href="https://githu
 <li>(Libplanet.Net) Added <code>BootstrapOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2024">#2024</a>]</li>
 <li>(Libplanet.Net) Added <code>BootstrapOptions</code> property to <code>SwarmOptions</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/2024">#2024</a>]</li>
+<li>(Libplanet.Net) Added <code>PreloadOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
+<li>(Libplanet.Net) Added <code>PreloadOptions</code> property to <code>SwarmOptions</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2025">#2025</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
