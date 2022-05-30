@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.37.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on May 30th, 2022.
 
 ### Backward-incompatible API changes
 
@@ -30,10 +28,6 @@ To be released.
  -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
     and no longer accepts multiple Urls for single instance. [[#2026]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Net) Added `BootstrapOptions` class.  [[#2024]]
@@ -42,12 +36,6 @@ To be released.
  -  (Libplanet.Net) Added `PreloadOptions` class.  [[#2025]]
  -  (Libplanet.Net) Added `PreloadOptions` property to `SwarmOptions`.
     [[#2025]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
 
 ### CLI tools
 
