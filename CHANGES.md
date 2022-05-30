@@ -10,11 +10,25 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Removed `SwarmOptions.BootstrapDialTimeout`.
+    Use `SwarmOptions.BootstrapOptions.DialTimeout` instead.  [[#2024]]
+ -  (Libplanet.Net) Added `Swarm<T>.BootstrapAsync(CancellationToken)`
+    which utilizes values stored in `BootstrapOptions`.  [[#2024]]
+ -  (Libplanet.Net) Parameter name `depth` changed to `searchDepth` for
+    `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?, int,
+    CancellationToken)` and made non-optional.  [[#2024]]
+ -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, depth,
+    CancellationToken)` removed.  [[#2024]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  (Libplanet.Net) Added `BootstrapOptions` class.  [[#2024]]
+ -  (Libplanet.Net) Added `BootstrapOptions` property to `SwarmOptions`.
+    [[#2024]]
 
 ### Behavioral changes
 
@@ -23,6 +37,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2024]: https://github.com/planetarium/libplanet/pull/2024
 
 
 Version 0.36.1

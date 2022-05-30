@@ -127,6 +127,11 @@ namespace Libplanet.Net
         public TransportType Type { get; set; } = TransportType.TcpTransport;
 
         /// <summary>
+        /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.
+        /// </summary>
+        public BootstrapOptions BootstrapOptions { get; set; } = new BootstrapOptions();
+
+        /// <summary>
         /// Various timeout options for sending and receiving <see cref="Message"/>s through
         /// an <see cref="ITransport"/>.
         /// </summary>
