@@ -34,6 +34,7 @@ namespace Libplanet.Net.Tests.Transports
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var apvKey = new PrivateKey();
             var swarmKey = new PrivateKey();
+            var consensusKey = new PrivateKey();
             var validators = new List<PublicKey>()
             {
                 swarmKey.PublicKey,
@@ -52,6 +53,7 @@ namespace Libplanet.Net.Tests.Transports
                 blockchain,
                 swarmKey,
                 apv,
+                consensusPrivateKey: consensusKey,
                 nodeId: 0,
                 validators: validators,
                 host: host,

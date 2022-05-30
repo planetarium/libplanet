@@ -29,7 +29,6 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
-        private const int BlockNMessagePortDifference = 1000;
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
@@ -56,6 +55,15 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
         /// <param name="nodeId">(Experimental) The Id of Node.</param>
         /// <param name="validators">(Experimental) The fixed list of validator set.</param>
+        /// <param name="consensusPrivateKey">(Experimental) The private key that is using
+        /// for Consensus Routing/Transporting/Signing.</param>
+        /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
+        /// <param name="consensusWorkers">(Experimental) The number of background workers for
+        /// Consensus transport.</param>
+        /// <param name="consensusTableSize">(Experimental) The Table size of Routing table for
+        /// ConsensusReactor.</param>
+        /// <param name="consensusTableBucket">(Experimental) The Bucket size of Routing table
+        /// for ConsensusReactor.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -80,6 +88,11 @@ namespace Libplanet.Net
             AppProtocolVersion appProtocolVersion,
             long nodeId,
             List<PublicKey> validators,
+            PrivateKey consensusPrivateKey,
+            int? consensusPort = null,
+            int consensusWorkers = 100,
+            int consensusTableSize = 1000,
+            int consensusTableBucket = 1,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -123,13 +136,14 @@ namespace Libplanet.Net
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
             MessageTransport = InitializeTransport(
-                workers,
+                consensusWorkers,
                 host,
-                listenPort + BlockNMessagePortDifference,
+                consensusPort,
                 iceServers,
                 differentAppProtocolVersionEncountered);
 
-            MessageRoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
+            MessageRoutingTable = new RoutingTable(
+                consensusPrivateKey.ToAddress(), consensusTableSize, consensusTableBucket);
             _consensusReactor = new ConsensusReactor<T>(
                 RoutingTable,
                 MessageRoutingTable,

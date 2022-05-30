@@ -543,21 +543,29 @@ namespace Libplanet.Net.Tests
             var policy = new BlockPolicy<DumbAction>();
             var blockchain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             var key = new PrivateKey();
+            var consensusPrivateKey = new PrivateKey();
             AppProtocolVersion ver = AppProtocolVersion.Sign(key, 1);
+            // TODO: Check Consensus Parameters.
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm<DumbAction>(null, key, ver, nodeId: 0, validators: null);
+                new Swarm<DumbAction>(
+                    null,
+                    key,
+                    ver,
+                    consensusPrivateKey: consensusPrivateKey,
+                    nodeId: 0,
+                    validators: null);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm<DumbAction>(blockchain, null, ver, nodeId: 0, validators: null);
-            });
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(blockchain, key, ver, nodeId: 0, validators: null);
+                new Swarm<DumbAction>(
+                    blockchain,
+                    null,
+                    ver,
+                    consensusPrivateKey: consensusPrivateKey,
+                    nodeId: 0,
+                    validators: null);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
@@ -567,6 +575,19 @@ namespace Libplanet.Net.Tests
                     blockchain,
                     key,
                     ver,
+                    consensusPrivateKey: consensusPrivateKey,
+                    nodeId: 0,
+                    validators: null);
+            });
+
+            // Swarm<DumbAction> needs host or iceServers.
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Swarm<DumbAction>(
+                    blockchain,
+                    key,
+                    ver,
+                    consensusPrivateKey: consensusPrivateKey,
                     iceServers: new IceServer[] { },
                     nodeId: 0,
                     validators: null);
