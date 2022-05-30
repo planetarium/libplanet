@@ -13980,6 +13980,57 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockVerificationState.VerifiedBlockHash
   nameWithType: BlockVerificationState.VerifiedBlockHash
+- uid: Libplanet.Net.BootstrapOptions
+  name: BootstrapOptions
+  href: api/Libplanet.Net.BootstrapOptions.html
+  commentId: T:Libplanet.Net.BootstrapOptions
+  fullName: Libplanet.Net.BootstrapOptions
+  nameWithType: BootstrapOptions
+- uid: Libplanet.Net.BootstrapOptions.DefaultDialTimeout
+  name: DefaultDialTimeout
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_DefaultDialTimeout
+  commentId: F:Libplanet.Net.BootstrapOptions.DefaultDialTimeout
+  fullName: Libplanet.Net.BootstrapOptions.DefaultDialTimeout
+  nameWithType: BootstrapOptions.DefaultDialTimeout
+- uid: Libplanet.Net.BootstrapOptions.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_DialTimeout
+  commentId: P:Libplanet.Net.BootstrapOptions.DialTimeout
+  fullName: Libplanet.Net.BootstrapOptions.DialTimeout
+  nameWithType: BootstrapOptions.DialTimeout
+- uid: Libplanet.Net.BootstrapOptions.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_DialTimeout_
+  commentId: Overload:Libplanet.Net.BootstrapOptions.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.BootstrapOptions.DialTimeout
+  nameWithType: BootstrapOptions.DialTimeout
+- uid: Libplanet.Net.BootstrapOptions.SearchDepth
+  name: SearchDepth
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_SearchDepth
+  commentId: P:Libplanet.Net.BootstrapOptions.SearchDepth
+  fullName: Libplanet.Net.BootstrapOptions.SearchDepth
+  nameWithType: BootstrapOptions.SearchDepth
+- uid: Libplanet.Net.BootstrapOptions.SearchDepth*
+  name: SearchDepth
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_SearchDepth_
+  commentId: Overload:Libplanet.Net.BootstrapOptions.SearchDepth
+  isSpec: "True"
+  fullName: Libplanet.Net.BootstrapOptions.SearchDepth
+  nameWithType: BootstrapOptions.SearchDepth
+- uid: Libplanet.Net.BootstrapOptions.SeedPeers
+  name: SeedPeers
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_SeedPeers
+  commentId: P:Libplanet.Net.BootstrapOptions.SeedPeers
+  fullName: Libplanet.Net.BootstrapOptions.SeedPeers
+  nameWithType: BootstrapOptions.SeedPeers
+- uid: Libplanet.Net.BootstrapOptions.SeedPeers*
+  name: SeedPeers
+  href: api/Libplanet.Net.BootstrapOptions.html#Libplanet_Net_BootstrapOptions_SeedPeers_
+  commentId: Overload:Libplanet.Net.BootstrapOptions.SeedPeers
+  isSpec: "True"
+  fullName: Libplanet.Net.BootstrapOptions.SeedPeers
+  nameWithType: BootstrapOptions.SeedPeers
 - uid: Libplanet.Net.BoundPeer
   name: BoundPeer
   href: api/Libplanet.Net.BoundPeer.html
@@ -16201,15 +16252,14 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BlockDemandTable
   nameWithType: Swarm<T>.BlockDemandTable
   nameWithType.vb: Swarm(Of T).BlockDemandTable
-- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<Peer>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of Peer), Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.BootstrapAsync(CancellationToken)
+  name: BootstrapAsync(CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(CancellationToken)
+  nameWithType: Swarm<T>.BootstrapAsync(CancellationToken)
+  nameWithType.vb: Swarm(Of T).BootstrapAsync(CancellationToken)
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
   name: BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
@@ -16617,6 +16667,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.BlockDemandLifespan
   nameWithType: SwarmOptions.BlockDemandLifespan
+- uid: Libplanet.Net.SwarmOptions.BootstrapOptions
+  name: BootstrapOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BootstrapOptions
+  commentId: P:Libplanet.Net.SwarmOptions.BootstrapOptions
+  fullName: Libplanet.Net.SwarmOptions.BootstrapOptions
+  nameWithType: SwarmOptions.BootstrapOptions
+- uid: Libplanet.Net.SwarmOptions.BootstrapOptions*
+  name: BootstrapOptions
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BootstrapOptions_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BootstrapOptions
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BootstrapOptions
+  nameWithType: SwarmOptions.BootstrapOptions
 - uid: Libplanet.Net.SwarmOptions.BranchpointThreshold
   name: BranchpointThreshold
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BranchpointThreshold
@@ -16823,25 +16886,6 @@ references:
   commentId: T:Libplanet.Net.TimeoutOptions
   fullName: Libplanet.Net.TimeoutOptions
   nameWithType: TimeoutOptions
-- uid: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
-  name: BootstrapDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_BootstrapDialTimeout
-  commentId: P:Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
-  fullName: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
-  nameWithType: TimeoutOptions.BootstrapDialTimeout
-- uid: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout*
-  name: BootstrapDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_BootstrapDialTimeout_
-  commentId: Overload:Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
-  isSpec: "True"
-  fullName: Libplanet.Net.TimeoutOptions.BootstrapDialTimeout
-  nameWithType: TimeoutOptions.BootstrapDialTimeout
-- uid: Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
-  name: DefaultBootstrapDialTimeout
-  href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultBootstrapDialTimeout
-  commentId: F:Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
-  fullName: Libplanet.Net.TimeoutOptions.DefaultBootstrapDialTimeout
-  nameWithType: TimeoutOptions.DefaultBootstrapDialTimeout
 - uid: Libplanet.Net.TimeoutOptions.DefaultDialTimeout
   name: DefaultDialTimeout
   href: api/Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultDialTimeout
