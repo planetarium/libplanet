@@ -20,19 +20,19 @@ namespace Libplanet.Net.Tests
                 async () =>
                 {
                     await IceServer.CreateTurnClient(
-                       new[] { new IceServer(new[] { "stun://stun.l.google.com:19302" }) }
+                       new[] { new IceServer("stun://stun.l.google.com:19302")}
                     );
                 }
             );
             var servers = new List<IceServer>()
             {
-                new IceServer(new[] { "turn://turn.does-not-exists.org" }),
+                new IceServer("turn://turn.does-not-exists.org"),
             };
 
             await Assert.ThrowsAsync<IceServerException>(
                 async () => { await IceServer.CreateTurnClient(servers); });
 
-            servers.Add(new IceServer(new[] { turnUri }, userInfo[0], userInfo[1]));
+            servers.Add(new IceServer(turnUri, userInfo[0], userInfo[1]));
             for (int i = 3; i > 0; i--)
             {
                 TurnClient turnClient;
