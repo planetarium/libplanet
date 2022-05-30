@@ -20,7 +20,7 @@ namespace Libplanet.Net.Tests
                 async () =>
                 {
                     await IceServer.CreateTurnClient(
-                       new[] { new IceServer("stun://stun.l.google.com:19302")}
+                       new[] { new IceServer("stun://stun.l.google.com:19302") }
                     );
                 }
             );
