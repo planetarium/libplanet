@@ -7,7 +7,6 @@ namespace Libplanet.Net
     public class PreloadOptions
     {
         public const int DefaultDialTimeout = 5;
-
         public const long DefaultTipDeltaThreshold = 25L;
 
         /// <summary>
