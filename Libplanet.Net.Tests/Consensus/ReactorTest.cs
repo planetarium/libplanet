@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -46,6 +45,15 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         public abstract IReactor CreateReactor(
+            BlockChain<DumbAction> blockChain,
+            PrivateKey? key = null,
+            RoutingTable? table = null,
+            string host = "localhost",
+            int port = 5001,
+            long id = 0,
+            List<PublicKey> validators = null!);
+
+        public abstract ConsensusReactor<DumbAction> CreateConcreteReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
             RoutingTable? table = null,
@@ -99,7 +107,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 if (json["step"].GetString() != "PreCommitState")
                 {
-                    Thread.Sleep(yieldTime);
+                    await Task.Delay(yieldTime);
 
                     json =
                         JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -111,7 +119,7 @@ namespace Libplanet.Net.Tests.Consensus
                 Assert.Equal(0L, json["height"].GetInt32());
                 Assert.Equal("PreCommitState", json["step"].GetString());
 
-                Thread.Sleep((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
+                await Task.Delay((int)ConsensusContext<DumbAction>.TimeoutMillisecond);
 
                 json =
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -119,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 if (json["step"].GetString() != "DefaultState")
                 {
-                    Thread.Sleep(yieldTime);
+                    await Task.Delay(yieldTime);
 
                     json =
                         JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
@@ -208,12 +216,15 @@ namespace Libplanet.Net.Tests.Consensus
                         keys[proposeNode],
                         append: false);
 
-                    stores[proposeNode].PutBlock(block);
+                    foreach (var store in stores)
+                    {
+                        store.PutBlock(block);
+                    }
 
                     reactors[proposeNode].Propose(block.Hash);
 
                     // For test accuracy, this test should not run in parallel.
-                    Thread.Sleep(propagationDelay);
+                    await Task.Delay(propagationDelay);
                     var isPolka = new bool[count];
 
                     for (var node = 0; node < count; ++node)
@@ -258,6 +269,208 @@ namespace Libplanet.Net.Tests.Consensus
                             Assert.True(a >= b, $"Commit count: {a}, TwoThirds: {b}");
                         }
                     }
+                }
+            }
+            finally
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StopAsync(default);
+                    reactor.Dispose();
+                }
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void VoteHoldingIfBlockNotPresent()
+        {
+            const int count = 4;
+            // INFO : This test uses local ports 7000 to 7003.
+            const int startPort = 7000;
+            const int propagationDelay = 4000;
+
+            var keys = new PrivateKey[count];
+            var tables = new RoutingTable[count];
+            var reactors = new ConsensusReactor<DumbAction>[count];
+            var validators = new List<PublicKey>();
+            var stores = new IStore[count];
+            var blockChains = new BlockChain<DumbAction>[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                keys[i] = new PrivateKey();
+                tables[i] = new RoutingTable(keys[i].ToAddress());
+                validators.Add(keys[i].PublicKey);
+                stores[i] = new MemoryStore();
+                blockChains[i] = new BlockChain<DumbAction>(
+                    TestUtils.Policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    stores[i],
+                    new TrieStateStore(new MemoryKeyValueStore()),
+                    _fx.GenesisBlock);
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                reactors[i] = CreateConcreteReactor(
+                    blockChain: blockChains[i],
+                    key: keys[i],
+                    table: tables[i],
+                    port: startPort + i,
+                    id: i,
+                    validators: validators);
+            }
+
+            try
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StartAsync(default);
+                }
+
+                for (var i = 0; i < count; i++)
+                {
+                    for (var j = 0; j < count; j++)
+                    {
+                        if (i == j)
+                        {
+                            continue;
+                        }
+
+                        tables[i].AddPeer(
+                            new BoundPeer(
+                                keys[j].PublicKey,
+                                new DnsEndPoint("localhost", startPort + j)));
+                    }
+                }
+
+                Block<DumbAction> block = await blockChains[0].MineBlock(
+                    keys[0],
+                    append: false);
+
+                stores[0].PutBlock(block);
+
+                reactors[0].Propose(block.Hash);
+
+                await Task.Delay(propagationDelay);
+
+                Assert.False(reactors[0].GetVoteHoldingHandle.IsSet);
+
+                for (var i = 1; i < count; ++i)
+                {
+                    Assert.True(reactors[i].GetVoteHoldingHandle.IsSet);
+                }
+            }
+            finally
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StopAsync(default);
+                    reactor.Dispose();
+                }
+            }
+        }
+
+        [Fact]
+        public async Task RecommitFailedBlockWoNet()
+        {
+            const int count = 4;
+            // INFO : This test uses local ports 8000 to 8003.
+            const int startPort = 8000;
+
+            var keys = new PrivateKey[count];
+            var tables = new RoutingTable[count];
+            var reactors = new ConsensusReactor<DumbAction>[count];
+            var validators = new List<PublicKey>();
+            var stores = new IStore[count];
+            var blockChains = new BlockChain<DumbAction>[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                keys[i] = new PrivateKey();
+                tables[i] = new RoutingTable(keys[i].ToAddress());
+                validators.Add(keys[i].PublicKey);
+                stores[i] = new MemoryStore();
+                blockChains[i] = new BlockChain<DumbAction>(
+                    TestUtils.Policy,
+                    new VolatileStagePolicy<DumbAction>(),
+                    stores[i],
+                    new TrieStateStore(new MemoryKeyValueStore()),
+                    _fx.GenesisBlock);
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                reactors[i] = CreateConcreteReactor(
+                    blockChain: blockChains[i],
+                    key: keys[i],
+                    table: tables[i],
+                    port: startPort + i,
+                    id: i,
+                    validators: validators);
+            }
+
+            try
+            {
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StartAsync(default);
+                }
+
+                for (var i = 0; i < count; i++)
+                {
+                    for (var j = 0; j < count; j++)
+                    {
+                        if (i == j)
+                        {
+                            continue;
+                        }
+
+                        tables[i].AddPeer(
+                            new BoundPeer(
+                                keys[j].PublicKey,
+                                new DnsEndPoint("localhost", startPort + j)));
+                    }
+                }
+
+                var proposeNode = 0;
+                var recommitNode = 1;
+
+                Dictionary<string, JsonElement> json;
+
+                Block<DumbAction> block = await blockChains[proposeNode].MineBlock(
+                    keys[0],
+                    append: false);
+
+                stores[proposeNode].PutBlock(block);
+                stores[2].PutBlock(block);
+                stores[3].PutBlock(block);
+                reactors[proposeNode].Propose(block.Hash);
+
+                await reactors[recommitNode].GetRecommitFailedHandle.WaitAsync();
+                stores[recommitNode].PutBlock(block);
+
+                await Task.Delay(((count - 1) * 1000) + 500);
+
+                json =
+                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        reactors[recommitNode].ToString());
+
+                Assert.Equal(recommitNode, json["node_id"].GetInt32());
+                Assert.Equal(1, json["height"].GetInt32());
+                Assert.Equal(0L, json["round"].GetInt32());
+                Assert.Equal("DefaultState", json["step"].GetString());
+                VoteSet? voteSet = reactors[recommitNode].VoteSetOf(proposeNode);
+                if (voteSet is null)
+                {
+                    Assert.NotNull(voteSet);
+                }
+                else
+                {
+                    Assert.Equal(proposeNode, voteSet.Height);
+                    int a = voteSet.Votes.Count(v => v.Flag == VoteFlag.Commit);
+                    int b = count / 3 * 2;
+                    Assert.True(a >= b, $"Commit count: {a}, TwoThirds: {b}");
                 }
             }
             finally

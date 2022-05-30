@@ -3,13 +3,15 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Timers;
-using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
+using Libplanet.Tx;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -19,7 +21,6 @@ namespace Libplanet.Net.Consensus
     {
         public const long TimeoutMillisecond = 10 * 1000;
 
-        private readonly Codec _codec = new Codec();
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
         private readonly TimeoutTicker _timoutTicker;
@@ -57,6 +58,9 @@ namespace Libplanet.Net.Consensus
             _logger = Log
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
+
+            VoteHolding = new AsyncManualResetEvent(false);
+            CommitFailed = new AsyncManualResetEvent(false);
         }
 
         /// <summary>
@@ -74,13 +78,24 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public long NodeId { get; internal set; }
 
+        /// <summary>
+        /// The HashAlgorithm used in <see cref="BlockChain{T}"/>.
+        /// </summary>
         public HashAlgorithmGetter HashAlgorithm => _blockChain.Policy.GetHashAlgorithm;
 
         public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
 
-        public bool IsVoteOnHold =>
-            CurrentRoundContext.State is PreVoteState<T> &&
-            CurrentRoundContext.CurrentNodeVoteFlag is VoteFlag.Null;
+        /// <summary>
+        /// A <see cref="AsyncManualResetEvent"/> whether A vote is in hold for waiting
+        /// <see cref="CurrentRoundContext"/> block.
+        /// </summary>
+        public AsyncManualResetEvent VoteHolding { get; }
+
+        /// <summary>
+        /// A <see cref="AsyncManualResetEvent"/> whether A commit has been failed in
+        /// <see cref="CurrentRoundContext"/>.
+        /// </summary>
+        public AsyncManualResetEvent CommitFailed { get; }
 
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
@@ -103,12 +118,35 @@ namespace Libplanet.Net.Consensus
                     hash,
                     NodeId);
 
-                // TODO: Needs additional block synchronization and recommit sequence if proposed
-                // block is not present in commit stage.
                 Block<T> block = _blockChain.Store.GetBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
                     hash);
-                _blockChain.Append(block);
+
+                try
+                {
+                    _blockChain.Append(block);
+                }
+                catch (NullReferenceException)
+                {
+                    CommitFailed.Set();
+                    throw new CommitBlockNotExistsException(CurrentRoundContext.VoteSet);
+                }
+                catch (Exception e) when (e is BlockPolicyViolationException ||
+                                          e is InvalidBlockException ||
+                                          e is InvalidTxNonceException)
+                {
+                    _logger.Error(
+                        "{MethodName}: Invalid block {BlockHash} is locked for current " +
+                        "Round {Round} and Height {Height} passed into the commit stage",
+                        nameof(CommitBlock),
+                        CurrentRoundContext.BlockHash,
+                        Round,
+                        Height);
+
+                    throw new ArgumentException(
+                        "Invalid block is locked for current round and passed into the " +
+                        "commit stage.");
+                }
 
                 // FIXME: Gets voteset by reference, it can be modified in other place.
                 VoteSets.Add(Height, CurrentRoundContext.VoteSet);
@@ -118,12 +156,15 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <inheritdoc cref="IStore.ContainsBlock"/>
         public bool ContainsBlock(BlockHash blockHash) =>
             _blockChain.Store.ContainsBlock(blockHash);
 
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
         public Block<T>? GetBlockFromStore(BlockHash blockHash) =>
             _blockChain.Store.GetBlock<T>(HashAlgorithm, blockHash);
 
+        /// <inheritdoc cref="IStore.PutBlock{T}"/>
         public void PutBlockToStore(Block<T> block) =>
             _blockChain.Store.PutBlock(block);
 
@@ -152,6 +193,8 @@ namespace Libplanet.Net.Consensus
                     Height,
                     Round);
             }
+
+            VoteHolding.Reset();
 
             return Round;
         }

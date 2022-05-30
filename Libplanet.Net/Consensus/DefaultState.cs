@@ -46,10 +46,15 @@ namespace Libplanet.Net.Consensus
             roundContext.BlockHash = propose.BlockHash;
             roundContext.State = new PreVoteState<T>();
 
-            return context.ContainsBlock(propose.BlockHash) ?
-                new ConsensusVote(
+            if (context.ContainsBlock(propose.BlockHash))
+            {
+                return new ConsensusVote(
                     context.SignVote(
-                    roundContext.Voting(VoteFlag.Absent))) : null;
+                        roundContext.Voting(VoteFlag.Absent)));
+            }
+
+            context.VoteHolding.Set();
+            return null;
         }
     }
 }

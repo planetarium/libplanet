@@ -232,6 +232,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         MaxTimeout = TimeSpan.FromSeconds(10),
                     };
 
+                    // TODO: Add nodeId getter/setter and validators getter!
                     swarm = new Swarm<NullAction>(
                         blockChain,
                         privateKey,
@@ -241,7 +242,9 @@ If omitted (default) explorer only the local blockchain store.")]
                         differentAppProtocolVersionEncountered: (p, pv, lv) => { },
                         workers: options.Workers,
                         iceServers: new[] { options.IceServer },
-                        options: swarmOptions
+                        options: swarmOptions,
+                        nodeId: 0,
+                        validators: null
                     );
                 }
 

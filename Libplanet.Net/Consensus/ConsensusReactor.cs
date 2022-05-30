@@ -12,6 +12,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -19,6 +20,8 @@ namespace Libplanet.Net.Consensus
     public class ConsensusReactor<T> : IReactor
         where T : IAction, new()
     {
+        private readonly int requestBlockTimeoutSeconds = 1;
+
         private readonly Codec _codec = new Codec();
 
         private RoutingTable _routingTable;
@@ -48,6 +51,10 @@ namespace Libplanet.Net.Consensus
                 blockChain);
         }
 
+        internal AsyncManualResetEvent GetVoteHoldingHandle => _context.VoteHolding;
+
+        internal AsyncManualResetEvent GetRecommitFailedHandle => _context.CommitFailed;
+
         public void Dispose()
         {
             _transport.Dispose();
@@ -64,12 +71,16 @@ namespace Libplanet.Net.Consensus
             return null;
         }
 
-        public async Task<Task> StartAsync(CancellationToken ctx)
+        public async Task<List<Task>> StartAsync(CancellationToken ctx)
         {
+            var tasks = new List<Task>();
             _transport.ProcessMessageHandler.Register(ProcessMessageHandler);
-            Task task = _transport.StartAsync(ctx);
+            tasks.Add(_transport.StartAsync(ctx));
             await _transport.WaitForRunningAsync();
-            return task;
+            tasks.Add(RequestBlockInVoteHolding());
+            tasks.Add(RecommittingFailedRound());
+
+            return tasks;
         }
 
         public async Task StopAsync(CancellationToken ctx)
@@ -146,94 +157,150 @@ namespace Libplanet.Net.Consensus
         {
             switch (message)
             {
-                case GetBlocks hashes:
-                    await ResponseBlockAsync(hashes);
-                    break;
                 case ConsensusMessage consensusMessage:
                     await ReplyPongAsync(consensusMessage);
-                    await RequestBlockNotExistsAsync(consensusMessage);
                     await ReceivedMessage(consensusMessage);
                     break;
             }
         }
 
-        private async Task RequestBlockNotExistsAsync(ConsensusMessage consensusMessage)
+        /// <summary>
+        /// Send a <see cref="Messages.GetBlocks"/> request for proposed <see cref="Block{T}"/> in
+        /// <see cref="ConsensusContext{T}.CurrentRoundContext"/> to neighbors.
+        /// </summary>
+        /// <returns>returns null if neighbors also don't have block or any network failure (e.g.
+        /// Timeout) or returns the unmarshalled <see cref="Block{T}"/>.</returns>
+        private async Task<Block<T>?> RequestCurrentRoundBlock()
         {
-            if (!_context.ContainsBlock(consensusMessage.BlockHash))
+            var neighbors = _routingTable.PeersToBroadcast(null);
+            Message? blockMessage = null;
+            var sendingMessage = new GetBlocks(new List<BlockHash>()
             {
-                var hashList = new List<BlockHash>
+                _context.CurrentRoundContext.BlockHash,
+            })
+            {
+                Remote = _transport.AsPeer,
+            };
+
+            foreach (var peer in neighbors)
+            {
+                try
                 {
-                    consensusMessage.BlockHash,
-                };
-                var message = new GetBlocks(hashList)
-                {
-                    Remote = _transport.AsPeer,
-                };
+                    blockMessage = await _transport.SendMessageAsync(
+                        peer,
+                        sendingMessage,
+                        TimeSpan.FromSeconds(requestBlockTimeoutSeconds),
+                        CancellationToken.None);
 
-                _logger.Debug(
-                    "{MethodName}: Requesting Block {BlockHash} derived from {@Message}",
-                    nameof(RequestBlockNotExistsAsync),
-                    consensusMessage.BlockHash,
-                    consensusMessage);
-
-                var blockMessage = await _transport.SendMessageAsync(
-                    _routingTable.GetPeer(consensusMessage.Remote!.Address),
-                    message,
-                    TimeSpan.FromSeconds(1),
-                    CancellationToken.None);
-
-                if (blockMessage is Messages.Blocks)
-                {
-                    var unmarshalBlock = BlockMarshaler.UnmarshalBlock<T>(
-                        _context.HashAlgorithm,
-                        (Bencodex.Types.Dictionary)_codec.Decode(blockMessage.DataFrames.Last())
-                    );
-
-                    _context.PutBlockToStore(unmarshalBlock);
-
-                    _logger.Debug(
-                        "{MethodName}: Received Block {BlockHash} from {Remote}",
-                        nameof(RequestBlockNotExistsAsync),
-                        unmarshalBlock.Hash,
-                        message.Remote);
-
-                    if (_context.IsVoteOnHold)
+                    if (blockMessage is Messages.Blocks)
                     {
-                        HandleMessage(
-                            new ConsensusVote(
-                                _context.CurrentRoundContext.Voting(VoteFlag.Absent)));
+                        break;
                     }
                 }
+                catch (CommunicationFailException)
+                {
+                    blockMessage = null;
+                }
+            }
+
+            if (!(blockMessage is Messages.Blocks))
+            {
+                return null;
+            }
+
+            var marshaled = blockMessage.DataFrames.Last();
+            var block =
+                BlockMarshaler.UnmarshalBlock<T>(
+                    _context.HashAlgorithm,
+                    (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
+
+            return block;
+        }
+
+        /// <summary>
+        /// A <see cref="Task"/> for requesting block while the state of node is in
+        /// <see cref="PreVoteState{T}"/>, however, node does not have the proposed
+        /// <see cref="Block{T}"/> to validate and vote.
+        /// </summary>
+        /// <remarks>This <see cref="Task"/> will be triggered when the
+        /// <see cref="ConsensusContext{T}.VoteHolding"/> is set.</remarks>
+        private async Task RequestBlockInVoteHolding()
+        {
+            while (true)
+            {
+                await _context.VoteHolding.WaitAsync();
+
+                _logger.Debug(
+                    "{MethodName}: Waiting for Block for voting... Requesting" +
+                    " Round #{Round}, Height #{Height} Block #{Block} from neighbors...",
+                    nameof(RequestBlockInVoteHolding),
+                    _context.CurrentRoundContext.Round,
+                    _context.CurrentRoundContext.Height,
+                    _context.CurrentRoundContext.BlockHash);
+
+                var block = await RequestCurrentRoundBlock();
+
+                if (block is null)
+                {
+                    continue;
+                }
+
+                _context.PutBlockToStore(block);
+
+                HandleMessage(new ConsensusVote(
+                    _context.SignVote(
+                        _context.CurrentRoundContext.Voting(VoteFlag.Absent))));
+
+                _context.VoteHolding.Reset();
             }
         }
 
-        private async Task ResponseBlockAsync(GetBlocks message)
+        /// <summary>
+        /// A <see cref="Task"/> for requesting failed commit block from neighbors and recommit.
+        /// </summary>
+        /// <remarks>This <see cref="Task"/> will be triggered when the
+        /// <see cref="ConsensusContext{T}.CommitFailed"/> is set.</remarks>
+        private async Task RecommittingFailedRound()
         {
-            var block = _context.GetBlockFromStore(message.BlockHashes.Last());
-            if (block != null)
+            while (true)
             {
-                var listBlock = new List<byte[]>
+                await _context.CommitFailed.WaitAsync();
+
+                _logger.Error(
+                    "{MethodName}: Caught Commit failure. In Round #{Round}, " +
+                    "Height #{Height}, with Block {BlockHash}. Attempt to getting block " +
+                    "from neighbors...",
+                    nameof(RecommittingFailedRound),
+                    _context.CurrentRoundContext.Round,
+                    _context.CurrentRoundContext.Height,
+                    _context.CurrentRoundContext.BlockHash);
+
+                Block<T>? block;
+                var targetHash = _context.CurrentRoundContext.BlockHash;
+                var targetHeight = _context.CurrentRoundContext.Height;
+
+                // This order is intended to test recommitting in Unit Test.
+                if (_context.ContainsBlock(targetHash))
                 {
-                    _codec.Encode(block.MarshalBlock()),
-                };
-
-                var sending = new Messages.Blocks(listBlock)
+                    block = _context.GetBlockFromStore(targetHash);
+                }
+                else
                 {
-                    Identity = message.Identity,
-                    Remote = _transport.AsPeer,
-                };
+                    block = await RequestCurrentRoundBlock();
+                }
 
-                _logger.Debug(
-                    "{MethodName}: Received Block request {BlockHash} from {Remote}",
-                    nameof(RequestBlockNotExistsAsync),
-                    message.BlockHashes.First(),
-                    message.Remote);
+                if (block is null)
+                {
+                    continue;
+                }
 
-                await _transport.ReplyMessageAsync(sending, CancellationToken.None);
-            }
-            else
-            {
-                await ReplyPongAsync(message);
+                _context.PutBlockToStore(block);
+
+                _context.CommitBlock(
+                    targetHeight,
+                    targetHash);
+
+                _context.CommitFailed.Reset();
             }
         }
 

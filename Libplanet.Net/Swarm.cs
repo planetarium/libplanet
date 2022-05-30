@@ -14,6 +14,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -37,6 +38,7 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
         private readonly IStore _store;
+        private readonly ConsensusReactor<T> _consensusReactor;
 
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
@@ -51,6 +53,8 @@ namespace Libplanet.Net
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
+        /// <param name="nodeId">(Experimental) The Id of Node.</param>
+        /// <param name="validators">(Experimental) The fixed list of validator set.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -73,6 +77,8 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
+            long nodeId,
+            List<PublicKey> validators,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -113,6 +119,14 @@ namespace Libplanet.Net
                 differentAppProtocolVersionEncountered);
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
+
+            _consensusReactor = new ConsensusReactor<T>(
+                RoutingTable,
+                Transport,
+                BlockChain,
+                privateKey,
+                nodeId,
+                validators);
         }
 
         internal Swarm(
