@@ -12,10 +12,8 @@ namespace Libplanet.Net
             string url,
             string? username = null,
             string? credential = null)
+            : this(new Uri(url), username, credential)
         {
-            Url = new Uri(url);
-            Username = username;
-            Credential = credential;
         }
 
         public IceServer(
