@@ -15,8 +15,6 @@ namespace Libplanet.Net
     public class TimeoutOptions
     {
         public const int DefaultMaxTimeout = 150;
-        public const int DefaultBootstrapDialTimeout = 15;
-        public const int DefaultPreloadDialTimeout = 5;
         public const int DefaultDialTimeout = 1;
         public const int DefaultGetBlockHashesTimeout = 30;
         public const int DefaultGetBlocksBaseTimeout = 15;
@@ -33,35 +31,13 @@ namespace Libplanet.Net
             = TimeSpan.FromSeconds(DefaultMaxTimeout);
 
         /// <summary>
-        /// Determines how long an <see cref="ITransport"/> should wait before timimg out
-        /// when dialing peers for either <see cref="Pong"/>, <see cref="Neighbors"/>,
-        /// or <see cref="ChainStatus"/> during a bootstrapping phase.  Generally, a more relaxed
-        /// <see cref="TimeSpan"/> is used compared to <see cref="DialTimeout"/>.
-        /// Set to <see cref="DefaultBootstrapDialTimeout"/> seconds by default.
-        /// </summary>
-        /// <seealso cref="DialTimeout"/>
-        public TimeSpan BootstrapDialTimeout { get; set; }
-            = TimeSpan.FromSeconds(DefaultBootstrapDialTimeout);
-
-        /// <summary>
-        /// Determines how long an <see cref="ITransport"/> should wait before timimg out
-        /// when dialing peers for either <see cref="Pong"/>, <see cref="Neighbors"/>,
-        /// or <see cref="ChainStatus"/> during a preloading phase.  Generally, a more relaxed
-        /// <see cref="TimeSpan"/> is used compared to <see cref="DialTimeout"/>.
-        /// Set to <see cref="DefaultPreloadDialTimeout"/> seconds by default.
-        /// </summary>
-        /// <seealso cref="DialTimeout"/>
-        public TimeSpan PreloadDialTimeout { get; set; }
-            = TimeSpan.FromSeconds(DefaultPreloadDialTimeout);
-
-        /// <summary>
         /// Determines how long an <see cref="ITransport"/> should wait before timing out
         /// when dialing peers for either <see cref="Pong"/>, <see cref="Neighbors"/>,
         /// or <see cref="ChainStatus"/> for a long running process.
         /// Set to <see cref="DefaultDialTimeout"/> seconds by default.
         /// </summary>
-        /// <seealso cref="BootstrapDialTimeout"/>
-        /// <seealso cref="PreloadDialTimeout"/>
+        /// <seealso cref="BootstrapOptions.DialTimeout"/>
+        /// <seealso cref="PreloadOptions.DialTimeout"/>
         public TimeSpan DialTimeout { get; set; }
             = TimeSpan.FromSeconds(DefaultDialTimeout);
 

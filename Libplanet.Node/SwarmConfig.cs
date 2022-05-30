@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Libplanet.Net;
@@ -79,11 +79,20 @@ namespace Libplanet.Node
                 RefreshLifespan = SyncConfig.RoutingTableRefreshPeriod,
                 RefreshPeriod = SyncConfig.RoutingTableRefreshPeriod,
                 BlockDemandLifespan = SyncConfig.BlockDemandLifespan,
+                BootstrapOptions = new BootstrapOptions()
+                {
+                    DialTimeout = BootstrapConfig.DialTimeout,
+                    SeedPeers = BootstrapConfig.SeedPeers.ToImmutableList(),
+                    SearchDepth = BootstrapConfig.SearchDepth,
+                },
+                PreloadOptions = new PreloadOptions()
+                {
+                    DialTimeout = PreloadConfig.DialTimeout,
+                    TipDeltaThreshold = PreloadConfig.DeltaThreshold,
+                },
                 TimeoutOptions = new TimeoutOptions()
                 {
                     MaxTimeout = InitConfig.MaxTimeout,
-                    BootstrapDialTimeout = BootstrapConfig.DialTimeout,
-                    PreloadDialTimeout = PreloadConfig.DialTimeout,
                     DialTimeout = SyncConfig.DialTimeout,
                 },
             };
@@ -168,7 +177,7 @@ namespace Libplanet.Node
                     }
                 }
 
-                return new IceServer(new[] { uri }, username, credential);
+                return new IceServer(uri, username, credential);
             }
 
             public override void Write(
@@ -176,11 +185,7 @@ namespace Libplanet.Node
                 IceServer value,
                 JsonSerializerOptions options)
             {
-                // FIXME: See https://github.com/planetarium/libplanet/issues/1995.
-                Uri uri = value.Urls.FirstOrDefault()
-                    ?? throw new NullReferenceException(
-                        $"Given {nameof(IceServer)} does not contain any {nameof(Uri)}.");
-                writer.WriteStringValue(uri.ToString());
+                writer.WriteStringValue(value.Url.ToString());
             }
         }
     }

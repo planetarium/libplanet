@@ -24,7 +24,7 @@ namespace Libplanet.Net.Tests
                 {
                     string[] userInfo = turnUri.UserInfo.Split(':');
                     return new IceServer(
-                        urls: new[] { turnUri },
+                        url: turnUri,
                         username: userInfo[0],
                         credential: userInfo[1]
                     );
