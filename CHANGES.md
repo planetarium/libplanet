@@ -43,6 +43,7 @@ To be released.
 [#2024]: https://github.com/planetarium/libplanet/pull/2024
 [#2026]: https://github.com/planetarium/libplanet/pull/2026
 
+
 Version 0.36.1
 --------------
 
