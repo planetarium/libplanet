@@ -230,6 +230,10 @@ If omitted (default) explorer only the local blockchain store.")]
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
                     {
+                        BootstrapOptions = new BootstrapOptions
+                        {
+                            SeedPeers = options.Seeds.ToImmutableList(),
+                        },
                         TimeoutOptions = new TimeoutOptions
                         {
                             MaxTimeout = TimeSpan.FromSeconds(10),
@@ -262,7 +266,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     {
                         await Task.WhenAll(
                             webHost.RunAsync(cts.Token),
-                            StartSwarmAsync(swarm, options.Seeds, cts.Token)
+                            StartSwarmAsync(swarm, cts.Token)
                         );
                     }
                     catch (OperationCanceledException)
@@ -356,7 +360,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
         private static async Task StartSwarmAsync(
             Swarm<NullAction> swarm,
-            IEnumerable<Peer> seeds,
             CancellationToken cancellationToken)
         {
             if (swarm is null)
@@ -368,12 +371,7 @@ If omitted (default) explorer only the local blockchain store.")]
             try
             {
                 Console.Error.WriteLine("Bootstrapping.");
-                await swarm.BootstrapAsync(
-                    seeds,
-                    TimeSpan.FromMilliseconds(5000),
-                    Kademlia.MaxDepth,
-                    cancellationToken: cancellationToken
-                );
+                await swarm.BootstrapAsync(cancellationToken);
             }
             catch (TimeoutException)
             {
