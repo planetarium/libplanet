@@ -28,14 +28,15 @@ namespace Libplanet.Net.Tests.Consensus
         public override IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? table = null,
+            RoutingTable? blockTable = null,
+            RoutingTable? messageTable = null,
             string host = "localhost",
             int port = 5001,
             long id = 0,
             List<PublicKey> validators = null!)
         {
             key ??= new PrivateKey();
-            var transport = new NetMQTransport(
+            var blockTransport = new NetMQTransport(
                 key,
                 TestUtils.AppProtocolVersion,
                 null,
@@ -45,9 +46,21 @@ namespace Libplanet.Net.Tests.Consensus
                 Array.Empty<IceServer>(),
                 null);
 
+            var messageTransport = new NetMQTransport(
+                key,
+                TestUtils.AppProtocolVersion,
+                null,
+                8,
+                host,
+                port + 1000,
+                Array.Empty<IceServer>(),
+                null);
+
             return new ConsensusReactor<DumbAction>(
-                table ?? new RoutingTable(key.ToAddress()),
-                transport,
+                blockTable ?? new RoutingTable(key.ToAddress()),
+                messageTable ?? new RoutingTable(key.ToAddress()),
+                blockTransport,
+                messageTransport,
                 blockChain,
                 key,
                 id,
@@ -57,7 +70,8 @@ namespace Libplanet.Net.Tests.Consensus
         public override ConsensusReactor<DumbAction> CreateConcreteReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? table = null,
+            RoutingTable? blockTable = null,
+            RoutingTable? messageTable = null,
             string host = "localhost",
             int port = 5001,
             long id = 0,
@@ -66,7 +80,8 @@ namespace Libplanet.Net.Tests.Consensus
             return (ConsensusReactor<DumbAction>)CreateReactor(
                 blockChain,
                 key,
-                table,
+                blockTable,
+                messageTable,
                 host,
                 port,
                 id,

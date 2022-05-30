@@ -29,6 +29,7 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
+        private const int BlockNMessagePortDifference = 1000;
         private static readonly Codec Codec = new Codec();
 
         private readonly PrivateKey _privateKey;
@@ -110,6 +111,7 @@ namespace Libplanet.Net
 
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
+
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = InitializeTransport(
                 workers,
@@ -120,9 +122,19 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
+            MessageTransport = InitializeTransport(
+                workers,
+                host,
+                listenPort + BlockNMessagePortDifference,
+                iceServers,
+                differentAppProtocolVersionEncountered);
+
+            MessageRoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             _consensusReactor = new ConsensusReactor<T>(
                 RoutingTable,
+                MessageRoutingTable,
                 Transport,
+                MessageTransport,
                 BlockChain,
                 privateKey,
                 nodeId,
@@ -208,9 +220,13 @@ namespace Libplanet.Net
 
         internal RoutingTable RoutingTable { get; }
 
+        internal RoutingTable MessageRoutingTable { get; }
+
         internal IProtocol PeerDiscovery { get; }
 
         internal ITransport Transport { get; private set; }
+
+        internal ITransport MessageTransport { get; private set; }
 
         internal TxCompletion<BoundPeer, T> TxCompletion { get; }
 

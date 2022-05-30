@@ -24,22 +24,30 @@ namespace Libplanet.Net.Consensus
 
         private readonly Codec _codec = new Codec();
 
-        private RoutingTable _routingTable;
-        private ITransport _transport;
+        private RoutingTable _blockRoutingTable;
+        private RoutingTable _messageRoutingTable;
+        private ITransport _blockTransport;
+        private ITransport _messageTransport;
         private ConsensusContext<T> _context;
         private PrivateKey _privateKey;
         private ILogger _logger;
 
         public ConsensusReactor(
-            RoutingTable routingTable,
-            ITransport transport,
+            RoutingTable blockRoutingTable,
+            RoutingTable messageRoutingTable,
+            ITransport blockTransport,
+            ITransport messageTransport,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             long nodeId,
             List<PublicKey>? validators)
         {
-            _routingTable = routingTable;
-            _transport = transport;
+            _blockTransport = blockTransport;
+            _messageTransport = messageTransport;
+
+            _blockRoutingTable = blockRoutingTable;
+            _messageRoutingTable = messageRoutingTable;
+
             _logger = Log
                 .ForContext<ConsensusReactor<T>>()
                 .ForContext("Source", nameof(ConsensusReactor<T>));
@@ -57,7 +65,8 @@ namespace Libplanet.Net.Consensus
 
         public void Dispose()
         {
-            _transport.Dispose();
+            // Block Transport will be disposed in Swarm
+            _messageTransport.Dispose();
         }
 
         public VoteSet? VoteSetOf(long height)
@@ -74,9 +83,9 @@ namespace Libplanet.Net.Consensus
         public async Task<List<Task>> StartAsync(CancellationToken ctx)
         {
             var tasks = new List<Task>();
-            _transport.ProcessMessageHandler.Register(ProcessMessageHandler);
-            tasks.Add(_transport.StartAsync(ctx));
-            await _transport.WaitForRunningAsync();
+            _messageTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
+            tasks.Add(_messageTransport.StartAsync(ctx));
+            await _messageTransport.WaitForRunningAsync();
             tasks.Add(RequestBlockInVoteHolding());
             tasks.Add(RecommittingFailedRound());
 
@@ -85,7 +94,7 @@ namespace Libplanet.Net.Consensus
 
         public async Task StopAsync(CancellationToken ctx)
         {
-            await _transport.StopAsync(TimeSpan.FromMilliseconds(10), ctx);
+            await _messageTransport.StopAsync(TimeSpan.FromMilliseconds(10), ctx);
         }
 
         public async Task ReceivedMessage(ConsensusMessage message)
@@ -112,7 +121,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            res.Remote = _transport.AsPeer;
+            res.Remote = _messageTransport.AsPeer;
             BroadcastMessage(res);
         }
 
@@ -136,7 +145,7 @@ namespace Libplanet.Net.Consensus
                 _context.Round,
                 blockHash)
             {
-                Remote = _transport.AsPeer,
+                Remote = _messageTransport.AsPeer,
             };
 
             BroadcastMessage(propose);
@@ -149,7 +158,7 @@ namespace Libplanet.Net.Consensus
 
         private void BroadcastMessage(ConsensusMessage message)
         {
-            _transport.BroadcastMessage(_routingTable.Peers, message);
+            _messageTransport.BroadcastMessage(_messageRoutingTable.Peers, message);
             HandleMessage(message);
         }
 
@@ -158,7 +167,7 @@ namespace Libplanet.Net.Consensus
             switch (message)
             {
                 case ConsensusMessage consensusMessage:
-                    await ReplyPongAsync(consensusMessage);
+                    await ReplyMessagePongAsync(consensusMessage);
                     await ReceivedMessage(consensusMessage);
                     break;
             }
@@ -172,21 +181,22 @@ namespace Libplanet.Net.Consensus
         /// Timeout) or returns the unmarshalled <see cref="Block{T}"/>.</returns>
         private async Task<Block<T>?> RequestCurrentRoundBlock()
         {
-            var neighbors = _routingTable.PeersToBroadcast(null);
+            // This will not return the same neighbor with MessageRoutingTable
+            var neighbors = _blockRoutingTable.PeersToBroadcast(null);
             Message? blockMessage = null;
             var sendingMessage = new GetBlocks(new List<BlockHash>()
             {
                 _context.CurrentRoundContext.BlockHash,
             })
             {
-                Remote = _transport.AsPeer,
+                Remote = _blockTransport.AsPeer,
             };
 
             foreach (var peer in neighbors)
             {
                 try
                 {
-                    blockMessage = await _transport.SendMessageAsync(
+                    blockMessage = await _blockTransport.SendMessageAsync(
                         peer,
                         sendingMessage,
                         TimeSpan.FromSeconds(requestBlockTimeoutSeconds),
@@ -304,10 +314,10 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        private async Task ReplyPongAsync(Message message)
+        private async Task ReplyMessagePongAsync(Message message)
         {
             var pong = new Pong { Identity = message.Identity };
-            await _transport.ReplyMessageAsync(pong, CancellationToken.None);
+            await _messageTransport.ReplyMessageAsync(pong, CancellationToken.None);
         }
     }
 }
