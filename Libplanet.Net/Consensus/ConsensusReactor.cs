@@ -240,6 +240,8 @@ namespace Libplanet.Net.Consensus
             {
                 await _context.VoteHolding.WaitAsync();
 
+                await Task.Delay(50);
+
                 _logger.Debug(
                     "{MethodName}: Waiting for Block for voting... Requesting" +
                     " Round #{Round}, Height #{Height} Block #{Block} from neighbors...",
@@ -275,6 +277,8 @@ namespace Libplanet.Net.Consensus
             while (true)
             {
                 await _context.CommitFailed.WaitAsync();
+
+                await Task.Delay(50);
 
                 _logger.Error(
                     "{MethodName}: Caught Commit failure. In Round #{Round}, " +
