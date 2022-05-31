@@ -69,6 +69,7 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
+            PrivateKey consensusPrivateKey = null,
             long nodeId = 0,
             List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
@@ -92,6 +93,7 @@ namespace Libplanet.Net.Tests
             return CreateSwarm(
                 blockchain,
                 privateKey,
+                consensusPrivateKey,
                 nodeId,
                 validators,
                 appProtocolVersion,
@@ -106,6 +108,7 @@ namespace Libplanet.Net.Tests
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
+            PrivateKey consensusPrivateKey = null,
             long nodeId = 0,
             List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
@@ -137,9 +140,11 @@ namespace Libplanet.Net.Tests
             }
 
             privateKey ??= new PrivateKey();
+            consensusPrivateKey ??= new PrivateKey();
+
             validators ??= new List<PublicKey>()
             {
-                privateKey.PublicKey,
+                consensusPrivateKey.PublicKey,
             };
 
             var swarm = new Swarm<T>(
@@ -148,13 +153,14 @@ namespace Libplanet.Net.Tests
                 appProtocolVersion ?? DefaultAppProtocolVersion,
                 nodeId,
                 validators,
-                5,
-                host,
-                listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners,
-                options);
+                consensusPrivateKey,
+                workers: 5,
+                host: host,
+                listenPort: listenPort,
+                iceServers: iceServers,
+                differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners: trustedAppProtocolVersionSigners,
+                options: options);
             _finalizers.Add(async () =>
             {
                 try

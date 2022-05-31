@@ -55,6 +55,15 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
         /// <param name="nodeId">(Experimental) The Id of Node.</param>
         /// <param name="validators">(Experimental) The fixed list of validator set.</param>
+        /// <param name="consensusPrivateKey">(Experimental) The private key that is using
+        /// for Consensus Routing/Transporting/Signing.</param>
+        /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
+        /// <param name="consensusWorkers">(Experimental) The number of background workers for
+        /// Consensus transport.</param>
+        /// <param name="consensusTableSize">(Experimental) The Table size of Routing table for
+        /// ConsensusReactor.</param>
+        /// <param name="consensusTableBucket">(Experimental) The Bucket size of Routing table
+        /// for ConsensusReactor.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -79,6 +88,11 @@ namespace Libplanet.Net
             AppProtocolVersion appProtocolVersion,
             long nodeId,
             List<PublicKey> validators,
+            PrivateKey consensusPrivateKey,
+            int? consensusPort = null,
+            int consensusWorkers = 100,
+            int consensusTableSize = 1000,
+            int consensusTableBucket = 1,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -110,6 +124,7 @@ namespace Libplanet.Net
 
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
+
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = InitializeTransport(
                 workers,
@@ -120,9 +135,20 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
+            ConsensusTransport = InitializeTransport(
+                consensusWorkers,
+                host,
+                consensusPort,
+                iceServers,
+                differentAppProtocolVersionEncountered);
+
+            ConsensusRoutingTable = new RoutingTable(
+                consensusPrivateKey.ToAddress(), consensusTableSize, consensusTableBucket);
             _consensusReactor = new ConsensusReactor<T>(
                 RoutingTable,
+                ConsensusRoutingTable,
                 Transport,
+                ConsensusTransport,
                 BlockChain,
                 privateKey,
                 nodeId,
@@ -208,9 +234,13 @@ namespace Libplanet.Net
 
         internal RoutingTable RoutingTable { get; }
 
+        internal RoutingTable ConsensusRoutingTable { get; }
+
         internal IProtocol PeerDiscovery { get; }
 
         internal ITransport Transport { get; private set; }
+
+        internal ITransport ConsensusTransport { get; private set; }
 
         internal TxCompletion<BoundPeer, T> TxCompletion { get; }
 
@@ -245,6 +275,7 @@ namespace Libplanet.Net
                 _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
                 Transport?.Dispose();
+                _consensusReactor.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -269,6 +300,7 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
+                await _consensusReactor.StopAsync(cancellationToken);
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -385,6 +417,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
+                tasks.AddRange(await _consensusReactor.StartAsync(cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(

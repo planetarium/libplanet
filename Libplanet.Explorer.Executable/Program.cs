@@ -225,6 +225,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     Console.Error.WriteLine("Creating Swarm.");
 
                     var privateKey = new PrivateKey();
+                    var consensusPrivateKey = new PrivateKey();
 
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
@@ -244,7 +245,11 @@ If omitted (default) explorer only the local blockchain store.")]
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions,
                         nodeId: 0,
-                        validators: null
+                        validators: new List<PublicKey>()
+                        {
+                            consensusPrivateKey.PublicKey,
+                        },
+                        consensusPrivateKey: consensusPrivateKey
                     );
                 }
 

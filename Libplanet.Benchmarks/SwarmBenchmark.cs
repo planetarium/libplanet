@@ -54,6 +54,7 @@ namespace Libplanet.Benchmarks
         public void InitializeSwarms()
         {
             _keys = TestUtils.AdjacentKeys;
+            var consensusKeys = new PrivateKey[SwarmNumber];
             _fxs = new DefaultStoreFixture[SwarmNumber];
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
@@ -65,6 +66,7 @@ namespace Libplanet.Benchmarks
             for (int i = 0; i < SwarmNumber; i++)
             {
                 _keys[i] = _keys[i] ?? new PrivateKey();
+                consensusKeys[i] = consensusKeys[i] ?? new PrivateKey();
                 _fxs[i] = new DefaultStoreFixture(memory: true);
                 _blockChains[i] = new BlockChain<DumbAction>(
                     _policy, _stagePolicy, _fxs[i].Store, _fxs[i].StateStore, _blocks[0]);
@@ -72,11 +74,12 @@ namespace Libplanet.Benchmarks
                     _blockChains[i],
                     _keys[i],
                     _appProtocolVersion,
+                    consensusPrivateKey: consensusKeys[i],
                     host: IPAddress.Loopback.ToString(),
                     nodeId: i,
                     validators: new List<PublicKey>()
                     {
-                        _keys[i].PublicKey,
+                        consensusKeys[i].PublicKey,
                     });
                 tasks.Add(StartAsync(_swarms[i]));
             }
