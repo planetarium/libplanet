@@ -96,7 +96,7 @@ namespace Libplanet.Net.Consensus
 
         public void HandleMessage(ConsensusMessage message)
         {
-            Log.Debug(
+            _logger.Debug(
                 "NodeID: {Id}, Height: {Height}, Round: {Round}, " +
                 "State: {State}, HandleMessage: {@Message},",
                 _context.NodeId,
@@ -123,7 +123,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            Log.Debug(
+            _logger.Debug(
                 "Propose Block: {Hash}, Proposer: {NodeId}, Height: {Height}, Round: {Round}",
                 blockHash,
                 _context.NodeId,

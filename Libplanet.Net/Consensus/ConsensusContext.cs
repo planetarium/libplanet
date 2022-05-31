@@ -229,7 +229,7 @@ namespace Libplanet.Net.Consensus
             }
             catch (Exception e)
             {
-                Log.Error(e, "Handle throws exception: {E}", e);
+                _logger.Error(e, "Handle throws exception: {E}", e);
             }
 
             SetTimeoutByState(beforeRoundContext);
