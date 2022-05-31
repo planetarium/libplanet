@@ -91,7 +91,7 @@ namespace Libplanet.Stun.Messages
         /// </returns>
         public static async Task<StunMessage> ParseAsync(
             Stream stream,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var header = new byte[20];
             await stream.ReadAsync(header, 0, 20, cancellationToken);

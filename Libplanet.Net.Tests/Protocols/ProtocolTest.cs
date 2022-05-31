@@ -233,7 +233,7 @@ namespace Libplanet.Net.Tests.Protocols
 
             await transportB.StopAsync(TimeSpan.Zero);
             await Task.Delay(100);
-            await transportA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            await transportA.Protocol.RefreshTableAsync(TimeSpan.Zero, default);
             Assert.Empty(transportA.Peers);
 
             transportA.Dispose();
@@ -292,8 +292,8 @@ namespace Libplanet.Net.Tests.Protocols
             Assert.DoesNotContain(transportC.AsPeer, transport.Peers);
 
             await transportA.StopAsync(TimeSpan.Zero);
-            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default);
+            await transport.Protocol.CheckReplacementCacheAsync(default);
 
             Assert.Single(transport.Peers);
             Assert.DoesNotContain(transportA.AsPeer, transport.Peers);
@@ -330,8 +330,8 @@ namespace Libplanet.Net.Tests.Protocols
             await transportB.StopAsync(TimeSpan.Zero);
 
             await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
-            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default);
+            await transport.Protocol.CheckReplacementCacheAsync(default);
 
             Assert.Single(transport.Peers);
             Assert.DoesNotContain(transportA.AsPeer, transport.Peers);
@@ -580,7 +580,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         private async Task StartTestTransportAsync(
             TestTransport transport,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             _ = transport.StartAsync(cancellationToken);
             await transport.WaitForRunningAsync();

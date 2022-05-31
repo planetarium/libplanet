@@ -322,12 +322,12 @@ namespace Libplanet.Net.Tests
                 await Task.Delay(100);
                 await swarm.PeerDiscovery.RefreshTableAsync(
                     TimeSpan.Zero,
-                    default(CancellationToken));
+                    default);
                 // Invoke once more in case of swarmA and swarmB is in the same bucket,
                 // and swarmA is last updated.
                 await swarm.PeerDiscovery.RefreshTableAsync(
                     TimeSpan.Zero,
-                    default(CancellationToken));
+                    default);
                 Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
                 Assert.Contains(swarmB.AsPeer, swarm.Peers);
 

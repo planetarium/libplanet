@@ -139,7 +139,7 @@ namespace Libplanet.Stun
 
         public async Task<IPEndPoint> AllocateRequestAsync(
             TimeSpan lifetime,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             NetworkStream stream = _control.GetStream();
             StunMessage response;
@@ -172,7 +172,7 @@ namespace Libplanet.Stun
 
         public async Task CreatePermissionAsync(
             IPEndPoint peerAddress,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
@@ -190,7 +190,7 @@ namespace Libplanet.Stun
         }
 
         public async Task<NetworkStream> AcceptRelayedStreamAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             while (true)
             {
@@ -227,7 +227,7 @@ namespace Libplanet.Stun
         }
 
         public async Task<IPEndPoint> GetMappedAddressAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
@@ -249,7 +249,7 @@ namespace Libplanet.Stun
 
         public async Task<TimeSpan> RefreshAllocationAsync(
             TimeSpan lifetime,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
@@ -275,14 +275,14 @@ namespace Libplanet.Stun
         }
 
         public async Task<bool> IsBehindNAT(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IPEndPoint mapped = await GetMappedAddressAsync(cancellationToken);
             return !_control.Client.LocalEndPoint.Equals(mapped);
         }
 
         public async Task<bool> IsConnectable(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             try
             {
@@ -314,7 +314,7 @@ namespace Libplanet.Stun
 
         public async Task BindProxies(
             int listenPort,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -346,7 +346,7 @@ namespace Libplanet.Stun
         private List<Task> BindMultipleProxies(
             int listenPort,
             int count,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Enumerable.Range(1, count)
                 .Select(x => BindProxies(listenPort, cancellationToken))
