@@ -384,7 +384,7 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task RecommitFailedBlockWoNet()
         {
             const int count = 4;
