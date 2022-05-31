@@ -16,8 +16,8 @@ To be released.
 
 ### Added APIs
 
- -  (Libplanet.Node) Added `NetworkConfiguration` class.  [[#1946], [#2000]]
- -  (Libplanet.Node) Added `NodeConfiguration` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NetworkConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeConfig` class.  [[#1946], [#2000]]
  -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
  -  (Libplanet.Node) Added `SwarmConfig`, `InitConfig`, `BootstrapConfig`
     `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
