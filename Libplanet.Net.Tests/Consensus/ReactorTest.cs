@@ -47,20 +47,22 @@ namespace Libplanet.Net.Tests.Consensus
         public abstract IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? blockTable = null,
-            RoutingTable? messageTable = null,
+            RoutingTable? swarmTable = null,
+            RoutingTable? consensusTable = null,
             string host = "localhost",
-            int port = 5001,
+            int swarmPort = 5001,
+            int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!);
 
         public abstract ConsensusReactor<DumbAction> CreateConcreteReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? blockTable = null,
-            RoutingTable? messageTable = null,
+            RoutingTable? swarmTable = null,
+            RoutingTable? consensusTable = null,
             string host = "localhost",
-            int port = 5001,
+            int swarmPort = 5001,
+            int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!);
 
@@ -84,7 +86,12 @@ namespace Libplanet.Net.Tests.Consensus
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
-            var reactor = CreateReactor(blockChain, key, port: 11001, validators: validators);
+            var reactor = CreateReactor(
+                blockChain,
+                key,
+                swarmPort: 11001,
+                consensusPort: 11101,
+                validators: validators);
 
             try
             {
@@ -151,13 +158,13 @@ namespace Libplanet.Net.Tests.Consensus
         public async void Propose()
         {
             const int count = 4;
-            // INFO : This test uses local ports 6000 to 6003.
-            const int blockPort = 6000;
-            const int messagePort = blockPort + 1000;
+            // INFO : This test uses local ports 6000 to 6003, 6100 to 6103.
+            const int swarmPort = 6000;
+            const int consensusPort = 6100;
 
             const int propagationDelay = 4000;
             var keys = new PrivateKey[count];
-            var messageTables = new RoutingTable[count];
+            var consensusTables = new RoutingTable[count];
             var reactors = new IReactor[count];
             var validators = new List<PublicKey>();
             var stores = new IStore[count];
@@ -166,7 +173,7 @@ namespace Libplanet.Net.Tests.Consensus
             for (var i = 0; i < count; i++)
             {
                 keys[i] = new PrivateKey();
-                messageTables[i] = new RoutingTable(keys[i].ToAddress());
+                consensusTables[i] = new RoutingTable(keys[i].ToAddress());
                 validators.Add(keys[i].PublicKey);
                 stores[i] = new MemoryStore();
                 blockChains[i] = new BlockChain<DumbAction>(
@@ -182,8 +189,9 @@ namespace Libplanet.Net.Tests.Consensus
                 reactors[i] = CreateReactor(
                     blockChain: blockChains[i],
                     key: keys[i],
-                    messageTable: messageTables[i],
-                    port: blockPort + i,
+                    consensusTable: consensusTables[i],
+                    swarmPort: swarmPort + i,
+                    consensusPort: consensusPort + i,
                     id: i,
                     validators: validators);
             }
@@ -204,10 +212,10 @@ namespace Libplanet.Net.Tests.Consensus
                             continue;
                         }
 
-                        messageTables[i].AddPeer(
+                        consensusTables[i].AddPeer(
                             new BoundPeer(
                                 keys[j].PublicKey,
-                                new DnsEndPoint("localhost", messagePort + j)));
+                                new DnsEndPoint("localhost", consensusPort + j)));
                     }
                 }
 
@@ -288,13 +296,13 @@ namespace Libplanet.Net.Tests.Consensus
         public async void VoteHoldingIfBlockNotPresent()
         {
             const int count = 4;
-            // INFO : This test uses local ports 7000 to 7003.
-            const int blockPort = 7000;
-            const int messagePort = blockPort + 1000;
+            // INFO : This test uses local ports 7000 to 7003, 7100 to 7103.
+            const int swarmPort = 7000;
+            const int consensusPort = 7100;
             const int propagationDelay = 4000;
 
             var keys = new PrivateKey[count];
-            var messageTables = new RoutingTable[count];
+            var consensusTables = new RoutingTable[count];
             var reactors = new ConsensusReactor<DumbAction>[count];
             var validators = new List<PublicKey>();
             var stores = new IStore[count];
@@ -303,7 +311,7 @@ namespace Libplanet.Net.Tests.Consensus
             for (var i = 0; i < count; i++)
             {
                 keys[i] = new PrivateKey();
-                messageTables[i] = new RoutingTable(keys[i].ToAddress());
+                consensusTables[i] = new RoutingTable(keys[i].ToAddress());
                 validators.Add(keys[i].PublicKey);
                 stores[i] = new MemoryStore();
                 blockChains[i] = new BlockChain<DumbAction>(
@@ -319,8 +327,9 @@ namespace Libplanet.Net.Tests.Consensus
                 reactors[i] = CreateConcreteReactor(
                     blockChain: blockChains[i],
                     key: keys[i],
-                    messageTable: messageTables[i],
-                    port: blockPort + i,
+                    consensusTable: consensusTables[i],
+                    swarmPort: swarmPort + i,
+                    consensusPort: consensusPort + i,
                     id: i,
                     validators: validators);
             }
@@ -341,10 +350,10 @@ namespace Libplanet.Net.Tests.Consensus
                             continue;
                         }
 
-                        messageTables[i].AddPeer(
+                        consensusTables[i].AddPeer(
                             new BoundPeer(
                                 keys[j].PublicKey,
-                                new DnsEndPoint("localhost", messagePort + j)));
+                                new DnsEndPoint("localhost", consensusPort + j)));
                     }
                 }
 
@@ -379,12 +388,12 @@ namespace Libplanet.Net.Tests.Consensus
         public async Task RecommitFailedBlockWoNet()
         {
             const int count = 4;
-            // INFO : This test uses local ports 8000 to 8003.
-            const int blockPort = 8000;
-            const int messagePort = blockPort + 1000;
+            // INFO : This test uses local ports 8000 to 8003, 8100 to 8103.
+            const int swarmPort = 8000;
+            const int consensusPort = 8100;
 
             var keys = new PrivateKey[count];
-            var messageTables = new RoutingTable[count];
+            var consensusTables = new RoutingTable[count];
             var reactors = new ConsensusReactor<DumbAction>[count];
             var validators = new List<PublicKey>();
             var stores = new IStore[count];
@@ -393,7 +402,7 @@ namespace Libplanet.Net.Tests.Consensus
             for (var i = 0; i < count; i++)
             {
                 keys[i] = new PrivateKey();
-                messageTables[i] = new RoutingTable(keys[i].ToAddress());
+                consensusTables[i] = new RoutingTable(keys[i].ToAddress());
                 validators.Add(keys[i].PublicKey);
                 stores[i] = new MemoryStore();
                 blockChains[i] = new BlockChain<DumbAction>(
@@ -409,8 +418,9 @@ namespace Libplanet.Net.Tests.Consensus
                 reactors[i] = CreateConcreteReactor(
                     blockChain: blockChains[i],
                     key: keys[i],
-                    messageTable: messageTables[i],
-                    port: blockPort + i,
+                    consensusTable: consensusTables[i],
+                    swarmPort: swarmPort + i,
+                    consensusPort: consensusPort + i,
                     id: i,
                     validators: validators);
             }
@@ -431,10 +441,10 @@ namespace Libplanet.Net.Tests.Consensus
                             continue;
                         }
 
-                        messageTables[i].AddPeer(
+                        consensusTables[i].AddPeer(
                             new BoundPeer(
                                 keys[j].PublicKey,
-                                new DnsEndPoint("localhost", messagePort + j)));
+                                new DnsEndPoint("localhost", consensusPort + j)));
                     }
                 }
 
@@ -505,7 +515,12 @@ namespace Libplanet.Net.Tests.Consensus
                 _fx.Store,
                 _fx.StateStore,
                 _fx.GenesisBlock);
-            IReactor reactor = CreateReactor(blockChain, key1, port: 5123, validators: validators);
+            IReactor reactor = CreateReactor(
+                blockChain,
+                key1,
+                swarmPort: 5123,
+                consensusPort: 5124,
+                validators: validators);
             Assert.Null(reactor.VoteSetOf(0));
         }
     }

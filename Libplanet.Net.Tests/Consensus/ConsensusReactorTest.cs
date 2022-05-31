@@ -28,39 +28,40 @@ namespace Libplanet.Net.Tests.Consensus
         public override IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? blockTable = null,
-            RoutingTable? messageTable = null,
+            RoutingTable? swarmTable = null,
+            RoutingTable? consensusTable = null,
             string host = "localhost",
-            int port = 5001,
+            int swarmPort = 5001,
+            int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!)
         {
             key ??= new PrivateKey();
-            var blockTransport = new NetMQTransport(
+            var swarmTransport = new NetMQTransport(
                 key,
                 TestUtils.AppProtocolVersion,
                 null,
                 8,
                 host,
-                port,
+                swarmPort,
                 Array.Empty<IceServer>(),
                 null);
 
-            var messageTransport = new NetMQTransport(
+            var consensusTransport = new NetMQTransport(
                 key,
                 TestUtils.AppProtocolVersion,
                 null,
                 8,
                 host,
-                port + 1000,
+                consensusPort,
                 Array.Empty<IceServer>(),
                 null);
 
             return new ConsensusReactor<DumbAction>(
-                blockTable ?? new RoutingTable(key.ToAddress()),
-                messageTable ?? new RoutingTable(key.ToAddress()),
-                blockTransport,
-                messageTransport,
+                swarmTable ?? new RoutingTable(key.ToAddress()),
+                consensusTable ?? new RoutingTable(key.ToAddress()),
+                swarmTransport,
+                consensusTransport,
                 blockChain,
                 key,
                 id,
@@ -70,20 +71,22 @@ namespace Libplanet.Net.Tests.Consensus
         public override ConsensusReactor<DumbAction> CreateConcreteReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            RoutingTable? blockTable = null,
-            RoutingTable? messageTable = null,
+            RoutingTable? swarmTable = null,
+            RoutingTable? consensusTable = null,
             string host = "localhost",
-            int port = 5001,
+            int swarmPort = 5001,
+            int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!)
         {
             return (ConsensusReactor<DumbAction>)CreateReactor(
                 blockChain,
                 key,
-                blockTable,
-                messageTable,
+                swarmTable,
+                consensusTable,
                 host,
-                port,
+                swarmPort,
+                consensusPort,
                 id,
                 validators);
         }

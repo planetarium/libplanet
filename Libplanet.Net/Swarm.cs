@@ -135,20 +135,20 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
-            MessageTransport = InitializeTransport(
+            ConsensusTransport = InitializeTransport(
                 consensusWorkers,
                 host,
                 consensusPort,
                 iceServers,
                 differentAppProtocolVersionEncountered);
 
-            MessageRoutingTable = new RoutingTable(
+            ConsensusRoutingTable = new RoutingTable(
                 consensusPrivateKey.ToAddress(), consensusTableSize, consensusTableBucket);
             _consensusReactor = new ConsensusReactor<T>(
                 RoutingTable,
-                MessageRoutingTable,
+                ConsensusRoutingTable,
                 Transport,
-                MessageTransport,
+                ConsensusTransport,
                 BlockChain,
                 privateKey,
                 nodeId,
@@ -234,13 +234,13 @@ namespace Libplanet.Net
 
         internal RoutingTable RoutingTable { get; }
 
-        internal RoutingTable MessageRoutingTable { get; }
+        internal RoutingTable ConsensusRoutingTable { get; }
 
         internal IProtocol PeerDiscovery { get; }
 
         internal ITransport Transport { get; private set; }
 
-        internal ITransport MessageTransport { get; private set; }
+        internal ITransport ConsensusTransport { get; private set; }
 
         internal TxCompletion<BoundPeer, T> TxCompletion { get; }
 
