@@ -275,6 +275,7 @@ namespace Libplanet.Net
                 _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
                 Transport?.Dispose();
+                _consensusReactor.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -299,6 +300,7 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
+                await _consensusReactor.StopAsync(cancellationToken);
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -415,6 +417,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
+                tasks.AddRange(await _consensusReactor.StartAsync(cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
