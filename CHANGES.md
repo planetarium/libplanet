@@ -17,7 +17,7 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
- -  Added `PrivateKey(string)` constructor for hexadecimal string. [[#2012, #2022]]
+ -  Added `PrivateKey(string)` constructor for hexadecimal string. [[#2012], [#2022]]
 
 ### Bug fixes
 
