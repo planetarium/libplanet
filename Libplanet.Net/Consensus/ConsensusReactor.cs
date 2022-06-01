@@ -49,6 +49,8 @@ namespace Libplanet.Net.Consensus
             _consensusRoutingTable = consensusRoutingTable;
 
             _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "Reactor")
                 .ForContext<ConsensusReactor<T>>()
                 .ForContext("Source", nameof(ConsensusReactor<T>));
             _privateKey = privateKey;

@@ -56,6 +56,8 @@ namespace Libplanet.Net.Consensus
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
             VoteSets = new Dictionary<long, VoteSet?>();
             _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "Context")
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
 
