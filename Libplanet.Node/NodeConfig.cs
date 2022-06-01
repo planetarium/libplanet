@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Renderers;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
@@ -33,18 +35,22 @@ namespace Libplanet.Node
         /// <param name="store">The <see cref="IStore"/> to use for storing chain data.</param>
         /// <param name="stateStore">The <see cref="IStateStore"/> to use for storing state data.
         /// </param>
+        /// <param name="renderers">The <see cref="IRenderer{T}"/>s for rendering events when
+        /// <see cref="BlockChain{T}.Tip"/> changes.</param>
         public NodeConfig(
             PrivateKey privateKey,
             NetworkConfig<T> networkConfig,
             SwarmConfig swarmConfig,
             IStore store,
-            IStateStore stateStore)
+            IStateStore stateStore,
+            IEnumerable<IRenderer<T>>? renderers)
         {
             _privateKey = privateKey;
             NetworkConfig = networkConfig;
             SwarmConfig = swarmConfig;
             Store = store;
             StateStore = stateStore;
+            Renderers = renderers;
         }
 
         /// <summary>
@@ -68,6 +74,12 @@ namespace Libplanet.Node
         public IStateStore StateStore { get; private set; }
 
         /// <summary>
+        /// The <see cref="IRenderer{T}"/>s for rendering events when
+        /// <see cref="BlockChain{T}.Tip"/> changes.
+        /// </summary>
+        public IEnumerable<IRenderer<T>>? Renderers { get; private set; }
+
+        /// <summary>
         /// Creates a new <see cref="BlockChain{T}"/> instance.
         /// </summary>
         /// <returns>A new <see cref="BlockChain{T}"/> instance.</returns>
@@ -78,7 +90,8 @@ namespace Libplanet.Node
                 stagePolicy: NetworkConfig.StagePolicy,
                 genesisBlock: NetworkConfig.GenesisBlock,
                 store: Store,
-                stateStore: StateStore);
+                stateStore: StateStore,
+                renderers: Renderers);
         }
 
         /// <summary>
