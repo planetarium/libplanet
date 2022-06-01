@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 0.37.0
+Version 0.38.0
 --------------
 
 To be released.
@@ -27,6 +27,49 @@ To be released.
 
 [#2012]: https://github.com/planetarium/libplanet/issues/2012
 [#2022]: https://github.com/planetarium/libplanet/pull/2022
+
+Version 0.37.0
+--------------
+
+Released on May 30th, 2022.
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Net) Removed `SwarmOptions.BootstrapDialTimeout`.
+    Use `SwarmOptions.BootstrapOptions.DialTimeout` instead.  [[#2024]]
+ -  (Libplanet.Net) Added `Swarm<T>.BootstrapAsync(CancellationToken)`
+    which utilizes values stored in `BootstrapOptions`.  [[#2024]]
+ -  (Libplanet.Net) Parameter name `depth` changed to `searchDepth` for
+    `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?, int,
+    CancellationToken)` and made non-optional.  [[#2024]]
+ -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, depth,
+    CancellationToken)` removed.  [[#2024]]
+ -  (Libplanet.Net) Removed `SwarmOptions.PreloadDialTimeout`.
+    Use `SwarmOptions.PreloadOptions.DialTimeout` instead.  [[#2025]]
+ -  (Libplanet.Net) Added `Swarm<T>.PreloadAsync(IProgress<PreloadState>, bool,
+    CancellationToken)`.  [[#2025]]
+ -  (Libplanet.Net) Changed the order of parameters from `Swarm<T>(TimeSpan,
+    IProgresss<PreloadState>, bool, long, CancellationToken)` to `Swarm<T>(
+    TimeSpan?, long, IProgress<PreloadState>, bool, CancellationToken)`
+    with default value for `tipDeltaThreshold` removed.  [[#2025]]
+ -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
+    and no longer accepts multiple Urls for single instance. [[#2026]]
+
+### Added APIs
+
+ -  (Libplanet.Net) Added `BootstrapOptions` class.  [[#2024]]
+ -  (Libplanet.Net) Added `BootstrapOptions` property to `SwarmOptions`.
+    [[#2024]]
+ -  (Libplanet.Net) Added `PreloadOptions` class.  [[#2025]]
+ -  (Libplanet.Net) Added `PreloadOptions` property to `SwarmOptions`.
+    [[#2025]]
+
+### CLI tools
+
+[#2024]: https://github.com/planetarium/libplanet/pull/2024
+[#2025]: https://github.com/planetarium/libplanet/pull/2025
+[#2026]: https://github.com/planetarium/libplanet/pull/2026
+
 
 Version 0.36.1
 --------------
