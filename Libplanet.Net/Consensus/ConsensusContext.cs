@@ -57,6 +57,8 @@ namespace Libplanet.Net.Consensus
             VoteSets = new Dictionary<long, VoteSet?>();
             Height = blockChain.Tip.Index;
             _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "Context")
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
 

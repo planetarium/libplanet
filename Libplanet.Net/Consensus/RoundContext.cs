@@ -17,6 +17,7 @@ namespace Libplanet.Net.Consensus
         private readonly object _lock;
         private readonly long _numberOfValidator;
         private readonly List<PublicKey> _validators;
+        private readonly ILogger _logger;
 
         public RoundContext(
             long nodeId,
@@ -40,6 +41,11 @@ namespace Libplanet.Net.Consensus
             Round = round;
             VoteSet = new VoteSet(Height, Round, BlockHash, validators.ToImmutableArray());
             _lock = new object();
+            _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "RoundContext")
+                .ForContext<RoundContext<T>>()
+                .ForContext("Source", nameof(RoundContext<T>));
         }
 
         public IState<T> State { get; internal set; }
@@ -99,7 +105,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                Log.Debug(
+                _logger.Debug(
                     "Vote({Vote}/{Commit}/{Total}) NodeID: {Id}, " +
                     "Validator: {Address}, Height: {Height}, Round: {Round}",
                     VoteCount,
@@ -111,7 +117,7 @@ namespace Libplanet.Net.Consensus
                     Round);
                 if (VoteSet.Add(vote))
                 {
-                    Log.Debug(
+                    _logger.Debug(
                         "Vote Success({Vote}/{Commit}/{Total}) NodeID: {Id}, " +
                         "Validator: {Address}, Height: {Height}, Round: {Round}",
                         VoteCount,
