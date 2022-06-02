@@ -55,6 +55,7 @@ namespace Libplanet.Net.Consensus
 
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
             VoteSets = new Dictionary<long, VoteSet?>();
+            Height = blockChain.Tip.Index;
             _logger = Log
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
