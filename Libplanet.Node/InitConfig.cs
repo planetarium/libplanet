@@ -40,12 +40,12 @@ namespace Libplanet.Node
         public int BlockLocatorIndexSampleThreshold { get; set; } = 10;
 
         /// <summary>
-        /// Determines the host.
+        /// Determines the host.  Set to <c>"localhost"</c> by default.
         /// </summary>
-        public string? Host { get; set; } = null;
+        public string? Host { get; set; } = "localhost";
 
         /// <summary>
-        /// Determines the <em>incoming</em> port.
+        /// Determines the <em>incoming</em> port.  Set to <c>null</c> by default.
         /// </summary>
         public int? Port { get; set; } = null;
 
