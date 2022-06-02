@@ -40,7 +40,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(validators),
-                    $"Number of validator should be greater than 0. ({validators.Count}is given)");
+                    $"Number of validator should be greater than 0. ({validators.Count} is given)");
             }
 
             NodeId = nodeId;
@@ -55,6 +55,7 @@ namespace Libplanet.Net.Consensus
 
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
             VoteSets = new Dictionary<long, VoteSet?>();
+            Height = blockChain.Tip.Index;
             _logger = Log
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
