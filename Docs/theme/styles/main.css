@@ -19,6 +19,10 @@
     "Courier New", monospace;
 }
 
+.container {
+    width: 100%;
+}
+
 .sideaffix, .sidetoc{
     overflow: scroll;
     scrollbar-width: none;
