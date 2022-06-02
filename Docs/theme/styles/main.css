@@ -19,6 +19,24 @@
     "Courier New", monospace;
 }
 
+.sideaffix, .sidetoc{
+    overflow: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sideaffix::-webkit-scrollbar, .sidetoc::-webkit-scrollbar{
+    display: none;
+}
+
+.affix ul > li.active > ul, .affix ul > li.active > a::before, .affix ul > li > a:hover::before{
+    white-space: unset;
+}
+
+.affix ul > li > a:hover {
+    color: var(--highlight-dark);
+}
+
 body {
     color: var(--font-color);
     font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, "Segoe UI",
