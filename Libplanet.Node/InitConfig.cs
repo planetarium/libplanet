@@ -53,6 +53,6 @@ namespace Libplanet.Node
         /// The list of <see cref="IceServers"/> to use when connecting to the network.
         /// If <see cref="Host"/> is provided, this gets ignored.
         /// </summary>
-        public List<IceServer> IceServers { get; set; } = new List<IceServer>();
+        public IEnumerable<IceServer> IceServers { get; set; } = new List<IceServer>();
     }
 }

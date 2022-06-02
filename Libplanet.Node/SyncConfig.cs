@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -39,8 +39,7 @@ namespace Libplanet.Node
         /// in a <see cref="RoutingTable"/>. <see cref="StaticPeers"/> are artificially added
         /// to a <see cref="RoutingTable"/> periodically.
         /// </remarks>
-        public ImmutableHashSet<BoundPeer> StaticPeers { get; set; }
-            = ImmutableHashSet<BoundPeer>.Empty;
+        public IEnumerable<BoundPeer> StaticPeers { get; set; } = new List<BoundPeer>();
 
         /// <summary>
         /// Determines how often a <see cref="BoundPeer"/> from <see cref="StaticPeers"/> is

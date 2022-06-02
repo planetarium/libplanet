@@ -12,7 +12,7 @@ namespace Libplanet.Node
         /// <summary>
         /// The list of seed peers to connect to.
         /// </summary>
-        public List<BoundPeer> SeedPeers { get; set; } = new List<BoundPeer>();
+        public IEnumerable<BoundPeer> SeedPeers { get; set; } = new List<BoundPeer>();
 
         /// <summary>
         /// Determines the depth of the search when discovering neighbors for the local node.
