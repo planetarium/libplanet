@@ -10485,12 +10485,15 @@ references:
   commentId: T:Libplanet.Extensions.Cocona.Commands.ApvCommand
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand
   nameWithType: ApvCommand
-- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.String,System.Boolean)
-  name: Analyze(String, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_String_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.String,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.String, System.Boolean)
-  nameWithType: ApvCommand.Analyze(String, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable{System.String},System.Boolean)
+  name: Analyze(Nullable<String>, Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_System_Nullable_System_String__System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable{System.String},System.Boolean)
+  name.vb: Analyze(Nullable(Of String), Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable<System.String>, System.Boolean)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze(System.Nullable(Of System.String), System.Boolean)
+  nameWithType: ApvCommand.Analyze(Nullable<String>, Boolean)
+  nameWithType.vb: ApvCommand.Analyze(Nullable(Of String), Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Analyze*
   name: Analyze
   href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Analyze_
@@ -10511,15 +10514,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Query
   nameWithType: ApvCommand.Query
-- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,System.String[])
-  name: Sign(Guid, Int32, PassphraseParameters, String, String[])
-  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_System_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_System_String___
-  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.String,System.String[])
-  name.vb: Sign(Guid, Int32, PassphraseParameters, String, String())
-  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid, System.Int32, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, System.String[])
-  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(System.Guid, System.Int32, Libplanet.Extensions.Cocona.PassphraseParameters, System.String, System.String())
-  nameWithType: ApvCommand.Sign(Guid, Int32, PassphraseParameters, String, String[])
-  nameWithType.vb: ApvCommand.Sign(Guid, Int32, PassphraseParameters, String, String())
+- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String},System.String[])
+  name: Sign(Guid, Int32, PassphraseParameters, Nullable<String>, String[])
+  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_Guid_System_Int32_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__System_String___
+  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid,System.Int32,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String},System.String[])
+  name.vb: Sign(Guid, Int32, PassphraseParameters, Nullable(Of String), String())
+  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid, System.Int32, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable<System.String>, System.String[])
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign(Guid, System.Int32, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable(Of System.String), System.String())
+  nameWithType: ApvCommand.Sign(Guid, Int32, PassphraseParameters, Nullable<String>, String[])
+  nameWithType.vb: ApvCommand.Sign(Guid, Int32, PassphraseParameters, Nullable(Of String), String())
 - uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign*
   name: Sign
   href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Sign_
@@ -10527,15 +10530,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Sign
   nameWithType: ApvCommand.Sign
-- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,System.String[],System.Boolean)
-  name: Verify(String, String[], Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_String_System_String___System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String,System.String[],System.Boolean)
-  name.vb: Verify(String, String(), Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, System.String[], System.Boolean)
-  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.String, System.String(), System.Boolean)
-  nameWithType: ApvCommand.Verify(String, String[], Boolean)
-  nameWithType.vb: ApvCommand.Verify(String, String(), Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable{System.String},System.String[],System.Boolean)
+  name: Verify(Nullable<String>, String[], Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_System_Nullable_System_String__System_String___System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable{System.String},System.String[],System.Boolean)
+  name.vb: Verify(Nullable(Of String), String(), Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable<System.String>, System.String[], System.Boolean)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify(System.Nullable(Of System.String), System.String(), System.Boolean)
+  nameWithType: ApvCommand.Verify(Nullable<String>, String[], Boolean)
+  nameWithType.vb: ApvCommand.Verify(Nullable(Of String), String(), Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify*
   name: Verify
   href: api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html#Libplanet_Extensions_Cocona_Commands_ApvCommand_Verify_
@@ -10600,11 +10603,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create
   nameWithType: KeyCommand.Create
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
   name: Export(Guid, PassphraseParameters, Boolean, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean)
   nameWithType: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export*
   name: Export
@@ -10665,11 +10668,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.List
   nameWithType: KeyCommand.List
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
   name: Remove(Guid, PassphraseParameters, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Remove_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Remove_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean)
   nameWithType: KeyCommand.Remove(Guid, PassphraseParameters, Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove*
   name: Remove
@@ -10678,12 +10681,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove
   nameWithType: KeyCommand.Remove
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.String)
-  name: Sign(Guid, String, PassphraseParameters, String)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_System_Guid_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_String_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.String)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(System.Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.String)
-  nameWithType: KeyCommand.Sign(Guid, String, PassphraseParameters, String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String})
+  name: Sign(Guid, String, PassphraseParameters, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_Guid_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String})
+  name.vb: Sign(Guid, String, PassphraseParameters, Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable<String>)
+  nameWithType.vb: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign*
   name: Sign
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_
@@ -10691,11 +10697,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign
   nameWithType: KeyCommand.Sign
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
   name: UnprotectKey(Guid, PassphraseParameters, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_UnprotectKey_System_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(System.Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(System.Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_UnprotectKey_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean)
   nameWithType: KeyCommand.UnprotectKey(Guid, PassphraseParameters, Boolean)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.UnprotectKey*
   name: UnprotectKey
@@ -10950,13 +10956,13 @@ references:
   commentId: T:Libplanet.Extensions.Cocona.Configuration.MptConfiguration
   fullName: Libplanet.Extensions.Cocona.Configuration.MptConfiguration
   nameWithType: MptConfiguration
-- uid: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.#ctor(System.Collections.Generic.Dictionary{System.String,System.String})
+- uid: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.#ctor(Dictionary{System.String,System.String})
   name: MptConfiguration(Dictionary<String, String>)
-  href: api/Libplanet.Extensions.Cocona.Configuration.MptConfiguration.html#Libplanet_Extensions_Cocona_Configuration_MptConfiguration__ctor_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Libplanet.Extensions.Cocona.Configuration.MptConfiguration.#ctor(System.Collections.Generic.Dictionary{System.String,System.String})
+  href: api/Libplanet.Extensions.Cocona.Configuration.MptConfiguration.html#Libplanet_Extensions_Cocona_Configuration_MptConfiguration__ctor_Dictionary_System_String_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Configuration.MptConfiguration.#ctor(Dictionary{System.String,System.String})
   name.vb: MptConfiguration(Dictionary(Of String, String))
-  fullName: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.MptConfiguration(System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.MptConfiguration(System.Collections.Generic.Dictionary(Of System.String, System.String))
+  fullName: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.MptConfiguration(Dictionary<System.String, System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.MptConfiguration(Dictionary(Of System.String, System.String))
   nameWithType: MptConfiguration.MptConfiguration(Dictionary<String, String>)
   nameWithType.vb: MptConfiguration.MptConfiguration(Dictionary(Of String, String))
 - uid: Libplanet.Extensions.Cocona.Configuration.MptConfiguration.#ctor*
@@ -11087,12 +11093,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.PassphraseParameters.PassphraseFile
   nameWithType: PassphraseParameters.PassphraseFile
-- uid: Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String,System.String,System.Boolean)
-  name: Take(String, String, Boolean)
-  href: api/Libplanet.Extensions.Cocona.PassphraseParameters.html#Libplanet_Extensions_Cocona_PassphraseParameters_Take_System_String_System_String_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String,System.String,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String, System.String, System.Boolean)
-  nameWithType: PassphraseParameters.Take(String, String, Boolean)
+- uid: Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String,System.Nullable{System.String},System.Boolean)
+  name: Take(String, Nullable<String>, Boolean)
+  href: api/Libplanet.Extensions.Cocona.PassphraseParameters.html#Libplanet_Extensions_Cocona_PassphraseParameters_Take_System_String_System_Nullable_System_String__System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String,System.Nullable{System.String},System.Boolean)
+  name.vb: Take(String, Nullable(Of String), Boolean)
+  fullName: Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String, System.Nullable<System.String>, System.Boolean)
+  fullName.vb: Libplanet.Extensions.Cocona.PassphraseParameters.Take(System.String, System.Nullable(Of System.String), System.Boolean)
+  nameWithType: PassphraseParameters.Take(String, Nullable<String>, Boolean)
+  nameWithType.vb: PassphraseParameters.Take(String, Nullable(Of String), Boolean)
 - uid: Libplanet.Extensions.Cocona.PassphraseParameters.Take*
   name: Take
   href: api/Libplanet.Extensions.Cocona.PassphraseParameters.html#Libplanet_Extensions_Cocona_PassphraseParameters_Take_
@@ -11313,31 +11322,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Utils.PrintTable
   nameWithType: Utils.PrintTable
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``1(System.ValueTuple{``0},System.Collections.Generic.IEnumerable{System.ValueTuple{``0}})
-  name: PrintTable<T1>((T1), IEnumerable<(T1)>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__1_System_ValueTuple___0__System_Collections_Generic_IEnumerable_System_ValueTuple___0___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``1(System.ValueTuple{``0},System.Collections.Generic.IEnumerable{System.ValueTuple{``0}})
-  name.vb: PrintTable(Of T1)((T1)(Of T1), IEnumerable(Of (T1)(Of T1)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1>(System.ValueTuple<T1>, System.Collections.Generic.IEnumerable<System.ValueTuple<T1>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1)(System.ValueTuple(Of T1), System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of T1)))
-  nameWithType: Utils.PrintTable<T1>((T1), IEnumerable<(T1)>)
-  nameWithType.vb: Utils.PrintTable(Of T1)((T1)(Of T1), IEnumerable(Of (T1)(Of T1)))
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1}})
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{``0},IEnumerable{ValueTuple{``0}})
+  name: PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__1_ValueTuple___0__IEnumerable_ValueTuple___0___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``1(ValueTuple{``0},IEnumerable{ValueTuple{``0}})
+  name.vb: PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
+  nameWithType: Utils.PrintTable<T1>(ValueTuple<T1>, IEnumerable<ValueTuple<T1>>)
+  nameWithType.vb: Utils.PrintTable(Of T1)(ValueTuple(Of T1), IEnumerable(Of ValueTuple(Of T1)))
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},IEnumerable{System.ValueTuple{``0,``1}})
   name: PrintTable<T1, T2>((T1, T2), IEnumerable<(T1, T2)>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__2_System_ValueTuple___0___1__System_Collections_Generic_IEnumerable_System_ValueTuple___0___1___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1}})
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__2_System_ValueTuple___0___1__IEnumerable_System_ValueTuple___0___1___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``2(System.ValueTuple{``0,``1},IEnumerable{System.ValueTuple{``0,``1}})
   name.vb: PrintTable(Of T1, T2)((T1, T2)(Of T1, T2), IEnumerable(Of (T1, T2)(Of T1, T2)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2>(System.ValueTuple<T1, T2>, System.Collections.Generic.IEnumerable<System.ValueTuple<T1, T2>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2)(System.ValueTuple(Of T1, T2), System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of T1, T2)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2>(System.ValueTuple<T1, T2>, IEnumerable<System.ValueTuple<T1, T2>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2)(System.ValueTuple(Of T1, T2), IEnumerable(Of System.ValueTuple(Of T1, T2)))
   nameWithType: Utils.PrintTable<T1, T2>((T1, T2), IEnumerable<(T1, T2)>)
   nameWithType.vb: Utils.PrintTable(Of T1, T2)((T1, T2)(Of T1, T2), IEnumerable(Of (T1, T2)(Of T1, T2)))
-- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1,``2}})
+- uid: Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},IEnumerable{System.ValueTuple{``0,``1,``2}})
   name: PrintTable<T1, T2, T3>((T1, T2, T3), IEnumerable<(T1, T2, T3)>)
-  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__3_System_ValueTuple___0___1___2__System_Collections_Generic_IEnumerable_System_ValueTuple___0___1___2___
-  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},System.Collections.Generic.IEnumerable{System.ValueTuple{``0,``1,``2}})
+  href: api/Libplanet.Extensions.Cocona.Utils.html#Libplanet_Extensions_Cocona_Utils_PrintTable__3_System_ValueTuple___0___1___2__IEnumerable_System_ValueTuple___0___1___2___
+  commentId: M:Libplanet.Extensions.Cocona.Utils.PrintTable``3(System.ValueTuple{``0,``1,``2},IEnumerable{System.ValueTuple{``0,``1,``2}})
   name.vb: PrintTable(Of T1, T2, T3)((T1, T2, T3)(Of T1, T2, T3), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
-  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2, T3>(System.ValueTuple<T1, T2, T3>, System.Collections.Generic.IEnumerable<System.ValueTuple<T1, T2, T3>>)
-  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2, T3)(System.ValueTuple(Of T1, T2, T3), System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of T1, T2, T3)))
+  fullName: Libplanet.Extensions.Cocona.Utils.PrintTable<T1, T2, T3>(System.ValueTuple<T1, T2, T3>, IEnumerable<System.ValueTuple<T1, T2, T3>>)
+  fullName.vb: Libplanet.Extensions.Cocona.Utils.PrintTable(Of T1, T2, T3)(System.ValueTuple(Of T1, T2, T3), IEnumerable(Of System.ValueTuple(Of T1, T2, T3)))
   nameWithType: Utils.PrintTable<T1, T2, T3>((T1, T2, T3), IEnumerable<(T1, T2, T3)>)
   nameWithType.vb: Utils.PrintTable(Of T1, T2, T3)((T1, T2, T3)(Of T1, T2, T3), IEnumerable(Of (T1, T2, T3)(Of T1, T2, T3)))
 - uid: Libplanet.Extensions.Cocona.Utils.SerializeHumanReadable*
@@ -18755,6 +18764,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.RocksDBKeyValueStore
   nameWithType: RocksDBKeyValueStore.RocksDBKeyValueStore
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Delete(IEnumerable<KeyBytes>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Delete(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: RocksDBKeyValueStore.Delete(IEnumerable<KeyBytes>)
+  nameWithType.vb: RocksDBKeyValueStore.Delete(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(Libplanet.Store.Trie.KeyBytes@)
   name: Delete(in KeyBytes)
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_Libplanet_Store_Trie_KeyBytes__
@@ -18764,15 +18782,6 @@ references:
   fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(ByRef Libplanet.Store.Trie.KeyBytes)
   nameWithType: RocksDBKeyValueStore.Delete(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Delete(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name: Delete(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name.vb: Delete(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
-  nameWithType: RocksDBKeyValueStore.Delete(IEnumerable<KeyBytes>)
-  nameWithType.vb: RocksDBKeyValueStore.Delete(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Delete*
   name: Delete
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Delete_
@@ -18809,6 +18818,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Exists
   nameWithType: RocksDBKeyValueStore.Exists
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name: Get(IEnumerable<KeyBytes>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_IEnumerable_Libplanet_Store_Trie_KeyBytes__
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(IEnumerable{Libplanet.Store.Trie.KeyBytes})
+  name.vb: Get(IEnumerable(Of KeyBytes))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(IEnumerable<Libplanet.Store.Trie.KeyBytes>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
+  nameWithType: RocksDBKeyValueStore.Get(IEnumerable<KeyBytes>)
+  nameWithType.vb: RocksDBKeyValueStore.Get(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(Libplanet.Store.Trie.KeyBytes@)
   name: Get(in KeyBytes)
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_Libplanet_Store_Trie_KeyBytes__
@@ -18818,15 +18836,6 @@ references:
   fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(ByRef Libplanet.Store.Trie.KeyBytes)
   nameWithType: RocksDBKeyValueStore.Get(in KeyBytes)
   nameWithType.vb: RocksDBKeyValueStore.Get(ByRef KeyBytes)
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name: Get(IEnumerable<KeyBytes>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_System_Collections_Generic_IEnumerable_Libplanet_Store_Trie_KeyBytes__
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable{Libplanet.Store.Trie.KeyBytes})
-  name.vb: Get(IEnumerable(Of KeyBytes))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable<Libplanet.Store.Trie.KeyBytes>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get(System.Collections.Generic.IEnumerable(Of Libplanet.Store.Trie.KeyBytes))
-  nameWithType: RocksDBKeyValueStore.Get(IEnumerable<KeyBytes>)
-  nameWithType.vb: RocksDBKeyValueStore.Get(IEnumerable(Of KeyBytes))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Get*
   name: Get
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Get_
@@ -18847,6 +18856,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.ListKeys
   nameWithType: RocksDBKeyValueStore.ListKeys
+- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name: Set(IDictionary<KeyBytes, Byte[]>)
+  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
+  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
+  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
+  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
+  nameWithType: RocksDBKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
+  nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(Libplanet.Store.Trie.KeyBytes@,System.Byte[])
   name: Set(in KeyBytes, Byte[])
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_Libplanet_Store_Trie_KeyBytes__System_Byte___
@@ -18856,15 +18874,6 @@ references:
   fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(ByRef Libplanet.Store.Trie.KeyBytes, System.Byte())
   nameWithType: RocksDBKeyValueStore.Set(in KeyBytes, Byte[])
   nameWithType.vb: RocksDBKeyValueStore.Set(ByRef KeyBytes, Byte())
-- uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
-  name: Set(IDictionary<KeyBytes, Byte[]>)
-  href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_System_Collections_Generic_IDictionary_Libplanet_Store_Trie_KeyBytes_System_Byte____
-  commentId: M:Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary{Libplanet.Store.Trie.KeyBytes,System.Byte[]})
-  name.vb: Set(IDictionary(Of KeyBytes, Byte()))
-  fullName: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary<Libplanet.Store.Trie.KeyBytes, System.Byte[]>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set(System.Collections.Generic.IDictionary(Of Libplanet.Store.Trie.KeyBytes, System.Byte()))
-  nameWithType: RocksDBKeyValueStore.Set(IDictionary<KeyBytes, Byte[]>)
-  nameWithType.vb: RocksDBKeyValueStore.Set(IDictionary(Of KeyBytes, Byte()))
 - uid: Libplanet.RocksDBStore.RocksDBKeyValueStore.Set*
   name: Set
   href: api/Libplanet.RocksDBStore.RocksDBKeyValueStore.html#Libplanet_RocksDBStore_RocksDBKeyValueStore_Set_
@@ -18894,11 +18903,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.RocksDBStore
   nameWithType: RocksDBStore.RocksDBStore
-- uid: Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
+- uid: Libplanet.RocksDBStore.RocksDBStore.AppendIndex(Guid,Libplanet.Blocks.BlockHash)
   name: AppendIndex(Guid, BlockHash)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_AppendIndex_System_Guid_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.AppendIndex(System.Guid, Libplanet.Blocks.BlockHash)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_AppendIndex_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.AppendIndex(Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.AppendIndex(Guid, Libplanet.Blocks.BlockHash)
   nameWithType: RocksDBStore.AppendIndex(Guid, BlockHash)
 - uid: Libplanet.RocksDBStore.RocksDBStore.AppendIndex*
   name: AppendIndex
@@ -18946,11 +18955,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.CountBlocks
   nameWithType: RocksDBStore.CountBlocks
-- uid: Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.CountIndex(Guid)
   name: CountIndex(Guid)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_CountIndex_System_Guid_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.CountIndex(System.Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_CountIndex_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.CountIndex(Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.CountIndex(Guid)
   nameWithType: RocksDBStore.CountIndex(Guid)
 - uid: Libplanet.RocksDBStore.RocksDBStore.CountIndex*
   name: CountIndex
@@ -18985,11 +18994,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteBlock
   nameWithType: RocksDBStore.DeleteBlock
-- uid: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(Guid)
   name: DeleteChainId(Guid)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_System_Guid_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(System.Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteChainId_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId(Guid)
   nameWithType: RocksDBStore.DeleteChainId(Guid)
 - uid: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId*
   name: DeleteChainId
@@ -19037,11 +19046,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.Dispose
   nameWithType: RocksDBStore.Dispose
-- uid: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
+- uid: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(Guid,Guid,Libplanet.Blocks.BlockHash)
   name: ForkBlockIndexes(Guid, Guid, BlockHash)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_System_Guid_System_Guid_Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid,System.Guid,Libplanet.Blocks.BlockHash)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(System.Guid, System.Guid, Libplanet.Blocks.BlockHash)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ForkBlockIndexes_Guid_Guid_Libplanet_Blocks_BlockHash_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(Guid,Guid,Libplanet.Blocks.BlockHash)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes(Guid, Guid, Libplanet.Blocks.BlockHash)
   nameWithType: RocksDBStore.ForkBlockIndexes(Guid, Guid, BlockHash)
 - uid: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes*
   name: ForkBlockIndexes
@@ -19050,11 +19059,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.ForkBlockIndexes
   nameWithType: RocksDBStore.ForkBlockIndexes
-- uid: Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid,System.Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(Guid,Guid)
   name: ForkTxNonces(Guid, Guid)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_System_Guid_System_Guid_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid,System.Guid)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(System.Guid, System.Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ForkTxNonces_Guid_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(Guid,Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces(Guid, Guid)
   nameWithType: RocksDBStore.ForkTxNonces(Guid, Guid)
 - uid: Libplanet.RocksDBStore.RocksDBStore.ForkTxNonces*
   name: ForkTxNonces
@@ -19131,11 +19140,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.GetTxExecution
   nameWithType: RocksDBStore.GetTxExecution
-- uid: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid,Libplanet.Address)
+- uid: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(Guid,Libplanet.Address)
   name: GetTxNonce(Guid, Address)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_System_Guid_Libplanet_Address_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid,Libplanet.Address)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(System.Guid, Libplanet.Address)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_GetTxNonce_Guid_Libplanet_Address_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(Guid,Libplanet.Address)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce(Guid, Libplanet.Address)
   nameWithType: RocksDBStore.GetTxNonce(Guid, Address)
 - uid: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce*
   name: GetTxNonce
@@ -19144,11 +19153,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.GetTxNonce
   nameWithType: RocksDBStore.GetTxNonce
-- uid: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid,Libplanet.Address,System.Int64)
+- uid: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
   name: IncreaseTxNonce(Guid, Address, Int64)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_System_Guid_Libplanet_Address_System_Int64_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid,Libplanet.Address,System.Int64)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(System.Guid, Libplanet.Address, System.Int64)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce(Guid, Libplanet.Address, System.Int64)
   nameWithType: RocksDBStore.IncreaseTxNonce(Guid, Address, Int64)
 - uid: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce*
   name: IncreaseTxNonce
@@ -19157,11 +19166,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.IncreaseTxNonce
   nameWithType: RocksDBStore.IncreaseTxNonce
-- uid: Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid,System.Int64)
+- uid: Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(Guid,System.Int64)
   name: IndexBlockHash(Guid, Int64)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_System_Guid_System_Int64_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid,System.Int64)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(System.Guid, System.Int64)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IndexBlockHash_Guid_System_Int64_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(Guid,System.Int64)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash(Guid, System.Int64)
   nameWithType: RocksDBStore.IndexBlockHash(Guid, Int64)
 - uid: Libplanet.RocksDBStore.RocksDBStore.IndexBlockHash*
   name: IndexBlockHash
@@ -19183,13 +19192,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.IterateBlockHashes
   nameWithType: RocksDBStore.IterateBlockHashes
-- uid: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})
+- uid: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
   name: IterateIndexes(Guid, Int32, Nullable<Int32>)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_System_Guid_System_Int32_System_Nullable_System_Int32__
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid,System.Int32,System.Nullable{System.Int32})
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
   name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
-  fullName: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid, System.Int32, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(System.Guid, System.Int32, System.Nullable(Of System.Int32))
+  fullName: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
   nameWithType: RocksDBStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
   nameWithType.vb: RocksDBStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
 - uid: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes*
@@ -19238,11 +19247,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.ListChainIds
   nameWithType: RocksDBStore.ListChainIds
-- uid: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(Guid)
   name: ListTxNonces(Guid)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_System_Guid_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(System.Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_ListTxNonces_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces(Guid)
   nameWithType: RocksDBStore.ListTxNonces(Guid)
 - uid: Libplanet.RocksDBStore.RocksDBStore.ListTxNonces*
   name: ListTxNonces
@@ -19341,11 +19350,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.PutTxIdBlockHashIndex
   nameWithType: RocksDBStore.PutTxIdBlockHashIndex
-- uid: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
+- uid: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
   name: SetBlockPerceivedTime(BlockHash, DateTimeOffset)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_System_DateTimeOffset_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,System.DateTimeOffset)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, System.DateTimeOffset)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetBlockPerceivedTime_Libplanet_Blocks_BlockHash_DateTimeOffset_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash,DateTimeOffset)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime(Libplanet.Blocks.BlockHash, DateTimeOffset)
   nameWithType: RocksDBStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)
 - uid: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime*
   name: SetBlockPerceivedTime
@@ -19354,11 +19363,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.SetBlockPerceivedTime
   nameWithType: RocksDBStore.SetBlockPerceivedTime
-- uid: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)
+- uid: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(Guid)
   name: SetCanonicalChainId(Guid)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_System_Guid_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(System.Guid)
+  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_SetCanonicalChainId_Guid_
+  commentId: M:Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(Guid)
+  fullName: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId(Guid)
   nameWithType: RocksDBStore.SetCanonicalChainId(Guid)
 - uid: Libplanet.RocksDBStore.RocksDBStore.SetCanonicalChainId*
   name: SetCanonicalChainId
