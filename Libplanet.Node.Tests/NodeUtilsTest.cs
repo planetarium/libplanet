@@ -10,10 +10,6 @@ namespace Libplanet.Node.Tests
 {
     public class NodeUtilsTest
     {
-        public NodeUtilsTest()
-        {
-        }
-
         [Fact]
         public void SaveAndLoadGenesisBlock()
         {
