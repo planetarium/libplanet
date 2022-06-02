@@ -40,7 +40,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(validators),
-                    $"Number of validator should be greater than 0. ({validators.Count}is given)");
+                    $"Number of validator should be greater than 0. ({validators.Count} is given)");
             }
 
             NodeId = nodeId;

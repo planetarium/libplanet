@@ -107,7 +107,7 @@ namespace Libplanet.Net.Consensus
         {
             _logger.Debug(
                 "NodeID: {Id}, Height: {Height}, Round: {Round}, " +
-                "State: {State}, HandleMessage: {@Message},",
+                "State: {State}, HandleMessage: {Message},",
                 _context.NodeId,
                 _context.Height,
                 _context.Round,

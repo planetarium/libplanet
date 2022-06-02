@@ -1,7 +1,6 @@
 using Libplanet.Action;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
-using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
@@ -22,8 +21,6 @@ namespace Libplanet.Net.Consensus
 
         private ConsensusMessage? HandleCommit(ConsensusContext<T> context, ConsensusCommit commit)
         {
-            Log.Debug("Context: {@Context}, HandleCommit: {@Message}", context, commit);
-
             if (context.Height != commit.Height)
             {
                 throw new UnexpectedHeightProposeException(commit);
