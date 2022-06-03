@@ -77,6 +77,23 @@ namespace Libplanet.Crypto
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="PrivateKey"/> instance from the given hexadecimal
+        /// <see cref="string"/> (i.e.,<paramref name="hex"/>).
+        /// </summary>
+        /// <param name="hex">A hexadecimal string of a private key's
+        /// <see cref="ByteArray"/>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
+        /// string is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
+        /// <paramref name="hex"/> string is too short or too long.</exception>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
+        /// not a valid hexadecimal string.</exception>
+        public PrivateKey(string hex)
+            : this(unverifiedKey: GenerateBytesFromHexString(hex), informedConsent: true)
+        {
+        }
+
         internal PrivateKey(byte[] unverifiedKey, bool informedConsent)
             : this(GenerateKeyFromBytes(unverifiedKey))
         {
@@ -157,16 +174,10 @@ namespace Libplanet.Crypto
         [Pure]
         public static PrivateKey FromString(string hex)
         {
-            byte[] bytes = ByteUtil.ParseHex(hex);
-            if (bytes.Length != KeyByteSize)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(hex),
-                    $"Expected {KeyByteSize * 2} hexadecimal digits."
-                );
-            }
-
-            return new PrivateKey(unverifiedKey: bytes, informedConsent: true);
+            return new PrivateKey(
+                unverifiedKey: GenerateBytesFromHexString(hex),
+                informedConsent: true
+            );
         }
 
         public bool Equals(PrivateKey? other) => KeyParam.Equals(other?.KeyParam);
@@ -380,6 +391,20 @@ namespace Libplanet.Crypto
             var _ = new PrivateKey(param).PublicKey;
 #pragma warning restore SA1312, S1481
             return param;
+        }
+
+        private static byte[] GenerateBytesFromHexString(string hex)
+        {
+            byte[] bytes = ByteUtil.ParseHex(hex);
+            if (bytes.Length != KeyByteSize)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(hex),
+                    $"Expected {KeyByteSize * 2} hexadecimal digits."
+                );
+            }
+
+            return bytes;
         }
 
         private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
