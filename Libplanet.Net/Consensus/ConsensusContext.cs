@@ -44,6 +44,11 @@ namespace Libplanet.Net.Consensus
             }
 
             NodeId = nodeId;
+            Height = blockChain.Tip.Index;
+            VoteSets = new Dictionary<long, VoteSet?>();
+            VoteHolding = new AsyncManualResetEvent(false);
+            CommitFailed = new AsyncManualResetEvent(false);
+
             _blockChain = blockChain;
             _validators = validators;
             _privateKey = privateKey;
@@ -54,16 +59,11 @@ namespace Libplanet.Net.Consensus
             };
 
             _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
-            VoteSets = new Dictionary<long, VoteSet?>();
-            Height = blockChain.Tip.Index;
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Context")
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
-
-            VoteHolding = new AsyncManualResetEvent(false);
-            CommitFailed = new AsyncManualResetEvent(false);
         }
 
         /// <summary>
