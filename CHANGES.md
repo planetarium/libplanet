@@ -16,6 +16,12 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Node) Added `NetworkConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
+ -  (Libplanet.Node) Added `SwarmConfig`, `InitConfig`, `BootstrapConfig`
+    `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
+
 ### Behavioral changes
  -  Allow `0x` prefix for `Address` class constructor.
     `DeriveAddress` method will remove '0x' prefix string. [[#2015], [#2018]]
@@ -26,8 +32,13 @@ To be released.
 
 ### CLI tools
 
+[#1946]: https://github.com/planetarium/libplanet/issues/1946
+[#2000]: https://github.com/planetarium/libplanet/pull/2000
+[#2013]: https://github.com/planetarium/libplanet/pull/2013
 [#2015]: https://github.com/planetarium/libplanet/issues/2015
 [#2018]: https://github.com/planetarium/libplanet/pull/2018
+[#2021]: https://github.com/planetarium/libplanet/pull/2021
+
 
 Version 0.37.0
 --------------
