@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Libplanet.Blockchain;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 
 namespace Libplanet.Node
 {
@@ -38,6 +39,13 @@ namespace Libplanet.Node
         /// Determines sampling threshold for <see cref="BlockLocator"/>s.
         /// </summary>
         public int BlockLocatorIndexSampleThreshold { get; set; } = 10;
+
+        /// <summary>
+        /// Determines the type of <see cref="ITransport"/> to use.  Set to
+        /// <see cref="SwarmOptions.TransportType.NetMQTransport"/> by default.
+        /// </summary>
+        public SwarmOptions.TransportType TransportType { get; set; } =
+            SwarmOptions.TransportType.NetMQTransport;
 
         /// <summary>
         /// Determines the host.  Set to <c>"localhost"</c> by default.
