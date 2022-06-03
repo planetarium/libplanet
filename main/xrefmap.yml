@@ -18201,6 +18201,937 @@ references:
   commentId: N:Libplanet.Node
   fullName: Libplanet.Node
   nameWithType: Libplanet.Node
+- uid: Libplanet.Node.BootstrapConfig
+  name: BootstrapConfig
+  href: api/Libplanet.Node.BootstrapConfig.html
+  commentId: T:Libplanet.Node.BootstrapConfig
+  fullName: Libplanet.Node.BootstrapConfig
+  nameWithType: BootstrapConfig
+- uid: Libplanet.Node.BootstrapConfig.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_DialTimeout
+  commentId: P:Libplanet.Node.BootstrapConfig.DialTimeout
+  fullName: Libplanet.Node.BootstrapConfig.DialTimeout
+  nameWithType: BootstrapConfig.DialTimeout
+- uid: Libplanet.Node.BootstrapConfig.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_DialTimeout_
+  commentId: Overload:Libplanet.Node.BootstrapConfig.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Node.BootstrapConfig.DialTimeout
+  nameWithType: BootstrapConfig.DialTimeout
+- uid: Libplanet.Node.BootstrapConfig.SearchDepth
+  name: SearchDepth
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_SearchDepth
+  commentId: P:Libplanet.Node.BootstrapConfig.SearchDepth
+  fullName: Libplanet.Node.BootstrapConfig.SearchDepth
+  nameWithType: BootstrapConfig.SearchDepth
+- uid: Libplanet.Node.BootstrapConfig.SearchDepth*
+  name: SearchDepth
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_SearchDepth_
+  commentId: Overload:Libplanet.Node.BootstrapConfig.SearchDepth
+  isSpec: "True"
+  fullName: Libplanet.Node.BootstrapConfig.SearchDepth
+  nameWithType: BootstrapConfig.SearchDepth
+- uid: Libplanet.Node.BootstrapConfig.SeedPeers
+  name: SeedPeers
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_SeedPeers
+  commentId: P:Libplanet.Node.BootstrapConfig.SeedPeers
+  fullName: Libplanet.Node.BootstrapConfig.SeedPeers
+  nameWithType: BootstrapConfig.SeedPeers
+- uid: Libplanet.Node.BootstrapConfig.SeedPeers*
+  name: SeedPeers
+  href: api/Libplanet.Node.BootstrapConfig.html#Libplanet_Node_BootstrapConfig_SeedPeers_
+  commentId: Overload:Libplanet.Node.BootstrapConfig.SeedPeers
+  isSpec: "True"
+  fullName: Libplanet.Node.BootstrapConfig.SeedPeers
+  nameWithType: BootstrapConfig.SeedPeers
+- uid: Libplanet.Node.InitConfig
+  name: InitConfig
+  href: api/Libplanet.Node.InitConfig.html
+  commentId: T:Libplanet.Node.InitConfig
+  fullName: Libplanet.Node.InitConfig
+  nameWithType: InitConfig
+- uid: Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold
+  name: BlockLocatorIndexSampleThreshold
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_BlockLocatorIndexSampleThreshold
+  commentId: P:Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold
+  fullName: Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold
+  nameWithType: InitConfig.BlockLocatorIndexSampleThreshold
+- uid: Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold*
+  name: BlockLocatorIndexSampleThreshold
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_BlockLocatorIndexSampleThreshold_
+  commentId: Overload:Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.BlockLocatorIndexSampleThreshold
+  nameWithType: InitConfig.BlockLocatorIndexSampleThreshold
+- uid: Libplanet.Node.InitConfig.Host
+  name: Host
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_Host
+  commentId: P:Libplanet.Node.InitConfig.Host
+  fullName: Libplanet.Node.InitConfig.Host
+  nameWithType: InitConfig.Host
+- uid: Libplanet.Node.InitConfig.Host*
+  name: Host
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_Host_
+  commentId: Overload:Libplanet.Node.InitConfig.Host
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.Host
+  nameWithType: InitConfig.Host
+- uid: Libplanet.Node.InitConfig.IceServers
+  name: IceServers
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_IceServers
+  commentId: P:Libplanet.Node.InitConfig.IceServers
+  fullName: Libplanet.Node.InitConfig.IceServers
+  nameWithType: InitConfig.IceServers
+- uid: Libplanet.Node.InitConfig.IceServers*
+  name: IceServers
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_IceServers_
+  commentId: Overload:Libplanet.Node.InitConfig.IceServers
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.IceServers
+  nameWithType: InitConfig.IceServers
+- uid: Libplanet.Node.InitConfig.MaxTimeout
+  name: MaxTimeout
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_MaxTimeout
+  commentId: P:Libplanet.Node.InitConfig.MaxTimeout
+  fullName: Libplanet.Node.InitConfig.MaxTimeout
+  nameWithType: InitConfig.MaxTimeout
+- uid: Libplanet.Node.InitConfig.MaxTimeout*
+  name: MaxTimeout
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_MaxTimeout_
+  commentId: Overload:Libplanet.Node.InitConfig.MaxTimeout
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.MaxTimeout
+  nameWithType: InitConfig.MaxTimeout
+- uid: Libplanet.Node.InitConfig.MinTimeout
+  name: MinTimeout
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_MinTimeout
+  commentId: P:Libplanet.Node.InitConfig.MinTimeout
+  fullName: Libplanet.Node.InitConfig.MinTimeout
+  nameWithType: InitConfig.MinTimeout
+- uid: Libplanet.Node.InitConfig.MinTimeout*
+  name: MinTimeout
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_MinTimeout_
+  commentId: Overload:Libplanet.Node.InitConfig.MinTimeout
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.MinTimeout
+  nameWithType: InitConfig.MinTimeout
+- uid: Libplanet.Node.InitConfig.Port
+  name: Port
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_Port
+  commentId: P:Libplanet.Node.InitConfig.Port
+  fullName: Libplanet.Node.InitConfig.Port
+  nameWithType: InitConfig.Port
+- uid: Libplanet.Node.InitConfig.Port*
+  name: Port
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_Port_
+  commentId: Overload:Libplanet.Node.InitConfig.Port
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.Port
+  nameWithType: InitConfig.Port
+- uid: Libplanet.Node.InitConfig.RoutingTableBucketSize
+  name: RoutingTableBucketSize
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_RoutingTableBucketSize
+  commentId: P:Libplanet.Node.InitConfig.RoutingTableBucketSize
+  fullName: Libplanet.Node.InitConfig.RoutingTableBucketSize
+  nameWithType: InitConfig.RoutingTableBucketSize
+- uid: Libplanet.Node.InitConfig.RoutingTableBucketSize*
+  name: RoutingTableBucketSize
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_RoutingTableBucketSize_
+  commentId: Overload:Libplanet.Node.InitConfig.RoutingTableBucketSize
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.RoutingTableBucketSize
+  nameWithType: InitConfig.RoutingTableBucketSize
+- uid: Libplanet.Node.InitConfig.RoutingTableNumBuckets
+  name: RoutingTableNumBuckets
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_RoutingTableNumBuckets
+  commentId: P:Libplanet.Node.InitConfig.RoutingTableNumBuckets
+  fullName: Libplanet.Node.InitConfig.RoutingTableNumBuckets
+  nameWithType: InitConfig.RoutingTableNumBuckets
+- uid: Libplanet.Node.InitConfig.RoutingTableNumBuckets*
+  name: RoutingTableNumBuckets
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_RoutingTableNumBuckets_
+  commentId: Overload:Libplanet.Node.InitConfig.RoutingTableNumBuckets
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.RoutingTableNumBuckets
+  nameWithType: InitConfig.RoutingTableNumBuckets
+- uid: Libplanet.Node.InitConfig.TransportType
+  name: TransportType
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_TransportType
+  commentId: P:Libplanet.Node.InitConfig.TransportType
+  fullName: Libplanet.Node.InitConfig.TransportType
+  nameWithType: InitConfig.TransportType
+- uid: Libplanet.Node.InitConfig.TransportType*
+  name: TransportType
+  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_TransportType_
+  commentId: Overload:Libplanet.Node.InitConfig.TransportType
+  isSpec: "True"
+  fullName: Libplanet.Node.InitConfig.TransportType
+  nameWithType: InitConfig.TransportType
+- uid: Libplanet.Node.NetworkConfig`1
+  name: NetworkConfig<T>
+  href: api/Libplanet.Node.NetworkConfig-1.html
+  commentId: T:Libplanet.Node.NetworkConfig`1
+  name.vb: NetworkConfig(Of T)
+  fullName: Libplanet.Node.NetworkConfig<T>
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T)
+  nameWithType: NetworkConfig<T>
+  nameWithType.vb: NetworkConfig(Of T)
+- uid: Libplanet.Node.NetworkConfig`1.#ctor
+  name: NetworkConfig()
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1__ctor
+  commentId: M:Libplanet.Node.NetworkConfig`1.#ctor
+  fullName: Libplanet.Node.NetworkConfig<T>.NetworkConfig()
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).NetworkConfig()
+  nameWithType: NetworkConfig<T>.NetworkConfig()
+  nameWithType.vb: NetworkConfig(Of T).NetworkConfig()
+- uid: Libplanet.Node.NetworkConfig`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Blocks.Block{`0})
+  name: NetworkConfig(IBlockPolicy<T>, IStagePolicy<T>, Block<T>)
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Node.NetworkConfig`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Blocks.Block{`0})
+  name.vb: NetworkConfig(IBlockPolicy(Of T), IStagePolicy(Of T), Block(Of T))
+  fullName: Libplanet.Node.NetworkConfig<T>.NetworkConfig(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).NetworkConfig(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: NetworkConfig<T>.NetworkConfig(IBlockPolicy<T>, IStagePolicy<T>, Block<T>)
+  nameWithType.vb: NetworkConfig(Of T).NetworkConfig(IBlockPolicy(Of T), IStagePolicy(Of T), Block(Of T))
+- uid: Libplanet.Node.NetworkConfig`1.#ctor*
+  name: NetworkConfig
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1__ctor_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.NetworkConfig
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).NetworkConfig
+  nameWithType: NetworkConfig<T>.NetworkConfig
+  nameWithType.vb: NetworkConfig(Of T).NetworkConfig
+- uid: Libplanet.Node.NetworkConfig`1.AppProtocolVersion
+  name: AppProtocolVersion
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_AppProtocolVersion
+  commentId: P:Libplanet.Node.NetworkConfig`1.AppProtocolVersion
+  fullName: Libplanet.Node.NetworkConfig<T>.AppProtocolVersion
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).AppProtocolVersion
+  nameWithType: NetworkConfig<T>.AppProtocolVersion
+  nameWithType.vb: NetworkConfig(Of T).AppProtocolVersion
+- uid: Libplanet.Node.NetworkConfig`1.AppProtocolVersion*
+  name: AppProtocolVersion
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_AppProtocolVersion_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.AppProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.AppProtocolVersion
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).AppProtocolVersion
+  nameWithType: NetworkConfig<T>.AppProtocolVersion
+  nameWithType.vb: NetworkConfig(Of T).AppProtocolVersion
+- uid: Libplanet.Node.NetworkConfig`1.BlockPolicy
+  name: BlockPolicy
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_BlockPolicy
+  commentId: P:Libplanet.Node.NetworkConfig`1.BlockPolicy
+  fullName: Libplanet.Node.NetworkConfig<T>.BlockPolicy
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).BlockPolicy
+  nameWithType: NetworkConfig<T>.BlockPolicy
+  nameWithType.vb: NetworkConfig(Of T).BlockPolicy
+- uid: Libplanet.Node.NetworkConfig`1.BlockPolicy*
+  name: BlockPolicy
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_BlockPolicy_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.BlockPolicy
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.BlockPolicy
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).BlockPolicy
+  nameWithType: NetworkConfig<T>.BlockPolicy
+  nameWithType.vb: NetworkConfig(Of T).BlockPolicy
+- uid: Libplanet.Node.NetworkConfig`1.DifferentAppProtocolVersionEncountered
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_DifferentAppProtocolVersionEncountered
+  commentId: P:Libplanet.Node.NetworkConfig`1.DifferentAppProtocolVersionEncountered
+  fullName: Libplanet.Node.NetworkConfig<T>.DifferentAppProtocolVersionEncountered
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).DifferentAppProtocolVersionEncountered
+  nameWithType: NetworkConfig<T>.DifferentAppProtocolVersionEncountered
+  nameWithType.vb: NetworkConfig(Of T).DifferentAppProtocolVersionEncountered
+- uid: Libplanet.Node.NetworkConfig`1.DifferentAppProtocolVersionEncountered*
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_DifferentAppProtocolVersionEncountered_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.DifferentAppProtocolVersionEncountered
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.DifferentAppProtocolVersionEncountered
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).DifferentAppProtocolVersionEncountered
+  nameWithType: NetworkConfig<T>.DifferentAppProtocolVersionEncountered
+  nameWithType.vb: NetworkConfig(Of T).DifferentAppProtocolVersionEncountered
+- uid: Libplanet.Node.NetworkConfig`1.GenesisBlock
+  name: GenesisBlock
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_GenesisBlock
+  commentId: P:Libplanet.Node.NetworkConfig`1.GenesisBlock
+  fullName: Libplanet.Node.NetworkConfig<T>.GenesisBlock
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).GenesisBlock
+  nameWithType: NetworkConfig<T>.GenesisBlock
+  nameWithType.vb: NetworkConfig(Of T).GenesisBlock
+- uid: Libplanet.Node.NetworkConfig`1.GenesisBlock*
+  name: GenesisBlock
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_GenesisBlock_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.GenesisBlock
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.GenesisBlock
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).GenesisBlock
+  nameWithType: NetworkConfig<T>.GenesisBlock
+  nameWithType.vb: NetworkConfig(Of T).GenesisBlock
+- uid: Libplanet.Node.NetworkConfig`1.StagePolicy
+  name: StagePolicy
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_StagePolicy
+  commentId: P:Libplanet.Node.NetworkConfig`1.StagePolicy
+  fullName: Libplanet.Node.NetworkConfig<T>.StagePolicy
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).StagePolicy
+  nameWithType: NetworkConfig<T>.StagePolicy
+  nameWithType.vb: NetworkConfig(Of T).StagePolicy
+- uid: Libplanet.Node.NetworkConfig`1.StagePolicy*
+  name: StagePolicy
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_StagePolicy_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.StagePolicy
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.StagePolicy
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).StagePolicy
+  nameWithType: NetworkConfig<T>.StagePolicy
+  nameWithType.vb: NetworkConfig(Of T).StagePolicy
+- uid: Libplanet.Node.NetworkConfig`1.TrustedAppProtocolVersionSigners
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_TrustedAppProtocolVersionSigners
+  commentId: P:Libplanet.Node.NetworkConfig`1.TrustedAppProtocolVersionSigners
+  fullName: Libplanet.Node.NetworkConfig<T>.TrustedAppProtocolVersionSigners
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).TrustedAppProtocolVersionSigners
+  nameWithType: NetworkConfig<T>.TrustedAppProtocolVersionSigners
+  nameWithType.vb: NetworkConfig(Of T).TrustedAppProtocolVersionSigners
+- uid: Libplanet.Node.NetworkConfig`1.TrustedAppProtocolVersionSigners*
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Node.NetworkConfig-1.html#Libplanet_Node_NetworkConfig_1_TrustedAppProtocolVersionSigners_
+  commentId: Overload:Libplanet.Node.NetworkConfig`1.TrustedAppProtocolVersionSigners
+  isSpec: "True"
+  fullName: Libplanet.Node.NetworkConfig<T>.TrustedAppProtocolVersionSigners
+  fullName.vb: Libplanet.Node.NetworkConfig(Of T).TrustedAppProtocolVersionSigners
+  nameWithType: NetworkConfig<T>.TrustedAppProtocolVersionSigners
+  nameWithType.vb: NetworkConfig(Of T).TrustedAppProtocolVersionSigners
+- uid: Libplanet.Node.NodeConfig`1
+  name: NodeConfig<T>
+  href: api/Libplanet.Node.NodeConfig-1.html
+  commentId: T:Libplanet.Node.NodeConfig`1
+  name.vb: NodeConfig(Of T)
+  fullName: Libplanet.Node.NodeConfig<T>
+  fullName.vb: Libplanet.Node.NodeConfig(Of T)
+  nameWithType: NodeConfig<T>
+  nameWithType.vb: NodeConfig(Of T)
+- uid: Libplanet.Node.NodeConfig`1.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Node.NetworkConfig{`0},Libplanet.Node.SwarmConfig,Libplanet.Store.IStore,Libplanet.Store.IStateStore,System.Nullable{IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}}})
+  name: NodeConfig(PrivateKey, NetworkConfig<T>, SwarmConfig, IStore, IStateStore, Nullable<IEnumerable<IRenderer<T>>>)
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Node_NetworkConfig__0__Libplanet_Node_SwarmConfig_Libplanet_Store_IStore_Libplanet_Store_IStateStore_System_Nullable_IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0____
+  commentId: M:Libplanet.Node.NodeConfig`1.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Node.NetworkConfig{`0},Libplanet.Node.SwarmConfig,Libplanet.Store.IStore,Libplanet.Store.IStateStore,System.Nullable{IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}}})
+  name.vb: NodeConfig(PrivateKey, NetworkConfig(Of T), SwarmConfig, IStore, IStateStore, Nullable(Of IEnumerable(Of IRenderer(Of T))))
+  fullName: Libplanet.Node.NodeConfig<T>.NodeConfig(Libplanet.Crypto.PrivateKey, Libplanet.Node.NetworkConfig<T>, Libplanet.Node.SwarmConfig, Libplanet.Store.IStore, Libplanet.Store.IStateStore, System.Nullable<IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>>)
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).NodeConfig(Libplanet.Crypto.PrivateKey, Libplanet.Node.NetworkConfig(Of T), Libplanet.Node.SwarmConfig, Libplanet.Store.IStore, Libplanet.Store.IStateStore, System.Nullable(Of IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T))))
+  nameWithType: NodeConfig<T>.NodeConfig(PrivateKey, NetworkConfig<T>, SwarmConfig, IStore, IStateStore, Nullable<IEnumerable<IRenderer<T>>>)
+  nameWithType.vb: NodeConfig(Of T).NodeConfig(PrivateKey, NetworkConfig(Of T), SwarmConfig, IStore, IStateStore, Nullable(Of IEnumerable(Of IRenderer(Of T))))
+- uid: Libplanet.Node.NodeConfig`1.#ctor*
+  name: NodeConfig
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1__ctor_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.NodeConfig
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).NodeConfig
+  nameWithType: NodeConfig<T>.NodeConfig
+  nameWithType.vb: NodeConfig(Of T).NodeConfig
+- uid: Libplanet.Node.NodeConfig`1.GetBlockChain
+  name: GetBlockChain()
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_GetBlockChain
+  commentId: M:Libplanet.Node.NodeConfig`1.GetBlockChain
+  fullName: Libplanet.Node.NodeConfig<T>.GetBlockChain()
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).GetBlockChain()
+  nameWithType: NodeConfig<T>.GetBlockChain()
+  nameWithType.vb: NodeConfig(Of T).GetBlockChain()
+- uid: Libplanet.Node.NodeConfig`1.GetBlockChain*
+  name: GetBlockChain
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_GetBlockChain_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.GetBlockChain
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.GetBlockChain
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).GetBlockChain
+  nameWithType: NodeConfig<T>.GetBlockChain
+  nameWithType.vb: NodeConfig(Of T).GetBlockChain
+- uid: Libplanet.Node.NodeConfig`1.GetSwarm
+  name: GetSwarm()
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_GetSwarm
+  commentId: M:Libplanet.Node.NodeConfig`1.GetSwarm
+  fullName: Libplanet.Node.NodeConfig<T>.GetSwarm()
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).GetSwarm()
+  nameWithType: NodeConfig<T>.GetSwarm()
+  nameWithType.vb: NodeConfig(Of T).GetSwarm()
+- uid: Libplanet.Node.NodeConfig`1.GetSwarm*
+  name: GetSwarm
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_GetSwarm_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.GetSwarm
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.GetSwarm
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).GetSwarm
+  nameWithType: NodeConfig<T>.GetSwarm
+  nameWithType.vb: NodeConfig(Of T).GetSwarm
+- uid: Libplanet.Node.NodeConfig`1.NetworkConfig
+  name: NetworkConfig
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_NetworkConfig
+  commentId: P:Libplanet.Node.NodeConfig`1.NetworkConfig
+  fullName: Libplanet.Node.NodeConfig<T>.NetworkConfig
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).NetworkConfig
+  nameWithType: NodeConfig<T>.NetworkConfig
+  nameWithType.vb: NodeConfig(Of T).NetworkConfig
+- uid: Libplanet.Node.NodeConfig`1.NetworkConfig*
+  name: NetworkConfig
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_NetworkConfig_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.NetworkConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.NetworkConfig
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).NetworkConfig
+  nameWithType: NodeConfig<T>.NetworkConfig
+  nameWithType.vb: NodeConfig(Of T).NetworkConfig
+- uid: Libplanet.Node.NodeConfig`1.Renderers
+  name: Renderers
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_Renderers
+  commentId: P:Libplanet.Node.NodeConfig`1.Renderers
+  fullName: Libplanet.Node.NodeConfig<T>.Renderers
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).Renderers
+  nameWithType: NodeConfig<T>.Renderers
+  nameWithType.vb: NodeConfig(Of T).Renderers
+- uid: Libplanet.Node.NodeConfig`1.Renderers*
+  name: Renderers
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_Renderers_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.Renderers
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.Renderers
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).Renderers
+  nameWithType: NodeConfig<T>.Renderers
+  nameWithType.vb: NodeConfig(Of T).Renderers
+- uid: Libplanet.Node.NodeConfig`1.StateStore
+  name: StateStore
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_StateStore
+  commentId: P:Libplanet.Node.NodeConfig`1.StateStore
+  fullName: Libplanet.Node.NodeConfig<T>.StateStore
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).StateStore
+  nameWithType: NodeConfig<T>.StateStore
+  nameWithType.vb: NodeConfig(Of T).StateStore
+- uid: Libplanet.Node.NodeConfig`1.StateStore*
+  name: StateStore
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_StateStore_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.StateStore
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.StateStore
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).StateStore
+  nameWithType: NodeConfig<T>.StateStore
+  nameWithType.vb: NodeConfig(Of T).StateStore
+- uid: Libplanet.Node.NodeConfig`1.Store
+  name: Store
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_Store
+  commentId: P:Libplanet.Node.NodeConfig`1.Store
+  fullName: Libplanet.Node.NodeConfig<T>.Store
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).Store
+  nameWithType: NodeConfig<T>.Store
+  nameWithType.vb: NodeConfig(Of T).Store
+- uid: Libplanet.Node.NodeConfig`1.Store*
+  name: Store
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_Store_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.Store
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.Store
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).Store
+  nameWithType: NodeConfig<T>.Store
+  nameWithType.vb: NodeConfig(Of T).Store
+- uid: Libplanet.Node.NodeConfig`1.SwarmConfig
+  name: SwarmConfig
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_SwarmConfig
+  commentId: P:Libplanet.Node.NodeConfig`1.SwarmConfig
+  fullName: Libplanet.Node.NodeConfig<T>.SwarmConfig
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).SwarmConfig
+  nameWithType: NodeConfig<T>.SwarmConfig
+  nameWithType.vb: NodeConfig(Of T).SwarmConfig
+- uid: Libplanet.Node.NodeConfig`1.SwarmConfig*
+  name: SwarmConfig
+  href: api/Libplanet.Node.NodeConfig-1.html#Libplanet_Node_NodeConfig_1_SwarmConfig_
+  commentId: Overload:Libplanet.Node.NodeConfig`1.SwarmConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeConfig<T>.SwarmConfig
+  fullName.vb: Libplanet.Node.NodeConfig(Of T).SwarmConfig
+  nameWithType: NodeConfig<T>.SwarmConfig
+  nameWithType.vb: NodeConfig(Of T).SwarmConfig
+- uid: Libplanet.Node.NodeUtils`1
+  name: NodeUtils<T>
+  href: api/Libplanet.Node.NodeUtils-1.html
+  commentId: T:Libplanet.Node.NodeUtils`1
+  name.vb: NodeUtils(Of T)
+  fullName: Libplanet.Node.NodeUtils<T>
+  fullName.vb: Libplanet.Node.NodeUtils(Of T)
+  nameWithType: NodeUtils<T>
+  nameWithType.vb: NodeUtils(Of T)
+- uid: Libplanet.Node.NodeUtils`1.CreateGenesisBlock
+  name: CreateGenesisBlock()
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_CreateGenesisBlock
+  commentId: M:Libplanet.Node.NodeUtils`1.CreateGenesisBlock
+  fullName: Libplanet.Node.NodeUtils<T>.CreateGenesisBlock()
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).CreateGenesisBlock()
+  nameWithType: NodeUtils<T>.CreateGenesisBlock()
+  nameWithType.vb: NodeUtils(Of T).CreateGenesisBlock()
+- uid: Libplanet.Node.NodeUtils`1.CreateGenesisBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.Policies.IBlockPolicy{`0})
+  name: CreateGenesisBlock(PrivateKey, IBlockPolicy<T>)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_CreateGenesisBlock_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_Policies_IBlockPolicy__0__
+  commentId: M:Libplanet.Node.NodeUtils`1.CreateGenesisBlock(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.Policies.IBlockPolicy{`0})
+  name.vb: CreateGenesisBlock(PrivateKey, IBlockPolicy(Of T))
+  fullName: Libplanet.Node.NodeUtils<T>.CreateGenesisBlock(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.Policies.IBlockPolicy<T>)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).CreateGenesisBlock(Libplanet.Crypto.PrivateKey, Libplanet.Blockchain.Policies.IBlockPolicy(Of T))
+  nameWithType: NodeUtils<T>.CreateGenesisBlock(PrivateKey, IBlockPolicy<T>)
+  nameWithType.vb: NodeUtils(Of T).CreateGenesisBlock(PrivateKey, IBlockPolicy(Of T))
+- uid: Libplanet.Node.NodeUtils`1.CreateGenesisBlock*
+  name: CreateGenesisBlock
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_CreateGenesisBlock_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.CreateGenesisBlock
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.CreateGenesisBlock
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).CreateGenesisBlock
+  nameWithType: NodeUtils<T>.CreateGenesisBlock
+  nameWithType.vb: NodeUtils(Of T).CreateGenesisBlock
+- uid: Libplanet.Node.NodeUtils`1.DefaultBlockPolicy
+  name: DefaultBlockPolicy
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy
+  commentId: P:Libplanet.Node.NodeUtils`1.DefaultBlockPolicy
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultBlockPolicy
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultBlockPolicy
+  nameWithType: NodeUtils<T>.DefaultBlockPolicy
+  nameWithType.vb: NodeUtils(Of T).DefaultBlockPolicy
+- uid: Libplanet.Node.NodeUtils`1.DefaultBlockPolicy*
+  name: DefaultBlockPolicy
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultBlockPolicy_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.DefaultBlockPolicy
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultBlockPolicy
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultBlockPolicy
+  nameWithType: NodeUtils<T>.DefaultBlockPolicy
+  nameWithType.vb: NodeUtils(Of T).DefaultBlockPolicy
+- uid: Libplanet.Node.NodeUtils`1.DefaultStagePolicy
+  name: DefaultStagePolicy
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultStagePolicy
+  commentId: P:Libplanet.Node.NodeUtils`1.DefaultStagePolicy
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultStagePolicy
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultStagePolicy
+  nameWithType: NodeUtils<T>.DefaultStagePolicy
+  nameWithType.vb: NodeUtils(Of T).DefaultStagePolicy
+- uid: Libplanet.Node.NodeUtils`1.DefaultStagePolicy*
+  name: DefaultStagePolicy
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultStagePolicy_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.DefaultStagePolicy
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultStagePolicy
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultStagePolicy
+  nameWithType: NodeUtils<T>.DefaultStagePolicy
+  nameWithType.vb: NodeUtils(Of T).DefaultStagePolicy
+- uid: Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme
+  name: DefaultStoreUriScheme
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultStoreUriScheme
+  commentId: P:Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultStoreUriScheme
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultStoreUriScheme
+  nameWithType: NodeUtils<T>.DefaultStoreUriScheme
+  nameWithType.vb: NodeUtils(Of T).DefaultStoreUriScheme
+- uid: Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme*
+  name: DefaultStoreUriScheme
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_DefaultStoreUriScheme_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.DefaultStoreUriScheme
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.DefaultStoreUriScheme
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).DefaultStoreUriScheme
+  nameWithType: NodeUtils<T>.DefaultStoreUriScheme
+  nameWithType.vb: NodeUtils(Of T).DefaultStoreUriScheme
+- uid: Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String)
+  name: LoadGenesisBlock(String)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_
+  commentId: M:Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String)
+  fullName: Libplanet.Node.NodeUtils<T>.LoadGenesisBlock(System.String)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadGenesisBlock(System.String)
+  nameWithType: NodeUtils<T>.LoadGenesisBlock(String)
+  nameWithType.vb: NodeUtils(Of T).LoadGenesisBlock(String)
+- uid: Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String,Libplanet.Blockchain.Policies.IBlockPolicy{`0})
+  name: LoadGenesisBlock(String, IBlockPolicy<T>)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadGenesisBlock_System_String_Libplanet_Blockchain_Policies_IBlockPolicy__0__
+  commentId: M:Libplanet.Node.NodeUtils`1.LoadGenesisBlock(System.String,Libplanet.Blockchain.Policies.IBlockPolicy{`0})
+  name.vb: LoadGenesisBlock(String, IBlockPolicy(Of T))
+  fullName: Libplanet.Node.NodeUtils<T>.LoadGenesisBlock(System.String, Libplanet.Blockchain.Policies.IBlockPolicy<T>)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadGenesisBlock(System.String, Libplanet.Blockchain.Policies.IBlockPolicy(Of T))
+  nameWithType: NodeUtils<T>.LoadGenesisBlock(String, IBlockPolicy<T>)
+  nameWithType.vb: NodeUtils(Of T).LoadGenesisBlock(String, IBlockPolicy(Of T))
+- uid: Libplanet.Node.NodeUtils`1.LoadGenesisBlock*
+  name: LoadGenesisBlock
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadGenesisBlock_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.LoadGenesisBlock
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.LoadGenesisBlock
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadGenesisBlock
+  nameWithType: NodeUtils<T>.LoadGenesisBlock
+  nameWithType.vb: NodeUtils(Of T).LoadGenesisBlock
+- uid: Libplanet.Node.NodeUtils`1.LoadPrivateKey(System.String)
+  name: LoadPrivateKey(String)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadPrivateKey_System_String_
+  commentId: M:Libplanet.Node.NodeUtils`1.LoadPrivateKey(System.String)
+  fullName: Libplanet.Node.NodeUtils<T>.LoadPrivateKey(System.String)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadPrivateKey(System.String)
+  nameWithType: NodeUtils<T>.LoadPrivateKey(String)
+  nameWithType.vb: NodeUtils(Of T).LoadPrivateKey(String)
+- uid: Libplanet.Node.NodeUtils`1.LoadPrivateKey*
+  name: LoadPrivateKey
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadPrivateKey_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.LoadPrivateKey
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.LoadPrivateKey
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadPrivateKey
+  nameWithType: NodeUtils<T>.LoadPrivateKey
+  nameWithType.vb: NodeUtils(Of T).LoadPrivateKey
+- uid: Libplanet.Node.NodeUtils`1.LoadStore(System.String)
+  name: LoadStore(String)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadStore_System_String_
+  commentId: M:Libplanet.Node.NodeUtils`1.LoadStore(System.String)
+  fullName: Libplanet.Node.NodeUtils<T>.LoadStore(System.String)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadStore(System.String)
+  nameWithType: NodeUtils<T>.LoadStore(String)
+  nameWithType.vb: NodeUtils(Of T).LoadStore(String)
+- uid: Libplanet.Node.NodeUtils`1.LoadStore(Uri)
+  name: LoadStore(Uri)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadStore_Uri_
+  commentId: M:Libplanet.Node.NodeUtils`1.LoadStore(Uri)
+  fullName: Libplanet.Node.NodeUtils<T>.LoadStore(Uri)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadStore(Uri)
+  nameWithType: NodeUtils<T>.LoadStore(Uri)
+  nameWithType.vb: NodeUtils(Of T).LoadStore(Uri)
+- uid: Libplanet.Node.NodeUtils`1.LoadStore*
+  name: LoadStore
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_LoadStore_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.LoadStore
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.LoadStore
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).LoadStore
+  nameWithType: NodeUtils<T>.LoadStore
+  nameWithType.vb: NodeUtils(Of T).LoadStore
+- uid: Libplanet.Node.NodeUtils`1.SaveGenesisBlock(System.String,Libplanet.Blocks.Block{`0})
+  name: SaveGenesisBlock(String, Block<T>)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SaveGenesisBlock_System_String_Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Node.NodeUtils`1.SaveGenesisBlock(System.String,Libplanet.Blocks.Block{`0})
+  name.vb: SaveGenesisBlock(String, Block(Of T))
+  fullName: Libplanet.Node.NodeUtils<T>.SaveGenesisBlock(System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).SaveGenesisBlock(System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: NodeUtils<T>.SaveGenesisBlock(String, Block<T>)
+  nameWithType.vb: NodeUtils(Of T).SaveGenesisBlock(String, Block(Of T))
+- uid: Libplanet.Node.NodeUtils`1.SaveGenesisBlock*
+  name: SaveGenesisBlock
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SaveGenesisBlock_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.SaveGenesisBlock
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.SaveGenesisBlock
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).SaveGenesisBlock
+  nameWithType: NodeUtils<T>.SaveGenesisBlock
+  nameWithType.vb: NodeUtils(Of T).SaveGenesisBlock
+- uid: Libplanet.Node.NodeUtils`1.SavePrivateKey(System.String,Libplanet.Crypto.PrivateKey)
+  name: SavePrivateKey(String, PrivateKey)
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SavePrivateKey_System_String_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Node.NodeUtils`1.SavePrivateKey(System.String,Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Node.NodeUtils<T>.SavePrivateKey(System.String, Libplanet.Crypto.PrivateKey)
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).SavePrivateKey(System.String, Libplanet.Crypto.PrivateKey)
+  nameWithType: NodeUtils<T>.SavePrivateKey(String, PrivateKey)
+  nameWithType.vb: NodeUtils(Of T).SavePrivateKey(String, PrivateKey)
+- uid: Libplanet.Node.NodeUtils`1.SavePrivateKey*
+  name: SavePrivateKey
+  href: api/Libplanet.Node.NodeUtils-1.html#Libplanet_Node_NodeUtils_1_SavePrivateKey_
+  commentId: Overload:Libplanet.Node.NodeUtils`1.SavePrivateKey
+  isSpec: "True"
+  fullName: Libplanet.Node.NodeUtils<T>.SavePrivateKey
+  fullName.vb: Libplanet.Node.NodeUtils(Of T).SavePrivateKey
+  nameWithType: NodeUtils<T>.SavePrivateKey
+  nameWithType.vb: NodeUtils(Of T).SavePrivateKey
+- uid: Libplanet.Node.PreloadConfig
+  name: PreloadConfig
+  href: api/Libplanet.Node.PreloadConfig.html
+  commentId: T:Libplanet.Node.PreloadConfig
+  fullName: Libplanet.Node.PreloadConfig
+  nameWithType: PreloadConfig
+- uid: Libplanet.Node.PreloadConfig.DeltaThreshold
+  name: DeltaThreshold
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_DeltaThreshold
+  commentId: P:Libplanet.Node.PreloadConfig.DeltaThreshold
+  fullName: Libplanet.Node.PreloadConfig.DeltaThreshold
+  nameWithType: PreloadConfig.DeltaThreshold
+- uid: Libplanet.Node.PreloadConfig.DeltaThreshold*
+  name: DeltaThreshold
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_DeltaThreshold_
+  commentId: Overload:Libplanet.Node.PreloadConfig.DeltaThreshold
+  isSpec: "True"
+  fullName: Libplanet.Node.PreloadConfig.DeltaThreshold
+  nameWithType: PreloadConfig.DeltaThreshold
+- uid: Libplanet.Node.PreloadConfig.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_DialTimeout
+  commentId: P:Libplanet.Node.PreloadConfig.DialTimeout
+  fullName: Libplanet.Node.PreloadConfig.DialTimeout
+  nameWithType: PreloadConfig.DialTimeout
+- uid: Libplanet.Node.PreloadConfig.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_DialTimeout_
+  commentId: Overload:Libplanet.Node.PreloadConfig.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Node.PreloadConfig.DialTimeout
+  nameWithType: PreloadConfig.DialTimeout
+- uid: Libplanet.Node.PreloadConfig.Render
+  name: Render
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_Render
+  commentId: P:Libplanet.Node.PreloadConfig.Render
+  fullName: Libplanet.Node.PreloadConfig.Render
+  nameWithType: PreloadConfig.Render
+- uid: Libplanet.Node.PreloadConfig.Render*
+  name: Render
+  href: api/Libplanet.Node.PreloadConfig.html#Libplanet_Node_PreloadConfig_Render_
+  commentId: Overload:Libplanet.Node.PreloadConfig.Render
+  isSpec: "True"
+  fullName: Libplanet.Node.PreloadConfig.Render
+  nameWithType: PreloadConfig.Render
+- uid: Libplanet.Node.SwarmConfig
+  name: SwarmConfig
+  href: api/Libplanet.Node.SwarmConfig.html
+  commentId: T:Libplanet.Node.SwarmConfig
+  fullName: Libplanet.Node.SwarmConfig
+  nameWithType: SwarmConfig
+- uid: Libplanet.Node.SwarmConfig.BootstrapConfig
+  name: BootstrapConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_BootstrapConfig
+  commentId: P:Libplanet.Node.SwarmConfig.BootstrapConfig
+  fullName: Libplanet.Node.SwarmConfig.BootstrapConfig
+  nameWithType: SwarmConfig.BootstrapConfig
+- uid: Libplanet.Node.SwarmConfig.BootstrapConfig*
+  name: BootstrapConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_BootstrapConfig_
+  commentId: Overload:Libplanet.Node.SwarmConfig.BootstrapConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.BootstrapConfig
+  nameWithType: SwarmConfig.BootstrapConfig
+- uid: Libplanet.Node.SwarmConfig.FromJson(System.String)
+  name: FromJson(String)
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_FromJson_System_String_
+  commentId: M:Libplanet.Node.SwarmConfig.FromJson(System.String)
+  fullName: Libplanet.Node.SwarmConfig.FromJson(System.String)
+  nameWithType: SwarmConfig.FromJson(String)
+- uid: Libplanet.Node.SwarmConfig.FromJson*
+  name: FromJson
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_FromJson_
+  commentId: Overload:Libplanet.Node.SwarmConfig.FromJson
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.FromJson
+  nameWithType: SwarmConfig.FromJson
+- uid: Libplanet.Node.SwarmConfig.InitConfig
+  name: InitConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_InitConfig
+  commentId: P:Libplanet.Node.SwarmConfig.InitConfig
+  fullName: Libplanet.Node.SwarmConfig.InitConfig
+  nameWithType: SwarmConfig.InitConfig
+- uid: Libplanet.Node.SwarmConfig.InitConfig*
+  name: InitConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_InitConfig_
+  commentId: Overload:Libplanet.Node.SwarmConfig.InitConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.InitConfig
+  nameWithType: SwarmConfig.InitConfig
+- uid: Libplanet.Node.SwarmConfig.PreloadConfig
+  name: PreloadConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_PreloadConfig
+  commentId: P:Libplanet.Node.SwarmConfig.PreloadConfig
+  fullName: Libplanet.Node.SwarmConfig.PreloadConfig
+  nameWithType: SwarmConfig.PreloadConfig
+- uid: Libplanet.Node.SwarmConfig.PreloadConfig*
+  name: PreloadConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_PreloadConfig_
+  commentId: Overload:Libplanet.Node.SwarmConfig.PreloadConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.PreloadConfig
+  nameWithType: SwarmConfig.PreloadConfig
+- uid: Libplanet.Node.SwarmConfig.SyncConfig
+  name: SyncConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_SyncConfig
+  commentId: P:Libplanet.Node.SwarmConfig.SyncConfig
+  fullName: Libplanet.Node.SwarmConfig.SyncConfig
+  nameWithType: SwarmConfig.SyncConfig
+- uid: Libplanet.Node.SwarmConfig.SyncConfig*
+  name: SyncConfig
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_SyncConfig_
+  commentId: Overload:Libplanet.Node.SwarmConfig.SyncConfig
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.SyncConfig
+  nameWithType: SwarmConfig.SyncConfig
+- uid: Libplanet.Node.SwarmConfig.ToJson
+  name: ToJson()
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_ToJson
+  commentId: M:Libplanet.Node.SwarmConfig.ToJson
+  fullName: Libplanet.Node.SwarmConfig.ToJson()
+  nameWithType: SwarmConfig.ToJson()
+- uid: Libplanet.Node.SwarmConfig.ToJson*
+  name: ToJson
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_ToJson_
+  commentId: Overload:Libplanet.Node.SwarmConfig.ToJson
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.ToJson
+  nameWithType: SwarmConfig.ToJson
+- uid: Libplanet.Node.SwarmConfig.ToSwarmOptions
+  name: ToSwarmOptions()
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_ToSwarmOptions
+  commentId: M:Libplanet.Node.SwarmConfig.ToSwarmOptions
+  fullName: Libplanet.Node.SwarmConfig.ToSwarmOptions()
+  nameWithType: SwarmConfig.ToSwarmOptions()
+- uid: Libplanet.Node.SwarmConfig.ToSwarmOptions*
+  name: ToSwarmOptions
+  href: api/Libplanet.Node.SwarmConfig.html#Libplanet_Node_SwarmConfig_ToSwarmOptions_
+  commentId: Overload:Libplanet.Node.SwarmConfig.ToSwarmOptions
+  isSpec: "True"
+  fullName: Libplanet.Node.SwarmConfig.ToSwarmOptions
+  nameWithType: SwarmConfig.ToSwarmOptions
+- uid: Libplanet.Node.SyncConfig
+  name: SyncConfig
+  href: api/Libplanet.Node.SyncConfig.html
+  commentId: T:Libplanet.Node.SyncConfig
+  fullName: Libplanet.Node.SyncConfig
+  nameWithType: SyncConfig
+- uid: Libplanet.Node.SyncConfig.BlockBroadcastInterval
+  name: BlockBroadcastInterval
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_BlockBroadcastInterval
+  commentId: P:Libplanet.Node.SyncConfig.BlockBroadcastInterval
+  fullName: Libplanet.Node.SyncConfig.BlockBroadcastInterval
+  nameWithType: SyncConfig.BlockBroadcastInterval
+- uid: Libplanet.Node.SyncConfig.BlockBroadcastInterval*
+  name: BlockBroadcastInterval
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_BlockBroadcastInterval_
+  commentId: Overload:Libplanet.Node.SyncConfig.BlockBroadcastInterval
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.BlockBroadcastInterval
+  nameWithType: SyncConfig.BlockBroadcastInterval
+- uid: Libplanet.Node.SyncConfig.BlockDemandLifespan
+  name: BlockDemandLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_BlockDemandLifespan
+  commentId: P:Libplanet.Node.SyncConfig.BlockDemandLifespan
+  fullName: Libplanet.Node.SyncConfig.BlockDemandLifespan
+  nameWithType: SyncConfig.BlockDemandLifespan
+- uid: Libplanet.Node.SyncConfig.BlockDemandLifespan*
+  name: BlockDemandLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_BlockDemandLifespan_
+  commentId: Overload:Libplanet.Node.SyncConfig.BlockDemandLifespan
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.BlockDemandLifespan
+  nameWithType: SyncConfig.BlockDemandLifespan
+- uid: Libplanet.Node.SyncConfig.DialTimeout
+  name: DialTimeout
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_DialTimeout
+  commentId: P:Libplanet.Node.SyncConfig.DialTimeout
+  fullName: Libplanet.Node.SyncConfig.DialTimeout
+  nameWithType: SyncConfig.DialTimeout
+- uid: Libplanet.Node.SyncConfig.DialTimeout*
+  name: DialTimeout
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_DialTimeout_
+  commentId: Overload:Libplanet.Node.SyncConfig.DialTimeout
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.DialTimeout
+  nameWithType: SyncConfig.DialTimeout
+- uid: Libplanet.Node.SyncConfig.MaximumPollNumPeers
+  name: MaximumPollNumPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_MaximumPollNumPeers
+  commentId: P:Libplanet.Node.SyncConfig.MaximumPollNumPeers
+  fullName: Libplanet.Node.SyncConfig.MaximumPollNumPeers
+  nameWithType: SyncConfig.MaximumPollNumPeers
+- uid: Libplanet.Node.SyncConfig.MaximumPollNumPeers*
+  name: MaximumPollNumPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_MaximumPollNumPeers_
+  commentId: Overload:Libplanet.Node.SyncConfig.MaximumPollNumPeers
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.MaximumPollNumPeers
+  nameWithType: SyncConfig.MaximumPollNumPeers
+- uid: Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers
+  name: MinimumBroadcastNumPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_MinimumBroadcastNumPeers
+  commentId: P:Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers
+  fullName: Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers
+  nameWithType: SyncConfig.MinimumBroadcastNumPeers
+- uid: Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers*
+  name: MinimumBroadcastNumPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_MinimumBroadcastNumPeers_
+  commentId: Overload:Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.MinimumBroadcastNumPeers
+  nameWithType: SyncConfig.MinimumBroadcastNumPeers
+- uid: Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan
+  name: RoutingTableBoundPeerLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_RoutingTableBoundPeerLifespan
+  commentId: P:Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan
+  fullName: Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan
+  nameWithType: SyncConfig.RoutingTableBoundPeerLifespan
+- uid: Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan*
+  name: RoutingTableBoundPeerLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_RoutingTableBoundPeerLifespan_
+  commentId: Overload:Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.RoutingTableBoundPeerLifespan
+  nameWithType: SyncConfig.RoutingTableBoundPeerLifespan
+- uid: Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod
+  name: RoutingTableRefreshPeriod
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_RoutingTableRefreshPeriod
+  commentId: P:Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod
+  fullName: Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod
+  nameWithType: SyncConfig.RoutingTableRefreshPeriod
+- uid: Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod*
+  name: RoutingTableRefreshPeriod
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_RoutingTableRefreshPeriod_
+  commentId: Overload:Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.RoutingTableRefreshPeriod
+  nameWithType: SyncConfig.RoutingTableRefreshPeriod
+- uid: Libplanet.Node.SyncConfig.StaticPeers
+  name: StaticPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_StaticPeers
+  commentId: P:Libplanet.Node.SyncConfig.StaticPeers
+  fullName: Libplanet.Node.SyncConfig.StaticPeers
+  nameWithType: SyncConfig.StaticPeers
+- uid: Libplanet.Node.SyncConfig.StaticPeers*
+  name: StaticPeers
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_StaticPeers_
+  commentId: Overload:Libplanet.Node.SyncConfig.StaticPeers
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.StaticPeers
+  nameWithType: SyncConfig.StaticPeers
+- uid: Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod
+  name: StaticPeersMaintainPeriod
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_StaticPeersMaintainPeriod
+  commentId: P:Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod
+  fullName: Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod
+  nameWithType: SyncConfig.StaticPeersMaintainPeriod
+- uid: Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod*
+  name: StaticPeersMaintainPeriod
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_StaticPeersMaintainPeriod_
+  commentId: Overload:Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.StaticPeersMaintainPeriod
+  nameWithType: SyncConfig.StaticPeersMaintainPeriod
+- uid: Libplanet.Node.SyncConfig.TipLifespan
+  name: TipLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_TipLifespan
+  commentId: P:Libplanet.Node.SyncConfig.TipLifespan
+  fullName: Libplanet.Node.SyncConfig.TipLifespan
+  nameWithType: SyncConfig.TipLifespan
+- uid: Libplanet.Node.SyncConfig.TipLifespan*
+  name: TipLifespan
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_TipLifespan_
+  commentId: Overload:Libplanet.Node.SyncConfig.TipLifespan
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.TipLifespan
+  nameWithType: SyncConfig.TipLifespan
+- uid: Libplanet.Node.SyncConfig.TxBroadcastInterval
+  name: TxBroadcastInterval
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_TxBroadcastInterval
+  commentId: P:Libplanet.Node.SyncConfig.TxBroadcastInterval
+  fullName: Libplanet.Node.SyncConfig.TxBroadcastInterval
+  nameWithType: SyncConfig.TxBroadcastInterval
+- uid: Libplanet.Node.SyncConfig.TxBroadcastInterval*
+  name: TxBroadcastInterval
+  href: api/Libplanet.Node.SyncConfig.html#Libplanet_Node_SyncConfig_TxBroadcastInterval_
+  commentId: Overload:Libplanet.Node.SyncConfig.TxBroadcastInterval
+  isSpec: "True"
+  fullName: Libplanet.Node.SyncConfig.TxBroadcastInterval
+  nameWithType: SyncConfig.TxBroadcastInterval
 - uid: Libplanet.Node.UntypedBlock
   name: UntypedBlock
   href: api/Libplanet.Node.UntypedBlock.html

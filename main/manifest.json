@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "7viUEAPwKENAI14G5q47NMDg10TdlIoKllV8dpPeyEU="
+          "hash": "2jzuvO8MuHLozFrNrhtsgCYADN76nQZwe0XKRYV2Ivc="
         }
       },
       "is_incremental": false,
@@ -2885,6 +2885,102 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.BootstrapConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.BootstrapConfig.html",
+          "hash": "IsHNILVLcOYruxI1oxpw7xrYqnsG1NqFVQYr9VoBOxc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.InitConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.InitConfig.html",
+          "hash": "XFQtGuRrUAtnk980TOG1sjiVQ9BCJG03MLs0Y1V9U1E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.NetworkConfig-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.NetworkConfig-1.html",
+          "hash": "st+1GWHvk9xYSuty/ZTx1bt7NWw+ImYLxxwobs4hggo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.NodeConfig-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.NodeConfig-1.html",
+          "hash": "4NvJnOtoI3SzMRwM9SoBzfWc+a1SUr0GO6ufmsyXOtE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.NodeUtils-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.NodeUtils-1.html",
+          "hash": "bGXJ1vgq4c1WJ+YN9fWcNOx43UX1GKd1f/scLVyYO9Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.PreloadConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.PreloadConfig.html",
+          "hash": "QPPf7E+ENyr4HJqMynBY3l1siduGbD8oPW7ZKf+gZvg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.SwarmConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.SwarmConfig.html",
+          "hash": "IZzxKRzI/qUv/PF/o1I4/jsoKggL7AuZY4cz+qIC+WM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Node.SyncConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Node.SyncConfig.html",
+          "hash": "FauE1ETYm9iAf77Vi3m6SEzYi663xyaLKwg1WI1sVGs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Node.UntypedBlock.yml",
       "output": {
         ".html": {
@@ -2913,7 +3009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Node.html",
-          "hash": "We0/ATC2ZZ+XnVMrWUuO4BAZ9yXjelI3cZDHSp53A94="
+          "hash": "LFO/D6dl2TfN9eFYm7WZSk3Xb45b9UUqScy7woPqGf0="
         }
       },
       "is_incremental": false,
@@ -4041,7 +4137,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "tutXdXZuQypQFGNmttISrNPaE0GswIGHB5K+piiCU70="
+          "hash": "gFHWIJy2pw/9Ie8IaAIGaip5KwZ7WiR9lN9dcfkVsug="
         }
       },
       "is_incremental": false,
@@ -4150,7 +4246,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 326,
+          "total_file_count": 334,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
