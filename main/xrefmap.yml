@@ -9942,6 +9942,12 @@ references:
   fullName.vb: Libplanet.Crypto.PrivateKey.PrivateKey(IReadOnlyList(Of System.Byte))
   nameWithType: PrivateKey.PrivateKey(IReadOnlyList<Byte>)
   nameWithType.vb: PrivateKey.PrivateKey(IReadOnlyList(Of Byte))
+- uid: Libplanet.Crypto.PrivateKey.#ctor(System.String)
+  name: PrivateKey(String)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_String_
+  commentId: M:Libplanet.Crypto.PrivateKey.#ctor(System.String)
+  fullName: Libplanet.Crypto.PrivateKey.PrivateKey(System.String)
+  nameWithType: PrivateKey.PrivateKey(String)
 - uid: Libplanet.Crypto.PrivateKey.#ctor*
   name: PrivateKey
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_
