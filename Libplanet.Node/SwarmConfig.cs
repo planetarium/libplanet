@@ -157,28 +157,7 @@ namespace Libplanet.Node
                 Type typeToConvert,
                 JsonSerializerOptions options)
             {
-                Uri uri = new Uri(reader.GetString());
-                string? username = null;
-                string? credential = null;
-                if (uri.UserInfo.Length > 0)
-                {
-                    string[] userInfo = uri.UserInfo.Split(':');
-                    if (userInfo.Length == 1)
-                    {
-                        username = userInfo[0];
-                    }
-                    else if (userInfo.Length == 2)
-                    {
-                        username = userInfo[0];
-                        credential = userInfo[1];
-                    }
-                    else
-                    {
-                        throw new UriFormatException($"Invalid URI format: {uri}");
-                    }
-                }
-
-                return new IceServer(uri, username, credential);
+                return new IceServer(new Uri(reader.GetString()));
             }
 
             public override void Write(

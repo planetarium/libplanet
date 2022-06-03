@@ -680,7 +680,7 @@ namespace Libplanet.Net.Tests
 
             IEnumerable<IceServer> iceServers = new[]
             {
-                new IceServer(url: proxyUri, username: username, credential: password),
+                new IceServer(url: proxyUri),
             };
 
             var cts = new CancellationTokenSource();

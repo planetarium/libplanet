@@ -18,8 +18,8 @@ namespace Libplanet.Node.Tests
                 1001,
                 new List<IceServer>()
                 {
-                    new IceServer(new Uri("turn://user:cred@www.foo.com:1002"), "user", "cred"),
-                    new IceServer(new Uri("turn://www.bar.com:1003"), null, null),
+                    new IceServer(new Uri("turn://user:cred@www.foo.com:1002")),
+                    new IceServer(new Uri("turn://www.bar.com:1003")),
                 },
                 new List<BoundPeer>()
                 {

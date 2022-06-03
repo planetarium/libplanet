@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Stun;
 using Serilog;
@@ -8,29 +9,36 @@ namespace Libplanet.Net
 {
     public class IceServer
     {
-        public IceServer(
-            string url,
-            string? username = null,
-            string? credential = null)
-            : this(new Uri(url), username, credential)
+        public IceServer(string url)
+            : this(new Uri(url))
         {
         }
 
-        public IceServer(
-            Uri url,
-            string? username = null,
-            string? credential = null)
+        public IceServer(Uri url)
         {
+            // FIXME: This doesn't account for multiple colons.
+#pragma warning disable S1121, S3358, SA1316
             Url = url;
-            Username = username;
-            Credential = credential;
+            Func<string, string, bool, char, (string, string, bool)> parser =
+                (username, credential, isUsernameChar, c) =>
+                    c == ':'
+                        ? (username, credential, !isUsernameChar)
+                        : isUsernameChar
+                            ? (username += c, credential, isUsernameChar)
+                            : (username, credential += c, isUsernameChar);
+            (string username, string credential, bool isUsernameChar) seed =
+                (string.Empty, string.Empty, true);
+            (Username, Credential, _) = url.UserInfo
+                .Aggregate(seed, (prev, c) =>
+                    parser(prev.username, prev.credential, prev.isUsernameChar, c));
+#pragma warning restore S1121, S3358, SA1316
         }
 
         public Uri Url { get; }
 
-        public string? Username { get; }
+        public string Username { get; }
 
-        public string? Credential { get; }
+        public string Credential { get; }
 
         internal static async Task<TurnClient> CreateTurnClient(
             IEnumerable<IceServer> iceServers)

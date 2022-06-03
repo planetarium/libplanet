@@ -125,34 +125,8 @@ namespace Libplanet.Explorer.Executable
 
         public string IceServerUrl
         {
-            get
-            {
-                if (IceServer is null)
-                {
-                    return null;
-                }
-
-                Uri uri = IceServer.Url;
-                var uriBuilder = new UriBuilder(uri)
-                {
-                    UserName = IceServer.Username,
-                    Password = IceServer.Credential,
-                };
-                return uriBuilder.Uri.ToString();
-            }
-
-            set
-            {
-                if (value is null)
-                {
-                    IceServer = null;
-                    return;
-                }
-
-                var uri = new Uri(value);
-                string[] userInfo = uri.UserInfo.Split(':', count: 2);
-                IceServer = new IceServer(uri, userInfo[0], userInfo[1]);
-            }
+            get => IceServer is null ? null : IceServer.Url.ToString();
+            set => IceServer = value is null ? null : new IceServer(value);
         }
 
         public IceServer IceServer { get; set; }
