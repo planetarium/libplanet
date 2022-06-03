@@ -57,7 +57,7 @@ namespace Libplanet.Net
         /// <param name="nodeId">(Experimental) The Id of Node.</param>
         /// <param name="validators">(Experimental) The fixed list of validator set.</param>
         /// <param name="consensusPrivateKey">(Experimental) The private key that is using
-        /// for Consensus Routing/Transporting/Signing.</param>
+        /// for Consensus Signing.</param>
         /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
         /// <param name="consensusWorkers">(Experimental) The number of background workers for
         /// Consensus transport.</param>
@@ -92,8 +92,8 @@ namespace Libplanet.Net
             PrivateKey consensusPrivateKey,
             int? consensusPort = null,
             int consensusWorkers = 100,
-            int consensusTableSize = 1000,
-            int consensusTableBucket = 1,
+            int consensusTableSize = 1,
+            int consensusTableBucket = 1000,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -144,14 +144,14 @@ namespace Libplanet.Net
                 differentAppProtocolVersionEncountered);
 
             ConsensusRoutingTable = new RoutingTable(
-                consensusPrivateKey.ToAddress(), consensusTableSize, consensusTableBucket);
+                privateKey.ToAddress(), consensusTableSize, consensusTableBucket);
             _consensusReactor = new ConsensusReactor<T>(
                 RoutingTable,
                 ConsensusRoutingTable,
                 Transport,
                 ConsensusTransport,
                 BlockChain,
-                privateKey,
+                consensusPrivateKey,
                 nodeId,
                 validators);
         }
