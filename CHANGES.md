@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Net) Removed `username` and `credential` parameters from
+    `IceServer(string, string?, string?)` and
+    `IceServer(Uri, string?, string?)`.  [[#2048], [#2049]]
+ -  (Libplanet.Net) Properties `IceServer.Username` and `IceServer.Credential`
+    are no longer nullable.  [[#2048], [#2049]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -43,6 +49,8 @@ To be released.
 [#2018]: https://github.com/planetarium/libplanet/pull/2018
 [#2021]: https://github.com/planetarium/libplanet/pull/2021
 [#2022]: https://github.com/planetarium/libplanet/pull/2022
+[#2048]: https://github.com/planetarium/libplanet/issues/2048
+[#2049]: https://github.com/planetarium/libplanet/pull/2049
 
 
 Version 0.37.0

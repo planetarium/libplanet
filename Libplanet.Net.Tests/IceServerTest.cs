@@ -42,7 +42,7 @@ namespace Libplanet.Net.Tests
             Assert.Empty(iceServer.Username);
             Assert.Equal("empty", iceServer.Credential);
 
-            urlString = "turn://:@only.userinfo.seperator";
+            urlString = "turn://:@only.userinfo.separator";
             iceServer = new IceServer(urlString);
             Assert.Empty(iceServer.Username);
             Assert.Empty(iceServer.Credential);
