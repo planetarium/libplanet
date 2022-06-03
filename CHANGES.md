@@ -16,6 +16,12 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Node) Added `NetworkConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
+ -  (Libplanet.Node) Added `SwarmConfig`, `InitConfig`, `BootstrapConfig`
+    `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +29,11 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1946]: https://github.com/planetarium/libplanet/issues/1946
+[#2000]: https://github.com/planetarium/libplanet/pull/2000
+[#2013]: https://github.com/planetarium/libplanet/pull/2013
+[#2021]: https://github.com/planetarium/libplanet/pull/2021
 
 
 Version 0.37.0
