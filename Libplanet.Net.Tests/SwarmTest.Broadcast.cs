@@ -78,7 +78,7 @@ namespace Libplanet.Net.Tests
                 await StopAsync(swarmA);
                 await seed.PeerDiscovery.RefreshTableAsync(
                     TimeSpan.Zero,
-                    default(CancellationToken));
+                    default);
 
                 Assert.DoesNotContain(swarmA.AsPeer, seed.Peers);
 

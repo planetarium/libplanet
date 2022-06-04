@@ -23,9 +23,11 @@ To be released.
     `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
 
 ### Behavioral changes
- -  Added `PrivateKey(string)` constructor for hexadecimal string. [[#2012], [#2022]]
+ -  Added `PrivateKey(string)` constructor for hexadecimal string.
+    [[#2012], [#2022]]
  -  Allow `0x` prefix for `Address` class constructor.
-    `DeriveAddress` method will remove '0x' prefix string. [[#2015], [#2018]]
+    `DeriveAddress` method will remove '0x' prefix string.
+    [[#2015], [#2018]]
 
 ### Bug fixes
 

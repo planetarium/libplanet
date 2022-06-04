@@ -118,7 +118,7 @@ namespace Libplanet.Net.Tests.Protocols
         }
 
         public async Task StartAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -139,7 +139,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public async Task StopAsync(
             TimeSpan waitFor,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -163,7 +163,7 @@ namespace Libplanet.Net.Tests.Protocols
             IEnumerable<Peer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
             int depth = 3,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -184,7 +184,7 @@ namespace Libplanet.Net.Tests.Protocols
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
             int depth = 3,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -221,7 +221,7 @@ namespace Libplanet.Net.Tests.Protocols
         public Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_disposed)
             {
@@ -310,7 +310,7 @@ namespace Libplanet.Net.Tests.Protocols
                 _ = (Protocol as KademliaProtocol).PingAsync(
                     boundPeer,
                     timeSpan,
-                    default(CancellationToken));
+                    default);
             });
         }
 
@@ -446,7 +446,7 @@ namespace Libplanet.Net.Tests.Protocols
             TimeSpan? timeout,
             int expectedResponses,
             bool returnWhenTimeout,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return new[]
             {
@@ -475,7 +475,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public async Task WaitForTestMessageWithData(
             string data,
-            CancellationToken token = default(CancellationToken))
+            CancellationToken token = default)
         {
             if (_disposed)
             {
