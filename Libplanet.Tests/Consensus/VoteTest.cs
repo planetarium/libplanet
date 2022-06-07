@@ -25,5 +25,26 @@ namespace Libplanet.Tests.Consensus
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
         }
+
+        [Fact]
+        public void Sign()
+        {
+            var fx = new MemoryStoreFixture();
+            var now = DateTimeOffset.UtcNow;
+            var privateKey = new PrivateKey();
+            var vote = new Vote(
+                1,
+                2,
+                fx.Hash1,
+                now,
+                privateKey.PublicKey,
+                VoteFlag.Commit,
+                null);
+            Assert.Null(vote.Signature);
+            Vote signed = vote.Sign(privateKey);
+            Assert.NotNull(signed.Signature);
+            Assert.True(
+                privateKey.PublicKey.Verify(signed.RemoveSignature.ByteArray, signed.Signature));
+        }
     }
 }
