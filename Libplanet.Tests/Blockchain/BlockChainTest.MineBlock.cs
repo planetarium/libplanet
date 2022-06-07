@@ -552,7 +552,6 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        // TODO: Should add test with invalid commits.
         [Fact]
         public async Task MineBlockWithLastCommit()
         {
@@ -561,10 +560,13 @@ namespace Libplanet.Tests.Blockchain
             var keyC = new PrivateKey();
 
             var voteSet = new VoteSet(
-                _blockChain.Count,
+                _blockChain.Tip.Index,
                 0,
                 _blockChain.Tip.Hash,
                 new[] { keyA.PublicKey, keyB.PublicKey, keyC.PublicKey });
+            voteSet.Add(voteSet.Votes[0].Sign(keyA));
+            voteSet.Add(voteSet.Votes[1].Sign(keyB));
+            voteSet.Add(voteSet.Votes[2].Sign(keyC));
             var blockCommit = new BlockCommit(voteSet, _blockChain.Tip.Hash);
 
             Block<DumbAction> block = await _blockChain.MineBlock(

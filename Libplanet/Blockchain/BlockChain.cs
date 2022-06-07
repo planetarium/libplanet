@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -1380,6 +1381,67 @@ namespace Libplanet.Blockchain
                     $"The block #{index} {block.Hash}'s timestamp " +
                     $"({block.Timestamp}) is earlier than " +
                     $"the block #{index - 1}'s ({prevTimestamp}).");
+            }
+
+            // Check if the given block's LastCommit is made of votes that are
+            // for the previous block.
+            if (block.LastCommit is { } commit)
+            {
+                if (commit.Height != index - 1)
+                {
+                    return new InvalidBlockLastCommitException(
+                        $"The block #{index} {block.Hash}'s lastcommit's height " +
+                        $"({commit.Height}) does not match " +
+                        $"the previous block's index {index - 1}.");
+                }
+
+                if (!commit.BlockHash.Equals(prevHash))
+                {
+                    return new InvalidBlockLastCommitException(
+                        $"The block #{index} {block.Hash}'s lastcommit's previous hash " +
+                        $"({commit.BlockHash}) does not match " +
+                        $"the previous block's hash {prevHash}.");
+                }
+
+                if (commit.Votes is { } votes)
+                {
+                    // If the flag of a vote is not null or unknown, it should have valid signature.
+                    if (!votes.All(
+                            vote =>
+                            {
+                                if (vote.Signature is { } sign &&
+                                    vote.Validator.Verify(vote.RemoveSignature.ByteArray, sign))
+                                {
+                                    return true;
+                                }
+
+                                if (vote.Flag == VoteFlag.Null || vote.Flag == VoteFlag.Unknown)
+                                {
+                                    return true;
+                                }
+
+                                return false;
+                            }))
+                    {
+                        return new InvalidBlockLastCommitException(
+                            $"Some of the block #{index} {block.Hash}'s lastcommit's votes' " +
+                            "are not valid.");
+                    }
+
+                    // The height of all votes are same with the lastcommit's height.
+                    if (!votes.All(vote => vote.Height == commit.Height))
+                    {
+                        return new InvalidBlockLastCommitException(
+                            $"The block #{index} {block.Hash}'s lastcommit's votes' " +
+                            $"height does not match the previous block's index {index - 1}.");
+                    }
+                }
+                else if (index != 0)
+                {
+                    return new InvalidBlockLastCommitException(
+                        $"The block #{index} {block.Hash}'s votes can only be null " +
+                        "for the genesis block.");
+                }
             }
 
             return null;
