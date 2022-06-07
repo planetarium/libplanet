@@ -146,14 +146,13 @@ namespace Libplanet.Net
             ConsensusRoutingTable = new RoutingTable(
                 privateKey.ToAddress(), consensusTableSize, consensusTableBucket);
             _consensusReactor = new ConsensusReactor<T>(
-                RoutingTable,
-                ConsensusRoutingTable,
-                Transport,
                 ConsensusTransport,
                 BlockChain,
                 consensusPrivateKey,
                 nodeId,
-                validators);
+                validators,
+                Options.StaticPeers,
+                _cancellationToken);
         }
 
         internal Swarm(
@@ -265,6 +264,8 @@ namespace Libplanet.Net
 
         public void Propose(BlockHash blockHash) => _consensusReactor.Propose(blockHash);
 
+        public bool IsOwnProposeTurn() => _consensusReactor.IsOwnProposeTurn();
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
@@ -305,7 +306,7 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
-                await _consensusReactor.StopAsync(cancellationToken);
+                await _consensusReactor.StopAsync();
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -422,7 +423,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
-                tasks.AddRange(await _consensusReactor.StartAsync(cancellationToken));
+                tasks.Add(_consensusReactor.StartAsync());
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
