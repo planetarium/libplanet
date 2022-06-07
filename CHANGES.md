@@ -27,7 +27,7 @@ Released on June 7th, 2022.
  -  Added `PrivateKey(string)` constructor for hexadecimal string.
     [[#2012], [#2022]]
  -  Allow `0x` prefix for `Address` class constructor.
-    `DeriveAddress` method will remove '0x' prefix string.
+    `DeriveAddress` method will remove `0x` prefix string.
     [[#2015], [#2018]]
 
 [#1946]: https://github.com/planetarium/libplanet/issues/1946
