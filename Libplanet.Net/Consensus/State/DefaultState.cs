@@ -1,8 +1,11 @@
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Net.Consensus.State
 {
     public class DefaultState<T> : IState<T>
         where T : IAction, new()
@@ -32,7 +35,7 @@ namespace Libplanet.Net.Consensus
                 throw new UnexpectedRoundProposeException(propose);
             }
 
-            RoundContext<T> roundContext = context.CurrentRoundContext;
+            RoundContext<T> roundContext = context.RoundContextOf(propose.Height, propose.Round);
             if (roundContext.LeaderElection() != propose.NodeId)
             {
                 throw new UnexpectedLeaderProposeException(propose);
@@ -45,16 +48,15 @@ namespace Libplanet.Net.Consensus
 
             roundContext.BlockHash = propose.BlockHash;
             roundContext.State = new PreVoteState<T>();
+            var codec = new Codec();
+            var block = BlockMarshaler.UnmarshalBlock<T>(
+                context.HashAlgorithm,
+                (Dictionary)codec.Decode(propose.Payload));
+            context.PutBlockToStore(block);
 
-            if (context.ContainsBlock(propose.BlockHash))
-            {
-                return new ConsensusVote(
-                    context.SignVote(
-                        roundContext.Voting(VoteFlag.Absent)));
-            }
-
-            context.VoteHolding.Set();
-            return null;
+            return new ConsensusVote(
+                context.SignVote(
+                    roundContext.Voting(VoteFlag.Absent)));
         }
     }
 }

@@ -2,7 +2,7 @@ using Libplanet.Action;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Net.Consensus.State
 {
     public class PreCommitState<T> : IState<T>
         where T : IAction, new()
@@ -36,7 +36,7 @@ namespace Libplanet.Net.Consensus
                 throw new UnexpectedBlockHashException(commit);
             }
 
-            RoundContext<T> roundContext = context.CurrentRoundContext;
+            RoundContext<T> roundContext = context.RoundContextOf(commit.Height, commit.Round);
 
             roundContext.Vote(commit.CommitVote);
 
@@ -45,7 +45,10 @@ namespace Libplanet.Net.Consensus
                 return null;
             }
 
-            context.CommitBlock(roundContext.Height, roundContext.BlockHash);
+            context.CommitBlock(
+                roundContext.Height,
+                roundContext.Round,
+                roundContext.BlockHash);
 
             return null;
         }
@@ -62,7 +65,7 @@ namespace Libplanet.Net.Consensus
                 return null;
             }
 
-            RoundContext<T> targetContext = context.RoundContextOf(vote.Round);
+            RoundContext<T> targetContext = context.RoundContextOf(vote.Height, vote.Round);
             targetContext.Vote(vote.ProposeVote);
 
             if (!targetContext.VoteSet.HasTwoThirdPrevote())

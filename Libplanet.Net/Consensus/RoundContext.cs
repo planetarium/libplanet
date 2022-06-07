@@ -7,6 +7,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus.State;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
