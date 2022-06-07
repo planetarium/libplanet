@@ -1,0 +1,151 @@
+schema {
+  query: ExplorerQuery
+}
+
+type ExplorerQuery {
+  blockQuery: BlockQuery
+  transactionQuery: TransactionQuery
+  nodeState: NodeState!
+}
+
+type BlockQuery {
+  blocks(
+    # By default blocks queried from genesis block. in order to start query from tip, enable this.
+    desc: Boolean = false
+
+    # The number of blocks to skip from tip or bottom.
+    offset: Int = 0
+
+    # The number of blocks to get.
+    limit: Int
+
+    # By enabling excludeEmptyTxs, you can filter out 'Empty" (Txless) blocks.
+    excludeEmptyTxs: Boolean = false
+
+    # Address of current node.
+    miner: Address
+  ): [Block!]!
+  block(hash: ID, index: ID): Block
+}
+
+type Block {
+  # A block's hash.
+  hash: ID!
+
+  # The height of the block.
+  index: Long!
+
+  # The mining difficulty that the block's Nonce has to satisfy.
+  difficulty: Long!
+
+  # The total mining difficulty since the genesis including the block's Difficulty.
+  totalDifficulty: BigInt!
+
+  # The proof-of-work nonce which satisfies the required Difficulty.
+  nonce: ByteString!
+
+  # The address of the miner.
+  miner: Address!
+
+  # The public key of the Miner. This is used for verifying the signature.
+  # It is mandatory since ProtocolVersion 2, so It may be null under that version.
+  publicKey: PublicKey
+
+  # The previous block, If it's a genesis block (i.e., its Index is 0) this should be null.
+  previousBlock: Block
+
+  # The time the block is created.
+  timestamp: DateTimeOffset!
+
+  # The Hash of the resulting states after evaluating transactions and a BlockAction. (if exists)
+  stateRootHash: ByteString!
+
+  # The digital signature of the whole block content (except for Hash, which is derived from the signature and other contents). This is made by the Miner's PrivateKey.
+  signature: ByteString
+
+  # Transactions belonging to the block.
+  transactions: [Transaction!]!
+}
+
+scalar Long
+
+scalar BigInt
+
+scalar ByteString
+
+scalar Address
+
+scalar PublicKey
+
+# The `DateTimeOffset` scalar type represents a date, time and offset from UTC. `DateTimeOffset` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTimeOffset
+
+type Transaction {
+
+  # transaction id.
+  id: ID!
+
+  # The number of previous Transactions committed by the Signer of this transaction. This nonce is used for preventing replay attack.
+  # not be confused with block nonce.
+  nonce: Long!
+
+  # A Address of the account who signs this transaction.
+  signer: Address!
+
+  # A PublicKey of the account who signs this transaction. The Signer address is always corresponding to this for each transaction.
+  publicKey: ByteString!
+
+  # list of addresses whose states would be affected by actions in this transaction.
+  updatedAddresses: [Address!]!
+
+  # A digital signature of the content of this Transaction. This is signed by the account who corresponds to PublicKey.
+  signature: ByteString!
+
+  # The time this transaction is created and signed.
+  timestamp: DateTimeOffset!
+
+  # A list of IActions. These are executed in the order. This can be empty, but cannot be null.
+  actions: [Action!]!
+
+  # A block reference which this transaction was included.
+  blockRef: [Block!]
+}
+
+type Action {
+  # Action data encoded as Hex string.
+  raw(encode: String = "hex"): String!
+
+  # A human-readable representation for debugging, which looks similar to Python's
+  # literal syntax.  However, if a value is a complex tree and contains any unloaded
+  # subvalues, these are omitted and their fingerprints are shown instead.
+  inspection: String!
+}
+
+type TransactionQuery {
+  transactions(
+
+    # Address of the account who signs this transaction.
+    signer: Address
+
+    # All Addresses of the accounts that have been updated by the actions in the transaction within the block.
+    involvedAddress: Address
+
+    desc: Boolean = false
+    offset: Int = 0
+    limit: Int
+  ): [Transaction!]!
+  stagedTransactions(
+    signer: Address
+    involvedAddress: Address
+    desc: Boolean = false
+    offset: Int = 0
+    limit: Int
+  ): [Transaction!]!
+  transaction(id: ID): Transaction
+}
+
+
+# NodeState.preloaded specifies whether block preload has been completed.
+type NodeState {
+  preloaded: Boolean!
+}
