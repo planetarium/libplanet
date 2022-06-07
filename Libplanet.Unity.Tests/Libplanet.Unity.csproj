@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>true</IsTestProject>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\Libplanet.Tests\Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="
+    '$([System.Runtime.InteropServices.RuntimeInformation]::
+      OSArchitecture.ToString())' == 'Arm64' ">
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
+    <TargetFramework>$(TestsTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JunitXml.TestLogger" Version="3.0.98" />
+    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
+    <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.7" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.205">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xRetry" Version="1.5.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(SkipSonar)' != 'true'">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.12.0.21095">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Unity\Libplanet.Unity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
+    <!--
+    As Mono has no proper AppDomain, we prevent it on Mono.
+    This works around Xunit's fatal error on Mono.
+    -->
+    <Content Include="xunit.runner.mono.json">
+      <Link>xunit.runner.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
