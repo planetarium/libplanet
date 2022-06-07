@@ -5,6 +5,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Tx;
 
 namespace Libplanet.Node
 {
@@ -28,7 +29,8 @@ namespace Libplanet.Node
         {
             BlockPolicy = NodeUtils<T>.DefaultBlockPolicy;
             StagePolicy = NodeUtils<T>.DefaultStagePolicy;
-            GenesisBlock = NodeUtils<T>.CreateGenesisBlock(new PrivateKey(), BlockPolicy);
+            GenesisBlock = NodeUtils<T>.CreateGenesisBlock(
+                new PrivateKey(), BlockPolicy, new List<Transaction<T>>());
         }
 
         /// <summary>

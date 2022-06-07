@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using Bencodex;
@@ -11,6 +13,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tx;
 
 namespace Libplanet.Node
 {
@@ -49,7 +52,7 @@ namespace Libplanet.Node
         /// purposes and testing.
         /// </remarks>
         public static Block<T> CreateGenesisBlock()
-            => CreateGenesisBlock(new PrivateKey(), DefaultBlockPolicy);
+            => CreateGenesisBlock(new PrivateKey(), DefaultBlockPolicy, new List<Transaction<T>>());
 
         /// <summary>
         /// Creates an empty genesis <see cref="Block{T}"/> signed with
@@ -58,16 +61,20 @@ namespace Libplanet.Node
         /// <param name="privateKey">The <see cref="PrivateKey"/> to sign the genesis
         /// <see cref="Block{T}"/> with.</param>
         /// <param name="blockPolicy">The <see cref="IBlockPolicy{T}"/> to use.</param>
+        /// <param name="transactions">The <see cref="Transaction{T}"/> to include.</param>
         /// <returns>An empty genesis <see cref="Block{T}"/> signed with
         /// <paramref name="privateKey"/>.</returns>
         public static Block<T> CreateGenesisBlock(
             PrivateKey privateKey,
-            IBlockPolicy<T> blockPolicy)
+            IBlockPolicy<T> blockPolicy,
+            IEnumerable<Transaction<T>> transactions)
         {
-            return new BlockContent<T>(new BlockMetadata()
-                {
-                    PublicKey = privateKey.PublicKey,
-                })
+            return new BlockContent<T>()
+            {
+                PublicKey = privateKey.PublicKey,
+                Timestamp = DateTimeOffset.UtcNow,
+                Transactions = transactions.ToImmutableList(),
+            }
                 .Mine(blockPolicy.GetHashAlgorithm(0L))
                 .Evaluate(
                     privateKey,
