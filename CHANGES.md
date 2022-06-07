@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.38.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on June 7th, 2022.
 
 ### Backward-incompatible API changes
 
@@ -15,10 +13,6 @@ To be released.
     `IceServer(Uri, string?, string?)`.  [[#2048], [#2049]]
  -  (Libplanet.Net) Properties `IceServer.Username` and `IceServer.Credential`
     are no longer nullable.  [[#2048], [#2049]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -29,17 +23,12 @@ To be released.
     `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
 
 ### Behavioral changes
+
  -  Added `PrivateKey(string)` constructor for hexadecimal string.
     [[#2012], [#2022]]
  -  Allow `0x` prefix for `Address` class constructor.
-    `DeriveAddress` method will remove '0x' prefix string.
+    `DeriveAddress` method will remove `0x` prefix string.
     [[#2015], [#2018]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#1946]: https://github.com/planetarium/libplanet/issues/1946
 [#2000]: https://github.com/planetarium/libplanet/pull/2000
