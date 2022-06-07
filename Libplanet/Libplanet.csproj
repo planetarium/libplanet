@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <VersionPrefix>0.38.0</VersionPrefix>
+    <VersionPrefix>0.39.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
       Version: 1.2.3-dev.456
