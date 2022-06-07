@@ -14209,24 +14209,18 @@ references:
   commentId: T:Libplanet.Net.IceServer
   fullName: Libplanet.Net.IceServer
   nameWithType: IceServer
-- uid: Libplanet.Net.IceServer.#ctor(System.String,System.Nullable{System.String},System.Nullable{System.String})
-  name: IceServer(String, Nullable<String>, Nullable<String>)
-  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_System_String_System_Nullable_System_String__System_Nullable_System_String__
-  commentId: M:Libplanet.Net.IceServer.#ctor(System.String,System.Nullable{System.String},System.Nullable{System.String})
-  name.vb: IceServer(String, Nullable(Of String), Nullable(Of String))
-  fullName: Libplanet.Net.IceServer.IceServer(System.String, System.Nullable<System.String>, System.Nullable<System.String>)
-  fullName.vb: Libplanet.Net.IceServer.IceServer(System.String, System.Nullable(Of System.String), System.Nullable(Of System.String))
-  nameWithType: IceServer.IceServer(String, Nullable<String>, Nullable<String>)
-  nameWithType.vb: IceServer.IceServer(String, Nullable(Of String), Nullable(Of String))
-- uid: Libplanet.Net.IceServer.#ctor(Uri,System.Nullable{System.String},System.Nullable{System.String})
-  name: IceServer(Uri, Nullable<String>, Nullable<String>)
-  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_Uri_System_Nullable_System_String__System_Nullable_System_String__
-  commentId: M:Libplanet.Net.IceServer.#ctor(Uri,System.Nullable{System.String},System.Nullable{System.String})
-  name.vb: IceServer(Uri, Nullable(Of String), Nullable(Of String))
-  fullName: Libplanet.Net.IceServer.IceServer(Uri, System.Nullable<System.String>, System.Nullable<System.String>)
-  fullName.vb: Libplanet.Net.IceServer.IceServer(Uri, System.Nullable(Of System.String), System.Nullable(Of System.String))
-  nameWithType: IceServer.IceServer(Uri, Nullable<String>, Nullable<String>)
-  nameWithType.vb: IceServer.IceServer(Uri, Nullable(Of String), Nullable(Of String))
+- uid: Libplanet.Net.IceServer.#ctor(System.String)
+  name: IceServer(String)
+  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_System_String_
+  commentId: M:Libplanet.Net.IceServer.#ctor(System.String)
+  fullName: Libplanet.Net.IceServer.IceServer(System.String)
+  nameWithType: IceServer.IceServer(String)
+- uid: Libplanet.Net.IceServer.#ctor(Uri)
+  name: IceServer(Uri)
+  href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_Uri_
+  commentId: M:Libplanet.Net.IceServer.#ctor(Uri)
+  fullName: Libplanet.Net.IceServer.IceServer(Uri)
+  nameWithType: IceServer.IceServer(Uri)
 - uid: Libplanet.Net.IceServer.#ctor*
   name: IceServer
   href: api/Libplanet.Net.IceServer.html#Libplanet_Net_IceServer__ctor_
