@@ -80,5 +80,11 @@
     <Reference Include="UnityEngine.CoreModule">
         <HintPath>.\UnityReference\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor">
+        <HintPath>.\UnityReference\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.CoreModule">
+        <HintPath>.\UnityReference\UnityEditor.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
