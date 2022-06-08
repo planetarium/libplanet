@@ -23,7 +23,6 @@ namespace Libplanet.Net.Consensus
         private ConsensusContext<T> _context;
         private ILogger _logger;
         private IImmutableSet<BoundPeer>? _validatorPeers;
-        private CancellationToken _ctx;
 
         public ConsensusReactor(
             ITransport consensusTransport,
@@ -31,17 +30,13 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             long nodeId,
             List<PublicKey>? validators,
-            IImmutableSet<BoundPeer>? validatorPeers,
-            CancellationToken cancellationToken = default)
+            IImmutableSet<BoundPeer>? validatorPeers)
         {
             _consensusTransport = consensusTransport;
-            _validatorPeers = validatorPeers;
+            _validatorPeers = validatorPeers?
+                .Where(peer => !peer.PublicKey.Equals(privateKey.PublicKey)).ToImmutableHashSet();
             _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
 
-            CancellationTokenSource ctxSource = new CancellationTokenSource();
-            _ctx = CancellationTokenSource.CreateLinkedTokenSource(
-                    ctxSource.Token, cancellationToken
-                ).Token;
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Reactor")
@@ -72,17 +67,17 @@ namespace Libplanet.Net.Consensus
             return voteSets;
         }
 
-        public async Task<Task> StartAsync()
+        public async Task<Task> StartAsync(CancellationToken cancellationToken)
         {
             var tasks = new List<Task>();
-            tasks.Add(_consensusTransport.StartAsync(_ctx));
+            tasks.Add(_consensusTransport.StartAsync(cancellationToken));
 
             return await Task.WhenAny(tasks);
         }
 
-        public async Task StopAsync()
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await _consensusTransport.StopAsync(TimeSpan.FromMilliseconds(10), _ctx);
+            await _consensusTransport.StopAsync(TimeSpan.FromMilliseconds(10), cancellationToken);
         }
 
         public async Task ReceivedMessage(ConsensusMessage message)

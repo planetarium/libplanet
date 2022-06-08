@@ -45,10 +45,7 @@ namespace Libplanet.Net.Consensus.State
                 return null;
             }
 
-            context.CommitBlock(
-                roundContext.Height,
-                roundContext.Round,
-                roundContext.BlockHash);
+            context.CommitBlock(roundContext.Height, roundContext.BlockHash);
 
             return null;
         }

@@ -87,7 +87,7 @@ namespace Libplanet.Net.Consensus
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
 
-        public void CommitBlock(long height, long round, BlockHash hash)
+        public void CommitBlock(long height, BlockHash hash)
         {
             // Unlike round, lock is required because block append may take time.
             lock (_commitLock)
@@ -140,7 +140,7 @@ namespace Libplanet.Net.Consensus
                     Height + 1,
                     hash,
                     NodeId);
-                _commitedRound[height] = round;
+                _commitedRound[height] = Round;
                 Height++;
                 Round = 0;
             }

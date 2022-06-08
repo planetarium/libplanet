@@ -151,8 +151,7 @@ namespace Libplanet.Net
                 consensusPrivateKey,
                 nodeId,
                 validators,
-                Options.StaticPeers,
-                _cancellationToken);
+                Options.StaticPeers);
         }
 
         internal Swarm(
@@ -306,7 +305,7 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
-                await _consensusReactor.StopAsync();
+                await _consensusReactor.StopAsync(cancellationToken);
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -423,7 +422,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
-                tasks.Add(_consensusReactor.StartAsync());
+                tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
                 if (Options.StaticPeers.Any())
                 {
                     tasks.Add(
