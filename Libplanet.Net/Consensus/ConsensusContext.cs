@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Timers;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -11,7 +10,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Store;
 using Libplanet.Tx;
-using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Consensus
@@ -23,12 +21,12 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
-        private readonly TimeoutTicker _timoutTicker;
         private readonly List<PublicKey> _validators;
         private readonly object _commitLock;
         private readonly PrivateKey _privateKey;
 
-        private ConcurrentDictionary<long, RoundContext<T>> _roundContexts;
+        private ConcurrentDictionary<(long, long), RoundContext<T>> _roundContexts;
+        private ConcurrentDictionary<long, long> _commitedRound;
 
         public ConsensusContext(
             long nodeId,
@@ -44,21 +42,19 @@ namespace Libplanet.Net.Consensus
             }
 
             NodeId = nodeId;
-            Height = blockChain.Tip.Index;
-            VoteSets = new Dictionary<long, VoteSet?>();
-            VoteHolding = new AsyncManualResetEvent(false);
-            CommitFailed = new AsyncManualResetEvent(false);
-
+            Height = blockChain.Tip.Index + 1;
+            Round = 0;
             _blockChain = blockChain;
             _validators = validators;
             _privateKey = privateKey;
             _commitLock = new object();
-            _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>
+            _roundContexts = new ConcurrentDictionary<(long, long), RoundContext<T>>
             {
-                [0] = new RoundContext<T>(NodeId, validators, Height, Round),
+                [(Height, Round)] = new RoundContext<T>(NodeId, validators, Height, Round),
             };
+            _commitedRound = new ConcurrentDictionary<long, long>();
 
-            _timoutTicker = new TimeoutTicker(TimeoutMillisecond, TimerTimeoutCallback);
+            VoteSets = new Dictionary<long, VoteSet?>();
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "Context")
@@ -86,19 +82,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public HashAlgorithmGetter HashAlgorithm => _blockChain.Policy.GetHashAlgorithm;
 
-        public RoundContext<T> CurrentRoundContext => RoundContextOf(Round);
-
-        /// <summary>
-        /// A <see cref="AsyncManualResetEvent"/> whether A vote is in hold for waiting
-        /// <see cref="CurrentRoundContext"/> block.
-        /// </summary>
-        public AsyncManualResetEvent VoteHolding { get; }
-
-        /// <summary>
-        /// A <see cref="AsyncManualResetEvent"/> whether A commit has been failed in
-        /// <see cref="CurrentRoundContext"/>.
-        /// </summary>
-        public AsyncManualResetEvent CommitFailed { get; }
+        public RoundContext<T> CurrentRoundContext => RoundContextOf(Height, Round);
 
         // FIXME: Storing all voteset on memory is not required. Leave only 1~2 votesets.
         public Dictionary<long, VoteSet?> VoteSets { get; }
@@ -131,7 +115,6 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (NullReferenceException)
                 {
-                    CommitFailed.Set();
                     throw new CommitBlockNotExistsException(CurrentRoundContext.VoteSet);
                 }
                 catch (Exception e) when (e is BlockPolicyViolationException ||
@@ -151,11 +134,15 @@ namespace Libplanet.Net.Consensus
                         "commit stage.");
                 }
 
-                // FIXME: Gets voteset by reference, it can be modified in other place.
-                VoteSets.Add(Height, CurrentRoundContext.VoteSet);
+                _logger.Debug(
+                    "Commited block {Hash} from #{Before} to #{After} in node id {Id}.",
+                    Height,
+                    Height + 1,
+                    hash,
+                    NodeId);
+                _commitedRound[height] = Round;
                 Height++;
                 Round = 0;
-                _roundContexts = new ConcurrentDictionary<long, RoundContext<T>>();
             }
         }
 
@@ -170,6 +157,9 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IStore.PutBlock{T}"/>
         public void PutBlockToStore(Block<T> block) =>
             _blockChain.Store.PutBlock(block);
+
+        public long CommitedRound(long height) =>
+            _commitedRound.ContainsKey(height) ? _commitedRound[height] : -1;
 
         public long NextRound(long round)
         {
@@ -188,32 +178,30 @@ namespace Libplanet.Net.Consensus
 
             // NOTE: Reusing existing round context is valid?
             // FIXME: Should not re-create RoundContext. Instead, use new vote set.
-            if (!_roundContexts.ContainsKey(Round))
+            if (!_roundContexts.ContainsKey((Height, Round)))
             {
-                _roundContexts[Round] = new RoundContext<T>(
+                _roundContexts[(Height, Round)] = new RoundContext<T>(
                     NodeId,
                     _validators,
                     Height,
                     Round);
             }
 
-            VoteHolding.Reset();
-
             return Round;
         }
 
-        public RoundContext<T> RoundContextOf(long round)
+        public RoundContext<T> RoundContextOf(long height, long round)
         {
-            if (!_roundContexts.ContainsKey(round))
+            if (!_roundContexts.ContainsKey((height, round)))
             {
-                _roundContexts[round] = new RoundContext<T>(
+                _roundContexts[(height, round)] = new RoundContext<T>(
                     NodeId,
                     _validators,
                     Height,
                     round);
             }
 
-            return _roundContexts[round];
+            return _roundContexts[(height, round)];
         }
 
         public Vote SignVote(Vote vote)
@@ -223,19 +211,20 @@ namespace Libplanet.Net.Consensus
 
         public ConsensusMessage? HandleMessage(ConsensusMessage message)
         {
-            var beforeRoundContext = CurrentRoundContext.State;
+            var roundContext = RoundContextOf(message.Height, message.Round).State;
+            _logger.Debug($"{nameof(HandleMessage)} -> " +
+                          $"{ToString()}");
 
             ConsensusMessage? res = null;
             try
             {
-                res = CurrentRoundContext.State.Handle(this, message);
+                res = roundContext.Handle(this, message);
             }
             catch (Exception e)
             {
                 _logger.Error(e, "Handle throws exception: {E}", e);
             }
 
-            SetTimeoutByState(beforeRoundContext);
             return res;
         }
 
@@ -250,76 +239,6 @@ namespace Libplanet.Net.Consensus
                 { "step", CurrentRoundContext.State.Name },
             };
             return JsonSerializer.Serialize(message);
-        }
-
-        private void TimerTimeoutCallback(object? sender, ElapsedEventArgs eventArgs)
-        {
-            _logger.Debug(
-                "NodeId: {Id}, Height: {RHeight}, Round: {RRound}, " +
-                          "State: {State}, TimeoutTicker: " +
-                          "Timeout occurred. Considering NIL in " +
-                          "Round #{Round} of Height #{Height}.",
-                NodeId,
-                CurrentRoundContext.Height,
-                CurrentRoundContext.Round,
-                CurrentRoundContext.State.Name,
-                Round,
-                Height);
-
-            switch (CurrentRoundContext.State)
-            {
-                case PreVoteState<T> _:
-                    CurrentRoundContext.State = new PreCommitState<T>();
-                    StartTimeout();
-                    break;
-                case PreCommitState<T> _:
-                    NextRound(Round);
-                    StopTimeout();
-                    break;
-            }
-        }
-
-        private void SetTimeoutByState(IState<T> beforeRoundContext)
-        {
-            switch (beforeRoundContext)
-            {
-                case DefaultState<T> _
-                    when CurrentRoundContext.State is PreVoteState<T>:
-                case PreVoteState<T> _
-                    when CurrentRoundContext.State is PreCommitState<T>:
-                    StartTimeout();
-                    break;
-                case PreCommitState<T> _
-                    when CurrentRoundContext.State is DefaultState<T>:
-                    StopTimeout();
-                    break;
-            }
-        }
-
-        private void StartTimeout()
-        {
-            _logger.Verbose(
-                "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
-                          "State: {State}, TimeoutTicker: Timer Started. " +
-                          "Timeout will be occurred in {Time}",
-                CurrentRoundContext.NodeId,
-                CurrentRoundContext.Height,
-                CurrentRoundContext.Round,
-                CurrentRoundContext.State.Name,
-                DateTimeOffset.UtcNow.AddMilliseconds(TimeoutMillisecond));
-            _timoutTicker.Set();
-        }
-
-        private void StopTimeout()
-        {
-            _logger.Verbose(
-                "NodeId: {Id}, Height: {Height}, Round: {Round}, " +
-                          "State: {State}, TimeoutTicker: Timer Stopped.",
-                NodeId,
-                CurrentRoundContext.Height,
-                CurrentRoundContext.Round,
-                CurrentRoundContext.State.Name);
-            _timoutTicker.Stop();
         }
     }
 }

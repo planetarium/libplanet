@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -23,9 +22,9 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         public VoteSet? VoteSetOf(long height);
 
-        public Task<List<Task>> StartAsync(CancellationToken ctx);
+        public Task<Task> StartAsync(CancellationToken cancellationToken);
 
-        public Task StopAsync(CancellationToken ctx);
+        public Task StopAsync(CancellationToken cancellationToken);
 
         public string ToString();
     }

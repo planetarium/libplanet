@@ -5,6 +5,7 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
+using Libplanet.Net.Consensus.State;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Xunit;
@@ -40,18 +41,18 @@ namespace Libplanet.Net.Tests.Consensus
             context.Vote(duplicatedVote);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
             Assert.Equal(
-                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
-                new[] { duplicatedVote }.ToHashSet());
+                new HashSet<Vote>(context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent)),
+                new HashSet<Vote>(new[] { duplicatedVote }));
             context.Vote(duplicatedVote);
             Assert.Equal(initialVoteCount + 1, context.VoteCount);
             Assert.Equal(
-                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
-                new[] { duplicatedVote }.ToHashSet());
+                new HashSet<Vote>(context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent)),
+                new HashSet<Vote>(new[] { duplicatedVote }));
             context.Vote(uniqueVote);
             Assert.Equal(initialVoteCount + 2, context.VoteCount);
             Assert.Equal(
-                context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent).ToHashSet(),
-                new[] { uniqueVote, duplicatedVote }.ToHashSet());
+                new HashSet<Vote>(context.VoteSet.Votes.Where(v => v.Flag == VoteFlag.Absent)),
+                new HashSet<Vote>(new[] { uniqueVote, duplicatedVote }));
         }
 
         [Fact]

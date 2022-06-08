@@ -1,7 +1,7 @@
 using Libplanet.Action;
 using Libplanet.Net.Messages;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Net.Consensus.State
 {
     public interface IState<T>
         where T : IAction, new()

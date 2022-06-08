@@ -1,10 +1,12 @@
 using System.Linq;
+using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
+using Libplanet.Net.Consensus.State;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -31,7 +33,9 @@ namespace Libplanet.Net.Tests.Consensus.States
         [Fact]
         public void Handle()
         {
+            var codec = new Codec();
             BlockHash validBlockHash = _fx.Block1.Hash;
+            byte[] validBlockPayload = codec.Encode(_fx.Block1.MarshalBlock());
             BlockHash invalidBlockHash = _fx.Block2.Hash;
             var validators = Enumerable.Range(0, 6)
                                              .Select(x => new PrivateKey())
@@ -47,7 +51,7 @@ namespace Libplanet.Net.Tests.Consensus.States
             {
                 contextAlreadyVoted.CurrentRoundContext.Vote(
                         TestUtils
-                            .CreateVote(validatorsPubKey[i], VoteFlag.Absent, id: i)
+                            .CreateVote(validatorsPubKey[i], VoteFlag.Absent, id: i, height: 1)
                             .Sign(validators[i]));
             }
 
@@ -55,53 +59,27 @@ namespace Libplanet.Net.Tests.Consensus.States
             Assert.Throws<TryUnexpectedMessageHandleException>(
                 () => state.Handle(
                     context,
-                    new ConsensusPropose(0, 0, 0, validBlockHash) { Remote = TestUtils.Peer0 }));
+                    new ConsensusPropose(0, 1, 0, validBlockHash, validBlockPayload)
+                        { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedRoundProposeException>(
                 () => state.Handle(
                     context,
                     new ConsensusVote(
-                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 0, 1))
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 1, 1))
                         { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedHeightProposeException>(
                 () => state.Handle(
                     context,
                     new ConsensusVote(
-                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 1, 0))
+                            TestUtils.CreateVote(validBlockHash, VoteFlag.Absent, 0, 2, 0))
                         { Remote = TestUtils.Peer0 }));
             Assert.Throws<UnexpectedBlockHashException>(
                 () => state.Handle(
                     context,
                     new ConsensusVote(
-                            TestUtils.CreateVote(invalidBlockHash, VoteFlag.Absent, 0, 0, 0))
+                            TestUtils.CreateVote(invalidBlockHash, VoteFlag.Absent, 0, 1, 0))
                         { Remote = TestUtils.Peer0 }));
             Assert.Equal(0, context.CurrentRoundContext.VoteCount);
-            Assert.Throws<VoteBlockNotExistsException>(
-                () => state.Handle(
-                    context,
-                    new ConsensusVote(
-                            TestUtils.CreateVote(
-                                validBlockHash,
-                                VoteFlag.Absent,
-                                1,
-                                0,
-                                0,
-                                validatorsPubKey[0]).Sign(
-                                validators[0]))
-                        { Remote = TestUtils.Peer0 }));
-            _fx.Store.PutBlock(_fx.Block1);
-            Assert.NotNull(
-                state.Handle(
-                    context,
-                    new ConsensusVote(
-                            TestUtils.CreateVote(
-                                validBlockHash,
-                                VoteFlag.Absent,
-                                1,
-                                0,
-                                0,
-                                validatorsPubKey[0]).Sign(
-                                validators[0]))
-                        { Remote = TestUtils.Peer0 }));
             Assert.Null(
                 state.Handle(
                     context,
@@ -110,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                                     validBlockHash,
                                     VoteFlag.Absent,
                                     1,
-                                    0,
+                                    1,
                                     0,
                                     validatorsPubKey[0]).Sign(
                                 validators[0]))
@@ -123,7 +101,7 @@ namespace Libplanet.Net.Tests.Consensus.States
                                 validBlockHash,
                                 VoteFlag.Absent,
                                 5,
-                                0,
+                                1,
                                 0,
                                 validatorsPubKey[5]).Sign(validators[5]))
                     { Remote = TestUtils.Peer0 });
