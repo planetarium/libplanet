@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Node) Changed `NodeUtils<T>.CreateGenesisBlock(PrivateKey,
+    IBlockPolicy<T>)` to `NodeUtils<T>.CreateGenesisBlock(PrivateKey,
+    IBlockPolicy<T>), IEnumerable<Transaction<T>>)` to allow creating
+    a non-empty genesis `Block<T>`.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -47,6 +52,7 @@ To be released.
 
 [#1696]: https://github.com/planetarium/libplanet/issues/1696
 [#2058]: https://github.com/planetarium/libplanet/issues/2058
+[#2059]: https://github.com/planetarium/libplanet/pull/2059
 [#2091]: https://github.com/planetarium/libplanet/pull/2091
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108

@@ -62,8 +62,8 @@ namespace Libplanet.Node
         /// <see cref="Block{T}"/> with.</param>
         /// <param name="blockPolicy">The <see cref="IBlockPolicy{T}"/> to use.</param>
         /// <param name="transactions">The <see cref="Transaction{T}"/> to include.</param>
-        /// <returns>An empty genesis <see cref="Block{T}"/> signed with
-        /// <paramref name="privateKey"/>.</returns>
+        /// <returns>A genesis <see cref="Block{T}"/> containing <paramref name="transactions"/>
+        /// signed with <paramref name="privateKey"/>.</returns>
         public static Block<T> CreateGenesisBlock(
             PrivateKey privateKey,
             IBlockPolicy<T> blockPolicy,
