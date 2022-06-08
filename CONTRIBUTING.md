@@ -115,6 +115,9 @@ on GitHub consists of several projects:
  -  *Libplanet.Explorer.Executable*: Turns Libplanet Explorer into a single
     executable binary so that it is easy to distribute.
 
+ -  *Libplanet.Unity*: User-friendly pluggable API for developing and running
+    a *Libplanet* blockchain node within Unity.
+
  -  *Libplanet.Benchmarks*: Performance benchmarks.
     See the [*Benchmarks*](#benchmarks) section below.
 
@@ -134,6 +137,9 @@ on GitHub consists of several projects:
     project.
 
  -  *Libplanet.Explorer.Tests*: Unit tests of the *Libplanet.Explorer*
+    project.
+
+ -  *Libplanet.Unity.Tests*: Unit tests of the *Libplanet.Unity*
     project.
 
  -  *Libplanet.Extensions.Cocona.Tests*: Unit tests of the
