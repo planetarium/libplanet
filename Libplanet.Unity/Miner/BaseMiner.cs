@@ -9,18 +9,19 @@ using UnityEngine;
 namespace Libplanet.Unity.Miner
 {
     /// <summary>
-    /// Agent.
+    /// <c>BaseMiner</c> class provides basic mining coroutine.
+    /// <see cref="BlockChain{T}"/>'s <c>MineBlock</c> must be implemented and success/failure can be monitored through <c>OnMineListener</c>.
     /// </summary>
-    /// <typeparam name="T">The type.</typeparam>
+    /// <typeparam name="T"><see cref="BlockChain{T}"/> Action Type.</typeparam>
     public abstract class BaseMiner<T>
         where T : IAction, new()
     {
         /// <summary>
-        /// Agent.
+        /// Initialize a <see cref="BaseMiner{T}"/> instance.
         /// </summary>
-        /// <param name="blockChain">A.</param>
-        /// <param name="privateKey">Av.</param>
-        /// <param name="onMineListener">As.</param>
+        /// <param name="blockChain"><see cref="BlockChain{T}"/> to be used for mining.</param>
+        /// <param name="privateKey"><see cref="PrivateKey"/> to be used for mining.</param>
+        /// <param name="onMineListener"><c>OnMineListener</c> success/failure handler.</param>
         protected BaseMiner(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -32,24 +33,24 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// Agent.
+        /// <see cref="BlockChain"/>
         /// </summary>
         protected BlockChain<T> BlockChain { get; }
 
         /// <summary>
-        /// Agent.
+        /// <see cref="PrivateKey"/>
         /// </summary>
         protected PrivateKey PrivateKey { get; }
 
         /// <summary>
-        /// Agent.
+        /// <see cref="IMineListener{T}"/>
         /// </summary>
         protected IMineListener<T> OnMineListener { get; set; }
 
         /// <summary>
-        /// Agent.
+        /// Process mining and wait.
         /// </summary>
-        /// <returns>a.</returns>
+        /// <returns>Mining Coroutine.</returns>
         public IEnumerator CoStart()
         {
             while (true)
@@ -70,9 +71,9 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// Agent.
+        /// Use <see cref="BlockChain"/>'s <c>MineBlock</c> to implement <c>Mine</c>
         /// </summary>
-        /// <returns>a.</returns>
+        /// <returns>Runned mine Task.</returns>
         protected abstract Task<Block<T>> Mine();
     }
 }

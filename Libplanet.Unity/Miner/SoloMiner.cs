@@ -3,22 +3,23 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net;
 
 namespace Libplanet.Unity.Miner
 {
     /// <summary>
-    /// Agent.
+    /// It is used for mining without <see cref="Swarm{T}"/>.
     /// </summary>
-    /// <typeparam name="T">The type.</typeparam>
+    /// <typeparam name="T"><see cref="BlockChain{T}"/> Action Type.</typeparam>
     public class SoloMiner<T> : BaseMiner<T>
         where T : IAction, new()
     {
         /// <summary>
-        /// Agent.
+        /// Initialize a <see cref="SoloMiner{T}"/> instance.
         /// </summary>
-        /// <param name="blockChain">A.</param>
-        /// <param name="privateKey">Ad.</param>
-        /// <param name="onMineListener">As.</param>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> to use.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to use.</param>
+        /// <param name="onMineListener">The <see cref="IMineListener{T}"/> to use.</param>
         public SoloMiner(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -28,9 +29,9 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// Agent.
+        /// Implementation for Solo Mining.
         /// </summary>
-        /// <returns>a.</returns>
+        /// <returns>Runned Task.</returns>
         protected override Task<Block<T>> Mine()
         {
             var task = Task.Run(async () =>
