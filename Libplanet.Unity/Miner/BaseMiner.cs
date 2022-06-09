@@ -10,7 +10,8 @@ namespace Libplanet.Unity.Miner
 {
     /// <summary>
     /// <c>BaseMiner</c> class provides basic mining coroutine.
-    /// <see cref="BlockChain{T}"/>'s <c>MineBlock</c> must be implemented and success/failure can be monitored through <c>OnMineListener</c>.
+    /// <see cref="BlockChain{T}"/>'s <c>MineBlock</c> must be implemented
+    /// and success/failure can be monitored through <c>OnMineListener</c>.
     /// </summary>
     /// <typeparam name="T"><see cref="BlockChain{T}"/> Action Type.</typeparam>
     public abstract class BaseMiner<T>
@@ -33,17 +34,17 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// <see cref="BlockChain"/>
+        /// <see cref="BlockChain{T}"/> to be used in Mine.
         /// </summary>
         protected BlockChain<T> BlockChain { get; }
 
         /// <summary>
-        /// <see cref="PrivateKey"/>
+        /// <see cref="PrivateKey"/> to be used in Mine.
         /// </summary>
         protected PrivateKey PrivateKey { get; }
 
         /// <summary>
-        /// <see cref="IMineListener{T}"/>
+        /// <see cref="IMineListener{T}"/> to be used in CoStart.
         /// </summary>
         protected IMineListener<T> OnMineListener { get; set; }
 
@@ -71,7 +72,7 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// Use <see cref="BlockChain"/>'s <c>MineBlock</c> to implement <c>Mine</c>
+        /// Use <see cref="BlockChain"/>'s <c>MineBlock</c> to implement <c>Mine</c>.
         /// </summary>
         /// <returns>Runned mine Task.</returns>
         protected abstract Task<Block<T>> Mine();

@@ -12,7 +12,7 @@ namespace Libplanet.Unity.Miner
         where T : IAction, new()
     {
         /// <summary>
-        /// If <c>Mine</c> is success, this method is called
+        /// If <c>Mine</c> is success, this method is called.
         /// </summary>
         /// <param name="block">Mined <see cref="Block{T}"/>.</param>
         void Success(Block<T> block);
