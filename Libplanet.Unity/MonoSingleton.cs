@@ -1,6 +1,6 @@
+#nullable disable
 using UnityEngine;
 
-#pragma warning disable S2696
 namespace Libplanet.Unity
 {
     /// <summary>
@@ -11,8 +11,6 @@ namespace Libplanet.Unity
         where T : MonoSingleton<T>
     {
         private static readonly object Lock = new object();
-#pragma warning disable CS8625
-#pragma warning disable CS8603
         private static T _instance = null;
         private static bool _appLicationIsQuitting;
 
@@ -67,8 +65,6 @@ namespace Libplanet.Unity
                 }
             }
         }
-#pragma warning restore CS8625
-#pragma warning restore CS8603
 
         /// <summary>
         /// Unity Engine Mono Awake.
@@ -77,7 +73,9 @@ namespace Libplanet.Unity
         {
             if (_instance == null)
             {
+#pragma warning disable S2696
                 _instance = (T)this;
+#pragma warning restore S2696
 
                 DontDestroyOnLoad(gameObject);
             }
@@ -101,8 +99,9 @@ namespace Libplanet.Unity
         /// </summary>
         protected virtual void OnApplicationQuit()
         {
+#pragma warning disable S2696
             _appLicationIsQuitting = true;
+#pragma warning restore S2696
         }
     }
 }
-#pragma warning restore S2696
