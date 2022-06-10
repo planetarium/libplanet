@@ -1,116 +1,158 @@
 #nullable disable
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Node;
+using Libplanet.Store;
 using Libplanet.Tx;
+using Libplanet.Unity.Miner;
 using NetMQ;
+using Serilog;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Libplanet.Node;
 using UnityEngine;
+using UnityEditor;
 
 namespace Libplanet.Unity
 {
     /// <summary>
-    /// Temp.
+    /// T.
     /// </summary>
-    public abstract class Agent : MonoSingleton<Agent>
+    public class Agent : MonoSingleton<Agent>
     {
-        private readonly ConcurrentQueue<System.Action> _actions =
-            new ConcurrentQueue<System.Action>();
+        private readonly ConcurrentQueue<System.Action> _actions = new ConcurrentQueue<System.Action>();
 
-        private PrivateKey _privateKey;
+        private BaseMiner<PolymorphicAction<ActionBase>> _miner;
 
-        private NodeConfig<PolymorphicAction<IAction>> _nodeConfig;
+        private SwarmRunner _swarmRunner;
 
-        private Swarm<PolymorphicAction<IAction>> _swarm;
+        private PrivateKey PrivateKey { get; set; }
 
-        private BlockChain<PolymorphicAction<IAction>> _blockChain;
+        private NodeConfig<PolymorphicAction<ActionBase>> _nodeConfig;
 
-        private CancellationTokenSource _cancellationTokenSource;
+        private Swarm<PolymorphicAction<ActionBase>> _swarm;
+
+        private BlockChain<PolymorphicAction<ActionBase>> _blockChain;
 
         /// <summary>
-        /// Temp.
+        /// T.
         /// </summary>
-        /// <param name="renderers">T1.</param>
-        /// <param name="privateKey">T2.</param>
-        /// <param name="nodeConfig">T3.</param>
+        public Address Address { get; private set; }
+
+        /// <summary>
+        /// T.
+        /// </summary>
         public static void Initialize(
-            IEnumerable<IRenderer<PolymorphicAction<IAction>>> renderers,
-            PrivateKey privateKey,
-            NodeConfig<PolymorphicAction<IAction>> nodeConfig)
+            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
+            BaseMiner<PolymorphicAction<ActionBase>> miner = null)
         {
-            Instance.InitAgent(
-                renderers,
-                privateKey,
-                nodeConfig);
+            Instance.InitAgent(renderers, miner);
         }
 
         /// <summary>
-        /// Temp.
+        /// T.
         /// </summary>
-        /// <param name="address">T.</param>
-        /// <returns>T2.</returns>
         public IValue GetState(Address address)
         {
             return _blockChain.GetState(address);
         }
 
         /// <summary>
-        /// Temp.
+        /// T.
         /// </summary>
-        /// <param name="gameActions">T.</param>
-        public void MakeTransaction(IEnumerable<IAction> gameActions)
+        public void MakeTransaction(IEnumerable<ActionBase> gameActions)
         {
-            var actions = gameActions.Select(
-                gameAction => (PolymorphicAction<IAction>)gameAction).ToList();
+            var actions = gameActions.Select(gameAction => (PolymorphicAction<ActionBase>)gameAction).ToList();
             Task.Run(() => MakeTransaction(actions, true));
         }
 
         /// <summary>
-        /// Temp.
+        /// T.
         /// </summary>
-        /// <param name="action">T.</param>
         public void RunOnMainThread(System.Action action)
         {
             _actions.Enqueue(action);
         }
 
+        private void InitAgent(
+            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
+            BaseMiner<PolymorphicAction<ActionBase>> miner)
+        {
+            var storagePath = Paths.StorePath;
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            Init(storagePath, renderers, miner);
+
+            StartCoroutines();
+        }
+
+        private void Init(
+            string storagePath,
+            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
+            BaseMiner<PolymorphicAction<ActionBase>> miner)
+        {
+            PrivateKey = GetPrivateKey();
+            Address = PrivateKey.PublicKey.ToAddress();
+
+            SwarmConfig swarmConfig = GetSwarmConfig();
+            Block<PolymorphicAction<ActionBase>> genesis = GetGenesisBlock();
+            (IStore store, IStateStore stateStore) = NodeUtils<PolymorphicAction<ActionBase>>.LoadStore(storagePath);
+            _nodeConfig = new NodeConfig<PolymorphicAction<ActionBase>>(
+                PrivateKey,
+                new NetworkConfig<PolymorphicAction<ActionBase>>(
+                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultBlockPolicy,
+                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultStagePolicy,
+                    genesis),
+                swarmConfig,
+                store,
+                stateStore,
+                renderers);
+            _nodeConfig.SwarmConfig.InitConfig.Host = "localhost";
+            _swarm = _nodeConfig.GetSwarm();
+            _blockChain = _swarm.BlockChain;
+
+            // NOTE: Agent private key doesn't necessarily have to match swarm private key.
+            _swarmRunner = new SwarmRunner(_swarm, PrivateKey);
+            if (miner is null)
+            {
+                _miner = new SoloMiner<PolymorphicAction<ActionBase>>(
+                    _blockChain,
+                    PrivateKey,
+                    new DefaultMineHandler(_blockChain, PrivateKey));
+            } else
+            {
+                _miner = miner;
+            }
+        }
+
         /// <summary>
-        /// Temp.
+        /// T.
         /// </summary>
         protected override void OnDestroy()
         {
             NetMQConfig.Cleanup(false);
 
             base.OnDestroy();
-            _swarm.Dispose();
+            _swarm?.Dispose();
         }
 
-        /// <summary>
-        /// Temp.
-        /// </summary>
-        /// <param name="renderers">T1.</param>
-        /// <param name="privateKey">T2.</param>
-        /// <param name="nodeConfig">T3.</param>
-        private void InitAgent(
-            IEnumerable<IRenderer<PolymorphicAction<IAction>>> renderers,
-            PrivateKey privateKey,
-            NodeConfig<PolymorphicAction<IAction>> nodeConfig)
+        private void StartCoroutines()
         {
-            _privateKey = privateKey;
-            _nodeConfig = nodeConfig;
-            _swarm = nodeConfig.GetSwarm();
-            _blockChain = _swarm.BlockChain;
-
-            _cancellationTokenSource = new CancellationTokenSource();
+            StartCoroutine(_swarmRunner.CoSwarmRunner());
+            StartCoroutine(_miner.CoStart());
+            StartCoroutine(CoProcessActions());
         }
 
         private IEnumerator CoProcessActions()
@@ -121,25 +163,29 @@ namespace Libplanet.Unity
                 {
                     action();
                 }
-
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
-        [RuntimeInitializeOnLoadMethod]
-        private void RunOnStart()
+        private static bool WantsToQuit()
         {
-            Application.wantsToQuit += () => true;
+            return true;
         }
 
-        private Transaction<PolymorphicAction<IAction>> MakeTransaction(
-                    IEnumerable<PolymorphicAction<IAction>> actions, bool broadcast)
+        [RuntimeInitializeOnLoadMethod]
+        private static void RunOnStart()
+        {
+            Application.wantsToQuit += WantsToQuit;
+        }
+
+        private Transaction<PolymorphicAction<ActionBase>> MakeTransaction(
+                    IEnumerable<PolymorphicAction<ActionBase>> actions, bool broadcast)
         {
             var polymorphicActions = actions.ToArray();
             Debug.LogFormat(
                 "Make Transaction with Actions: `{0}`",
                 string.Join(",", polymorphicActions.Select(i => i.InnerAction)));
-            return _blockChain.MakeTransaction(_privateKey, polymorphicActions);
+            return _blockChain.MakeTransaction(PrivateKey, polymorphicActions);
         }
     }
 }
