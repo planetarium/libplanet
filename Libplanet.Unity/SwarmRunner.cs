@@ -6,7 +6,6 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Unity.Action;
 using UnityEngine;
 
 namespace Libplanet.Unity

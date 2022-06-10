@@ -14,7 +14,6 @@ using Libplanet.Net;
 using Libplanet.Node;
 using Libplanet.Store;
 using Libplanet.Tx;
-using Libplanet.Unity.Action;
 using NetMQ;
 using UnityEngine;
 
@@ -28,7 +27,7 @@ namespace Libplanet.Unity
         private readonly ConcurrentQueue<System.Action> _actions =
             new ConcurrentQueue<System.Action>();
 
-        private Miner<PolymorphicAction<ActionBase>> _miner;
+        private Miner _miner;
 
         private Swarm<PolymorphicAction<ActionBase>> _swarm;
 
@@ -57,7 +56,7 @@ namespace Libplanet.Unity
         }
 
         /// <summary>
-        /// Get blockchain now state
+        /// T.
         /// </summary>
         /// <param name="address"><see cref="Address"/> to be use.</param>
         /// <returns>Return <see cref="IValue"/>.</returns>
@@ -139,7 +138,7 @@ namespace Libplanet.Unity
 
         private void ConfigureMiner()
         {
-            _miner = new Miner<PolymorphicAction<ActionBase>>(
+            _miner = new Miner(
                 _swarm,
                 PrivateKey);
         }

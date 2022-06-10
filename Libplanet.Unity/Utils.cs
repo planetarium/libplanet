@@ -6,7 +6,7 @@ using Libplanet.Node;
 using Libplanet.Store;
 using Libplanet.Unity;
 
-namespace LibplanetUnity
+namespace Libplanet.Unity
 {
     /// <summary>
     /// A static class with various helper methods for handling persistent data.
