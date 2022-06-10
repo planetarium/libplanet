@@ -12,7 +12,7 @@ namespace Libplanet.Unity
     {
         private static readonly object Lock = new object();
         private static T _instance = null;
-        private static bool _appLicationIsQuitting;
+        private static bool _applicationIsQuitting;
 
         /// <summary>
         /// MonoSingleton.
@@ -21,7 +21,7 @@ namespace Libplanet.Unity
         {
             get
             {
-                if (_appLicationIsQuitting)
+                if (_applicationIsQuitting)
                 {
                     Debug.Log(
                         $"[MonoSingleton]Instance '{typeof(T)}' " +
@@ -100,7 +100,7 @@ namespace Libplanet.Unity
         protected virtual void OnApplicationQuit()
         {
 #pragma warning disable S2696
-            _appLicationIsQuitting = true;
+            _applicationIsQuitting = true;
 #pragma warning restore S2696
         }
     }

@@ -5,7 +5,8 @@ using Libplanet.Blocks;
 namespace Libplanet.Unity.Miner
 {
     /// <summary>
-    /// IMineListener is to check whether 'mine' of <see cref="BaseMiner{T}"/> is successful.
+    /// IMineListener is to check whether <see cref="BaseMiner{T}.Mine"/> of
+    /// <see cref="BaseMiner{T}"/> is successful.
     /// </summary>
     /// <typeparam name="T"><see cref="BaseMiner{T}"/>'s chain Action Type.</typeparam>
     public interface IMineListener<T>

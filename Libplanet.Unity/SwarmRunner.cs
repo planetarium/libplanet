@@ -1,12 +1,12 @@
-using Libplanet;
-using Libplanet.Action;
-using Libplanet.Blockchain;
-using Libplanet.Crypto;
-using Libplanet.Net;
 using System;
 using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Crypto;
+using Libplanet.Net;
+using Libplanet.Unity.Action;
 using UnityEngine;
 
 namespace Libplanet.Unity
@@ -16,8 +16,6 @@ namespace Libplanet.Unity
     /// </summary>
     public class SwarmRunner
     {
-        private PrivateKey PrivateKey { get; set; }
-
         private CancellationTokenSource _cancellationTokenSource;
 
         private Swarm<PolymorphicAction<ActionBase>> _swarm;
@@ -27,6 +25,8 @@ namespace Libplanet.Unity
         /// <summary>
         /// T.
         /// </summary>
+        /// <param name="swarm">T1.</param>
+        /// <param name="privateKey">T2.</param>
         public SwarmRunner(
             Swarm<PolymorphicAction<ActionBase>> swarm,
             PrivateKey privateKey)
@@ -38,9 +38,12 @@ namespace Libplanet.Unity
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
+        private PrivateKey PrivateKey { get; set; }
+
         /// <summary>
         /// T.
         /// </summary>
+        /// <returns>T1.</returns>
         public IEnumerator CoSwarmRunner()
         {
             if (_swarm is null)

@@ -1,4 +1,9 @@
 #nullable disable
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -6,60 +11,60 @@ using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Node;
 using Libplanet.Store;
 using Libplanet.Tx;
+using Libplanet.Unity.Action;
 using Libplanet.Unity.Miner;
 using NetMQ;
-using Serilog;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Libplanet.Node;
 using UnityEngine;
-using UnityEditor;
 
 namespace Libplanet.Unity
 {
     /// <summary>
-    /// T.
+    /// Agent
     /// </summary>
     public class Agent : MonoSingleton<Agent>
     {
-        private readonly ConcurrentQueue<System.Action> _actions = new ConcurrentQueue<System.Action>();
+        private readonly ConcurrentQueue<System.Action> _actions =
+            new ConcurrentQueue<System.Action>();
 
         private BaseMiner<PolymorphicAction<ActionBase>> _miner;
 
         private SwarmRunner _swarmRunner;
-
-        private PrivateKey PrivateKey { get; set; }
-
-        private NodeConfig<PolymorphicAction<ActionBase>> _nodeConfig;
 
         private Swarm<PolymorphicAction<ActionBase>> _swarm;
 
         private BlockChain<PolymorphicAction<ActionBase>> _blockChain;
 
         /// <summary>
-        /// T.
+        /// PrivateKey's Address.
         /// </summary>
         public Address Address { get; private set; }
 
+        private PrivateKey PrivateKey { get; set; }
+
         /// <summary>
-        /// T.
+        /// Initialize Agent
+        /// m
         /// </summary>
+        /// <param name="renderers">T1.</param>
+        /// <param name="miner">T2.</param>
         public static void Initialize(
             IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
             BaseMiner<PolymorphicAction<ActionBase>> miner = null)
         {
-            Instance.InitAgent(renderers, miner);
+            if (Instance is { } instance)
+            {
+                instance.InitAgent(renderers, miner);
+            }
         }
 
         /// <summary>
-        /// T.
+        /// Get blockchain now state
         /// </summary>
+        /// <param name="address"><see cref="Address"/> to be use.</param>
+        /// <returns>Return <see cref="IValue"/>.</returns>
         public IValue GetState(Address address)
         {
             return _blockChain.GetState(address);
@@ -68,73 +73,21 @@ namespace Libplanet.Unity
         /// <summary>
         /// T.
         /// </summary>
+        /// <param name="gameActions">T1.</param>
         public void MakeTransaction(IEnumerable<ActionBase> gameActions)
         {
-            var actions = gameActions.Select(gameAction => (PolymorphicAction<ActionBase>)gameAction).ToList();
+            var actions = gameActions.Select(
+                gameAction => (PolymorphicAction<ActionBase>)gameAction).ToList();
             Task.Run(() => MakeTransaction(actions, true));
         }
 
         /// <summary>
         /// T.
         /// </summary>
+        /// <param name="action">T1.</param>
         public void RunOnMainThread(System.Action action)
         {
             _actions.Enqueue(action);
-        }
-
-        private void InitAgent(
-            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
-            BaseMiner<PolymorphicAction<ActionBase>> miner)
-        {
-            var storagePath = Paths.StorePath;
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            Init(storagePath, renderers, miner);
-
-            StartCoroutines();
-        }
-
-        private void Init(
-            string storagePath,
-            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
-            BaseMiner<PolymorphicAction<ActionBase>> miner)
-        {
-            PrivateKey = GetPrivateKey();
-            Address = PrivateKey.PublicKey.ToAddress();
-
-            SwarmConfig swarmConfig = GetSwarmConfig();
-            Block<PolymorphicAction<ActionBase>> genesis = GetGenesisBlock();
-            (IStore store, IStateStore stateStore) = NodeUtils<PolymorphicAction<ActionBase>>.LoadStore(storagePath);
-            _nodeConfig = new NodeConfig<PolymorphicAction<ActionBase>>(
-                PrivateKey,
-                new NetworkConfig<PolymorphicAction<ActionBase>>(
-                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultBlockPolicy,
-                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultStagePolicy,
-                    genesis),
-                swarmConfig,
-                store,
-                stateStore,
-                renderers);
-            _nodeConfig.SwarmConfig.InitConfig.Host = "localhost";
-            _swarm = _nodeConfig.GetSwarm();
-            _blockChain = _swarm.BlockChain;
-
-            // NOTE: Agent private key doesn't necessarily have to match swarm private key.
-            _swarmRunner = new SwarmRunner(_swarm, PrivateKey);
-            if (miner is null)
-            {
-                _miner = new SoloMiner<PolymorphicAction<ActionBase>>(
-                    _blockChain,
-                    PrivateKey,
-                    new DefaultMineHandler(_blockChain, PrivateKey));
-            } else
-            {
-                _miner = miner;
-            }
         }
 
         /// <summary>
@@ -146,6 +99,62 @@ namespace Libplanet.Unity
 
             base.OnDestroy();
             _swarm?.Dispose();
+        }
+
+        private void InitAgent(
+            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers,
+            BaseMiner<PolymorphicAction<ActionBase>> miner)
+        {
+            ConfigureKeys();
+            ConfigureNode(renderers);
+            ConfigureMiner(miner);
+
+            StartCoroutines();
+        }
+
+        private void ConfigureKeys()
+        {
+            PrivateKey = InitHelper.GetPrivateKey(Paths.PrivateKeyPath);
+            Address = PrivateKey.PublicKey.ToAddress();
+        }
+
+        private void ConfigureNode(
+            IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers)
+        {
+            SwarmConfig swarmConfig = InitHelper.GetSwarmConfig(Paths.SwarmConfigPath);
+            Block<PolymorphicAction<ActionBase>> genesis = InitHelper.GetGenesisBlock(
+                Paths.GenesisBlockPath);
+            (IStore store, IStateStore stateStore) = InitHelper.GetStore(Paths.StorePath);
+
+            var nodeConfig = new NodeConfig<PolymorphicAction<ActionBase>>(
+                PrivateKey,
+                new NetworkConfig<PolymorphicAction<ActionBase>>(
+                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultBlockPolicy,
+                    NodeUtils<PolymorphicAction<ActionBase>>.DefaultStagePolicy,
+                    genesis),
+                swarmConfig,
+                store,
+                stateStore,
+                renderers);
+            _swarm = nodeConfig.GetSwarm();
+            _swarmRunner = new SwarmRunner(_swarm, PrivateKey);
+
+            _blockChain = _swarm.BlockChain;
+        }
+
+        private void ConfigureMiner(BaseMiner<PolymorphicAction<ActionBase>> miner)
+        {
+            if (miner is null)
+            {
+                _miner = new SoloMiner<PolymorphicAction<ActionBase>>(
+                    _blockChain,
+                    PrivateKey,
+                    new MineHandler(_blockChain, PrivateKey));
+            }
+            else
+            {
+                _miner = miner;
+            }
         }
 
         private void StartCoroutines()
@@ -163,19 +172,9 @@ namespace Libplanet.Unity
                 {
                     action();
                 }
+
                 yield return new WaitForSeconds(0.1f);
             }
-        }
-
-        private static bool WantsToQuit()
-        {
-            return true;
-        }
-
-        [RuntimeInitializeOnLoadMethod]
-        private static void RunOnStart()
-        {
-            Application.wantsToQuit += WantsToQuit;
         }
 
         private Transaction<PolymorphicAction<ActionBase>> MakeTransaction(
