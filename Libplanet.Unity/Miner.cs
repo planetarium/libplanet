@@ -7,46 +7,39 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using UnityEngine;
 
-namespace Libplanet.Unity.Miner
+namespace Libplanet.Unity
 {
     /// <summary>
-    /// <c>Miner</c> class provides basic mining coroutine.
+    /// <see cref="Miner"/> class provides basic mining coroutine.
     /// </summary>
-    /// <typeparam name="T"><see cref="Swarm{T}"/> Action Type.</typeparam>
-    public class Miner<T>
-        where T : IAction, new()
+    public class Miner
     {
         /// <summary>
-        /// <see cref="Swarm{T}"/> to be used in Mine.
+        /// The <see cref="Swarm{T}"/> to use for mining.
         /// </summary>
-        private Swarm<T> _swarm;
+        private Swarm<PolymorphicAction<ActionBase>> _swarm;
 
         /// <summary>
-        /// <see cref="BlockChain{T}"/> to be used in Mine.
-        /// </summary>
-        private BlockChain<T> _blockChain;
-
-        /// <summary>
-        /// <see cref="PrivateKey"/> to be used in Mine.
+        /// The <see cref="PrivateKey"/> to sign mined <see cref="Block{T}"/>s.
         /// </summary>
         private PrivateKey _privateKey;
 
         /// <summary>
-        /// Initialize a <see cref="Miner{T}"/> instance.
+        /// Initialize a <see cref="Miner"/> instance.
         /// </summary>
-        /// <param name="swarm"><see cref="Swarm{T}"/> to be used for mining.</param>
-        /// <param name="privateKey"><see cref="PrivateKey"/> to be used for mining.</param>
+        /// <param name="swarm">The <see cref="Swarm{T}"/> to use for mining.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to sign
+        /// mined <see cref="Block{T}"/>s.</param>
         public Miner(
-            Swarm<T> swarm,
+            Swarm<PolymorphicAction<ActionBase>> swarm,
             PrivateKey privateKey)
         {
             _swarm = swarm;
-            _blockChain = swarm.BlockChain;
             _privateKey = privateKey;
         }
 
         /// <summary>
-        /// Process mining and wait.
+        /// Processes mining and wait.
         /// </summary>
         /// <returns>Mining Coroutine.</returns>
         public IEnumerator CoStart()
@@ -59,7 +52,6 @@ namespace Libplanet.Unity.Miner
                 if (!task.IsCanceled && !task.IsFaulted)
                 {
                     var block = task.Result;
-
                     Debug.Log($"Created block index[{block.Index}] difficulty {block.Difficulty}.");
                 }
                 else
@@ -70,14 +62,14 @@ namespace Libplanet.Unity.Miner
         }
 
         /// <summary>
-        /// Use <see cref="BlockChain{T}"/>'s <c>MineBlock</c> to implement <c>Mine</c>.
+        /// Uses <see cref="BlockChain{T}"/> to implement <see cref="Mine"/>.
         /// </summary>
-        /// <returns>Runned mine Task.</returns>
-        public Task<Block<T>> Mine()
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        public Task<Block<PolymorphicAction<ActionBase>>> Mine()
         {
             var task = Task.Run(async () =>
             {
-                var block = await _blockChain.MineBlock(_privateKey);
+                var block = await _swarm.BlockChain.MineBlock(_privateKey);
                 _swarm.BroadcastBlock(block);
 
                 return block;
