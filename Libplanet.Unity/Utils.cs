@@ -3,7 +3,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Node;
-using Libplanet.Unity;
+using Libplanet.Unity.Action;
 
 namespace LibplanetUnity
 {

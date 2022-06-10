@@ -1,7 +1,7 @@
 using Bencodex.Types;
 using Libplanet.Action;
 
-namespace Libplanet.Unity
+namespace Libplanet.Unity.Action
 {
     /// <summary>
     /// A base class for <see cref="IAction"/>s.  Inherit this class when implementing

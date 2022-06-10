@@ -7,7 +7,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using UnityEngine;
 
-namespace Libplanet.Unity.Miner
+namespace Libplanet.Unity
 {
     /// <summary>
     /// <c>Miner</c> class provides basic mining coroutine.
