@@ -93,7 +93,7 @@ namespace LibplanetUnity
         /// <returns>A <see cref="PrivateKey"/> loaded from <paramref name="path"/>.</returns>
         /// <exception cref="FileNotFoundException">If no file was found at
         /// <paramref name="path"/>.</exception>
-        public static PrivateKey GetPrivateKey(string path)
+        public static PrivateKey LoadPrivateKey(string path)
         {
             if (!File.Exists(path))
             {
