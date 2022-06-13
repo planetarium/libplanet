@@ -36,7 +36,7 @@ namespace Libplanet.Unity
         private BlockChain<PolymorphicAction<ActionBase>> _blockChain;
 
         /// <summary>
-        /// PrivateKey's Address.
+        /// Address of the <see cref="PrivateKey"/>
         /// </summary>
         public Address Address { get; private set; }
 
@@ -108,17 +108,17 @@ namespace Libplanet.Unity
 
         private void ConfigureKeys()
         {
-            PrivateKey = InitHelper.GetPrivateKey(Paths.PrivateKeyPath);
+            PrivateKey = Utils.GetPrivateKey(Paths.PrivateKeyPath);
             Address = PrivateKey.PublicKey.ToAddress();
         }
 
         private void ConfigureNode(
             IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers)
         {
-            SwarmConfig swarmConfig = InitHelper.GetSwarmConfig(Paths.SwarmConfigPath);
-            Block<PolymorphicAction<ActionBase>> genesis = InitHelper.GetGenesisBlock(
+            SwarmConfig swarmConfig = Utils.LoadSwarmConfig(Paths.SwarmConfigPath);
+            Block<PolymorphicAction<ActionBase>> genesis = Utils.LoadGenesisBlock(
                 Paths.GenesisBlockPath);
-            (IStore store, IStateStore stateStore) = InitHelper.GetStore(Paths.StorePath);
+            (IStore store, IStateStore stateStore) = Utils.LoadStore(Paths.StorePath);
 
             var nodeConfig = new NodeConfig<PolymorphicAction<ActionBase>>(
                 PrivateKey,
