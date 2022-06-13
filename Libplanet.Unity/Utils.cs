@@ -3,12 +3,13 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Node;
+using Libplanet.Store;
 using Libplanet.Unity;
 
 namespace LibplanetUnity
 {
     /// <summary>
-    /// Various helper methods for creating persistent data.
+    /// A static class with various helper methods for handling persistent data.
     /// </summary>
     public static class Utils
     {
@@ -47,6 +48,77 @@ namespace LibplanetUnity
             PrivateKey privateKey = new PrivateKey();
             File.Delete(path);
             NodeUtils<PolymorphicAction<ActionBase>>.SavePrivateKey(path, privateKey);
+        }
+
+        /// <summary>
+        /// Loads a <see cref="SwarmConfig"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">Path to a file containing a <see cref="SwarmConfig"/>.</param>
+        /// <returns>A <see cref="SwarmConfig"/> loaded from <paramref name="path"/>.</returns>
+        /// <exception cref="FileNotFoundException">If no file was found at
+        /// <paramref name="path"/>.</exception>
+        public static SwarmConfig LoadSwarmConfig(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(
+                    $"File not found for {nameof(SwarmConfig)}.", path);
+            }
+
+            return SwarmConfig.FromJson(File.ReadAllText(path));
+        }
+
+        /// <summary>
+        /// Loads a genesis <see cref="Block{T}"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">Path to a file containing a genesis <see cref="Block{T}"/>.</param>
+        /// <returns>A genesis <see cref="Block{T}"/> loaded from <paramref name="path"/>.</returns>
+        /// <exception cref="FileNotFoundException">If no file was found at
+        /// <paramref name="path"/>.</exception>
+        public static Block<PolymorphicAction<ActionBase>> LoadGenesisBlock(string path)
+        {
+            if (!File.Exists(Paths.GenesisBlockPath))
+            {
+                throw new FileNotFoundException(
+                    $"File not found for genesis block.", path);
+            }
+
+            return NodeUtils<PolymorphicAction<ActionBase>>.LoadGenesisBlock(path);
+        }
+
+        /// <summary>
+        /// Loads a <see cref="PrivateKey"/> from <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">Path to a file containing a <see cref="PrivateKey"/>.</param>
+        /// <returns>A <see cref="PrivateKey"/> loaded from <paramref name="path"/>.</returns>
+        /// <exception cref="FileNotFoundException">If no file was found at
+        /// <paramref name="path"/>.</exception>
+        public static PrivateKey GetPrivateKey(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(
+                    $"File not found for genesis block.", path);
+            }
+
+            return NodeUtils<PolymorphicAction<ActionBase>>.LoadPrivateKey(path);
+        }
+
+        /// <summary>
+        /// Loads a pair of <see cref="IStore"/> and <see cref="IStateStore"/> from
+        /// <paramref name="path"/>.
+        /// </summary>
+        /// <param name="path">The location of a directory containing <see cref="IStore"/>
+        /// and <see cref="IStateStore"/>.</param>
+        /// <returns>A pair of loaded <see cref="IStore"/> and <see cref="IStateStore"/> instances
+        /// from <paramref name="path"/>.</returns>
+        /// <remarks>
+        /// Unlike other methods for loading, if stores are not found at <paramref name="path"/>,
+        /// they are created silently.
+        /// </remarks>
+        public static (IStore Store, IStateStore StateStore) LoadStore(string path)
+        {
+            return NodeUtils<PolymorphicAction<ActionBase>>.LoadStore(path);
         }
     }
 }
