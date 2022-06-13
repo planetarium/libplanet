@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Libplanet.Unity
 {
     /// <summary>
-    /// T.
+    /// <see cref="SwarmRunner"/> class provides <see cref="Swarm{T}"/> start coroutine.
     /// </summary>
     public class SwarmRunner
     {
@@ -22,10 +22,10 @@ namespace Libplanet.Unity
         private BlockChain<PolymorphicAction<ActionBase>> _blockChain;
 
         /// <summary>
-        /// T.
+        /// Initialize a <see cref="SwarmRunner"/> instance.
         /// </summary>
-        /// <param name="swarm">T1.</param>
-        /// <param name="privateKey">T2.</param>
+        /// <param name="swarm">The <see cref="Swarm{T}"/> to use.</param>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> to use.</param>
         public SwarmRunner(
             Swarm<PolymorphicAction<ActionBase>> swarm,
             PrivateKey privateKey)
@@ -40,9 +40,9 @@ namespace Libplanet.Unity
         private PrivateKey PrivateKey { get; set; }
 
         /// <summary>
-        /// T.
+        /// Start <see cref="Swarm{T}"/> bootstrap, preload and wait.
         /// </summary>
-        /// <returns>T1.</returns>
+        /// <returns>It exists only for WaitUntil.</returns>
         public IEnumerator CoSwarmRunner()
         {
             if (_swarm is null)

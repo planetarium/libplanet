@@ -20,7 +20,8 @@ using UnityEngine;
 namespace Libplanet.Unity
 {
     /// <summary>
-    /// Agent
+    /// Agent runs <see cref="Miner"/>, <see cref="SwarmRunner"/> and Action Controller
+    /// You can use <c>RunOnMainThread</c>, <c>MakeTransaction</c> to manage actions.
     /// </summary>
     public class Agent : MonoSingleton<Agent>
     {
@@ -36,7 +37,7 @@ namespace Libplanet.Unity
         private BlockChain<PolymorphicAction<ActionBase>> _blockChain;
 
         /// <summary>
-        /// Address of the <see cref="PrivateKey"/>
+        /// Address of the <see cref="PrivateKey"/>.
         /// </summary>
         public Address Address { get; private set; }
 
@@ -44,8 +45,9 @@ namespace Libplanet.Unity
 
         /// <summary>
         /// Initialize Agent.
+        /// Because it is <see cref="MonoSingleton{T}"/>, use Initialize instead of constructor.
         /// </summary>
-        /// <param name="renderers">T1.</param>
+        /// <param name="renderers">Listener to check status.</param>
         public static void Initialize(
             IEnumerable<IRenderer<PolymorphicAction<ActionBase>>> renderers)
         {
@@ -56,19 +58,19 @@ namespace Libplanet.Unity
         }
 
         /// <summary>
-        /// T.
+        /// Returns the status of the current <see cref="BlockChain{T}"/>.
         /// </summary>
         /// <param name="address"><see cref="Address"/> to be use.</param>
-        /// <returns>Return <see cref="IValue"/>.</returns>
+        /// <returns>This can be <c>null</c>.</returns>
         public IValue GetState(Address address)
         {
             return _blockChain.GetState(address);
         }
 
         /// <summary>
-        /// T.
+        /// Stage the action transactions.
         /// </summary>
-        /// <param name="gameActions">T1.</param>
+        /// <param name="gameActions"><see cref="Action"/> list to be use.</param>
         public void MakeTransaction(IEnumerable<ActionBase> gameActions)
         {
             var actions = gameActions.Select(
@@ -77,16 +79,16 @@ namespace Libplanet.Unity
         }
 
         /// <summary>
-        /// T.
+        /// Append action.
         /// </summary>
-        /// <param name="action">T1.</param>
+        /// <param name="action"><see cref="Action"/> to be use.</param>
         public void RunOnMainThread(System.Action action)
         {
             _actions.Enqueue(action);
         }
 
         /// <summary>
-        /// T.
+        /// Dispose <see cref="Swarm{T}"/> and <see cref="NetMQConfig"/> clean up.
         /// </summary>
         protected override void OnDestroy()
         {
