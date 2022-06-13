@@ -6,7 +6,9 @@ namespace Libplanet.Net.Messages
 {
     public abstract class ConsensusMessage : Message
     {
-        protected ConsensusMessage(long nodeId, long height, long round, BlockHash blockHash)
+        protected const byte Nil = 0x00;
+
+        protected ConsensusMessage(long nodeId, long height, int round, BlockHash? blockHash)
         {
             Round = round;
             Height = height;
@@ -18,24 +20,31 @@ namespace Libplanet.Net.Messages
         {
             NodeId = BitConverter.ToInt64(dataframes[0], 0);
             Height = BitConverter.ToInt64(dataframes[1], 0);
-            Round = BitConverter.ToInt64(dataframes[2], 0);
-            BlockHash = new BlockHash(dataframes[3]);
+            Round = BitConverter.ToInt32(dataframes[2], 0);
+            if (dataframes[3].Length == 1 && dataframes[3][0] == Nil)
+            {
+                BlockHash = null;
+            }
+            else
+            {
+                BlockHash = new BlockHash(dataframes[3]);
+            }
         }
 
         public long Height { get; }
 
-        public long Round { get; }
+        public int Round { get; }
 
         public long NodeId { get; }
 
-        public BlockHash BlockHash { get; }
+        public BlockHash? BlockHash { get; }
 
         public override IEnumerable<byte[]> DataFrames => new[]
         {
             BitConverter.GetBytes(NodeId),
             BitConverter.GetBytes(Height),
             BitConverter.GetBytes(Round),
-            BlockHash.ToByteArray(),
+            BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },
         };
     }
 }

@@ -9,21 +9,26 @@ namespace Libplanet.Net.Messages
         public ConsensusPropose(
             long nodeId,
             long height,
-            long round,
+            int round,
             BlockHash blockHash,
-            byte[] payload)
+            byte[] payload,
+            int validRound)
         : base(nodeId, height, round, blockHash)
         {
             Payload = payload;
+            ValidRound = validRound;
         }
 
         public ConsensusPropose(byte[][] dataframes)
         : base(dataframes)
         {
             Payload = dataframes[4];
+            ValidRound = BitConverter.ToInt32(dataframes[5], 0);
         }
 
         public byte[] Payload { get; }
+
+        public int ValidRound { get; }
 
         public override IEnumerable<byte[]> DataFrames
         {
@@ -34,8 +39,9 @@ namespace Libplanet.Net.Messages
                     BitConverter.GetBytes(NodeId),
                     BitConverter.GetBytes(Height),
                     BitConverter.GetBytes(Round),
-                    BlockHash.ToByteArray(),
+                    BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },
                     Payload,
+                    BitConverter.GetBytes(ValidRound),
                 };
                 return frames;
             }

@@ -1318,7 +1318,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private InvalidBlockException ValidateNextBlock(Block<T> block)
+        public InvalidBlockException ValidateNextBlock(Block<T> block)
         {
             int actualProtocolVersion = block.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;

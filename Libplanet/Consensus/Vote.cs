@@ -39,8 +39,8 @@ namespace Libplanet.Consensus
         /// <param name="signature">Signature of the vote.</param>
         public Vote(
             long height,
-            long round,
-            BlockHash blockHash,
+            int round,
+            BlockHash? blockHash,
             DateTimeOffset timestamp,
             PublicKey validator,
             VoteFlag flag,
@@ -72,7 +72,9 @@ namespace Libplanet.Consensus
                 var dict = (Dictionary)codec.Decode(marshaled);
                 Height = dict.GetValue<Integer>(HeightKey);
                 Round = dict.GetValue<Integer>(RoundKey);
-                BlockHash = new BlockHash(dict.GetValue<Binary>(BlockHashKey).ByteArray);
+                BlockHash = dict.ContainsKey(BlockHashKey)
+                    ? new BlockHash(dict.GetValue<Binary>(BlockHashKey).ByteArray)
+                    : (BlockHash?)null;
                 Timestamp = DateTimeOffset.ParseExact(
                     dict.GetValue<Text>(TimestampKey),
                     TimestampFormat,
@@ -100,12 +102,12 @@ namespace Libplanet.Consensus
         /// <summary>
         /// Round of the vote in given height.
         /// </summary>
-        public long Round { get; }
+        public int Round { get; }
 
         /// <summary>
-        /// <see cref="BlockHash"/> of the block in vote.
+        /// <see cref="BlockHash"/> of the block in vote. If null, vote nil.
         /// </summary>
-        public BlockHash BlockHash { get; }
+        public BlockHash? BlockHash { get; }
 
         /// <summary>
         /// The time at which the voting took place.
@@ -143,13 +145,17 @@ namespace Libplanet.Consensus
                 var dict = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
                     .Add(RoundKey, Round)
-                    .Add(BlockHashKey, BlockHash.ByteArray)
                     .Add(
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                     .Add(ValidatorKey, Validator.Format(compress: true))
                     .Add(FlagKey, (long)Flag)
                     .Add(NodeIdKey, NodeId);
+
+                if (BlockHash is { } blockHash)
+                {
+                    dict = dict.Add(BlockHashKey, blockHash.ByteArray);
+                }
 
                 if (Signature is { } signature)
                 {
