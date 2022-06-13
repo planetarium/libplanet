@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Libplanet.Unity
 {
     /// <summary>
-    /// MonoSingleton.
+    /// A singleton implementation with <see cref="MonoBehaviour"/> as its base class.
     /// </summary>
-    /// <typeparam name="T">The type.</typeparam>
+    /// <typeparam name="T">The class to wrap with this singleton pattern.</typeparam>
     public abstract class MonoSingleton<T> : MonoBehaviour
         where T : MonoSingleton<T>
     {
@@ -15,7 +15,7 @@ namespace Libplanet.Unity
         private static bool _applicationIsQuitting;
 
         /// <summary>
-        /// MonoSingleton.
+        /// The singleton instance of <see cref="MonoSingleton{T}"/>.
         /// </summary>
         public static T Instance
         {
@@ -67,7 +67,7 @@ namespace Libplanet.Unity
         }
 
         /// <summary>
-        /// Unity Engine Mono Awake.
+        /// Initialize <see cref="MonoSingleton{T}"/>.
         /// </summary>
         protected virtual void Awake()
         {
@@ -88,14 +88,14 @@ namespace Libplanet.Unity
         }
 
         /// <summary>
-        /// Unity Engine Mono OnDestroy.
+        /// None.
         /// </summary>
         protected virtual void OnDestroy()
         {
         }
 
         /// <summary>
-        /// Unity Engine Mono OnApplicationQuit.
+        /// Update _applicationIsQuitting status.
         /// </summary>
         protected virtual void OnApplicationQuit()
         {

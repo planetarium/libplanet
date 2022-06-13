@@ -110,7 +110,7 @@ namespace Libplanet.Unity
 
         private void ConfigureKeys()
         {
-            PrivateKey = Utils.GetPrivateKey(Paths.PrivateKeyPath);
+            PrivateKey = Utils.LoadPrivateKey(Paths.PrivateKeyPath);
             Address = PrivateKey.PublicKey.ToAddress();
         }
 
