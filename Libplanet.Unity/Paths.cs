@@ -34,5 +34,11 @@ namespace Libplanet.Unity
         /// </summary>
         public static readonly string PrivateKeyPath =
             Path.Combine(Application.persistentDataPath, "private_key");
+
+        /// <summary>
+        /// Path to storing temporary <see cref="PrivateKey"/>s with memos.
+        /// </summary>
+        public static readonly string TempPrivateKeysPath =
+            Path.Combine(Application.temporaryCachePath, "temp_private_keys");
     }
 }
