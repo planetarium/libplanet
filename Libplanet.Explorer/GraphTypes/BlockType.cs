@@ -13,6 +13,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BlockType()
         {
+            #pragma warning disable SA1118
             Field<NonNullGraphType<IdGraphType>>(
             "Hash",
             description: "A block's hash.",
@@ -83,6 +84,7 @@ namespace Libplanet.Explorer.GraphTypes
             );
 
             Name = "Block";
+            #pragma warning restore SA1118
         }
     }
 }
