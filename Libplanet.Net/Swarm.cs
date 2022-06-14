@@ -13,7 +13,6 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -259,9 +258,7 @@ namespace Libplanet.Net
 
         internal SwarmOptions Options { get; }
 
-        public VoteSet VoteSetOf(long height) => _consensusReactor.VoteSetOf(height);
-
-        public void Propose(BlockHash blockHash) => _consensusReactor.Propose(blockHash);
+        public void Propose() => _consensusReactor.Propose();
 
         public bool IsOwnProposeTurn() => _consensusReactor.IsOwnProposeTurn();
 

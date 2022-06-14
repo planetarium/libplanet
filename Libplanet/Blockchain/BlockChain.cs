@@ -1318,7 +1318,9 @@ namespace Libplanet.Blockchain
             }
         }
 
+#pragma warning disable SA1202
         public InvalidBlockException ValidateNextBlock(Block<T> block)
+#pragma warning restore SA1202
         {
             int actualProtocolVersion = block.ProtocolVersion;
             const int currentProtocolVersion = Block<T>.CurrentProtocolVersion;

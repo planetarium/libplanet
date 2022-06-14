@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Libplanet.Net.Consensus;
 using Libplanet.Net.Protocols;
 using Libplanet.Tests.Common.Action;
 
@@ -42,41 +40,12 @@ namespace Libplanet.Net.Tests
             blockAction: new MinerReward(1),
             getMaxBlockBytes: _ => 50 * 1024);
 
-        public static ConsensusContext<DumbAction> CreateConsensusContext(
-            BlockChain<DumbAction> blockChain,
-            long id = 0) =>
-            CreateConsensusContext(Validators, Peer0Priv, blockChain, id);
-
-        public static ConsensusContext<DumbAction> CreateConsensusContext(
-            List<PublicKey> validator,
-            PrivateKey privateKey,
-            BlockChain<DumbAction> blockChain,
-            long id = 0) =>
-            new ConsensusContext<DumbAction>(
-                id,
-                privateKey,
-                validator,
-                blockChain);
-
-        public static RoundContext<DumbAction> CreateRoundContext(
-            long id = 0,
-            long height = 0,
-            long round = 0) =>
-            new RoundContext<DumbAction>(id, Validators, height, round);
-
-        public static RoundContext<DumbAction> CreateRoundContext(
-            List<PublicKey> validators,
-            long id = 0,
-            long height = 0,
-            long round = 0) =>
-            new RoundContext<DumbAction>(id, validators, height, round);
-
         public static Vote CreateVote(
             PublicKey publicKey,
             VoteFlag flag = VoteFlag.Null,
             long id = 0,
             long height = 0,
-            long round = 0) =>
+            int round = 0) =>
             new Vote(
                 height,
                 round,
@@ -92,7 +61,7 @@ namespace Libplanet.Net.Tests
             VoteFlag flag = VoteFlag.Null,
             long id = 0,
             long height = 0,
-            long round = 0,
+            int round = 0,
             PublicKey? publicKey = null) =>
             new Vote(
                 height,

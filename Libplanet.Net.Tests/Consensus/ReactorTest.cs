@@ -6,8 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Store;
@@ -23,7 +21,6 @@ namespace Libplanet.Net.Tests.Consensus
     public abstract class ReactorTest
     {
         private const int Timeout = 60 * 1000;
-        private const int TimerTestTimeout = (int)ConsensusContext<DumbAction>.TimeoutMillisecond;
         private const int TimerTestMargin = 500;
 
         private readonly StoreFixture _fx;
@@ -56,13 +53,13 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact(Timeout = Timeout)]
         public async void Propose()
         {
-            const int count = 4;
+            const int count = 1;
             // INFO : This test uses local ports 6100 to 6103.
             const int consensusPort = 6100;
 
             const int propagationDelay = 4000;
             var keys = new PrivateKey[count];
-            var reactors = new IReactor[count];
+            var reactors = new ConsensusReactor<DumbAction>[count];
             var validators = new List<PublicKey>();
             var validatorPeers = new List<BoundPeer>();
             var stores = new IStore[count];
@@ -87,7 +84,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             for (var i = 0; i < count; i++)
             {
-                reactors[i] = CreateReactor(
+                reactors[i] = (ConsensusReactor<DumbAction>)CreateReactor(
                     blockChain: blockChains[i],
                     key: keys[i],
                     consensusPort: consensusPort + i,
@@ -105,110 +102,64 @@ namespace Libplanet.Net.Tests.Consensus
                 }
 
                 Dictionary<string, JsonElement> json;
+                var proposeNode = 0;
 
-                for (var proposeNode = 0; proposeNode < count; proposeNode++)
+                foreach (var node in reactors)
                 {
-                    Block<DumbAction> block = await blockChains[proposeNode].MineBlock(
-                        keys[proposeNode],
-                        append: false);
+                    node.Propose();
+                }
 
-                    foreach (var store in stores)
+                // For test accuracy, this test should not run in parallel.
+                await Task.Delay(propagationDelay);
+                await reactors[proposeNode].StopAsync(reactorCtx.Token);
+                var isPolka = new bool[count];
+
+                for (var node = 0; node < count; ++node)
+                {
+                    json =
+                        JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                            reactors[node].ToString());
+
+                    // Genesis block exists, add 1 to the height.
+                    if (json["step"].GetString() == "PreCommit" &&
+                        json["height"].GetInt32() == 1 + proposeNode)
                     {
-                        store.PutBlock(block);
+                        isPolka[node] = true;
                     }
-
-                    reactors[(proposeNode + 1) % count].Propose(block.Hash);
-
-                    // For test accuracy, this test should not run in parallel.
-                    await Task.Delay(propagationDelay);
-                    var isPolka = new bool[count];
-
-                    for (var node = 0; node < count; ++node)
+                    else
                     {
-                        json =
-                            JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                                reactors[node].ToString());
-
-                        // Genesis block exists, add 1 to the height.
-                        if (json["step"].GetString() == "DefaultState" &&
-                            json["height"].GetInt32() == 1 + proposeNode + 1)
-                        {
-                            isPolka[node] = true;
-                        }
-                        else
-                        {
-                            isPolka[node] = false;
-                        }
+                        isPolka[node] = false;
                     }
+                }
 
-                    Assert.Equal(count, isPolka.Sum(x => x ? 1 : 0));
+                Assert.Equal(count, isPolka.Sum(x => x ? 1 : 0));
 
-                    for (var node = 0; node < count; ++node)
-                    {
-                        json =
-                            JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                                reactors[node].ToString());
+                for (var node = 0; node < count; ++node)
+                {
+                    json =
+                        JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                            reactors[node].ToString());
 
-                        Assert.Equal((long)node, json["node_id"].GetInt32());
-                        Assert.Equal(1 + proposeNode + 1, json["height"].GetInt32());
-                        Assert.Equal(0L, json["round"].GetInt32());
-                        Assert.Equal("DefaultState", json["step"].GetString());
-                        VoteSet? voteSet = reactors[node].VoteSetOf(1 + proposeNode);
-                        if (voteSet is null)
-                        {
-                            Assert.NotNull(voteSet);
-                        }
-                        else
-                        {
-                            Assert.Equal(1 + proposeNode, voteSet.Height);
-                            int a = voteSet.Votes.Count(v => v.Flag == VoteFlag.Commit);
-                            int b = count / 3 * 2;
-                            Assert.True(a >= b, $"Commit count: {a}, TwoThirds: {b}");
-                        }
-                    }
+                    Assert.Equal((long)node, json["node_id"].GetInt32());
+                    Assert.Equal(1 + proposeNode, json["height"].GetInt32());
+                    Assert.Equal(2, blockChains[node].Count);
+                    Assert.Equal(0L, json["round"].GetInt32());
+                    Assert.Equal("PreCommit", json["step"].GetString());
                 }
             }
             finally
             {
                 foreach (var reactor in reactors)
                 {
-                    await reactor.StopAsync(default);
-                    reactor.Dispose();
+                    if (reactor.Running)
+                    {
+                        await reactor.StopAsync(default);
+                        reactor.Dispose();
+                    }
                 }
 
                 reactorCtx.Cancel();
             }
-        }
-
-        // Non-null case is in Propose().
-        [Fact]
-        public void VoteSetOfNull()
-        {
-            var key1 = new PrivateKey();
-            var key2 = new PrivateKey();
-            var validators = new List<PublicKey>
-            {
-                key1.PublicKey,
-                key2.PublicKey,
-            };
-            var validatorPeers = new List<BoundPeer>
-            {
-                new BoundPeer(key1.PublicKey, new DnsEndPoint("localhost", 1004)),
-                new BoundPeer(key2.PublicKey, new DnsEndPoint("localhost", 1005)),
-            };
-            var blockChain = new BlockChain<DumbAction>(
-                TestUtils.Policy,
-                new VolatileStagePolicy<DumbAction>(),
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock);
-            IReactor reactor = CreateReactor(
-                blockChain,
-                key1,
-                consensusPort: 5124,
-                validators: validators,
-                validatorPeers: validatorPeers);
-            Assert.Null(reactor.VoteSetOf(0));
         }
     }
 }
