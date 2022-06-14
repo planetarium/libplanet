@@ -29,7 +29,8 @@ namespace Libplanet.Explorer.GraphTypes
             resolve: x => x.Source.Difficulty);
             Field<NonNullGraphType<BigIntGraphType>>(
             name: "TotalDifficulty",
-            description: "The total mining difficulty since the genesis including the block's Difficulty.",
+            description: @"The total mining difficulty since the genesis including
+            the block's Difficulty.",
             resolve: x => x.Source.TotalDifficulty);
             Field<NonNullGraphType<ByteStringType>>(
             name: "Nonce",
@@ -50,7 +51,8 @@ namespace Libplanet.Explorer.GraphTypes
             );
             Field<BlockType<T>>(
             name: "PreviousBlock",
-            description: "The previous block, If it's a genesis block (i.e., its Index is 0) this should be null.",
+            description: @"The previous block, If it's a genesis block
+            (i.e., its Index is 0) this should be null.",
             resolve: ctx =>
             {
                 if (!(ctx.Source.PreviousHash is BlockHash h))
@@ -67,11 +69,13 @@ namespace Libplanet.Explorer.GraphTypes
             Field(x => x.Timestamp);
             Field<NonNullGraphType<ByteStringType>>(
             name: "StateRootHash",
-            description: "The Hash of the resulting states after evaluating transactions and a BlockAction. (if exists)",
+            description: @"The Hash of the resulting states after evaluating
+            transactions and a BlockAction. (if exists)",
             resolve: ctx => ctx.Source.StateRootHash.ToByteArray());
             Field<ByteStringType>(
             name: "Signature",
-            description: "The digital signature of the whole block content (except for Hash, which is derived from the signature and other contents)",
+            description: @"The digital signature of the whole block content
+            (except for Hash, which is derived from the signature and other contents)",
             resolve: ctx => ctx.Source.Signature?.ToBuilder()?.ToArray());
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
             name: "transactions",
