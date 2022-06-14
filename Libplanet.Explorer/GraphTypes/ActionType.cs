@@ -49,7 +49,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Inspection",
-                description: "an-readable representation for debugging.",
+                description: "A readable representation for debugging.",
                 resolve: ctx => ctx.Source.PlainValue.Inspect(loadAll: true)
             );
 
