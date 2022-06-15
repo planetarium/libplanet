@@ -67,12 +67,9 @@ namespace Libplanet.Net.Consensus
             return voteSets;
         }
 
-        public async Task<Task> StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var tasks = new List<Task>();
-            tasks.Add(_consensusTransport.StartAsync(cancellationToken));
-
-            return await Task.WhenAny(tasks);
+            await _consensusTransport.StartAsync(cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

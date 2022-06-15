@@ -22,7 +22,7 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         public VoteSet? VoteSetOf(long height);
 
-        public Task<Task> StartAsync(CancellationToken cancellationToken);
+        public Task StartAsync(CancellationToken cancellationToken);
 
         public Task StopAsync(CancellationToken cancellationToken);
 
