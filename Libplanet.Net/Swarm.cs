@@ -144,13 +144,16 @@ namespace Libplanet.Net
 
             ConsensusRoutingTable = new RoutingTable(
                 privateKey.ToAddress(), consensusTableSize, consensusTableBucket);
+
+            // FIXME: newHeightDelay should be configurable
             _consensusReactor = new ConsensusReactor<T>(
                 ConsensusTransport,
                 BlockChain,
                 consensusPrivateKey,
                 nodeId,
                 validators,
-                Options.StaticPeers);
+                Options.StaticPeers,
+                TimeSpan.FromMilliseconds(10_000));
         }
 
         internal Swarm(
@@ -257,10 +260,6 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
-
-        public void Propose() => _consensusReactor.Propose();
-
-        public bool IsOwnProposeTurn() => _consensusReactor.IsOwnProposeTurn();
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.

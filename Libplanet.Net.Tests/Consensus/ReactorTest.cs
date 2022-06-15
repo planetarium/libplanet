@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -48,16 +49,17 @@ namespace Libplanet.Net.Tests.Consensus
             int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!,
-            List<BoundPeer> validatorPeers = null!);
+            List<BoundPeer> validatorPeers = null!,
+            int newHeightDelayMilliseconds = 10_000);
 
         [Fact(Timeout = Timeout)]
-        public async void Propose()
+        public async void StartAsync()
         {
-            const int count = 1;
+            const int count = 4;
             // INFO : This test uses local ports 6100 to 6103.
             const int consensusPort = 6100;
 
-            const int propagationDelay = 4000;
+            const int propagationDelay = 3_000;
             var keys = new PrivateKey[count];
             var reactors = new ConsensusReactor<DumbAction>[count];
             var validators = new List<PublicKey>();
@@ -90,7 +92,8 @@ namespace Libplanet.Net.Tests.Consensus
                     consensusPort: consensusPort + i,
                     id: i,
                     validators: validators,
-                    validatorPeers: validatorPeers);
+                    validatorPeers: validatorPeers,
+                    newHeightDelayMilliseconds: propagationDelay * 2);
             }
 
             var reactorCtx = new CancellationTokenSource();
@@ -102,16 +105,14 @@ namespace Libplanet.Net.Tests.Consensus
                 }
 
                 Dictionary<string, JsonElement> json;
-                var proposeNode = 0;
-
-                foreach (var node in reactors)
-                {
-                    node.Propose();
-                }
 
                 // For test accuracy, this test should not run in parallel.
-                await Task.Delay(propagationDelay);
-                await reactors[proposeNode].StopAsync(reactorCtx.Token);
+                await Task.Delay(propagationDelay, reactorCtx.Token);
+                foreach (var reactor in reactors)
+                {
+                    await reactor.StopAsync(reactorCtx.Token);
+                }
+
                 var isPolka = new bool[count];
 
                 for (var node = 0; node < count; ++node)
@@ -121,13 +122,16 @@ namespace Libplanet.Net.Tests.Consensus
                             reactors[node].ToString());
 
                     // Genesis block exists, add 1 to the height.
-                    if (json["step"].GetString() == "PreCommit" &&
-                        json["height"].GetInt32() == 1 + proposeNode)
+                    if (json["step"].GetString() == "EndCommit")
                     {
                         isPolka[node] = true;
                     }
                     else
                     {
+                        Log.Error(
+                            "[Failed]: {0} {1}",
+                            json["step"].GetString(),
+                            blockChains[node].Count);
                         isPolka[node] = false;
                     }
                 }
@@ -141,10 +145,10 @@ namespace Libplanet.Net.Tests.Consensus
                             reactors[node].ToString());
 
                     Assert.Equal((long)node, json["node_id"].GetInt32());
-                    Assert.Equal(1 + proposeNode, json["height"].GetInt32());
+                    Assert.Equal(1, json["height"].GetInt32());
                     Assert.Equal(2, blockChains[node].Count);
                     Assert.Equal(0L, json["round"].GetInt32());
-                    Assert.Equal("PreCommit", json["step"].GetString());
+                    Assert.Equal("EndCommit", json["step"].GetString());
                 }
             }
             finally
@@ -160,6 +164,13 @@ namespace Libplanet.Net.Tests.Consensus
 
                 reactorCtx.Cancel();
             }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void IncreaseRoundWhenTimeout()
+        {
+            await Task.Yield();
+            Assert.True(true);
         }
     }
 }

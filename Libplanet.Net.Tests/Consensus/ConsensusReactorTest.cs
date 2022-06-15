@@ -32,7 +32,8 @@ namespace Libplanet.Net.Tests.Consensus
             int consensusPort = 5101,
             long id = 0,
             List<PublicKey> validators = null!,
-            List<BoundPeer> validatorPeers = null!)
+            List<BoundPeer> validatorPeers = null!,
+            int newHeightDelayMilliseconds = 10_000)
         {
             key ??= new PrivateKey();
 
@@ -52,7 +53,8 @@ namespace Libplanet.Net.Tests.Consensus
                 key,
                 id,
                 validators,
-                validatorPeers.ToImmutableHashSet());
+                validatorPeers.ToImmutableHashSet(),
+                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
         }
     }
 }

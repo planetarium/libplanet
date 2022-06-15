@@ -31,7 +31,8 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             long nodeId,
             List<PublicKey>? validators,
-            IImmutableSet<BoundPeer>? validatorPeers)
+            IImmutableSet<BoundPeer>? validatorPeers,
+            TimeSpan newHeightDelay)
         {
             _consensusTransport = consensusTransport;
             _validators = validators;
@@ -50,7 +51,8 @@ namespace Libplanet.Net.Consensus
                     nodeId,
                     blockChain.Tip.Index,
                     privateKey,
-                    validators);
+                    validators,
+                    newHeightDelay);
             }
             else
             {
@@ -74,46 +76,26 @@ namespace Libplanet.Net.Consensus
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _consensusTransport.StartAsync(cancellationToken);
+            Task task = _consensusTransport.StartAsync(cancellationToken);
+            await _consensusTransport.WaitForRunningAsync();
+            _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
+            await task;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            _consensusContext.Dispose();
             await _consensusTransport.StopAsync(TimeSpan.FromMilliseconds(10), cancellationToken);
-        }
-
-        public async Task ReceivedMessage(ConsensusMessage message)
-        {
-             HandleMessage(message);
-             await Task.Yield();
-        }
-
-        public void HandleMessage(ConsensusMessage message)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void Propose()
-        {
-            _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
-        }
-
-        public bool IsOwnProposeTurn()
-        {
-            throw new NotSupportedException();
         }
 
         public override string ToString()
         {
-            var message = new Dictionary<string, object>
-            {
-                { "node_id", _nodeId },
-                { "number_of_validator", _validators!.Count },
-                { "height", _consensusContext.Height },
-                { "round", _consensusContext.Round },
-                { "step", _consensusContext.Step.ToString() },
-            };
-            return JsonSerializer.Serialize(message);
+            var dict =
+                JsonSerializer.Deserialize<Dictionary<string, object>>(
+                    _consensusContext.ToString());
+            dict["peer"] = _consensusTransport.AsPeer.ToString();
+
+            return JsonSerializer.Serialize(dict);
         }
 
         internal void BroadcastMessage(ConsensusMessage message)

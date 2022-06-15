@@ -21,5 +21,10 @@ namespace Libplanet.Net.Consensus
         /// Commit voting step.
         /// </summary>
         PreCommit,
+
+        /// <summary>
+        /// Commit end step.
+        /// </summary>
+        EndCommit,
     }
 }
