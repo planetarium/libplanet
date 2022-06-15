@@ -273,8 +273,8 @@ namespace Libplanet.Extensions.Cocona.Commands
                 {
                     if (File.Exists(path))
                     {
-                    ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(File.ReadAllText(path));
-                    Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+                        ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(File.ReadAllText(path));
+                        Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
                     }
                     else
                     {
