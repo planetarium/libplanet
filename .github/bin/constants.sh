@@ -10,7 +10,6 @@ projects=(
   "Libplanet.RocksDBStore"
   "Libplanet.Analyzers"
   "Libplanet.Tools"
-  "Libplanet.Unity"
   "Libplanet.Explorer"
   "Libplanet.Explorer.Executable"
   "Libplanet.Extensions.Cocona"
