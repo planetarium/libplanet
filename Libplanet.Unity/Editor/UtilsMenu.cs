@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Libplanet.Crypto;
 using UnityEditor;
 using UnityEngine;
