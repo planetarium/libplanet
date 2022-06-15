@@ -41,8 +41,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Node", "Libplanet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Node.Tests", "Libplanet.Node.Tests\Libplanet.Node.Tests.csproj", "{67E63D26-F3CE-4D9E-B1B9-851C5945391D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Unity", "Libplanet.Unity\Libplanet.Unity.csproj", "{92670203-5DB1-4D10-922E-D7EC2A80C2FE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,18 +279,6 @@ Global
 		{67E63D26-F3CE-4D9E-B1B9-851C5945391D}.Release|x64.Build.0 = Release|Any CPU
 		{67E63D26-F3CE-4D9E-B1B9-851C5945391D}.Release|x86.ActiveCfg = Release|Any CPU
 		{67E63D26-F3CE-4D9E-B1B9-851C5945391D}.Release|x86.Build.0 = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|x64.Build.0 = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Debug|x86.Build.0 = Debug|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|x64.ActiveCfg = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|x64.Build.0 = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|x86.ActiveCfg = Release|Any CPU
-		{92670203-5DB1-4D10-922E-D7EC2A80C2FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
