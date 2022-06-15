@@ -410,18 +410,13 @@ namespace Libplanet.Net.Consensus
             _messagesInRound[message.Round].Add(message);
         }
 
-        private void BroadcastMessage(ConsensusMessage message)
-        {
+        private void BroadcastMessage(ConsensusMessage message) =>
             ConsensusContext.BroadcastMessage(message);
-        }
 
         private bool IsValid(Block<T> block)
         {
-            /*
-            var exception = _blockChain.ValidateNextBlock(block)
-            return exception is null
-            */
-            return true;
+            var exception = _blockChain.ValidateNextBlock(block);
+            return exception is null;
         }
 
         private Vote Voting(long height, int round, BlockHash? hash, VoteFlag flag)
@@ -430,7 +425,7 @@ namespace Libplanet.Net.Consensus
                 height,
                 round,
                 hash,
-                DateTimeOffset.Now,
+                DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
                 flag,
                 _id,
