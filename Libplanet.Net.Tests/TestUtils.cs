@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
+using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
@@ -61,21 +67,21 @@ namespace Libplanet.Net.Tests
                 ImmutableArray<byte>.Empty);
 
         public static Vote CreateVote(
-            BlockHash hash,
-            VoteFlag flag = VoteFlag.Null,
+            PrivateKey privateKey,
             long id = 0,
             long height = 0,
             int round = 0,
-            PublicKey? publicKey = null) =>
+            BlockHash hash = default,
+            VoteFlag flag = VoteFlag.Null) =>
             new Vote(
                 height,
                 round,
                 hash,
                 DateTimeOffset.Now,
-                publicKey ?? Peer0.PublicKey,
+                privateKey.PublicKey,
                 flag,
                 id,
-                ImmutableArray<byte>.Empty);
+                ImmutableArray<byte>.Empty).Sign(privateKey);
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
         {
@@ -101,6 +107,77 @@ namespace Libplanet.Net.Tests
                 fx.GenesisBlock);
 
             return blockChain;
+        }
+
+        public static ITransport CreateNetMQTransport(
+            PrivateKey? privateKey = null,
+            string host = "localhost",
+            int port = 5000) => new NetMQTransport(
+                privateKey ?? new PrivateKey(),
+                TestUtils.AppProtocolVersion,
+                null,
+                8,
+                host,
+                port,
+                Array.Empty<IceServer>(),
+                null);
+
+        public static (ITransport, ConsensusContext<DumbAction>)
+            CreateStandaloneConsensusContext(
+            BlockChain<DumbAction> blockChain,
+            TimeSpan newHeightDelay,
+            long nodeId = 0,
+            string host = "localhost",
+            int port = 18192,
+            PrivateKey? privateKey = null,
+            List<PublicKey>? validators = null)
+        {
+            privateKey ??= new PrivateKey();
+            var validatorPeers = new List<BoundPeer>()
+            {
+                new BoundPeer(privateKey.PublicKey, new DnsEndPoint(host, port)),
+            };
+            validators ??= new List<PublicKey>()
+            {
+                privateKey.PublicKey,
+            };
+
+            var exceptList = validators.Except(new[] { privateKey.PublicKey }).ToList();
+
+            for (var i = 0; i < exceptList.Count; ++i)
+            {
+                validatorPeers.Add(
+                    new BoundPeer(
+                        privateKey.PublicKey, new DnsEndPoint("localhost", port + i)));
+            }
+
+            var transport = CreateNetMQTransport(privateKey, host, port);
+
+            void BroadcastMessage(ConsensusMessage message) =>
+                transport.BroadcastMessage(validatorPeers, message);
+
+            var consensusContext = new ConsensusContext<DumbAction>(
+                BroadcastMessage,
+                blockChain,
+                nodeId,
+                privateKey,
+                validators,
+                newHeightDelay: newHeightDelay);
+
+            async Task DummyHandle(Message message)
+            {
+                switch (message)
+                {
+                    case ConsensusMessage consensusMessage:
+                        await transport!.ReplyMessageAsync(message, default);
+                        consensusContext!.HandleMessage(consensusMessage);
+                        break;
+                }
+            }
+
+            transport.ProcessMessageHandler.Register(DummyHandle);
+
+            return (transport, consensusContext);
         }
     }
 }

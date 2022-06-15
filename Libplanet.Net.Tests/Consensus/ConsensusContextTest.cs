@@ -54,7 +54,7 @@ namespace Libplanet.Net.Tests.Consensus
                     () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
 
                 blockChain.TipChanged += (sender, tuple) => waitingCommit.Set();
-                consensusContext.NewHeight(consensusContext.Height + 1);
+                consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
                 waitingCommit.WaitOne();
 
@@ -70,21 +70,19 @@ namespace Libplanet.Net.Tests.Consensus
         {
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            long targetHeightBeforeAppend = blockChain.Tip.Index + 1;
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
             var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
                 0,
-                targetHeightBeforeAppend,
                 new PrivateKey(),
                 new List<PublicKey> { new PrivateKey().PublicKey, new PrivateKey().PublicKey },
                 newHeightDelay);
-            Assert.Equal(targetHeightBeforeAppend, context.Height);
+            Assert.Equal(1, context.Height);
             await blockChain.MineBlock(new PrivateKey(), append: true);
-            Assert.Equal(targetHeightBeforeAppend, context.Height);
+            Assert.Equal(1, context.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
-            Assert.Equal(targetHeightBeforeAppend + 1, context.Height);
+            Assert.Equal(blockChain.Tip.Index + 1, context.Height);
         }
     }
 }
