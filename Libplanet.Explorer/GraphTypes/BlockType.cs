@@ -14,6 +14,7 @@ namespace Libplanet.Explorer.GraphTypes
         public BlockType()
         {
             #pragma warning disable SA1118
+            // We need multiple row of description for clearer, not confusing explanation of field.
             Field<NonNullGraphType<IdGraphType>>(
             "Hash",
             description: "A block's hash.",
