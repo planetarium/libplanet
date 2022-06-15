@@ -19,12 +19,12 @@ namespace Libplanet.Explorer.GraphTypes
             description: "A block's hash.",
             resolve: ctx => ctx.Source.Hash.ToString()
             );
-            Field<NonNullGraphType<IntGraphType>>(
+            Field<NonNullGraphType<LongGraphType>>(
             name: "Index",
             description: "The height of the block.",
             resolve: x => x.Source.Index
             );
-            Field<NonNullGraphType<BigIntGraphType>>(
+            Field<NonNullGraphType<LongGraphType>>(
             name: "Difficulty",
             description: "The mining difficulty that the block's Nonce has to satisfy.",
             resolve: x => x.Source.Difficulty);

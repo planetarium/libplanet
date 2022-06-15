@@ -38,7 +38,7 @@ namespace Libplanet.Explorer.GraphTypes
             );
             Field(
             type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>),
-            name: "UpdatedAddress",
+            name: "UpdatedAddresses",
             description: "Addresses whose states were affected by Actions.",
             resolve: x => x.Source.UpdatedAddresses
             );
@@ -49,7 +49,7 @@ namespace Libplanet.Explorer.GraphTypes
             resolve: x => x.Source.Signature
             );
             Field(
-            type: typeof(NonNullGraphType<StringGraphType>),
+            type: typeof(NonNullGraphType<DateTimeOffsetGraphType>),
             name: "Timestamp",
             description: "The time this transaction was created and signed.",
             resolve: x => x.Source.Timestamp
