@@ -13,7 +13,6 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -145,13 +144,16 @@ namespace Libplanet.Net
 
             ConsensusRoutingTable = new RoutingTable(
                 privateKey.ToAddress(), consensusTableSize, consensusTableBucket);
+
+            // FIXME: newHeightDelay should be configurable
             _consensusReactor = new ConsensusReactor<T>(
                 ConsensusTransport,
                 BlockChain,
                 consensusPrivateKey,
                 nodeId,
                 validators,
-                Options.StaticPeers);
+                Options.StaticPeers,
+                TimeSpan.FromMilliseconds(10_000));
         }
 
         internal Swarm(
@@ -258,12 +260,6 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockDownloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal SwarmOptions Options { get; }
-
-        public VoteSet VoteSetOf(long height) => _consensusReactor.VoteSetOf(height);
-
-        public void Propose(BlockHash blockHash) => _consensusReactor.Propose(blockHash);
-
-        public bool IsOwnProposeTurn() => _consensusReactor.IsOwnProposeTurn();
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
