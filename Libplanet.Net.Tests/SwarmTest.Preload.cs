@@ -163,7 +163,7 @@ namespace Libplanet.Net.Tests
                 );
 
                 minerSwarm.FindNextHashesChunkSize = 2;
-                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
+                await receiverSwarm.PreloadAsync(progress);
 
                 // Await 1 second to make sure all progresses is reported.
                 await Task.Delay(1000);
@@ -313,55 +313,6 @@ namespace Libplanet.Net.Tests
             Assert.Equal(1, renderCount2);
         }
 
-        [Fact(Timeout = 5 * 1000)]
-        public async Task BlockDownloadTimeout()
-        {
-            var options = new SwarmOptions
-            {
-                BlockDownloadTimeout = TimeSpan.FromMilliseconds(1),
-            };
-
-            var minerKey = new PrivateKey();
-            Swarm<DumbAction> minerSwarm = CreateSwarm(minerKey);
-            Swarm<DumbAction> receiverSwarm = CreateSwarm(options: options);
-
-            foreach (var unused in Enumerable.Range(0, 10))
-            {
-                await minerSwarm.BlockChain.MineBlock(minerKey);
-            }
-
-            try
-            {
-                await StartAsync(minerSwarm);
-
-                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                Task waitTask = receiverSwarm.BlockDownloadStarted.WaitAsync();
-
-                Task preloadTask = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
-                await waitTask;
-                await StopAsync(minerSwarm);
-                Exception thrown = null;
-
-                try
-                {
-                    await preloadTask;
-                }
-                catch (OperationCanceledException e)
-                {
-                    thrown = e;
-                }
-
-                Assert.True(
-                    thrown is OperationCanceledException || thrown is TaskCanceledException,
-                    $"The exception thrown is {thrown}"
-                );
-            }
-            finally
-            {
-                await StopAsync(minerSwarm);
-            }
-        }
-
         [Fact(Timeout = Timeout)]
         public async Task PreloadWithFailedActions()
         {
@@ -386,7 +337,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(minerSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
+                await receiverSwarm.PreloadAsync();
 
                 var action = new ThrowException { ThrowOnExecution = true };
 
@@ -410,7 +361,7 @@ namespace Libplanet.Net.Tests
                 ).Evaluate(ChainPrivateKey, minerChain);
                 minerSwarm.BlockChain.Append(block, false, true, false);
 
-                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
+                await receiverSwarm.PreloadAsync();
 
                 // Preloading should succeed even if action throws exception.
                 Assert.Equal(minerChain.Tip, receiverChain.Tip);
@@ -476,7 +427,7 @@ namespace Libplanet.Net.Tests
                 await nominerSwarm1.AddPeersAsync(new[] { nominerSwarm0.AsPeer }, null);
                 await nominerSwarm1.PreloadAsync();
                 await receiverSwarm.AddPeersAsync(new[] { nominerSwarm1.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
+                await receiverSwarm.PreloadAsync(progress);
 
                 // Await 1 second to make sure all progresses is reported.
                 await Task.Delay(1000);
@@ -564,7 +515,8 @@ namespace Libplanet.Net.Tests
             Swarm<DumbAction> swarm1 = CreateSwarm();
             Swarm<DumbAction> receiverSwarm = CreateSwarm();
 
-            receiverSwarm.Options.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(1000);
+            receiverSwarm.Options.TimeoutOptions.GetBlockHashesTimeout
+                = TimeSpan.FromMilliseconds(1000);
 
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;
@@ -598,9 +550,7 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            await receiverSwarm.PreloadAsync(
-                dialTimeout: TimeSpan.FromSeconds(5),
-                progress: new ActionProgress<PreloadState>(Action));
+            await receiverSwarm.PreloadAsync(progress: new ActionProgress<PreloadState>(Action));
 
             Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);

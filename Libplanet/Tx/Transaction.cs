@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
@@ -26,7 +25,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public sealed class Transaction<T> : IEquatable<Transaction<T>>
+    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITxExcerpt
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -35,8 +34,32 @@ namespace Libplanet.Tx
         private const int BytesCacheThreshold = 50 * 1024;
 
         private TxId? _id;
+        private TxMetadata _metadata;
         private byte[] _signature;
         private byte[] _bytes;
+
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> instance by copying data from a specified
+        /// transaction <paramref name="metadata"/>.
+        /// </summary>
+        /// <param name="metadata">The transaction metadata that contains data to copy.</param>
+        /// <param name="actions">A list of <see cref="IAction"/>s to include.  This can be empty,
+        /// but cannot be <see langword="null"/>.  This goes to the <see cref="Actions"/> property.
+        /// </param>
+        /// <param name="signature">A digital signature of the content of this
+        /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
+        /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
+        /// the <see cref="Signature"/> property.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
+        /// is passed to <paramref name="signature"/> or <paramref name="actions"/>.</exception>
+        public Transaction(ITxMetadata metadata, IEnumerable<T> actions, byte[] signature)
+        {
+            _metadata = new TxMetadata(metadata);
+            Actions = actions?.ToImmutableList()
+                ?? throw new ArgumentNullException(nameof(actions));
+            Signature = signature
+                ?? throw new ArgumentNullException(nameof(signature));
+        }
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
@@ -53,15 +76,12 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
         /// <see cref="Transaction{T}.Nonce"/> property.</param>
-        /// <param name="signer">An <see cref="Address"/> of the account
-        /// who signs this transaction.  If this is not derived from <paramref
-        /// name="publicKey"/> <see cref="InvalidTxPublicKeyException"/> is
-        /// thrown.  This goes to the <see cref="Signer"/> property.</param>
-        /// <param name="publicKey">A <see cref="PublicKey"/> of the account
-        /// who signs this transaction.  If this does not match to <paramref
-        /// name="signer"/> address <see cref="InvalidTxPublicKeyException"/>
-        /// is thrown.  This cannot be <c>null</c>.  This goes to
-        /// the <see cref="PublicKey"/> property.</param>
+        /// <param name="signer">Ignored.  Left only for backward compatibility.  It will be
+        /// completely gone in the future.  See also <paramref name="publicKey"/> parameter's
+        /// description.</param>
+        /// <param name="publicKey">A <see cref="PublicKey"/> used for signing this transaction.
+        /// This cannot be <see langword="null"/>.  This goes to the <see cref="PublicKey"/>
+        /// property, and <see cref="Signer"/> property is also derived from this value.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
         /// This can be <c>null</c> iff the transaction is contained
@@ -82,10 +102,8 @@ namespace Libplanet.Tx
         /// or it will throw <see cref="InvalidTxSignatureException"/>.
         /// This is copied and then assigned to the <see cref="Signature"/>
         /// property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
-        /// is passed to <paramref name="signature"/>,
-        /// <paramref name="actions"/>, or <paramref name="publicKey"/>.
-        /// </exception>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
+        /// is passed to <paramref name="signature"/> or <paramref name="actions"/>.</exception>
         public Transaction(
             long nonce,
             Address signer,
@@ -96,18 +114,20 @@ namespace Libplanet.Tx
             IEnumerable<T> actions,
             byte[] signature)
         {
-            Nonce = nonce;
-            Signer = signer;
-            GenesisHash = genesisHash;
-            UpdatedAddresses = updatedAddresses ??
-                               throw new ArgumentNullException(nameof(updatedAddresses));
+            _metadata = new TxMetadata(publicKey
+                ?? throw new ArgumentNullException(nameof(publicKey)))
+            {
+                Nonce = nonce,
+                GenesisHash = genesisHash,
+                UpdatedAddresses = updatedAddresses
+                    ?? throw new ArgumentNullException(nameof(updatedAddresses)),
+                Timestamp = timestamp,
+            };
+
             Signature = signature ??
                         throw new ArgumentNullException(nameof(signature));
-            Timestamp = timestamp;
             Actions = actions?.ToImmutableList() ??
                       throw new ArgumentNullException(nameof(actions));
-            PublicKey = publicKey ??
-                        throw new ArgumentNullException(nameof(publicKey));
         }
 
         /// <summary>
@@ -117,30 +137,15 @@ namespace Libplanet.Tx
         /// representation of <see cref="Transaction{T}"/> instance.
         /// </param>
         public Transaction(Bencodex.Types.Dictionary dict)
-            : this(new RawTransaction(dict))
         {
-        }
-
-#pragma warning disable SA1118 // Parameter spans multiple line
-        internal Transaction(RawTransaction rawTx)
-            : this(
-                rawTx.Nonce,
-                new Address(rawTx.Signer),
-                new PublicKey(rawTx.PublicKey.ToArray()),
-                rawTx.GenesisHash != ImmutableArray<byte>.Empty
-                    ? new BlockHash(rawTx.GenesisHash.ToArray())
-                    : (BlockHash?)null,
-                rawTx.UpdatedAddresses.Select(
-                    a => new Address(a)
-                ).ToImmutableHashSet(),
-                DateTimeOffset.ParseExact(
-                    rawTx.Timestamp,
-                    TimestampFormat,
-                    CultureInfo.InvariantCulture).ToUniversalTime(),
-                rawTx.Actions.Select(ToAction).ToImmutableList(),
-                rawTx.Signature.ToArray())
-#pragma warning restore SA1118 // Parameter spans multiple line
-        {
+            _metadata = new TxMetadata(dict);
+            Actions = dict.GetValue<List>(TxMetadata.ActionsKey)
+                .Select(ToAction)
+                .ToImmutableList();
+            _signature
+                = dict.TryGetValue((Binary)TxMetadata.SignatureKey, out IValue s) && s is Binary sig
+                ? sig.ToByteArray()
+                : Array.Empty<byte>();
         }
 
         private Transaction(
@@ -184,25 +189,14 @@ namespace Libplanet.Tx
             }
         }
 
-        /// <summary>
-        /// The number of previous <see cref="Transaction{T}"/>s committed by
-        /// the <see cref="Signer"/> of this transaction.
-        /// </summary>
-        public long Nonce { get; }
+        /// <inheritdoc cref="ITxMetadata.Nonce"/>
+        public long Nonce => _metadata.Nonce;
 
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this transaction.
-        /// This is derived from the <see cref="PublicKey"/>.
-        /// </summary>
-        public Address Signer { get; }
+        /// <inheritdoc cref="ITxMetadata.Signer"/>
+        public Address Signer => _metadata.Signer;
 
-        /// <summary>
-        /// <see cref="Address"/>es whose states affected by
-        /// <see cref="Actions"/>.
-        /// </summary>
-        // TODO: We should remove this property.
-        // See also https://github.com/planetarium/libplanet/issues/368
-        public IImmutableSet<Address> UpdatedAddresses { get; }
+        /// <inheritdoc cref="ITxMetadata.UpdatedAddresses"/>
+        public IImmutableSet<Address> UpdatedAddresses => _metadata.UpdatedAddresses;
 
         /// <summary>
         /// A digital signature of the content of this
@@ -235,26 +229,14 @@ namespace Libplanet.Tx
         /// </summary>
         public IImmutableList<T> Actions { get; }
 
-        /// <summary>
-        /// The time this <see cref="Transaction{T}"/> is created and signed.
-        /// </summary>
-        public DateTimeOffset Timestamp { get; }
+        /// <inheritdoc cref="ITxMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _metadata.Timestamp;
 
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this
-        /// <see cref="Transaction{T}"/>.
-        /// The <see cref="Signer"/> address is always corresponding to this
-        /// for each transaction.  This cannot be <c>null</c>.
-        /// </summary>
-        public PublicKey PublicKey { get; }
+        /// <inheritdoc cref="ITxMetadata.PublicKey"/>
+        public PublicKey PublicKey => _metadata.PublicKey;
 
-        /// <summary>
-        /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this
-        /// <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
-        /// in the genesis block.
-        /// </summary>
-        public BlockHash? GenesisHash { get; }
+        /// <inheritdoc cref="ITxMetadata.GenesisHash"/>
+        public BlockHash? GenesisHash => _metadata.GenesisHash;
 
         /// <summary>
         /// Decodes a <see cref="Transaction{T}"/>'s
@@ -268,9 +250,6 @@ namespace Libplanet.Tx
         /// <see cref="Signature"/> is invalid or not signed by
         /// the account who corresponds to <see cref="PublicKey"/>.
         /// </exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Signer"/> is not derived from its
-        /// <see cref="PublicKey"/>.</exception>
         /// <seealso cref="Serialize(bool)"/>
         public static Transaction<T> Deserialize(byte[] bytes, bool validate = true)
         {
@@ -579,7 +558,7 @@ namespace Libplanet.Tx
                 {
                     codec = new Codec();
                     byte[] sigDict =
-                        codec.Encode(Dictionary.Empty.Add(RawTransaction.SignatureKey, _signature));
+                        codec.Encode(Dictionary.Empty.Add(TxMetadata.SignatureKey, _signature));
                     var sigField = new byte[sigDict.Length - 1];
                     Array.Copy(sigDict, 1, sigField, 0, sigField.Length);
                     int sigOffset = _bytes.IndexOf(sigField);
@@ -614,7 +593,10 @@ namespace Libplanet.Tx
         /// <a href="https://bencodex.org/">Bencodex</a>
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex(bool sign) =>
-            ToRawTransaction(sign).ToBencodex();
+            _metadata.ToBencodex(
+                Actions.Select(a => a.PlainValue),
+                sign ? ImmutableArray.Create(_signature) : (ImmutableArray<byte>?)null
+            );
 
         /// <summary>
         /// Validates this <see cref="Transaction{T}"/> and throws an appropriate exception
@@ -624,9 +606,6 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}.Signature"/> is invalid or not signed by
         /// the account who corresponds to its <see cref="PublicKey"/>.
         /// </exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Signer"/> is not derived from its
-        /// <see cref="Transaction{T}.PublicKey"/>.</exception>
         public void Validate()
         {
             if (Signature.Length == 0 || !PublicKey.Verify(Serialize(false), Signature))
@@ -635,14 +614,6 @@ namespace Libplanet.Tx
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
                     "to verify.";
                 throw new InvalidTxSignatureException(Id, message);
-            }
-
-            if (!new Address(PublicKey).Equals(Signer))
-            {
-                string message =
-                    $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
-                    $"is not matched to the address ({Signer}).";
-                throw new InvalidTxPublicKeyException(Id, message);
             }
         }
 
@@ -654,29 +625,6 @@ namespace Libplanet.Tx
 
         /// <inheritdoc />
         public override int GetHashCode() => Id.GetHashCode();
-
-        internal RawTransaction ToRawTransaction(bool includeSign)
-        {
-            ImmutableArray<byte> genesisHash =
-                GenesisHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
-            var rawTx = new RawTransaction(
-                nonce: Nonce,
-                signer: Signer.ByteArray,
-                genesisHash: genesisHash,
-                updatedAddresses: UpdatedAddresses.Select(a =>
-                    a.ByteArray).ToImmutableArray(),
-                publicKey: PublicKey.Format(false).ToImmutableArray(),
-                timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                actions: Actions.Select(a => a.PlainValue).ToImmutableArray()
-            );
-
-            if (includeSign)
-            {
-                rawTx = rawTx.AddSignature(Signature);
-            }
-
-            return rawTx;
-        }
 
         private static T ToAction(IValue value)
         {

@@ -337,10 +337,12 @@ namespace Libplanet.Net.Tests
                     // Peer A does not respond and Peer B does respond.
                     if (peer == 'A')
                     {
-                        while (true)
-                        {
-                            await Task.Delay(5000, yield.CancellationToken);
-                        }
+                        const int transportTimeout = 3_000;
+                        await Task.Delay(transportTimeout, yield.CancellationToken);
+
+                        // Technically this should throw CommunicationException, but that would
+                        // require much more scaffolding.
+                        throw new Exception("Peer failed to respond");
                     }
 
                     foreach (Block<DumbAction> b in fixture)
@@ -354,10 +356,7 @@ namespace Libplanet.Net.Tests
 
             Tuple<Block<DumbAction>, char>[] result =
                 await AsyncEnumerable.ToArrayAsync(
-                    bc.Complete(
-                        new[] { 'A', 'B' }, blockFetcher, millisecondsSingleSessionTimeout: 3000
-                    )
-                );
+                    bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
                 fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
                 result.ToHashSet()

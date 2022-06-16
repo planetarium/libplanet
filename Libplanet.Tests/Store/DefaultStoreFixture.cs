@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Store
                 );
             }
 
-            Scheme = "default://";
+            Scheme = "default+file://";
 
             var store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;

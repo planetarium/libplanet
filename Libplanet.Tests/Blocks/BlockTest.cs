@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -81,64 +79,16 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidTxSignature()
         {
-            RawTransaction rawTx = new RawTransaction(
-                0,
-                _fx.TxFixture.Address1.ByteArray,
-                _fx.Genesis.Hash.ByteArray,
-                ImmutableArray<ImmutableArray<byte>>.Empty,
-                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString(
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
-                ImmutableArray<IValue>.Empty,
-                new byte[10].ToImmutableArray()
-            );
-            var invalidTx = new Transaction<DumbAction>(rawTx);
-            Assert.Throws<InvalidTxSignatureException>(() =>
-                MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
-                    _fx.GetHashAlgorithm,
-                    new List<Transaction<DumbAction>>
-                    {
-                        invalidTx,
-                    }
-                )
-            );
-        }
-
-        [Fact]
-        public void DetectInvalidTxPublicKey()
-        {
-            RawTransaction rawTxWithoutSig = new RawTransaction(
-                0,
-                new PrivateKey().ToAddress().ByteArray,
-                _fx.Genesis.Hash.ByteArray,
-                ImmutableArray<ImmutableArray<byte>>.Empty,
-                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
-                DateTimeOffset.UtcNow.ToString(
-                    "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
-                ImmutableArray<IValue>.Empty,
-                ImmutableArray<byte>.Empty
-            );
-            byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
-                new Transaction<DumbAction>(rawTxWithoutSig).Serialize(false)
-            );
+            var txMeta = new TxMetadata(_fx.TxFixture.PublicKey1)
+            {
+                GenesisHash = _fx.Genesis.Hash,
+            };
             var invalidTx = new Transaction<DumbAction>(
-                new RawTransaction(
-                    0,
-                    rawTxWithoutSig.Signer,
-                    rawTxWithoutSig.GenesisHash,
-                    rawTxWithoutSig.UpdatedAddresses,
-                    rawTxWithoutSig.PublicKey,
-                    rawTxWithoutSig.Timestamp,
-                    rawTxWithoutSig.Actions,
-                    sig.ToImmutableArray()
-                )
+                txMeta,
+                Enumerable.Empty<DumbAction>(),
+                Array.Empty<byte>()
             );
-            Assert.Throws<InvalidTxPublicKeyException>(() =>
+            Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
                     MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
                     _fx.GetHashAlgorithm,

@@ -15,7 +15,7 @@ namespace Libplanet.RocksDBStore.Tests
                 $"rocksdb_test_{Guid.NewGuid()}"
             );
 
-            Scheme = "rocksdb://";
+            Scheme = "rocksdb+file://";
 
             var store = new RocksDBStore(Path, blockCacheSize: 2, txCacheSize: 2);
             Store = store;

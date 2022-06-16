@@ -17,6 +17,7 @@ using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
@@ -230,7 +231,14 @@ If omitted (default) explorer only the local blockchain store.")]
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
                     {
-                        MaxTimeout = TimeSpan.FromSeconds(10),
+                        BootstrapOptions = new BootstrapOptions
+                        {
+                            SeedPeers = options.Seeds.ToImmutableList(),
+                        },
+                        TimeoutOptions = new TimeoutOptions
+                        {
+                            MaxTimeout = TimeSpan.FromSeconds(10),
+                        },
                     };
 
                     // TODO: Add nodeId getter/setter and validators getter!
@@ -266,7 +274,7 @@ If omitted (default) explorer only the local blockchain store.")]
                     {
                         await Task.WhenAll(
                             webHost.RunAsync(cts.Token),
-                            StartSwarmAsync(swarm, options.Seeds, cts.Token)
+                            StartSwarmAsync(swarm, cts.Token)
                         );
                     }
                     catch (OperationCanceledException)
@@ -288,7 +296,7 @@ If omitted (default) explorer only the local blockchain store.")]
         private static IRichStore LoadStore(Options options)
         {
             // FIXME: This method basically does the same thing to Libplanet.Extensions.Cocona's
-            // StoreCommand.LoadStoreFromUri() & StatsCommand.LoadStoreFromUri() methods.
+            // Utils.LoadStoreFromUri() method.
             // The duplicate code should be extract to a shared common method.
             // https://github.com/planetarium/libplanet/issues/1573
             bool readOnlyMode = options.Seeds is null;
@@ -360,7 +368,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
         private static async Task StartSwarmAsync(
             Swarm<NullAction> swarm,
-            IEnumerable<Peer> seeds,
             CancellationToken cancellationToken)
         {
             if (swarm is null)
@@ -372,12 +379,7 @@ If omitted (default) explorer only the local blockchain store.")]
             try
             {
                 Console.Error.WriteLine("Bootstrapping.");
-                await swarm.BootstrapAsync(
-                    seeds,
-                    5000,
-                    5000,
-                    cancellationToken: cancellationToken
-                );
+                await swarm.BootstrapAsync(cancellationToken);
             }
             catch (TimeoutException)
             {
@@ -385,10 +387,7 @@ If omitted (default) explorer only the local blockchain store.")]
             }
 
             Console.Error.WriteLine("Starts preloading.");
-            await swarm.PreloadAsync(
-                dialTimeout: TimeSpan.FromSeconds(15),
-                cancellationToken: cancellationToken
-            );
+            await swarm.PreloadAsync(cancellationToken: cancellationToken);
             Console.Error.WriteLine("Finished preloading.");
             Startup.PreloadedSingleton = true;
 

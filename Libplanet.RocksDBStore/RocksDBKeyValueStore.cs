@@ -9,6 +9,72 @@ namespace Libplanet.RocksDBStore
     /// <summary>
     /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IKeyValueStore"/> implementation.
     /// This stores data in the RocksDB.
+    /// <para><see cref="RocksDBStore"/> and <see cref="RocksDBKeyValueStore"/>-backed
+    /// <see cref="TrieStateStore"/> can be instantiated from a URI with <c>rocksdb+file:</c> scheme
+    /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
+    /// <list type="bullet">
+    /// <item><description><c>rocksdb+file:///var/data/planet/</c></description></item>
+    /// <item><description><c>rocksdb+file:///c:/Users/john/AppData/Local/planet/</c></description>
+    /// </item>
+    /// <item><description><c>rocksdb+file:///var/data/planet/?secure=true</c>
+    /// (trie keys are hashed)</description></item>
+    /// </list>
+    /// <para>The following query string parameters are supported:</para>
+    /// <list type="table">
+    /// <item>
+    /// <term><c>block-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>blockCacheSize</c> parameter.  512 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>tx-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>txCacheSize</c> parameter.  1024 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>max-total-wal-size</c></term>
+    /// <description>Corresponds to RocksDB's <c>max_total_wal_size</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>keep-log-file-num</c></term>
+    /// <description>Corresponds to RocksDB's <c>keep_log_file_num</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>max_log_file_size</c></term>
+    /// <description>Corresponds to RocksDB's <c>max_log_file_size</c> option.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>tx-epoch-unit-secs</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>txEpochUnitSeconds</c> parameter.  86400 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>block-epoch-unit-secs</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>blockEpochUnitSeconds</c> parameter.  86400 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>connection-cache</c></term>
+    /// <description>Corresponds to
+    /// <see cref="RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"/>'s
+    /// <c>dbConnectionCacheSize</c> parameter.  100 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>states-dir</c></term>
+    /// <description>Corresponds to <see cref="RocksDBKeyValueStore(string)"/>'s <c>path</c>
+    /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>secure</c></term>
+    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <see cref="Libplanet.Store.TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s
+    /// <c>secure</c> parameter.</description>
+    /// </item>
+    /// </list>
     /// </summary>
     public class RocksDBKeyValueStore : IKeyValueStore
     {

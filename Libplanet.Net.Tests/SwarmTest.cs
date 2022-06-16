@@ -223,7 +223,10 @@ namespace Libplanet.Net.Tests
             try
             {
                 await Assert.ThrowsAsync<PeerDiscoveryException>(
-                    () => swarmB.BootstrapAsync(new[] { swarmA.AsPeer }, 3000, 3000));
+                    () => swarmB.BootstrapAsync(
+                        new[] { swarmA.AsPeer },
+                        TimeSpan.FromMilliseconds(3000),
+                        Kademlia.MaxDepth));
 
                 await StartAsync(swarmA);
             }
@@ -707,7 +710,7 @@ namespace Libplanet.Net.Tests
 
             IEnumerable<IceServer> iceServers = new[]
             {
-                new IceServer(urls: new[] { proxyUri }, username: username, credential: password),
+                new IceServer(url: proxyUri, username: username, credential: password),
             };
 
             var cts = new CancellationTokenSource();
@@ -1807,9 +1810,10 @@ namespace Libplanet.Net.Tests
             where T : IAction, new()
         {
             Task task = swarm.StartAsync(
-                millisecondsDialTimeout: 200,
-                millisecondsBroadcastBlockInterval: millisecondsBroadcastBlockInterval,
-                millisecondsBroadcastTxInterval: 200,
+                dialTimeout: TimeSpan.FromMilliseconds(200),
+                broadcastBlockInterval:
+                    TimeSpan.FromMilliseconds(millisecondsBroadcastBlockInterval),
+                broadcastTxInterval: TimeSpan.FromMilliseconds(200),
                 cancellationToken: cancellationToken
             );
             await swarm.WaitForRunningAsync();
@@ -1839,8 +1843,8 @@ namespace Libplanet.Net.Tests
         {
             await swarm.BootstrapAsync(
                 seeds,
-                null,
-                findNeighborsTimeout: TimeSpan.FromSeconds(3),
+                dialTimeout: TimeSpan.FromSeconds(3),
+                searchDepth: Kademlia.MaxDepth,
                 cancellationToken: cancellationToken);
         }
 

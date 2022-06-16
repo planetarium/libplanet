@@ -122,6 +122,7 @@ namespace Libplanet.Tests.Crypto
             };
             Assert.True(pubKey.Verify(payload, signature));
             Assert.False(pubKey.Verify(payload, ImmutableArray<byte>.Empty));
+            Assert.False(pubKey.Verify(payload, default(ImmutableArray<byte>)));
         }
 
         [Fact]

@@ -1,13 +1,17 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Web;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Misc;
+using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
@@ -22,6 +26,62 @@ namespace Libplanet.Store
     /// The default built-in <see cref="IStore"/> implementation.  This stores data in
     /// the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
     /// for some complex indices.
+    /// <para><see cref="DefaultStore"/> and <see cref="DefaultKeyValueStore"/>-backed
+    /// <see cref="TrieStateStore"/> can be instantiated from a URI with <c>default+file:</c> scheme
+    /// using <see cref="StoreLoaderAttribute.LoadStore(Uri)"/>, e.g.:</para>
+    /// <list type="bullet">
+    /// <item><description><c>default+file:///var/data/planet/</c></description></item>
+    /// <item><description><c>default+file:///c:/Users/john/AppData/Local/planet/</c></description>
+    /// </item>
+    /// <item><description><c>default+file:///var/data/planet/?secure=true</c>
+    /// (trie keys are hashed)</description></item>
+    /// </list>
+    /// <para>The following query string parameters are supported:</para>
+    /// <list type="table">
+    /// <item>
+    /// <term><c>journal</c></term>
+    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
+    /// parameter.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>index-cache</c></term>
+    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <c>indexCacheSize</c> parameter.  50000 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>block-cache</c></term>
+    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <c>blockCacheSize</c> parameter.  512 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>tx-cache</c></term>
+    /// <description>Corresponds to <see cref="DefaultStore(string,bool,int,int,int,bool,bool)"/>'s
+    /// <c>txCacheSize</c> parameter.  1024 by default.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>flush</c></term>
+    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
+    /// parameter.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>readonly</c></term>
+    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
+    /// parameter.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>states-dir</c></term>
+    /// <description>Corresponds to <see cref="DefaultKeyValueStore(string)"/>'s <c>path</c>
+    /// parameter.  It is relative to the URI path, and defaults to <c>states</c>.</description>
+    /// </item>
+    /// <item>
+    /// <term><c>secure</c></term>
+    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <see cref="TrieStateStore(IKeyValueStore, bool)"/>'s <c>secure</c> parameter.</description>
+    /// </item>
+    /// </list>
     /// </summary>
     /// <seealso cref="IStore"/>
     public class DefaultStore : BaseStore
@@ -29,6 +89,7 @@ namespace Libplanet.Store
         private const string IndexColPrefix = "index_";
         private const string TxIdBlockIndexPrefix = "txblockindex_";
         private const string TxNonceIdPrefix = "nonce_";
+        private const string StatesKvPathDefault = "states";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
@@ -702,6 +763,34 @@ namespace Libplanet.Store
 
         internal static string FormatChainId(Guid chainId) =>
             ByteUtil.Hex(chainId.ToByteArray());
+
+        [StoreLoader("default+file")]
+        private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
+        {
+            NameValueCollection query = HttpUtility.ParseQueryString(storeUri.Query);
+            bool journal = query.GetBoolean("journal", true);
+            int indexCacheSize = query.GetInt32("index-cache", 50000);
+            int blockCacheSize = query.GetInt32("block-cache", 512);
+            int txCacheSize = query.GetInt32("tx-cache", 1024);
+            bool flush = query.GetBoolean("flush", true);
+            bool readOnly = query.GetBoolean("readonly");
+            string statesKvPath = query.Get("states-dir") ?? StatesKvPathDefault;
+            bool secure = query.GetBoolean("secure");
+            var store = new DefaultStore(
+                storeUri.LocalPath,
+                journal,
+                indexCacheSize,
+                blockCacheSize,
+                txCacheSize,
+                flush,
+                readOnly
+            );
+            var stateStore = new TrieStateStore(
+                new DefaultKeyValueStore(Path.Combine(storeUri.LocalPath, statesKvPath)),
+                secure
+            );
+            return (store, stateStore);
+        }
 
         private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
         {

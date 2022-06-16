@@ -132,7 +132,7 @@ namespace Libplanet.Explorer.Executable
                     return null;
                 }
 
-                Uri uri = IceServer.Urls.First();
+                Uri uri = IceServer.Url;
                 var uriBuilder = new UriBuilder(uri)
                 {
                     UserName = IceServer.Username,
@@ -151,7 +151,7 @@ namespace Libplanet.Explorer.Executable
 
                 var uri = new Uri(value);
                 string[] userInfo = uri.UserInfo.Split(':', count: 2);
-                IceServer = new IceServer(new[] { uri }, userInfo[0], userInfo[1]);
+                IceServer = new IceServer(uri, userInfo[0], userInfo[1]);
             }
         }
 

@@ -61,8 +61,7 @@ namespace Libplanet.Net.Protocols
         // when found neighbor's count is reached 2*k.
         public async Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
-            TimeSpan? pingSeedTimeout,
-            TimeSpan? findNeighborsTimeout,
+            TimeSpan? dialTimeout,
             int depth,
             CancellationToken cancellationToken)
         {
@@ -75,7 +74,7 @@ namespace Libplanet.Net.Protocols
                 // Guarantees at least one connection (seed peer)
                 try
                 {
-                    await PingAsync(peer, pingSeedTimeout, cancellationToken);
+                    await PingAsync(peer, dialTimeout, cancellationToken);
                     findPeerTasks.Add(
                         FindPeerAsync(
                             history,
@@ -83,7 +82,7 @@ namespace Libplanet.Net.Protocols
                             _address,
                             peer,
                             depth,
-                            findNeighborsTimeout,
+                            dialTimeout,
                             cancellationToken));
                 }
                 catch (PingTimeoutException)
