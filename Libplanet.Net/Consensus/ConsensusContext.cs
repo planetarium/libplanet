@@ -77,6 +77,15 @@ namespace Libplanet.Net.Consensus
 
         public void NewHeight(long height)
         {
+            _newHeightCts?.Cancel();
+
+            if (height != _blockChain.Tip.Index + 1)
+            {
+                throw new InvalidHeightIncreasingException(
+                    $"{nameof(NewHeight)}: Given new height is not increasing monotonically by 1." +
+                    $" (expected: {_blockChain.Tip.Index + 1}, actual: {height})");
+            }
+
             HeightContext.Dispose();
             Height = height;
 

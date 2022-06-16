@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
@@ -30,6 +31,38 @@ namespace Libplanet.Net.Tests.Consensus
 
             _logger = Log.ForContext<ReactorTest>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public void NewHeightIncreasing()
+        {
+            // NewHeight also covers Commit() due to calling the method from Context<T>
+            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            var (transport, consensusContext) =
+                TestUtils.CreateStandaloneConsensusContext(
+                    blockChain,
+                    TimeSpan.FromSeconds(1));
+            var waitingCommit = new AutoResetEvent(false);
+
+            using (transport)
+            {
+                transport.StartAsync();
+
+                Assert.Throws<InvalidHeightIncreasingException>(
+                    () => consensusContext.NewHeight(blockChain.Tip.Index));
+                Assert.Throws<InvalidHeightIncreasingException>(
+                    () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
+
+                blockChain.TipChanged += (sender, tuple) => waitingCommit.Set();
+                consensusContext.NewHeight(consensusContext.Height + 1);
+
+                waitingCommit.WaitOne();
+
+                Assert.Equal(1, blockChain.Tip.Index);
+                // Next NewHeight is not called yet.
+                Assert.Equal(1, consensusContext.Height);
+                Assert.Equal(0, consensusContext.Round);
+            }
         }
 
         [Fact(Timeout = Timeout)]
