@@ -17,6 +17,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Raw",
+                description: "Raw Action data ('hex' or 'base64' encoding available.)",
                 arguments: new QueryArguments(
                     new QueryArgument<StringGraphType>
                     {
@@ -48,6 +49,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             Field<NonNullGraphType<StringGraphType>>(
                 name: "Inspection",
+                description: "A readable representation for debugging.",
                 resolve: ctx => ctx.Source.PlainValue.Inspect(loadAll: true)
             );
 
