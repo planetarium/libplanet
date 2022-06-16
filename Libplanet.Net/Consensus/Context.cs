@@ -420,7 +420,7 @@ namespace Libplanet.Net.Consensus
         // Predicates
         private (Block<T>?, int?) HasProposeFromProposer(PublicKey proposer)
         {
-            ConsensusMessage? msg = _messagesInRound[Round].First(
+            ConsensusMessage? msg = _messagesInRound[Round].FirstOrDefault(
                 msg =>
                     msg is ConsensusPropose &&
                     proposer.Equals(msg.Remote!.PublicKey));
