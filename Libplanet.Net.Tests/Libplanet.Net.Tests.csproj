@@ -18,7 +18,9 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup Condition="&#xA;    '$([System.Runtime.InteropServices.RuntimeInformation]::&#xA;      OSArchitecture.ToString())' == 'Arm64' ">
+  <PropertyGroup Condition="
+    '$([System.Runtime.InteropServices.RuntimeInformation]::
+      OSArchitecture.ToString())' == 'Arm64' ">
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
