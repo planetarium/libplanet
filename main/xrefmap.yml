@@ -10596,12 +10596,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.KeyCommand
   nameWithType: KeyCommand.KeyCommand
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  name: Create(PassphraseParameters, Boolean, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean)
-  nameWithType: KeyCommand.Create(PassphraseParameters, Boolean, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.String)
+  name: Create(PassphraseParameters, Boolean, Boolean, String)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.String)
+  nameWithType: KeyCommand.Create(PassphraseParameters, Boolean, Boolean, String)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create*
   name: Create
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_
@@ -10609,12 +10609,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create
   nameWithType: KeyCommand.Create
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  name: Export(Guid, PassphraseParameters, Boolean, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean)
-  nameWithType: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.String)
+  name: Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, String)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_Boolean_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Boolean, System.String)
+  nameWithType: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, String)
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export*
   name: Export
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_
