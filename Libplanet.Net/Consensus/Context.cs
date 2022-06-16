@@ -38,7 +38,6 @@ namespace Libplanet.Net.Consensus
         private ConcurrentBag<int> _preVoteFlags;
         private ConcurrentBag<int> _hasTwoThirdsPreVoteFlags;
         private ConcurrentBag<int> _preCommitFlags;
-        private ConcurrentDictionary<long, VoteSet> _voteSets;
 
         private BlockChain<T> _blockChain;
         private Codec _codec;
@@ -72,7 +71,6 @@ namespace Libplanet.Net.Consensus
             _validators = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
-            _voteSets = new ConcurrentDictionary<long, VoteSet>();
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -101,8 +99,29 @@ namespace Libplanet.Net.Consensus
             _cancellationTokenSource.Cancel();
         }
 
-        public VoteSet? VoteSet(long round) =>
-            _voteSets.ContainsKey(round) ? _voteSets[round] : null;
+        public VoteSet VoteSet(int round)
+        {
+            var (block, _) = HasProposeFromProposer(Proposer(Height, Round));
+            var voteSet = new VoteSet(Height, round, block?.Hash, _validators);
+            var roundVotes =
+                _messagesInRound[round].Where(
+                    x => x is ConsensusVote).Cast<ConsensusVote>().ToList();
+            var roundCommits =
+                _messagesInRound[round].Where(
+                    x => x is ConsensusCommit).Cast<ConsensusCommit>().ToList();
+
+            foreach (var vote in roundVotes)
+            {
+                voteSet.Add(vote.ProposeVote);
+            }
+
+            foreach (var commit in roundCommits)
+            {
+                voteSet.Add(commit.CommitVote);
+            }
+
+            return voteSet;
+        }
 
         public void HandleMessage(ConsensusMessage message)
         {
@@ -354,39 +373,24 @@ namespace Libplanet.Net.Consensus
 
         private void AddMessage(ConsensusMessage message)
         {
-            _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
-            if (!(message is ConsensusPropose) && !_voteSets.ContainsKey(message.Round))
+            if (message.Height != Height)
             {
-                var (block, _) = HasProposeFromProposer(Proposer(message.Height, message.Round));
+                throw new InvalidMessageException(
+                    $"{nameof(AddMessage)}: Height of message differs with working height",
+                    message);
+            }
 
-                if (block is null)
-                {
-                    var msg = $"{nameof(AddMessage)}: Received vote for round {message.Round} " +
-                              $"and propose does not exist for the round.";
-                    _logger.Error(msg);
-                    throw new InvalidMessageException(msg, message);
-                }
+            if (!_messagesInRound.ContainsKey(message.Round))
+            {
+                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
+            }
 
-                _voteSets.TryAdd(
-                    message.Round,
-                    new VoteSet(message.Height, message.Round, block.Hash, _validators));
+            if (message is ConsensusPropose && message.BlockHash.Equals(default(BlockHash)))
+            {
+                throw new InvalidMessageException("Proposing block cannot be null", message);
             }
 
             // TODO: Prevent duplicated messages adding.
-            var ret = message switch
-            {
-                ConsensusVote vote => _voteSets[vote.Round].Add(vote.ProposeVote),
-                ConsensusCommit commit => _voteSets[commit.Round].Add(commit.CommitVote),
-                _ => true,
-            };
-
-            if (!ret)
-            {
-                var msg = $"{nameof(AddMessage)}: Vote for round {message.Round} is invalid.";
-                _logger.Error(msg);
-                throw new InvalidMessageException(msg, message);
-            }
-
             _messagesInRound[message.Round].Add(message);
         }
 
