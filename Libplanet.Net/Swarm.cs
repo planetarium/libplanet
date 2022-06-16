@@ -151,7 +151,7 @@ namespace Libplanet.Net
                 consensusPrivateKey,
                 nodeId,
                 validators,
-                Options.StaticPeers,
+                Options.ConsensusPeers,
                 TimeSpan.FromMilliseconds(10_000));
         }
 
@@ -415,14 +415,6 @@ namespace Libplanet.Net
                     )
                 );
                 tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
-                if (Options.StaticPeers.Any())
-                {
-                    tasks.Add(
-                        MaintainStaticPeerAsync(
-                            Options.StaticPeersMaintainPeriod,
-                            _cancellationToken));
-                }
-
                 _logger.Debug("Swarm started.");
 
                 await await Task.WhenAny(tasks);
@@ -484,11 +476,6 @@ namespace Libplanet.Net
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
             IReadOnlyList<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
-
-            if (Options.StaticPeers.Any())
-            {
-                await AddPeersAsync(Options.StaticPeers, dialTimeout, cancellationToken);
-            }
 
             await PeerDiscovery.BootstrapAsync(
                 peers,
@@ -1481,30 +1468,6 @@ namespace Libplanet.Net
                               $"{nameof(RebuildConnectionAsync)}(): {{0}}";
                     _logger.Warning(e, msg, e);
                 }
-            }
-        }
-
-        private async Task MaintainStaticPeerAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
-        {
-            TimeSpan timeout = TimeSpan.FromSeconds(3);
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                var tasks = Options.StaticPeers
-                    .Where(peer => !RoutingTable.Contains(peer))
-                    .Select(async peer =>
-                    {
-                        try
-                        {
-                            await AddPeersAsync(new[] { peer }, timeout, cancellationToken);
-                        }
-                        catch (TimeoutException)
-                        {
-                        }
-                    });
-                await Task.WhenAll(tasks);
-                await Task.Delay(period, cancellationToken);
             }
         }
     }

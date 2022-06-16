@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
     {
         private ITransport _consensusTransport;
         private ILogger _logger;
-        private IImmutableSet<BoundPeer>? _validatorPeers;
+        private IImmutableSet<BoundPeer> _validatorPeers;
         private List<PublicKey>? _validators;
         private ConsensusContext<T> _consensusContext;
         private BlockChain<T> _blockChain;
@@ -37,7 +37,8 @@ namespace Libplanet.Net.Consensus
             _consensusTransport = consensusTransport;
             _validators = validators;
             _validatorPeers = validatorPeers?
-                .Where(peer => !peer.PublicKey.Equals(privateKey.PublicKey)).ToImmutableHashSet();
+                .Where(peer => !peer.PublicKey.Equals(privateKey.PublicKey)).ToImmutableHashSet()
+                              ?? ImmutableHashSet<BoundPeer>.Empty;
             _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
             _blockChain = blockChain;
             _nodeId = nodeId;
@@ -103,7 +104,7 @@ namespace Libplanet.Net.Consensus
             if (_consensusTransport.AsPeer is BoundPeer boundPeer)
             {
                 _consensusTransport.BroadcastMessage(
-                    _validatorPeers!.Add(boundPeer), message);
+                    _validatorPeers.Add(boundPeer), message);
             }
         }
 

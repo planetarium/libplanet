@@ -285,67 +285,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task MaintainStaticPeers()
-        {
-            var keyA = new PrivateKey();
-            Swarm<DumbAction> swarmA = CreateSwarm(keyA, listenPort: 20000);
-            Swarm<DumbAction> swarmB = CreateSwarm(listenPort: 20001);
-            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
-
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                Swarm<DumbAction> swarm = CreateSwarm(
-                    options: new SwarmOptions
-                    {
-                        StaticPeers = new[]
-                        {
-                            (BoundPeer)swarmA.AsPeer,
-                            (BoundPeer)swarmB.AsPeer,
-                            // Unreachable peer:
-                            new BoundPeer(
-                                new PrivateKey().PublicKey,
-                                new DnsEndPoint("127.0.0.1", 65535)
-                            ),
-                        }.ToImmutableHashSet(),
-                        StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
-                    });
-
-                await StartAsync(swarm);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
-
-                _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
-                await StopAsync(swarmA);
-                await Task.Delay(100);
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default(CancellationToken));
-                // Invoke once more in case of swarmA and swarmB is in the same bucket,
-                // and swarmA is last updated.
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default(CancellationToken));
-                Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
-                Assert.Contains(swarmB.AsPeer, swarm.Peers);
-
-                await StartAsync(swarmC);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
-
-                await StopAsync(swarm);
-            }
-            finally
-            {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task Cancel()
         {
             Swarm<DumbAction> swarm = CreateSwarm();
