@@ -32,13 +32,15 @@ namespace Libplanet.Extensions.Cocona.Commands
         public void Create(
             PassphraseParameters passphrase,
             [Option(
-                Description = "Print the created private key as Web3 Secret Storage format."
+                Description = "Export created private key as Web3 Secret Storage format."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
-            bool dryRun = false
+            bool dryRun = false,
+            [Option(Description = "Path to export key as Web3 Secret Storage Format")]
+            string path = ""
         ) =>
-            Add(new PrivateKey(), passphrase, json, dryRun);
+            Add(string.Empty, passphrase, json, dryRun, path, true);
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
@@ -70,7 +72,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                 "PRIVATE-KEY",
                 Description = "A raw private key to import in hexadecimal string."
             )]
-            string rawKeyHex,
+            string key,
             PassphraseParameters passphrase,
             [Option(
                 Description = "Print the created private key as Web3 Secret Storage format."
@@ -80,25 +82,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             bool dryRun = false
         )
         {
-            PrivateKey key;
-            try
-            {
-                key = PrivateKey.FromString(rawKeyHex);
-            }
-            catch (FormatException)
-            {
-                throw Utils.Error("A raw private key should be hexadecimal.");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                throw Utils.Error("Hexadecimal characters should be even (not odd).");
-            }
-            catch (Exception)
-            {
-                throw Utils.Error("Invalid private key.");
-            }
-
-            Add(key, passphrase, json, dryRun);
+            Add(key, passphrase, json, dryRun, key, false);
         }
 
         [Command(Description = "Export a raw private key (or public key).")]
@@ -112,7 +96,11 @@ namespace Libplanet.Extensions.Cocona.Commands
                 'b',
                 Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
             )]
-            bool bytes = false
+            bool bytes = false,
+            [Option(Description = "Export a Web3 Secret Storage Formatted json to path.")]
+            bool json = false,
+            [Option(Description = "Path to export json key.")]
+            string path = ""
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
@@ -121,6 +109,14 @@ namespace Libplanet.Extensions.Cocona.Commands
             {
                 using Stream stdout = Console.OpenStandardOutput();
                 stdout.Write(rawKey, 0, rawKey.Length);
+            }
+            else if (json)
+            {
+                Stream fs = PathHandler(path);
+                var ppk = KeyStore.Get(keyId);
+                ppk.WriteJson(fs, keyId);
+                fs.WriteByte(0x0a);
+                fs.Close();
             }
             else
             {
@@ -248,24 +244,51 @@ namespace Libplanet.Extensions.Cocona.Commands
         }
 
         private void Add(
-            PrivateKey key,
+            string key,
             PassphraseParameters passphrase,
             bool json,
-            bool dryRun
+            bool dryRun,
+            string pathString,
+            bool create
         )
         {
-            string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
-            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(key, passphraseValue);
-            Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-            if (json)
+            Stream fs = PathHandler(pathString);
+            if (create)
             {
-                using Stream stdout = System.Console.OpenStandardOutput();
-                ppk.WriteJson(stdout, keyId);
-                stdout.WriteByte(0x0a);  // line ending
+                string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+                PrivateKey pkey = new PrivateKey();
+                ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
+                Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+                if (json)
+                {
+                    ppk.WriteJson(fs, keyId);
+                    fs.WriteByte(0x0a);
+                    fs.Close();
+                }
             }
             else
             {
-                PrintKeys(new[] { (keyId, ppk) });
+                if (json)
+                {
+                    try
+                    {
+                        ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(
+                                                new StreamReader(fs).ReadToEnd());
+                        Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+                    }
+                    catch (Exception)
+                    {
+                        Utils.Error("This is not valid json file or file does not exists.");
+                    }
+                }
+                else
+                {
+                    string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+                    PrivateKey privateKey = ValidateRawHex(key);
+                    ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
+                        privateKey, passphraseValue);
+                    Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+                }
             }
         }
 
@@ -275,6 +298,42 @@ namespace Libplanet.Extensions.Cocona.Commands
                 ("Key ID", "Address"),
                 keys.Select(t => (t.KeyId.ToString(), t.Key.Address.ToString()))
             );
+        }
+
+        private PrivateKey ValidateRawHex(string rawKeyHex)
+        {
+            PrivateKey key;
+            try
+            {
+                key = PrivateKey.FromString(rawKeyHex);
+            }
+            catch (FormatException)
+            {
+                throw Utils.Error("A raw private key should be hexadecimal.");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw Utils.Error("Hexadecimal characters should be even (not odd).");
+            }
+            catch (Exception)
+            {
+                throw Utils.Error("Invalid private key.");
+            }
+
+            return key;
+        }
+
+        private Stream PathHandler(string pathString)
+        {
+            if (pathString == string.Empty)
+            {
+                return System.Console.OpenStandardOutput();
+            }
+            else
+            {
+                string path = Path.GetFullPath(pathString);
+                return File.Open(path, FileMode.OpenOrCreate);
+            }
         }
     }
 }
