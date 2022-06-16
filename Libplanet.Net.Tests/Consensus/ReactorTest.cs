@@ -59,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus
             // INFO : This test uses local ports 6100 to 6103.
             const int consensusPort = 6100;
 
-            const int propagationDelay = 3_000;
+            const int propagationDelay = 10_000;
             var keys = new PrivateKey[count];
             var reactors = new ConsensusReactor<DumbAction>[count];
             var validators = new List<PublicKey>();
