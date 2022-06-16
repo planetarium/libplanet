@@ -101,7 +101,7 @@ namespace Libplanet.Net.Consensus
 
         public VoteSet VoteSet(int round)
         {
-            var (block, _) = HasProposeFromProposer(Proposer(Height, Round));
+            var (block, _) = GetPropose(round);
             var voteSet = new VoteSet(Height, round, block?.Hash, _validators);
             var roundVotes =
                 _messagesInRound[round].Where(
@@ -147,7 +147,7 @@ namespace Libplanet.Net.Consensus
                 message,
                 ToString());
 
-            if (HasProposeFromProposer(Proposer(Height, Round)) is
+            if (GetPropose(Round) is
                     (Block<T> block1, int validRound1) &&
                 validRound1 == -1 &&
                 Step == Step.Propose)
@@ -170,7 +170,7 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (HasProposeFromProposer(Proposer(Height, Round)) is
+            if (GetPropose(Round) is
                     (Block<T> block2, int validRound2) &&
                 validRound2 >= 0 &&
                 validRound2 < Round &&
@@ -209,7 +209,7 @@ namespace Libplanet.Net.Consensus
                 _ = OnTimeoutPreVote(Height, Round);
             }
 
-            if (HasProposeFromProposer(Proposer(Height, Round)) is (Block<T> block3, _) &&
+            if (GetPropose(Round) is (Block<T> block3, _) &&
                 HasTwoThirdsPreVote(Round, block3.Hash) &&
                 IsValid(block3) &&
                 Step >= Step.PreVote &&
@@ -265,7 +265,7 @@ namespace Libplanet.Net.Consensus
             if (message is ConsensusPropose || message is ConsensusCommit)
             {
                 int round = message.Round;
-                if (HasProposeFromProposer(Proposer(Height, round)) is (Block<T> block4, _) &&
+                if (GetPropose(round) is (Block<T> block4, _) &&
                     HasTwoThirdsPreCommit(round, block4.Hash) &&
                     Step != Step.EndCommit &&
                     IsValid(block4))
@@ -321,10 +321,10 @@ namespace Libplanet.Net.Consensus
             return block;
         }
 
-        private PublicKey Proposer(long height, int round)
+        private PublicKey Proposer(int round)
         {
             // return designated proposer for the height round pair.
-            return _validators[(int)((height + round) % TotalValidators)];
+            return _validators[(int)((Height + round) % TotalValidators)];
         }
 
         private async Task StartRound(int round)
@@ -336,7 +336,7 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             Step = Step.Propose;
-            if (Proposer(Height, Round) == _privateKey.PublicKey)
+            if (Proposer(Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
                     "Starting round {NewRound} and is a proposer. (context: {Context})",
@@ -375,19 +375,35 @@ namespace Libplanet.Net.Consensus
         {
             if (message.Height != Height)
             {
-                throw new InvalidMessageException(
-                    $"{nameof(AddMessage)}: Height of message differs with working height",
+                throw new InvalidHeightMessageException(
+                    "Height of message differs with working height.  " +
+                    $"(expected: {Height}, actual: {message.Height})",
                     message);
+            }
+
+            if (message is ConsensusPropose propose)
+            {
+                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
+                {
+                    throw new InvalidProposerProposeMessageException(
+                        "Proposer for the height " +
+                        $"{message.Height} and round {message.Round} is invalid.  " +
+                        $"(expected: {Proposer(message.Round)}, " +
+                        $"actual: {propose.Remote!.PublicKey}",
+                        message);
+                }
+
+                if (message.BlockHash.Equals(default(BlockHash)))
+                {
+                    throw new InvalidBlockProposeMessageException(
+                        "Cannot propose a null block.",
+                        message);
+                }
             }
 
             if (!_messagesInRound.ContainsKey(message.Round))
             {
                 _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
-            }
-
-            if (message is ConsensusPropose && message.BlockHash.Equals(default(BlockHash)))
-            {
-                throw new InvalidMessageException("Proposing block cannot be null", message);
             }
 
             // TODO: Prevent duplicated messages adding.
@@ -422,12 +438,11 @@ namespace Libplanet.Net.Consensus
         }
 
         // Predicates
-        private (Block<T>?, int?) HasProposeFromProposer(PublicKey proposer)
+        private (Block<T>?, int?) GetPropose(int round)
         {
-            ConsensusMessage? msg = _messagesInRound[Round].FirstOrDefault(
+            ConsensusMessage? msg = _messagesInRound[round].FirstOrDefault(
                 msg =>
-                    msg is ConsensusPropose &&
-                    proposer.Equals(msg.Remote!.PublicKey));
+                    msg is ConsensusPropose);
 
             if (msg is ConsensusPropose propose)
             {
