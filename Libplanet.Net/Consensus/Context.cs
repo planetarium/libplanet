@@ -101,7 +101,7 @@ namespace Libplanet.Net.Consensus
 
         public VoteSet VoteSet(int round)
         {
-            var (block, _) = GetPropose(Round);
+            var (block, _) = GetPropose(round);
             var voteSet = new VoteSet(Height, round, block?.Hash, _validators);
             var roundVotes =
                 _messagesInRound[round].Where(
