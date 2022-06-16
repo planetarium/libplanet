@@ -108,6 +108,19 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void CreateUnsignedFromBencodex()
+        {
+            var expected = Transaction<PolymorphicAction<BaseAction>>.CreateUnsigned(
+                0,
+                _fx.PublicKey1,
+                null,
+                _fx.TxWithActions.Actions);
+            Bencodex.Types.Dictionary dict = expected.ToBencodex(false);
+            var actual = new Transaction<PolymorphicAction<BaseAction>>(dict);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
             Transaction<DumbAction> emptyTx = Transaction<DumbAction>.Create(
@@ -572,89 +585,10 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void DetectBadSignature()
         {
-            var rawTx = _fx.Tx.ToRawTransaction(true);
-            Transaction<DumbAction> tx = new Transaction<DumbAction>(
-                new RawTransaction(
-                    0,
-                    rawTx.Signer,
-                    rawTx.GenesisHash,
-                    rawTx.UpdatedAddresses,
-                    rawTx.PublicKey,
-                    rawTx.Timestamp,
-                    rawTx.Actions,
-                    new byte[rawTx.Signature.Length].ToImmutableArray()
-                )
-            );
-
+            Bencodex.Types.Dictionary dict = _fx.Tx.ToBencodex(true)
+                .SetItem(TxMetadata.SignatureKey, new byte[_fx.Tx.Signature.Length]);
+            var tx = new Transaction<DumbAction>(dict);
             Assert.Throws<InvalidTxSignatureException>(() => tx.Validate());
-        }
-
-        [Fact]
-        public void DetectAddressMismatch()
-        {
-            var privKey = new PrivateKey();
-            var mismatchedPrivKey = new PrivateKey();
-            var tx = new Transaction<DumbAction>(
-                0,
-                new Address(mismatchedPrivKey.PublicKey),
-                privKey.PublicKey,
-                null,
-                ImmutableHashSet<Address>.Empty,
-                new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero),
-                ImmutableArray<DumbAction>.Empty,
-                new byte[0]
-            );
-            var invalidTx = new Transaction<DumbAction>(
-                tx.Nonce,
-                tx.Signer,
-                tx.PublicKey,
-                tx.GenesisHash,
-                tx.UpdatedAddresses,
-                tx.Timestamp,
-                tx.Actions,
-                privKey.Sign(tx.Serialize(false))
-            );
-
-            Assert.Throws<InvalidTxPublicKeyException>(() => invalidTx.Validate());
-        }
-
-        [Fact]
-        public void ConvertToRaw()
-        {
-            var privateKey = new PrivateKey(
-                new byte[]
-                {
-                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
-                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
-                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
-                    0x7b, 0x76,
-                }
-            );
-            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                0,
-                privateKey,
-                null,
-                new DumbAction[0],
-                timestamp: timestamp
-            );
-
-            Assert.Equal(
-                GetExpectedRawTransaction(false),
-                tx.ToRawTransaction(false)
-            );
-            Assert.Equal(
-                GetExpectedRawTransaction(true),
-                tx.ToRawTransaction(true)
-            );
-        }
-
-        [Fact]
-        public void ConvertFromRawTransaction()
-        {
-            RawTransaction rawTx = GetExpectedRawTransaction(true);
-            var tx = new Transaction<DumbAction>(rawTx);
-            tx.Validate();
         }
 
         [Fact]
@@ -713,53 +647,6 @@ namespace Libplanet.Tests.Tx
             actions.Add(new DumbAction());
             Assert.Empty(t1.Actions);
             Assert.Empty(t2.Actions);
-        }
-
-        internal RawTransaction GetExpectedRawTransaction(bool includeSingature)
-        {
-            var privateKey = new PrivateKey(new byte[]
-                {
-                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
-                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
-                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
-                    0x7b, 0x76,
-                });
-            var tx = new RawTransaction(
-                nonce: 0,
-                signer: new byte[]
-                {
-                    0xc2, 0xa8, 0x60, 0x14, 0x07, 0x3d, 0x66, 0x2a, 0x4a, 0x9b,
-                    0xfc, 0xf9, 0xcb, 0x54, 0x26, 0x3d, 0xfa, 0x4f, 0x5c, 0xbc,
-                }.ToImmutableArray(),
-                updatedAddresses: ImmutableArray<ImmutableArray<byte>>.Empty,
-                publicKey: new byte[]
-                {
-                    0x04, 0x46, 0x11, 0x5b, 0x01, 0x31, 0xba, 0xcc, 0xf9, 0x4a,
-                    0x58, 0x56, 0xed, 0xe8, 0x71, 0x29, 0x5f, 0x6f, 0x3d, 0x35,
-                    0x2e, 0x68, 0x47, 0xcd, 0xa9, 0xc0, 0x3e, 0x89, 0xfe, 0x09,
-                    0xf7, 0x32, 0x80, 0x87, 0x11, 0xec, 0x97, 0xaf, 0x6e, 0x34,
-                    0x1f, 0x11, 0x0a, 0x32, 0x6d, 0xa1, 0xbd, 0xb8, 0x1f, 0x5a,
-                    0xe3, 0xba, 0xdf, 0x76, 0xa9, 0x0b, 0x22, 0xc8, 0xc4, 0x91,
-                    0xae, 0xd3, 0xaa, 0xa2, 0x96,
-                }.ToImmutableArray(),
-                genesisHash: ImmutableArray<byte>.Empty,
-                timestamp: "2018-11-21T00:00:00.000000Z",
-                actions: ImmutableArray<IValue>.Empty
-            );
-            if (!includeSingature)
-            {
-                return tx;
-            }
-
-            byte[] signature =
-            {
-                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb, 0xe8,
-                0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e, 0x97, 0x44,
-                0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c, 0x06, 0x02, 0x1f,
-                0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96, 0xa8, 0x63, 0x04, 0xb0,
-                0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9, 0x7d, 0x37, 0x67, 0xe1, 0xe9,
-            };
-            return tx.AddSignature(signature);
         }
     }
 }

@@ -175,7 +175,6 @@ namespace Libplanet.Net.Tests.Protocols
             await Assert.ThrowsAsync<TransportException>(
                 () => transportB.BootstrapAsync(
                     new[] { transportA.AsPeer },
-                    TimeSpan.FromSeconds(3),
                     TimeSpan.FromSeconds(3))
             );
 

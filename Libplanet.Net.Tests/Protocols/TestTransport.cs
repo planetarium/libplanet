@@ -162,7 +162,6 @@ namespace Libplanet.Net.Tests.Protocols
         public async Task BootstrapAsync(
             IEnumerable<Peer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
-            TimeSpan? findPeerTimeout = null,
             int depth = 3,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -176,7 +175,6 @@ namespace Libplanet.Net.Tests.Protocols
             await BootstrapAsync(
                 peers,
                 pingSeedTimeout,
-                findPeerTimeout,
                 depth,
                 cancellationToken);
         }
@@ -185,7 +183,6 @@ namespace Libplanet.Net.Tests.Protocols
         public async Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
-            TimeSpan? findPeerTimeout = null,
             int depth = 3,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -207,7 +204,6 @@ namespace Libplanet.Net.Tests.Protocols
             await Protocol.BootstrapAsync(
                 bootstrapPeers.ToImmutableList(),
                 pingSeedTimeout,
-                findPeerTimeout,
                 Kademlia.MaxDepth,
                 cancellationToken);
         }

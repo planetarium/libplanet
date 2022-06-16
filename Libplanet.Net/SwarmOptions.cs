@@ -1,9 +1,6 @@
-#nullable disable
 using System;
 using System.Collections.Immutable;
-using System.Threading;
 using Libplanet.Blockchain;
-using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -28,31 +25,6 @@ namespace Libplanet.Net
             /// </summary>
             TcpTransport = 0x02,
         }
-
-        /// <summary>
-        /// The maximum timeout used in <see cref="Swarm{T}"/>.
-        /// </summary>
-        public TimeSpan MaxTimeout { get; set; } = TimeSpan.FromSeconds(150);
-
-        /// <summary>
-        /// The base timeout used to receive the block hashes from other peers.
-        /// </summary>
-        public TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
-
-        /// <summary>
-        /// The base timeout used to receive <see cref="Block{T}"/> from other peers.
-        /// </summary>
-        public TimeSpan BlockRecvTimeout { get; set; } = TimeSpan.FromSeconds(15);
-
-        /// <summary>
-        /// The base timeout used to receive <see cref="Transaction{T}"/> from other peers.
-        /// </summary>
-        public TimeSpan TxRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
-
-        /// <summary>
-        /// The timeout used to block download in preloading.
-        /// </summary>
-        public TimeSpan BlockDownloadTimeout { get; set; } = Timeout.InfiniteTimeSpan;
 
         /// <summary>
         /// The lifespan of block demand.
@@ -104,6 +76,28 @@ namespace Libplanet.Net
         public int MinimumBroadcastTarget { get; set; } = 10;
 
         /// <summary>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMessage"/>
+        /// to its peers.
+        /// </summary>
+        /// <remarks>
+        /// Broadcasts are also made whenever <see cref="BlockChain{T}.Tip"/> changes in addition
+        /// to regular broadcasts determined by this option.
+        /// </remarks>
+        public TimeSpan BlockBroadcastInterval { get; set; }
+            = TimeSpan.FromMilliseconds(15_000);
+
+        /// <summary>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIds"/>
+        /// to its peers.
+        /// </summary>
+        /// <remarks>
+        /// Broadcasts are also made whenever <see cref="Transaction{T}"/> is staged in addition
+        /// to regular broadcasts determined by this option.
+        /// </remarks>
+        public TimeSpan TxBroadcastInterval { get; set; }
+            = TimeSpan.FromMilliseconds(5_000);
+
+        /// <summary>
         /// The number of buckets of the Kademlia based routing table.
         /// </summary>
         /// <seealso cref="RoutingTable"/>
@@ -114,11 +108,6 @@ namespace Libplanet.Net
         /// </summary>
         /// <seealso cref="RoutingTable"/>
         public int BucketSize { get; set; } = Kademlia.BucketSize;
-
-        /// <summary>
-        /// The interval between block polling.
-        /// </summary>
-        public TimeSpan PollInterval { get; set; } = TimeSpan.FromSeconds(15);
 
         /// <summary>
         /// The maximum number of peers to poll blocks.
@@ -136,5 +125,21 @@ namespace Libplanet.Net
         /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
         /// </summary>
         public TransportType Type { get; set; } = TransportType.TcpTransport;
+
+        /// <summary>
+        /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.
+        /// </summary>
+        public BootstrapOptions BootstrapOptions { get; set; } = new BootstrapOptions();
+
+        /// <summary>
+        /// Various options for the default preload behavior of <see cref="Swarm{T}"/>.
+        /// </summary>
+        public PreloadOptions PreloadOptions { get; set; } = new PreloadOptions();
+
+        /// <summary>
+        /// Various timeout options for sending and receiving <see cref="Message"/>s through
+        /// an <see cref="ITransport"/>.
+        /// </summary>
+        public TimeoutOptions TimeoutOptions { get; set; } = new TimeoutOptions();
     }
 }

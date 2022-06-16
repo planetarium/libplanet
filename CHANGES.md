@@ -1,28 +1,215 @@
 Libplanet changelog
 ===================
 
-Version 0.35.0
+Version 0.37.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on May 30th, 2022.
 
 ### Backward-incompatible API changes
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+ -  (Libplanet.Net) Removed `SwarmOptions.BootstrapDialTimeout`.
+    Use `SwarmOptions.BootstrapOptions.DialTimeout` instead.  [[#2024]]
+ -  (Libplanet.Net) Added `Swarm<T>.BootstrapAsync(CancellationToken)`
+    which utilizes values stored in `BootstrapOptions`.  [[#2024]]
+ -  (Libplanet.Net) Parameter name `depth` changed to `searchDepth` for
+    `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?, int,
+    CancellationToken)` and made non-optional.  [[#2024]]
+ -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, depth,
+    CancellationToken)` removed.  [[#2024]]
+ -  (Libplanet.Net) Removed `SwarmOptions.PreloadDialTimeout`.
+    Use `SwarmOptions.PreloadOptions.DialTimeout` instead.  [[#2025]]
+ -  (Libplanet.Net) Added `Swarm<T>.PreloadAsync(IProgress<PreloadState>, bool,
+    CancellationToken)`.  [[#2025]]
+ -  (Libplanet.Net) Changed the order of parameters from `Swarm<T>(TimeSpan,
+    IProgresss<PreloadState>, bool, long, CancellationToken)` to `Swarm<T>(
+    TimeSpan?, long, IProgress<PreloadState>, bool, CancellationToken)`
+    with default value for `tipDeltaThreshold` removed.  [[#2025]]
+ -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
+    and no longer accepts multiple Urls for single instance. [[#2026]]
 
 ### Added APIs
 
+ -  (Libplanet.Net) Added `BootstrapOptions` class.  [[#2024]]
+ -  (Libplanet.Net) Added `BootstrapOptions` property to `SwarmOptions`.
+    [[#2024]]
+ -  (Libplanet.Net) Added `PreloadOptions` class.  [[#2025]]
+ -  (Libplanet.Net) Added `PreloadOptions` property to `SwarmOptions`.
+    [[#2025]]
+
+### CLI tools
+
+[#2024]: https://github.com/planetarium/libplanet/pull/2024
+[#2025]: https://github.com/planetarium/libplanet/pull/2025
+[#2026]: https://github.com/planetarium/libplanet/pull/2026
+
+
+Version 0.36.1
+--------------
+
+Released on May 26th, 2022.
+
+ -  Fixed `Transaction<T>()` constructor's bug that it had thrown
+    `KeyNotFoundException` when a Bencodex dictionary without
+    signature.  [[#2005]]
+
+[#2005]: https://github.com/planetarium/libplanet/pull/2005
+
+
+Version 0.36.0
+--------------
+
+Released on May 25th, 2022.
+
+### Backward-incompatible API changes
+
+ -  Removed `InvalidTxPublicKeyException` class.  [[#1164], [#1978]]
+ -  (Libplanet.Net) Property `SwarmOptions.BlockDownloadTimeout` removed.
+    [[#1981], [#1982]]
+ -  (Libplanet.Net) `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, TimeSpan?,
+    TimeSpan?, int, CancellationToken)` changed to `Swarm<T>.BoostrapAsync(
+    IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
+    `dialTimeout` now gets used for both old `pingSeedTimeout` and
+    `findNeigborsTimeout`.  [[#1990]]
+ -  (Libplanet.Net) `IProtocol.BootstrapAsync(IEnumerable<BoundPeer>, TimeSpan?,
+    TimeSpan?, int, CancellationToken)` changed to `IProtocol.BootstrapAsync(
+    IEnumerable<Peer>, TimeSpan?, int, CancellationToken)`.  Parameter
+    `dialTimeout` now gets used for both old `pingSeedTimeout` and
+    `findNeigborsTimeout`.  [[#1990]]
+
+### Added APIs
+
+ -  Introduced *Libplanet.Node* package.  [[#1974], [#1978]]
+ -  Added `ITxMetadata` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxMetadata` class.  [[#1164], [#1974], [#1978]]
+ -  Added `ITxExcerpt` interface.  [[#1164], [#1974], [#1978]]
+ -  Added `TxExcerptExtensions` static class.  [[#1164], [#1974], [#1978]]
+ -  `Transaction<T>` now implements `ITxExcerpt` interface.
+    [[#1164], [#1974], [#1978]]
+ -  Added `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])` constructor.
+    [[#1164], [#1978]]
+ -  Added `TxId.FromString()` static method.  [[#1978]]
+ -  (Libplanet.Node) Added `UntypedTransaction` class.  [[#1974], [#1978]]
+ -  (Libplanet.Node) Added `UntypedBlock` class.  [[#1974], [#1978]]
+
 ### Behavioral changes
+
+ -  `Transaction<T>(long, Address, PublicKey, BlockHash?,
+    IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])` constructor
+    became to ignore its second parameter `Address signer`.  Instead,
+    `Transaction<T>.Signer` property is now automatically derived from its
+    `PublicKey`.  [[#1164], [#1978]]
 
 ### Bug fixes
 
-### Dependencies
+ -  Fixed `InvalidOperationException` thrown by `PublicKey.Verify()` method
+    if `signature` is a `default(ImmutableArray<byte>)`.  Instead, it silently
+    returns `false` now.  [[#1978]]
+ -  Fixed `NullReferenceException` thrown by `ByteUtil.Hex(in
+    ImmutabelArray<byte>)` method if a `default(ImmutableArray<byte>)` is
+    present.  Instead, it silently returns an empty string now.  [[#1978]]
+ -  Fixed a `TxId(byte[])` constructor's bug where `ParamName` and `Message` of
+    `ArgumentOutOfRangeException` it had thrown had been reversed.  [[#1978]]
 
 ### CLI tools
+
+[#1974]: https://github.com/planetarium/libplanet/issues/1974
+[#1978]: https://github.com/planetarium/libplanet/pull/1978
+[#1981]: https://github.com/planetarium/libplanet/issues/1981
+[#1982]: https://github.com/planetarium/libplanet/pull/1982
+[#1990]: https://github.com/planetarium/libplanet/pull/1990
+
+
+Version 0.35.1
+--------------
+
+Released on May 23rd, 2022.
+
+### Bug fixes
+
+-  (Libplanet.Net) Wrongly assigned default value to
+   `TimeoutOptions.PreloadDialTimeout` fixed.  [[#1983]]
+
+[#1983]: https://github.com/planetarium/libplanet/pull/1983
+
+
+Version 0.35.0
+--------------
+
+Released on May 20th, 2022.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Unused property `SwarmOptions.PollInterval` removed.
+    [[#1962]]
+
+### Backward-incompatible API changes
+
+ -  `BlockCompletion<TPeer, TAction>.Complete()` no longer accepts
+    neither parmeter `TimeSpan singleSessionTimeout` nor
+    `int millisecondsSingleSessionTimeout` to regulate a single session length.
+    [[#1961]]
+ -  (Libplanet.Net) General API changes made to `Swarm<T>.BootstrapAsync()`,
+    `Swarm<T>.PreloadAsync()`, and `Swarm<T>.StartAsync()`.  [[#1962]]
+     -  `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, double, double,
+        int, CancellationToken)` replaced with
+        `Swarm<T>.BootstrapAsync(IEnumerable<Peer>, int, CancellationToken)`
+        which uses default values provided by `SwarmOptions` for
+        `pingSeedTimeout` and `findPeerTimeout`.
+     -  `Swarm<T>.StartAsync(int, int, int CancellationToken)`
+        replaced with `Swarm<T>.StartAsync(CancellationToken)`
+        which uses default values provided by `SwarmOptions` for
+        `millisecondsDialTimeout`, `millisecondsBroadcastBlockInterval`
+        and `millisecondsBroadcastTxInterval`.
+     -  `Swarm<T>.PreloadAsync(IProgress<PreloadState>,
+        bool, long, CancellationToken)` overload method added and
+        `Swarm<T>.PreloadAsync(TimeSpan?, IProgress<PreloadState>, bool
+        long, CancellationToken)` changed to `Swarm<T>.PreloadAsync(
+        TimeSpan, IProgress<PreloadState>, bool, long, CancellationToken)`
+ -  (Libplanet.Net) `TimeoutOptions` property added to `SwarmOptions` with
+    all timeout related options moved from `SwarmOptions` to `TimeoutOptions`.
+    [[#1957], [#1962]]
+
+### Added APIs
+
+ -  Added `StoreLoader` delegate.  [[#1359], [#1953], [#1955]]
+ -  Added `StoreLoaderAttribute` class.  [[#1359], [#1953], [#1955]]
+ -  Added `TrieStateStore.Secure` property.  [[#1955]]
+ -  Added `NameValueCollectionExtensions` static class.  [[#1955]]
+ -  Type support for `Guid` added to `DataModel`.  [[#1959], [#1960]]
+ -  `TimeoutOptions` class added.  [[#1957], [#1962]]
+ -  `SwarmOptions.BlockBroadcastInterval` and `SwarmOptions.TxBroadcastInterval`
+    properties added.  [[#1962]]
+ -  `TimeSpanExtensions.Multiply()` method added.  [[#1966]]
+
+### Behavioral changes
+
+ -  `DefaultStore` and `DefaultKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `default+file:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1359], [#1953], [#1955]]
+ -  `MemoryStore` and `MemoryKeyValueStore`-backed `TrieStateStore` now can be
+    instantiated with URI scheme `memory:` using
+    `StoreLoaderAttribute.LoadStore()` method.  [[#1359], [#1953], [#1955]]
+ -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore`-backed
+    `TrieStateStore` now can be instantiated with URI scheme `rocksdb+file:`
+    using `StoreLoaderAttribute.LoadStore()` method. [[#1359], [#1953], [#1955]]
+
+### CLI tools
+
+ -  The following store URI schemes are deprecated:  [[#1573], [#1955]]
+     - `default`: Use `default+file` instead.
+     - `rocksdb`: Use `rocksdb+file` instead.
+
+[#1359]: https://github.com/planetarium/libplanet/issues/1359
+[#1573]: https://github.com/planetarium/libplanet/issues/1573
+[#1953]: https://github.com/planetarium/libplanet/issues/1953
+[#1955]: https://github.com/planetarium/libplanet/pull/1955
+[#1957]: https://github.com/planetarium/libplanet/issues/1957
+[#1959]: https://github.com/planetarium/libplanet/issues/1959
+[#1960]: https://github.com/planetarium/libplanet/pull/1960
+[#1961]: https://github.com/planetarium/libplanet/pull/1961
+[#1962]: https://github.com/planetarium/libplanet/pull/1962
+[#1966]: https://github.com/planetarium/libplanet/pull/1966
 
 
 Version 0.34.0

@@ -68,10 +68,21 @@ namespace Libplanet.Tests
 
         [Theory]
         [MemberData(nameof(MultiplicationTestData))]
+        public static void Multiplication(TimeSpan timeSpan, double factor, TimeSpan expected)
+        {
+            // This code is borrowed from the official .NET implementation:
+            //   https://bit.ly/3MhgH63
+            // We can remove these copy-and-pasted lines in the future when Libplanet drops
+            // .NET Standard 2.0 support and becomes to support .NET Standard 2.1 or higher.
+            Assert.Equal(expected, TimeSpanExtensions.Multiply(timeSpan, factor));
+        }
+
+        [Theory]
+        [MemberData(nameof(MultiplicationTestData))]
         public static void Division(TimeSpan timeSpan, double factor, TimeSpan expected)
         {
             // This code is borrowed from the official .NET implementation:
-            //   https://git.io/JYvjY#L1152-L1158
+            //   https://bit.ly/3FVRjAw
             // We can remove these copy-and-pasted lines in the future when Libplanet drops
             // .NET Standard 2.0 support and becomes to support .NET Standard 2.1 or higher.
             double divisor = 1.0 / factor;
@@ -82,7 +93,7 @@ namespace Libplanet.Tests
         public static void DivideByZero()
         {
             // This code is borrowed from the official .NET implementation:
-            //   https://git.io/JYvjT#L1160-L1169
+            //   https://bit.ly/3MhilEx
             // We can remove these copy-and-pasted lines in the future when Libplanet drops
             // .NET Standard 2.0 support and becomes to support .NET Standard 2.1 or higher.
             Assert.Throws<OverflowException>(
@@ -95,10 +106,22 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public static void NaNMultiplication()
+        {
+            // This code is borrowed from the official .NET implementation:
+            //   https://bit.ly/3PgO36S
+            // We can remove these copy-and-pasted lines in the future when Libplanet drops
+            // .NET Standard 2.0 support and becomes to support .NET Standard 2.1 or higher.
+            ArgumentException e = Assert.Throws<ArgumentException>(
+                () => TimeSpanExtensions.Multiply(TimeSpan.FromDays(1), double.NaN));
+            Assert.Equal("factor", e.ParamName);
+        }
+
+        [Fact]
         public static void NaNDivision()
         {
             // This code is borrowed from the official .NET implementation:
-            //   https://git.io/JYvhp#L1171-L1175
+            //   https://bit.ly/3FRNXP0
             // We can remove these copy-and-pasted lines in the future when Libplanet drops
             // .NET Standard 2.0 support and becomes to support .NET Standard 2.1 or higher.
             ArgumentException e = Assert.Throws<ArgumentException>(

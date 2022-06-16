@@ -21,6 +21,8 @@ namespace Libplanet.Store
                         $"Argument {nameof(key)} cannot be null");
                 case ImmutableArray<byte> bytes:
                     return new BTypes.Binary(bytes);
+                case Guid guid:
+                    return new BTypes.Binary(guid.ToByteArray());
                 case Address address:
                     return new BTypes.Binary(address.ByteArray);
                 case string s:
@@ -47,6 +49,8 @@ namespace Libplanet.Store
                     return new BTypes.Integer(bigInteger);
                 case ImmutableArray<byte> bytes:
                     return new BTypes.Binary(bytes);
+                case Guid guid:
+                    return new BTypes.Binary(guid.ToByteArray());
                 case Address address:
                     return new BTypes.Binary(address.ByteArray);
                 case string s:
@@ -81,6 +85,7 @@ namespace Libplanet.Store
                     || genericType == typeof(long?)
                     || genericType == typeof(BigInteger?)
                     || genericType == typeof(ImmutableArray<byte>?)
+                    || genericType == typeof(Guid?)
                     || genericType == typeof(Address?))
                 {
                     throw new NotSupportedException(
@@ -91,6 +96,7 @@ namespace Libplanet.Store
                     || genericType == typeof(long)
                     || genericType == typeof(BigInteger)
                     || genericType == typeof(ImmutableArray<byte>)
+                    || genericType == typeof(Guid)
                     || genericType == typeof(Address)
                     || genericType == typeof(string))
                 {
@@ -122,6 +128,7 @@ namespace Libplanet.Store
                 Type valueType = genericTypes[1];
                 if (keyType == typeof(string)
                     || keyType == typeof(ImmutableArray<byte>)
+                    || keyType == typeof(Guid)
                     || keyType == typeof(Address))
                 {
                     if (valueType.IsGenericType &&
@@ -133,6 +140,7 @@ namespace Libplanet.Store
                     }
                     else if (
                         keyType == typeof(ImmutableArray<byte>?)
+                        || keyType == typeof(Guid?)
                         || keyType == typeof(Address?))
                     {
                         throw new NotSupportedException(
@@ -143,6 +151,7 @@ namespace Libplanet.Store
                         || valueType == typeof(long?)
                         || valueType == typeof(BigInteger?)
                         || valueType == typeof(ImmutableArray<byte>?)
+                        || valueType == typeof(Guid?)
                         || valueType == typeof(Address?))
                     {
                         throw new NotSupportedException(
@@ -153,6 +162,7 @@ namespace Libplanet.Store
                         || valueType == typeof(long)
                         || valueType == typeof(BigInteger)
                         || valueType == typeof(ImmutableArray<byte>)
+                        || valueType == typeof(Guid)
                         || valueType == typeof(Address)
                         || valueType == typeof(string))
                     {

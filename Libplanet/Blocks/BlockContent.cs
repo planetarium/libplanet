@@ -44,8 +44,6 @@ namespace Libplanet.Blocks
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
-        /// from its its public key.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
@@ -81,8 +79,6 @@ namespace Libplanet.Blocks
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
-        /// from its its public key.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
@@ -118,8 +114,6 @@ namespace Libplanet.Blocks
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
-        /// from its its public key.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
@@ -150,8 +144,6 @@ namespace Libplanet.Blocks
         /// together.</para></remarks>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxPublicKeyException">Thrown when any tx signer is not derived
-        /// from its its public key.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
         /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
         /// Note that this validates only a block's intrinsic integrity between its transactions,
@@ -164,41 +156,12 @@ namespace Libplanet.Blocks
             get => _transactions;
             set
             {
-                IEnumerable<IGrouping<Address, Transaction<T>>> signerTxs =
-                    value.OrderBy(tx => tx.Nonce).GroupBy(tx => tx.Signer);
-                BlockHash? genesisHash = null;
-                foreach (IGrouping<Address, Transaction<T>> txs in signerTxs)
+                value.ValidateTxNonces(Index);
+                foreach (Transaction<T> tx in value)
                 {
-                    long lastNonce = -1L;
-                    foreach (Transaction<T> tx in txs)
-                    {
-                        // FIXME: Transaction<T> should disallow illegal states to be represented
-                        // as its instances.  https://github.com/planetarium/libplanet/issues/1164
-                        tx.Validate();
-
-                        long nonce = tx.Nonce;
-                        if (lastNonce >= 0 && lastNonce + 1 != nonce)
-                        {
-                            Address s = tx.Signer;
-                            string msg = nonce <= lastNonce
-                                ? $"The signer {s}'s nonce {nonce} was already consumed before."
-                                : $"The signer {s}'s nonce {lastNonce} has to be added first.";
-                            throw new InvalidTxNonceException(tx.Id, lastNonce + 1, tx.Nonce, msg);
-                        }
-
-                        if (genesisHash is { } g && !tx.GenesisHash.Equals(g))
-                        {
-                            throw new InvalidTxGenesisHashException(
-                                tx.Id,
-                                g,
-                                tx.GenesisHash,
-                                $"Transactions in the block #{Index} are inconsistent."
-                            );
-                        }
-
-                        lastNonce = nonce;
-                        genesisHash = tx.GenesisHash;
-                    }
+                    // FIXME: Transaction<T> should disallow illegal states to be represented
+                    // as its instances.  https://github.com/planetarium/libplanet/issues/1164
+                    tx.Validate();
                 }
 
                 _transactions = value.OrderBy(tx => tx.Id).ToImmutableArray();
