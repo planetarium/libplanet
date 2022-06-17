@@ -336,6 +336,21 @@ namespace Libplanet.Net.Consensus
             return JsonSerializer.Serialize(dict);
         }
 
+        internal TimeSpan TimeoutPropose(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreVote(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreCommit(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
+        }
+
         private async Task<Block<T>> GetValue()
         {
             Block<T> block = await _blockChain.MineBlock(
@@ -548,21 +563,6 @@ namespace Libplanet.Net.Consensus
                 await StartRound(Round + 1);
                 TimeoutOccurred?.Invoke(this, (Step, TimeoutPreCommit(round)));
             }
-        }
-
-        private TimeSpan TimeoutPropose(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
-        }
-
-        private TimeSpan TimeoutPreVote(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
-        }
-
-        private TimeSpan TimeoutPreCommit(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
         }
     }
 }
