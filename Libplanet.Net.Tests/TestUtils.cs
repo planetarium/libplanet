@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Protocols;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
 
 namespace Libplanet.Net.Tests
 {
@@ -84,6 +88,19 @@ namespace Libplanet.Net.Tests
             while (table.GetBucketIndexOf(privateKey.ToAddress()) != target);
 
             return privateKey;
+        }
+
+        public static BlockChain<DumbAction> CreateDummyBlockChain(MemoryStoreFixture fx)
+        {
+            var store = new MemoryStore();
+            var blockChain = new BlockChain<DumbAction>(
+                TestUtils.Policy,
+                new VolatileStagePolicy<DumbAction>(),
+                store,
+                new TrieStateStore(new MemoryKeyValueStore()),
+                fx.GenesisBlock);
+
+            return blockChain;
         }
     }
 }

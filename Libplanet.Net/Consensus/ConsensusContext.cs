@@ -48,6 +48,8 @@ namespace Libplanet.Net.Consensus
                 _privateKey,
                 validators);
 
+            _blockChain.TipChanged += OnBlockChainTipChanged;
+
             _logger = Log
                 .ForContext("Tag", "Consensus")
                 .ForContext("SubTag", "ConsensusContext")
@@ -75,9 +77,7 @@ namespace Libplanet.Net.Consensus
 
         public void NewHeight(long height)
         {
-            _newHeightCts?.Cancel();
-            _newHeightCts?.Dispose();
-
+            HeightContext.Dispose();
             Height = height;
 
             _logger.Debug("Start consensus for height {Height}.", Height);
@@ -95,22 +95,8 @@ namespace Libplanet.Net.Consensus
 
         public void Commit(Block<T> block)
         {
-            long heightBeforeCommit = Height;
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block);
-            HeightContext.Dispose();
-
-            _newHeightCts = new CancellationTokenSource();
-            Task.Run(
-                async () =>
-                {
-                    await Task.Delay(_newHeightDelay, _newHeightCts.Token);
-                    if (!_newHeightCts.IsCancellationRequested && Height == heightBeforeCommit)
-                    {
-                        NewHeight(Height + 1);
-                    }
-                },
-                _newHeightCts.Token);
         }
 
         public void HandleMessage(ConsensusMessage consensusMessage) =>
@@ -119,6 +105,26 @@ namespace Libplanet.Net.Consensus
         public override string ToString()
         {
             return HeightContext.ToString();
+        }
+
+        private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
+        {
+            HeightContext.Dispose();
+
+            // TODO: Should set delay by using GST.
+            _newHeightCts?.Cancel();
+            _newHeightCts?.Dispose();
+            _newHeightCts = new CancellationTokenSource();
+            Task.Run(
+                async () =>
+                {
+                    await Task.Delay(_newHeightDelay, _newHeightCts.Token);
+                    if (!_newHeightCts.IsCancellationRequested)
+                    {
+                        NewHeight(e.NewTip.Index + 1);
+                    }
+                },
+                _newHeightCts.Token);
         }
     }
 }
