@@ -427,6 +427,14 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
+            if (message.Round < Round)
+            {
+                throw new InvalidRoundMessageException(
+                    $"{nameof(AddMessage)}: Round of message is lower than working round. " +
+                    $"$(expected: {message.Round},  actual: {message.Height}",
+                    message);
+            }
+
             if (!_messagesInRound.ContainsKey(message.Round))
             {
                 _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
