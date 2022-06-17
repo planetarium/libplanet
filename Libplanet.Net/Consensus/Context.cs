@@ -534,9 +534,9 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPropose has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
+                TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
                 BroadcastMessage(
                     new ConsensusVote(Voting(Height, Round, null, VoteFlag.Absent)));
-                TimeoutOccurred?.Invoke(this, (Step, TimeoutPropose(round)));
                 SetStep(Step.PreVote);
             }
         }
@@ -551,9 +551,9 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPreVote has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
+                TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Height, Round, null, VoteFlag.Commit)));
-                TimeoutOccurred?.Invoke(this, (Step, TimeoutPreVote(round)));
                 SetStep(Step.PreCommit);
             }
         }
@@ -568,8 +568,8 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
-                await StartRound(Round + 1);
-                TimeoutOccurred?.Invoke(this, (Step, TimeoutPreCommit(round)));
+                TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
+                _ = StartRound(Round + 1);
             }
         }
     }

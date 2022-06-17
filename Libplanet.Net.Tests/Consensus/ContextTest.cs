@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Blocks;
@@ -10,7 +9,10 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Nito.AsyncEx;
+using Serilog;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
@@ -20,9 +22,19 @@ namespace Libplanet.Net.Tests.Consensus
         private const int Port = 17192;
         private readonly TimeSpan newHeightDelay = TimeSpan.FromSeconds(4);
         private readonly StoreFixture _fx;
+        private readonly ILogger _logger;
 
-        public ContextTest()
+        public ContextTest(ITestOutputHelper output)
         {
+            const string outputTemplate =
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                .CreateLogger()
+                .ForContext<ReactorTest>();
+
+            _logger = Log.ForContext<ContextTest>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
         }
 
@@ -341,7 +353,7 @@ namespace Libplanet.Net.Tests.Consensus
 
                 context.HandleMessage(
                     new ConsensusVote(
-                        TestUtils.CreateVote(privateKeys[0], 0, 1, 0, default, VoteFlag.Absent))
+                        TestUtils.CreateVote(privateKeys[0], 0, 1, 0, null, VoteFlag.Absent))
                     {
                         Remote = new Peer(privateKeys[0].PublicKey),
                     });
@@ -350,23 +362,30 @@ namespace Libplanet.Net.Tests.Consensus
 
                 context.HandleMessage(
                     new ConsensusVote(
-                        TestUtils.CreateVote(privateKeys[2], 2, 1, 0, default, VoteFlag.Absent))
+                        TestUtils.CreateVote(privateKeys[1], 1, 1, 0, null, VoteFlag.Absent))
+                    {
+                        Remote = new Peer(privateKeys[1].PublicKey),
+                    });
+
+                context.HandleMessage(
+                    new ConsensusVote(
+                        TestUtils.CreateVote(privateKeys[2], 2, 1, 0, null, VoteFlag.Absent))
                     {
                         Remote = new Peer(privateKeys[2].PublicKey),
                     });
 
                 context.HandleMessage(
                     new ConsensusVote(
-                        TestUtils.CreateVote(privateKeys[3], 3, 1, 0, default, VoteFlag.Absent))
+                        TestUtils.CreateVote(privateKeys[3], 3, 1, 0, null, VoteFlag.Absent))
                     {
                         Remote = new Peer(privateKeys[3].PublicKey),
                     });
 
                 roundVoteSet = context.VoteSet(0);
                 Assert.True(roundVoteSet.HasTwoThirdPrevote());
-                Assert.Equal(Step.PreCommit, context.Step);
                 Assert.Equal(1, context.Height);
                 Assert.Equal(0, context.Round);
+                Assert.Equal(Step.PreCommit, context.Step);
 
                 Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
                 Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
@@ -379,8 +398,8 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public void PreCommitNILToEndCommit()
+        [Fact(Timeout = Timeout)]
+        public async void PreCommitNILToTimeoutToPropose()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
@@ -404,33 +423,50 @@ namespace Libplanet.Net.Tests.Consensus
                     privateKeys[0],
                     validators,
                     Step.PreCommit);
+                var timeoutOccurred = new AsyncManualResetEvent();
+                context.TimeoutOccurred += (sender, tuple) =>
+                {
+                    if (tuple.Item1 == Step.PreCommit)
+                    {
+                        timeoutOccurred.Set();
+                    }
+                };
 
                 context.HandleMessage(
                     new ConsensusCommit(
-                        TestUtils.CreateVote(privateKeys[0], 0, 1, 0, default, VoteFlag.Commit))
+                        TestUtils.CreateVote(privateKeys[0], 0, 1, 0, null, VoteFlag.Commit))
                     {
                         Remote = new Peer(privateKeys[0].PublicKey),
                     });
 
                 context.HandleMessage(
                     new ConsensusCommit(
-                        TestUtils.CreateVote(privateKeys[2], 2, 1, 0, default, VoteFlag.Commit))
+                        TestUtils.CreateVote(privateKeys[1], 1, 1, 0, null, VoteFlag.Commit))
+                    {
+                        Remote = new Peer(privateKeys[1].PublicKey),
+                    });
+
+                context.HandleMessage(
+                    new ConsensusCommit(
+                        TestUtils.CreateVote(privateKeys[2], 2, 1, 0, null, VoteFlag.Commit))
                     {
                         Remote = new Peer(privateKeys[2].PublicKey),
                     });
 
                 context.HandleMessage(
                     new ConsensusVote(
-                        TestUtils.CreateVote(privateKeys[3], 3, 1, 0, default, VoteFlag.Commit))
+                        TestUtils.CreateVote(privateKeys[3], 3, 1, 0, null, VoteFlag.Commit))
                     {
                         Remote = new Peer(privateKeys[3].PublicKey),
                     });
 
+                await timeoutOccurred.WaitAsync();
+
                 var roundVoteSet = context.VoteSet(0);
                 Assert.True(roundVoteSet.HasTwoThirdCommit());
-                Assert.Equal(Step.EndCommit, context.Step);
                 Assert.Equal(1, context.Height);
-                Assert.Equal(0, context.Round);
+                Assert.Equal(1, context.Round);
+                Assert.Equal(Step.Propose, context.Step);
                 Assert.NotNull(context.VoteSet(0));
 
                 roundVoteSet = context.VoteSet(0);
@@ -446,7 +482,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact]
-        public void ProposeTimeoutToPreVote()
+        public async Task ProposeTimeoutToPreVote()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
@@ -469,11 +505,20 @@ namespace Libplanet.Net.Tests.Consensus
                     blockChain.Tip.Index + 1,
                     privateKeys[0],
                     validators);
-                var timeoutOccurred = new ManualResetEventSlim();
+                var timeoutOccurred = new AsyncManualResetEvent();
                 context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
+                var enterPreVote = new AsyncManualResetEvent();
+                context.StepChanged += (sender, tuple) =>
+                {
+                    if (tuple == Step.PreVote)
+                    {
+                        enterPreVote.Set();
+                    }
+                };
 
                 context.Start();
-                timeoutOccurred.Wait();
+                await timeoutOccurred.WaitAsync();
+                await enterPreVote.WaitAsync();
 
                 Assert.Equal(Step.PreVote, context.Step);
                 Assert.Equal(1, context.Height);

@@ -71,7 +71,7 @@ namespace Libplanet.Net.Tests
             long id = 0,
             long height = 0,
             int round = 0,
-            BlockHash hash = default,
+            BlockHash? hash = null,
             VoteFlag flag = VoteFlag.Null) =>
             new Vote(
                 height,
