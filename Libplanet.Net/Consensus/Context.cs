@@ -52,12 +52,33 @@ namespace Libplanet.Net.Consensus
             long height,
             PrivateKey privateKey,
             List<PublicKey> validators)
+            : this(
+                consensusContext,
+                blockChain,
+                id,
+                height,
+                privateKey,
+                validators,
+                Step.Default,
+                0)
+        {
+        }
+
+        internal Context(
+            ConsensusContext<T> consensusContext,
+            BlockChain<T> blockChain,
+            long id,
+            long height,
+            PrivateKey privateKey,
+            List<PublicKey> validators,
+            Step step,
+            int round = 0)
         {
             _id = id;
             _privateKey = privateKey;
             Height = height;
-            Round = 0;
-            Step = Step.Default;
+            Round = round;
+            Step = step;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;
