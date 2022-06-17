@@ -100,6 +100,10 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(Context<T>));
         }
 
+        internal event EventHandler<(Step, TimeSpan)>? TimeoutOccurred;
+
+        internal event EventHandler<int>? RoundStarted;
+
         public long Height { get; }
 
         public int Round { get; private set; }
@@ -350,6 +354,7 @@ namespace Libplanet.Net.Consensus
 
         private async Task StartRound(int round)
         {
+            RoundStarted?.Invoke(this, round);
             _logger.Debug(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,
@@ -501,6 +506,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusVote(Voting(Height, Round, null, VoteFlag.Absent)));
                 Step = Step.PreVote;
+                TimeoutOccurred?.Invoke(this, (Step, TimeoutPropose(round)));
             }
         }
 
@@ -517,6 +523,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Height, Round, null, VoteFlag.Commit)));
                 Step = Step.PreCommit;
+                TimeoutOccurred?.Invoke(this, (Step, TimeoutPreVote(round)));
             }
         }
 
@@ -531,6 +538,7 @@ namespace Libplanet.Net.Consensus
                     timeout,
                     ToString());
                 await StartRound(Round + 1);
+                TimeoutOccurred?.Invoke(this, (Step, TimeoutPreCommit(round)));
             }
         }
 
