@@ -19,8 +19,8 @@ namespace Libplanet.Net.Consensus
     {
         private ITransport _consensusTransport;
         private ILogger _logger;
-        private IImmutableSet<BoundPeer>? _validatorPeers;
-        private List<PublicKey>? _validators;
+        private IImmutableSet<BoundPeer> _validatorPeers;
+        private List<PublicKey> _validators;
         private ConsensusContext<T> _consensusContext;
         private BlockChain<T> _blockChain;
         private long _nodeId;
@@ -30,34 +30,35 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             long nodeId,
-            List<PublicKey>? validators,
-            IImmutableSet<BoundPeer>? validatorPeers,
+            List<PublicKey> validators,
+            IImmutableSet<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
             _consensusTransport = consensusTransport;
             _validators = validators;
-            _validatorPeers = validatorPeers?
-                .Where(peer => !peer.PublicKey.Equals(privateKey.PublicKey)).ToImmutableHashSet();
+            _validatorPeers = validatorPeers;
             _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
             _blockChain = blockChain;
             _nodeId = nodeId;
 
+            var peersAndValidatorsAreSame
+                = validatorPeers.Select(x => x.PublicKey).All(validators.Contains);
+            if (!peersAndValidatorsAreSame)
+            {
+                throw new ArgumentException($"{nameof(validators)} " +
+                                            $"and {nameof(validatorPeers)}" +
+                                            $"are must contain same public key.");
+            }
+
             // TODO: Height and round should be serialized.
-            if (validators != null)
-            {
-                _consensusContext = new ConsensusContext<T>(
-                    BroadcastMessage,
-                    blockChain,
-                    nodeId,
-                    blockChain.Tip.Index,
-                    privateKey,
-                    validators,
-                    newHeightDelay);
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(validators));
-            }
+            _consensusContext = new ConsensusContext<T>(
+                BroadcastMessage,
+                blockChain,
+                nodeId,
+                blockChain.Tip.Index,
+                privateKey,
+                validators,
+                newHeightDelay);
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -100,11 +101,7 @@ namespace Libplanet.Net.Consensus
 
         internal void BroadcastMessage(ConsensusMessage message)
         {
-            if (_consensusTransport.AsPeer is BoundPeer boundPeer)
-            {
-                _consensusTransport.BroadcastMessage(
-                    _validatorPeers!.Add(boundPeer), message);
-            }
+            _consensusTransport.BroadcastMessage(_validatorPeers, message);
         }
 
         private async Task ProcessMessageHandler(Message message)

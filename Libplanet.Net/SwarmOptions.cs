@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using Libplanet.Blockchain;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -49,18 +50,11 @@ namespace Libplanet.Net
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
-        /// The list of <see cref="Peer"/>s to keep in routing table permanently.
-        /// The <see cref="Peer"/>s in the list will be maintained periodically within
-        /// <see cref="StaticPeersMaintainPeriod"/>.
+        /// The list of <see cref="Peer"/>s for <see cref="ConsensusReactor{T}"/>.
+        /// It must have all validator's <see cref="Peer"/>.
         /// </summary>
-        public IImmutableSet<BoundPeer> StaticPeers { get; set; } =
+        public IImmutableSet<BoundPeer> ConsensusPeers { get; set; } =
             ImmutableHashSet<BoundPeer>.Empty;
-
-        /// <summary>
-        /// The period of <c>Task</c> maintains static peer.
-        /// </summary>
-        /// <seealso cref="StaticPeers"/>
-        public TimeSpan StaticPeersMaintainPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// The threshold for detecting branchpoint when block synchronization.
