@@ -55,6 +55,8 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(ConsensusReactor<T>));
         }
 
+        private delegate Task<bool> PingPong(BoundPeer peer);
+
         public bool Running => _consensusTransport.Running;
 
         public void Dispose()
@@ -67,6 +69,7 @@ namespace Libplanet.Net.Consensus
         {
             Task task = _consensusTransport.StartAsync(cancellationToken);
             await _consensusTransport.WaitForRunningAsync();
+            await CheckValidatorsLiveness(cancellationToken);
             _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
             await task;
         }
@@ -100,6 +103,51 @@ namespace Libplanet.Net.Consensus
                     await ReplyMessagePongAsync(message);
                     _consensusContext.HandleMessage(consensusMessage);
                     break;
+                case Ping ping:
+                    await ReplyMessagePongAsync(ping);
+                    break;
+            }
+        }
+
+        private async Task CheckValidatorsLiveness(CancellationToken ctx)
+        {
+            while (!ctx.IsCancellationRequested)
+            {
+                PingPong sendMessage = async peer =>
+                {
+                    try
+                    {
+                        Message? pong = await _consensusTransport.SendMessageAsync(
+                            peer,
+                            new Ping(),
+                            TimeSpan.FromSeconds(1),
+                            ctx);
+                        return pong is Pong;
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Debug(
+                            "{FName}: Failed. Exception => {Exception}",
+                            nameof(_consensusTransport.SendMessageAsync),
+                            e.Message);
+                        return false;
+                    }
+                };
+
+                List<Task<bool>> tasks = _validatorPeers
+                    .Select(peer => sendMessage(peer))
+                    .ToList();
+                int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
+
+                var twoThird = _validatorPeers.Count * 2.0 / 3.0;
+                _logger.Debug($"{nameof(CheckValidatorsLiveness)}:" +
+                              $" count of pong => {countOfPong}, twoThird => {twoThird}");
+                if (countOfPong > twoThird)
+                {
+                    break;
+                }
+
+                await Task.Delay(TimeSpan.FromMilliseconds(10), ctx);
             }
         }
 
