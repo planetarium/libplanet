@@ -20,10 +20,16 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `PrivateKey()` constructor had returned an invalid key 
+    less than 32 bytes. [[#1696], [#2091]]
+
 ### Dependencies
 
 ### CLI tools
 
+
+[#1696]: https://github.com/planetarium/libplanet/issues/1696
+[#2091]: https://github.com/planetarium/libplanet/pull/2091
 
 Version 0.38.0
 --------------
