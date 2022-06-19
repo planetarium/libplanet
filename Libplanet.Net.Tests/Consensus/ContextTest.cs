@@ -156,12 +156,13 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public async Task ThrowInvalidProposer()
+        [Fact(Timeout = Timeout)]
+        public async void ThrowInvalidProposer()
         {
             var (validators, privateKeys) = GetRandomValidators();
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
@@ -199,12 +200,13 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public async Task ThrowNILPropose()
+        [Fact(Timeout = Timeout)]
+        public async void ThrowNILPropose()
         {
             var (validators, privateKeys) = GetRandomValidators();
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
@@ -246,13 +248,14 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public async Task ThrowLowerRoundVotes()
+        [Fact(Timeout = Timeout)]
+        public async void ThrowLowerRoundVotes()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
@@ -273,11 +276,11 @@ namespace Libplanet.Net.Tests.Consensus
                     validators,
                     Step.PreVote,
                     1);
-                var block = await blockChain.MineBlock(privateKeys[0], append: false);
+                var block = await blockChain.MineBlock(privateKeys[1], append: false);
 
                 context.HandleMessage(
                     new ConsensusPropose(
-                        1,
+                        2,
                         1,
                         1,
                         block.Hash,
@@ -291,27 +294,28 @@ namespace Libplanet.Net.Tests.Consensus
                     () => context.HandleMessage(
                         new ConsensusVote(
                             TestUtils.CreateVote(
-                                privateKeys[0], 1, 1, 0, block.Hash, VoteFlag.Absent))
+                                privateKeys[1], 2, 1, 0, block.Hash, VoteFlag.Absent))
                         {
                             Remote = new Peer(privateKeys[1].PublicKey),
                         }));
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public async Task ThrowDifferentHeight()
+        [Fact(Timeout = Timeout)]
+        public async void ThrowDifferentHeight()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     newHeightDelay,
-                    0,
+                    1,
                     port: Port,
-                    privateKey: privateKeys[0],
+                    privateKey: privateKeys[1],
                     validators: validators);
 
             using (transport)
@@ -319,51 +323,54 @@ namespace Libplanet.Net.Tests.Consensus
                 var context = new Context<DumbAction>(
                     consensusContext,
                     blockChain,
-                    0,
-                    blockChain.Tip.Index,
-                    privateKeys[0],
+                    1,
+                    blockChain.Tip.Index + 1,
+                    privateKeys[1],
                     validators);
-                var block = await blockChain.MineBlock(privateKeys[0], append: false);
+                var block = await blockChain.MineBlock(privateKeys[1], append: false);
 
                 context.Start();
                 context.HandleMessage(
                     new ConsensusPropose(
-                        0,
-                        0,
+                        1,
+                        1,
                         0,
                         block.Hash,
                         codec.Encode(block.MarshalBlock()),
                         -1)
                     {
-                        Remote = new Peer(privateKeys[0].PublicKey),
+                        Remote = new Peer(privateKeys[1].PublicKey),
                     });
 
                 Assert.Throws<InvalidHeightMessageException>(
                     () => context.HandleMessage(
                         new ConsensusPropose(
-                            1,
-                            1,
+                            2,
+                            2,
                             0,
                             block.Hash,
                             codec.Encode(block.MarshalBlock()),
-                            -1)));
+                            -1)
+                        {
+                            Remote = new Peer(privateKeys[2].PublicKey),
+                        }));
 
                 Assert.Throws<InvalidHeightMessageException>(
                     () => context.HandleMessage(
                         new ConsensusVote(
                             TestUtils.CreateVote(
-                                privateKeys[0], 1, 1, 0, block.Hash, VoteFlag.Absent))
+                                privateKeys[2], 2, 2, 0, block.Hash, VoteFlag.Absent))
                         {
-                            Remote = new Peer(privateKeys[1].PublicKey),
+                            Remote = new Peer(privateKeys[2].PublicKey),
                         }));
 
                 Assert.Throws<InvalidHeightMessageException>(
                     () => context.HandleMessage(
                         new ConsensusCommit(
                             TestUtils.CreateVote(
-                                privateKeys[0], 1, 1, 0, block.Hash, VoteFlag.Absent))
+                                privateKeys[2], 2, 2, 0, block.Hash, VoteFlag.Absent))
                         {
-                            Remote = new Peer(privateKeys[1].PublicKey),
+                            Remote = new Peer(privateKeys[2].PublicKey),
                         }));
             }
         }
@@ -373,7 +380,8 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var (validators, privateKeys) = GetRandomValidators();
 
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var voteSent = false;
             var messageReceived = new ManualResetEventSlim();
             void IsPreCommitSent(ConsensusMessage message)
@@ -460,7 +468,8 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var (validators, privateKeys) = GetRandomValidators();
 
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
@@ -538,12 +547,13 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact]
-        public async Task ProposeTimeoutToPreVote()
+        [Fact(Timeout = Timeout)]
+        public async void ProposeTimeoutToPreVote()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var voteSent = false;
             var messageReceived = new ManualResetEventSlim();
 
@@ -598,13 +608,14 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        [Fact(Timeout=Timeout)]
-        public async Task PreVoteBlockToPreCommit()
+        [Fact(Timeout = Timeout)]
+        public async void PreVoteBlockToPreCommit()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var voteSent = false;
             var messageReceived = new ManualResetEventSlim();
 
@@ -700,12 +711,13 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreCommitBlockToEndCommit()
+        public async void PreCommitBlockToEndCommit()
         {
             var (validators, privateKeys) = GetRandomValidators();
 
             var codec = new Codec();
-            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var (transport, consensusContext) =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
