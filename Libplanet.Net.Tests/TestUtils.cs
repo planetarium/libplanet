@@ -124,11 +124,13 @@ namespace Libplanet.Net.Tests
                 Array.Empty<IceServer>(),
                 null);
 
-        public static (ITransport, ConsensusContext<DumbAction>)
+        public static ConsensusContext<DumbAction>
             CreateStandaloneConsensusContext(
             BlockChain<DumbAction> blockChain,
+            ITransport transport,
             TimeSpan newHeightDelay,
             long nodeId = 0,
+            long height = 0,
             string host = "localhost",
             int port = 18192,
             PrivateKey? privateKey = null,
@@ -154,8 +156,6 @@ namespace Libplanet.Net.Tests
                         privateKey.PublicKey, new DnsEndPoint("localhost", port + i)));
             }
 
-            var transport = CreateNetMQTransport(privateKey, host, port);
-
             void BroadcastMessage(ConsensusMessage message) =>
                 transport.BroadcastMessage(validatorPeers, message);
 
@@ -163,6 +163,7 @@ namespace Libplanet.Net.Tests
                 BroadcastMessage,
                 blockChain,
                 nodeId,
+                height,
                 privateKey,
                 validators,
                 newHeightDelay: newHeightDelay);
@@ -181,7 +182,7 @@ namespace Libplanet.Net.Tests
 
             transport.ProcessMessageHandler.Register(DummyHandle);
 
-            return (transport, consensusContext);
+            return consensusContext;
         }
     }
 }
