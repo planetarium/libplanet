@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using Bencodex;
 using Bencodex.Types;
@@ -169,10 +170,17 @@ namespace Libplanet.Consensus
         public Vote RemoveSignature =>
             new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, NodeId, null);
 
-        public Vote Sign(PrivateKey privateKey)
+        /// <summary>
+        /// Sign a <see cref="Vote"/> using the given private key.
+        /// </summary>
+        /// <param name="signer">A private key to sign the claim.</param>
+        /// <returns>A signed vote claim.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="signer"/> is
+        /// <c>null</c>.</exception>
+        public Vote Sign(PrivateKey signer)
         {
             Vote voteWithoutSign = RemoveSignature;
-            byte[] sign = privateKey.Sign(voteWithoutSign.ByteArray);
+            byte[] sign = signer.Sign(voteWithoutSign.ByteArray);
             return new Vote(
                 Height,
                 Round,
@@ -183,6 +191,18 @@ namespace Libplanet.Consensus
                 NodeId,
                 sign.ToImmutableArray());
         }
+
+        /// <summary>
+        /// Verifies whether the claim is certainly signed by the <see cref="Validator"/>.
+        /// </summary>
+        /// <param name="publicKey">A public key of the <see cref="Validator"/>.</param>
+        /// <returns><c>true</c> if and only if the given <paramref name="publicKey"/> is
+        /// <see cref="Validator"/>'s and the <see cref="Signature"/> is certainly signed by
+        /// the <see cref="Validator"/>.</returns>
+        [Pure]
+        public bool Verify(PublicKey publicKey) =>
+            Validator.Equals(publicKey) &&
+            publicKey.Verify(RemoveSignature.ByteArray.ToImmutableArray(), Signature!);
 
         public bool Equals(Vote other)
         {

@@ -98,11 +98,14 @@ namespace Libplanet.Consensus
                 return false;
             }
 
-            Vote voteWithoutSign = vote.RemoveSignature;
-            if (!vote.Validator.Verify(
-                voteWithoutSign.ByteArray.ToImmutableArray(),
-                vote.Signature))
+            if (!vote.Verify(vote.Validator))
             {
+                return false;
+            }
+
+            if (!ValidatorSet.Contains(vote.Validator))
+            {
+                // The voter is not a validator.
                 return false;
             }
 
@@ -113,12 +116,6 @@ namespace Libplanet.Consensus
 
             if (vote.Round != Round)
             {
-                return false;
-            }
-
-            if (!ValidatorSet.Contains(vote.Validator))
-            {
-                // The voter is not a validator.
                 return false;
             }
 
