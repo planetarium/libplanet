@@ -52,12 +52,33 @@ namespace Libplanet.Net.Consensus
             long height,
             PrivateKey privateKey,
             List<PublicKey> validators)
+            : this(
+                consensusContext,
+                blockChain,
+                id,
+                height,
+                privateKey,
+                validators,
+                Step.Default,
+                0)
+        {
+        }
+
+        internal Context(
+            ConsensusContext<T> consensusContext,
+            BlockChain<T> blockChain,
+            long id,
+            long height,
+            PrivateKey privateKey,
+            List<PublicKey> validators,
+            Step step,
+            int round = 0)
         {
             _id = id;
             _privateKey = privateKey;
             Height = height;
-            Round = 0;
-            Step = Step.Default;
+            Round = round;
+            Step = step;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;
@@ -78,6 +99,12 @@ namespace Libplanet.Net.Consensus
                 .ForContext<Context<T>>()
                 .ForContext("Source", nameof(Context<T>));
         }
+
+        internal event EventHandler<(Step, TimeSpan)>? TimeoutOccurred;
+
+        internal event EventHandler<Step>? StepChanged;
+
+        internal event EventHandler<int>? RoundStarted;
 
         public long Height { get; }
 
@@ -156,7 +183,7 @@ namespace Libplanet.Net.Consensus
                     "Entering PreVote step due to proposal message with " +
                     "valid round -1. (context: {Context})",
                     ToString());
-                Step = Step.PreVote;
+                SetStep(Step.PreVote);
 
                 if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
                 {
@@ -182,7 +209,7 @@ namespace Libplanet.Net.Consensus
                     "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
                     validRound2,
                     ToString());
-                Step = Step.PreVote;
+                SetStep(Step.PreVote);
 
                 if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
                 {
@@ -228,7 +255,7 @@ namespace Libplanet.Net.Consensus
                         "2/3+ PreVote for current round {Round}. (context: {Context})",
                         Round,
                         ToString());
-                    Step = Step.PreCommit;
+                    SetStep(Step.PreCommit);
                     _lockedValue = block3;
                     _lockedRound = Round;
                     BroadcastMessage(
@@ -246,7 +273,7 @@ namespace Libplanet.Net.Consensus
                     "(context: {Context})",
                     Round,
                     ToString());
-                Step = Step.PreCommit;
+                SetStep(Step.PreCommit);
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Height, Round, null, VoteFlag.Commit)));
             }
@@ -270,7 +297,7 @@ namespace Libplanet.Net.Consensus
                     Step != Step.EndCommit &&
                     IsValid(block4))
                 {
-                    Step = Step.EndCommit;
+                    SetStep(Step.EndCommit);
                     _logger.Debug(
                         "Committed block in round {Round}. (context: {Context})",
                         Round,
@@ -311,6 +338,21 @@ namespace Libplanet.Net.Consensus
             return JsonSerializer.Serialize(dict);
         }
 
+        internal TimeSpan TimeoutPropose(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreVote(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreCommit(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
+        }
+
         private async Task<Block<T>> GetValue()
         {
             Block<T> block = await _blockChain.MineBlock(
@@ -329,13 +371,14 @@ namespace Libplanet.Net.Consensus
 
         private async Task StartRound(int round)
         {
+            RoundStarted?.Invoke(this, round);
             _logger.Debug(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,
                 Round,
                 ToString());
             Round = round;
-            Step = Step.Propose;
+            SetStep(Step.Propose);
             if (Proposer(Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
@@ -401,6 +444,14 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
+            if (message.Round < Round)
+            {
+                throw new InvalidRoundMessageException(
+                    $"{nameof(AddMessage)}: Round of message is lower than working round. " +
+                    $"$(expected: {message.Round},  actual: {message.Height}",
+                    message);
+            }
+
             if (!_messagesInRound.ContainsKey(message.Round))
             {
                 _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
@@ -410,18 +461,13 @@ namespace Libplanet.Net.Consensus
             _messagesInRound[message.Round].Add(message);
         }
 
-        private void BroadcastMessage(ConsensusMessage message)
-        {
+        private void BroadcastMessage(ConsensusMessage message) =>
             ConsensusContext.BroadcastMessage(message);
-        }
 
         private bool IsValid(Block<T> block)
         {
-            /*
-            var exception = _blockChain.ValidateNextBlock(block)
-            return exception is null
-            */
-            return true;
+            var exception = _blockChain.ValidateNextBlock(block);
+            return exception is null;
         }
 
         private Vote Voting(long height, int round, BlockHash? hash, VoteFlag flag)
@@ -430,11 +476,17 @@ namespace Libplanet.Net.Consensus
                 height,
                 round,
                 hash,
-                DateTimeOffset.Now,
+                DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
                 flag,
                 _id,
                 null).Sign(_privateKey);
+        }
+
+        private void SetStep(Step step)
+        {
+            Step = step;
+            StepChanged?.Invoke(this, step);
         }
 
         // Predicates
@@ -482,9 +534,10 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPropose has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
+                TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
                 BroadcastMessage(
                     new ConsensusVote(Voting(Height, Round, null, VoteFlag.Absent)));
-                Step = Step.PreVote;
+                SetStep(Step.PreVote);
             }
         }
 
@@ -498,9 +551,10 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPreVote has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
+                TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Height, Round, null, VoteFlag.Commit)));
-                Step = Step.PreCommit;
+                SetStep(Step.PreCommit);
             }
         }
 
@@ -514,23 +568,9 @@ namespace Libplanet.Net.Consensus
                     "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                     timeout,
                     ToString());
-                await StartRound(Round + 1);
+                TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
+                _ = StartRound(Round + 1);
             }
-        }
-
-        private TimeSpan TimeoutPropose(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
-        }
-
-        private TimeSpan TimeoutPreVote(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
-        }
-
-        private TimeSpan TimeoutPreCommit(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
         }
     }
 }
