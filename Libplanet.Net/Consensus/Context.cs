@@ -158,7 +158,7 @@ namespace Libplanet.Net.Consensus
             }
             catch (Exception e)
             {
-                _logger.Error(e, "AddMessageException: {E}", e);
+                _logger.Error(e, "An error occurred during adding message. {E}", e);
                 throw;
             }
 
@@ -444,12 +444,22 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (message.Round < Round)
+            if (message is ConsensusVote vote &&
+                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
+                 !_validators.Contains(vote.ProposeVote.Validator)))
             {
-                throw new InvalidRoundMessageException(
-                    $"{nameof(AddMessage)}: Round of message is lower than working round. " +
-                    $"$(expected: {message.Round},  actual: {message.Height}",
-                    message);
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusVote message is made by invalid validator.",
+                    vote);
+            }
+
+            if (message is ConsensusCommit commit &&
+                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
+                 !_validators.Contains(commit.CommitVote.Validator)))
+            {
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusCommit message is made by invalid validator.",
+                    commit);
             }
 
             if (!_messagesInRound.ContainsKey(message.Round))
