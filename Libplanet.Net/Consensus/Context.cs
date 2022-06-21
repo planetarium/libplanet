@@ -116,9 +116,16 @@ namespace Libplanet.Net.Consensus
 
         private int TotalValidators => _validators.Count;
 
-        public void Start()
+        public async Task StartAsync()
         {
-            _ = StartRound(0);
+            await StartRound(0);
+            if (Proposer(0) != _privateKey.PublicKey &&
+                _messagesInRound.ContainsKey(0) &&
+                _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
+                    ConsensusPropose propose)
+            {
+                DoHandleMessage(propose);
+            }
         }
 
         public void Dispose()
@@ -162,11 +169,16 @@ namespace Libplanet.Net.Consensus
                 throw;
             }
 
+            DoHandleMessage(message);
+        }
+
+        public void DoHandleMessage(ConsensusMessage message)
+        {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
                 "Height: {Height}, Round: {Round}, NodeId: {NodeId}. " +
                 "MessageCount: {Count}. (context: {Context})",
-                nameof(HandleMessage),
+                nameof(DoHandleMessage),
                 message,
                 message.Height,
                 message.Round,

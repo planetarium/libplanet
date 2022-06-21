@@ -90,7 +90,7 @@ namespace Libplanet.Net.Tests.Consensus
                     privateKey.PublicKey,
                 });
 
-            context.Start();
+            await context.StartAsync();
             messageReceived.Wait();
 
             Assert.Equal(Step.Propose, context.Step);
@@ -145,7 +145,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.Start();
+            await context.StartAsync();
             context.HandleMessage(
                 new ConsensusPropose(
                     1,
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.Start();
+            await context.StartAsync();
             Assert.Throws<InvalidBlockProposeMessageException>(
                 () =>
                     context.HandleMessage(
@@ -237,7 +237,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.Start();
+            await context.StartAsync();
             Assert.Throws<InvalidProposerProposeMessageException>(
                 () =>
                     context.HandleMessage(
@@ -285,7 +285,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.Start();
+            await context.StartAsync();
             // Vote's validator does not match with remote
             Assert.Throws<InvalidValidatorVoteMessageException>(
                 () =>
@@ -388,7 +388,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[1], append: false);
 
-            context.Start();
+            await context.StartAsync();
             context.HandleMessage(
                 new ConsensusPropose(
                     1,
@@ -664,7 +664,7 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            context.Start();
+            await context.StartAsync();
             await timeoutOccurred.WaitAsync();
             await enterPreVote.WaitAsync();
             messageReceived.Wait();
@@ -721,7 +721,7 @@ namespace Libplanet.Net.Tests.Consensus
                 validators);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.Start();
+            await context.StartAsync();
             context.HandleMessage(
                 new ConsensusPropose(
                     0,

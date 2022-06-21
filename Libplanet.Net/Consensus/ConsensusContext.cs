@@ -102,7 +102,7 @@ namespace Libplanet.Net.Consensus
                     _validators);
             }
 
-            _contexts[height].Start();
+            _ = _contexts[height].StartAsync();
         }
 
         public void Commit(Block<T> block)
