@@ -62,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cocona.Lite" Version="1.6.*" />
+    <PackageReference Include="Cocona.Lite" Version="2.0.*" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
