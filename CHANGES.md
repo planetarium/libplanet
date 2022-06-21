@@ -24,6 +24,12 @@ To be released.
 
 ### CLI tools
 
+ - (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.6.\* to
+    [2.0.\*][Cocona.Lite 2.0.0].  [[#2101]]
+
+[#2101]: https://github.com/planetarium/libplanet/pull/2101
+[Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
+
 
 Version 0.38.0
 --------------

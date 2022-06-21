@@ -20,7 +20,7 @@ namespace Libplanet.Tools
             "cli.json");
 
         public static Task Main(string[] args) =>
-            CoconaLiteApp.Create()
+            CoconaLiteApp.CreateHostBuilder()
                 .ConfigureServices(services =>
                 {
                     services.AddJsonConfigurationService(FileConfigurationServiceRoot);
