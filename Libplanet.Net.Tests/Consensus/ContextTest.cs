@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus
                     {
                         privateKey.PublicKey,
                     },
-                    interceptConsensusMessage: IsProposeSent);
+                    watchConsensusMessage: IsProposeSent);
 
             _ = transport.StartAsync();
             await transport.WaitForRunningAsync();
@@ -131,7 +131,7 @@ namespace Libplanet.Net.Tests.Consensus
                     port: Port + 5,
                     privateKey: privateKeys[0],
                     validators: validators,
-                    interceptConsensusMessage: IsPreVoteSent);
+                    watchConsensusMessage: IsPreVoteSent);
 
             _ = transport.StartAsync();
             await transport.WaitForRunningAsync();
@@ -463,7 +463,7 @@ namespace Libplanet.Net.Tests.Consensus
                     port: Port + 4,
                     privateKey: privateKeys[0],
                     validators: validators,
-                    interceptConsensusMessage: IsPreCommitSent);
+                    watchConsensusMessage: IsPreCommitSent);
 
             _ = transport.StartAsync();
             await transport.WaitForRunningAsync();
@@ -641,7 +641,7 @@ namespace Libplanet.Net.Tests.Consensus
                     port: Port + 6,
                     privateKey: privateKeys[0],
                     validators: validators,
-                    interceptConsensusMessage: IsPreVoteSent);
+                    watchConsensusMessage: IsPreVoteSent);
 
             _ = transport.StartAsync();
             await transport.WaitForRunningAsync();
@@ -707,7 +707,7 @@ namespace Libplanet.Net.Tests.Consensus
                     port: Port + 3,
                     privateKey: privateKeys[0],
                     validators: validators,
-                    interceptConsensusMessage: IsPreCommitSent);
+                    watchConsensusMessage: IsPreCommitSent);
 
             _ = transport.StartAsync();
             await transport.WaitForRunningAsync();
