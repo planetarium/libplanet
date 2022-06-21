@@ -456,8 +456,10 @@ namespace Libplanet.Net.Consensus
                     throw new InvalidProposerProposeMessageException(
                         "Proposer for the height " +
                         $"{message.Height} and round {message.Round} is invalid.  " +
-                        $"(expected: {Proposer(message.Round)}, " +
-                        $"actual: {propose.Remote!.PublicKey})",
+                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
+                        $"Proposer: {message.Remote!.PublicKey} / " +
+                        $"actual: Height: {Height}, Round: {Round}, " +
+                        $"Proposer: {Proposer(message.Round)})",
                         message);
                 }
 
