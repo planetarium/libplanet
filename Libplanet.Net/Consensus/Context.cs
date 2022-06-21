@@ -173,6 +173,11 @@ namespace Libplanet.Net.Consensus
                 message.NodeId,
                 _messagesInRound[Round].Count,
                 ToString());
+            if (Step == Step.Default || Step == Step.EndCommit)
+            {
+                _logger.Debug("Operation will not run in {State} state.", Step.ToString());
+                return;
+            }
 
             if (GetPropose(Round) is
                     (Block<T> block1, int validRound1) &&
@@ -495,6 +500,11 @@ namespace Libplanet.Net.Consensus
 
         private void SetStep(Step step)
         {
+            _logger.Debug(
+                "Translate step from {Before} to {After}. {Info}",
+                Step.ToString(),
+                step.ToString(),
+                ToString());
             Step = step;
             StepChanged?.Invoke(this, step);
         }
@@ -572,7 +582,7 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreCommit(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round)
+            if (height == Height && round == Round && Step < Step.EndCommit)
             {
                 _logger.Debug(
                     "TimeoutPreCommit has occurred in {Timeout}. {Info}",
