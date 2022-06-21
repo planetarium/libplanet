@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -102,6 +102,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0, context.Round);
             Assert.Throws<KeyNotFoundException>(() => context.VoteSet(0));
             Assert.True(proposeSent);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -167,6 +175,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.True(voteSent);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -526,6 +542,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Null(roundVoteSet.Votes[2].BlockHash);
             Assert.Null(roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -611,6 +635,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Null(roundVoteSet.Votes[2].BlockHash);
             Assert.Null(roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -676,6 +708,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.True(voteSent);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -781,6 +821,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(0, json["locked_round"].GetInt64());
+            Assert.Equal(block.Hash.ToString(), json["locked_value"].GetString());
+            Assert.Equal(0, json["valid_round"].GetInt64());
+            Assert.Equal(block.Hash.ToString(), json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -878,7 +926,15 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(roundVoteSet.Votes[0].BlockHash);
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Null(roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -972,7 +1028,15 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[0].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1080,7 +1144,15 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[0].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(1, json["locked_round"].GetInt64());
+            Assert.Equal(block.Hash.ToString(), json["locked_value"].GetString());
+            Assert.Equal(1, json["valid_round"].GetInt64());
+            Assert.Equal(block.Hash.ToString(), json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1188,7 +1260,15 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(roundVoteSet.Votes[0].BlockHash);
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Null(roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1289,7 +1369,15 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[0].BlockHash);
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1377,6 +1465,14 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
             Assert.True(blockChain.ContainsBlock(block.Hash));
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1465,8 +1561,16 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[0].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
             Assert.True(blockChain.ContainsBlock(block.Hash));
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1558,8 +1662,16 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Null(roundVoteSet.Votes[0].BlockHash);
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Null(roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
             Assert.False(blockChain.ContainsBlock(block.Hash));
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         [Fact(Timeout = Timeout)]
@@ -1643,8 +1755,16 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(block.Hash, roundVoteSet.Votes[0].BlockHash);
             Assert.Null(roundVoteSet.Votes[1].BlockHash);
             Assert.Equal(block.Hash, roundVoteSet.Votes[2].BlockHash);
-            Assert.Null(roundVoteSet.Votes[3].BlockHash);
+            Assert.Equal(block.Hash, roundVoteSet.Votes[3].BlockHash);
             Assert.False(blockChain.ContainsBlock(block.Hash));
+
+            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                context.ToString());
+
+            Assert.Equal(-1, json["locked_round"].GetInt64());
+            Assert.Equal(string.Empty, json["locked_value"].GetString());
+            Assert.Equal(-1, json["valid_round"].GetInt64());
+            Assert.Equal(string.Empty, json["valid_value"].GetString());
         }
 
         private static (List<PublicKey>, List<PrivateKey>) GetRandomValidators(
