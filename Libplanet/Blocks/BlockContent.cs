@@ -233,6 +233,14 @@ namespace Libplanet.Blocks
                 MineNonce(hashAlgorithm, cancellationToken)
             );
 
+        public PreEvaluationBlock<T> Propose(
+            HashAlgorithmType hashAlgorithm,
+            ImmutableArray<byte> preEvaluationHash) =>
+            new PreEvaluationBlock<T>(
+                this,
+                hashAlgorithm,
+                (default, preEvaluationHash));
+
         /// <summary>
         /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.
         /// </summary>
