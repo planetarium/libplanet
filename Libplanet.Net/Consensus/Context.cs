@@ -116,9 +116,16 @@ namespace Libplanet.Net.Consensus
 
         private int TotalValidators => _validators.Count;
 
-        public void Start()
+        public async Task StartAsync()
         {
-            _ = StartRound(0);
+            await StartRound(0);
+            if (Proposer(0) != _privateKey.PublicKey &&
+                _messagesInRound.ContainsKey(0) &&
+                _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
+                    ConsensusPropose propose)
+            {
+                DoHandleMessage(propose);
+            }
         }
 
         public void Dispose()
@@ -162,17 +169,27 @@ namespace Libplanet.Net.Consensus
                 throw;
             }
 
+            DoHandleMessage(message);
+        }
+
+        public void DoHandleMessage(ConsensusMessage message)
+        {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
                 "Height: {Height}, Round: {Round}, NodeId: {NodeId}. " +
                 "MessageCount: {Count}. (context: {Context})",
-                nameof(HandleMessage),
+                nameof(DoHandleMessage),
                 message,
                 message.Height,
                 message.Round,
                 message.NodeId,
                 _messagesInRound[Round].Count,
                 ToString());
+            if (Step == Step.Default || Step == Step.EndCommit)
+            {
+                _logger.Debug("Operation will not run in {State} state.", Step.ToString());
+                return;
+            }
 
             if (GetPropose(Round) is
                     (Block<T> block1, int validRound1) &&
@@ -495,6 +512,11 @@ namespace Libplanet.Net.Consensus
 
         private void SetStep(Step step)
         {
+            _logger.Debug(
+                "Translate step from {Before} to {After}. {Info}",
+                Step.ToString(),
+                step.ToString(),
+                ToString());
             Step = step;
             StepChanged?.Invoke(this, step);
         }
@@ -572,7 +594,7 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreCommit(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round)
+            if (height == Height && round == Round && Step < Step.EndCommit)
             {
                 _logger.Debug(
                     "TimeoutPreCommit has occurred in {Timeout}. {Info}",

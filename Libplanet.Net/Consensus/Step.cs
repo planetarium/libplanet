@@ -26,5 +26,10 @@ namespace Libplanet.Net.Consensus
         /// Commit end step.
         /// </summary>
         EndCommit,
+
+        /// <summary>
+        /// Only when context does not exists.
+        /// </summary>
+        Null = 0x99,
     }
 }

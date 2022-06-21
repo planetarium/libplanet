@@ -20,6 +20,7 @@ namespace Libplanet.Net.Consensus
         private readonly List<PublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
+        private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -40,14 +41,7 @@ namespace Libplanet.Net.Consensus
             Height = height;
             _newHeightDelay = newHeightDelay;
 
-            HeightContext = new Context<T>(
-                this,
-                _blockChain,
-                _nodeId,
-                Height,
-                _privateKey,
-                validators);
-
+            _contexts = new Dictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
 
             _logger = Log
@@ -63,16 +57,17 @@ namespace Libplanet.Net.Consensus
 
         public long Height { get; private set; }
 
-        public long Round => HeightContext.Round;
+        public long Round => _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
 
-        public Step Step => HeightContext.Step;
-
-        internal Context<T> HeightContext { get; private set; }
+        public Step Step => _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
 
         public void Dispose()
         {
             _newHeightCts?.Cancel();
-            HeightContext.Dispose();
+            foreach (Context<T> context in _contexts.Values)
+            {
+                context.Dispose();
+            }
         }
 
         public void NewHeight(long height)
@@ -86,20 +81,28 @@ namespace Libplanet.Net.Consensus
                     $" (expected: {_blockChain.Tip.Index + 1}, actual: {height})");
             }
 
-            HeightContext.Dispose();
+            if (_contexts.ContainsKey(Height))
+            {
+                _contexts[Height].Dispose();
+                _contexts.Remove(Height);
+            }
+
             Height = height;
 
             _logger.Debug("Start consensus for height {Height}.", Height);
 
-            HeightContext = new Context<T>(
-                this,
-                _blockChain,
-                _nodeId,
-                Height,
-                _privateKey,
-                _validators);
+            if (!_contexts.ContainsKey(height))
+            {
+                _contexts[height] = new Context<T>(
+                    this,
+                    _blockChain,
+                    _nodeId,
+                    height,
+                    _privateKey,
+                    _validators);
+            }
 
-            HeightContext.Start();
+            _ = _contexts[height].StartAsync();
         }
 
         public void Commit(Block<T> block)
@@ -108,18 +111,38 @@ namespace Libplanet.Net.Consensus
             _blockChain.Append(block);
         }
 
-        public void HandleMessage(ConsensusMessage consensusMessage) =>
-            HeightContext.HandleMessage(consensusMessage);
+        public void HandleMessage(ConsensusMessage consensusMessage)
+        {
+            long height = consensusMessage.Height;
+            if (height < Height)
+            {
+                throw new InvalidHeightMessageException(
+                    $"Received message's height {height} is lower than " +
+                    $"current context's height {Height}.",
+                    consensusMessage);
+            }
+
+            if (!_contexts.ContainsKey(height))
+            {
+                _contexts[height] = new Context<T>(
+                    this,
+                    _blockChain,
+                    _nodeId,
+                    height,
+                    _privateKey,
+                    _validators);
+            }
+
+            _contexts[height].HandleMessage(consensusMessage);
+        }
 
         public override string ToString()
         {
-            return HeightContext.ToString();
+            return _contexts.ContainsKey(Height) ? _contexts[Height].ToString() : "No context";
         }
 
         private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
-            HeightContext.Dispose();
-
             // TODO: Should set delay by using GST.
             _newHeightCts?.Cancel();
             _newHeightCts?.Dispose();
