@@ -54,7 +54,6 @@ namespace Libplanet.Net
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
         /// <param name="nodeId">(Experimental) The Id of Node.</param>
-        /// <param name="validators">(Experimental) The fixed list of validator set.</param>
         /// <param name="consensusPrivateKey">(Experimental) The private key that is using
         /// for Consensus Signing.</param>
         /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
@@ -86,7 +85,6 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             long nodeId,
-            List<PublicKey> validators,
             PrivateKey consensusPrivateKey,
             int? consensusPort = null,
             int consensusWorkers = 100,
@@ -150,7 +148,6 @@ namespace Libplanet.Net
                 BlockChain,
                 consensusPrivateKey,
                 nodeId,
-                validators,
                 Options.ConsensusPeers,
                 TimeSpan.FromMilliseconds(10_000));
         }

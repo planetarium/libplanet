@@ -253,10 +253,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions,
                         nodeId: 0,
-                        validators: new List<PublicKey>()
-                        {
-                            consensusPrivateKey.PublicKey,
-                        },
                         consensusPrivateKey: consensusPrivateKey
                     );
                 }

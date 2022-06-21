@@ -52,7 +52,6 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain,
                 key,
                 id,
-                validators,
                 validatorPeers.ToImmutableHashSet(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
         }

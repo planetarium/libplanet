@@ -55,7 +55,6 @@ namespace Libplanet.Net.Tests.Transports
                 apv,
                 consensusPrivateKey: consensusKey,
                 nodeId: 0,
-                validators: validators,
                 host: host,
                 listenPort: port,
                 options: option))

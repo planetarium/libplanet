@@ -152,7 +152,6 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 appProtocolVersion ?? DefaultAppProtocolVersion,
                 nodeId,
-                validators,
                 consensusPrivateKey,
                 workers: 5,
                 host: host,

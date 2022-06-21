@@ -20,7 +20,6 @@ namespace Libplanet.Net.Consensus
         private ITransport _consensusTransport;
         private ILogger _logger;
         private IImmutableSet<BoundPeer> _validatorPeers;
-        private List<PublicKey> _validators;
         private ConsensusContext<T> _consensusContext;
         private BlockChain<T> _blockChain;
         private long _nodeId;
@@ -30,25 +29,14 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             long nodeId,
-            List<PublicKey> validators,
             IImmutableSet<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
             _consensusTransport = consensusTransport;
-            _validators = validators;
             _validatorPeers = validatorPeers;
             _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
             _blockChain = blockChain;
             _nodeId = nodeId;
-
-            var peersAndValidatorsAreSame
-                = validatorPeers.Select(x => x.PublicKey).All(validators.Contains);
-            if (!peersAndValidatorsAreSame)
-            {
-                throw new ArgumentException($"{nameof(validators)} " +
-                                            $"and {nameof(validatorPeers)}" +
-                                            $"are must contain same public key.");
-            }
 
             // TODO: Height and round should be serialized.
             _consensusContext = new ConsensusContext<T>(
@@ -57,7 +45,7 @@ namespace Libplanet.Net.Consensus
                 nodeId,
                 blockChain.Tip.Index,
                 privateKey,
-                validators,
+                validatorPeers.Select(x => x.PublicKey).ToList(),
                 newHeightDelay);
 
             _logger = Log
