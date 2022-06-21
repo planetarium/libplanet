@@ -53,8 +53,8 @@ namespace Libplanet.Net
         /// The list of <see cref="Peer"/>s for <see cref="ConsensusReactor{T}"/>.
         /// It must have all validator's <see cref="Peer"/>.
         /// </summary>
-        public IImmutableSet<BoundPeer> ConsensusPeers { get; set; } =
-            ImmutableHashSet<BoundPeer>.Empty;
+        public ImmutableList<BoundPeer> ConsensusPeers { get; set; } =
+            ImmutableList<BoundPeer>.Empty;
 
         /// <summary>
         /// The threshold for detecting branchpoint when block synchronization.

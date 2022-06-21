@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
     {
         private ITransport _consensusTransport;
         private ILogger _logger;
-        private IImmutableSet<BoundPeer> _validatorPeers;
+        private IImmutableList<BoundPeer> _validatorPeers;
         private ConsensusContext<T> _consensusContext;
         private BlockChain<T> _blockChain;
         private long _nodeId;
@@ -29,7 +29,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             long nodeId,
-            IImmutableSet<BoundPeer> validatorPeers,
+            ImmutableList<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
             _consensusTransport = consensusTransport;
