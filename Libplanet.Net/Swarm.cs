@@ -59,10 +59,6 @@ namespace Libplanet.Net
         /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
         /// <param name="consensusWorkers">(Experimental) The number of background workers for
         /// Consensus transport.</param>
-        /// <param name="consensusTableSize">(Experimental) The Table size of Routing table for
-        /// ConsensusReactor.</param>
-        /// <param name="consensusTableBucket">(Experimental) The Bucket size of Routing table
-        /// for ConsensusReactor.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -88,8 +84,6 @@ namespace Libplanet.Net
             PrivateKey consensusPrivateKey,
             int? consensusPort = null,
             int consensusWorkers = 100,
-            int consensusTableSize = 1,
-            int consensusTableBucket = 1000,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -138,9 +132,6 @@ namespace Libplanet.Net
                 consensusPort,
                 iceServers,
                 differentAppProtocolVersionEncountered);
-
-            ConsensusRoutingTable = new RoutingTable(
-                privateKey.ToAddress(), consensusTableSize, consensusTableBucket);
 
             // FIXME: newHeightDelay should be configurable
             _consensusReactor = new ConsensusReactor<T>(
@@ -237,8 +228,6 @@ namespace Libplanet.Net
         public AppProtocolVersion AppProtocolVersion => _appProtocolVersion;
 
         internal RoutingTable RoutingTable { get; }
-
-        internal RoutingTable ConsensusRoutingTable { get; }
 
         internal IProtocol PeerDiscovery { get; }
 
