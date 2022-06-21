@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus
             var context = new Context<DumbAction>(
                 consensusContext,
                 blockChain,
-                0,
+                1,
                 blockChain.Tip.Index + 1,
                 privateKey,
                 new List<PublicKey>()
