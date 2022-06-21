@@ -50,7 +50,7 @@ namespace Libplanet.Net.Tests
             blockAction: new MinerReward(1),
             getMaxBlockBytes: _ => 50 * 1024);
 
-        public delegate void InterceptConsensusMessage(ConsensusMessage message);
+        public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 
         public static Vote CreateVote(
             PublicKey publicKey,
@@ -135,7 +135,7 @@ namespace Libplanet.Net.Tests
             int port = 18192,
             PrivateKey? privateKey = null,
             List<PublicKey>? validators = null,
-            InterceptConsensusMessage? interceptConsensusMessage = null)
+            DelegateWatchConsensusMessage? watchConsensusMessage = null)
         {
             privateKey ??= new PrivateKey();
             var validatorPeers = new List<BoundPeer>()
@@ -175,7 +175,7 @@ namespace Libplanet.Net.Tests
                     case ConsensusMessage consensusMessage:
                         await transport!.ReplyMessageAsync(message, default);
                         consensusContext!.HandleMessage(consensusMessage);
-                        interceptConsensusMessage?.Invoke(consensusMessage);
+                        watchConsensusMessage?.Invoke(consensusMessage);
                         break;
                 }
             }
