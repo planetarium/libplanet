@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             var privateKey = new PrivateKey();
-            var proposeSent = false;
+            bool proposeSent = false;
             var messageReceived = new AsyncManualResetEvent();
             var roundStarted = new AsyncManualResetEvent();
             using ITransport transport =
@@ -113,7 +113,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             using ITransport transport =
                 TestUtils.CreateNetMQTransport(privateKeys[0], port: Port + 2);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new AsyncManualResetEvent();
 
             void IsPreVoteSent(ConsensusMessage message)
@@ -265,7 +265,6 @@ namespace Libplanet.Net.Tests.Consensus
         public async void ThrowInvalidValidatorVote()
         {
             var (validators, privateKeys) = GetRandomValidators();
-            var codec = new Codec();
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             using ITransport transport =
@@ -446,7 +445,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.CreateNetMQTransport(privateKeys[0], port: Port + 7);
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new ManualResetEventSlim();
             void IsPreCommitSent(ConsensusMessage message)
             {
@@ -623,7 +622,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.CreateNetMQTransport(privateKeys[0], port: Port + 9);
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new AsyncManualResetEvent();
 
             void IsPreVoteSent(ConsensusMessage message)
@@ -689,7 +688,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new ManualResetEventSlim();
 
             void IsPreCommitSent(ConsensusMessage message)
@@ -986,7 +985,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new ManualResetEventSlim();
 
             void IsPreCommitSent(ConsensusMessage message)
@@ -1094,7 +1093,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new ManualResetEventSlim();
 
             void IsPreCommitSent(ConsensusMessage message)
@@ -1202,7 +1201,7 @@ namespace Libplanet.Net.Tests.Consensus
             var codec = new Codec();
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            var voteSent = false;
+            bool voteSent = false;
             var messageReceived = new AsyncManualResetEvent();
             var timeoutOccurred = new AsyncManualResetEvent();
 
