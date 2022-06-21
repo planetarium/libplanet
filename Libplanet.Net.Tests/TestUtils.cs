@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -123,6 +124,27 @@ namespace Libplanet.Net.Tests
                 port,
                 Array.Empty<IceServer>(),
                 null);
+
+        public static ConsensusPropose CreateConsensusPropose(
+            Block<DumbAction>? block,
+            PrivateKey privateKey,
+            long nodeId = 1,
+            long height = 1,
+            int round = 0,
+            int validRound = -1)
+        {
+            var codec = new Codec();
+            return new ConsensusPropose(
+                nodeId,
+                height,
+                round,
+                block?.Hash ?? default,
+                block is null ? Array.Empty<byte>() : codec.Encode(block.MarshalBlock()),
+                validRound)
+            {
+                Remote = new Peer(privateKey.PublicKey),
+            };
+        }
 
         public static ConsensusContext<DumbAction>
             CreateStandaloneConsensusContext(

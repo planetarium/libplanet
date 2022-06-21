@@ -146,17 +146,7 @@ namespace Libplanet.Net.Tests.Consensus
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
             await context.StartAsync();
-            context.HandleMessage(
-                new ConsensusPropose(
-                    1,
-                    1,
-                    0,
-                    block.Hash,
-                    codec.Encode(block.MarshalBlock()),
-                    -1)
-                {
-                    Remote = new Peer(privateKeys[1].PublicKey),
-                });
+            context.HandleMessage(TestUtils.CreateConsensusPropose(block, privateKeys[1]));
 
             messageReceived.Wait();
             Assert.Equal(Step.PreVote, context.Step);
@@ -197,16 +187,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Throws<InvalidBlockProposeMessageException>(
                 () =>
                     context.HandleMessage(
-                        new ConsensusPropose(
-                            0,
-                            1,
-                            0,
-                            default,
-                            codec.Encode(block.MarshalBlock()),
-                            -1)
-                        {
-                            Remote = new Peer(privateKeys[1].PublicKey),
-                        }));
+                        TestUtils.CreateConsensusPropose(default, privateKeys[1])));
         }
 
         [Fact(Timeout = Timeout)]
@@ -389,30 +370,11 @@ namespace Libplanet.Net.Tests.Consensus
             var block = await blockChain.MineBlock(privateKeys[1], append: false);
 
             await context.StartAsync();
-            context.HandleMessage(
-                new ConsensusPropose(
-                    1,
-                    1,
-                    0,
-                    block.Hash,
-                    codec.Encode(block.MarshalBlock()),
-                    -1)
-                {
-                    Remote = new Peer(privateKeys[1].PublicKey),
-                });
+            context.HandleMessage(TestUtils.CreateConsensusPropose(block, privateKeys[1]));
 
             Assert.Throws<InvalidHeightMessageException>(
                 () => context.HandleMessage(
-                    new ConsensusPropose(
-                        2,
-                        2,
-                        0,
-                        block.Hash,
-                        codec.Encode(block.MarshalBlock()),
-                        -1)
-                    {
-                        Remote = new Peer(privateKeys[2].PublicKey),
-                    }));
+                    TestUtils.CreateConsensusPropose(block, privateKeys[2], nodeId: 2, height: 2)));
 
             Assert.Throws<InvalidHeightMessageException>(
                 () => context.HandleMessage(
@@ -722,17 +684,7 @@ namespace Libplanet.Net.Tests.Consensus
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
             await context.StartAsync();
-            context.HandleMessage(
-                new ConsensusPropose(
-                    0,
-                    1,
-                    0,
-                    block.Hash,
-                    codec.Encode(block.MarshalBlock()),
-                    -1)
-                {
-                    Remote = new Peer(privateKeys[1].PublicKey),
-                });
+            context.HandleMessage(TestUtils.CreateConsensusPropose(block, privateKeys[1]));
 
             context.HandleMessage(
                 new ConsensusVote(
@@ -811,17 +763,7 @@ namespace Libplanet.Net.Tests.Consensus
                 Step.PreVote);
             var block = await blockChain.MineBlock(privateKeys[0], append: false);
 
-            context.HandleMessage(
-                new ConsensusPropose(
-                    1,
-                    1,
-                    0,
-                    block.Hash,
-                    codec.Encode(block.MarshalBlock()),
-                    -1)
-                {
-                    Remote = new Peer(privateKeys[1].PublicKey),
-                });
+            context.HandleMessage(TestUtils.CreateConsensusPropose(block, privateKeys[1]));
 
             context.HandleMessage(
                 new ConsensusCommit(
