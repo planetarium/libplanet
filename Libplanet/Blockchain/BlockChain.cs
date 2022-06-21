@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
@@ -1353,39 +1352,10 @@ namespace Libplanet.Blockchain
             }
 
             long index = this.Count;
-            long difficulty = Policy.GetNextBlockDifficulty(this);
-            BigInteger totalDifficulty = index >= 1
-                    ? this[index - 1].TotalDifficulty + block.Difficulty
-                    : block.Difficulty;
 
             Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
-
-            if (block.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"The expected index of block {block.Hash} is #{index}, " +
-                    $"but its index is #{block.Index}.");
-            }
-
-            if (block.Difficulty < difficulty)
-            {
-                return new InvalidBlockDifficultyException(
-                    $"The expected difficulty of the block #{index} {block.Hash} " +
-                    $"is {difficulty}, but its difficulty is {block.Difficulty}.");
-            }
-
-            if (block.TotalDifficulty != totalDifficulty)
-            {
-                var msg = $"The expected total difficulty of the block #{index} " +
-                          $"{block.Hash} is {totalDifficulty}, but its difficulty is " +
-                          $"{block.TotalDifficulty}.";
-                return new InvalidBlockTotalDifficultyException(
-                    block.Difficulty,
-                    block.TotalDifficulty,
-                    msg);
-            }
 
             if (!block.PreviousHash.Equals(prevHash))
             {
