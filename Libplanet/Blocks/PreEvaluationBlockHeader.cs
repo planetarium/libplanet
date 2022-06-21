@@ -183,35 +183,6 @@ namespace Libplanet.Blocks
                     $"{pubKey}.";
                 throw new InvalidBlockPublicKeyException(pubKey, msg);
             }
-            else if (!ByteUtil.Satisfies(proof.PreEvaluationHash, metadata.Difficulty))
-            {
-                throw new InvalidBlockNonceException(
-                    $"Block #{metadata.Index}'s {nameof(PreEvaluationHash)} " +
-                    $"({ByteUtil.Hex(proof.PreEvaluationHash)}) with nonce ({proof.Nonce}) does " +
-                    $"not satisfy its difficulty level {metadata.Difficulty}."
-                );
-            }
-            else if (metadata.Index == 0L && metadata.Difficulty > 0L)
-            {
-                throw new InvalidBlockDifficultyException(
-                    $"Genesis block must have zero difficulty: {metadata.Difficulty}."
-                );
-            }
-            else if (metadata.Index == 0L && metadata.TotalDifficulty > BigInteger.Zero)
-            {
-                throw new InvalidBlockTotalDifficultyException(
-                    metadata.Difficulty,
-                    metadata.TotalDifficulty,
-                    $"Genesis block's total difficulty must be zero: {metadata.TotalDifficulty}."
-                );
-            }
-            else if (metadata.Index > 0L && metadata.Difficulty < 1L)
-            {
-                throw new InvalidBlockDifficultyException(
-                    $"Block #{metadata.Index}'s difficulty must be more than zero (except for " +
-                    $"genesis block): {metadata.Difficulty}."
-                );
-            }
 
             Metadata = metadata;
             Nonce = proof.Nonce;
@@ -426,29 +397,6 @@ namespace Libplanet.Blocks
             in ImmutableArray<byte> preEvaluationHash
         )
         {
-            // Since PreEvaluationHash comparison between the actual and the expected was not
-            // implemented in ProtocolVersion == 0, we need to maintain this bug on
-            // ProtocolVersion < 1 for backward compatibility:
-            if (metadata.ProtocolVersion < 1)
-            {
-                return (nonce, preEvaluationHash);
-            }
-
-            ImmutableArray<byte> expectedPreEvaluationHash =
-                metadata.DerivePreEvaluationHash(hashAlgorithm, nonce);
-            if (!ByteUtil.TimingSafelyCompare(preEvaluationHash, expectedPreEvaluationHash))
-            {
-                string message =
-                    $"The expected pre-evaluation hash of block #{metadata.Index} is " +
-                    ByteUtil.Hex(expectedPreEvaluationHash) +
-                    $", but its pre-evaluation hash is {ByteUtil.Hex(preEvaluationHash)}.";
-                throw new InvalidBlockPreEvaluationHashException(
-                    preEvaluationHash,
-                    expectedPreEvaluationHash,
-                    message
-                );
-            }
-
             return (nonce, preEvaluationHash);
         }
     }
