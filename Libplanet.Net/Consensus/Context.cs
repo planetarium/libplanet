@@ -163,15 +163,15 @@ namespace Libplanet.Net.Consensus
             }
 
             _logger.Debug(
-                "{FName}: Height: {Height}, Round: {Round}, NodeId: {NodeId}, " +
-                "Step: {Step}, MessageCount: {Count}, Message: {Message}. (context: {Context})",
+                "{FName}: Message: {Message} => " +
+                "Height: {Height}, Round: {Round}, NodeId: {NodeId}. " +
+                "MessageCount: {Count}. (context: {Context})",
                 nameof(HandleMessage),
-                Height,
-                Round,
-                _id,
-                Step,
-                _messagesInRound[Round].Count,
                 message,
+                message.Height,
+                message.Round,
+                message.NodeId,
+                _messagesInRound[Round].Count,
                 ToString());
 
             if (GetPropose(Round) is
@@ -432,7 +432,7 @@ namespace Libplanet.Net.Consensus
                         "Proposer for the height " +
                         $"{message.Height} and round {message.Round} is invalid.  " +
                         $"(expected: {Proposer(message.Round)}, " +
-                        $"actual: {propose.Remote!.PublicKey}",
+                        $"actual: {propose.Remote!.PublicKey})",
                         message);
                 }
 
