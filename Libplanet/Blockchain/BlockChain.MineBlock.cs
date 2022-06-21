@@ -234,7 +234,7 @@ namespace Libplanet.Blockchain
         }
 
         public async Task<Block<T>> ProposeBlock(
-            PrivateKey miner,
+            PrivateKey proposer,
             DateTimeOffset? timestamp = null,
             bool? append = null,
             long? maxBlockBytes = null,
@@ -245,7 +245,7 @@ namespace Libplanet.Blockchain
             CancellationToken? cancellationToken = null) =>
 #pragma warning disable SA1118
             await ProposeBlock(
-                miner: miner,
+                proposer: proposer,
                 timestamp: timestamp ?? DateTimeOffset.UtcNow,
                 maxBlockBytes: maxBlockBytes
                                ?? Policy.GetMaxBlockBytes(Count),
@@ -259,7 +259,7 @@ namespace Libplanet.Blockchain
 #pragma warning restore SA1118
 
         public async Task<Block<T>> ProposeBlock(
-            PrivateKey miner,
+            PrivateKey proposer,
             DateTimeOffset timestamp,
             long maxBlockBytes,
             int maxTransactions,
@@ -307,7 +307,7 @@ namespace Libplanet.Blockchain
                 Index = index,
                 Difficulty = difficulty,
                 TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                PublicKey = miner.PublicKey,
+                PublicKey = proposer.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
                 LastCommit = lastCommit,
@@ -371,7 +371,7 @@ namespace Libplanet.Blockchain
             }
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
-                preEval.EvaluateActions(miner, this);
+                preEval.EvaluateActions(proposer, this);
             IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, actionEvaluations);
             UpdateTxExecutions(txExecutions);
 
