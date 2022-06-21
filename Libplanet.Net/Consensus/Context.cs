@@ -176,13 +176,14 @@ namespace Libplanet.Net.Consensus
         {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, NodeId: {NodeId}. " +
+                "Height: {Height}, Round: {Round}, NodeId: {NodeId}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
                 nameof(DoHandleMessage),
                 message,
                 message.Height,
                 message.Round,
                 message.NodeId,
+                message.BlockHash,
                 _messagesInRound[Round].Count,
                 ToString());
             if (Step == Step.Default || Step == Step.EndCommit)
@@ -372,7 +373,7 @@ namespace Libplanet.Net.Consensus
 
         private async Task<Block<T>> GetValue()
         {
-            Block<T> block = await _blockChain.MineBlock(
+            Block<T> block = await _blockChain.ProposeBlock(
                 _privateKey,
                 append: false,
                 cancellationToken: _cancellationTokenSource.Token);
@@ -412,7 +413,8 @@ namespace Libplanet.Net.Consensus
                     proposal = _validValue;
                 }
 
-                BroadcastMessage(
+                _ = SendMessageAfter(
+                    TimeSpan.FromMilliseconds(500),
                     new ConsensusPropose(
                         _id,
                         Height,
@@ -429,6 +431,12 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 _ = OnTimeoutPropose(Height, Round);
             }
+        }
+
+        private async Task SendMessageAfter(TimeSpan time, ConsensusMessage message)
+        {
+            await Task.Delay(time);
+            BroadcastMessage(message);
         }
 
         private void AddMessage(ConsensusMessage message)

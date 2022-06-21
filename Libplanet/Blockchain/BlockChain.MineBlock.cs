@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -230,6 +229,161 @@ namespace Libplanet.Blockchain
                     renderActions: true,
                     actionEvaluations: actionEvaluations);
             }
+
+            return block;
+        }
+
+        public async Task<Block<T>> ProposeBlock(
+            PrivateKey proposer,
+            DateTimeOffset? timestamp = null,
+            bool? append = null,
+            long? maxBlockBytes = null,
+            int? maxTransactions = null,
+            int? maxTransactionsPerSigner = null,
+            IComparer<Transaction<T>> txPriority = null,
+            BlockCommit? lastCommit = null,
+            CancellationToken? cancellationToken = null) =>
+#pragma warning disable SA1118
+            await ProposeBlock(
+                proposer: proposer,
+                timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                maxBlockBytes: maxBlockBytes
+                               ?? Policy.GetMaxBlockBytes(Count),
+                maxTransactions: maxTransactions
+                                 ?? Policy.GetMaxTransactionsPerBlock(Count),
+                maxTransactionsPerSigner: maxTransactionsPerSigner
+                                          ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
+                txPriority: txPriority,
+                lastCommit: lastCommit,
+                cancellationToken: cancellationToken ?? default(CancellationToken));
+#pragma warning restore SA1118
+
+        public async Task<Block<T>> ProposeBlock(
+            PrivateKey proposer,
+            DateTimeOffset timestamp,
+            long maxBlockBytes,
+            int maxTransactions,
+            int maxTransactionsPerSigner,
+            IComparer<Transaction<T>> txPriority = null,
+            BlockCommit? lastCommit = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using var cts = new CancellationTokenSource();
+            using CancellationTokenSource cancellationTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+
+            void WatchTip(object target, (Block<T> OldTip, Block<T> NewTip) tip)
+            {
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Ignore if mining was already finished.
+                }
+            }
+
+            long index = Count;
+            long difficulty = 500000;
+            BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
+
+            int sessionId = new System.Random().Next();
+            int processId = Process.GetCurrentProcess().Id;
+            _logger.Debug(
+                "{SessionId}/{ProcessId}: Starting to propose block #{Index} with " +
+                "difficulty {Difficulty} and previous hash {PreviousHash}...",
+                sessionId,
+                processId,
+                index,
+                difficulty,
+                prevHash);
+
+            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
+
+            // TODO: Should validate LastCommit somewhere?
+            var metadata = new BlockMetadata
+            {
+                Index = index,
+                Difficulty = difficulty,
+                TotalDifficulty = Tip.TotalDifficulty + difficulty,
+                PublicKey = proposer.PublicKey,
+                PreviousHash = prevHash,
+                Timestamp = timestamp,
+                LastCommit = lastCommit,
+            };
+
+            var transactionsToMine = GatherTransactionsToMine(
+                metadata,
+                maxBlockBytes: maxBlockBytes,
+                maxTransactions: maxTransactions,
+                maxTransactionsPerSigner: maxTransactionsPerSigner,
+                txPriority: txPriority
+            );
+
+            if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
+            {
+                cts.Cancel();
+                throw new OperationCanceledException(
+                    $"Mining canceled due to insufficient number of gathered transactions " +
+                    $"to mine for the requirement of {Policy.GetMinTransactionsPerBlock(index)} " +
+                    $"given by the policy: {transactionsToMine.Count}");
+            }
+
+            _logger.Verbose(
+                "{SessionId}/{ProcessId}: Propose block #{Index} will include " +
+                "{TxCount} transactions.",
+                sessionId,
+                processId,
+                index,
+                transactionsToMine.Count);
+
+            var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
+            PreEvaluationBlock<T> preEval;
+
+            TipChanged += WatchTip;
+
+            if (!(prevHash is { } ph))
+            {
+                throw new InvalidBlockPreviousHashException("Need PreviousHash.");
+            }
+
+            try
+            {
+                preEval = await Task.Run(
+                    () => blockContent.Propose(hashAlgorithm, ph.ByteArray),
+                    cancellationTokenSource.Token
+                );
+            }
+            catch (OperationCanceledException)
+            {
+                if (cts.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(
+                        "Mining canceled due to change of tip index.");
+                }
+
+                throw new OperationCanceledException(cancellationToken);
+            }
+            finally
+            {
+                TipChanged -= WatchTip;
+            }
+
+            (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
+                preEval.EvaluateActions(proposer, this);
+            IEnumerable<TxExecution> txExecutions = MakeTxExecutions(block, actionEvaluations);
+            UpdateTxExecutions(txExecutions);
+
+            _logger.Debug(
+                "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
+                "with difficulty {Difficulty} and previous hash {PreviousHash}.",
+                sessionId,
+                processId,
+                block.Index,
+                block.Hash,
+                block.Difficulty,
+                block.PreviousHash);
 
             return block;
         }

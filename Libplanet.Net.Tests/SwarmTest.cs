@@ -720,64 +720,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task RemoveForkedChainWhenFillBlocksAsyncFail()
-        {
-            // This test makes 2 different policies to reproduce an exception
-            // while FillBlocksAsync.
-            var policy1 = new BlockPolicy<DumbAction>();
-            var policy2 = new NullBlockPolicy<DumbAction>();
-            var fx1 = new MemoryStoreFixture();
-            var fx2 = new MemoryStoreFixture();
-
-            var chain1 = MakeBlockChain(policy1, fx1.Store, fx1.StateStore);
-            var chain2 = MakeBlockChain(policy2, fx2.Store, fx2.StateStore);
-
-            var key1 = new PrivateKey();
-            var key2 = new PrivateKey();
-
-            var swarm1 = CreateSwarm(chain1);
-            var swarm2 = CreateSwarm(chain2);
-
-            Assert.Equal(chain1.Genesis, chain2.Genesis);
-
-            await chain1.MineBlock(key1);
-            await chain2.MineBlock(key2);
-
-            // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
-            Block<DumbAction> block3 = MineNext(
-                chain2.Tip,
-                policy2.GetHashAlgorithm,
-                miner: ChainPrivateKey.PublicKey,
-                difficulty: (long)chain1.Tip.TotalDifficulty + 1,
-                blockInterval: TimeSpan.FromMilliseconds(1)
-            ).Evaluate(ChainPrivateKey, chain2);
-            chain2.Append(block3);
-            try
-            {
-                await StartAsync(swarm1);
-                await StartAsync(swarm2);
-                await swarm1.AddPeersAsync(new[] { swarm2.AsPeer }, null);
-
-                swarm2.BroadcastBlock(block3);
-                await swarm1.FillBlocksAsyncFailed.WaitAsync();
-
-                List<Guid> chainIds = fx1.Store.ListChainIds().ToList();
-                Assert.Single(chainIds);
-            }
-            finally
-            {
-                await StopAsync(swarm1);
-                await StopAsync(swarm2);
-
-                swarm1.Dispose();
-                swarm2.Dispose();
-
-                fx1.Dispose();
-                fx2.Dispose();
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));

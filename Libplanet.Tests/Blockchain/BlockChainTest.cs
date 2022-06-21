@@ -1856,32 +1856,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void TipChanged()
-        {
-            var genesis = _blockChain.Genesis;
-
-            _renderer.ResetRecords();
-
-            // Mine block
-            Assert.Empty(_renderer.BlockRecords);
-            Block<DumbAction> block = await _blockChain.MineBlock(new PrivateKey());
-            IReadOnlyList<RenderRecord<DumbAction>.Block> records = _renderer.BlockRecords;
-            Assert.Equal(2, records.Count);
-            foreach (RenderRecord<DumbAction>.Block record in records)
-            {
-                Assert.Equal(genesis, record.OldTip);
-                Assert.Equal(block, record.NewTip);
-                Assert.Equal(1, record.NewTip.Index);
-            }
-
-            _renderer.ResetRecords();
-            Assert.Throws<InvalidBlockIndexException>(() => _blockChain.Append(block));
-            Assert.Empty(_renderer.BlockRecords);
-
-            // TODO: Add test cases for swap
-        }
-
-        [Fact]
         private async void Reorged()
         {
             _renderer.ResetRecords();
