@@ -76,11 +76,7 @@ namespace Libplanet.Benchmarks
                     _appProtocolVersion,
                     consensusPrivateKey: consensusKeys[i],
                     host: IPAddress.Loopback.ToString(),
-                    nodeId: i,
-                    validators: new List<PublicKey>()
-                    {
-                        consensusKeys[i].PublicKey,
-                    });
+                    nodeId: i);
                 tasks.Add(StartAsync(_swarms[i]));
             }
 

@@ -495,8 +495,7 @@ namespace Libplanet.Net.Tests
                     key,
                     ver,
                     consensusPrivateKey: consensusPrivateKey,
-                    nodeId: 0,
-                    validators: null);
+                    nodeId: 0);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -506,8 +505,7 @@ namespace Libplanet.Net.Tests
                     null,
                     ver,
                     consensusPrivateKey: consensusPrivateKey,
-                    nodeId: 0,
-                    validators: null);
+                    nodeId: 0);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
@@ -518,8 +516,7 @@ namespace Libplanet.Net.Tests
                     key,
                     ver,
                     consensusPrivateKey: consensusPrivateKey,
-                    nodeId: 0,
-                    validators: null);
+                    nodeId: 0);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
@@ -531,8 +528,7 @@ namespace Libplanet.Net.Tests
                     ver,
                     consensusPrivateKey: consensusPrivateKey,
                     iceServers: new IceServer[] { },
-                    nodeId: 0,
-                    validators: null);
+                    nodeId: 0);
             });
         }
 
