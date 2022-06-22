@@ -28,18 +28,59 @@ namespace Libplanet.Net.Tests
                 ByteUtil.ParseHex(
                     "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
 
+        public static readonly PrivateKey Peer1Priv =
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
+
+        public static readonly PrivateKey Peer2Priv =
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93"));
+
+        public static readonly PrivateKey Peer3Priv =
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"));
+
         public static readonly Peer Peer0 = new Peer(
             new PrivateKey(
                 ByteUtil.ParseHex(
                     "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550")).PublicKey);
 
+        public static readonly Peer Peer1 = new Peer(
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef")).PublicKey);
+
+        public static readonly Peer Peer2 = new Peer(
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93")).PublicKey);
+
+        public static readonly Peer Peer3 = new Peer(
+            new PrivateKey(
+                ByteUtil.ParseHex(
+                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a")).PublicKey);
+
         public static readonly BlockHash BlockHash0 =
             BlockHash.FromString(
                 "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
 
-        public static readonly List<PublicKey> Validators = new List<PublicKey>
+        public static readonly List<PrivateKey> PrivateKeys = new List<PrivateKey>()
+        {
+            Peer0Priv,
+            Peer1Priv,
+            Peer2Priv,
+            Peer3Priv,
+        };
+
+        public static readonly List<PublicKey> Validators = new List<PublicKey>()
         {
             Peer0.PublicKey,
+            Peer1.PublicKey,
+            Peer2.PublicKey,
+            Peer3.PublicKey,
         };
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
