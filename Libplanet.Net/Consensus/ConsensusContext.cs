@@ -61,6 +61,8 @@ namespace Libplanet.Net.Consensus
 
         public Step Step => _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
 
+        internal Dictionary<long, Context<T>> Contexts => _contexts;
+
         public void Dispose()
         {
             _newHeightCts?.Cancel();
@@ -133,13 +135,12 @@ namespace Libplanet.Net.Consensus
                     _validators);
             }
 
-            _contexts[height].HandleMessage(consensusMessage);
+            _contexts[height].ProduceMessage(consensusMessage);
         }
 
-        public override string ToString()
-        {
-            return _contexts.ContainsKey(Height) ? _contexts[Height].ToString() : "No context";
-        }
+        public override string ToString() => _contexts.ContainsKey(Height)
+            ? _contexts[Height].ToString()
+            : "No context";
 
         private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
