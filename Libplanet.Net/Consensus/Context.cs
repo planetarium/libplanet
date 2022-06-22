@@ -371,6 +371,65 @@ namespace Libplanet.Net.Consensus
             return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
         }
 
+        internal void AddMessage(ConsensusMessage message)
+        {
+            if (message.Height != Height)
+            {
+                throw new InvalidHeightMessageException(
+                    "Height of message differs with working height.  " +
+                    $"(expected: {Height}, actual: {message.Height})",
+                    message);
+            }
+
+            if (message is ConsensusPropose propose)
+            {
+                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
+                {
+                    throw new InvalidProposerProposeMessageException(
+                        "Proposer for the height " +
+                        $"{message.Height} and round {message.Round} is invalid.  " +
+                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
+                        $"Proposer: {message.Remote!.PublicKey} / " +
+                        $"actual: Height: {Height}, Round: {Round}, " +
+                        $"Proposer: {Proposer(message.Round)})",
+                        message);
+                }
+
+                if (message.BlockHash.Equals(default(BlockHash)))
+                {
+                    throw new InvalidBlockProposeMessageException(
+                        "Cannot propose a null block.",
+                        message);
+                }
+            }
+
+            if (message is ConsensusVote vote &&
+                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
+                 !_validators.Contains(vote.ProposeVote.Validator)))
+            {
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusVote message is made by invalid validator.",
+                    vote);
+            }
+
+            if (message is ConsensusCommit commit &&
+                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
+                 !_validators.Contains(commit.CommitVote.Validator)))
+            {
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusCommit message is made by invalid validator.",
+                    commit);
+            }
+
+            if (!_messagesInRound.ContainsKey(message.Round))
+            {
+                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
+            }
+
+            // TODO: Prevent duplicated messages adding.
+            _messagesInRound[message.Round].Add(message);
+        }
+
         private async Task<Block<T>> GetValue()
         {
             Block<T> block = await _blockChain.ProposeBlock(
@@ -437,65 +496,6 @@ namespace Libplanet.Net.Consensus
         {
             await Task.Delay(time);
             BroadcastMessage(message);
-        }
-
-        private void AddMessage(ConsensusMessage message)
-        {
-            if (message.Height != Height)
-            {
-                throw new InvalidHeightMessageException(
-                    "Height of message differs with working height.  " +
-                    $"(expected: {Height}, actual: {message.Height})",
-                    message);
-            }
-
-            if (message is ConsensusPropose propose)
-            {
-                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
-                {
-                    throw new InvalidProposerProposeMessageException(
-                        "Proposer for the height " +
-                        $"{message.Height} and round {message.Round} is invalid.  " +
-                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {message.Remote!.PublicKey} / " +
-                        $"actual: Height: {Height}, Round: {Round}, " +
-                        $"Proposer: {Proposer(message.Round)})",
-                        message);
-                }
-
-                if (message.BlockHash.Equals(default(BlockHash)))
-                {
-                    throw new InvalidBlockProposeMessageException(
-                        "Cannot propose a null block.",
-                        message);
-                }
-            }
-
-            if (message is ConsensusVote vote &&
-                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
-                 !_validators.Contains(vote.ProposeVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusVote message is made by invalid validator.",
-                    vote);
-            }
-
-            if (message is ConsensusCommit commit &&
-                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
-                 !_validators.Contains(commit.CommitVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusCommit message is made by invalid validator.",
-                    commit);
-            }
-
-            if (!_messagesInRound.ContainsKey(message.Round))
-            {
-                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
-            }
-
-            // TODO: Prevent duplicated messages adding.
-            _messagesInRound[message.Round].Add(message);
         }
 
         private void BroadcastMessage(ConsensusMessage message) =>
