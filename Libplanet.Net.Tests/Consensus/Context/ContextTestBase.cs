@@ -113,7 +113,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             {
                 Index = BlockChain.Tip.Index + 1,
                 Difficulty = BlockChain.Tip.Difficulty,
-                TotalDifficulty = BlockChain.Tip.TotalDifficulty + 1,
+                TotalDifficulty = BlockChain.Tip.TotalDifficulty + BlockChain.Tip.Difficulty,
                 PublicKey = Fx.Miner.PublicKey,
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
