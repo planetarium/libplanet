@@ -212,11 +212,11 @@ namespace Libplanet.Net.Tests
 
             var exceptList = validators.Except(new[] { privateKey.PublicKey }).ToList();
 
-            for (var i = 0; i < exceptList.Count; ++i)
+            foreach (var publicKey in exceptList)
             {
                 validatorPeers.Add(
                     new BoundPeer(
-                        privateKey.PublicKey, new DnsEndPoint("localhost", port + i)));
+                        publicKey, new DnsEndPoint("localhost", port++)));
             }
 
             void BroadcastMessage(ConsensusMessage message) =>
