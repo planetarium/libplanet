@@ -4,16 +4,10 @@ using System.IO;
 using System.Linq;
 using global::Cocona;
 using Libplanet.Crypto;
-using Libplanet.Extensions.Cocona.Commands.Key;
 using Libplanet.KeyStore;
 
 namespace Libplanet.Extensions.Cocona.Commands
 {
-    [HasSubCommands(
-        typeof(DerivationCommand),
-        "derive",
-        Description = "Derive the address or public key from private key."
-    )]
     public class KeyCommand
     {
         public KeyCommand()
@@ -25,22 +19,38 @@ namespace Libplanet.Extensions.Cocona.Commands
 
         [PrimaryCommand]
         [Command(Description = "List all private keys.")]
-        public void List() =>
+        public void List(
+            [Option(
+                Description = "Specify KeyStore path to list."
+            )]
+            string? path = null)
+        {
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(path);
+            }
+
             PrintKeys(KeyStore.List().Select(t => t.ToValueTuple()));
+        }
 
         [Command(Description = "Create a new private key.")]
         public void Create(
             PassphraseParameters passphrase,
             [Option(
-                Description = "Export created private key as Web3 Secret Storage format."
+                Description = "print created private key as Web3 Secret Storage format."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
             bool dryRun = false,
-            [Option(Description = "Path to export key as Web3 Secret Storage Format")]
-            string path = ""
-        ) =>
-            Add(string.Empty, passphrase, json, dryRun, path, true);
+            [Option(Description = "Path to key store")]
+            string? path = null
+        )
+        {
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(path);
+            }
+
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
@@ -48,11 +58,18 @@ namespace Libplanet.Extensions.Cocona.Commands
             Guid keyId,
             PassphraseParameters passphrase,
             [Option(Description = "Remove without asking passphrase.")]
-            bool noPassphrase = false
+            bool noPassphrase = false,
+            [Option(Description = "Path to key store")]
+            string? path = null
         )
         {
             try
             {
+                if (path != null)
+                {
+                    KeyStore = new Web3KeyStore(path);
+                }
+
                 if (!noPassphrase)
                 {
                     UnprotectKey(keyId, passphrase);
@@ -79,10 +96,15 @@ namespace Libplanet.Extensions.Cocona.Commands
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
-            bool dryRun = false
+            bool dryRun = false,
+            [Option(Description = "Path to key store")]
+            string? path = null
         )
         {
-            Add(key, passphrase, json, dryRun, key, false);
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(path);
+            }
         }
 
         [Command(Description = "Export a raw private key (or public key).")]
@@ -97,12 +119,17 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
             )]
             bool bytes = false,
-            [Option(Description = "Export a Web3 Secret Storage Formatted json to path.")]
+            [Option(Description = "Export a Web3 Secret Storage Formatted json")]
             bool json = false,
-            [Option(Description = "Path to export json key.")]
-            string path = ""
+            [Option(Description = "Path to key store to export from.")]
+            string? path = null
         )
         {
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(path);
+            }
+
             PrivateKey key = UnprotectKey(keyId, passphrase);
             byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
             if (bytes)
@@ -177,9 +204,16 @@ namespace Libplanet.Extensions.Cocona.Commands
                                   "as raw bytes not hexadecimal string or else. " +
                                   "If this option isn't given, it will print hexadecimal string " +
                                   "to stdout as default behaviour.")]
-            string? binaryOutput = null
+            string? binaryOutput = null,
+            [Option(Description = "Path to key store to use key from.")]
+            string? storePath = ""
         )
         {
+            if (storePath != null)
+            {
+                KeyStore = new Web3KeyStore(path);
+            }
+
             PrivateKey key = UnprotectKey(keyId, passphrase);
 
             byte[] message;
