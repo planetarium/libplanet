@@ -291,15 +291,11 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "A raw private key to import."
             )]
             string key,
-            PassphraseParameters passphrase
         )
         {
             PrivateKey privateKey = ValidateRawHex(key);
-            string passphraseValue = passphrase.Take("Passphrase: ");
             string addr = privateKey.ToAddress().ToString();
             string pub = ByteUtil.Hex(privateKey.PublicKey.Format(compress: true));
-            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
-                privateKey, passphraseValue);
             Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
         }
 
