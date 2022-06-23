@@ -27,7 +27,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             if (path != null)
             {
-                KeyStore = new Web3KeyStore(path);
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
 
             PrintKeys(KeyStore.List().Select(t => t.ToValueTuple()));
@@ -48,7 +48,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             if (path != null)
             {
-                KeyStore = new Web3KeyStore(path);
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
 
             string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
@@ -82,7 +82,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             {
                 if (path != null)
                 {
-                    KeyStore = new Web3KeyStore(path);
+                    KeyStore = new Web3KeyStore(Path.GetFullPath(path));
                 }
 
                 if (!noPassphrase)
@@ -119,7 +119,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             if (path != null)
             {
-                KeyStore = new Web3KeyStore(path);
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
 
             if (json)
@@ -164,7 +164,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             if (path != null)
             {
-                KeyStore = new Web3KeyStore(path);
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
 
             PrivateKey key = UnprotectKey(keyId, passphrase);
@@ -246,7 +246,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         {
             if (storePath != null)
             {
-                KeyStore = new Web3KeyStore(path);
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
 
             PrivateKey key = UnprotectKey(keyId, passphrase);
