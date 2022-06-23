@@ -51,6 +51,21 @@ namespace Libplanet.Extensions.Cocona.Commands
                 KeyStore = new Web3KeyStore(path);
             }
 
+            string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+            PrivateKey pkey = new PrivateKey();
+            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
+            Guid keyId = Add(ppk, dryRun);
+            if (json)
+            {
+                Stream stdout = Console.OpenStandardOutput();
+                ppk.WriteJson(stdout, keyId);
+                stdout.WriteByte(0x0a);
+            }
+            else
+            {
+                PrintKeys(new[] { (keyId, ppk) });
+            }
+        }
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
@@ -83,16 +98,17 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        [Command(Description = "Import a raw private key.")]
+        [Command(Description = "Import a raw private key or Web3 Secret Storage.")]
         public void Import(
             [Argument(
                 "PRIVATE-KEY",
-                Description = "A raw private key to import in hexadecimal string."
+                Description = @"A raw private key in hexadecimal string, or path to Web3 Secret
+                Storage to import"
             )]
             string key,
             PassphraseParameters passphrase,
             [Option(
-                Description = "Print the created private key as Web3 Secret Storage format."
+                Description = "Import Web3 Secret Storage key."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
@@ -104,6 +120,27 @@ namespace Libplanet.Extensions.Cocona.Commands
             if (path != null)
             {
                 KeyStore = new Web3KeyStore(path);
+            }
+
+            if (json)
+            {
+                try
+                {
+                    ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(ValidateJsonPath(key));
+                    PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
+                }
+                catch (Exception)
+                {
+                    Utils.Error("Couldn't load ppk from json.");
+                }
+            }
+            else
+            {
+                PrivateKey privateKey = ValidateRawHex(key);
+                string passphraseValue = passphrase.Take("Passphrase: ");
+                ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
+                    privateKey, passphraseValue);
+                PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
             }
         }
 
@@ -132,18 +169,16 @@ namespace Libplanet.Extensions.Cocona.Commands
 
             PrivateKey key = UnprotectKey(keyId, passphrase);
             byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
+            using Stream stdout = Console.OpenStandardOutput();
             if (bytes)
             {
-                using Stream stdout = Console.OpenStandardOutput();
                 stdout.Write(rawKey, 0, rawKey.Length);
             }
             else if (json)
             {
-                Stream fs = PathHandler(path);
                 var ppk = KeyStore.Get(keyId);
-                ppk.WriteJson(fs, keyId);
-                fs.WriteByte(0x0a);
-                fs.Close();
+                ppk.WriteJson(stdout, keyId);
+                stdout.WriteByte(0x0a);
             }
             else
             {
@@ -277,53 +312,13 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        private void Add(
-            string key,
-            PassphraseParameters passphrase,
-            bool json,
-            bool dryRun,
-            string pathString,
-            bool create
+        private Guid Add(
+            ProtectedPrivateKey ppk,
+            bool dryRun
         )
         {
-            Stream fs = PathHandler(pathString);
-            if (create)
-            {
-                string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
-                PrivateKey pkey = new PrivateKey();
-                ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
-                Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                if (json)
-                {
-                    ppk.WriteJson(fs, keyId);
-                    fs.WriteByte(0x0a);
-                    fs.Close();
-                }
-            }
-            else
-            {
-                if (json)
-                {
-                    try
-                    {
-                        ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(
-                                                new StreamReader(fs).ReadToEnd());
-                        Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                    }
-                    catch (Exception)
-                    {
-                        Utils.Error("This is not valid json file or file does not exists.");
-                    }
-                }
-                else
-                {
-                    string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
-                    PrivateKey privateKey = ValidateRawHex(key);
-                    ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
-                        privateKey, passphraseValue);
-                    Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                }
-            }
+            Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+            return keyId;
         }
 
         private void PrintKeys(IEnumerable<(Guid KeyId, ProtectedPrivateKey Key)> keys)
@@ -357,16 +352,17 @@ namespace Libplanet.Extensions.Cocona.Commands
             return key;
         }
 
-        private Stream PathHandler(string pathString)
+        private string ValidateJsonPath(string jsonPath)
         {
-            if (pathString == string.Empty)
+            try
             {
-                return System.Console.OpenStandardOutput();
+                string json = new StreamReader(jsonPath).ReadToEnd();
+                return json;
             }
-            else
+            catch (Exception)
             {
-                string path = Path.GetFullPath(pathString);
-                return File.Open(path, FileMode.OpenOrCreate);
+                Utils.Error("This is not valid json file or file does not exists.");
+                return string.Empty;
             }
         }
     }
