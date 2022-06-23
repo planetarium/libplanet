@@ -102,8 +102,8 @@ namespace Libplanet.Extensions.Cocona.Commands
         public void Import(
             [Argument(
                 "PRIVATE-KEY",
-                Description = @"A raw private key in hexadecimal string, or path to Web3 Secret
-                Storage to import"
+                Description = "A raw private key in hexadecimal string, or path to Web3 Secret " +
+                              "Storage to import"
             )]
             string key,
             PassphraseParameters passphrase,
