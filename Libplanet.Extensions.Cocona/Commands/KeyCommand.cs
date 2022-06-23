@@ -21,7 +21,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             KeyStore = Web3KeyStore.DefaultKeyStore;
         }
 
-        public IKeyStore KeyStore { get; }
+        public IKeyStore KeyStore { get; set; }
 
         [PrimaryCommand]
         [Command(Description = "List all private keys.")]
