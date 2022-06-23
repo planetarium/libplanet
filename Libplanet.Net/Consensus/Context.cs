@@ -50,6 +50,7 @@ namespace Libplanet.Net.Consensus
         private int _lockedRound;
         private Block<T>? _validValue;
         private int _validRound;
+        private BlockCommit? _lastCommit;
         private int _requestCount;
 
         public Context(
@@ -118,12 +119,15 @@ namespace Libplanet.Net.Consensus
 
         public Step Step { get; private set; }
 
+        public int CommittedRound { get; private set; } = -1;
+
         private ConsensusContext<T> ConsensusContext { get; }
 
         private int TotalValidators => _validators.Count;
 
-        public async Task StartAsync()
+        public async Task StartAsync(BlockCommit? lastCommit = null)
         {
+            _lastCommit = lastCommit;
             await StartRound(0);
             if (Proposer(0) != _privateKey.PublicKey &&
                 _messagesInRound.ContainsKey(0) &&
@@ -426,6 +430,7 @@ namespace Libplanet.Net.Consensus
                     IsValid(block4))
                 {
                     SetStep(Step.EndCommit);
+                    CommittedRound = round;
                     _logger.Debug(
                         "Committed block in round {Round}. (context: {Context})",
                         Round,
@@ -453,6 +458,7 @@ namespace Libplanet.Net.Consensus
         {
             Block<T> block = await _blockChain.ProposeBlock(
                 _privateKey,
+                lastCommit: _lastCommit,
                 append: false,
                 cancellationToken: _cancellationTokenSource.Token);
             _blockChain.Store.PutBlock(block);
