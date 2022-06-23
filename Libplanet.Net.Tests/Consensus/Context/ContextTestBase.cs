@@ -10,6 +10,7 @@ using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
 using Serilog;
 using Xunit.Abstractions;
 
@@ -104,6 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Transport.Dispose();
             _consensusContext.Dispose();
             Context.Dispose();
+            NetMQConfig.Cleanup(false);
         }
 
         protected Block<DumbAction> GetInvalidBlock() =>
