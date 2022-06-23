@@ -215,8 +215,7 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (GetPropose(Round) is
-                    (Block<T> block2, int validRound2) &&
+            if (GetPropose(Round) is (Block<T> block2, int validRound2) &&
                 validRound2 >= 0 &&
                 validRound2 < Round &&
                 HasTwoThirdsPreVote(validRound2, block2.Hash) &&
