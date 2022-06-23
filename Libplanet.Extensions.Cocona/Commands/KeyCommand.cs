@@ -380,7 +380,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
             catch (Exception)
             {
-                Utils.Error("This is not valid json file or file does not exists.");
+                Utils.Error("This file does not exist.");
                 return string.Empty;
             }
         }
