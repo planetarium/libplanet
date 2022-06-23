@@ -72,12 +72,5 @@ namespace Libplanet.Net.Tests.Consensus
                 Assert.Equal("EndCommit", json["step"].GetString());
             }
         }
-
-        [Fact(Timeout = Timeout)]
-        public async void IncreaseRoundWhenTimeout()
-        {
-            await Task.Yield();
-            Assert.True(true);
-        }
     }
 }
