@@ -37,7 +37,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         public void Create(
             PassphraseParameters passphrase,
             [Option(
-                Description = "print created private key as Web3 Secret Storage format."
+                Description = "Print created private key as Web3 Secret Storage format."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
