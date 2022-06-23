@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -44,6 +47,48 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
             await Transport.StopAsync(TimeSpan.FromSeconds(1));
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void StartAsyncWithLastCommit()
+        {
+            var messageReceived = new AsyncManualResetEvent();
+            ConsensusPropose? received = null;
+
+            void IsProposeSent(ConsensusMessage message)
+            {
+                if (message is ConsensusPropose propose)
+                {
+                    messageReceived.Set();
+                    received = propose;
+                }
+            }
+
+            watchConsensusMessage = IsProposeSent;
+            _ = Transport.StartAsync();
+            await Transport.WaitForRunningAsync();
+
+            var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
+            var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
+            await Context.StartAsync(lastCommit);
+            await messageReceived.WaitAsync();
+
+            Assert.Equal(Step.PreVote, Context.Step);
+            // Looks dirty, but compiler throws error without if statement.
+            if (received is null)
+            {
+                Assert.NotNull(received);
+            }
+            else
+            {
+                Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        BlockChain.Policy.GetHashAlgorithm,
+                        (Dictionary)new Codec().Decode(received.Payload));
+                Assert.NotNull(mined.LastCommit);
+                Assert.Equal(
+                    new HashSet<Vote>(voteSet.Votes),
+                    new HashSet<Vote>(mined.LastCommit?.Votes!));
+            }
         }
 
         [Fact(Timeout = Timeout)]

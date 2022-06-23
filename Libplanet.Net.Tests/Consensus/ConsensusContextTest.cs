@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
@@ -16,6 +19,7 @@ using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus
 {
@@ -119,6 +123,110 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0, context.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(blockChain.Tip.Index + 1, context.Height);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void NewHeightWithLastCommit()
+        {
+            BlockChain<DumbAction> blockChain =
+                TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            List<PrivateKey> validators = new List<PrivateKey>
+                { new PrivateKey(), new PrivateKey(), new PrivateKey(), new PrivateKey() };
+            List<BoundPeer> validatorPeers = validators.Select(
+                v => new BoundPeer(v.PublicKey, new DnsEndPoint("localhost", 1000))).ToList();
+            AsyncAutoResetEvent tipChanged = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent proposed = new AsyncAutoResetEvent();
+            ConsensusPropose? propose = null;
+            var codec = new Codec();
+            blockChain.TipChanged += (sender, tuple) =>
+            {
+                tipChanged.Set();
+            };
+
+            var context = new ConsensusContext<DumbAction>(
+                message =>
+                {
+                    if (message is ConsensusPropose proposeMessage)
+                    {
+                        propose = proposeMessage;
+                        proposed.Set();
+                    }
+                },
+                blockChain,
+                blockChain.Tip.Index,
+                validators[2],
+                validators.Select(pk => pk.PublicKey).ToList(),
+                TimeSpan.MaxValue);
+            context.NewHeight(1);
+            var block1 = await blockChain.MineBlock(validators[1], append: false);
+            context.HandleMessage(
+                new ConsensusPropose(
+                    1,
+                    0,
+                    block1.Hash,
+                    codec.Encode(block1.MarshalBlock()),
+                    -1) { Remote = validatorPeers[1], });
+            var expectedVotes = new Vote[4];
+            for (int i = 0; i < 4; i++)
+            {
+                expectedVotes[i] = new Vote(
+                    1,
+                    0,
+                    block1.Hash,
+                    DateTimeOffset.UtcNow,
+                    validators[i].PublicKey,
+                    VoteFlag.Absent,
+                    null).Sign(validators[i]);
+                context.HandleMessage(
+                    new ConsensusVote(expectedVotes[i]) { Remote = validatorPeers[i], });
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 2)
+                {
+                    continue;
+                }
+
+                expectedVotes[i] = new Vote(
+                    1,
+                    0,
+                    block1.Hash,
+                    DateTimeOffset.UtcNow,
+                    validators[i].PublicKey,
+                    VoteFlag.Commit,
+                    null).Sign(validators[i]);
+                context.HandleMessage(
+                    new ConsensusCommit(expectedVotes[i]) { Remote = validatorPeers[i], });
+            }
+
+            await tipChanged.WaitAsync();
+            context.NewHeight(2);
+            await proposed.WaitAsync();
+            if (propose is null)
+            {
+                throw new NotNullException();
+            }
+
+            Block<DumbAction> proposedBlock =
+                BlockMarshaler.UnmarshalBlock<DumbAction>(
+                    blockChain.Policy.GetHashAlgorithm,
+                    (Dictionary)codec.Decode(propose.Payload));
+            if (proposedBlock.LastCommit?.Votes is null)
+            {
+                throw new NotNullException();
+            }
+
+            ImmutableArray<Vote> votes = proposedBlock.LastCommit.Value.Votes.Value;
+            foreach (Vote vote in votes)
+            {
+                Assert.True(vote.BlockHash.Equals(blockChain[1].Hash));
+                Assert.Equal(
+                    vote.Validator.Equals(validators[2].PublicKey)
+                        ? VoteFlag.Absent
+                        : VoteFlag.Commit,
+                    vote.Flag);
+            }
         }
 
         [Fact(Timeout = Timeout)]
