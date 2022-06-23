@@ -1,59 +1,83 @@
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using Libplanet.Blockchain;
-using Libplanet.Crypto;
-using Libplanet.Net.Consensus;
-using Libplanet.Net.Transports;
-using Libplanet.Tests.Common.Action;
-using NetMQ;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
     [Collection("NetMQConfiguration")]
-    public class ConsensusReactorTest : ReactorTest, IDisposable
+    public class ConsensusReactorTest : ReactorTest
     {
+        private const int Timeout = 60 * 1000;
+
         public ConsensusReactorTest(ITestOutputHelper output)
             : base(output)
         {
         }
 
-        public void Dispose()
+        [Fact(Timeout = Timeout)]
+        public async void StartAsync()
         {
-            NetMQConfig.Cleanup(false);
+            foreach (var reactor in ConsensusReactors)
+            {
+                _ = reactor.StartAsync(CancellationTokenSource.Token);
+            }
+
+            Dictionary<string, JsonElement> json;
+
+            await Task.Delay(PropagationDelay, CancellationTokenSource.Token);
+            foreach (var reactor in ConsensusReactors)
+            {
+                await reactor.StopAsync(CancellationTokenSource.Token);
+            }
+
+            var isPolka = new bool[Count];
+
+            for (var node = 0; node < Count; ++node)
+            {
+                json =
+                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        ConsensusReactors[node].ToString());
+
+                // Genesis block exists, add 1 to the height.
+                if (json["step"].GetString() == "EndCommit")
+                {
+                    isPolka[node] = true;
+                }
+                else
+                {
+                    Log.Error(
+                        "[Failed]: {0} {1}",
+                        json["step"].GetString(),
+                        BlockChains[node].Count);
+                    isPolka[node] = false;
+                }
+            }
+
+            Assert.Equal(Count, isPolka.Sum(x => x ? 1 : 0));
+
+            for (var node = 0; node < Count; ++node)
+            {
+                json =
+                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                        ConsensusReactors[node].ToString());
+
+                Assert.Equal((long)node, json["node_id"].GetInt32());
+                Assert.Equal(1, json["height"].GetInt32());
+                Assert.Equal(2, BlockChains[node].Count);
+                Assert.Equal(0L, json["round"].GetInt32());
+                Assert.Equal("EndCommit", json["step"].GetString());
+            }
         }
 
-        public override IReactor CreateReactor(
-            BlockChain<DumbAction> blockChain,
-            PrivateKey? key = null,
-            string host = "localhost",
-            int consensusPort = 5101,
-            long id = 0,
-            List<PublicKey> validators = null!,
-            List<BoundPeer> validatorPeers = null!,
-            int newHeightDelayMilliseconds = 10_000)
+        [Fact(Timeout = Timeout)]
+        public async void IncreaseRoundWhenTimeout()
         {
-            key ??= new PrivateKey();
-
-            var consensusTransport = new NetMQTransport(
-                key,
-                TestUtils.AppProtocolVersion,
-                null,
-                8,
-                host,
-                consensusPort,
-                Array.Empty<IceServer>(),
-                null);
-
-            return new ConsensusReactor<DumbAction>(
-                consensusTransport,
-                blockChain,
-                key,
-                id,
-                validatorPeers.ToImmutableList(),
-                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
+            await Task.Yield();
+            Assert.True(true);
         }
     }
 }
