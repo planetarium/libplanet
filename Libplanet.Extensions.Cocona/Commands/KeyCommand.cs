@@ -284,6 +284,25 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
+        [Command(Description = "Derive Public key and Address from Private key.")]
+        public void Derive(
+            [Argument(
+                "PRIVATE-KEY",
+                Description = "A raw private key to import."
+            )]
+            string key,
+            PassphraseParameters passphrase
+        )
+        {
+            PrivateKey privateKey = ValidateRawHex(key);
+            string passphraseValue = passphrase.Take("Passphrase: ");
+            string addr = privateKey.ToAddress().ToString();
+            string pub = ByteUtil.Hex(privateKey.PublicKey.Format(compress: true));
+            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
+                privateKey, passphraseValue);
+            Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
+        }
+
         public PrivateKey UnprotectKey(
             Guid keyId,
             PassphraseParameters passphrase,
