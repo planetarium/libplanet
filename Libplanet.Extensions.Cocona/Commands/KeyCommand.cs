@@ -241,7 +241,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                                   "to stdout as default behaviour.")]
             string? binaryOutput = null,
             [Option(Description = "Path to key store to use key from.")]
-            string? storePath = ""
+            string? storePath = null
         )
         {
             if (storePath != null)
