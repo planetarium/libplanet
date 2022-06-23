@@ -241,7 +241,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         },
                     };
 
-                    // TODO: Add nodeId getter/setter and validators getter!
                     swarm = new Swarm<NullAction>(
                         blockChain,
                         privateKey,
@@ -252,7 +251,6 @@ If omitted (default) explorer only the local blockchain store.")]
                         workers: options.Workers,
                         iceServers: new[] { options.IceServer },
                         options: swarmOptions,
-                        nodeId: 0,
                         consensusPrivateKey: consensusPrivateKey
                     );
                 }

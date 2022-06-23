@@ -40,7 +40,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     i,
                      null);
                  var vote = new Vote(
                      1,
@@ -49,7 +48,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     i,
                      validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
                  voteSet.Add(vote);
              }
@@ -73,7 +71,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Commit,
-                     i,
                      null);
                  var vote = new Vote(
                      1,
@@ -82,7 +79,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Commit,
-                     i,
                      validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
                  voteSet.Add(vote);
              }
@@ -121,7 +117,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     i,
                      null);
                  var vote = new Vote(
                      1,
@@ -130,7 +125,6 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     i,
                      validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
                  voteSet.Add(vote);
              }

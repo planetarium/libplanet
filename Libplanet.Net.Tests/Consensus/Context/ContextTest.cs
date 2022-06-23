@@ -57,8 +57,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Context.AddMessage(
                         TestUtils.CreateConsensusPropose(
                             block,
-                            TestUtils.PrivateKeys[0],
-                            nodeId: NodeId)));
+                            TestUtils.PrivateKeys[0])));
             await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
@@ -70,8 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Context.AddMessage(
                         TestUtils.CreateConsensusPropose(
                             default,
-                            TestUtils.PrivateKeys[NodeId],
-                            nodeId: NodeId)));
+                            TestUtils.PrivateKeys[NodeId])));
             await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
@@ -93,7 +91,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                                 DateTimeOffset.UtcNow,
                                 TestUtils.Validators[0],
                                 VoteFlag.Absent,
-                                NodeId,
                                 null).Sign(TestUtils.PrivateKeys[NodeId]))
                         {
                             Remote = new Peer(TestUtils.Validators[NodeId]),
@@ -111,7 +108,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                                 DateTimeOffset.UtcNow,
                                 TestUtils.Validators[0],
                                 VoteFlag.Absent,
-                                1,
                                 null).Sign(TestUtils.PrivateKeys[NodeId]))
                         {
                             Remote = new Peer(TestUtils.Validators[0]),
@@ -129,7 +125,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                                 DateTimeOffset.UtcNow,
                                 TestUtils.Validators[NodeId],
                                 VoteFlag.Absent,
-                                1,
                                 null).Sign(TestUtils.PrivateKeys[NodeId]))
                         {
                             Remote = new Peer(TestUtils.Validators[0]),
@@ -147,7 +142,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                                 DateTimeOffset.UtcNow,
                                 TestUtils.Validators[0],
                                 VoteFlag.Absent,
-                                1,
                                 null).Sign(TestUtils.PrivateKeys[NodeId]))
                         {
                             Remote = new Peer(TestUtils.Validators[0]),
@@ -172,7 +166,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         TestUtils.CreateVote(
                             TestUtils.PrivateKeys[2],
                             2,
-                            2,
                             0,
                             block.Hash,
                             VoteFlag.Absent))
@@ -185,7 +178,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     new ConsensusCommit(
                         TestUtils.CreateVote(
                             TestUtils.PrivateKeys[2],
-                            2,
                             2,
                             0,
                             block.Hash,
@@ -210,7 +202,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[0], 0, 1, hash: block.Hash, flag: VoteFlag.Absent))
+                        TestUtils.PrivateKeys[0], 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
@@ -218,7 +210,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[1], 1, 1, hash: block.Hash, flag: VoteFlag.Absent))
+                        TestUtils.PrivateKeys[1], 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
@@ -228,9 +220,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, 1, hash: block.Hash, flag: VoteFlag.Commit))
+                        TestUtils.PrivateKeys[1], 1, hash: block.Hash, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = new Peer(TestUtils.Validators[1]),
                 });
             roundVoteSet = Context.VoteSet(0);
 

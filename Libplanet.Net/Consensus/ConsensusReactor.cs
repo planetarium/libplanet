@@ -22,13 +22,11 @@ namespace Libplanet.Net.Consensus
         private IImmutableList<BoundPeer> _validatorPeers;
         private ConsensusContext<T> _consensusContext;
         private BlockChain<T> _blockChain;
-        private long _nodeId;
 
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            long nodeId,
             ImmutableList<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
@@ -36,12 +34,10 @@ namespace Libplanet.Net.Consensus
             _validatorPeers = validatorPeers;
             _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
             _blockChain = blockChain;
-            _nodeId = nodeId;
 
             _consensusContext = new ConsensusContext<T>(
                 BroadcastMessage,
                 blockChain,
-                nodeId,
                 blockChain.Tip.Index,
                 privateKey,
                 validatorPeers.Select(x => x.PublicKey).ToList(),

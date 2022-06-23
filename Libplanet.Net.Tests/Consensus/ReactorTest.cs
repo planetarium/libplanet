@@ -26,11 +26,11 @@ namespace Libplanet.Net.Tests.Consensus
         protected readonly ConsensusReactor<DumbAction>[] ConsensusReactors;
         protected readonly BlockChain<DumbAction>[] BlockChains;
         protected readonly CancellationTokenSource CancellationTokenSource;
+        protected readonly List<BoundPeer> ValidatorPeers;
 
         private const int Port = 6100;
         private readonly StoreFixture _fx;
         private readonly PrivateKey[] _privateKey;
-        private readonly List<BoundPeer> _validatorPeers;
         private readonly IStore[] _stores;
 
         private ILogger _logger;
@@ -52,14 +52,14 @@ namespace Libplanet.Net.Tests.Consensus
 
             _privateKey = new PrivateKey[Count];
             ConsensusReactors = new ConsensusReactor<DumbAction>[Count];
-            _validatorPeers = new List<BoundPeer>();
+            ValidatorPeers = new List<BoundPeer>();
             _stores = new IStore[Count];
             BlockChains = new BlockChain<DumbAction>[Count];
 
             for (var i = 0; i < Count; i++)
             {
                 _privateKey[i] = new PrivateKey();
-                _validatorPeers.Add(
+                ValidatorPeers.Add(
                     new BoundPeer(
                         _privateKey[i].PublicKey,
                         new DnsEndPoint("localhost", Port + i)));
@@ -78,8 +78,7 @@ namespace Libplanet.Net.Tests.Consensus
                     blockChain: BlockChains[i],
                     key: _privateKey[i],
                     consensusPort: Port + i,
-                    id: i,
-                    validatorPeers: _validatorPeers,
+                    validatorPeers: ValidatorPeers,
                     newHeightDelayMilliseconds: PropagationDelay * 2);
             }
         }
@@ -100,7 +99,6 @@ namespace Libplanet.Net.Tests.Consensus
             PrivateKey? key = null,
             string host = "localhost",
             int consensusPort = 5101,
-            long id = 0,
             List<BoundPeer> validatorPeers = null!,
             int newHeightDelayMilliseconds = 10_000)
         {
@@ -120,7 +118,6 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusTransport,
                 blockChain,
                 key,
-                id,
                 validatorPeers.ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
         }

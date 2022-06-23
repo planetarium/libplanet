@@ -20,7 +20,6 @@ namespace Libplanet.Tests.Consensus
                 now,
                 new PrivateKey().PublicKey,
                 VoteFlag.Commit,
-                7,
                 null);
             byte[] marshaled = vote.ByteArray;
             var unMarshaled = new Vote(marshaled);

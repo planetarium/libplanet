@@ -53,7 +53,6 @@ namespace Libplanet.Net
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
-        /// <param name="nodeId">(Experimental) The Id of Node.</param>
         /// <param name="consensusPrivateKey">(Experimental) The private key that is using
         /// for Consensus Signing.</param>
         /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
@@ -80,7 +79,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            long nodeId,
             PrivateKey consensusPrivateKey,
             int? consensusPort = null,
             int consensusWorkers = 100,
@@ -138,7 +136,6 @@ namespace Libplanet.Net
                 ConsensusTransport,
                 BlockChain,
                 consensusPrivateKey,
-                nodeId,
                 Options.ConsensusPeers,
                 TimeSpan.FromMilliseconds(10_000));
         }

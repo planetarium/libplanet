@@ -31,7 +31,6 @@ namespace Libplanet.Tests.Blocks
                                               DateTimeOffset.Now,
                                               new PrivateKey().PublicKey,
                                               VoteFlag.Absent,
-                                              x,
                                               ImmutableArray<byte>.Empty))
                                           .ToImmutableArray();
              var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);

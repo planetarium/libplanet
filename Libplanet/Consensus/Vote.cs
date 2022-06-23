@@ -36,7 +36,6 @@ namespace Libplanet.Consensus
         /// </param>
         /// <param name="flag">
         /// <see cref="VoteFlag"/> for the vote's status.</param>
-        /// <param name="nodeId">The Id of the validator made the vote.</param>
         /// <param name="signature">Signature of the vote.</param>
         public Vote(
             long height,
@@ -45,7 +44,6 @@ namespace Libplanet.Consensus
             DateTimeOffset timestamp,
             PublicKey validator,
             VoteFlag flag,
-            long nodeId,
             ImmutableArray<byte>? signature)
         {
             Height = height;
@@ -54,7 +52,6 @@ namespace Libplanet.Consensus
             Timestamp = timestamp;
             Validator = validator;
             Flag = flag;
-            NodeId = nodeId;
             Signature = signature;
         }
 
@@ -82,7 +79,6 @@ namespace Libplanet.Consensus
                     CultureInfo.InvariantCulture);
                 Validator = new PublicKey(dict.GetValue<Binary>(ValidatorKey).ByteArray);
                 Flag = (VoteFlag)(long)dict.GetValue<Integer>(FlagKey);
-                NodeId = dict.GetValue<Integer>(NodeIdKey);
                 Signature = dict.ContainsKey(SignatureKey)
                     ? dict.GetValue<Binary>(SignatureKey)
                     : (ImmutableArray<byte>?)null;
@@ -126,11 +122,6 @@ namespace Libplanet.Consensus
         public VoteFlag Flag { get; }
 
         /// <summary>
-        /// The Id of the validator made the vote.
-        /// </summary>
-        public long NodeId { get; }
-
-        /// <summary>
         /// Signature of the vote.
         /// </summary>
         public ImmutableArray<byte>? Signature { get; }
@@ -150,8 +141,7 @@ namespace Libplanet.Consensus
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                     .Add(ValidatorKey, Validator.Format(compress: true))
-                    .Add(FlagKey, (long)Flag)
-                    .Add(NodeIdKey, NodeId);
+                    .Add(FlagKey, (long)Flag);
 
                 if (BlockHash is { } blockHash)
                 {
@@ -168,7 +158,7 @@ namespace Libplanet.Consensus
         }
 
         public Vote RemoveSignature =>
-            new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, NodeId, null);
+            new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, null);
 
         /// <summary>
         /// Sign a <see cref="Vote"/> using the given private key.
@@ -188,7 +178,6 @@ namespace Libplanet.Consensus
                 Timestamp,
                 Validator,
                 Flag,
-                NodeId,
                 sign.ToImmutableArray());
         }
 
@@ -215,7 +204,6 @@ namespace Libplanet.Consensus
                                TimestampFormat,
                                CultureInfo.InvariantCulture)) &&
                    Validator.Equals(other.Validator) &&
-                   NodeId == other.NodeId &&
                    Flag == other.Flag &&
                    Nullable.Equals(Signature, other.Signature);
         }
@@ -235,7 +223,6 @@ namespace Libplanet.Consensus
                 BlockHash,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 Validator,
-                NodeId,
                 Signature);
         }
     }

@@ -151,7 +151,6 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey,
                 appProtocolVersion ?? DefaultAppProtocolVersion,
-                nodeId,
                 consensusPrivateKey,
                 workers: 5,
                 host: host,
