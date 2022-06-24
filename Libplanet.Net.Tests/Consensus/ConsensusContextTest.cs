@@ -19,6 +19,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
+    [Collection("NetMQConfiguration")]
     public class ConsensusContextTest
     {
         private const int Timeout = 60_000;
