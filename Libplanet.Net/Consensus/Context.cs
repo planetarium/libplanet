@@ -8,6 +8,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Caching;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -43,6 +44,7 @@ namespace Libplanet.Net.Consensus
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         private readonly ILogger _logger;
+        private readonly LRUCache<BlockHash, bool> _blockHashCache;
 
         private Block<T>? _lockedValue;
         private int _lockedRound;
@@ -74,7 +76,8 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             List<PublicKey> validators,
             Step step,
-            int round = 0)
+            int round = 0,
+            int cacheSize = 128)
         {
             _privateKey = privateKey;
             Height = height;
@@ -94,6 +97,7 @@ namespace Libplanet.Net.Consensus
             _validators = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
+            _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -517,8 +521,17 @@ namespace Libplanet.Net.Consensus
 
         private bool IsValid(Block<T> block)
         {
-            var exception = _blockChain.ValidateNextBlock(block);
-            return exception is null;
+            if (_blockHashCache.TryGet(block.Hash, out bool isValidCached))
+            {
+                return isValidCached;
+            }
+            else
+            {
+                var exception = _blockChain.ValidateNextBlock(block);
+                bool isValid = exception is null;
+                _blockHashCache.AddReplace(block.Hash, isValid);
+                return isValid;
+            }
         }
 
         private Vote Voting(long height, int round, BlockHash? hash, VoteFlag flag)
