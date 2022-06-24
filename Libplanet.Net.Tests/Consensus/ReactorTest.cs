@@ -84,18 +84,14 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
+            CancellationTokenSource.Cancel();
             foreach (var reactor in ConsensusReactors)
             {
-                if (reactor.Running)
-                {
-                    await reactor.StopAsync(default);
-                    reactor.Dispose();
-                }
+                reactor.Dispose();
             }
 
-            CancellationTokenSource.Cancel();
             NetMQConfig.Cleanup(false);
         }
 

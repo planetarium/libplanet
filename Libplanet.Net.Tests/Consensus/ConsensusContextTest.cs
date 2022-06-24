@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public void Ctor()
+        public async void Ctor()
         {
             var privateKey = new PrivateKey();
             var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey,
                 "localhost",
                 17192);
-            var consensusContext =
+            using var consensusContext =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     transport,
@@ -58,6 +58,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             Assert.Equal(Step.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -70,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey,
                 "localhost",
                 17192);
-            var consensusContext =
+            using var consensusContext =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     transport,
@@ -96,6 +97,7 @@ namespace Libplanet.Net.Tests.Consensus
             // Next NewHeight is not called yet.
             Assert.Equal(1, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -104,7 +106,7 @@ namespace Libplanet.Net.Tests.Consensus
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
                 0,
@@ -125,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
                 0,
@@ -150,7 +152,7 @@ namespace Libplanet.Net.Tests.Consensus
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
             var privateKey = new PrivateKey();
             var codec = new Codec();
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain1,
                 0,
@@ -246,7 +248,7 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.Peer1Priv,
                 "localhost",
                 17193);
-            var consensusContext =
+            using var consensusContext =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     transport,
@@ -323,6 +325,7 @@ namespace Libplanet.Net.Tests.Consensus
                 () => consensusContext.Round == 1,
                 5_000,
                 conditionLabel: "Round does not changed.");
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

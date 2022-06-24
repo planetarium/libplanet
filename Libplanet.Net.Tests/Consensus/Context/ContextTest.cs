@@ -43,6 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -58,10 +59,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                             block,
                             TestUtils.PrivateKeys[0],
                             nodeId: NodeId)));
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
-        public void ThrowNilPropose()
+        public async void ThrowNilPropose()
         {
             Assert.Throws<InvalidBlockProposeMessageException>(
                 () =>
@@ -70,6 +72,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                             default,
                             TestUtils.PrivateKeys[NodeId],
                             nodeId: NodeId)));
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -149,6 +152,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         {
                             Remote = new Peer(TestUtils.Validators[0]),
                         }));
+
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -188,6 +193,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     {
                         Remote = new Peer(TestUtils.Validators[2]),
                     }));
+
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -233,6 +240,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
+            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

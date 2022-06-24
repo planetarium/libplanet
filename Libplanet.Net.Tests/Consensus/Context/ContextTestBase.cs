@@ -97,10 +97,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Transport.ProcessMessageHandler.Register(ContextHandle);
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
-            await Transport.StopAsync(default);
-
             Fx.Dispose();
             Transport.Dispose();
             _consensusContext.Dispose();
