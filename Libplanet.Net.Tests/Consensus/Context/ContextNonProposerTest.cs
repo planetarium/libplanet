@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Libplanet.Blocks;
@@ -38,6 +37,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -46,6 +47,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -92,6 +94,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -101,6 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -154,6 +159,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -163,6 +170,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -185,6 +193,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -193,6 +203,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -216,11 +227,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Transport.WaitForRunningAsync();
 
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
 
             await Context.StartAsync();
 
             await timeoutOccurred.WaitAsync();
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -268,6 +281,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -278,6 +293,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             await timeoutOccurred.WaitAsync();
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -317,6 +333,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
@@ -327,6 +345,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             await timeoutOccurred.WaitAsync();
             await roundStared.WaitAsync();
+            await messageProcessed.WaitAsync();
             await NewRoundSendMessageAfterAssert();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);

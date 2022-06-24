@@ -37,7 +37,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Transport.WaitForRunningAsync();
 
             await Context.StartAsync();
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -209,6 +212,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
@@ -216,8 +221,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
-            roundVoteSet = Context.VoteSet(0);
 
+            await messageProcessed.WaitAsync();
+
+            roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
