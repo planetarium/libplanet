@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -26,24 +27,29 @@ namespace Libplanet.Net.Consensus
         private const int TimeoutProposeMultiplier = 1;
         private const int TimeoutPreVoteMultiplier = 1;
         private const int TimeoutPreCommitMultiplier = 1;
+
+        private readonly BlockChain<T> _blockChain;
+        private readonly Codec _codec;
+        private readonly long _id;
+        private readonly List<PublicKey> _validators;
+        private readonly Channel<ConsensusMessage> _messageRequests;
+        private readonly ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>>
+            _messagesInRound;
+
+        private readonly PrivateKey _privateKey;
+        private readonly ConcurrentBag<int> _preVoteFlags;
+        private readonly ConcurrentBag<int> _hasTwoThirdsPreVoteFlags;
+        private readonly ConcurrentBag<int> _preCommitFlags;
+
+        private readonly CancellationTokenSource _cancellationTokenSource;
+
         private readonly ILogger _logger;
 
-        private long _id;
-        private PrivateKey _privateKey;
         private Block<T>? _lockedValue;
         private int _lockedRound;
         private Block<T>? _validValue;
         private int _validRound;
-        private ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>> _messagesInRound;
-        private ConcurrentBag<int> _preVoteFlags;
-        private ConcurrentBag<int> _hasTwoThirdsPreVoteFlags;
-        private ConcurrentBag<int> _preCommitFlags;
-
-        private BlockChain<T> _blockChain;
-        private Codec _codec;
-        private List<PublicKey> _validators;
-
-        private CancellationTokenSource _cancellationTokenSource;
+        private int _requestCount;
 
         public Context(
             ConsensusContext<T> consensusContext,
@@ -85,6 +91,7 @@ namespace Libplanet.Net.Consensus
             _validRound = -1;
             _blockChain = blockChain;
             _codec = new Codec();
+            _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
             _messagesInRound = new ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>>();
             _preVoteFlags = new ConcurrentBag<int>();
             _hasTwoThirdsPreVoteFlags = new ConcurrentBag<int>();
@@ -124,12 +131,15 @@ namespace Libplanet.Net.Consensus
                 _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
                     ConsensusPropose propose)
             {
-                DoHandleMessage(propose);
+                ProcessMessage(propose);
             }
+
+            _ = MessageConsumerTask(_cancellationTokenSource.Token);
         }
 
         public void Dispose()
         {
+            _messageRequests.Writer.TryComplete();
             _cancellationTokenSource.Cancel();
         }
 
@@ -157,7 +167,46 @@ namespace Libplanet.Net.Consensus
             return voteSet;
         }
 
-        public void HandleMessage(ConsensusMessage message)
+        public void ProduceMessage(ConsensusMessage message)
+        {
+            Interlocked.Increment(ref _requestCount);
+            _messageRequests.Writer.WriteAsync(message);
+        }
+
+        public override string ToString()
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "node_id", _id },
+                { "number_of_validator", _validators!.Count },
+                { "height", Height },
+                { "round", Round },
+                { "step", Step.ToString() },
+                { "locked_value", _lockedValue?.Hash.ToString() ?? string.Empty },
+                { "locked_round", _lockedRound },
+                { "valid_value", _validValue?.Hash.ToString() ?? string.Empty },
+                { "valid_round", _validRound },
+            };
+            return JsonSerializer.Serialize(dict);
+        }
+
+        internal TimeSpan TimeoutPropose(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreVote(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
+        }
+
+        internal TimeSpan TimeoutPreCommit(long round)
+        {
+            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
+        }
+
+        // Isn't thread-safe, use carefully in tests.
+        internal void HandleMessage(ConsensusMessage message)
         {
             try
             {
@@ -165,20 +214,83 @@ namespace Libplanet.Net.Consensus
             }
             catch (Exception e)
             {
-                _logger.Error(e, "An error occurred during adding message. {E}", e);
+                _logger.Error(
+                    e,
+                    "An error occurred during handling message {Message}. {E}",
+                    message,
+                    e);
                 throw;
             }
 
-            DoHandleMessage(message);
+            ProcessMessage(message);
         }
 
-        public void DoHandleMessage(ConsensusMessage message)
+        internal void AddMessage(ConsensusMessage message)
+        {
+            if (message.Height != Height)
+            {
+                throw new InvalidHeightMessageException(
+                    "Height of message differs with working height.  " +
+                    $"(expected: {Height}, actual: {message.Height})",
+                    message);
+            }
+
+            if (message is ConsensusPropose propose)
+            {
+                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
+                {
+                    throw new InvalidProposerProposeMessageException(
+                        "Proposer for the height " +
+                        $"{message.Height} and round {message.Round} is invalid.  " +
+                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
+                        $"Proposer: {message.Remote!.PublicKey} / " +
+                        $"actual: Height: {Height}, Round: {Round}, " +
+                        $"Proposer: {Proposer(message.Round)})",
+                        message);
+                }
+
+                if (message.BlockHash.Equals(default(BlockHash)))
+                {
+                    throw new InvalidBlockProposeMessageException(
+                        "Cannot propose a null block.",
+                        message);
+                }
+            }
+
+            if (message is ConsensusVote vote &&
+                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
+                 !_validators.Contains(vote.ProposeVote.Validator)))
+            {
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusVote message is made by invalid validator.",
+                    vote);
+            }
+
+            if (message is ConsensusCommit commit &&
+                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
+                 !_validators.Contains(commit.CommitVote.Validator)))
+            {
+                throw new InvalidValidatorVoteMessageException(
+                    "Received ConsensusCommit message is made by invalid validator.",
+                    commit);
+            }
+
+            if (!_messagesInRound.ContainsKey(message.Round))
+            {
+                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
+            }
+
+            // TODO: Prevent duplicated messages adding.
+            _messagesInRound[message.Round].Add(message);
+        }
+
+        private void ProcessMessage(ConsensusMessage message)
         {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
                 "Height: {Height}, Round: {Round}, NodeId: {NodeId}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
-                nameof(DoHandleMessage),
+                nameof(ProcessMessage),
                 message,
                 message.Height,
                 message.Round,
@@ -338,97 +450,6 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        public override string ToString()
-        {
-            var dict = new Dictionary<string, object>
-            {
-                { "node_id", _id },
-                { "number_of_validator", _validators!.Count },
-                { "height", Height },
-                { "round", Round },
-                { "step", Step.ToString() },
-                { "locked_value", _lockedValue?.Hash.ToString() ?? string.Empty },
-                { "locked_round", _lockedRound },
-                { "valid_value", _validValue?.Hash.ToString() ?? string.Empty },
-                { "valid_round", _validRound },
-            };
-            return JsonSerializer.Serialize(dict);
-        }
-
-        internal TimeSpan TimeoutPropose(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
-        }
-
-        internal TimeSpan TimeoutPreVote(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
-        }
-
-        internal TimeSpan TimeoutPreCommit(long round)
-        {
-            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
-        }
-
-        internal void AddMessage(ConsensusMessage message)
-        {
-            if (message.Height != Height)
-            {
-                throw new InvalidHeightMessageException(
-                    "Height of message differs with working height.  " +
-                    $"(expected: {Height}, actual: {message.Height})",
-                    message);
-            }
-
-            if (message is ConsensusPropose propose)
-            {
-                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
-                {
-                    throw new InvalidProposerProposeMessageException(
-                        "Proposer for the height " +
-                        $"{message.Height} and round {message.Round} is invalid.  " +
-                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {message.Remote!.PublicKey} / " +
-                        $"actual: Height: {Height}, Round: {Round}, " +
-                        $"Proposer: {Proposer(message.Round)})",
-                        message);
-                }
-
-                if (message.BlockHash.Equals(default(BlockHash)))
-                {
-                    throw new InvalidBlockProposeMessageException(
-                        "Cannot propose a null block.",
-                        message);
-                }
-            }
-
-            if (message is ConsensusVote vote &&
-                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
-                 !_validators.Contains(vote.ProposeVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusVote message is made by invalid validator.",
-                    vote);
-            }
-
-            if (message is ConsensusCommit commit &&
-                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
-                 !_validators.Contains(commit.CommitVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusCommit message is made by invalid validator.",
-                    commit);
-            }
-
-            if (!_messagesInRound.ContainsKey(message.Round))
-            {
-                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
-            }
-
-            // TODO: Prevent duplicated messages adding.
-            _messagesInRound[message.Round].Add(message);
-        }
-
         private async Task<Block<T>> GetValue()
         {
             Block<T> block = await _blockChain.ProposeBlock(
@@ -528,6 +549,32 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Step = step;
             StepChanged?.Invoke(this, step);
+        }
+
+        private async Task MessageConsumerTask(CancellationToken ctx)
+        {
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
+            await foreach (ConsensusMessage message in _messageRequests.Reader.ReadAllAsync(ctx))
+            {
+#else
+            while (!ctx.IsCancellationRequested)
+            {
+                ConsensusMessage message = await _messageRequests.Reader.ReadAsync(ctx);
+#endif
+                long left = Interlocked.Decrement(ref _requestCount);
+                try
+                {
+                    HandleMessage(message);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Unexpected exception occurred during {FName}. {E}",
+                        nameof(HandleMessage),
+                        e);
+                }
+            }
         }
 
         // Predicates

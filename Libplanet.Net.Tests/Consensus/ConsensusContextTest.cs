@@ -12,6 +12,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -178,6 +179,11 @@ namespace Libplanet.Net.Tests.Consensus
 
             context.NewHeight(blockChain1.Tip.Index + 1);
             Assert.Equal(1, context.Height);
+            var stepChanged = new AsyncAutoResetEvent();
+            context.Contexts[1].StepChanged += (sender, tuple) =>
+            {
+                stepChanged.Set();
+            };
             context.HandleMessage(
                 new ConsensusPropose(
                     0,
@@ -189,6 +195,7 @@ namespace Libplanet.Net.Tests.Consensus
                 {
                     Remote = validatorPeer,
                 });
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreVote, context.Step);
 
             context.HandleMessage(
@@ -205,6 +212,7 @@ namespace Libplanet.Net.Tests.Consensus
                 {
                     Remote = validatorPeer,
                 });
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, context.Step);
 
             context.HandleMessage(
@@ -221,6 +229,7 @@ namespace Libplanet.Net.Tests.Consensus
                 {
                     Remote = validatorPeer,
                 });
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.EndCommit, context.Step);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, context.Height);
