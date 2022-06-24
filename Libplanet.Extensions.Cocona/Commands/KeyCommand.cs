@@ -121,7 +121,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             else
             {
                 PrivateKey privateKey = ValidateRawHex(key);
-                string passphraseValue = passphrase.Take("Passphrase: ");
+                string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
                 ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
                     privateKey, passphraseValue);
                 PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
