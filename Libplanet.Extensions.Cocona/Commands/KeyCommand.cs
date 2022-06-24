@@ -350,10 +350,9 @@ namespace Libplanet.Extensions.Cocona.Commands
                 string json = new StreamReader(jsonPath).ReadToEnd();
                 return json;
             }
-            catch (Exception)
+            catch (System.IO.FileNotFoundException)
             {
-                Utils.Error("This file does not exist.");
-                return string.Empty;
+                throw Utils.Error("This file does not exist.");
             }
         }
 
