@@ -260,7 +260,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        [Command(Description = "Derive Public key and Address from Private key.")]
+        [Command(Description = "Derive public key and address from private key.")]
         public void Derive(
             [Argument(
                 "PRIVATE-KEY",
