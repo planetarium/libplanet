@@ -493,8 +493,7 @@ namespace Libplanet.Net.Tests
                 new Swarm<DumbAction>(
                     null,
                     key,
-                    ver,
-                    consensusPrivateKey: consensusPrivateKey);
+                    ver);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -502,8 +501,16 @@ namespace Libplanet.Net.Tests
                 new Swarm<DumbAction>(
                     blockchain,
                     null,
-                    ver,
-                    consensusPrivateKey: consensusPrivateKey);
+                    ver);
+            });
+
+            // Swarm<DumbAction> needs host or iceServers.
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Swarm<DumbAction>(
+                    blockchain,
+                    key,
+                    ver);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
@@ -513,17 +520,6 @@ namespace Libplanet.Net.Tests
                     blockchain,
                     key,
                     ver,
-                    consensusPrivateKey: consensusPrivateKey);
-            });
-
-            // Swarm<DumbAction> needs host or iceServers.
-            Assert.Throws<ArgumentException>(() =>
-            {
-                new Swarm<DumbAction>(
-                    blockchain,
-                    key,
-                    ver,
-                    consensusPrivateKey: consensusPrivateKey,
                     iceServers: new IceServer[] { });
             });
         }

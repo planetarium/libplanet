@@ -74,7 +74,6 @@ namespace Libplanet.Benchmarks
                     _blockChains[i],
                     _keys[i],
                     _appProtocolVersion,
-                    consensusPrivateKey: consensusKeys[i],
                     host: IPAddress.Loopback.ToString());
                 tasks.Add(StartAsync(_swarms[i]));
             }

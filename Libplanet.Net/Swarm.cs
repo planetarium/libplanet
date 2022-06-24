@@ -70,7 +70,7 @@ namespace Libplanet.Net
         /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
         /// <see langword="null"/>, which is the default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
-        /// <param name="consensusOption"><see cref="consensusOption"/> for
+        /// <param name="consensusOption"><see cref="ConsensusReactorOption"/> for
         /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
