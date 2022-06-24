@@ -28,7 +28,7 @@ To be released.
     [2.0.\*][Cocona.Lite 2.0.0].  [[#2101]]
 
  - Implemented *planet key derive*, now you can get public key and
-   address from private key directly! [[#2108]]
+   address from private key directly!  [[#2108]]
 
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
