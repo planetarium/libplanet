@@ -64,30 +64,37 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             }
 
-            watchConsensusMessage = IsProposeSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
-            var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
-            var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
-            await Context.StartAsync(lastCommit);
-            await messageReceived.WaitAsync();
-
-            Assert.Equal(Step.PreVote, Context.Step);
-            // Looks dirty, but compiler throws error without if statement.
-            if (received is null)
+            try
             {
-                Assert.NotNull(received);
-            }
-            else
-            {
-                Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                watchConsensusMessage = IsProposeSent;
+                _ = Transport.StartAsync();
+                await Transport.WaitForRunningAsync();
+
+                var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
+                var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
+                await Context.StartAsync(lastCommit);
+                await messageReceived.WaitAsync();
+
+                Assert.Equal(Step.PreVote, Context.Step);
+                // Looks dirty, but compiler throws error without if statement.
+                if (received is null)
+                {
+                    Assert.NotNull(received);
+                }
+                else
+                {
+                    Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
                         BlockChain.Policy.GetHashAlgorithm,
                         (Dictionary)new Codec().Decode(received.Payload));
-                Assert.NotNull(mined.LastCommit);
-                Assert.Equal(
-                    new HashSet<Vote>(voteSet.Votes),
-                    new HashSet<Vote>(mined.LastCommit?.Votes!));
+                    Assert.NotNull(mined.LastCommit);
+                    Assert.Equal(
+                        new HashSet<Vote>(voteSet.Votes),
+                        new HashSet<Vote>(mined.LastCommit?.Votes!));
+                }
+            }
+            finally
+            {
+                await Transport.StopAsync(TimeSpan.Zero);
             }
         }
 
