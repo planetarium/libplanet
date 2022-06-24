@@ -66,7 +66,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             PassphraseParameters passphrase,
             [Option(Description = "Remove without asking passphrase.")]
             bool noPassphrase = false,
-            [Option(Description = "Path to key store")]
+            [Option(Description = "Path to key store.")]
             string? path = null
         )
         {
