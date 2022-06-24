@@ -45,7 +45,7 @@ namespace Libplanet.Consensus
 
         public long Height { get; }
 
-        public long Round { get; }
+        public int Round { get; }
 
         public ImmutableArray<PublicKey> ValidatorSet { get; }
 

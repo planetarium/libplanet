@@ -17,7 +17,7 @@ namespace Libplanet.Blocks
 
         public BlockCommit(
             long height,
-            long round,
+            int round,
             BlockHash hash,
             ImmutableArray<Vote>? votes)
         {
@@ -62,7 +62,7 @@ namespace Libplanet.Blocks
 
         public long Height { get; }
 
-        public long Round { get; }
+        public int Round { get; }
 
         public BlockHash BlockHash { get; }
 
