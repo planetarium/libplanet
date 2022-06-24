@@ -80,8 +80,14 @@ namespace Libplanet.Net.Consensus
                     $" (expected: {_blockChain.Tip.Index + 1}, actual: {height})");
             }
 
+            BlockCommit? lastCommit = null;
             if (_contexts.ContainsKey(Height))
             {
+                lastCommit = _contexts[Height].CommittedRound == -1
+                    ? (BlockCommit?)null
+                    : new BlockCommit(
+                        _contexts[Height].VoteSet(_contexts[Height].CommittedRound),
+                        _blockChain.Tip.Hash);
                 _contexts[Height].Dispose();
                 _contexts.Remove(Height);
             }
@@ -100,7 +106,7 @@ namespace Libplanet.Net.Consensus
                     _validators);
             }
 
-            _ = _contexts[height].StartAsync();
+            _ = _contexts[height].StartAsync(lastCommit);
         }
 
         public void Commit(Block<T> block)
