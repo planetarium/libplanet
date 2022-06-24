@@ -214,9 +214,10 @@ namespace Libplanet.Net.Tests
 
             foreach (var publicKey in exceptList)
             {
+                port += 1;
                 validatorPeers.Add(
                     new BoundPeer(
-                        publicKey, new DnsEndPoint("localhost", port++)));
+                        publicKey, new DnsEndPoint("localhost", port)));
             }
 
             void BroadcastMessage(ConsensusMessage message) =>

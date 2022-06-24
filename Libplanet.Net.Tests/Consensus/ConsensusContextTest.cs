@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public void Ctor()
+        public async void Ctor()
         {
             var privateKey = new PrivateKey();
             var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey,
                 "localhost",
                 17192);
-            var consensusContext =
+            using var consensusContext =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     transport,
@@ -58,6 +58,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             Assert.Equal(Step.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -70,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus
                 privateKey,
                 "localhost",
                 17192);
-            var consensusContext =
+            using var consensusContext =
                 TestUtils.CreateStandaloneConsensusContext(
                     blockChain,
                     transport,
@@ -96,6 +97,7 @@ namespace Libplanet.Net.Tests.Consensus
             // Next NewHeight is not called yet.
             Assert.Equal(1, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -104,7 +106,7 @@ namespace Libplanet.Net.Tests.Consensus
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
                 0,
@@ -125,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus
             BlockChain<DumbAction> blockChain =
                 TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
                 0,
@@ -150,7 +152,7 @@ namespace Libplanet.Net.Tests.Consensus
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
             var privateKey = new PrivateKey();
             var codec = new Codec();
-            var context = new ConsensusContext<DumbAction>(
+            using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain1,
                 0,
@@ -236,6 +238,94 @@ namespace Libplanet.Net.Tests.Consensus
 
             // Already received propose message for height 2, skip to PreVote step not Propose step.
             Assert.Equal(Step.PreVote, context.Step);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void IncreaseRoundWhenTimeout()
+        {
+            var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            using var transport = TestUtils.CreateNetMQTransport(
+                TestUtils.Peer1Priv,
+                "localhost",
+                17193);
+            using var consensusContext =
+                TestUtils.CreateStandaloneConsensusContext(
+                    blockChain,
+                    transport,
+                    TimeSpan.FromSeconds(1),
+                    nodeId: 1,
+                    port: 17193,
+                    privateKey: TestUtils.Peer1Priv,
+                    validators: TestUtils.Validators);
+
+            _ = transport.StartAsync();
+            await transport.WaitForRunningAsync();
+
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            // Wait for block to be proposed.
+            await Task.Delay(1000);
+            Assert.Equal(1, consensusContext.Height);
+            Assert.Equal(0, consensusContext.Round);
+
+            // Triggers timeout +2/3 with NIL and Block
+            consensusContext.HandleMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer2Priv,
+                        2,
+                        1,
+                        hash: null,
+                        flag: VoteFlag.Absent))
+                {
+                    Remote = TestUtils.Peer2,
+                });
+
+            consensusContext.HandleMessage(
+                new ConsensusVote(
+                    vote: TestUtils.CreateVote(
+                        TestUtils.Peer3Priv,
+                        3,
+                        1,
+                        hash: null,
+                        flag: VoteFlag.Absent))
+                {
+                    Remote = TestUtils.Peer3,
+                });
+
+            await Task.Delay(Context<DumbAction>.TimeoutPreVote(0));
+
+            consensusContext.HandleMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer2Priv,
+                        2,
+                        1,
+                        hash: null,
+                        flag: VoteFlag.Commit))
+                {
+                    Remote = TestUtils.Peer2,
+                });
+
+            consensusContext.HandleMessage(
+                new ConsensusCommit(
+                    vote: TestUtils.CreateVote(
+                        TestUtils.Peer3Priv,
+                        3,
+                        1,
+                        hash: null,
+                        flag: VoteFlag.Commit))
+                {
+                    Remote = TestUtils.Peer3,
+                });
+
+            await Task.Delay(Context<DumbAction>.TimeoutPreCommit(0));
+
+            Assert.Equal(1, consensusContext.Height);
+            await Libplanet.Tests.TestUtils.AssertThatEventually(
+                () => consensusContext.Round == 1,
+                5_000,
+                conditionLabel: "Round does not changed.");
+            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

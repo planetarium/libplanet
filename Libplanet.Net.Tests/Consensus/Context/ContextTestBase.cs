@@ -10,6 +10,7 @@ using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
 using Serilog;
 using Xunit.Abstractions;
 
@@ -96,14 +97,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Transport.ProcessMessageHandler.Register(ContextHandle);
         }
 
-        public async void Dispose()
+        public void Dispose()
         {
-            await Transport.StopAsync(default);
-
             Fx.Dispose();
             Transport.Dispose();
             _consensusContext.Dispose();
             Context.Dispose();
+            NetMQConfig.Cleanup(false);
         }
 
         protected Block<DumbAction> GetInvalidBlock() =>
@@ -111,7 +111,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             {
                 Index = BlockChain.Tip.Index + 1,
                 Difficulty = BlockChain.Tip.Difficulty,
-                TotalDifficulty = BlockChain.Tip.TotalDifficulty + 1,
+                TotalDifficulty = BlockChain.Tip.TotalDifficulty + BlockChain.Tip.Difficulty,
                 PublicKey = Fx.Miner.PublicKey,
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),

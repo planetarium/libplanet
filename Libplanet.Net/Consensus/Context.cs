@@ -190,17 +190,17 @@ namespace Libplanet.Net.Consensus
             return JsonSerializer.Serialize(dict);
         }
 
-        internal TimeSpan TimeoutPropose(long round)
+        internal static TimeSpan TimeoutPropose(long round)
         {
             return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
         }
 
-        internal TimeSpan TimeoutPreVote(long round)
+        internal static TimeSpan TimeoutPreVote(long round)
         {
             return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
         }
 
-        internal TimeSpan TimeoutPreCommit(long round)
+        internal static TimeSpan TimeoutPreCommit(long round)
         {
             return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
         }
