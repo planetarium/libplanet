@@ -21,7 +21,7 @@ namespace Libplanet.Extensions.Cocona.Commands
         [Command(Description = "List all private keys.")]
         public void List(
             [Option(
-                Description = "Specify KeyStore path to list."
+                Description = "Specify key store path to list."
             )]
             string? path = null)
         {
