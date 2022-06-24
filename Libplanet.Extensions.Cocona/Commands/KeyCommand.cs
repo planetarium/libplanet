@@ -25,11 +25,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             )]
             string? path = null)
         {
-            if (path != null)
-            {
-                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-            }
-
+            ChangeKeyStorePath(path);
             PrintKeys(KeyStore.List().Select(t => t.ToValueTuple()));
         }
 
@@ -46,11 +42,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string? path = null
         )
         {
-            if (path != null)
-            {
-                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-            }
-
+            ChangeKeyStorePath(path);
             string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
             PrivateKey pkey = new PrivateKey();
             ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
@@ -78,13 +70,9 @@ namespace Libplanet.Extensions.Cocona.Commands
             string? path = null
         )
         {
+            ChangeKeyStorePath(path);
             try
             {
-                if (path != null)
-                {
-                    KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-                }
-
                 if (!noPassphrase)
                 {
                     UnprotectKey(keyId, passphrase);
@@ -117,11 +105,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string? path = null
         )
         {
-            if (path != null)
-            {
-                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-            }
-
+            ChangeKeyStorePath(path);
             if (json)
             {
                 try
@@ -162,11 +146,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string? path = null
         )
         {
-            if (path != null)
-            {
-                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-            }
-
+            ChangeKeyStorePath(path);
             PrivateKey key = UnprotectKey(keyId, passphrase);
             byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
             using Stream stdout = Console.OpenStandardOutput();
@@ -244,11 +224,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             string? storePath = null
         )
         {
-            if (storePath != null)
-            {
-                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
-            }
-
+            ChangeKeyStorePath(storePath);
             PrivateKey key = UnprotectKey(keyId, passphrase);
 
             byte[] message;
@@ -290,7 +266,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                 "PRIVATE-KEY",
                 Description = "A raw private key to import."
             )]
-            string key,
+            string key
         )
         {
             PrivateKey privateKey = ValidateRawHex(key);
@@ -378,6 +354,18 @@ namespace Libplanet.Extensions.Cocona.Commands
             {
                 Utils.Error("This file does not exist.");
                 return string.Empty;
+            }
+        }
+
+        private void ChangeKeyStorePath(string? path)
+        {
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
+            }
+            else
+            {
+                KeyStore = Web3KeyStore.DefaultKeyStore;
             }
         }
     }
