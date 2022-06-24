@@ -38,7 +38,6 @@ namespace Libplanet.Net.Consensus
             _blockChain = blockChain;
             _nodeId = nodeId;
 
-            // TODO: Height and round should be serialized.
             _consensusContext = new ConsensusContext<T>(
                 BroadcastMessage,
                 blockChain,
