@@ -130,6 +130,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 1_000);
         }
 
+        protected AsyncManualResetEvent WatchMessageProcessed()
+        {
+            var messageProcessed = new AsyncManualResetEvent();
+            Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
+
+            return messageProcessed;
+        }
+
         private async Task DisposeTransport()
         {
             if (Transport.Running)
