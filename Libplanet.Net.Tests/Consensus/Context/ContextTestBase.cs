@@ -66,7 +66,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _consensusContext = new ConsensusContext<DumbAction>(
                 BroadcastMessage,
                 BlockChain,
-                nodeId,
                 height,
                 privateKey: TestUtils.PrivateKeys[(int)nodeId],
                 validators: TestUtils.Validators,
@@ -75,7 +74,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context = new Context<DumbAction>(
                 _consensusContext,
                 BlockChain,
-                nodeId,
                 height,
                 TestUtils.PrivateKeys[(int)nodeId],
                 TestUtils.Validators,

@@ -19,6 +19,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
+    [Collection("NetMQConfiguration")]
     public class ConsensusContextTest
     {
         private const int Timeout = 60_000;
@@ -109,7 +110,6 @@ namespace Libplanet.Net.Tests.Consensus
             using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
-                0,
                 blockChain.Tip.Index,
                 new PrivateKey(),
                 new List<PublicKey> { new PrivateKey().PublicKey, new PrivateKey().PublicKey },
@@ -130,7 +130,6 @@ namespace Libplanet.Net.Tests.Consensus
             using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain,
-                0,
                 blockChain.Tip.Index + 1,
                 new PrivateKey(),
                 new List<PublicKey> { new PrivateKey().PublicKey, new PrivateKey().PublicKey },
@@ -139,7 +138,7 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.True(context.Height > 0);
             Assert.Throws<InvalidHeightMessageException>(
                 () => context.HandleMessage(
-                    new ConsensusPropose(0, 0, 0, _fx.Block1.Hash, new byte[] { }, -1)));
+                    new ConsensusPropose(0, 0, _fx.Block1.Hash, new byte[] { }, -1)));
         }
 
         [Fact(Timeout = Timeout)]
@@ -155,7 +154,6 @@ namespace Libplanet.Net.Tests.Consensus
             using var context = new ConsensusContext<DumbAction>(
                 _ => { },
                 blockChain1,
-                0,
                 blockChain1.Tip.Index + 1,
                 new PrivateKey(),
                 new List<PublicKey> { privateKey.PublicKey },
@@ -169,7 +167,6 @@ namespace Libplanet.Net.Tests.Consensus
             // Message from higher height
             context.HandleMessage(
                 new ConsensusPropose(
-                    0,
                     2,
                     0,
                     block2.Hash,
@@ -188,7 +185,6 @@ namespace Libplanet.Net.Tests.Consensus
             };
             context.HandleMessage(
                 new ConsensusPropose(
-                    0,
                     1,
                     0,
                     block1.Hash,
@@ -209,7 +205,6 @@ namespace Libplanet.Net.Tests.Consensus
                         DateTimeOffset.UtcNow,
                         privateKey.PublicKey,
                         VoteFlag.Absent,
-                        0,
                         null).Sign(privateKey))
                 {
                     Remote = validatorPeer,
@@ -226,7 +221,6 @@ namespace Libplanet.Net.Tests.Consensus
                         DateTimeOffset.UtcNow,
                         privateKey.PublicKey,
                         VoteFlag.Commit,
-                        0,
                         null).Sign(privateKey))
                 {
                     Remote = validatorPeer,
@@ -253,7 +247,6 @@ namespace Libplanet.Net.Tests.Consensus
                     blockChain,
                     transport,
                     TimeSpan.FromSeconds(1),
-                    nodeId: 1,
                     port: 17193,
                     privateKey: TestUtils.Peer1Priv,
                     validators: TestUtils.Validators);
@@ -272,7 +265,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
-                        2,
                         1,
                         hash: null,
                         flag: VoteFlag.Absent))
@@ -284,7 +276,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusVote(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
-                        3,
                         1,
                         hash: null,
                         flag: VoteFlag.Absent))
@@ -298,7 +289,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
-                        2,
                         1,
                         hash: null,
                         flag: VoteFlag.Commit))
@@ -310,7 +300,6 @@ namespace Libplanet.Net.Tests.Consensus
                 new ConsensusCommit(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
-                        3,
                         1,
                         hash: null,
                         flag: VoteFlag.Commit))

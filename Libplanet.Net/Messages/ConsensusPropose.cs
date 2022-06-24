@@ -7,13 +7,12 @@ namespace Libplanet.Net.Messages
     public class ConsensusPropose : ConsensusMessage
     {
         public ConsensusPropose(
-            long nodeId,
             long height,
             int round,
             BlockHash blockHash,
             byte[] payload,
             int validRound)
-        : base(nodeId, height, round, blockHash)
+        : base(height, round, blockHash)
         {
             Payload = payload;
             ValidRound = validRound;
@@ -22,8 +21,8 @@ namespace Libplanet.Net.Messages
         public ConsensusPropose(byte[][] dataframes)
         : base(dataframes)
         {
-            Payload = dataframes[4];
-            ValidRound = BitConverter.ToInt32(dataframes[5], 0);
+            Payload = dataframes[3];
+            ValidRound = BitConverter.ToInt32(dataframes[4], 0);
         }
 
         public byte[] Payload { get; }
@@ -36,7 +35,6 @@ namespace Libplanet.Net.Messages
             {
                 var frames = new List<byte[]>
                 {
-                    BitConverter.GetBytes(NodeId),
                     BitConverter.GetBytes(Height),
                     BitConverter.GetBytes(Round),
                     BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },

@@ -48,7 +48,6 @@ namespace Libplanet.Tests.Blocks
                             Genesis.Timestamp,
                             Miner.PublicKey,
                             VoteFlag.Commit,
-                            0,
                             null),
                     }.ToImmutableArray())
             );
@@ -81,7 +80,6 @@ namespace Libplanet.Tests.Blocks
                             Next.Timestamp,
                             Miner.PublicKey,
                             VoteFlag.Commit,
-                            0,
                             null),
                     }.ToImmutableArray())
             );

@@ -65,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus
                     JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
                         ConsensusReactors[node].ToString());
 
-                Assert.Equal((long)node, json["node_id"].GetInt32());
+                Assert.Equal(ValidatorPeers[node].Address.ToString(), json["node_id"].GetString());
                 Assert.Equal(1, json["height"].GetInt32());
                 Assert.Equal(2, BlockChains[node].Count);
                 Assert.Equal(0L, json["round"].GetInt32());

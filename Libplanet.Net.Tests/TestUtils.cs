@@ -97,7 +97,6 @@ namespace Libplanet.Net.Tests
         public static Vote CreateVote(
             PublicKey publicKey,
             VoteFlag flag = VoteFlag.Null,
-            long id = 0,
             long height = 0,
             int round = 0) =>
             new Vote(
@@ -107,12 +106,10 @@ namespace Libplanet.Net.Tests
                 DateTimeOffset.Now,
                 publicKey,
                 flag,
-                id,
                 ImmutableArray<byte>.Empty);
 
         public static Vote CreateVote(
             PrivateKey privateKey,
-            long id = 0,
             long height = 0,
             int round = 0,
             BlockHash? hash = null,
@@ -124,7 +121,6 @@ namespace Libplanet.Net.Tests
                 DateTimeOffset.Now,
                 privateKey.PublicKey,
                 flag,
-                id,
                 ImmutableArray<byte>.Empty).Sign(privateKey);
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
@@ -169,14 +165,12 @@ namespace Libplanet.Net.Tests
         public static ConsensusPropose CreateConsensusPropose(
             Block<DumbAction>? block,
             PrivateKey privateKey,
-            long nodeId = 1,
             long height = 1,
             int round = 0,
             int validRound = -1)
         {
             var codec = new Codec();
             return new ConsensusPropose(
-                nodeId,
                 height,
                 round,
                 block?.Hash ?? default,
@@ -192,7 +186,6 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> blockChain,
             ITransport transport,
             TimeSpan newHeightDelay,
-            long nodeId = 0,
             long height = 0,
             string host = "localhost",
             int port = 18192,
@@ -226,7 +219,6 @@ namespace Libplanet.Net.Tests
             var consensusContext = new ConsensusContext<DumbAction>(
                 BroadcastMessage,
                 blockChain,
-                nodeId,
                 height,
                 privateKey,
                 validators,

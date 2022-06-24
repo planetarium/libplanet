@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     public class ConsensusVote : ConsensusMessage
     {
         public ConsensusVote(Vote vote)
-            : base(vote.NodeId, vote.Height, vote.Round, vote.BlockHash)
+            : base(vote.Height, vote.Round, vote.BlockHash)
         {
             ProposeVote = vote;
         }

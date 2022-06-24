@@ -30,7 +30,6 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
-        private readonly long _id;
         private readonly List<PublicKey> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
         private readonly ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>>
@@ -54,14 +53,12 @@ namespace Libplanet.Net.Consensus
         public Context(
             ConsensusContext<T> consensusContext,
             BlockChain<T> blockChain,
-            long id,
             long height,
             PrivateKey privateKey,
             List<PublicKey> validators)
             : this(
                 consensusContext,
                 blockChain,
-                id,
                 height,
                 privateKey,
                 validators,
@@ -73,14 +70,12 @@ namespace Libplanet.Net.Consensus
         internal Context(
             ConsensusContext<T> consensusContext,
             BlockChain<T> blockChain,
-            long id,
             long height,
             PrivateKey privateKey,
             List<PublicKey> validators,
             Step step,
             int round = 0)
         {
-            _id = id;
             _privateKey = privateKey;
             Height = height;
             Round = round;
@@ -177,7 +172,7 @@ namespace Libplanet.Net.Consensus
         {
             var dict = new Dictionary<string, object>
             {
-                { "node_id", _id },
+                { "node_id", _privateKey.ToAddress().ToString() },
                 { "number_of_validator", _validators!.Count },
                 { "height", Height },
                 { "round", Round },
@@ -288,13 +283,13 @@ namespace Libplanet.Net.Consensus
         {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, NodeId: {NodeId}, Hash: {BlockHash}. " +
+                "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
                 nameof(ProcessMessage),
                 message,
                 message.Height,
                 message.Round,
-                message.NodeId,
+                message.Remote!.Address,
                 message.BlockHash,
                 _messagesInRound[Round].Count,
                 ToString());
@@ -495,7 +490,6 @@ namespace Libplanet.Net.Consensus
                 _ = SendMessageAfter(
                     TimeSpan.FromMilliseconds(500),
                     new ConsensusPropose(
-                        _id,
                         Height,
                         Round,
                         proposal.Hash,
@@ -536,7 +530,6 @@ namespace Libplanet.Net.Consensus
                 DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
                 flag,
-                _id,
                 null).Sign(_privateKey);
         }
 

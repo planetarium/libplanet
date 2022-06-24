@@ -54,7 +54,6 @@ namespace Libplanet.Net.Tests.Transports
                 swarmKey,
                 apv,
                 consensusPrivateKey: consensusKey,
-                nodeId: 0,
                 host: host,
                 listenPort: port,
                 options: option))

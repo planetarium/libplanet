@@ -15,7 +15,7 @@ namespace Libplanet.Consensus
     {
         // FIXME: Should separate prevote lock and commit vote lock?
         private readonly object _lock;
-        private Vote[] _votes;
+        private Dictionary<PublicKey, Vote> _votes;
 
         public VoteSet(
             long height,
@@ -34,9 +34,8 @@ namespace Libplanet.Consensus
                     DateTimeOffset.Now,
                     ValidatorSet[x],
                     VoteFlag.Null,
-                    x,
                     null))
-                .ToArray();
+                .ToDictionary(keySelector: x => x.Validator, elementSelector: x => x);
 
             // TODO: Fill Votes with null Signature?
             Sum = 0;
@@ -54,7 +53,9 @@ namespace Libplanet.Consensus
 
         public ImmutableArray<Vote> Votes
         {
-            get => _votes.ToImmutableArray();
+            // ToDictionary() does not keep the order of the source. Creates a new list that will be
+            // same as the order of ValidatorSet.
+            get => ValidatorSet.Select(publicKey => _votes[publicKey]).ToImmutableArray();
         }
 
         public bool Add(Vote vote)
@@ -66,7 +67,7 @@ namespace Libplanet.Consensus
                     return false;
                 }
 
-                _votes[vote.NodeId] = vote;
+                _votes[vote.Validator] = vote;
                 return true;
             }
         }
@@ -74,21 +75,21 @@ namespace Libplanet.Consensus
         public bool HasTwoThirdAny()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
-            return _votes.Count(x => !(x.Signature is null)) > twoThird;
+            return _votes.Count(x => !(x.Value.Signature is null)) > twoThird;
         }
 
         public bool HasTwoThirdPrevote()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !(x.Signature is null) && x.Flag == VoteFlag.Absent) > twoThird;
+                !(x.Value.Signature is null) && x.Value.Flag == VoteFlag.Absent) > twoThird;
         }
 
         public bool HasTwoThirdCommit()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !(x.Signature is null) && x.Flag == VoteFlag.Commit) > twoThird;
+                !(x.Value.Signature is null) && x.Value.Flag == VoteFlag.Commit) > twoThird;
         }
 
         private bool IsVoteValid(Vote vote)
@@ -119,7 +120,7 @@ namespace Libplanet.Consensus
                 return false;
             }
 
-            if (vote.Flag < _votes[vote.NodeId].Flag)
+            if (vote.Flag < _votes[vote.Validator].Flag)
             {
                 return false;
             }

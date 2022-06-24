@@ -15,7 +15,6 @@ namespace Libplanet.Net.Consensus
         where T : IAction, new()
     {
         private readonly BlockChain<T> _blockChain;
-        private readonly long _nodeId;
         private readonly PrivateKey _privateKey;
         private readonly List<PublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
@@ -27,7 +26,6 @@ namespace Libplanet.Net.Consensus
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
-            long nodeId,
             long height,
             PrivateKey privateKey,
             List<PublicKey> validators,
@@ -35,7 +33,6 @@ namespace Libplanet.Net.Consensus
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
-            _nodeId = nodeId;
             _privateKey = privateKey;
             _validators = validators;
             Height = height;
@@ -98,7 +95,6 @@ namespace Libplanet.Net.Consensus
                 _contexts[height] = new Context<T>(
                     this,
                     _blockChain,
-                    _nodeId,
                     height,
                     _privateKey,
                     _validators);
@@ -129,7 +125,6 @@ namespace Libplanet.Net.Consensus
                 _contexts[height] = new Context<T>(
                     this,
                     _blockChain,
-                    _nodeId,
                     height,
                     _privateKey,
                     _validators);
