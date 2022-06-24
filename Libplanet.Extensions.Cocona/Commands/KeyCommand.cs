@@ -101,7 +101,7 @@ namespace Libplanet.Extensions.Cocona.Commands
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
             bool dryRun = false,
-            [Option(Description = "Path to key store")]
+            [Option(Description = "Path to key store.")]
             string? path = null
         )
         {
