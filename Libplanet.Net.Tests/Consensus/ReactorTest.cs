@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -14,11 +16,13 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using NetMQ;
 using Serilog;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    public abstract class ReactorTest : IDisposable
+    [Collection("NetMQConfiguration")]
+    public class ReactorTest : IDisposable, IAsyncLifetime
     {
         protected const int Count = 4;
         protected const int PropagationDelay = 10_000;
@@ -94,6 +98,10 @@ namespace Libplanet.Net.Tests.Consensus
             NetMQConfig.Cleanup(false);
         }
 
+        public Task InitializeAsync() => Task.Delay(TimeSpan.Zero);
+
+        public Task DisposeAsync() => DisposeConsensusReactors();
+
         private IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
@@ -120,6 +128,14 @@ namespace Libplanet.Net.Tests.Consensus
                 key,
                 validatorPeers.ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
+        }
+
+        private Task DisposeConsensusReactors()
+        {
+            return Task.WhenAll((
+                from reactor in ConsensusReactors
+                where reactor.Running
+                select reactor.StopAsync(CancellationTokenSource.Token)).ToArray());
         }
     }
 }

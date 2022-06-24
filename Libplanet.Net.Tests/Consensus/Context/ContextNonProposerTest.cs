@@ -12,7 +12,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    [Collection("NetMQConfiguration")]
     public class ContextNonProposerTest : ContextTestBase
     {
         private const int NodeId = 0;
@@ -50,7 +49,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -114,7 +112,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(0, json["valid_round"].GetInt64());
             Assert.Equal(block.Hash.ToString(), json["locked_value"].GetString());
             Assert.Equal(block.Hash.ToString(), json["valid_value"].GetString());
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -169,7 +166,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -200,7 +196,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -229,7 +224,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -287,7 +281,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -338,7 +331,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

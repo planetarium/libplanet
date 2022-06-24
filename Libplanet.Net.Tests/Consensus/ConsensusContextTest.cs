@@ -19,7 +19,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    [Collection("NetMQConfiguration")]
     public class ConsensusContextTest
     {
         private const int Timeout = 60_000;
@@ -41,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact(Timeout = Timeout)]
-        public async void Ctor()
+        public void Ctor()
         {
             var privateKey = new PrivateKey();
             var blockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
@@ -59,7 +58,6 @@ namespace Libplanet.Net.Tests.Consensus
 
             Assert.Equal(Step.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
-            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -98,7 +96,6 @@ namespace Libplanet.Net.Tests.Consensus
             // Next NewHeight is not called yet.
             Assert.Equal(1, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);
-            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -314,7 +311,6 @@ namespace Libplanet.Net.Tests.Consensus
                 () => consensusContext.Round == 1,
                 5_000,
                 conditionLabel: "Round does not changed.");
-            await transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }
