@@ -53,11 +53,6 @@ namespace Libplanet.Net
         /// <param name="privateKey">A private key to sign messages.  The public part of
         /// this key become a part of its end address for being pointed by peers.</param>
         /// <param name="appProtocolVersion">An app protocol to comply.</param>
-        /// <param name="consensusPrivateKey">(Experimental) The private key that is using
-        /// for Consensus Signing.</param>
-        /// <param name="consensusPort">(Experimental) The port for ConsensusReactor.</param>
-        /// <param name="consensusWorkers">(Experimental) The number of background workers for
-        /// Consensus transport.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -75,20 +70,20 @@ namespace Libplanet.Net
         /// signed <see cref="AppProtocolVersion"/>s to trust.  To trust any party, pass
         /// <see langword="null"/>, which is the default.</param>
         /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
+        /// <param name="consensusOption"><see cref="consensusOption"/> for
+        /// initialize <see cref="ConsensusReactor{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            PrivateKey consensusPrivateKey,
-            int? consensusPort = null,
-            int consensusWorkers = 100,
             int workers = 5,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null)
+            SwarmOptions options = null,
+            ConsensusReactorOption? consensusOption = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -124,20 +119,22 @@ namespace Libplanet.Net
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
-            ConsensusTransport = InitializeTransport(
-                consensusWorkers,
-                host,
-                consensusPort,
-                iceServers,
-                differentAppProtocolVersionEncountered);
-
-            // FIXME: newHeightDelay should be configurable
-            _consensusReactor = new ConsensusReactor<T>(
-                ConsensusTransport,
-                BlockChain,
-                consensusPrivateKey,
-                Options.ConsensusPeers,
-                TimeSpan.FromMilliseconds(10_000));
+            if (consensusOption is { } consensusReactorOption)
+            {
+                _consensusReactor = new ConsensusReactor<T>(
+                    InitTransport.Init(
+                        GetTransportParam(
+                            consensusReactorOption.ConsensusWorkers,
+                            host,
+                            consensusReactorOption.ConsensusPort,
+                            iceServers,
+                            differentAppProtocolVersionEncountered)
+                    ),
+                    BlockChain,
+                    consensusReactorOption.ConsensusPrivateKey,
+                    consensusReactorOption.ConsensusPeers,
+                    consensusReactorOption.TargetBlockInterval);
+            }
         }
 
         internal Swarm(
@@ -230,8 +227,6 @@ namespace Libplanet.Net
 
         internal ITransport Transport { get; private set; }
 
-        internal ITransport ConsensusTransport { get; private set; }
-
         internal TxCompletion<BoundPeer, T> TxCompletion { get; }
 
         internal AsyncAutoResetEvent TxReceived => TxCompletion?.TxReceived;
@@ -265,7 +260,7 @@ namespace Libplanet.Net
                 _workerCancellationTokenSource?.Cancel();
                 TxCompletion?.Dispose();
                 Transport?.Dispose();
-                _consensusReactor.Dispose();
+                _consensusReactor?.Dispose();
                 _workerCancellationTokenSource?.Dispose();
                 _disposed = true;
             }
@@ -290,7 +285,10 @@ namespace Libplanet.Net
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
-                await _consensusReactor.StopAsync(cancellationToken);
+                if (_consensusReactor is { })
+                {
+                    await _consensusReactor.StopAsync(cancellationToken);
+                }
             }
 
             BlockDemandTable = new BlockDemandTable<T>(Options.BlockDemandLifespan);
@@ -1132,6 +1130,26 @@ namespace Libplanet.Net
                 exceptions);
         }
 
+        private InitTransport.TransportParam GetTransportParam(
+            int workers,
+            string host,
+            int? listenPort,
+            IEnumerable<IceServer> iceServers,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered
+        ) => new InitTransport.TransportParam
+        {
+            Workers = workers,
+            AppProtocolVersion = _appProtocolVersion,
+            DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+            Host = host,
+            IceServers = iceServers,
+            ListenPort = listenPort,
+            MessageSigner = _privateKey,
+            MessageTimestampBuffer = Options.MessageTimestampBuffer,
+            TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
+            Type = Options.Type,
+        };
+
         private ITransport InitializeTransport(
             int workers,
             string host,
@@ -1139,34 +1157,20 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
         {
-            switch (Options.Type)
+            var param = new InitTransport.TransportParam
             {
-                case SwarmOptions.TransportType.NetMQTransport:
-                    return new NetMQTransport(
-                        _privateKey,
-                        _appProtocolVersion,
-                        TrustedAppProtocolVersionSigners,
-                        workers,
-                        host,
-                        listenPort,
-                        iceServers ?? new IceServer[0],
-                        differentAppProtocolVersionEncountered,
-                        Options.MessageTimestampBuffer);
-
-                case SwarmOptions.TransportType.TcpTransport:
-                    return new TcpTransport(
-                        _privateKey,
-                        _appProtocolVersion,
-                        TrustedAppProtocolVersionSigners,
-                        host,
-                        listenPort,
-                        iceServers ?? new IceServer[0],
-                        differentAppProtocolVersionEncountered,
-                        Options.MessageTimestampBuffer);
-
-                default:
-                    throw new ArgumentException(nameof(SwarmOptions.Type));
-            }
+                Workers = workers,
+                AppProtocolVersion = _appProtocolVersion,
+                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
+                Host = host,
+                IceServers = iceServers,
+                ListenPort = listenPort,
+                MessageSigner = _privateKey,
+                MessageTimestampBuffer = Options.MessageTimestampBuffer,
+                TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
+                Type = Options.Type,
+            };
+            return InitTransport.Init(param);
         }
 
         private void BroadcastBlock(Address? except, Block<T> block)

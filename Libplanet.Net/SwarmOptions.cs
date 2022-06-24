@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Immutable;
 using Libplanet.Blockchain;
-using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
@@ -11,22 +9,6 @@ namespace Libplanet.Net
 {
     public class SwarmOptions
     {
-        /// <summary>
-        /// <c>Enum</c> represents the type of the <see cref="ITransport"/>.
-        /// </summary>
-        public enum TransportType : byte
-        {
-            /// <summary>
-            /// NetMQ based transport.
-            /// </summary>
-            NetMQTransport = 0x01,
-
-            /// <summary>
-            /// TCP based transport.
-            /// </summary>
-            TcpTransport = 0x02,
-        }
-
         /// <summary>
         /// The lifespan of block demand.
         /// </summary>
@@ -48,13 +30,6 @@ namespace Libplanet.Net
         /// <seealso cref="IProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
-
-        /// <summary>
-        /// The list of <see cref="Peer"/>s for <see cref="ConsensusReactor{T}"/>.
-        /// It must have all validator's <see cref="Peer"/>.
-        /// </summary>
-        public ImmutableList<BoundPeer> ConsensusPeers { get; set; } =
-            ImmutableList<BoundPeer>.Empty;
 
         /// <summary>
         /// The threshold for detecting branchpoint when block synchronization.
@@ -118,7 +93,8 @@ namespace Libplanet.Net
         /// <summary>
         /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
         /// </summary>
-        public TransportType Type { get; set; } = TransportType.TcpTransport;
+        public InitTransport.TransportType Type { get; set; }
+            = InitTransport.TransportType.TcpTransport;
 
         /// <summary>
         /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.
