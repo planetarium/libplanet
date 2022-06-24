@@ -113,9 +113,13 @@ namespace Libplanet.Extensions.Cocona.Commands
                     ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(ValidateJsonPath(key));
                     PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
                 }
+                catch (CommandExitedException)
+                {
+                    throw;
+                }
                 catch (Exception)
                 {
-                    Utils.Error("Couldn't load ppk from json.");
+                    throw Utils.Error("Couldn't load ppk from json.");
                 }
             }
             else
