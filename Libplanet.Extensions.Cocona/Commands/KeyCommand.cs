@@ -4,16 +4,10 @@ using System.IO;
 using System.Linq;
 using global::Cocona;
 using Libplanet.Crypto;
-using Libplanet.Extensions.Cocona.Commands.Key;
 using Libplanet.KeyStore;
 
 namespace Libplanet.Extensions.Cocona.Commands
 {
-    [HasSubCommands(
-        typeof(DerivationCommand),
-        "derive",
-        Description = "Derive the address or public key from private key."
-    )]
     public class KeyCommand
     {
         public KeyCommand()
@@ -21,26 +15,49 @@ namespace Libplanet.Extensions.Cocona.Commands
             KeyStore = Web3KeyStore.DefaultKeyStore;
         }
 
-        public IKeyStore KeyStore { get; }
+        public IKeyStore KeyStore { get; set; }
 
         [PrimaryCommand]
         [Command(Description = "List all private keys.")]
-        public void List() =>
+        public void List(
+            [Option(
+                Description = "Specify key store path to list."
+            )]
+            string? path = null)
+        {
+            ChangeKeyStorePath(path);
             PrintKeys(KeyStore.List().Select(t => t.ToValueTuple()));
+        }
 
         [Command(Description = "Create a new private key.")]
         public void Create(
             PassphraseParameters passphrase,
             [Option(
-                Description = "Export created private key as Web3 Secret Storage format."
+                Description = "Print created private key as Web3 Secret Storage format."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
             bool dryRun = false,
-            [Option(Description = "Path to export key as Web3 Secret Storage Format")]
-            string path = ""
-        ) =>
-            Add(string.Empty, passphrase, json, dryRun, path, true);
+            [Option(Description = "Path to key store")]
+            string? path = null
+        )
+        {
+            ChangeKeyStorePath(path);
+            string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+            PrivateKey pkey = new PrivateKey();
+            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
+            Guid keyId = Add(ppk, dryRun);
+            if (json)
+            {
+                Stream stdout = Console.OpenStandardOutput();
+                ppk.WriteJson(stdout, keyId);
+                stdout.WriteByte(0x0a);
+            }
+            else
+            {
+                PrintKeys(new[] { (keyId, ppk) });
+            }
+        }
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
@@ -48,9 +65,12 @@ namespace Libplanet.Extensions.Cocona.Commands
             Guid keyId,
             PassphraseParameters passphrase,
             [Option(Description = "Remove without asking passphrase.")]
-            bool noPassphrase = false
+            bool noPassphrase = false,
+            [Option(Description = "Path to key store.")]
+            string? path = null
         )
         {
+            ChangeKeyStorePath(path);
             try
             {
                 if (!noPassphrase)
@@ -66,23 +86,50 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        [Command(Description = "Import a raw private key.")]
+        [Command(Description = "Import a raw private key or Web3 Secret Storage.")]
         public void Import(
             [Argument(
                 "PRIVATE-KEY",
-                Description = "A raw private key to import in hexadecimal string."
+                Description = "A raw private key in hexadecimal string, or path to Web3 Secret " +
+                              "Storage to import"
             )]
             string key,
             PassphraseParameters passphrase,
             [Option(
-                Description = "Print the created private key as Web3 Secret Storage format."
+                Description = "Import Web3 Secret Storage key."
             )]
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
-            bool dryRun = false
+            bool dryRun = false,
+            [Option(Description = "Path to key store.")]
+            string? path = null
         )
         {
-            Add(key, passphrase, json, dryRun, key, false);
+            ChangeKeyStorePath(path);
+            if (json)
+            {
+                try
+                {
+                    ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(ValidateJsonPath(key));
+                    PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
+                }
+                catch (CommandExitedException)
+                {
+                    throw;
+                }
+                catch (Exception)
+                {
+                    throw Utils.Error("Couldn't load ppk from json.");
+                }
+            }
+            else
+            {
+                PrivateKey privateKey = ValidateRawHex(key);
+                string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
+                ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
+                    privateKey, passphraseValue);
+                PrintKeys(new[] { (Add(ppk, dryRun), ppk) });
+            }
         }
 
         [Command(Description = "Export a raw private key (or public key).")]
@@ -97,26 +144,25 @@ namespace Libplanet.Extensions.Cocona.Commands
                 Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
             )]
             bool bytes = false,
-            [Option(Description = "Export a Web3 Secret Storage Formatted json to path.")]
+            [Option(Description = "Export a Web3 Secret Storage Formatted json")]
             bool json = false,
-            [Option(Description = "Path to export json key.")]
-            string path = ""
+            [Option(Description = "Path to key store to export from.")]
+            string? path = null
         )
         {
+            ChangeKeyStorePath(path);
             PrivateKey key = UnprotectKey(keyId, passphrase);
             byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ToByteArray();
+            using Stream stdout = Console.OpenStandardOutput();
             if (bytes)
             {
-                using Stream stdout = Console.OpenStandardOutput();
                 stdout.Write(rawKey, 0, rawKey.Length);
             }
             else if (json)
             {
-                Stream fs = PathHandler(path);
                 var ppk = KeyStore.Get(keyId);
-                ppk.WriteJson(fs, keyId);
-                fs.WriteByte(0x0a);
-                fs.Close();
+                ppk.WriteJson(stdout, keyId);
+                stdout.WriteByte(0x0a);
             }
             else
             {
@@ -177,9 +223,12 @@ namespace Libplanet.Extensions.Cocona.Commands
                                   "as raw bytes not hexadecimal string or else. " +
                                   "If this option isn't given, it will print hexadecimal string " +
                                   "to stdout as default behaviour.")]
-            string? binaryOutput = null
+            string? binaryOutput = null,
+            [Option(Description = "Path to key store to use key from.")]
+            string? storePath = null
         )
         {
+            ChangeKeyStorePath(storePath);
             PrivateKey key = UnprotectKey(keyId, passphrase);
 
             byte[] message;
@@ -215,6 +264,21 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
+        [Command(Description = "Derive public key and address from private key.")]
+        public void Derive(
+            [Argument(
+                "PRIVATE-KEY",
+                Description = "A raw private key to import."
+            )]
+            string key
+        )
+        {
+            PrivateKey privateKey = ValidateRawHex(key);
+            string addr = privateKey.ToAddress().ToString();
+            string pub = ByteUtil.Hex(privateKey.PublicKey.Format(compress: true));
+            Utils.PrintTable(("Public Key", "Address"), new[] { (pub, addr) });
+        }
+
         public PrivateKey UnprotectKey(
             Guid keyId,
             PassphraseParameters passphrase,
@@ -243,53 +307,13 @@ namespace Libplanet.Extensions.Cocona.Commands
             }
         }
 
-        private void Add(
-            string key,
-            PassphraseParameters passphrase,
-            bool json,
-            bool dryRun,
-            string pathString,
-            bool create
+        private Guid Add(
+            ProtectedPrivateKey ppk,
+            bool dryRun
         )
         {
-            Stream fs = PathHandler(pathString);
-            if (create)
-            {
-                string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
-                PrivateKey pkey = new PrivateKey();
-                ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(pkey, passphraseValue);
-                Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                if (json)
-                {
-                    ppk.WriteJson(fs, keyId);
-                    fs.WriteByte(0x0a);
-                    fs.Close();
-                }
-            }
-            else
-            {
-                if (json)
-                {
-                    try
-                    {
-                        ProtectedPrivateKey ppk = ProtectedPrivateKey.FromJson(
-                                                new StreamReader(fs).ReadToEnd());
-                        Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                    }
-                    catch (Exception)
-                    {
-                        Utils.Error("This is not valid json file or file does not exists.");
-                    }
-                }
-                else
-                {
-                    string passphraseValue = passphrase.Take("Passphrase: ", "Retype passphrase: ");
-                    PrivateKey privateKey = ValidateRawHex(key);
-                    ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(
-                        privateKey, passphraseValue);
-                    Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-                }
-            }
+            Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+            return keyId;
         }
 
         private void PrintKeys(IEnumerable<(Guid KeyId, ProtectedPrivateKey Key)> keys)
@@ -323,16 +347,28 @@ namespace Libplanet.Extensions.Cocona.Commands
             return key;
         }
 
-        private Stream PathHandler(string pathString)
+        private string ValidateJsonPath(string jsonPath)
         {
-            if (pathString == string.Empty)
+            try
             {
-                return System.Console.OpenStandardOutput();
+                string json = new StreamReader(jsonPath).ReadToEnd();
+                return json;
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                throw Utils.Error("This file does not exist.");
+            }
+        }
+
+        private void ChangeKeyStorePath(string? path)
+        {
+            if (path != null)
+            {
+                KeyStore = new Web3KeyStore(Path.GetFullPath(path));
             }
             else
             {
-                string path = Path.GetFullPath(pathString);
-                return File.Open(path, FileMode.OpenOrCreate);
+                KeyStore = Web3KeyStore.DefaultKeyStore;
             }
         }
     }
