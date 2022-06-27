@@ -10596,12 +10596,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.KeyCommand
   nameWithType: KeyCommand.KeyCommand
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.String)
-  name: Create(PassphraseParameters, Boolean, Boolean, String)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_String_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.String)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.String)
-  nameWithType: KeyCommand.Create(PassphraseParameters, Boolean, Boolean, String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name: Create(PassphraseParameters, Boolean, Boolean, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name.vb: Create(PassphraseParameters, Boolean, Boolean, Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create(Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Create(PassphraseParameters, Boolean, Boolean, Nullable<String>)
+  nameWithType.vb: KeyCommand.Create(PassphraseParameters, Boolean, Boolean, Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create*
   name: Create
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Create_
@@ -10609,12 +10612,28 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Create
   nameWithType: KeyCommand.Create
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.String)
-  name: Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, String)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_Boolean_System_String_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.String)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Boolean, System.String)
-  nameWithType: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
+  name: Derive(String)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Derive_System_String_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive(System.String)
+  nameWithType: KeyCommand.Derive(String)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive*
+  name: Derive
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Derive_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Derive
+  nameWithType: KeyCommand.Derive
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name: Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_Boolean_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name.vb: Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Boolean, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Boolean, System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, Nullable<String>)
+  nameWithType.vb: KeyCommand.Export(Guid, PassphraseParameters, Boolean, Boolean, Boolean, Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Export*
   name: Export
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Export_
@@ -10635,12 +10654,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Generate
   nameWithType: KeyCommand.Generate
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  name: Import(String, PassphraseParameters, Boolean, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Import_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean)
-  nameWithType: KeyCommand.Import(String, PassphraseParameters, Boolean, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name: Import(String, PassphraseParameters, Boolean, Boolean, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Import_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Boolean_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Boolean,System.Nullable{System.String})
+  name.vb: Import(String, PassphraseParameters, Boolean, Boolean, Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import(System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Boolean, System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Import(String, PassphraseParameters, Boolean, Boolean, Nullable<String>)
+  nameWithType.vb: KeyCommand.Import(String, PassphraseParameters, Boolean, Boolean, Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Import*
   name: Import
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Import_
@@ -10661,12 +10683,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.KeyStore
   nameWithType: KeyCommand.KeyStore
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.List
-  name: List()
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_List
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.List
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.List()
-  nameWithType: KeyCommand.List()
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.List(System.Nullable{System.String})
+  name: List(Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_List_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.List(System.Nullable{System.String})
+  name.vb: List(Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.List(System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.List(System.Nullable(Of System.String))
+  nameWithType: KeyCommand.List(Nullable<String>)
+  nameWithType.vb: KeyCommand.List(Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.List*
   name: List
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_List_
@@ -10674,12 +10699,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.List
   nameWithType: KeyCommand.List
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
-  name: Remove(Guid, PassphraseParameters, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Remove_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean)
-  nameWithType: KeyCommand.Remove(Guid, PassphraseParameters, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Nullable{System.String})
+  name: Remove(Guid, PassphraseParameters, Boolean, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Remove_Guid_Libplanet_Extensions_Cocona_PassphraseParameters_System_Boolean_System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid,Libplanet.Extensions.Cocona.PassphraseParameters,System.Boolean,System.Nullable{System.String})
+  name.vb: Remove(Guid, PassphraseParameters, Boolean, Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove(Guid, Libplanet.Extensions.Cocona.PassphraseParameters, System.Boolean, System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Remove(Guid, PassphraseParameters, Boolean, Nullable<String>)
+  nameWithType.vb: KeyCommand.Remove(Guid, PassphraseParameters, Boolean, Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove*
   name: Remove
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Remove_
@@ -10687,15 +10715,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Remove
   nameWithType: KeyCommand.Remove
-- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String})
-  name: Sign(Guid, String, PassphraseParameters, Nullable<String>)
-  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_Guid_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__
-  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String})
-  name.vb: Sign(Guid, String, PassphraseParameters, Nullable(Of String))
-  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable<System.String>)
-  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable(Of System.String))
-  nameWithType: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable<String>)
-  nameWithType.vb: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable(Of String))
+- uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String},System.Nullable{System.String})
+  name: Sign(Guid, String, PassphraseParameters, Nullable<String>, Nullable<String>)
+  href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_Guid_System_String_Libplanet_Extensions_Cocona_PassphraseParameters_System_Nullable_System_String__System_Nullable_System_String__
+  commentId: M:Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid,System.String,Libplanet.Extensions.Cocona.PassphraseParameters,System.Nullable{System.String},System.Nullable{System.String})
+  name.vb: Sign(Guid, String, PassphraseParameters, Nullable(Of String), Nullable(Of String))
+  fullName: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable<System.String>, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign(Guid, System.String, Libplanet.Extensions.Cocona.PassphraseParameters, System.Nullable(Of System.String), System.Nullable(Of System.String))
+  nameWithType: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable<String>, Nullable<String>)
+  nameWithType.vb: KeyCommand.Sign(Guid, String, PassphraseParameters, Nullable(Of String), Nullable(Of String))
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand.Sign*
   name: Sign
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html#Libplanet_Extensions_Cocona_Commands_KeyCommand_Sign_
