@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -182,6 +184,67 @@ namespace Libplanet.Blocks
                     $"The miner address {metadata.Miner} is not consistent with its public key " +
                     $"{pubKey}.";
                 throw new InvalidBlockPublicKeyException(pubKey, msg);
+            }
+            else if (metadata.LastCommit is { } commit)
+            {
+                // NOTE: Validator might be depend on chain's status, then validity check should
+                // be moved to blockchain's ValidateNextBlock.
+                if (commit.Height != metadata.Index - 1)
+                {
+                    throw new InvalidBlockLastCommitException(
+                        $"The block #{metadata.Index}'s lastcommit's height " +
+                        $"({commit.Height}) does not match " +
+                        $"the previous block's index {metadata.Index - 1}.");
+                }
+
+                if (!commit.BlockHash.Equals(metadata.PreviousHash))
+                {
+                    throw new InvalidBlockLastCommitException(
+                        $"The block #{metadata.Index}'s lastcommit's previous hash " +
+                        $"({commit.BlockHash}) does not match " +
+                        $"the previous block's hash {metadata.PreviousHash}.");
+                }
+
+                if (commit.Votes is { } votes)
+                {
+                    // If the flag of a vote is not null or unknown, it should have valid signature.
+                    if (!votes.All(
+                            vote =>
+                            {
+                                if (vote.Signature is { } sign &&
+                                    vote.Validator.Verify(vote.RemoveSignature.ByteArray, sign))
+                                {
+                                    return true;
+                                }
+
+                                if (vote.Flag == VoteFlag.Null || vote.Flag == VoteFlag.Unknown)
+                                {
+                                    return true;
+                                }
+
+                                return false;
+                            }))
+                    {
+                        throw new InvalidBlockLastCommitException(
+                            $"Some of the block #{metadata.Index}'s lastcommit's votes' " +
+                            "are not valid.");
+                    }
+
+                    // The height of all votes are same with the lastcommit's height.
+                    if (!votes.All(vote => vote.Height == commit.Height))
+                    {
+                        throw new InvalidBlockLastCommitException(
+                            $"The block #{metadata.Index}'s lastcommit's votes' " +
+                            "height does not match the previous block's index " +
+                            $"{metadata.Index - 1}.");
+                    }
+                }
+                else if (metadata.Index != 0)
+                {
+                    throw new InvalidBlockLastCommitException(
+                        $"The block #{metadata.Index}'s votes can only be null " +
+                        "for the genesis block.");
+                }
             }
 
             Metadata = metadata;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
@@ -76,6 +77,207 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> invalidBlock1PreEvalHash =
                 _sha256.Digest(invalidBlock1Bytes).ToImmutableArray();
             _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
+        }
+
+        [Fact]
+        public void Constructors()
+        {
+            var validatorA = new PrivateKey();
+            var validatorB = new PrivateKey();
+            var validatorC = new PrivateKey();
+            var invalidValidator = new PrivateKey();
+            BlockHash blockHash = BlockHash.FromString(
+                "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
+            );
+            DateTimeOffset timestamp = DateTimeOffset.UtcNow;
+            var voteA = new Vote(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorA.PublicKey,
+                VoteFlag.Commit,
+                null).Sign(validatorA);
+            var voteB = new Vote(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorB.PublicKey,
+                VoteFlag.Commit,
+                null).Sign(validatorB);
+            var voteC = new Vote(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorC.PublicKey,
+                VoteFlag.Commit,
+                null).Sign(validatorC);
+
+            // Height of the last commit is invalid.
+            var invalidHeightLastCommit = new BlockCommit(
+                0,
+                0,
+                _contents.GenesisHash,
+                new[] { voteA, voteB, voteC }.ToImmutableArray());
+            var invalidHeightMetadata = new BlockMetadata
+            {
+                Index = 2,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = validatorA.PublicKey,
+                Difficulty = 123,
+                PreviousHash = _contents.GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+                LastCommit = invalidHeightLastCommit,
+            };
+            Assert.Throws<InvalidBlockLastCommitException>(
+                () => new PreEvaluationBlockHeader(
+                    metadata: invalidHeightMetadata,
+                    hashAlgorithm: _sha256,
+                    nonce: _validGenesisProof.Nonce));
+
+            // BlockHash of the last commit is invalid.
+            var invalidBlockHashLastCommit = new BlockCommit(
+                1,
+                0,
+                BlockHash.FromString(
+                    "141e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
+                ),
+                new[] { voteA, voteB, voteC }.ToImmutableArray());
+            var invalidBlockHashMetadata = new BlockMetadata
+            {
+                Index = 2,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = validatorA.PublicKey,
+                Difficulty = 123,
+                PreviousHash = _contents.GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+                LastCommit = invalidBlockHashLastCommit,
+            };
+            Assert.Throws<InvalidBlockLastCommitException>(
+                () => new PreEvaluationBlockHeader(
+                    metadata: invalidBlockHashMetadata,
+                    hashAlgorithm: _sha256,
+                    nonce: _validGenesisProof.Nonce));
+
+            // Some of the vote's signature are invalid.
+            var invalidVoteSignatureLastCommit = new BlockCommit(
+                1,
+                0,
+                blockHash,
+                new[]
+                {
+                    voteA,
+                    voteB,
+                    new Vote(
+                        1,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorC.PublicKey,
+                        VoteFlag.Commit,
+                        null).Sign(invalidValidator),
+                }.ToImmutableArray());
+            var invalidVoteSignatureMetadata = new BlockMetadata
+            {
+                Index = 2,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = validatorA.PublicKey,
+                Difficulty = 123,
+                PreviousHash = _contents.GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+                LastCommit = invalidVoteSignatureLastCommit,
+            };
+            Assert.Throws<InvalidBlockLastCommitException>(
+                () => new PreEvaluationBlockHeader(
+                    metadata: invalidVoteSignatureMetadata,
+                    hashAlgorithm: _sha256,
+                    nonce: _validGenesisProof.Nonce));
+
+            // Some of the vote's height are invalid.
+            var invalidVoteHeightLastCommit = new BlockCommit(
+                1,
+                0,
+                blockHash,
+                new[]
+                {
+                    voteA,
+                    voteB,
+                    new Vote(
+                        2,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorC.PublicKey,
+                        VoteFlag.Commit,
+                        null).Sign(validatorC),
+                }.ToImmutableArray());
+            var invalidVoteHeightMetadata = new BlockMetadata
+            {
+                Index = 2,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = validatorA.PublicKey,
+                Difficulty = 123,
+                PreviousHash = _contents.GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+                LastCommit = invalidVoteHeightLastCommit,
+            };
+            Assert.Throws<InvalidBlockLastCommitException>(
+                () => new PreEvaluationBlockHeader(
+                    metadata: invalidVoteHeightMetadata,
+                    hashAlgorithm: _sha256,
+                    nonce: _validGenesisProof.Nonce));
+
+            // Signature can be null for null or unknown votes.
+            var validLastCommit = new BlockCommit(
+                1,
+                0,
+                blockHash,
+                new[]
+                {
+                    voteA,
+                    new Vote(
+                        1,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorB.PublicKey,
+                        VoteFlag.Null,
+                        null),
+                    new Vote(
+                        1,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorC.PublicKey,
+                        VoteFlag.Unknown,
+                        null),
+                }.ToImmutableArray());
+            var validMetadata = new BlockMetadata
+            {
+                Index = 2,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = validatorA.PublicKey,
+                Difficulty = 123,
+                PreviousHash = _contents.GenesisHash,
+                TxHash = HashDigest<SHA256>.FromString(
+                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                ),
+                LastCommit = validLastCommit,
+            };
+            _ = new PreEvaluationBlockHeader(
+                metadata: validMetadata,
+                hashAlgorithm: _sha256,
+                nonce: _validGenesisProof.Nonce);
         }
 
         [Fact]
