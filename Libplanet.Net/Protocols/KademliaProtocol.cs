@@ -472,7 +472,7 @@ namespace Libplanet.Net.Protocols
         private async Task ValidateAsync(
             BoundPeer peer,
             TimeSpan timeout,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             try
             {

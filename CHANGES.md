@@ -1,6 +1,81 @@
 Libplanet changelog
 ===================
 
+Version 0.39.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+ - (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.6.\* to
+    [2.0.\*][Cocona.Lite 2.0.0].  [[#2101]]
+
+ - Implemented *planet key derive*, now you can get public key and
+   address from private key directly!  [[#2108]]
+
+[#2101]: https://github.com/planetarium/libplanet/pull/2101
+[#2108]: https://github.com/planetarium/libplanet/pull/2108
+[Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
+
+
+Version 0.38.0
+--------------
+
+Released on June 7th, 2022.
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Net) Removed `username` and `credential` parameters from
+    `IceServer(string, string?, string?)` and
+    `IceServer(Uri, string?, string?)`.  [[#2048], [#2049]]
+ -  (Libplanet.Net) Properties `IceServer.Username` and `IceServer.Credential`
+    are no longer nullable.  [[#2048], [#2049]]
+
+### Added APIs
+
+ -  (Libplanet.Node) Added `NetworkConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeConfig` class.  [[#1946], [#2000]]
+ -  (Libplanet.Node) Added `NodeUtils` class.  [[#2013]]
+ -  (Libplanet.Node) Added `SwarmConfig`, `InitConfig`, `BootstrapConfig`
+    `PreloadConfig`, and `SyncConfig` classes.  [[#2021]]
+
+### Behavioral changes
+
+ -  Added `PrivateKey(string)` constructor for hexadecimal string.
+    [[#2012], [#2022]]
+ -  Allow `0x` prefix for `Address` class constructor.
+    `DeriveAddress` method will remove `0x` prefix string.
+    [[#2015], [#2018]]
+
+[#1946]: https://github.com/planetarium/libplanet/issues/1946
+[#2000]: https://github.com/planetarium/libplanet/pull/2000
+[#2012]: https://github.com/planetarium/libplanet/issues/2012
+[#2013]: https://github.com/planetarium/libplanet/pull/2013
+[#2015]: https://github.com/planetarium/libplanet/issues/2015
+[#2018]: https://github.com/planetarium/libplanet/pull/2018
+[#2021]: https://github.com/planetarium/libplanet/pull/2021
+[#2022]: https://github.com/planetarium/libplanet/pull/2022
+[#2048]: https://github.com/planetarium/libplanet/issues/2048
+[#2049]: https://github.com/planetarium/libplanet/pull/2049
+
+
 Version 0.37.0
 --------------
 

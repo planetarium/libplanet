@@ -272,7 +272,7 @@ namespace Libplanet.Net
         }
 
         public async Task StopAsync(
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             await StopAsync(TimeSpan.FromSeconds(1), cancellationToken);
@@ -280,7 +280,7 @@ namespace Libplanet.Net
 
         public async Task StopAsync(
             TimeSpan waitFor,
-            CancellationToken cancellationToken = default(CancellationToken)
+            CancellationToken cancellationToken = default
         )
         {
             _logger.Debug("Stopping watching " + nameof(BlockChain) + " for tip changes...");
@@ -356,7 +356,7 @@ namespace Libplanet.Net
             TimeSpan dialTimeout,
             TimeSpan broadcastBlockInterval,
             TimeSpan broadcastTxInterval,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var tasks = new List<Task>();
             _workerCancellationTokenSource = new CancellationTokenSource();
@@ -450,7 +450,7 @@ namespace Libplanet.Net
             IEnumerable<Peer> seedPeers,
             TimeSpan? dialTimeout,
             int searchDepth,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (seedPeers is null)
             {
@@ -696,7 +696,7 @@ namespace Libplanet.Net
             Address target,
             int depth = 3,
             TimeSpan? timeout = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             KademliaProtocol kademliaProtocol = (KademliaProtocol)PeerDiscovery;
             return await kademliaProtocol.FindSpecificPeerAsync(
@@ -716,7 +716,7 @@ namespace Libplanet.Net
         /// <returns>An awaitable task without value.</returns>
         public async Task CheckAllPeersAsync(
             TimeSpan? timeout = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             using CancellationTokenSource cts = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken, _cancellationToken);
@@ -738,14 +738,14 @@ namespace Libplanet.Net
         public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (Transport is null)
             {
                 throw new ArgumentNullException(nameof(Transport));
             }
 
-            if (cancellationToken == default(CancellationToken))
+            if (cancellationToken == default)
             {
                 cancellationToken = _cancellationToken;
             }

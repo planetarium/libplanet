@@ -71,7 +71,7 @@ namespace Libplanet.Blockchain
                         ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     txPriority: txPriority,
                     lastCommit: lastCommit,
-                    cancellationToken: cancellationToken ?? default(CancellationToken));
+                    cancellationToken: cancellationToken ?? default);
 #pragma warning restore SA1118
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Libplanet.Blockchain
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit? lastCommit = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource cancellationTokenSource =

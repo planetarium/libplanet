@@ -308,5 +308,24 @@ namespace Libplanet.Tests
                 (addresses[0] as IComparable).CompareTo("invalid")
             );
         }
+
+        [Fact]
+        public void ReplaceHexPrefixString()
+        {
+            var address = new Address("0x0123456789ABcdefABcdEfABcdEFabcDEFabCDEF");
+
+            Assert.Equal(
+                "0x0123456789ABcdefABcdEfABcdEFabcDEFabCDEF",
+                address.ToString()
+            );
+        }
+
+        [Fact]
+        public void ReplaceHexUpperCasePrefixString()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                 new Address("0X0123456789ABcdefABcdEfABcdEFabcDEFabCDEF")
+            );
+        }
     }
 }
