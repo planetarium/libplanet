@@ -26,6 +26,8 @@ namespace Libplanet.Consensus
             Height = height;
             Round = round;
             ValidatorSet = validatorSet.ToImmutableArray();
+
+            // TODO: Order of validators should not depend on given validatorSet's order?
             _votes = Enumerable.Range(0, ValidatorSet.Length)
                 .Select(x => new Vote(
                     height,
@@ -37,7 +39,6 @@ namespace Libplanet.Consensus
                     null))
                 .ToDictionary(keySelector: x => x.Validator, elementSelector: x => x);
 
-            // TODO: Fill Votes with null Signature?
             Sum = 0;
 
             _lock = new object();
