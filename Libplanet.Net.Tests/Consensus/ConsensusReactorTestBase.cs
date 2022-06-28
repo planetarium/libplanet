@@ -22,7 +22,7 @@ using Xunit.Abstractions;
 namespace Libplanet.Net.Tests.Consensus
 {
     [Collection("NetMQConfiguration")]
-    public class ReactorTest : IDisposable, IAsyncLifetime
+    public class ConsensusReactorTestBase : IDisposable, IAsyncLifetime
     {
         protected const int Count = 4;
         protected const int PropagationDelay = 10_000;
@@ -39,7 +39,7 @@ namespace Libplanet.Net.Tests.Consensus
 
         private ILogger _logger;
 
-        protected ReactorTest(ITestOutputHelper output)
+        protected ConsensusReactorTestBase(ITestOutputHelper output)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -47,9 +47,9 @@ namespace Libplanet.Net.Tests.Consensus
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ReactorTest>();
+                .ForContext<ConsensusReactorTestBase>();
 
-            _logger = Log.ForContext<ReactorTest>();
+            _logger = Log.ForContext<ConsensusReactorTestBase>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
 
             CancellationTokenSource = new CancellationTokenSource();

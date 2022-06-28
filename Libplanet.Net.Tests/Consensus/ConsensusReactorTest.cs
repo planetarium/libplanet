@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    public class ConsensusReactorTest : ReactorTest
+    public class ConsensusReactorTest : ConsensusReactorTestBase
     {
         private const int Timeout = 60 * 1000;
 

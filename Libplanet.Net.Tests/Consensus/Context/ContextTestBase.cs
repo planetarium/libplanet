@@ -48,9 +48,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ReactorTest>();
+                .ForContext<ContextTestBase>();
 
-            _logger = Log.ForContext<ContextTest>();
+            _logger = Log.ForContext<ContextTestBase>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
             BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             Transport = TestUtils.CreateNetMQTransport(

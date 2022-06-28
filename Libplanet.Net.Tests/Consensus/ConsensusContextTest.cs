@@ -33,9 +33,9 @@ namespace Libplanet.Net.Tests.Consensus
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ReactorTest>();
+                .ForContext<ConsensusContextTest>();
 
-            _logger = Log.ForContext<ReactorTest>();
+            _logger = Log.ForContext<ConsensusContextTest>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
         }
 
