@@ -7,22 +7,6 @@ namespace Libplanet.Net.Transports
 {
     public static class InitTransport
     {
-        /// <summary>
-        /// <c>Enum</c> represents the type of the <see cref="ITransport"/>.
-        /// </summary>
-        public enum TransportType : byte
-        {
-            /// <summary>
-            /// NetMQ based transport.
-            /// </summary>
-            NetMQTransport = 0x01,
-
-            /// <summary>
-            /// TCP based transport.
-            /// </summary>
-            TcpTransport = 0x02,
-        }
-
         public static ITransport Init(TransportParam param) => param.Type switch
         {
             TransportType.NetMQTransport => NetMQ(param),
@@ -30,7 +14,7 @@ namespace Libplanet.Net.Transports
             _ => throw new ArgumentOutOfRangeException(),
         };
 
-        public static NetMQTransport NetMQ(
+        private static NetMQTransport NetMQ(
             TransportParam param)
         {
             return new NetMQTransport(
@@ -45,7 +29,7 @@ namespace Libplanet.Net.Transports
                 param.MessageTimestampBuffer);
         }
 
-        public static TcpTransport Tcp(
+        private static TcpTransport Tcp(
             TransportParam param)
         {
             return new TcpTransport(

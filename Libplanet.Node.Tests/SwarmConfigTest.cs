@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Transports;
 using Xunit;
 
 namespace Libplanet.Node.Tests
@@ -13,7 +14,7 @@ namespace Libplanet.Node.Tests
         {
             new object[]
             {
-                SwarmOptions.TransportType.TcpTransport,
+                TransportType.TcpTransport,
                 "foo",
                 1001,
                 new List<IceServer>()
@@ -32,7 +33,7 @@ namespace Libplanet.Node.Tests
             },
             new object[]
             {
-                SwarmOptions.TransportType.NetMQTransport,
+                TransportType.NetMQTransport,
                 null,
                 null,
                 new List<IceServer>(),
@@ -44,7 +45,7 @@ namespace Libplanet.Node.Tests
         [Theory]
         [MemberData(nameof(SerializationData))]
         public void Serialization(
-            SwarmOptions.TransportType transportType,
+            TransportType transportType,
             string host,
             int? port,
             IEnumerable<IceServer> iceServers,

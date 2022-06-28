@@ -93,8 +93,8 @@ namespace Libplanet.Net
         /// <summary>
         /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
         /// </summary>
-        public InitTransport.TransportType Type { get; set; }
-            = InitTransport.TransportType.TcpTransport;
+        public TransportType Type { get; set; }
+            = TransportType.TcpTransport;
 
         /// <summary>
         /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.

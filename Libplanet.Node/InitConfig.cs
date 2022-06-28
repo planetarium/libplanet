@@ -42,10 +42,10 @@ namespace Libplanet.Node
 
         /// <summary>
         /// Determines the type of <see cref="ITransport"/> to use.  Set to
-        /// <see cref="SwarmOptions.TransportType.NetMQTransport"/> by default.
+        /// <see cref="TransportType.NetMQTransport"/> by default.
         /// </summary>
-        public SwarmOptions.TransportType TransportType { get; set; } =
-            SwarmOptions.TransportType.NetMQTransport;
+        public TransportType TransportType { get; set; } =
+            TransportType.NetMQTransport;
 
         /// <summary>
         /// Determines the host.  Set to <c>"localhost"</c> by default.

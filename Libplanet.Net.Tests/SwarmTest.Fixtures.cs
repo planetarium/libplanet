@@ -130,10 +130,10 @@ namespace Libplanet.Net.Tests
             switch (type)
             {
                 case "tcp":
-                    options.Type = InitTransport.TransportType.TcpTransport;
+                    options.Type = TransportType.TcpTransport;
                     break;
                 case "netmq":
-                    options.Type = InitTransport.TransportType.NetMQTransport;
+                    options.Type = TransportType.NetMQTransport;
                     break;
             }
 
