@@ -10,7 +10,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    [Collection("NetMQConfiguration")]
     public class ContextProposerTest : ContextTestBase
     {
         private const int NodeId = 1;
@@ -57,6 +56,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.Absent))
@@ -65,6 +66,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -111,6 +113,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: block.Hash, flag: VoteFlag.Absent))
@@ -119,10 +123,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -183,7 +187,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -217,6 +220,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
@@ -226,11 +231,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await stepChanged.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.EndCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            Assert.True(BlockChain.ContainsBlock(block.Hash));
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -252,15 +256,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Transport.StartAsync();
             await Transport.WaitForRunningAsync();
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(
                     invalidBlock, TestUtils.PrivateKeys[NodeId]));
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -285,14 +291,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
             targetHash = block.Hash;
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

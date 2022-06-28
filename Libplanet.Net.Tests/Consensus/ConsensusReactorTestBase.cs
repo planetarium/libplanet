@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
@@ -14,11 +16,13 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using NetMQ;
 using Serilog;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus
 {
-    public abstract class ReactorTest : IDisposable
+    [Collection("NetMQConfiguration")]
+    public class ConsensusReactorTestBase : IDisposable, IAsyncLifetime
     {
         protected const int Count = 4;
         protected const int PropagationDelay = 10_000;
@@ -35,7 +39,7 @@ namespace Libplanet.Net.Tests.Consensus
 
         private ILogger _logger;
 
-        protected ReactorTest(ITestOutputHelper output)
+        protected ConsensusReactorTestBase(ITestOutputHelper output)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -43,9 +47,9 @@ namespace Libplanet.Net.Tests.Consensus
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ReactorTest>();
+                .ForContext<ConsensusReactorTestBase>();
 
-            _logger = Log.ForContext<ReactorTest>();
+            _logger = Log.ForContext<ConsensusReactorTestBase>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
 
             CancellationTokenSource = new CancellationTokenSource();
@@ -94,6 +98,10 @@ namespace Libplanet.Net.Tests.Consensus
             NetMQConfig.Cleanup(false);
         }
 
+        public Task InitializeAsync() => Task.Delay(TimeSpan.Zero);
+
+        public Task DisposeAsync() => DisposeConsensusReactors();
+
         private IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
@@ -120,6 +128,14 @@ namespace Libplanet.Net.Tests.Consensus
                 key,
                 validatorPeers.ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
+        }
+
+        private Task DisposeConsensusReactors()
+        {
+            return Task.WhenAll((
+                from reactor in ConsensusReactors
+                where reactor.Running
+                select reactor.StopAsync(CancellationTokenSource.Token)).ToArray());
         }
     }
 }

@@ -113,6 +113,8 @@ namespace Libplanet.Net.Consensus
 
         internal event EventHandler<int>? RoundStarted;
 
+        internal event EventHandler<ConsensusMessage>? MessageProcessed;
+
         public long Height { get; }
 
         public int Round { get; private set; }
@@ -452,6 +454,8 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 _ = StartRound(message.Round);
             }
+
+            MessageProcessed?.Invoke(this, message);
         }
 
         private async Task<Block<T>> GetValue()

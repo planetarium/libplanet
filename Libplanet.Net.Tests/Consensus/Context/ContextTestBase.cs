@@ -11,23 +11,26 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using NetMQ;
+using Nito.AsyncEx;
 using Serilog;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    public class ContextTestBase : IDisposable
+    [Collection("NetMQConfiguration")]
+    public class ContextTestBase : IDisposable, IAsyncLifetime
     {
         protected const int Timeout = 60_000;
         protected readonly Context<DumbAction> Context;
         protected readonly ITransport Transport;
         protected readonly BlockChain<DumbAction> BlockChain;
-        protected readonly StoreFixture Fx;
 
         protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage = null;
 
         private const int Port = 51211;
 
+        private readonly StoreFixture _fx;
         private readonly ILogger _logger;
         private readonly TimeSpan _newHeightDelay = TimeSpan.FromSeconds(4);
         private readonly ConsensusContext<DumbAction> _consensusContext;
@@ -45,11 +48,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ReactorTest>();
+                .ForContext<ContextTestBase>();
 
-            _logger = Log.ForContext<ContextTest>();
-            Fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
-            BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)Fx);
+            _logger = Log.ForContext<ContextTestBase>();
+            _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
+            BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
             Transport = TestUtils.CreateNetMQTransport(
                 TestUtils.PrivateKeys[(int)nodeId], port: Port);
 
@@ -97,12 +100,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
         public void Dispose()
         {
-            Fx.Dispose();
+            _fx.Dispose();
             Transport.Dispose();
             _consensusContext.Dispose();
             Context.Dispose();
             NetMQConfig.Cleanup(false);
         }
+
+        public Task InitializeAsync() => Task.Delay(TimeSpan.Zero);
+
+        public Task DisposeAsync() => DisposeTransport();
 
         protected Block<DumbAction> GetInvalidBlock() =>
             new BlockContent<DumbAction>
@@ -110,17 +117,33 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 Index = BlockChain.Tip.Index + 1,
                 Difficulty = BlockChain.Tip.Difficulty,
                 TotalDifficulty = BlockChain.Tip.TotalDifficulty + BlockChain.Tip.Difficulty,
-                PublicKey = Fx.Miner.PublicKey,
+                PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 Transactions = new List<Transaction<DumbAction>>(),
-            }.Mine(Fx.GetHashAlgorithm(2)).Evaluate(Fx.Miner, BlockChain);
+            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, BlockChain);
 
         protected async Task NewRoundSendMessageAfterAssert()
         {
             await Libplanet.Tests.TestUtils.AssertThatEventually(
                 () => Context.Step == Step.Propose,
                 1_000);
+        }
+
+        protected AsyncManualResetEvent WatchMessageProcessed()
+        {
+            var messageProcessed = new AsyncManualResetEvent();
+            Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
+
+            return messageProcessed;
+        }
+
+        private async Task DisposeTransport()
+        {
+            if (Transport.Running)
+            {
+                await Transport.StopAsync(TimeSpan.FromSeconds(1));
+            }
         }
     }
 }

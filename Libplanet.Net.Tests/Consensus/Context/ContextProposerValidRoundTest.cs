@@ -10,7 +10,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    [Collection("NetMQConfiguration")]
     public class ContextProposerValidRoundTest : ContextTestBase
     {
         private const int NodeId = 1;
@@ -60,6 +59,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
@@ -71,10 +72,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -127,6 +128,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
@@ -139,10 +142,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }

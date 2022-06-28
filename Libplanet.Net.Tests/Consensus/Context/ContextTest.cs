@@ -13,7 +13,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    [Collection("NetMQConfiguration")]
     public class ContextTest : ContextTestBase
     {
         private const int NodeId = 1;
@@ -41,12 +40,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Transport.WaitForRunningAsync();
 
             await Context.StartAsync();
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             await messageReceived.WaitAsync();
+            await messageProcessed.WaitAsync();
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -110,11 +111,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         TestUtils.CreateConsensusPropose(
                             block,
                             TestUtils.PrivateKeys[0])));
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ThrowNilPropose()
+        public void ThrowNilPropose()
         {
             Assert.Throws<InvalidBlockProposeMessageException>(
                 () =>
@@ -122,7 +122,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         TestUtils.CreateConsensusPropose(
                             default,
                             TestUtils.PrivateKeys[NodeId])));
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -198,8 +197,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         {
                             Remote = new Peer(TestUtils.Validators[0]),
                         }));
-
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -237,8 +234,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     {
                         Remote = new Peer(TestUtils.Validators[2]),
                     }));
-
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -269,6 +264,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
@@ -276,15 +273,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
-            roundVoteSet = Context.VoteSet(0);
 
+            await messageProcessed.WaitAsync();
+
+            roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
-            await Transport.StopAsync(TimeSpan.FromSeconds(1));
         }
     }
 }
