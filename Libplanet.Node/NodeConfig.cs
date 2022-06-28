@@ -117,7 +117,6 @@ namespace Libplanet.Node
                 blockChain: blockChain,
                 privateKey: _privateKey,
                 appProtocolVersion: NetworkConfig.AppProtocolVersion,
-                consensusPrivateKey: _consensusPrivateKey,
                 trustedAppProtocolVersionSigners: NetworkConfig.TrustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered: NetworkConfig.DifferentAppProtocolVersionEncountered,
                 host: SwarmConfig.InitConfig.Host,

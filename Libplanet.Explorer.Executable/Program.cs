@@ -250,8 +250,7 @@ If omitted (default) explorer only the local blockchain store.")]
                         differentAppProtocolVersionEncountered: (p, pv, lv) => { },
                         workers: options.Workers,
                         iceServers: new[] { options.IceServer },
-                        options: swarmOptions,
-                        consensusPrivateKey: consensusPrivateKey
+                        options: swarmOptions
                     );
                 }
 

@@ -25,9 +25,9 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         [Theory(Timeout = 60 * 1000)]
-        [InlineData(SwarmOptions.TransportType.NetMQTransport)]
-        [InlineData(SwarmOptions.TransportType.TcpTransport)]
-        public async Task QueryAppProtocolVersion(SwarmOptions.TransportType transportType)
+        [InlineData(TransportType.NetMQTransport)]
+        [InlineData(TransportType.TcpTransport)]
+        public async Task QueryAppProtocolVersion(TransportType transportType)
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
@@ -53,7 +53,6 @@ namespace Libplanet.Net.Tests.Transports
                 blockchain,
                 swarmKey,
                 apv,
-                consensusPrivateKey: consensusKey,
                 host: host,
                 listenPort: port,
                 options: option))
@@ -104,7 +103,7 @@ namespace Libplanet.Net.Tests.Transports
                 }
             }
 
-            if (transportType == SwarmOptions.TransportType.NetMQTransport)
+            if (transportType == TransportType.NetMQTransport)
             {
                 NetMQConfig.Cleanup(false);
             }

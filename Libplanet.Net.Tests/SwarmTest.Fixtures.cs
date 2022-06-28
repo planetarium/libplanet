@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Net.Consensus;
+using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
@@ -70,8 +73,6 @@ namespace Libplanet.Net.Tests
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
             PrivateKey consensusPrivateKey = null,
-            long nodeId = 0,
-            List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
@@ -80,7 +81,8 @@ namespace Libplanet.Net.Tests
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
             SwarmOptions options = null,
             IBlockPolicy<DumbAction> policy = null,
-            Block<DumbAction> genesis = null)
+            Block<DumbAction> genesis = null,
+            ConsensusReactorOption? consensusReactorOption = null)
         {
             policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -93,31 +95,27 @@ namespace Libplanet.Net.Tests
             return CreateSwarm(
                 blockchain,
                 privateKey,
-                consensusPrivateKey,
-                nodeId,
-                validators,
                 appProtocolVersion,
                 host,
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners,
-                options);
+                options,
+                consensusReactorOption: consensusReactorOption);
         }
 
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
-            PrivateKey consensusPrivateKey = null,
-            long nodeId = 0,
-            List<PublicKey> validators = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
-            SwarmOptions options = null
+            SwarmOptions options = null,
+            ConsensusReactorOption? consensusReactorOption = null
         )
             where T : IAction, new()
         {
@@ -132,33 +130,34 @@ namespace Libplanet.Net.Tests
             switch (type)
             {
                 case "tcp":
-                    options.Type = SwarmOptions.TransportType.TcpTransport;
+                    options.Type = TransportType.TcpTransport;
                     break;
                 case "netmq":
-                    options.Type = SwarmOptions.TransportType.NetMQTransport;
+                    options.Type = TransportType.NetMQTransport;
                     break;
             }
 
             privateKey ??= new PrivateKey();
-            consensusPrivateKey ??= new PrivateKey();
-
-            validators ??= new List<PublicKey>()
-            {
-                consensusPrivateKey.PublicKey,
-            };
 
             var swarm = new Swarm<T>(
                 blockChain,
                 privateKey,
                 appProtocolVersion ?? DefaultAppProtocolVersion,
-                consensusPrivateKey,
                 workers: 5,
                 host: host,
                 listenPort: listenPort,
                 iceServers: iceServers,
                 differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners: trustedAppProtocolVersionSigners,
-                options: options);
+                options: options,
+                consensusOption: consensusReactorOption ?? new ConsensusReactorOption
+                {
+                    ConsensusPeers = ImmutableList<BoundPeer>.Empty,
+                    ConsensusPort = 5000,
+                    ConsensusPrivateKey = new PrivateKey(),
+                    ConsensusWorkers = 100,
+                    TargetBlockInterval = TimeSpan.FromSeconds(10),
+                });
             _finalizers.Add(async () =>
             {
                 try
