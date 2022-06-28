@@ -4,6 +4,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Consensus;
 using Libplanet.Store;
 
 namespace Libplanet.Node
@@ -25,11 +26,19 @@ namespace Libplanet.Node
         private PrivateKey _privateKey;
 
         /// <summary>
+        /// The <see cref="PrivateKey"/> used to sign consensus related messages.
+        /// </summary>
+        private PrivateKey _consensusPrivateKey;
+
+        /// <summary>
         /// Initialize a <see cref="NodeConfig{T}"/> instance.
         /// </summary>
         /// <param name="privateKey">The <see cref="PrivateKey"/> to use to initialize
         /// a <see cref="Swarm{T}"/> instance.  This determines the identity of a node
         /// on the network.</param>
+        /// <param name="consensusPrivateKey">>The <see cref="PrivateKey"/> to use in
+        /// an <see cref="IReactor"/> instance.  This is used to sign consensus related
+        /// messages.</param>
         /// <param name="networkConfig">The <see cref="Node.NetworkConfig{T}"/> to use.</param>
         /// <param name="swarmConfig">The <see cref="Node.SwarmConfig"/> to use.</param>
         /// <param name="store">The <see cref="IStore"/> to use for storing chain data.</param>
@@ -39,6 +48,7 @@ namespace Libplanet.Node
         /// <see cref="BlockChain{T}.Tip"/> changes.</param>
         public NodeConfig(
             PrivateKey privateKey,
+            PrivateKey consensusPrivateKey,
             NetworkConfig<T> networkConfig,
             SwarmConfig swarmConfig,
             IStore store,
@@ -46,6 +56,7 @@ namespace Libplanet.Node
             IEnumerable<IRenderer<T>>? renderers)
         {
             _privateKey = privateKey;
+            _consensusPrivateKey = consensusPrivateKey;
             NetworkConfig = networkConfig;
             SwarmConfig = swarmConfig;
             Store = store;
@@ -103,9 +114,10 @@ namespace Libplanet.Node
             BlockChain<T> blockChain = GetBlockChain();
 #pragma warning disable MEN002
             return new Swarm<T>(
-                privateKey: _privateKey,
                 blockChain: blockChain,
+                privateKey: _privateKey,
                 appProtocolVersion: NetworkConfig.AppProtocolVersion,
+                consensusPrivateKey: _consensusPrivateKey,
                 trustedAppProtocolVersionSigners: NetworkConfig.TrustedAppProtocolVersionSigners,
                 differentAppProtocolVersionEncountered: NetworkConfig.DifferentAppProtocolVersionEncountered,
                 host: SwarmConfig.InitConfig.Host,

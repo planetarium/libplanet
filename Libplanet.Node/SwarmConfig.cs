@@ -75,8 +75,6 @@ namespace Libplanet.Node
                 TxBroadcastInterval = SyncConfig.TxBroadcastInterval,
                 BlockBroadcastInterval = SyncConfig.BlockBroadcastInterval,
                 MinimumBroadcastTarget = SyncConfig.MinimumBroadcastNumPeers,
-                StaticPeers = SyncConfig.StaticPeers.ToImmutableHashSet(),
-                StaticPeersMaintainPeriod = SyncConfig.StaticPeersMaintainPeriod,
                 RefreshLifespan = SyncConfig.RoutingTableRefreshPeriod,
                 RefreshPeriod = SyncConfig.RoutingTableRefreshPeriod,
                 BlockDemandLifespan = SyncConfig.BlockDemandLifespan,
