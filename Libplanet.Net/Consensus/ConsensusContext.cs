@@ -11,6 +11,12 @@ using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
+    /// <summary>
+    /// A class that maintains the states of a <see cref="Context{T}"/> for block
+    /// indices now in consensus.
+    /// </summary>
+    /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain{T}"/>.
+    /// </typeparam>
     public class ConsensusContext<T> : IDisposable
         where T : IAction, new()
     {
@@ -23,6 +29,26 @@ namespace Libplanet.Net.Consensus
 
         private CancellationTokenSource? _newHeightCts;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
+        /// </summary>
+        /// <param name="broadcastMessage">A delegate method that will broadcasting given
+        /// <see cref="ConsensusMessage"/> to validators.
+        /// </param>
+        /// <param name="blockChain">A blockchain that will be committed, which
+        /// will be voted by consensus, and used for proposing a block.
+        /// </param>
+        /// <param name="height">The current height of consensus. this value should be same as the
+        /// index of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// </param>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
+        /// </param>
+        /// <param name="validators">A list of validator's <see cref="PublicKey"/>,
+        /// also including self.
+        /// </param>
+        /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
+        /// block. <seealso cref="OnBlockChainTipChanged"/>
+        /// </param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
@@ -48,18 +74,45 @@ namespace Libplanet.Net.Consensus
                 .ForContext("Source", nameof(ConsensusContext<T>));
         }
 
+        /// <summary>
+        /// A delegate method for using as broadcasting a <see cref="ConsensusMessage"/> to
+        /// validators.
+        /// </summary>
+        /// <param name="message">A message to broadcast.</param>
         public delegate void DelegateBroadcastMessage(ConsensusMessage message);
 
         public DelegateBroadcastMessage BroadcastMessage { get; }
 
+        /// <summary>
+        /// Index of the block that is now under consensus. this value should be same as the index
+        /// of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// </summary>
         public long Height { get; private set; }
 
+        /// <summary>
+        /// A current round of <see cref="Context{T}"/> in current <see cref="Height"/>.
+        /// </summary>
+        /// <returns>If there is <see cref="Context{T}"/> for <see cref="Height"/> returns the round
+        /// of current <see cref="Context{T}"/>, or otherwise returns -1.
+        /// </returns>
         public long Round => _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
 
+        /// <summary>
+        /// The current step of <see cref="Context{T}"/> in current <see cref="Height"/>.
+        /// </summary>
+        /// <returns>If there is <see cref="Context{T}"/> for <see cref="Height"/> returns the step
+        /// of current <see cref="Context{T}"/>, or otherwise returns
+        /// <see cref="Libplanet.Net.Consensus.Step.Null"/>.
+        /// </returns>
         public Step Step => _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
 
+        /// <summary>
+        /// A dictionary of <see cref="Context{T}"/> for each heights. Each key represents the
+        /// height of value, and value is the <see cref="Context{T}"/>.
+        /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
 
+        /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
             _newHeightCts?.Cancel();
@@ -69,6 +122,18 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Starts a consensus for a block of index <paramref name="height"/>.
+        /// </summary>
+        /// <param name="height">The height of new consensus process. this should be increasing
+        /// monotonically by 1.
+        /// </param>
+        /// <exception cref="InvalidHeightIncreasingException">Thrown if given height is not same as
+        /// the index of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// </exception>
+        /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
+        /// changed (i.e., committed, synchronized).
+        /// </remarks>
         public void NewHeight(long height)
         {
             _newHeightCts?.Cancel();
@@ -109,12 +174,30 @@ namespace Libplanet.Net.Consensus
             _ = _contexts[height].StartAsync(lastCommit);
         }
 
+        /// <summary>
+        /// Committing the block to the <see cref="BlockChain{T}"/>.
+        /// </summary>
+        /// <param name="block">A <see cref="Block{T}"/> to committing to the
+        /// <see cref="BlockChain{T}"/>.
+        /// </param>
+        /// <remarks>the method is called when a block is voted by <see cref="Context{T}"/>
+        /// in <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>.
+        /// </remarks>
         public void Commit(Block<T> block)
         {
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block);
         }
 
+        /// <summary>
+        /// Handling the received <see cref="ConsensusMessage"/>.
+        /// </summary>
+        /// <param name="consensusMessage">a received <see cref="ConsensusMessage"/> from any
+        /// bounding validator.
+        /// </param>
+        /// <exception cref="InvalidHeightMessageException"> Thrown if the given message is lower
+        /// than current <see cref="Height"/>.
+        /// </exception>
         public void HandleMessage(ConsensusMessage consensusMessage)
         {
             long height = consensusMessage.Height;
@@ -139,10 +222,27 @@ namespace Libplanet.Net.Consensus
             _contexts[height].ProduceMessage(consensusMessage);
         }
 
+        /// <summary>
+        /// Returns the summary for <see cref="ConsensusContext{T}"/>.
+        /// </summary>
+        /// <returns>Returns the current height <see cref="Context{T}"/>. if there's no instance of
+        /// <see cref="Context{T}"/> for current height, returns "No context".
+        /// </returns>
         public override string ToString() => _contexts.ContainsKey(Height)
             ? _contexts[Height].ToString()
             : "No context";
 
+        /// <summary>
+        /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls the
+        /// <see cref="NewHeight"/>. Starting a new height will be delayed for
+        /// <see cref="_newHeightDelay"/> to collecting remaining votes and stabilize the
+        /// consensus process by waiting for Global Stabilization Time.
+        /// </summary>
+        /// <param name="sender">the object instance for <see cref="EventHandler"/>.
+        /// </param>
+        /// <param name="e">the tuple of <see cref="Block{T}"/>s that are OldTip and NewTip
+        /// respectively.
+        /// </param>
         private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
             // TODO: Should set delay by using GST.
