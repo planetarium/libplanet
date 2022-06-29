@@ -327,7 +327,7 @@ commands:
               "--distributed-seed=$CIRCLE_BUILD_NUM"
             )
           fi
-          for c in "${exluced_classes[@]}"; do
+          for c in "${excluded_classes[@]}"; do
             args+=("--exclude-class=$c")
           done
           for project in *.Tests; do
