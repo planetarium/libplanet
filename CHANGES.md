@@ -1,6 +1,78 @@
 Libplanet changelog
 ===================
 
+Version PBFT
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
+ -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
+ -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `VoteSet` class.  [[#PBFT]]
+ -  Added `VoteFlag` enum.  [[#PBFT]]
+ -  Added `Vote` readonly struct.  [[#PBFT]]
+ -  Added `BlockContent.Propose()` method.  [[#PBFT]]
+ -  Added `BlockCommit` class.  [[#PBFT]]
+ -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
+ -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
+ -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
+    `IReactor` interface.  [[#PBFT]]
+ -  (Libplanet.Net) Added `ConsensusContext` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Context` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Step` enum.  [[#PBFT]]
+ -  (Libplanet.Net) Added `ConsensusMessage` abstract class which inherits
+    `Message` abstract class.  And added classes which implements
+    `ConsensusMessage` abstract class.  [[#PBFT]]
+     -  Added `ConsensusPropose` class.
+     -  Added `ConsensusVote` class.
+     -  Added `ConsensusCommit` class.
+ -  (Libplanet.Net) Added three enumeration items to `MessageType` enum.  [[#PBFT]]
+     -  Added `ConsensusPropose` of value `0x40`.
+     -  Added `ConsensusVote` of value `0x41`.
+     -  Added `ConsensusCommit` of value `0x42`.
+ -  (Libplanet.Net) Added `SwarmOptions.ConsensusPeers`.  [[#PBFT]]
+ -  (Libplanet.Net) Added
+    `InvalidBlockProposedMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added
+    `InvalidProposerProposeMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added
+    `InvalidRoundMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added
+    `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added
+    `TryUnexpectedMessageHandleException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `UnexpectedBlockHashException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `UnexpectedHeightProposeException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `UnexpectedLeaderProposeException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `UnexpectedRoundProposeException` class.  [[#PBFT]]
+
+### Behavioral changes
+
+ -  `PreEvaluationBlockHeader()` constructor became to throw
+    `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
+    invalid.  [[#PBFT]]
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+
+
 Version 0.39.0
 --------------
 
@@ -24,11 +96,11 @@ To be released.
 
 ### CLI tools
 
- - (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.6.\* to
+ -  (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.6.\* to
     [2.0.\*][Cocona.Lite 2.0.0].  [[#2101]]
 
- - Implemented *planet key derive*, now you can get public key and
-   address from private key directly!  [[#2108]]
+ -  Implemented *planet key derive*, now you can get public key and
+    address from private key directly!  [[#2108]]
 
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
