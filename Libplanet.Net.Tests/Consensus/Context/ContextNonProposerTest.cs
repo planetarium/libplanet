@@ -212,6 +212,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPropose()
         {
+            var stepChanged = new AsyncManualResetEvent();
             var messageReceived = new AsyncManualResetEvent();
             var timeoutOccurred = new AsyncManualResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
@@ -231,9 +232,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             await Context.StartAsync();
 
+            Context.StepChanged += (sender, step) => stepChanged.Set();
+
             await timeoutOccurred.WaitAsync();
             await messageReceived.WaitAsync();
             await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -253,6 +257,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             watchConsensusMessage = IsVoteSent;
             var timeoutOccurred = new AsyncManualResetEvent();
+            var stepChanged = new AsyncManualResetEvent();
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
 
             _ = Transport.StartAsync();
@@ -290,10 +295,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            Context.StepChanged += (sender, step) => stepChanged.Set();
 
             await timeoutOccurred.WaitAsync();
             await messageReceived.WaitAsync();
             await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);

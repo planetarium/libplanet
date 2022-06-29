@@ -65,37 +65,32 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             }
 
-            try
+            watchConsensusMessage = IsProposeSent;
+
+            var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
+            var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
+
+            _ = Transport.StartAsync();
+            await Transport.WaitForRunningAsync();
+
+            await Context.StartAsync(lastCommit);
+            await messageReceived.WaitAsync();
+
+            Assert.Equal(Step.PreVote, Context.Step);
+            // Looks dirty, but compiler throws error without if statement.
+            if (received is null)
             {
-                watchConsensusMessage = IsProposeSent;
-                _ = Transport.StartAsync();
-                await Transport.WaitForRunningAsync();
-
-                var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
-                var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
-                await Context.StartAsync(lastCommit);
-                await messageReceived.WaitAsync();
-
-                Assert.Equal(Step.PreVote, Context.Step);
-                // Looks dirty, but compiler throws error without if statement.
-                if (received is null)
-                {
-                    Assert.NotNull(received);
-                }
-                else
-                {
-                    Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        BlockChain.Policy.GetHashAlgorithm,
-                        (Dictionary)new Codec().Decode(received.Payload));
-                    Assert.NotNull(mined.LastCommit);
-                    Assert.Equal(
-                        new HashSet<Vote>(voteSet.Votes),
-                        new HashSet<Vote>(mined.LastCommit?.Votes!));
-                }
+                Assert.NotNull(received);
             }
-            finally
+            else
             {
-                await Transport.StopAsync(TimeSpan.Zero);
+                Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                    BlockChain.Policy.GetHashAlgorithm,
+                    (Dictionary)new Codec().Decode(received.Payload));
+                Assert.NotNull(mined.LastCommit);
+                Assert.Equal(
+                    new HashSet<Vote>(voteSet.Votes),
+                    new HashSet<Vote>(mined.LastCommit?.Votes!));
             }
         }
 
@@ -254,6 +249,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
+            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -261,10 +258,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
+
             VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
-
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusCommit(
@@ -273,8 +269,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
-
-            await messageProcessed.WaitAsync();
 
             roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
