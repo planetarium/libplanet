@@ -95,5 +95,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
         public Task DisposeAsync() => Transport.Running ?
                 Transport.StopAsync(TimeSpan.Zero) : Task.CompletedTask;
+
+        protected async Task NewHeightDelayAssert(long height)
+        {
+            await Libplanet.Tests.TestUtils.AssertThatEventually(
+                () => ConsensusContext.Height == height,
+                NewHeightDelay.Duration().Milliseconds + 3_000);
+        }
     }
 }

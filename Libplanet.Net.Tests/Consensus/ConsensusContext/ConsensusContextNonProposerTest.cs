@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
@@ -114,7 +116,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             }
 
             await tipChanged.WaitAsync();
-            ConsensusContext.NewHeight(2);
+            // NewHeight called after the tip changed event is triggered.
             await proposed.WaitAsync();
 
             Block<DumbAction> proposedBlock =
@@ -132,6 +134,127 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 Assert.True(vote.BlockHash.Equals(BlockChain[1].Hash));
                 Assert.Equal(VoteFlag.Commit, vote.Flag);
             }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void HandleMessageFromHigherHeight()
+        {
+            ConsensusPropose? propose = null;
+            var heightTwoStepChanged = new AsyncAutoResetEvent();
+            var heightThreeStepChanged = new AsyncAutoResetEvent();
+            var proposed = new AsyncAutoResetEvent();
+
+            var codec = new Codec();
+            await BlockChain.MineBlock(TestUtils.Peer1Priv, append: true);
+
+            Block<DumbAction> blockHeightThree =
+                await BlockChain.MineBlock(TestUtils.Peer3Priv, append: false);
+
+            watchConsensusMessage = (message) =>
+            {
+                if (message is ConsensusPropose proposeMessage)
+                {
+                    propose = proposeMessage;
+                    proposed.Set();
+                }
+            };
+
+            _ = Transport.StartAsync();
+            await Transport.WaitForRunningAsync();
+
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            await proposed.WaitAsync();
+
+            Assert.Equal(2, ConsensusContext.Height);
+
+            if (propose is null)
+            {
+                throw new NullException(propose);
+            }
+
+            ConsensusContext.Contexts[2].StepChanged += (sender, tuple) =>
+            {
+                heightTwoStepChanged.Set();
+            };
+            await heightTwoStepChanged.WaitAsync();
+            Assert.Equal(2, ConsensusContext.Height);
+            Assert.Equal(Step.PreVote, ConsensusContext.Step);
+
+            foreach (var privateKey in TestUtils.PrivateKeys)
+            {
+                if (privateKey == TestUtils.Peer2Priv)
+                {
+                    // Peer2 will send a ConsensusVote by handling the ConsensusPropose message.
+                    continue;
+                }
+
+                ConsensusContext.HandleMessage(
+                    new ConsensusVote(
+                        new Vote(
+                            2,
+                            0,
+                            propose.BlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.Absent,
+                            null).Sign(privateKey))
+                    {
+                        Remote = new Peer(privateKey.PublicKey),
+                    });
+            }
+
+            await heightTwoStepChanged.WaitAsync();
+            Assert.Equal(Step.PreCommit, ConsensusContext.Contexts[2].Step);
+
+            foreach (var privateKey in TestUtils.PrivateKeys)
+            {
+                if (privateKey == TestUtils.Peer2Priv)
+                {
+                    // Peer2 will send a ConsensusCommit by handling the ConsensusVote message.
+                    continue;
+                }
+
+                ConsensusContext.HandleMessage(
+                    new ConsensusCommit(
+                        new Vote(
+                            2,
+                            0,
+                            propose.BlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.Commit,
+                            null).Sign(privateKey))
+                    {
+                        Remote = new Peer(privateKey.PublicKey),
+                    });
+            }
+
+            // Message from higher height
+            ConsensusContext.HandleMessage(
+                new ConsensusPropose(
+                    3,
+                    0,
+                    blockHeightThree.Hash,
+                    codec.Encode(blockHeightThree.MarshalBlock()),
+                    -1)
+                {
+                    Remote = TestUtils.Peer3,
+                });
+
+            ConsensusContext.Contexts[3].StepChanged += (sender, tuple) =>
+            {
+                heightThreeStepChanged.Set();
+            };
+            // Propose -> PreVote (by consuming the message)
+            await heightThreeStepChanged.WaitAsync();
+            // Commit ends
+            await heightTwoStepChanged.WaitAsync();
+            // GST, PreVote -> Propose (NewRound started)
+            await NewHeightDelayAssert(3);
+            // Propose -> PreVote (message consumed)
+            await heightThreeStepChanged.WaitAsync();
+            Assert.Equal(3, ConsensusContext.Height);
+            Assert.Equal(Step.PreVote, ConsensusContext.Step);
         }
     }
 }
