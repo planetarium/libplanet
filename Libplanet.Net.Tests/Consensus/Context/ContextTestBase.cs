@@ -123,7 +123,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 Transactions = new List<Transaction<DumbAction>>(),
             }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, BlockChain);
 
-        protected async Task NewRoundSendMessageAfterAssert()
+        protected async Task NewRoundSendMessageAssert()
         {
             await Libplanet.Tests.TestUtils.AssertThatEventually(
                 () => Context.Step == Step.Propose,

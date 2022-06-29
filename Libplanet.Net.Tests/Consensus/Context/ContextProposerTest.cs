@@ -180,7 +180,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await roundStarted.WaitAsync();
             // Node id 1 is not next proposer, and wait for SendMessageAfter() and broadcast
             // messages.
-            await NewRoundSendMessageAfterAssert();
+            await NewRoundSendMessageAssert();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);

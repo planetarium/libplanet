@@ -353,7 +353,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await timeoutOccurred.WaitAsync();
             await roundStared.WaitAsync();
             await messageProcessed.WaitAsync();
-            await NewRoundSendMessageAfterAssert();
+            await NewRoundSendMessageAssert();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
