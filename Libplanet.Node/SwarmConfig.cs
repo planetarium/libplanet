@@ -64,6 +64,7 @@ namespace Libplanet.Node
         /// <returns>The <see cref="SwarmOptions"/> instance.</returns>
         public SwarmOptions ToSwarmOptions()
         {
+            // TODO: Should add ConsensusPeers by adding ConsensusConfig.
             return new SwarmOptions()
             {
                 Type = InitConfig.TransportType,
