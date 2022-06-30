@@ -463,7 +463,6 @@ namespace Libplanet.Net.Consensus
             Block<T> block = await _blockChain.ProposeBlock(
                 _privateKey,
                 lastCommit: _lastCommit,
-                append: false,
                 cancellationToken: _cancellationTokenSource.Token);
             _blockChain.Store.PutBlock(block);
             return block;

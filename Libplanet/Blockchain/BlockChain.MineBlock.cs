@@ -236,7 +236,6 @@ namespace Libplanet.Blockchain
         public async Task<Block<T>> ProposeBlock(
             PrivateKey proposer,
             DateTimeOffset? timestamp = null,
-            bool? append = null,
             long? maxBlockBytes = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
