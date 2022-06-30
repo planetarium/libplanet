@@ -1,11 +1,25 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blocks;
+using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
 {
+    /// <summary>
+    /// A message class for <see cref="Libplanet.Net.Consensus.Step.Propose"/>.
+    /// </summary>
     public class ConsensusPropose : ConsensusMessage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsensusPropose"/> class.
+        /// </summary>
+        /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
+        /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
+        /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
+        /// <param name="payload">A marshalled <see cref="Block{T}"/>.</param>
+        /// <param name="validRound">A last successful
+        /// <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
+        /// </param>
         public ConsensusPropose(
             long height,
             int round,
@@ -18,6 +32,11 @@ namespace Libplanet.Net.Messages
             ValidRound = validRound;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsensusPropose"/> class with marshalled
+        /// message.
+        /// </summary>
+        /// <param name="dataframes">A marshalled message.</param>
         public ConsensusPropose(byte[][] dataframes)
         : base(dataframes)
         {
@@ -25,10 +44,17 @@ namespace Libplanet.Net.Messages
             ValidRound = BitConverter.ToInt32(dataframes[4], 0);
         }
 
+        /// <summary>
+        /// A marshalled <see cref="Block{T}"/>.
+        /// </summary>
         public byte[] Payload { get; }
 
+        /// <summary>
+        /// A last successful <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
+        /// </summary>
         public int ValidRound { get; }
 
+        /// <inheritdoc cref="ConsensusMessage.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
         {
             get
@@ -45,6 +71,7 @@ namespace Libplanet.Net.Messages
             }
         }
 
+        /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusPropose;
     }
 }
