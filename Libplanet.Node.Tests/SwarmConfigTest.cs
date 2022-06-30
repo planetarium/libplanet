@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Net.Transports;
 using Xunit;
+using TransportType = Libplanet.Net.Transports.TransportType;
 
 namespace Libplanet.Node.Tests
 {

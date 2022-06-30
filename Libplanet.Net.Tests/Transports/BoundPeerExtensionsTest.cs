@@ -13,6 +13,7 @@ using NetMQ;
 using Xunit;
 using Xunit.Sdk;
 using static Libplanet.Tests.TestUtils;
+using TransportType = Libplanet.Net.Transports.TransportType;
 
 namespace Libplanet.Net.Tests.Transports
 {

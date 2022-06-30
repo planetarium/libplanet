@@ -11,11 +11,11 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
-using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using static Libplanet.Tests.TestUtils;
+using TransportType = Libplanet.Net.Transports.TransportType;
 
 namespace Libplanet.Net.Tests
 {
