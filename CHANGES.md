@@ -15,6 +15,9 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+ - (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
+ - (Libplanet.Explorer) Added `unsignedTransaction` and `bindSignature`
+   GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
 ### Behavioral changes
 
@@ -32,6 +35,7 @@ To be released.
 
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
+[#2130]: https://github.com/planetarium/libplanet/pull/2130
 [Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
 
 
