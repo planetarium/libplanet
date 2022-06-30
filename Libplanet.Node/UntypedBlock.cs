@@ -118,7 +118,7 @@ namespace Libplanet.Node
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _header.TxHash;
 
-        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _header.LastCommit;
 
         /// <inheritdoc cref="IBlockHeader.Signature"/>

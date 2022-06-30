@@ -41,7 +41,7 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// <param name="lastCommit">A <see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
@@ -90,7 +90,7 @@ namespace Libplanet.Blockchain
         /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
-        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// <param name="lastCommit">A <see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
@@ -233,6 +233,36 @@ namespace Libplanet.Blockchain
             return block;
         }
 
+        /// <summary>
+        /// <para>
+        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// </para>
+        /// <para>
+        /// All unprovided and/or <c>null</c> arguments are reassigned accordingly and redirected
+        /// to a overloaded method with non-nullable parameters.  By default, a policy adhering
+        /// block is produced with current timestamp and appended immediately to the chain.
+        /// </para>
+        /// </summary>
+        /// <param name="proposer">
+        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
+        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
+        /// </param>
+        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
+        /// that a block can accept per signer.  See also
+        /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public async Task<Block<T>> ProposeBlock(
             PrivateKey proposer,
             DateTimeOffset? timestamp = null,
@@ -257,6 +287,29 @@ namespace Libplanet.Blockchain
                 cancellationToken: cancellationToken ?? default(CancellationToken));
 #pragma warning restore SA1118
 
+        /// <summary>
+        /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <param name="proposer">
+        /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
+        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactions">The maximum number of transactions that a block can
+        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
+        /// </param>
+        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
+        /// that a block can accept per signer.  See also
+        /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
+        /// <param name="txPriority">An optional comparer for give certain transactions to
+        /// priority to belong to the block.  No certain priority by default.</param>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
+        /// </param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
         public async Task<Block<T>> ProposeBlock(
             PrivateKey proposer,
             DateTimeOffset timestamp,
@@ -265,7 +318,7 @@ namespace Libplanet.Blockchain
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit? lastCommit = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             using var cts = new CancellationTokenSource();
             using CancellationTokenSource cancellationTokenSource =
