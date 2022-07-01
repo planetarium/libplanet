@@ -255,6 +255,8 @@ namespace Libplanet.Blockchain.Policies
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
 
+        /// <inheritdoc/>
+        [Pure]
         public IEnumerable<PublicKey> GetValidators() => new List<PublicKey>();
     }
 }
