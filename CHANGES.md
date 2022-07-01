@@ -42,22 +42,14 @@ To be released.
      -  Added `ConsensusPropose` of value `0x40`.
      -  Added `ConsensusVote` of value `0x41`.
      -  Added `ConsensusCommit` of value `0x42`.
- -  (Libplanet.Net) Added `SwarmOptions.ConsensusPeers`.  [[#PBFT]]
+ -  (Libplanet.Net) Added `ConsensusReactorOption` struct.  [[#PBFT]]
  -  (Libplanet.Net) Added
     `InvalidBlockProposedMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added
     `InvalidProposerProposeMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added
-    `InvalidRoundMessageException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added
     `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added
-    `TryUnexpectedMessageHandleException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `UnexpectedBlockHashException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `UnexpectedHeightProposeException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `UnexpectedLeaderProposeException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added `UnexpectedRoundProposeException` class.  [[#PBFT]]
 
 ### Behavioral changes
 
