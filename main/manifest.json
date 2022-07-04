@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "iLkn4mo7NYgNG/8vGHZ6I36+JhK+heGvO8hkcXEZzP8="
+          "hash": "alXHXOGMaRP6KSy0vsjXHKkrCd+9bh406BqedQBP9jw="
         }
       },
       "is_incremental": false,
@@ -1534,30 +1534,6 @@
         ".html": {
           "relative_path": "api/Libplanet.Extensions.Cocona.Commands.ApvCommand.html",
           "hash": "ivPYWARcr1YyArG3ZuAordbRR3wdIE0YuD3QCUixl+8="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.html",
-          "hash": "Ko2vG4JzdLGDyqb6dzuW5MfJ52m/EAk9fHyhuAMxPIU="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Extensions.Cocona.Commands.Key.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Extensions.Cocona.Commands.Key.html",
-          "hash": "UtEhLHuFguVgoH4EA/chlHx5B/1dVeCW6lBDfgJkeqE="
         }
       },
       "is_incremental": false,
@@ -4137,7 +4113,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "gFHWIJy2pw/9Ie8IaAIGaip5KwZ7WiR9lN9dcfkVsug="
+          "hash": "3kZYRFngVtyGwobxVHTPlBf4ON3xEtKHP1YdRnO0S1E="
         }
       },
       "is_incremental": false,
@@ -4246,7 +4222,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 334,
+          "total_file_count": 332,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

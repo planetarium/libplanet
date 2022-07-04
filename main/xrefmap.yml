@@ -10552,31 +10552,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.ApvCommand.Verify
   nameWithType: ApvCommand.Verify
-- uid: Libplanet.Extensions.Cocona.Commands.Key
-  name: Libplanet.Extensions.Cocona.Commands.Key
-  href: api/Libplanet.Extensions.Cocona.Commands.Key.html
-  commentId: N:Libplanet.Extensions.Cocona.Commands.Key
-  fullName: Libplanet.Extensions.Cocona.Commands.Key
-  nameWithType: Libplanet.Extensions.Cocona.Commands.Key
-- uid: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand
-  name: DerivationCommand
-  href: api/Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.html
-  commentId: T:Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand
-  fullName: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand
-  nameWithType: DerivationCommand
-- uid: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey(System.String,System.Boolean,System.Boolean)
-  name: PrivateKey(String, Boolean, Boolean)
-  href: api/Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.html#Libplanet_Extensions_Cocona_Commands_Key_DerivationCommand_PrivateKey_System_String_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey(System.String,System.Boolean,System.Boolean)
-  fullName: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey(System.String, System.Boolean, System.Boolean)
-  nameWithType: DerivationCommand.PrivateKey(String, Boolean, Boolean)
-- uid: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey*
-  name: PrivateKey
-  href: api/Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.html#Libplanet_Extensions_Cocona_Commands_Key_DerivationCommand_PrivateKey_
-  commentId: Overload:Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey
-  isSpec: "True"
-  fullName: Libplanet.Extensions.Cocona.Commands.Key.DerivationCommand.PrivateKey
-  nameWithType: DerivationCommand.PrivateKey
 - uid: Libplanet.Extensions.Cocona.Commands.KeyCommand
   name: KeyCommand
   href: api/Libplanet.Extensions.Cocona.Commands.KeyCommand.html
