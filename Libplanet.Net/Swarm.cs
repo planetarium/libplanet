@@ -72,7 +72,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            int workers = 5,
+            int workers = 100,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
