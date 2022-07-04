@@ -20,6 +20,10 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Net) Invalid `Uri.UserInfo` with multiple colons is now
+    rejected by `IceServer(Uri url)` constructor and exception is thrown.
+    [[#2116]]
+
 ### Dependencies
 
 ### CLI tools
