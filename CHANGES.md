@@ -33,9 +33,12 @@ To be released.
 
  - Implemented *planet key derive*, now you can get public key and
    address from private key directly!  [[#2108]]
+ -  (Libplanet.Extensions.Cocona) Removed `DerivationCommand` class.
+    [[#2118]]
 
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
+[#2118]: https://github.com/planetarium/libplanet/pull/2118
 [Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
 
 
