@@ -88,7 +88,7 @@ consecutive blocks.")]
                 "workers",
                 new[] { 'W' },
                 Description = "The number of swarm workers.")]
-            int workers = 50,
+            int workers = 100,
             [Option(
                 "app-protocol-version",
                 new[] { 'V' },
