@@ -18,6 +18,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `PolymorphicAction<T>` now allows subclasses of `T` to be declared in
+    the entry assembly of the application besides the same assembly as `T`.
+    [[#2136]]
  -  (Libplanet.Net) Raised the default value for `Swarm<T>()` constructor's
     `workers` parameter to 100.  [[#2128], [#2134]]
  -  (Libplanet.Explorer) Raised the default value for `workers` console
@@ -51,6 +54,7 @@ To be released.
 [#2118]: https://github.com/planetarium/libplanet/pull/2118
 [#2128]: https://github.com/planetarium/libplanet/issues/2128
 [#2134]: https://github.com/planetarium/libplanet/pull/2134
+[#2136]: https://github.com/planetarium/libplanet/pull/2136
 [Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
 
 
