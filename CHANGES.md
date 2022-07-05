@@ -25,6 +25,8 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `PrivateKey()` constructor had returned an invalid key
+    less than 32 bytes. [[#1696], [#2091]]
  -  (Libplanet.Net) Invalid `Uri.UserInfo` with multiple colons is now
     rejected by `IceServer(Uri url)` constructor and exception is thrown.
     [[#2116]]
@@ -40,6 +42,8 @@ To be released.
  -  (Libplanet.Extensions.Cocona) Removed `DerivationCommand` class.
     [[#2118]]
 
+[#1696]: https://github.com/planetarium/libplanet/issues/1696
+[#2091]: https://github.com/planetarium/libplanet/pull/2091
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
 [#2118]: https://github.com/planetarium/libplanet/pull/2118
