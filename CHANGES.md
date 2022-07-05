@@ -38,7 +38,7 @@ To be released.
      -  Added `ConsensusPropose` class.
      -  Added `ConsensusVote` class.
      -  Added `ConsensusCommit` class.
- -  (Libplanet.Net) Added three enumeration items to `MessageType` enum.  [[#PBFT]]
+ -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#PBFT]]
      -  Added `ConsensusPropose` of value `0x40`.
      -  Added `ConsensusVote` of value `0x41`.
      -  Added `ConsensusCommit` of value `0x42`.
