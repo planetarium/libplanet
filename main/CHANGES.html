@@ -70,6 +70,12 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) Raised the default value for <code>Swarm&lt;T&gt;()</code> constructor's
+<code>workers</code> parameter to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
+<li>(Libplanet.Explorer) Raised the default value for <code>workers</code> console
+argument to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>(Libplanet.Net) Invalid <code>Uri.UserInfo</code> with multiple colons is now
@@ -79,15 +85,12 @@ rejected by <code>IceServer(Uri url)</code> constructor and exception is thrown.
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
-<li><p>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.6.* to
-<a href="https://www.nuget.org/packages/Cocona.Lite/2.0.0">2.0.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2101">#2101</a>]</p>
-</li>
-<li><p>Implemented <em>planet key derive</em>, now you can get public key and
-address from private key directly!  [<a href="https://github.com/planetarium/libplanet/pull/2108">#2108</a>]</p>
-</li>
-<li><p>(Libplanet.Extensions.Cocona) Removed <code>DerivationCommand</code> class.
-[<a href="https://github.com/planetarium/libplanet/pull/2118">#2118</a>]</p>
-</li>
+<li>(Libplanet.Extensions.Cocona) Upgraded <em>Cocona.Lite</em> from 1.6.* to
+<a href="https://www.nuget.org/packages/Cocona.Lite/2.0.0">2.0.*</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2101">#2101</a>]</li>
+<li>Implemented <em>planet key derive</em>, now you can get public key and
+address from private key directly!  [<a href="https://github.com/planetarium/libplanet/pull/2108">#2108</a>]</li>
+<li>(Libplanet.Extensions.Cocona) Removed <code>DerivationCommand</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/2118">#2118</a>]</li>
 </ul>
 <h2 id="version-0380">Version 0.38.0</h2>
 <p>Released on June 7th, 2022.</p>
