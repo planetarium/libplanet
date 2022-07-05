@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "eHUhHhk4deH9ADUywbtJ2g59zK8erEM/569GTQzrFnQ="
+          "hash": "DDCRpEhr4pzBSwe4Q9IXS2y4H853pUojMi2idRmjFhk="
         }
       },
       "is_incremental": false,
@@ -1445,6 +1445,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html",
+          "hash": "L7wcDW8O9mfNxqhRB+Yrha1utU11zWjNCgCExSacD5E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Crypto.ICryptoBackend-1.yml",
       "output": {
         ".html": {
@@ -1509,7 +1521,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Crypto.html",
-          "hash": "PM7kgVusUwmmQ9gGqFosYef56ZeGXPrdFxR6+PLPfz4="
+          "hash": "BWy8qYteLlhqFHL1oudxw0j/YtKc3Yx/wAAB8hAtPr4="
         }
       },
       "is_incremental": false,
@@ -4113,7 +4125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "3kZYRFngVtyGwobxVHTPlBf4ON3xEtKHP1YdRnO0S1E="
+          "hash": "AB9RU/RILY68eVKjyJFKFeMYOgK9n0lG+Mnl5av6l3w="
         }
       },
       "is_incremental": false,
@@ -4222,7 +4234,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 332,
+          "total_file_count": 333,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

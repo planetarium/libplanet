@@ -9839,6 +9839,43 @@ references:
   fullName.vb: Libplanet.Crypto.DefaultCryptoBackend(Of T).Verify
   nameWithType: DefaultCryptoBackend<T>.Verify
   nameWithType.vb: DefaultCryptoBackend(Of T).Verify
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException
+  name: GenerateKeyParamTriesExceedException
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html
+  commentId: T:Libplanet.Crypto.GenerateKeyParamTriesExceedException
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException
+  nameWithType: GenerateKeyParamTriesExceedException
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor
+  name: GenerateKeyParamTriesExceedException()
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor
+  commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException()
+  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException()
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(SerializationInfo,StreamingContext)
+  name: GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
+  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(System.String)
+  name: GenerateKeyParamTriesExceedException(String)
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_System_String_
+  commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(System.String)
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(System.String)
+  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(String)
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(System.String,Exception)
+  name: GenerateKeyParamTriesExceedException(String, Exception)
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_System_String_Exception_
+  commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(System.String,Exception)
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(System.String, Exception)
+  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(String, Exception)
+- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor*
+  name: GenerateKeyParamTriesExceedException
+  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_
+  commentId: Overload:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException
+  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException
 - uid: Libplanet.Crypto.ICryptoBackend`1
   name: ICryptoBackend<T>
   href: api/Libplanet.Crypto.ICryptoBackend-1.html
