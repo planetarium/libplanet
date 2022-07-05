@@ -59,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -128,7 +128,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(

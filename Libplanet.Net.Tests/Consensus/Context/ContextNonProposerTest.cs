@@ -37,7 +37,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(
@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlockTwoThird()
         {
-            var messageReceived = new AsyncManualResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
             BlockHash? blockHash = null;
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
@@ -94,7 +94,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(
@@ -122,7 +122,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitNilTwoThird()
         {
-            var messageReceived = new AsyncManualResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
             BlockHash? blockHash = null;
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
@@ -159,7 +159,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(
@@ -212,9 +212,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPropose()
         {
-            var stepChanged = new AsyncManualResetEvent();
-            var messageReceived = new AsyncManualResetEvent();
-            var timeoutOccurred = new AsyncManualResetEvent();
+            var stepChanged = new AsyncAutoResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
+            var timeoutOccurred = new AsyncAutoResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
                 if (consensusMessage is ConsensusVote)
@@ -228,7 +228,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Transport.WaitForRunningAsync();
 
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             await Context.StartAsync();
 
@@ -246,7 +246,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreVote()
         {
-            var messageReceived = new AsyncManualResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
                 if (consensusMessage is ConsensusCommit)
@@ -256,8 +256,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            var timeoutOccurred = new AsyncManualResetEvent();
-            var stepChanged = new AsyncManualResetEvent();
+            var timeoutOccurred = new AsyncAutoResetEvent();
+            var stepChanged = new AsyncAutoResetEvent();
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
 
             _ = Transport.StartAsync();
@@ -286,7 +286,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(
@@ -309,8 +309,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreCommit()
         {
-            var timeoutOccurred = new AsyncManualResetEvent();
-            var roundStared = new AsyncManualResetEvent();
+            var timeoutOccurred = new AsyncAutoResetEvent();
+            var roundStared = new AsyncAutoResetEvent();
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
             Context.RoundStarted += (sender, i) => roundStared.Set();
 
@@ -340,7 +340,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusCommit(

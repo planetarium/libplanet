@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsync()
         {
-            var messageReceived = new AsyncManualResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
 
             void IsProposeSent(ConsensusMessage message)
             {
@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Transport.WaitForRunningAsync();
 
             await Context.StartAsync();
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             await messageReceived.WaitAsync();
             await messageProcessed.WaitAsync();
@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsyncWithLastCommit()
         {
-            var messageReceived = new AsyncManualResetEvent();
+            var messageReceived = new AsyncAutoResetEvent();
             ConsensusPropose? received = null;
 
             void IsProposeSent(ConsensusMessage message)
@@ -249,7 +249,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            AsyncManualResetEvent messageProcessed = WatchMessageProcessed();
+            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 new ConsensusVote(

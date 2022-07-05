@@ -130,9 +130,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 1_000);
         }
 
-        protected AsyncManualResetEvent WatchMessageProcessed()
+        protected AsyncAutoResetEvent WatchMessageProcessed()
         {
-            var messageProcessed = new AsyncManualResetEvent();
+            var messageProcessed = new AsyncAutoResetEvent();
             Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
 
             return messageProcessed;
