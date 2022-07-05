@@ -71,6 +71,9 @@
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>PolymorphicAction&lt;T&gt;</code> now allows subclasses of <code>T</code> to be declared in
+the entry assembly of the application besides the same assembly as <code>T</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/2136">#2136</a>]</li>
 <li>(Libplanet.Net) Raised the default value for <code>Swarm&lt;T&gt;()</code> constructor's
 <code>workers</code> parameter to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
 <li>(Libplanet.Explorer) Raised the default value for <code>workers</code> console
