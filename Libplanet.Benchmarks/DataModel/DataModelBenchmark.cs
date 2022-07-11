@@ -7,55 +7,56 @@ namespace Libplanet.Benchmarks.DataModel
     {
         private RootModel _rootModel;
         private LeafModel _leafModel;
-        private PlainValueLeaf _plainValueLeaf;
+        private RawLeafModel _rawLeafModel;
 
         private BTypes.Dictionary _encodedRootModel;
         private BTypes.Dictionary _encodedLeafModel;
 
-        public DataModelBenchmark()
+        [GlobalSetup]
+        public void Setup()
         {
             _rootModel = new RootModel();
             _leafModel = new LeafModel();
             _encodedRootModel = _rootModel.Encode();
             _encodedLeafModel = _leafModel.Encode();
 
-            _plainValueLeaf = new PlainValueLeaf(_encodedLeafModel);
+            _rawLeafModel = new RawLeafModel(_encodedLeafModel);
         }
 
         [Benchmark]
-        public void EncodeRoot()
+        public Bencodex.Types.IValue EncodeRootModel()
         {
-            _rootModel.Encode();
+            return _rootModel.Encode();
         }
 
         [Benchmark]
-        public void EncodeLeaf()
+        public Bencodex.Types.IValue EncodeLeafModel()
         {
-            _leafModel.Encode();
+            return _leafModel.Encode();
         }
 
         [Benchmark]
-        public void EncodePlainValueLeaf()
+        public Bencodex.Types.IValue EncodeRawLeafModel()
         {
-            _plainValueLeaf.Encode();
+            return _rawLeafModel.Encode();
         }
 
         [Benchmark]
-        public void DecodeRoot()
+        public Libplanet.Store.DataModel DecodeRootModel()
         {
-            _ = new RootModel(_encodedRootModel);
+            return new RootModel(_encodedRootModel);
         }
 
         [Benchmark]
-        public void DecodeLeaf()
+        public Libplanet.Store.DataModel DecodeLeafModel()
         {
-            _ = new LeafModel(_encodedLeafModel);
+            return new LeafModel(_encodedLeafModel);
         }
 
         [Benchmark]
-        public void DecodePlainValueLeaf()
+        public RawLeafModel DecodeRawLeafModel()
         {
-            _ = new PlainValueLeaf(_encodedLeafModel);
+            return new RawLeafModel(_encodedLeafModel);
         }
     }
 }
