@@ -384,7 +384,7 @@ namespace Libplanet.Tests.Store
                     (BTypes.IValue)BTypes.List.Empty
                         .Add((BTypes.IValue)new BTypes.Integer(5))
                         .Add(BTypes.Null.Value));
-            Assert.Throws<ArgumentException>(() => new ListIntWrapper(encoded));
+            Assert.Throws<NotSupportedException>(() => new ListIntWrapper(encoded));
             encoded = BTypes.Dictionary.Empty
                 .Add(
                     nameof(DictStrIntWrapper.Value),

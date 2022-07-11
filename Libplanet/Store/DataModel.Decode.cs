@@ -32,9 +32,9 @@ namespace Libplanet.Store
                     return new Address(bytes.ByteArray);
                 case BTypes.Text s when type == typeof(string):
                     return s.Value;
-                case BTypes.Dictionary pvt when
+                case BTypes.Dictionary dm when
                     type.IsSubclassOf(typeof(DataModel)):
-                    object instance = Activator.CreateInstance(type, pvt)
+                    object instance = Activator.CreateInstance(type, dm)
                         ?? throw new NullReferenceException(
                             $"Failed to decode {value} to target type {type}");
                     return instance;
@@ -53,91 +53,32 @@ namespace Libplanet.Store
             {
                 Type[] genericTypes = type.GetGenericArguments();
                 Type genericType = genericTypes[0];
-                if (genericType == typeof(bool))
+
+                IEnumerable<object> tempList = list
+                    .Select(x => DecodeFromIValue(x, genericType));
+
+                switch (tempList)
                 {
-                    return list
-                        .Select(x
-                            => x is BTypes.Boolean b
-                                ? b.Value
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(int))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Integer i
-                                ? (int)i.Value
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(long))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Integer l
-                                ? (long)l.Value
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(BigInteger))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Integer bigInteger
-                                ? bigInteger.Value
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(ImmutableArray<byte>))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Binary bytes
-                                ? bytes.ByteArray
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(Guid))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Binary guid
-                                ? new Guid(guid.ToByteArray())
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encoutnered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(Address))
-                {
-                    return list
-                        .Select(x
-                            => x is BTypes.Binary address
-                                ? new Address(address.ByteArray)
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encoutnered."))
-                        .ToImmutableList();
-                }
-                else if (genericType == typeof(string))
-                {
-                    // FIXME: Reference type nullability should be inferred from attributes.
-                    return list
-                        .Select(x
-                            => x is BTypes.Text s
-                                ? s.Value
-                                : throw new ArgumentException(
-                                    $"Invalid encoded type {x.GetType()} encountered."))
-                        .ToImmutableList();
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        $"Invalid target generic type {genericType} encountered.");
+                    case IEnumerable<object> listBool when genericType == typeof(bool):
+                        return listBool.Cast<bool>().ToImmutableList();
+                    case IEnumerable<object> listInt when genericType == typeof(int):
+                        return listInt.Cast<int>().ToImmutableList();
+                    case IEnumerable<object> listLong when genericType == typeof(long):
+                        return listLong.Cast<long>().ToImmutableList();
+                    case IEnumerable<object> listBigInteger when genericType == typeof(BigInteger):
+                        return listBigInteger.Cast<BigInteger>().ToImmutableList();
+                    case IEnumerable<object> listBytes
+                        when genericType == typeof(ImmutableArray<byte>):
+                        return listBytes.Cast<ImmutableArray<byte>>().ToImmutableList();
+                    case IEnumerable<object> listGuid when genericType == typeof(Guid):
+                        return listGuid.Cast<Guid>().ToImmutableList();
+                    case IEnumerable<object> listAddress when genericType == typeof(Address):
+                        return listAddress.Cast<Address>().ToImmutableList();
+                    case IEnumerable<object> listString when genericType == typeof(string):
+                        return listString.Cast<string>().ToImmutableList();
+                    default:
+                        throw new ArgumentException(
+                            $"Invalid generic type {genericType} encountered.");
                 }
             }
             else
