@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Store
                         .Add(
                             (BTypes.IKey)new BTypes.Text("bar"),
                             (BTypes.IValue)BTypes.Null.Value));
-            Assert.Throws<ArgumentException>(() => new DictStrIntWrapper(encoded));
+            Assert.Throws<NotSupportedException>(() => new DictStrIntWrapper(encoded));
         }
 
         [Fact]
