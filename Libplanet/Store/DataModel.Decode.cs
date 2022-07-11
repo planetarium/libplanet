@@ -9,7 +9,7 @@ namespace Libplanet.Store
 {
     public abstract partial class DataModel
     {
-        private static object DecodeFromIValue(BTypes.IValue value, Type type)
+        private static dynamic DecodeFromIValue(BTypes.IValue value, Type type)
         {
             switch (value)
             {
@@ -53,28 +53,28 @@ namespace Libplanet.Store
                 Type[] genericTypes = type.GetGenericArguments();
                 Type genericType = genericTypes[0];
 
-                IEnumerable<object> tempList = list
+                IEnumerable<dynamic> tempList = list
                     .Select(x => DecodeFromIValue(x, genericType));
 
                 switch (tempList)
                 {
 #pragma warning disable MEN002
-                    case IEnumerable<object> listBool when genericType == typeof(bool):
-                        return listBool.Cast<bool>().ToImmutableList();
-                    case IEnumerable<object> listInt when genericType == typeof(int):
-                        return listInt.Cast<int>().ToImmutableList();
-                    case IEnumerable<object> listLong when genericType == typeof(long):
-                        return listLong.Cast<long>().ToImmutableList();
-                    case IEnumerable<object> listBigInteger when genericType == typeof(BigInteger):
-                        return listBigInteger.Cast<BigInteger>().ToImmutableList();
-                    case IEnumerable<object> listBytes when genericType == typeof(ImmutableArray<byte>):
-                        return listBytes.Cast<ImmutableArray<byte>>().ToImmutableList();
-                    case IEnumerable<object> listGuid when genericType == typeof(Guid):
-                        return listGuid.Cast<Guid>().ToImmutableList();
-                    case IEnumerable<object> listAddress when genericType == typeof(Address):
-                        return listAddress.Cast<Address>().ToImmutableList();
-                    case IEnumerable<object> listString when genericType == typeof(string):
-                        return listString.Cast<string>().ToImmutableList();
+                    case IEnumerable<dynamic> listBool when genericType == typeof(bool):
+                        return listBool.Select(x => (bool)x).ToImmutableList();
+                    case IEnumerable<dynamic> listInt when genericType == typeof(int):
+                        return listInt.Select(x => (int)x).ToImmutableList();
+                    case IEnumerable<dynamic> listLong when genericType == typeof(long):
+                        return listLong.Select(x => (long)x).ToImmutableList();
+                    case IEnumerable<dynamic> listBigInteger when genericType == typeof(BigInteger):
+                        return listBigInteger.Select(x => (BigInteger)x).ToImmutableList();
+                    case IEnumerable<dynamic> listBytes when genericType == typeof(ImmutableArray<byte>):
+                        return listBytes.Select(x => (ImmutableArray<byte>)x).ToImmutableList();
+                    case IEnumerable<dynamic> listGuid when genericType == typeof(Guid):
+                        return listGuid.Select(x => (Guid)x).ToImmutableList();
+                    case IEnumerable<dynamic> listAddress when genericType == typeof(Address):
+                        return listAddress.Select(x => (Address)x).ToImmutableList();
+                    case IEnumerable<dynamic> listString when genericType == typeof(string):
+                        return listString.Select(x => (string)x).ToImmutableList();
                     default:
                         throw new ArgumentException(
                             $"Invalid generic type {genericType} encountered.");
