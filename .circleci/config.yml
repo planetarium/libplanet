@@ -365,16 +365,6 @@ jobs:
     working_directory: /mnt/ramdisk
     steps: [mono_build_base]
 
-  linux-netcore-test-tcp:
-    docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
-    environment:
-      TRANSPORT_TYPE: tcp
-    resource_class: large
-    working_directory: /mnt/ramdisk
-    parallelism: 2
-    steps: [netcore_test_base]
-
   linux-netcore-test-netmq:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:3.1
@@ -457,8 +447,6 @@ workflows:
     jobs:
     - linux-netcore-build
     - linux-mono-build
-    - linux-netcore-test-tcp:
-        requires: [linux-netcore-build]
     - linux-netcore-test-netmq:
         requires: [linux-netcore-build]
     - linux-netcore-test-ar-SA:
