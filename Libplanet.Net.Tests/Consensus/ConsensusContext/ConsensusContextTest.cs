@@ -38,7 +38,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         }
 
         [Fact(Timeout = Timeout)]
-        public async void NewHeightIncreasing()
+        public void NewHeightIncreasing()
         {
             // NewHeight also covers Commit() due to calling the method from Context<T>
             AutoResetEvent waitingCommit = new AutoResetEvent(false);
@@ -65,9 +65,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     stepChanged.Set();
                 }
             }
-
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
 
             BlockChain.TipChanged += (sender, tuple) => waitingCommit.Set();
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);

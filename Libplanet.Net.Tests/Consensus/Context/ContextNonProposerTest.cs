@@ -23,9 +23,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlockOneThird()
         {
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
 
@@ -56,6 +53,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlockTwoThird()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             BlockHash? blockHash = null;
             void IsVoteSent(ConsensusMessage consensusMessage)
@@ -68,8 +66,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreCommit)
+                {
+                    stepChanged.Set();
+                }
+            };
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
@@ -94,8 +97,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -105,7 +106,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -122,6 +123,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitNilTwoThird()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             BlockHash? blockHash = null;
             void IsVoteSent(ConsensusMessage consensusMessage)
@@ -134,9 +136,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreCommit)
+                {
+                    stepChanged.Set();
+                }
+            };
             Block<DumbAction> block = GetInvalidBlock();
             blockHash = block.Hash;
 
@@ -159,8 +165,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -170,7 +174,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -179,9 +183,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteNilOneThird()
         {
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
 
@@ -224,8 +225,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
 
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
             AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
@@ -260,9 +259,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChanged = new AsyncAutoResetEvent();
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
 
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
 
@@ -286,8 +282,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -299,7 +293,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             await timeoutOccurred.WaitAsync();
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
             await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -313,9 +306,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var roundStared = new AsyncAutoResetEvent();
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
             Context.RoundStarted += (sender, i) => roundStared.Set();
-
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);

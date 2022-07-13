@@ -34,9 +34,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var messageProcessed = new AsyncAutoResetEvent();
             var timeoutOccurred = new AsyncAutoResetEvent();
 
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
 
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageProcessed +=

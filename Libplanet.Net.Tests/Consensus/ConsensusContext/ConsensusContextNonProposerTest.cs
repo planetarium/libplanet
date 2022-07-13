@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -55,9 +54,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     proposed.Set();
                 }
             };
-
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
 
             ConsensusContext.NewHeight(1);
             var block1 = await BlockChain.MineBlock(TestUtils.Peer1Priv, append: false);
@@ -159,9 +155,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
             await proposed.WaitAsync();
 
@@ -249,7 +242,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightThreeStepChanged.WaitAsync();
             // Commit ends
             await heightTwoStepChanged.WaitAsync();
-            // GST, PreVote -> Propose (NewRound started)
+            // GST, PreVote -> Propose (NewHeight and NewRound started)
             await NewHeightDelayAssert(3);
             // Propose -> PreVote (message consumed)
             await heightThreeStepChanged.WaitAsync();

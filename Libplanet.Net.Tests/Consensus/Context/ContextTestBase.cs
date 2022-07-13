@@ -1,34 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using NetMQ;
 using Nito.AsyncEx;
 using Serilog;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    [Collection("NetMQConfiguration")]
-    public class ContextTestBase : IDisposable, IAsyncLifetime
+    public class ContextTestBase : IDisposable
     {
         protected const int Timeout = 60_000;
         protected readonly Context<DumbAction> Context;
-        protected readonly ITransport Transport;
         protected readonly BlockChain<DumbAction> BlockChain;
 
         protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage = null;
-
-        private const int Port = 51211;
 
         private readonly StoreFixture _fx;
         private readonly ILogger _logger;
@@ -53,18 +45,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _logger = Log.ForContext<ContextTestBase>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
             BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
-            Transport = TestUtils.CreateNetMQTransport(
-                TestUtils.PrivateKeys[(int)nodeId], port: Port);
-
-            var validatorPeers = new List<BoundPeer>()
-            {
-                new BoundPeer(
-                    TestUtils.PrivateKeys[(int)nodeId].PublicKey,
-                    new DnsEndPoint("localhost", Port)),
-            };
 
             void BroadcastMessage(ConsensusMessage message) =>
-                Transport.BroadcastMessage(validatorPeers, message);
+                Task.Run(() =>
+                {
+                    watchConsensusMessage?.Invoke(message);
+                    message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
+                    Context!.HandleMessage(message);
+                });
 
             _consensusContext = new ConsensusContext<DumbAction>(
                 BroadcastMessage,
@@ -82,34 +70,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.Validators,
                 step,
                 round);
-
-            async Task ContextHandle(Message message)
-            {
-                switch (message)
-                {
-                    case ConsensusMessage consensusMessage:
-                        await Transport.ReplyMessageAsync(message, default);
-                        Context.HandleMessage(consensusMessage);
-                        watchConsensusMessage?.Invoke(consensusMessage);
-                        break;
-                }
-            }
-
-            Transport.ProcessMessageHandler.Register(ContextHandle);
         }
 
         public void Dispose()
         {
             _fx.Dispose();
-            Transport.Dispose();
             _consensusContext.Dispose();
             Context.Dispose();
-            NetMQConfig.Cleanup(false);
         }
-
-        public Task InitializeAsync() => Task.Delay(TimeSpan.Zero);
-
-        public Task DisposeAsync() => DisposeTransport();
 
         protected Block<DumbAction> GetInvalidBlock() =>
             new BlockContent<DumbAction>
@@ -136,14 +104,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
 
             return messageProcessed;
-        }
-
-        private async Task DisposeTransport()
-        {
-            if (Transport.Running)
-            {
-                await Transport.StopAsync(TimeSpan.FromSeconds(1));
-            }
         }
     }
 }

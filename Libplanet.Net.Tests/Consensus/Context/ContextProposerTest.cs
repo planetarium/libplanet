@@ -21,6 +21,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitNil()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             void IsPreCommitSent(ConsensusMessage consensusMessage)
             {
@@ -32,8 +33,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsPreCommitSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreCommit)
+                {
+                    stepChanged.Set();
+                }
+            };
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
@@ -55,8 +61,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.Absent))
@@ -65,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -74,6 +78,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlock()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             BlockHash? targetHash = null;
             void IsPreCommitSent(ConsensusMessage consensusMessage)
@@ -86,8 +91,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsPreCommitSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreCommit)
+                {
+                    stepChanged.Set();
+                }
+            };
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
@@ -111,8 +121,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: block.Hash, flag: VoteFlag.Absent))
@@ -121,7 +129,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -133,9 +141,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var timeoutOccurred = new AsyncAutoResetEvent();
             var stepChanged = new AsyncAutoResetEvent();
             var roundStarted = new AsyncAutoResetEvent();
-
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
@@ -191,10 +196,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChanged = new AsyncAutoResetEvent();
 
-            Context.StepChanged += (sender, step) => stepChanged.Set();
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.EndCommit)
+                {
+                    stepChanged.Set();
+                }
+            };
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
 
@@ -217,8 +225,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
@@ -228,7 +234,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await stepChanged.WaitAsync();
-            await messageProcessed.WaitAsync();
             Assert.Equal(Step.EndCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -237,6 +242,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteNil()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
@@ -248,19 +254,22 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreVote)
+                {
+                    stepChanged.Set();
+                }
+            };
+
             Block<DumbAction> invalidBlock = GetInvalidBlock();
-
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
-
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(
                     invalidBlock, TestUtils.PrivateKeys[NodeId]));
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -269,6 +278,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlock()
         {
+            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             BlockHash? targetHash = null;
             void IsVoteSent(ConsensusMessage consensusMessage)
@@ -281,20 +291,23 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            _ = Transport.StartAsync();
-            await Transport.WaitForRunningAsync();
+            Context.StepChanged += (sender, step) =>
+            {
+                if (step == Step.PreVote)
+                {
+                    stepChanged.Set();
+                }
+            };
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
             targetHash = block.Hash;
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await stepChanged.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
