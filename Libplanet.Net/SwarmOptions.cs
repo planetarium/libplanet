@@ -11,22 +11,6 @@ namespace Libplanet.Net
     public class SwarmOptions
     {
         /// <summary>
-        /// <c>Enum</c> represents the type of the <see cref="ITransport"/>.
-        /// </summary>
-        public enum TransportType : byte
-        {
-            /// <summary>
-            /// NetMQ based transport.
-            /// </summary>
-            NetMQTransport = 0x01,
-
-            /// <summary>
-            /// TCP based transport.
-            /// </summary>
-            TcpTransport = 0x02,
-        }
-
-        /// <summary>
         /// The lifespan of block demand.
         /// </summary>
         public TimeSpan BlockDemandLifespan { get; set; } = TimeSpan.FromMinutes(1);
@@ -120,11 +104,6 @@ namespace Libplanet.Net
         /// peers.
         /// </summary>
         public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(60);
-
-        /// <summary>
-        /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
-        /// </summary>
-        public TransportType Type { get; set; } = TransportType.TcpTransport;
 
         /// <summary>
         /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.

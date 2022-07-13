@@ -1121,34 +1121,16 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
         {
-            switch (Options.Type)
-            {
-                case SwarmOptions.TransportType.NetMQTransport:
-                    return new NetMQTransport(
-                        _privateKey,
-                        _appProtocolVersion,
-                        TrustedAppProtocolVersionSigners,
-                        workers,
-                        host,
-                        listenPort,
-                        iceServers ?? new IceServer[0],
-                        differentAppProtocolVersionEncountered,
-                        Options.MessageTimestampBuffer);
-
-                case SwarmOptions.TransportType.TcpTransport:
-                    return new TcpTransport(
-                        _privateKey,
-                        _appProtocolVersion,
-                        TrustedAppProtocolVersionSigners,
-                        host,
-                        listenPort,
-                        iceServers ?? new IceServer[0],
-                        differentAppProtocolVersionEncountered,
-                        Options.MessageTimestampBuffer);
-
-                default:
-                    throw new ArgumentException(nameof(SwarmOptions.Type));
-            }
+            return new NetMQTransport(
+                _privateKey,
+                _appProtocolVersion,
+                TrustedAppProtocolVersionSigners,
+                workers,
+                host,
+                listenPort,
+                iceServers ?? new IceServer[0],
+                differentAppProtocolVersionEncountered,
+                Options.MessageTimestampBuffer);
         }
 
         private void BroadcastBlock(Address? except, Block<T> block)

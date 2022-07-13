@@ -66,7 +66,6 @@ namespace Libplanet.Node
         {
             return new SwarmOptions()
             {
-                Type = InitConfig.TransportType,
                 TipLifespan = SyncConfig.TipLifespan,
                 MaximumPollPeers = SyncConfig.MaximumPollNumPeers,
                 BucketSize = InitConfig.RoutingTableBucketSize,
