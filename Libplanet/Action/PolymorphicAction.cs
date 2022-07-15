@@ -151,7 +151,7 @@ namespace Libplanet.Action
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static readonly Assembly[] Assemblies = new Assembly[]
+        private static readonly ISet<Assembly> Assemblies = new HashSet<Assembly>
         {
             typeof(T).Assembly,
             Assembly.GetEntryAssembly(),
