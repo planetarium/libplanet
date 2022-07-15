@@ -16,11 +16,16 @@ To be released.
 
 ### Added APIs
 
+ -  Added `DuplicateActionTypeIdentifierException` class.  [[#2142]]
+
 ### Behavioral changes
 
  -  `PolymorphicAction<T>` now allows subclasses of `T` to be declared in
     the entry assembly of the application besides the same assembly as `T`.
     [[#2136], [#2142]]
+ -  `PolymorphicAction<T>` now throws `DuplicateActionTypeIdentifierException`
+    when multiple subtypes of `T` are associated with the same
+    `ActionTypeAttribute.TypeIdentifier`.  [[#2142]]
  -  (Libplanet.Net) Raised the default value for `Swarm<T>()` constructor's
     `workers` parameter to 100.  [[#2128], [#2134]]
  -  (Libplanet.Explorer) Raised the default value for `workers` console
