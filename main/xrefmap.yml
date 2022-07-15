@@ -237,6 +237,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.CurrencyPermissionException.TransactionSigner
   nameWithType: CurrencyPermissionException.TransactionSigner
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException
+  name: DuplicateActionTypeIdentifierException
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html
+  commentId: T:Libplanet.Action.DuplicateActionTypeIdentifierException
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException
+  nameWithType: DuplicateActionTypeIdentifierException
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,IImmutableSet{Type},System.String)
+  name: DuplicateActionTypeIdentifierException(String, IImmutableSet<Type>, String)
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException__ctor_System_String_IImmutableSet_Type__System_String_
+  commentId: M:Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor(System.String,IImmutableSet{Type},System.String)
+  name.vb: DuplicateActionTypeIdentifierException(String, IImmutableSet(Of Type), String)
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, IImmutableSet<Type>, System.String)
+  fullName.vb: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(System.String, IImmutableSet(Of Type), System.String)
+  nameWithType: DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(String, IImmutableSet<Type>, String)
+  nameWithType.vb: DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException(String, IImmutableSet(Of Type), String)
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor*
+  name: DuplicateActionTypeIdentifierException
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException__ctor_
+  commentId: Overload:Libplanet.Action.DuplicateActionTypeIdentifierException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException
+  nameWithType: DuplicateActionTypeIdentifierException.DuplicateActionTypeIdentifierException
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes
+  name: DuplicateActionTypes
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException_DuplicateActionTypes
+  commentId: P:Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes
+  nameWithType: DuplicateActionTypeIdentifierException.DuplicateActionTypes
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes*
+  name: DuplicateActionTypes
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException_DuplicateActionTypes_
+  commentId: Overload:Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes
+  isSpec: "True"
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.DuplicateActionTypes
+  nameWithType: DuplicateActionTypeIdentifierException.DuplicateActionTypes
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
+  name: TypeIdentifier
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException_TypeIdentifier
+  commentId: P:Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
+  nameWithType: DuplicateActionTypeIdentifierException.TypeIdentifier
+- uid: Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier*
+  name: TypeIdentifier
+  href: api/Libplanet.Action.DuplicateActionTypeIdentifierException.html#Libplanet_Action_DuplicateActionTypeIdentifierException_TypeIdentifier_
+  commentId: Overload:Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
+  isSpec: "True"
+  fullName: Libplanet.Action.DuplicateActionTypeIdentifierException.TypeIdentifier
+  nameWithType: DuplicateActionTypeIdentifierException.TypeIdentifier
 - uid: Libplanet.Action.ExtractableException
   name: ExtractableException
   href: api/Libplanet.Action.ExtractableException.html
