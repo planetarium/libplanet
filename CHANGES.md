@@ -16,8 +16,8 @@ To be released.
 
 ### Added APIs
  - (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
- - (Libplanet.Explorer) Added `unsignedTransaction` and `bindSignature`
-   GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
+ - (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
+   `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
 ### Behavioral changes
 

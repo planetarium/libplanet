@@ -6,9 +6,11 @@ using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
@@ -19,7 +21,10 @@ namespace Libplanet.Explorer.Queries
         private static readonly Codec _codec = new Codec();
         private readonly IBlockChainContext<T> _context;
 
+        // FIXME should be refactored to reduce LoC of consturctor.
+        #pragma warning disable MEN003
         public TransactionQuery(IBlockChainContext<T> context)
+        #pragma warning restore MEN003
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
@@ -205,6 +210,73 @@ namespace Libplanet.Explorer.Queries
                         signature);
 
                     return ByteUtil.Hex(signedTransaction.Serialize(true));
+                }
+            );
+
+            Field<NonNullGraphType<TxResultType>>(
+                name: "transactionResult",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>>
+                    {
+                        Name = "txId",
+                        Description = "transaction id.",
+                    }
+                ),
+                resolve: context =>
+                {
+                    BlockChain<T> blockChain = _context.BlockChain;
+                    IStore store = _context.Store;
+                    TxId txId = new TxId(
+                        ByteUtil.ParseHex(context.GetArgument<string>("txId"))
+                    );
+                    if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } txExecutedBlockHash))
+                    {
+                        return blockChain.GetStagedTransactionIds().Contains(txId)
+                            ? new TxResult(TxStatus.STAGING, null, null, null, null)
+                            : new TxResult(TxStatus.INVALID, null, null, null, null);
+                    }
+
+                    try
+                    {
+                        TxExecution execution = blockChain.GetTxExecution(
+                            txExecutedBlockHash,
+                            txId
+                        );
+                        Block<T> txExecutedBlock = blockChain[txExecutedBlockHash];
+
+                        return execution switch
+                        {
+                            TxSuccess txSuccess => new TxResult(
+                                TxStatus.SUCCESS,
+                                txExecutedBlock.Index,
+                                txExecutedBlock.Hash.ToString(),
+                                null,
+                                null
+                            ),
+                            TxFailure txFailure => new TxResult(
+                                TxStatus.FAILURE,
+                                txExecutedBlock.Index,
+                                txExecutedBlock.Hash.ToString(),
+                                txFailure.ExceptionName,
+                                txFailure.ExceptionMetadata
+                            ),
+                            _ => throw new NotSupportedException(
+                                #pragma warning disable format
+                                $"{nameof(execution)} is not expected concrete class."
+                                #pragma warning restore format
+                            )
+                        };
+                    }
+                    catch (Exception)
+                    {
+                        return new TxResult(
+                            TxStatus.INVALID,
+                            null,
+                            null,
+                            null,
+                            null
+                        );
+                    }
                 }
             );
 
