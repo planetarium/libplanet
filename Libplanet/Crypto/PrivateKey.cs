@@ -375,7 +375,25 @@ namespace Libplanet.Crypto
                 new ECKeyGenerationParameters(ecParams, secureRandom);
             gen.Init(keyGenParam);
 
-            return (ECPrivateKeyParameters)gen.GenerateKeyPair().Private;
+            const int maxTries = 3000;
+            int tries = 0;
+            ECPrivateKeyParameters result;
+
+            while (tries < maxTries)
+            {
+                result = (ECPrivateKeyParameters)gen.GenerateKeyPair().Private;
+                if (result.D.ToByteArrayUnsigned().Length == KeyByteSize)
+                {
+                    return result;
+                }
+
+                tries++;
+            }
+
+            throw new GenerateKeyParamTriesExceedException(
+                "Can't find appropriate parameter for private key" +
+                $"(maxTries: {maxTries})"
+            );
         }
 
         private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)

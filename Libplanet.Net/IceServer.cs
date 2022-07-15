@@ -16,21 +16,24 @@ namespace Libplanet.Net
 
         public IceServer(Uri url)
         {
-            // FIXME: This doesn't account for multiple colons.
 #pragma warning disable S1121, S3358, SA1316
             Url = url;
             Func<string, string, bool, char, (string, string, bool)> parser =
-                (username, credential, isUsernameChar, c) =>
+                (username, credential, colonFound, c) =>
                     c == ':'
-                        ? (username, credential, !isUsernameChar)
-                        : isUsernameChar
-                            ? (username += c, credential, isUsernameChar)
-                            : (username, credential += c, isUsernameChar);
-            (string username, string credential, bool isUsernameChar) seed =
+                        ? colonFound
+                            ? (username, credential, !colonFound)
+                            : throw new ArgumentException(
+                                $"Uri.UserInfo '{url.UserInfo}' have to contain single colon " +
+                                "as a delimiter between username and credential.")
+                        : colonFound
+                            ? (username += c, credential, colonFound)
+                            : (username, credential += c, colonFound);
+            (string username, string credential, bool colonFound) seed =
                 (string.Empty, string.Empty, true);
             (Username, Credential, _) = url.UserInfo
-                .Aggregate(seed, (prev, c) =>
-                    parser(prev.username, prev.credential, prev.isUsernameChar, c));
+                .Aggregate(seed, (prev, c) => parser(
+                    prev.username, prev.credential, prev.colonFound, c));
 #pragma warning restore S1121, S3358, SA1316
         }
 

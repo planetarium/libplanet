@@ -9,12 +9,12 @@ namespace Libplanet.Benchmarks.DataModel
 {
     public partial class DataModelBenchmark
     {
-        private class LeafModel : StoreDataModel
+        public class LeafModel : StoreDataModel
         {
             public LeafModel()
                 : base()
             {
-                System.Random random = new System.Random();
+                System.Random random = new System.Random(2);
                 BigList = Enumerable
                     .Range(0, 1000)
                     .Select(_ => random.Next())
@@ -37,24 +37,9 @@ namespace Libplanet.Benchmarks.DataModel
             public ImmutableDictionary<Address, string> BigDict { get; private set; }
         }
 
-        private class PlainValueLeaf
+        public class RawLeafModel
         {
-            public PlainValueLeaf()
-            {
-                System.Random random = new System.Random();
-                BigList = Enumerable
-                    .Range(0, 1000)
-                    .Select(_ => random.Next())
-                    .ToImmutableList();
-                BigDict = Enumerable
-                    .Range(0, 1000)
-                    .Select(_ => new KeyValuePair<Address, string>(
-                        new PrivateKey().ToAddress(),
-                        new PrivateKey().ToAddress().ToString()))
-                    .ToImmutableDictionary();
-            }
-
-            public PlainValueLeaf(Bencodex.Types.Dictionary encoded)
+            public RawLeafModel(Bencodex.Types.Dictionary encoded)
             {
                 BigList = ((BTypes.List)encoded[nameof(BigList)])
                     .Select(x => (int)((BTypes.Integer)x).Value)
@@ -86,6 +71,5 @@ namespace Libplanet.Benchmarks.DataModel
 
             public ImmutableDictionary<Address, string> BigDict { get; private set; }
         }
-
     }
 }

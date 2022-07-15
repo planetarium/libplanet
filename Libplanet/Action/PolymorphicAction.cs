@@ -144,13 +144,21 @@ namespace Libplanet.Action
     /// Even if a superclass is marked with
     /// the <see cref="ActionTypeAttribute"/> its subclass also should be
     /// marked with the <see cref="ActionTypeAttribute"/> if it is concrete.
+    /// <para>Also, every concrete action subclass of <typeparamref name="T"/>
+    /// has to be declared in the same assembly as <typeparamref name="T"/>,
+    /// or at least in the entry assembly of the application.</para>
     /// </remarks>
     public sealed class PolymorphicAction<T> : IAction
         where T : IAction
     {
-        private static readonly IDictionary<string, Type> Types = typeof(T)
-            .Assembly
-            .GetTypes()
+        private static readonly Assembly[] Assemblies = new Assembly[]
+        {
+            typeof(T).Assembly,
+            Assembly.GetEntryAssembly(),
+        };
+
+        private static readonly IDictionary<string, Type> Types = Assemblies
+            .SelectMany(a => a?.GetTypes() ?? Enumerable.Empty<Type>())
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
