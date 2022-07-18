@@ -231,6 +231,8 @@ commands:
               LC_ALL: "<<parameters.locale>>"
               LANG: "<<parameters.locale>>"
               LANGUAGE: "<<parameters.locale>>"
+        - store_test_results:
+            path: /tmp/junit
 
   macos_netcore_test_base:
     parameters:
