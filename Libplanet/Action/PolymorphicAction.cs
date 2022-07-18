@@ -1,7 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using System.Reflection;
 using Bencodex.Types;
 
@@ -157,10 +157,7 @@ namespace Libplanet.Action
             Assembly.GetEntryAssembly(),
         };
 
-        private static readonly IDictionary<string, Type> Types = Assemblies
-            .SelectMany(a => a?.GetTypes() ?? Enumerable.Empty<Type>())
-            .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
-            .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
+        private static IDictionary<string, Type> _types;
 
         private T _innerAction;
 
@@ -238,12 +235,10 @@ namespace Libplanet.Action
             return new PolymorphicAction<T>(innerAction);
         }
 
-        public void LoadPlainValue(
-            Dictionary plainValue
-        )
+        public void LoadPlainValue(Dictionary plainValue)
         {
             var typeStr = plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(Types[(Text)typeStr]);
+            var innerAction = (T)Activator.CreateInstance(GetType((Text)typeStr));
             innerAction.LoadPlainValue(plainValue["values"]);
             InnerAction = innerAction;
         }
@@ -263,6 +258,52 @@ namespace Libplanet.Action
             const string polymorphicActionFullName = nameof(Libplanet) + "." + nameof(Action) +
                                                      "." + nameof(PolymorphicAction<T>);
             return $"{polymorphicActionFullName}<{_innerAction}>";
+        }
+
+        private static Type GetType(string typeId)
+        {
+            if (!(_types is { } types))
+            {
+                Type baseType = typeof(T);
+                Type attrType = typeof(ActionTypeAttribute);
+                types = new Dictionary<string, Type>();
+                foreach (Assembly a in Assemblies)
+                {
+                    if (!(a is { } asm))
+                    {
+                        continue;
+                    }
+
+                    foreach (Type t in a.GetTypes())
+                    {
+                        if (!(baseType.IsAssignableFrom(t) &&
+                              t.IsDefined(attrType) &&
+                              ActionTypeAttribute.ValueOf(t) is { } tid))
+                        {
+                            continue;
+                        }
+                        else if (types.TryGetValue(tid, out Type existing))
+                        {
+                            if (existing != t)
+                            {
+                                throw new DuplicateActionTypeIdentifierException(
+                                    tid,
+                                    ImmutableHashSet.Create(existing, t),
+                                    "Multiple action types are associated with the same type ID."
+                                );
+                            }
+
+                            continue;
+                        }
+
+                        types[tid] = t;
+                    }
+                }
+
+                _types = types;
+            }
+
+            return types[typeId];
         }
     }
 }

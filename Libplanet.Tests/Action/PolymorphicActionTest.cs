@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -117,6 +118,26 @@ namespace Libplanet.Tests.Action
             Assert.Equal("just string", (Text)newPa.InnerAction.PlainValue);
         }
 
+        [Fact]
+        public void DuplicateTypeId()
+        {
+#pragma warning disable CS0612
+            var pa = new PolymorphicAction<DupActionBase>();
+#pragma warning restore CS0612
+            Bencodex.Types.Dictionary plainValue = Bencodex.Types.Dictionary.Empty
+                .Add("type_id", "dup")
+                .Add("values", Null.Value);
+            DuplicateActionTypeIdentifierException e =
+                Assert.Throws<DuplicateActionTypeIdentifierException>(
+                    () => pa.LoadPlainValue(plainValue)
+                );
+            Assert.Equal("dup", e.TypeIdentifier);
+            Assert.Equal(
+                ImmutableHashSet.Create(typeof(DupActionA), typeof(DupActionB)),
+                e.DuplicateActionTypes
+            );
+        }
+
         [ActionType("TextPlainValueAction")]
         private class TextPlainValueAction : BaseAction
         {
@@ -142,6 +163,28 @@ namespace Libplanet.Tests.Action
             {
                 _value = (Text)plainValue;
             }
+        }
+
+        private class DupActionBase : IAction
+        {
+            public IValue PlainValue => Null.Value;
+
+            public IAccountStateDelta Execute(IActionContext context) =>
+                context.PreviousStates;
+
+            public void LoadPlainValue(IValue plainValue)
+            {
+            }
+        }
+
+        [ActionType("dup")]
+        private class DupActionA : DupActionBase
+        {
+        }
+
+        [ActionType("dup")]
+        private class DupActionB : DupActionBase
+        {
         }
     }
 }

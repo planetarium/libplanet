@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Linq;
 using System.Reflection;
@@ -38,14 +37,12 @@ namespace Libplanet.Action
         /// <returns>The <see cref="TypeIdentifier"/> of the given
         /// <paramref name="actionType"/> if it's annotated with
         /// <see cref="ActionTypeAttribute"/>.  If it's not annotated returns
-        /// <c>null</c>.</returns>
-        public static string ValueOf(Type actionType)
-        {
-            return actionType
+        /// <see langword="null"/>.</returns>
+        public static string? ValueOf(Type actionType) =>
+            actionType
                 .GetCustomAttributes()
                 .OfType<ActionTypeAttribute>()
                 .Select(attr => attr.TypeIdentifier)
                 .FirstOrDefault();
-        }
     }
 }

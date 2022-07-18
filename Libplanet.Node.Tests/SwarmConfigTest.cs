@@ -13,7 +13,6 @@ namespace Libplanet.Node.Tests
         {
             new object[]
             {
-                SwarmOptions.TransportType.TcpTransport,
                 "foo",
                 1001,
                 new List<IceServer>()
@@ -39,7 +38,6 @@ namespace Libplanet.Node.Tests
             },
             new object[]
             {
-                SwarmOptions.TransportType.NetMQTransport,
                 null,
                 null,
                 new List<IceServer>(),
@@ -52,7 +50,6 @@ namespace Libplanet.Node.Tests
         [Theory]
         [MemberData(nameof(SerializationData))]
         public void Serialization(
-            SwarmOptions.TransportType transportType,
             string host,
             int? port,
             IEnumerable<IceServer> iceServers,
@@ -64,7 +61,6 @@ namespace Libplanet.Node.Tests
             {
                 InitConfig = new InitConfig()
                 {
-                    TransportType = transportType,
                     MaxTimeout = TimeSpan.FromSeconds(101),
                     MinTimeout = TimeSpan.FromSeconds(102),
                     RoutingTableNumBuckets = 103,
