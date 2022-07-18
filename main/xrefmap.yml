@@ -16990,24 +16990,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.TipLifespan
   nameWithType: SwarmOptions.TipLifespan
-- uid: Libplanet.Net.SwarmOptions.TransportType
-  name: SwarmOptions.TransportType
-  href: api/Libplanet.Net.SwarmOptions.TransportType.html
-  commentId: T:Libplanet.Net.SwarmOptions.TransportType
-  fullName: Libplanet.Net.SwarmOptions.TransportType
-  nameWithType: SwarmOptions.TransportType
-- uid: Libplanet.Net.SwarmOptions.TransportType.NetMQTransport
-  name: NetMQTransport
-  href: api/Libplanet.Net.SwarmOptions.TransportType.html#Libplanet_Net_SwarmOptions_TransportType_NetMQTransport
-  commentId: F:Libplanet.Net.SwarmOptions.TransportType.NetMQTransport
-  fullName: Libplanet.Net.SwarmOptions.TransportType.NetMQTransport
-  nameWithType: SwarmOptions.TransportType.NetMQTransport
-- uid: Libplanet.Net.SwarmOptions.TransportType.TcpTransport
-  name: TcpTransport
-  href: api/Libplanet.Net.SwarmOptions.TransportType.html#Libplanet_Net_SwarmOptions_TransportType_TcpTransport
-  commentId: F:Libplanet.Net.SwarmOptions.TransportType.TcpTransport
-  fullName: Libplanet.Net.SwarmOptions.TransportType.TcpTransport
-  nameWithType: SwarmOptions.TransportType.TcpTransport
 - uid: Libplanet.Net.SwarmOptions.TxBroadcastInterval
   name: TxBroadcastInterval
   href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxBroadcastInterval
@@ -17021,19 +17003,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmOptions.TxBroadcastInterval
   nameWithType: SwarmOptions.TxBroadcastInterval
-- uid: Libplanet.Net.SwarmOptions.Type
-  name: Type
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_Type
-  commentId: P:Libplanet.Net.SwarmOptions.Type
-  fullName: Libplanet.Net.SwarmOptions.Type
-  nameWithType: SwarmOptions.Type
-- uid: Libplanet.Net.SwarmOptions.Type*
-  name: Type
-  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_Type_
-  commentId: Overload:Libplanet.Net.SwarmOptions.Type
-  isSpec: "True"
-  fullName: Libplanet.Net.SwarmOptions.Type
-  nameWithType: SwarmOptions.Type
 - uid: Libplanet.Net.TimeoutOptions
   name: TimeoutOptions
   href: api/Libplanet.Net.TimeoutOptions.html
@@ -17201,22 +17170,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionNetMQ
   nameWithType: BoundPeerExtensions.QueryAppProtocolVersionNetMQ
-- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
-  name: QueryAppProtocolVersionTcp(BoundPeer, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersionTcp_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp(Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
-  name.vb: QueryAppProtocolVersionTcp(BoundPeer, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp(Libplanet.Net.BoundPeer, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp(Libplanet.Net.BoundPeer, System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: BoundPeerExtensions.QueryAppProtocolVersionTcp(BoundPeer, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: BoundPeerExtensions.QueryAppProtocolVersionTcp(BoundPeer, Nullable(Of TimeSpan), CancellationToken)
-- uid: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp*
-  name: QueryAppProtocolVersionTcp
-  href: api/Libplanet.Net.Transports.BoundPeerExtensions.html#Libplanet_Net_Transports_BoundPeerExtensions_QueryAppProtocolVersionTcp_
-  commentId: Overload:Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.BoundPeerExtensions.QueryAppProtocolVersionTcp
-  nameWithType: BoundPeerExtensions.QueryAppProtocolVersionTcp
 - uid: Libplanet.Net.Transports.CommunicationFailException
   name: CommunicationFailException
   href: api/Libplanet.Net.Transports.CommunicationFailException.html
@@ -17422,64 +17375,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData
   nameWithType: InvalidCredentialException.GetObjectData
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException
-  name: InvalidMagicCookieException
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html
-  commentId: T:Libplanet.Net.Transports.InvalidMagicCookieException
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException
-  nameWithType: InvalidMagicCookieException
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMagicCookieException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.#ctor*
-  name: InvalidMagicCookieException
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMagicCookieException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.InvalidMagicCookieException
-  nameWithType: InvalidMagicCookieException.InvalidMagicCookieException
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.Actual
-  name: Actual
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_Actual
-  commentId: P:Libplanet.Net.Transports.InvalidMagicCookieException.Actual
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.Actual
-  nameWithType: InvalidMagicCookieException.Actual
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.Actual*
-  name: Actual
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_Actual_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMagicCookieException.Actual
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.Actual
-  nameWithType: InvalidMagicCookieException.Actual
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.Expected
-  name: Expected
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_Expected
-  commentId: P:Libplanet.Net.Transports.InvalidMagicCookieException.Expected
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.Expected
-  nameWithType: InvalidMagicCookieException.Expected
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.Expected*
-  name: Expected
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_Expected_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMagicCookieException.Expected
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.Expected
-  nameWithType: InvalidMagicCookieException.Expected
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMagicCookieException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.InvalidMagicCookieException.html#Libplanet_Net_Transports_InvalidMagicCookieException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMagicCookieException.GetObjectData
-  nameWithType: InvalidMagicCookieException.GetObjectData
 - uid: Libplanet.Net.Transports.InvalidMessageSignatureException
   name: InvalidMessageSignatureException
   href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html
@@ -17972,192 +17867,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.SendMessageFailException.Peer
   nameWithType: SendMessageFailException.Peer
-- uid: Libplanet.Net.Transports.TcpTransport
-  name: TcpTransport
-  href: api/Libplanet.Net.Transports.TcpTransport.html
-  commentId: T:Libplanet.Net.Transports.TcpTransport
-  fullName: Libplanet.Net.Transports.TcpTransport
-  nameWithType: TcpTransport
-- uid: Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name: TcpTransport(PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Nullable_IImmutableSet_Libplanet_Crypto_PublicKey___System_Nullable_System_String__System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.TcpTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Nullable{IImmutableSet{Libplanet.Crypto.PublicKey}},System.Nullable{System.String},System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name.vb: TcpTransport(PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable<IImmutableSet<Libplanet.Crypto.PublicKey>>, System.Nullable<System.String>, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.TcpTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Nullable(Of IImmutableSet(Of Libplanet.Crypto.PublicKey)), System.Nullable(Of System.String), System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
-  nameWithType: TcpTransport.TcpTransport(PrivateKey, AppProtocolVersion, Nullable<IImmutableSet<PublicKey>>, Nullable<String>, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  nameWithType.vb: TcpTransport.TcpTransport(PrivateKey, AppProtocolVersion, Nullable(Of IImmutableSet(Of PublicKey)), Nullable(Of String), Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-- uid: Libplanet.Net.Transports.TcpTransport.#ctor*
-  name: TcpTransport
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport__ctor_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.TcpTransport
-  nameWithType: TcpTransport.TcpTransport
-- uid: Libplanet.Net.Transports.TcpTransport.AsPeer
-  name: AsPeer
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_AsPeer
-  commentId: P:Libplanet.Net.Transports.TcpTransport.AsPeer
-  fullName: Libplanet.Net.Transports.TcpTransport.AsPeer
-  nameWithType: TcpTransport.AsPeer
-- uid: Libplanet.Net.Transports.TcpTransport.AsPeer*
-  name: AsPeer
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_AsPeer_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.AsPeer
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.AsPeer
-  nameWithType: TcpTransport.AsPeer
-- uid: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name: BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)
-  name.vb: BroadcastMessage(IEnumerable(Of BoundPeer), Message)
-  fullName: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable<Libplanet.Net.BoundPeer>, Libplanet.Net.Messages.Message)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.BroadcastMessage(IEnumerable(Of Libplanet.Net.BoundPeer), Libplanet.Net.Messages.Message)
-  nameWithType: TcpTransport.BroadcastMessage(IEnumerable<BoundPeer>, Message)
-  nameWithType.vb: TcpTransport.BroadcastMessage(IEnumerable(Of BoundPeer), Message)
-- uid: Libplanet.Net.Transports.TcpTransport.BroadcastMessage*
-  name: BroadcastMessage
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_BroadcastMessage_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.BroadcastMessage
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.BroadcastMessage
-  nameWithType: TcpTransport.BroadcastMessage
-- uid: Libplanet.Net.Transports.TcpTransport.Dispose
-  name: Dispose()
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_Dispose
-  commentId: M:Libplanet.Net.Transports.TcpTransport.Dispose
-  fullName: Libplanet.Net.Transports.TcpTransport.Dispose()
-  nameWithType: TcpTransport.Dispose()
-- uid: Libplanet.Net.Transports.TcpTransport.Dispose*
-  name: Dispose
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_Dispose_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.Dispose
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.Dispose
-  nameWithType: TcpTransport.Dispose
-- uid: Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp
-  name: LastMessageTimestamp
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_LastMessageTimestamp
-  commentId: P:Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp
-  fullName: Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp
-  nameWithType: TcpTransport.LastMessageTimestamp
-- uid: Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp*
-  name: LastMessageTimestamp
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_LastMessageTimestamp_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.LastMessageTimestamp
-  nameWithType: TcpTransport.LastMessageTimestamp
-- uid: Libplanet.Net.Transports.TcpTransport.MagicCookie
-  name: MagicCookie
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_MagicCookie
-  commentId: F:Libplanet.Net.Transports.TcpTransport.MagicCookie
-  fullName: Libplanet.Net.Transports.TcpTransport.MagicCookie
-  nameWithType: TcpTransport.MagicCookie
-- uid: Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
-  name: ProcessMessageHandler
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_ProcessMessageHandler
-  commentId: P:Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
-  fullName: Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
-  nameWithType: TcpTransport.ProcessMessageHandler
-- uid: Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler*
-  name: ProcessMessageHandler
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_ProcessMessageHandler_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.ProcessMessageHandler
-  nameWithType: TcpTransport.ProcessMessageHandler
-- uid: Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)
-  name: ReplyMessageAsync(Message, CancellationToken)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)
-  fullName: Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync(Libplanet.Net.Messages.Message, CancellationToken)
-  nameWithType: TcpTransport.ReplyMessageAsync(Message, CancellationToken)
-- uid: Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync*
-  name: ReplyMessageAsync
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_ReplyMessageAsync_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.ReplyMessageAsync
-  nameWithType: TcpTransport.ReplyMessageAsync
-- uid: Libplanet.Net.Transports.TcpTransport.Running
-  name: Running
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_Running
-  commentId: P:Libplanet.Net.Transports.TcpTransport.Running
-  fullName: Libplanet.Net.Transports.TcpTransport.Running
-  nameWithType: TcpTransport.Running
-- uid: Libplanet.Net.Transports.TcpTransport.Running*
-  name: Running
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_Running_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.Running
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.Running
-  nameWithType: TcpTransport.Running
-- uid: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: TcpTransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: TcpTransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), CancellationToken)
-- uid: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},System.Int32,System.Boolean,CancellationToken)
-  name: SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},System.Int32,System.Boolean,CancellationToken)
-  name.vb: SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-  fullName: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable<TimeSpan>, System.Int32, System.Boolean, CancellationToken)
-  fullName.vb: Libplanet.Net.Transports.TcpTransport.SendMessageAsync(Libplanet.Net.BoundPeer, Libplanet.Net.Messages.Message, System.Nullable(Of TimeSpan), System.Int32, System.Boolean, CancellationToken)
-  nameWithType: TcpTransport.SendMessageAsync(BoundPeer, Message, Nullable<TimeSpan>, Int32, Boolean, CancellationToken)
-  nameWithType.vb: TcpTransport.SendMessageAsync(BoundPeer, Message, Nullable(Of TimeSpan), Int32, Boolean, CancellationToken)
-- uid: Libplanet.Net.Transports.TcpTransport.SendMessageAsync*
-  name: SendMessageAsync
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_SendMessageAsync_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.SendMessageAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.SendMessageAsync
-  nameWithType: TcpTransport.SendMessageAsync
-- uid: Libplanet.Net.Transports.TcpTransport.StartAsync(CancellationToken)
-  name: StartAsync(CancellationToken)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_StartAsync_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.StartAsync(CancellationToken)
-  fullName: Libplanet.Net.Transports.TcpTransport.StartAsync(CancellationToken)
-  nameWithType: TcpTransport.StartAsync(CancellationToken)
-- uid: Libplanet.Net.Transports.TcpTransport.StartAsync*
-  name: StartAsync
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_StartAsync_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.StartAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.StartAsync
-  nameWithType: TcpTransport.StartAsync
-- uid: Libplanet.Net.Transports.TcpTransport.StopAsync(TimeSpan,CancellationToken)
-  name: StopAsync(TimeSpan, CancellationToken)
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_StopAsync_TimeSpan_CancellationToken_
-  commentId: M:Libplanet.Net.Transports.TcpTransport.StopAsync(TimeSpan,CancellationToken)
-  fullName: Libplanet.Net.Transports.TcpTransport.StopAsync(TimeSpan, CancellationToken)
-  nameWithType: TcpTransport.StopAsync(TimeSpan, CancellationToken)
-- uid: Libplanet.Net.Transports.TcpTransport.StopAsync*
-  name: StopAsync
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_StopAsync_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.StopAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.StopAsync
-  nameWithType: TcpTransport.StopAsync
-- uid: Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync
-  name: WaitForRunningAsync()
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_WaitForRunningAsync
-  commentId: M:Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync
-  fullName: Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync()
-  nameWithType: TcpTransport.WaitForRunningAsync()
-- uid: Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync*
-  name: WaitForRunningAsync
-  href: api/Libplanet.Net.Transports.TcpTransport.html#Libplanet_Net_Transports_TcpTransport_WaitForRunningAsync_
-  commentId: Overload:Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.TcpTransport.WaitForRunningAsync
-  nameWithType: TcpTransport.WaitForRunningAsync
 - uid: Libplanet.Net.Transports.TransportException
   name: TransportException
   href: api/Libplanet.Net.Transports.TransportException.html
@@ -18444,19 +18153,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Node.InitConfig.RoutingTableNumBuckets
   nameWithType: InitConfig.RoutingTableNumBuckets
-- uid: Libplanet.Node.InitConfig.TransportType
-  name: TransportType
-  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_TransportType
-  commentId: P:Libplanet.Node.InitConfig.TransportType
-  fullName: Libplanet.Node.InitConfig.TransportType
-  nameWithType: InitConfig.TransportType
-- uid: Libplanet.Node.InitConfig.TransportType*
-  name: TransportType
-  href: api/Libplanet.Node.InitConfig.html#Libplanet_Node_InitConfig_TransportType_
-  commentId: Overload:Libplanet.Node.InitConfig.TransportType
-  isSpec: "True"
-  fullName: Libplanet.Node.InitConfig.TransportType
-  nameWithType: InitConfig.TransportType
 - uid: Libplanet.Node.NetworkConfig`1
   name: NetworkConfig<T>
   href: api/Libplanet.Node.NetworkConfig-1.html

@@ -65,6 +65,12 @@
 <h2 id="version-0390">Version 0.39.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet.Net) Removed <code>TcpTransport</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
+<li>(Libplanet.Net) Removed <code>InvalidMagicCookieException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
+<li>(Libplanet.Net) Removed <code>SwarmOptions.TransportType</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
+<li>(Libplanet.Node) Removed <code>InitConfig.TransportType</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/2139">#2139</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -74,16 +80,16 @@
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li>(Libplanet.Net) Raised the default value for <code>Swarm&lt;T&gt;()</code> constructor's
+<code>workers</code> parameter to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
+<li>(Libplanet.Explorer) Raised the default value for <code>workers</code> console
+argument to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
 <li><code>PolymorphicAction&lt;T&gt;</code> now allows subclasses of <code>T</code> to be declared in
 the entry assembly of the application besides the same assembly as <code>T</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/2136">#2136</a>, <a href="https://github.com/planetarium/libplanet/pull/2142">#2142</a>]</li>
 <li><code>PolymorphicAction&lt;T&gt;</code> now throws <code>DuplicateActionTypeIdentifierException</code>
 when multiple subtypes of <code>T</code> are associated with the same
 <code>ActionTypeAttribute.TypeIdentifier</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2142">#2142</a>]</li>
-<li>(Libplanet.Net) Raised the default value for <code>Swarm&lt;T&gt;()</code> constructor's
-<code>workers</code> parameter to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
-<li>(Libplanet.Explorer) Raised the default value for <code>workers</code> console
-argument to 100.  [<a href="https://github.com/planetarium/libplanet/issues/2128">#2128</a>, <a href="https://github.com/planetarium/libplanet/pull/2134">#2134</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
