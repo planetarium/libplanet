@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.39.0
 --------------
 
-To be released.
+Released on July 18th, 2022.
 
 ### Deprecated APIs
 
@@ -12,12 +12,6 @@ To be released.
  -  (Libplanet.Net) Removed `InvalidMagicCookieException` class.  [[#2139]]
  -  (Libplanet.Net) Removed `SwarmOptions.TransportType` property.  [[#2139]]
  -  (Libplanet.Node) Removed `InitConfig.TransportType` property.  [[#2139]]
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -43,8 +37,6 @@ To be released.
  -  (Libplanet.Net) Invalid `Uri.UserInfo` with multiple colons is now
     rejected by `IceServer(Uri url)` constructor and exception is thrown.
     [[#2058], [#2116]]
-
-### Dependencies
 
 ### CLI tools
 
