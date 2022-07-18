@@ -118,17 +118,6 @@ namespace Libplanet.Net.Tests
             }
 
             options ??= new SwarmOptions();
-            string type = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
-            _logger.Debug("Transport type: {Type}", type);
-            switch (type)
-            {
-                case "tcp":
-                    options.Type = SwarmOptions.TransportType.TcpTransport;
-                    break;
-                case "netmq":
-                    options.Type = SwarmOptions.TransportType.NetMQTransport;
-                    break;
-            }
 
             var swarm = new Swarm<T>(
                 blockChain,
