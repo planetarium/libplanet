@@ -121,16 +121,11 @@ namespace Libplanet.Store
             BlockHash branchpoint
         )
         {
-            if (!_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
+            if (_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
             {
-                throw new ChainIdNotFoundException(
-                    sourceChainId,
-                    $"No such chain ID: {sourceChainId}."
-                );
+                int bpIndex = source.FindIndex(branchpoint.Equals);
+                _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
             }
-
-            int bpIndex = source.FindIndex(branchpoint.Equals);
-            _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
         }
 
         IEnumerable<TxId> IStore.IterateTransactionIds() =>
@@ -267,13 +262,7 @@ namespace Libplanet.Store
             if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long> dict))
             {
                 _txNonces[destinationChainId] = new ConcurrentDictionary<Address, long>(dict);
-                return;
             }
-
-            throw new ChainIdNotFoundException(
-                sourceChainId,
-                $"No such chain ID: {sourceChainId}."
-            );
         }
 
         void IStore.PruneOutdatedChains(bool noopWithoutCanon)
