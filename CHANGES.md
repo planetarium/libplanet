@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -27,6 +29,8 @@ To be released.
 
  -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
     perceive time of newly perceived blocks. [[#2155], [#2159]]
+ -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
+    empty chains. [[#2047], [#2156]]
 
 ### Bug fixes
 
@@ -35,8 +39,10 @@ To be released.
 ### CLI tools
 
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#2047]: https://github.com/planetarium/libplanet/issues/2047
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
+[#2156]: https://github.com/planetarium/libplanet/pull/2156
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 
 
