@@ -55,8 +55,8 @@ namespace Libplanet.Store
                     return new BTypes.Binary(address.ByteArray);
                 case string s:
                     return new BTypes.Text(s);
-                case DataModel pvt:
-                    return pvt.Encode();
+                case DataModel dm:
+                    return dm.Encode();
                 case IList list:
                     return EncodeToListIValue(list);
                 case IDictionary dict:

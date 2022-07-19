@@ -13,7 +13,6 @@ using NetMQ;
 using Xunit;
 using Xunit.Sdk;
 using static Libplanet.Tests.TestUtils;
-using TransportType = Libplanet.Net.Transports.TransportType;
 
 namespace Libplanet.Net.Tests.Transports
 {
@@ -25,10 +24,8 @@ namespace Libplanet.Net.Tests.Transports
             NetMQConfig.Cleanup(false);
         }
 
-        [Theory(Timeout = 60 * 1000)]
-        [InlineData(TransportType.NetMQTransport)]
-        [InlineData(TransportType.TcpTransport)]
-        public async Task QueryAppProtocolVersion(TransportType transportType)
+        [Fact(Timeout = 60 * 1000)]
+        public async Task QueryAppProtocolVersion()
         {
             var fx = new MemoryStoreFixture();
             var policy = new BlockPolicy<DumbAction>();
@@ -45,10 +42,7 @@ namespace Libplanet.Net.Tests.Transports
             string host = IPAddress.Loopback.ToString();
             int port = FreeTcpPort();
 
-            var option = new SwarmOptions
-            {
-                Type = transportType,
-            };
+            var option = new SwarmOptions();
 
             using (var swarm = new Swarm<DumbAction>(
                 blockchain,
@@ -60,15 +54,11 @@ namespace Libplanet.Net.Tests.Transports
             {
                 var peer = new BoundPeer(swarmKey.PublicKey, new DnsEndPoint(host, port));
                 // Before swarm starting...
-                await Assert.ThrowsAsync<TimeoutException>(async () =>
+                Assert.Throws<TimeoutException>(() =>
                 {
                     if (swarm.Transport is NetMQTransport)
                     {
                         peer.QueryAppProtocolVersionNetMQ(timeout: TimeSpan.FromSeconds(1));
-                    }
-                    else if (swarm.Transport is TcpTransport)
-                    {
-                        await peer.QueryAppProtocolVersionTcp(timeout: TimeSpan.FromSeconds(1));
                     }
                     else
                     {
@@ -85,11 +75,6 @@ namespace Libplanet.Net.Tests.Transports
                         receivedAPV = peer.QueryAppProtocolVersionNetMQ(
                             timeout: TimeSpan.FromSeconds(1));
                     }
-                    else if (swarm.Transport is TcpTransport)
-                    {
-                        receivedAPV = await peer.QueryAppProtocolVersionTcp(
-                            timeout: TimeSpan.FromSeconds(1));
-                    }
                     else
                     {
                         throw new XunitException(
@@ -104,10 +89,7 @@ namespace Libplanet.Net.Tests.Transports
                 }
             }
 
-            if (transportType == TransportType.NetMQTransport)
-            {
-                NetMQConfig.Cleanup(false);
-            }
+            NetMQConfig.Cleanup(false);
         }
 
         private static int FreeTcpPort()

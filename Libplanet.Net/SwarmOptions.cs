@@ -91,12 +91,6 @@ namespace Libplanet.Net
         public TimeSpan TipLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
-        /// The type of <see cref="ITransport"/> used in <see cref="Swarm{T}"/>.
-        /// </summary>
-        public TransportType Type { get; set; }
-            = TransportType.TcpTransport;
-
-        /// <summary>
         /// Various options for the default bootstrap behavior of <see cref="Swarm{T}"/>.
         /// </summary>
         public BootstrapOptions BootstrapOptions { get; set; } = new BootstrapOptions();

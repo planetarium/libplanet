@@ -8,12 +8,12 @@ namespace Libplanet.Benchmarks.DataModel
 {
     public partial class DataModelBenchmark
     {
-        private class MidModel : StoreDataModel
+        public class MidModel : StoreDataModel
         {
             public MidModel()
                 : base()
             {
-                System.Random random = new System.Random();
+                System.Random random = new System.Random(1);
                 LeafModel = new LeafModel();
                 BigList = Enumerable
                     .Range(0, 1000)

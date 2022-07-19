@@ -67,7 +67,6 @@ namespace Libplanet.Node
             // TODO: Should add ConsensusPeers by adding ConsensusConfig.
             return new SwarmOptions()
             {
-                Type = InitConfig.TransportType,
                 TipLifespan = SyncConfig.TipLifespan,
                 MaximumPollPeers = SyncConfig.MaximumPollNumPeers,
                 BucketSize = InitConfig.RoutingTableBucketSize,

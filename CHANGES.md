@@ -64,8 +64,7 @@ To be released.
 ### CLI tools
 
 
-
-Version 0.39.0
+Version 0.40.0
 --------------
 
 To be released.
@@ -88,14 +87,65 @@ To be released.
 
 ### CLI tools
 
+
+Version 0.39.0
+--------------
+
+Released on July 18th, 2022.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Removed `TcpTransport` class.  [[#2139]]
+ -  (Libplanet.Net) Removed `InvalidMagicCookieException` class.  [[#2139]]
+ -  (Libplanet.Net) Removed `SwarmOptions.TransportType` property.  [[#2139]]
+ -  (Libplanet.Node) Removed `InitConfig.TransportType` property.  [[#2139]]
+
+### Added APIs
+
+ -  Added `DuplicateActionTypeIdentifierException` class.  [[#2142]]
+
+### Behavioral changes
+
+ -  (Libplanet.Net) Raised the default value for `Swarm<T>()` constructor's
+    `workers` parameter to 100.  [[#2128], [#2134]]
+ -  (Libplanet.Explorer) Raised the default value for `workers` console
+    argument to 100.  [[#2128], [#2134]]
+ -  `PolymorphicAction<T>` now allows subclasses of `T` to be declared in
+    the entry assembly of the application besides the same assembly as `T`.
+    [[#2136], [#2142]]
+ -  `PolymorphicAction<T>` now throws `DuplicateActionTypeIdentifierException`
+    when multiple subtypes of `T` are associated with the same
+    `ActionTypeAttribute.TypeIdentifier`.  [[#2142]]
+
+### Bug fixes
+
+ -  Fixed a bug where `PrivateKey()` constructor had returned an invalid key
+    less than 32 bytes. [[#1696], [#2091]]
+ -  (Libplanet.Net) Invalid `Uri.UserInfo` with multiple colons is now
+    rejected by `IceServer(Uri url)` constructor and exception is thrown.
+    [[#2058], [#2116]]
+
+### CLI tools
+
  -  (Libplanet.Extensions.Cocona) Upgraded *Cocona.Lite* from 1.6.\* to
     [2.0.\*][Cocona.Lite 2.0.0].  [[#2101]]
-
  -  Implemented *planet key derive*, now you can get public key and
     address from private key directly!  [[#2108]]
+ -  (Libplanet.Extensions.Cocona) Removed `DerivationCommand` class.
+    [[#2118]]
 
+[#1696]: https://github.com/planetarium/libplanet/issues/1696
+[#2058]: https://github.com/planetarium/libplanet/issues/2058
+[#2091]: https://github.com/planetarium/libplanet/pull/2091
 [#2101]: https://github.com/planetarium/libplanet/pull/2101
 [#2108]: https://github.com/planetarium/libplanet/pull/2108
+[#2116]: https://github.com/planetarium/libplanet/pull/2116
+[#2118]: https://github.com/planetarium/libplanet/pull/2118
+[#2128]: https://github.com/planetarium/libplanet/issues/2128
+[#2134]: https://github.com/planetarium/libplanet/pull/2134
+[#2136]: https://github.com/planetarium/libplanet/pull/2136
+[#2139]: https://github.com/planetarium/libplanet/pull/2139
+[#2142]: https://github.com/planetarium/libplanet/pull/2142
 [Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
 
 

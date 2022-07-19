@@ -7,12 +7,10 @@ namespace Libplanet.Net.Transports
 {
     public static class InitTransport
     {
-        public static ITransport Init(TransportParam param) => param.Type switch
+        public static ITransport Init(TransportParam param)
         {
-            TransportType.NetMQTransport => NetMQ(param),
-            TransportType.TcpTransport => Tcp(param),
-            _ => throw new ArgumentOutOfRangeException(),
-        };
+            return NetMQ(param);
+        }
 
         private static NetMQTransport NetMQ(
             TransportParam param)
@@ -29,24 +27,8 @@ namespace Libplanet.Net.Transports
                 param.MessageTimestampBuffer);
         }
 
-        private static TcpTransport Tcp(
-            TransportParam param)
-        {
-            return new TcpTransport(
-                param.MessageSigner,
-                param.AppProtocolVersion,
-                param.TrustedAppProtocolVersionSigners,
-                param.Host,
-                param.ListenPort,
-                param.IceServers ?? new IceServer[0],
-                param.DifferentAppProtocolVersionEncountered,
-                param.MessageTimestampBuffer);
-        }
-
         public struct TransportParam
         {
-            public TransportType Type { get; set; }
-
             public int? Workers { get; set; }
 
             public string Host { get; set; }

@@ -696,7 +696,8 @@ namespace Libplanet.Net.Tests
 
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(block2),
-                    5_000
+                    5_000,
+                    1_000
                 );
                 Assert.Equal(3, receiverChain.Count);
                 Assert.Equal(4, renderCount);
