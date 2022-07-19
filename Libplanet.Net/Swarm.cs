@@ -76,7 +76,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            int workers = 5,
+            int workers = 100,
             string host = null,
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
@@ -108,7 +108,6 @@ namespace Libplanet.Net
 
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
-
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
             Transport = InitializeTransport(
                 workers,
@@ -1147,7 +1146,6 @@ namespace Libplanet.Net
             MessageSigner = _privateKey,
             MessageTimestampBuffer = Options.MessageTimestampBuffer,
             TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
-            Type = Options.Type,
         };
 
         private ITransport InitializeTransport(
@@ -1168,7 +1166,6 @@ namespace Libplanet.Net
                 MessageSigner = _privateKey,
                 MessageTimestampBuffer = Options.MessageTimestampBuffer,
                 TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
-                Type = Options.Type,
             };
             return InitTransport.Init(param);
         }

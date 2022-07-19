@@ -51,6 +51,9 @@ namespace Libplanet.Net.Tests
             iceServer = new IceServer(urlString);
             Assert.Equal("user", iceServer.Username);
             Assert.Equal("info", iceServer.Credential);
+
+            urlString = "turn://user:info:invalid@some.path";
+            Assert.Throws<ArgumentException>(() => new IceServer(urlString));
         }
 
         [FactOnlyTurnAvailable(Timeout = Timeout)]

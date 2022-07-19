@@ -15,7 +15,6 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using static Libplanet.Tests.TestUtils;
-using TransportType = Libplanet.Net.Transports.TransportType;
 
 namespace Libplanet.Net.Tests
 {
@@ -125,18 +124,6 @@ namespace Libplanet.Net.Tests
             }
 
             options ??= new SwarmOptions();
-            string type = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
-            _logger.Debug("Transport type: {Type}", type);
-            switch (type)
-            {
-                case "tcp":
-                    options.Type = TransportType.TcpTransport;
-                    break;
-                case "netmq":
-                    options.Type = TransportType.NetMQTransport;
-                    break;
-            }
-
             privateKey ??= new PrivateKey();
 
             var swarm = new Swarm<T>(

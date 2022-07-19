@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -324,6 +325,24 @@ namespace Libplanet.Tests.Crypto
                 },
                 actual.ToByteArray()
             );
+        }
+
+        [Fact]
+
+        public void PrivateKeyGenerateLongerThan31Bytes()
+        {
+            var faults = new List<int>();
+            for (int i = 0; i < 3000; i++)
+            {
+                var pk = new PrivateKey();
+
+                if (pk.ByteArray.Length < 32)
+                {
+                    faults.Add(i);
+                }
+            }
+
+            Assert.Empty(faults);
         }
     }
 }

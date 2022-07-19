@@ -34,6 +34,7 @@ package_version="$(cat obj/package_version.txt)"
 for project in "${projects[@]}"; do
   dotnet-nuget push \
     "./$project/bin/$configuration/$project.$package_version.nupkg" \
+    --skip-duplicate \
     --api-key "$NUGET_API_KEY" \
     --source https://api.nuget.org/v3/index.json
 done
