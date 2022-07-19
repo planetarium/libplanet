@@ -50,6 +50,7 @@ To be released.
     `InvalidProposerProposeMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added
     `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Message.GetHash()` method.  [[#PBFT]]
 
 ### Behavioral changes
 
