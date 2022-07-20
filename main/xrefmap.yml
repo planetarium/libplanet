@@ -2035,6 +2035,41 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Finalize
   nameWithType: BlockChain<T>.Finalize
   nameWithType.vb: BlockChain(Of T).Finalize
+- uid: Libplanet.Blockchain.BlockChain`1.FindNextHashes(Libplanet.Blockchain.BlockLocator,System.Nullable{Libplanet.Blocks.BlockHash},System.Int32)
+  name: FindNextHashes(BlockLocator, Nullable<BlockHash>, Int32)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Blocks_BlockHash__System_Int32_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.FindNextHashes(Libplanet.Blockchain.BlockLocator,System.Nullable{Libplanet.Blocks.BlockHash},System.Int32)
+  name.vb: FindNextHashes(BlockLocator, Nullable(Of BlockHash), Int32)
+  fullName: Libplanet.Blockchain.BlockChain<T>.FindNextHashes(Libplanet.Blockchain.BlockLocator, System.Nullable<Libplanet.Blocks.BlockHash>, System.Int32)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).FindNextHashes(Libplanet.Blockchain.BlockLocator, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Int32)
+  nameWithType: BlockChain<T>.FindNextHashes(BlockLocator, Nullable<BlockHash>, Int32)
+  nameWithType.vb: BlockChain(Of T).FindNextHashes(BlockLocator, Nullable(Of BlockHash), Int32)
+- uid: Libplanet.Blockchain.BlockChain`1.FindNextHashes*
+  name: FindNextHashes
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_FindNextHashes_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.FindNextHashes
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.FindNextHashes
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).FindNextHashes
+  nameWithType: BlockChain<T>.FindNextHashes
+  nameWithType.vb: BlockChain(Of T).FindNextHashes
+- uid: Libplanet.Blockchain.BlockChain`1.Fork(Libplanet.Blocks.BlockHash,System.Boolean)
+  name: Fork(BlockHash, Boolean)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Fork_Libplanet_Blocks_BlockHash_System_Boolean_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.Fork(Libplanet.Blocks.BlockHash,System.Boolean)
+  fullName: Libplanet.Blockchain.BlockChain<T>.Fork(Libplanet.Blocks.BlockHash, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Fork(Libplanet.Blocks.BlockHash, System.Boolean)
+  nameWithType: BlockChain<T>.Fork(BlockHash, Boolean)
+  nameWithType.vb: BlockChain(Of T).Fork(BlockHash, Boolean)
+- uid: Libplanet.Blockchain.BlockChain`1.Fork*
+  name: Fork
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Fork_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Fork
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.Fork
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Fork
+  nameWithType: BlockChain<T>.Fork
+  nameWithType.vb: BlockChain(Of T).Fork
 - uid: Libplanet.Blockchain.BlockChain`1.Genesis
   name: Genesis
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Genesis
@@ -2079,6 +2114,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBalance
   nameWithType: BlockChain<T>.GetBalance
   nameWithType.vb: BlockChain(Of T).GetBalance
+- uid: Libplanet.Blockchain.BlockChain`1.GetBlockLocator(System.Int32)
+  name: GetBlockLocator(Int32)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBlockLocator_System_Int32_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetBlockLocator(System.Int32)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBlockLocator(System.Int32)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBlockLocator(System.Int32)
+  nameWithType: BlockChain<T>.GetBlockLocator(Int32)
+  nameWithType.vb: BlockChain(Of T).GetBlockLocator(Int32)
+- uid: Libplanet.Blockchain.BlockChain`1.GetBlockLocator*
+  name: GetBlockLocator
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetBlockLocator_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetBlockLocator
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetBlockLocator
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetBlockLocator
+  nameWithType: BlockChain<T>.GetBlockLocator
+  nameWithType.vb: BlockChain(Of T).GetBlockLocator
 - uid: Libplanet.Blockchain.BlockChain`1.GetNextTxNonce(Libplanet.Address)
   name: GetNextTxNonce(Address)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_
@@ -2430,6 +2482,50 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction
   nameWithType: BlockChain<T>.UnstageTransaction
   nameWithType.vb: BlockChain(Of T).UnstageTransaction
+- uid: Libplanet.Blockchain.BlockLocator
+  name: BlockLocator
+  href: api/Libplanet.Blockchain.BlockLocator.html
+  commentId: T:Libplanet.Blockchain.BlockLocator
+  fullName: Libplanet.Blockchain.BlockLocator
+  nameWithType: BlockLocator
+- uid: Libplanet.Blockchain.BlockLocator.#ctor(Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},Func{Libplanet.Blocks.BlockHash,System.Int64},System.Int32)
+  name: BlockLocator(Func<Int64, Nullable<BlockHash>>, Func<BlockHash, Int64>, Int32)
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator__ctor_Func_System_Int64_System_Nullable_Libplanet_Blocks_BlockHash___Func_Libplanet_Blocks_BlockHash_System_Int64__System_Int32_
+  commentId: M:Libplanet.Blockchain.BlockLocator.#ctor(Func{System.Int64,System.Nullable{Libplanet.Blocks.BlockHash}},Func{Libplanet.Blocks.BlockHash,System.Int64},System.Int32)
+  name.vb: BlockLocator(Func(Of Int64, Nullable(Of BlockHash)), Func(Of BlockHash, Int64), Int32)
+  fullName: Libplanet.Blockchain.BlockLocator.BlockLocator(Func<System.Int64, System.Nullable<Libplanet.Blocks.BlockHash>>, Func<Libplanet.Blocks.BlockHash, System.Int64>, System.Int32)
+  fullName.vb: Libplanet.Blockchain.BlockLocator.BlockLocator(Func(Of System.Int64, System.Nullable(Of Libplanet.Blocks.BlockHash)), Func(Of Libplanet.Blocks.BlockHash, System.Int64), System.Int32)
+  nameWithType: BlockLocator.BlockLocator(Func<Int64, Nullable<BlockHash>>, Func<BlockHash, Int64>, Int32)
+  nameWithType.vb: BlockLocator.BlockLocator(Func(Of Int64, Nullable(Of BlockHash)), Func(Of BlockHash, Int64), Int32)
+- uid: Libplanet.Blockchain.BlockLocator.#ctor(IEnumerable{Libplanet.Blocks.BlockHash})
+  name: BlockLocator(IEnumerable<BlockHash>)
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blockchain.BlockLocator.#ctor(IEnumerable{Libplanet.Blocks.BlockHash})
+  name.vb: BlockLocator(IEnumerable(Of BlockHash))
+  fullName: Libplanet.Blockchain.BlockLocator.BlockLocator(IEnumerable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blockchain.BlockLocator.BlockLocator(IEnumerable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: BlockLocator.BlockLocator(IEnumerable<BlockHash>)
+  nameWithType.vb: BlockLocator.BlockLocator(IEnumerable(Of BlockHash))
+- uid: Libplanet.Blockchain.BlockLocator.#ctor*
+  name: BlockLocator
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator__ctor_
+  commentId: Overload:Libplanet.Blockchain.BlockLocator.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockLocator.BlockLocator
+  nameWithType: BlockLocator.BlockLocator
+- uid: Libplanet.Blockchain.BlockLocator.GetEnumerator
+  name: GetEnumerator()
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_GetEnumerator
+  commentId: M:Libplanet.Blockchain.BlockLocator.GetEnumerator
+  fullName: Libplanet.Blockchain.BlockLocator.GetEnumerator()
+  nameWithType: BlockLocator.GetEnumerator()
+- uid: Libplanet.Blockchain.BlockLocator.GetEnumerator*
+  name: GetEnumerator
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_GetEnumerator_
+  commentId: Overload:Libplanet.Blockchain.BlockLocator.GetEnumerator
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockLocator.GetEnumerator
+  nameWithType: BlockLocator.GetEnumerator
 - uid: Libplanet.Blockchain.FungibleAssetStateCompleter`1
   name: FungibleAssetStateCompleter<T>
   href: api/Libplanet.Blockchain.FungibleAssetStateCompleter-1.html
