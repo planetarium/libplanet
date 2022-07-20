@@ -702,7 +702,7 @@ namespace Libplanet.RocksDBStore
             }
 
             long timestamp = tx.Timestamp.ToUnixTimeSeconds();
-            string txDbName = $"epoch{(int)timestamp / _txEpochUnitSeconds}";
+            string txDbName = $"epoch{timestamp / _txEpochUnitSeconds}";
             _rwTxLock.EnterWriteLock();
             try
             {

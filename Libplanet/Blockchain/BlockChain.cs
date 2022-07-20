@@ -709,7 +709,8 @@ namespace Libplanet.Blockchain
         {
             if (!(Store.GetBlockPerceivedTime(blockExcerpt.Hash) is { } time))
             {
-                time = perceivedTime ?? DateTimeOffset.UtcNow;
+                time = perceivedTime ?? DateTimeOffset.FromUnixTimeMilliseconds(
+                    DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
                 Store.SetBlockPerceivedTime(blockExcerpt.Hash, time);
             }
 

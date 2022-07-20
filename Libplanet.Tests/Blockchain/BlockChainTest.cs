@@ -128,7 +128,8 @@ namespace Libplanet.Tests.Blockchain
                 TotalDifficulty = 21584061959429,
             };
 
-            DateTimeOffset timeBMin = DateTimeOffset.UtcNow;
+            DateTimeOffset timeBMin = DateTimeOffset.FromUnixTimeMilliseconds(
+                DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
             BlockPerception perceptionB = _blockChain.PerceiveBlock(blockB);
             DateTimeOffset timeBMax = DateTimeOffset.UtcNow;
             Assert.True(blockB.ExcerptEquals(perceptionB));
