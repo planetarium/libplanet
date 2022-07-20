@@ -114,6 +114,16 @@ namespace Libplanet.Net.Messages
             /// Consensus commit message.
             /// </summary>
             ConsensusCommit = 0x42,
+
+            /// <summary>
+            /// List of message IDs that the peer seen recently.
+            /// </summary>
+            HaveMessage = 0x50,
+
+            /// <summary>
+            /// List of message IDs that the peer want to have.
+            /// </summary>
+            WantMessage = 0x51,
         }
 
         public enum MessageFrame
