@@ -124,15 +124,15 @@ namespace Libplanet.Net.Tests.Messages
                 Timestamp = dateTimeOffset,
                 Remote = peer,
             };
-            AssertBytesEqual(
-                new byte[32]
+            Assert.Equal(
+                new MessageId(new byte[32]
                 {
                     0x49, 0xf1, 0x9d, 0x6b, 0x21, 0x4e, 0x46, 0x43,
                     0x73, 0x39, 0x84, 0xec, 0x19, 0xf6, 0x55, 0xd5,
                     0x34, 0x7e, 0xbe, 0xf3, 0x4a, 0x8c, 0x5b, 0xdd,
                     0x2f, 0x46, 0x80, 0xe7, 0xbb, 0xdd, 0xa0, 0x0c,
-                },
-                message.GetHash());
+                }),
+                message.Id);
         }
     }
 }

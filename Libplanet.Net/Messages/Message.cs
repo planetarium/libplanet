@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Destructurama.Attributed;
@@ -192,20 +191,23 @@ namespace Libplanet.Net.Messages
         /// SHA-256 digest of <see cref="Message"/>.
         /// </returns>
         [Pure]
-        public byte[] GetHash()
+        public MessageId Id
         {
-            var bytes = new List<byte>();
-            bytes.AddRange(Encoding.ASCII.GetBytes(Version.Token));
-            bytes.AddRange(BitConverter.GetBytes((int)Type));
-            bytes.AddRange(BitConverter.GetBytes(Timestamp.Ticks));
-            foreach (byte[] ba in DataFrames)
+            get
             {
-                bytes.AddRange(ba);
-            }
+                var bytes = new List<byte>();
+                bytes.AddRange(Encoding.ASCII.GetBytes(Version.Token));
+                bytes.AddRange(BitConverter.GetBytes((int)Type));
+                bytes.AddRange(BitConverter.GetBytes(Timestamp.Ticks));
+                foreach (byte[] ba in DataFrames)
+                {
+                    bytes.AddRange(ba);
+                }
 
-            SHA256 sha256 = SHA256.Create();
-            byte[] digest = sha256.ComputeHash(bytes.ToArray());
-            return digest.ToArray();
+                SHA256 sha256 = SHA256.Create();
+                byte[] digest = sha256.ComputeHash(bytes.ToArray());
+                return new MessageId(digest);
+            }
         }
     }
 }
