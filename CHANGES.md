@@ -25,6 +25,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
+    perceive time of newly perceived blocks. [[#2155], [#2159]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -33,6 +36,8 @@ To be released.
 
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
+[#2155]: https://github.com/planetarium/libplanet/issues/2155
+[#2159]: https://github.com/planetarium/libplanet/pull/2159
 
 
 Version 0.39.0
