@@ -16,6 +16,13 @@ To be released.
 
 ### Added APIs
 
+ - Added `BlockLocator` class. [[#1762], [#2140]]
+ - Added methods required for decoupling `Libplanet.Net` from
+   `Libplanet`. [[#1762], [#2140]]
+   - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
+   - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
+   - Added `BlockChain<T>.GetBlockLocator(int)` method.
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +30,9 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#2140]: https://github.com/planetarium/libplanet/pull/2140
 
 
 Version 0.39.0
