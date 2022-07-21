@@ -441,9 +441,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ClearRenderBufferWhenItsInterval()
         {
+            // FIXME: This should be properly addressed.
+            // https://github.com/planetarium/libplanet/issues/2166
+            Skip.IfNot(
+                Type.GetType("Mono.Runtime") is null,
+                "For unknown reason, it usually fails on Unity Mono."
+            );
+
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
