@@ -21495,38 +21495,6 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).Values
   nameWithType: BlockSet<T>.Values
   nameWithType.vb: BlockSet(Of T).Values
-- uid: Libplanet.Store.ChainIdNotFoundException
-  name: ChainIdNotFoundException
-  href: api/Libplanet.Store.ChainIdNotFoundException.html
-  commentId: T:Libplanet.Store.ChainIdNotFoundException
-  fullName: Libplanet.Store.ChainIdNotFoundException
-  nameWithType: ChainIdNotFoundException
-- uid: Libplanet.Store.ChainIdNotFoundException.#ctor(Guid,System.String)
-  name: ChainIdNotFoundException(Guid, String)
-  href: api/Libplanet.Store.ChainIdNotFoundException.html#Libplanet_Store_ChainIdNotFoundException__ctor_Guid_System_String_
-  commentId: M:Libplanet.Store.ChainIdNotFoundException.#ctor(Guid,System.String)
-  fullName: Libplanet.Store.ChainIdNotFoundException.ChainIdNotFoundException(Guid, System.String)
-  nameWithType: ChainIdNotFoundException.ChainIdNotFoundException(Guid, String)
-- uid: Libplanet.Store.ChainIdNotFoundException.#ctor*
-  name: ChainIdNotFoundException
-  href: api/Libplanet.Store.ChainIdNotFoundException.html#Libplanet_Store_ChainIdNotFoundException__ctor_
-  commentId: Overload:Libplanet.Store.ChainIdNotFoundException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.ChainIdNotFoundException.ChainIdNotFoundException
-  nameWithType: ChainIdNotFoundException.ChainIdNotFoundException
-- uid: Libplanet.Store.ChainIdNotFoundException.ChainId
-  name: ChainId
-  href: api/Libplanet.Store.ChainIdNotFoundException.html#Libplanet_Store_ChainIdNotFoundException_ChainId
-  commentId: P:Libplanet.Store.ChainIdNotFoundException.ChainId
-  fullName: Libplanet.Store.ChainIdNotFoundException.ChainId
-  nameWithType: ChainIdNotFoundException.ChainId
-- uid: Libplanet.Store.ChainIdNotFoundException.ChainId*
-  name: ChainId
-  href: api/Libplanet.Store.ChainIdNotFoundException.html#Libplanet_Store_ChainIdNotFoundException_ChainId_
-  commentId: Overload:Libplanet.Store.ChainIdNotFoundException.ChainId
-  isSpec: "True"
-  fullName: Libplanet.Store.ChainIdNotFoundException.ChainId
-  nameWithType: ChainIdNotFoundException.ChainId
 - uid: Libplanet.Store.DataModel
   name: DataModel
   href: api/Libplanet.Store.DataModel.html

@@ -66,6 +66,9 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>ChainIdNotFoundException</code> class. [<a href="https://github.com/planetarium/libplanet/issues/2047">#2047</a>, <a href="https://github.com/planetarium/libplanet/pull/2156">#2156</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -84,6 +87,8 @@
 <ul>
 <li><code>BlockChain&lt;T&gt;.PerceiveBlock()</code> method now uses millisecond precision for
 perceive time of newly perceived blocks. [<a href="https://github.com/planetarium/libplanet/issues/2155">#2155</a>, <a href="https://github.com/planetarium/libplanet/pull/2159">#2159</a>]</li>
+<li>Nonexistent chain ids in <code>IStore</code> are now considered to be chain ids of
+empty chains. [<a href="https://github.com/planetarium/libplanet/issues/2047">#2047</a>, <a href="https://github.com/planetarium/libplanet/pull/2156">#2156</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
