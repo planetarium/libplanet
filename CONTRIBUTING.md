@@ -34,6 +34,14 @@ FYI if you use macOS and [Homebrew] you can install it by
 Make sure that your .NET Core SDK is 3.1 or higher.  You could show
 the version you are using by `dotnet --info` command.
 
+{% warning %}
+
+**Warning:** `Libplanet.Test` project doesn't fully compatible with [.NET 6] yet.
+but allowed limitedly for [Aarch64] (e.g., [Apple Silicon]). therfore you need to
+install latest version of .NET Core 3.1 SDK to run unittest on [x86-64].
+
+{% endwarning %}
+
 Although it is not necessary, you should install a proper IDE for .NET
 (or an [OmniSharp] extension for your favorite editor — except it takes
 hours to properly configure and integrate with your editor).
@@ -44,7 +52,11 @@ Unless you already have your favorite setup, we recommend you to use
 made .NET as well.  So Visual Studio Code has a [first-party C# extension][2]
 which works well together.
 
+[Aarch64]: https://en.wikipedia.org/wiki/AArch64
+[Apple Silicon]: https://en.wikipedia.org/wiki/Apple_silicon
+[x86-64]: https://en.wikipedia.org/wiki/X86-64
 [.NET Core]: https://dot.net/
+[.NET 6]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 [Homebrew]: https://brew.sh/
 [OmniSharp]: http://www.omnisharp.net/
 [Visual Studio Code]: https://code.visualstudio.com/
