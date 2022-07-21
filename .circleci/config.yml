@@ -336,7 +336,10 @@ commands:
             args+=("--exclude-class=$c")
           done
           for project in *.Tests; do
-            if [[ $project !=  *"Explorer"* ]]
+            if [[
+              $project !=  *"Explorer"*
+              && $project != *"RocksDBStore"*
+            ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")
             fi
