@@ -91,7 +91,10 @@ commands:
           fi
           dotnet test --no-restore --no-build -c Release --list-tests \
           > .dotnet-list-tests.txt
-          grep -E '^    ' .dotnet-list-tests.txt \
+          grep '    ' .dotnet-list-tests.txt \
+          | sed 's/    /\n    /g' \
+          | sed '/^$/d' \
+          | grep '^    ' \
           | sed -E 's/^    |\(.*?\)$//g' \
           | uniq \
           | /usr/bin/sort -R --random-source=CHANGES.md \
