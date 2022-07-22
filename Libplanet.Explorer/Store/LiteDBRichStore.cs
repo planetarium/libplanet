@@ -239,6 +239,14 @@ namespace Libplanet.Explorer.Store
             _store.SetCanonicalChainId(chainId);
         }
 
+        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}(HashAlgorithmGetter)"/>
+        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+            where T : IAction, new() =>
+            _store.GetCanonicalChainId() is { } canonicalChainId
+            && _store.IndexBlockHash(canonicalChainId, 0) is { } genesisHash
+                ? _store.GetBlock<T>(hashAlgorithmGetter, genesisHash)
+                : null;
+
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
         public long CountIndex(Guid chainId)
         {
