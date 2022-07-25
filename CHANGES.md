@@ -11,6 +11,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Added `IBlockPolicy<T>.NativeTokens` property.  [[#2149], [#2150], [#2175]]
+ -  Added option `IImmutableSet<Currency>? nativeTokens` to `BlockPolicy<T>()`
+    constructor as its last parameter.  [[#2149], [#2150], [#2175]]
  -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
  -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
     [[#2162], [#2171]]
