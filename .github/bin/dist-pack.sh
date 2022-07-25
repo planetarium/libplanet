@@ -22,6 +22,7 @@ for project in "${executables[@]}"; do
     dotnet publish \
       --runtime "$rid" \
       -p:PublishSingleFile=true \
+      --self-contained \
       -p:Version="$version" \
       --configuration "$configuration" \
       --output "$output_dir" \
@@ -32,6 +33,7 @@ for project in "${executables[@]}"; do
           dotnet publish \
             --runtime "$rid" \
             -p:PublishSingleFile=true \
+            --self-contained \
             -p:Version="$version" \
             --configuration "$configuration" \
             --output "$output_dir" \
@@ -39,7 +41,7 @@ for project in "${executables[@]}"; do
         else
           exit 1
         fi
-    bin_name="$(find "$output_dir" -type f -executable -exec basename {} \;)"
+    bin_name="$(find "$output_dir" -type f -perm /o+x -exec basename {} \;)"
     pushd "$output_dir"
     if [[ "$rid" = win-* ]]; then
       zip -r9 "../${bin_name%.exe}-$version-$rid.zip" ./*

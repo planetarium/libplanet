@@ -38,6 +38,7 @@ To be released.
     perceive time of newly perceived blocks. [[#2155], [#2159]]
  -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
     empty chains. [[#2047], [#2156]]
+ -  `Libplanet.Explorer` now targets .NET 6.0. [[#2173]]
 
 ### Bug fixes
 
@@ -54,6 +55,7 @@ To be released.
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
+[#2173]: https://github.com/planetarium/libplanet/pull/2173
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
 [#2183]: https://github.com/planetarium/libplanet/pull/2183
 
