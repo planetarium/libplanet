@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -190,6 +192,10 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public IAction? BlockAction { get; }
+
+        /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
+        // TODO: This should be configurable through the constructor.
+        public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
