@@ -42,12 +42,13 @@ To be released.
  -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
     `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
- - Added `BlockLocator` class. [[#1762], [#2140]]
- - Added methods required for decoupling `Libplanet.Net` from
-   `Libplanet`. [[#1762], [#2140]]
-   - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
-   - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
-   - Added `BlockChain<T>.GetBlockLocator(int)` method.
+ -  Added `BlockLocator` class. [[#1762], [#2140]]
+ -  Added methods required for decoupling *Libplanet.Net* from
+    *Libplanet*. [[#1762], [#2140]]
+     -  Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)`
+        method.
+     -  Added `BlockChain<T>.Fork(BlockHash, bool)` method.
+     -  Added `BlockChain<T>.GetBlockLocator(int)` method.
  -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
  -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
  -  Added `IAccountStateView` interface.  [[#2183]]
