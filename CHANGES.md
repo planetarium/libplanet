@@ -42,6 +42,7 @@ To be released.
  -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
     `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
+ -  Added `NonNativeTokenException` class.  [[#2149], [#2150], [#2175]]
  -  Added `BlockLocator` class. [[#1762], [#2140]]
  -  Added methods required for decoupling *Libplanet.Net* from
     *Libplanet*. [[#1762], [#2140]]
