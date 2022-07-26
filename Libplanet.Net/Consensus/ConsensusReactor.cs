@@ -23,11 +23,10 @@ namespace Libplanet.Net.Consensus
     public class ConsensusReactor<T> : IReactor
         where T : IAction, new()
     {
-        private ITransport _consensusTransport;
-        private ILogger _logger;
-        private IImmutableList<BoundPeer> _validatorPeers;
-        private ConsensusContext<T> _consensusContext;
-        private BlockChain<T> _blockChain;
+        private readonly Gossip _gossip;
+        private readonly ConsensusContext<T> _consensusContext;
+        private readonly BlockChain<T> _blockChain;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusReactor{T}"/> class.
@@ -53,13 +52,15 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
-            _consensusTransport = consensusTransport;
-            _validatorPeers = validatorPeers;
-            _consensusTransport.ProcessMessageHandler.Register(ProcessMessageHandler);
+            _gossip = new Gossip(
+                consensusTransport,
+                validatorPeers.ToImmutableArray(),
+                ProcessMessage,
+                TimeSpan.FromMinutes(2));
             _blockChain = blockChain;
 
             _consensusContext = new ConsensusContext<T>(
-                BroadcastMessage,
+                AddMessage,
                 blockChain,
                 blockChain.Tip.Index,
                 privateKey,
@@ -74,21 +75,16 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A delegate method for <see cref="ConsensusReactor{T}.CheckValidatorsLiveness"/>.
-        /// </summary>
-        private delegate Task<bool> PingPong(BoundPeer peer);
-
-        /// <summary>
         /// Whether this <see cref="ConsensusReactor{T}"/> is running.
         /// </summary>
-        public bool Running => _consensusTransport.Running;
+        public bool Running => _gossip.Running;
 
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         /// </summary>
         public void Dispose()
         {
-            _consensusTransport.Dispose();
+            _gossip.Dispose();
             _consensusContext.Dispose();
         }
 
@@ -100,11 +96,8 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns the <see cref="ITransport.StartAsync"/>.</returns>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            Task task = _consensusTransport.StartAsync(cancellationToken);
-            await _consensusTransport.WaitForRunningAsync();
-            await CheckValidatorsLiveness(cancellationToken);
             _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
-            await task;
+            await _gossip.StartAsync(cancellationToken);
         }
 
         /// <summary>
@@ -115,7 +108,7 @@ namespace Libplanet.Net.Consensus
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             _consensusContext.Dispose();
-            await _consensusTransport.StopAsync(TimeSpan.FromMilliseconds(10), cancellationToken);
+            await _gossip.StopAsync(TimeSpan.FromMilliseconds(10), cancellationToken);
         }
 
         /// <summary>
@@ -128,91 +121,29 @@ namespace Libplanet.Net.Consensus
             var dict =
                 JsonSerializer.Deserialize<Dictionary<string, object>>(
                     _consensusContext.ToString());
-            dict["peer"] = _consensusTransport.AsPeer.ToString();
+            dict["peer"] = _gossip.AsPeer.ToString();
 
             return JsonSerializer.Serialize(dict);
         }
 
         /// <summary>
-        /// Broadcasts <see cref="ConsensusMessage"/> to validators.
+        /// Adds <see cref="ConsensusMessage"/> to gossip.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to broadcast.</param>
-        private void BroadcastMessage(ConsensusMessage message) =>
-            _consensusTransport.BroadcastMessage(_validatorPeers, message);
+        /// <param name="message">A <see cref="ConsensusMessage"/> to add.</param>
+        private void AddMessage(ConsensusMessage message) => _gossip.AddMessage(message);
 
         /// <summary>
-        /// A handler for <see cref="ITransport.ProcessMessageHandler"/> to handles a received
-        /// <see cref="Message"/>s.
+        /// A handler for received <see cref="Message"/>s.
         /// </summary>
         /// <param name="message">A message to process.</param>
-        private async Task ProcessMessageHandler(Message message)
+        private void ProcessMessage(Message message)
         {
             switch (message)
             {
                 case ConsensusMessage consensusMessage:
-                    await ReplyMessagePongAsync(message);
                     _consensusContext.HandleMessage(consensusMessage);
                     break;
-                case Ping ping:
-                    await ReplyMessagePongAsync(ping);
-                    break;
             }
-        }
-
-        /// <summary>
-        /// A task for checking how many validators are alive.
-        /// </summary>
-        /// <param name="ctx">A cancellation token.</param>
-        private async Task CheckValidatorsLiveness(CancellationToken ctx)
-        {
-            while (!ctx.IsCancellationRequested)
-            {
-                PingPong sendMessage = async peer =>
-                {
-                    try
-                    {
-                        Message? pong = await _consensusTransport.SendMessageAsync(
-                            peer,
-                            new Ping(),
-                            TimeSpan.FromSeconds(1),
-                            ctx);
-                        return pong is Pong;
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Debug(
-                            "{FName}: Failed. Exception => {Exception}",
-                            nameof(_consensusTransport.SendMessageAsync),
-                            e.Message);
-                        return false;
-                    }
-                };
-
-                List<Task<bool>> tasks = _validatorPeers
-                    .Select(peer => sendMessage(peer))
-                    .ToList();
-                int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
-
-                var twoThird = _validatorPeers.Count * 2.0 / 3.0;
-                _logger.Debug($"{nameof(CheckValidatorsLiveness)}:" +
-                              $" count of pong => {countOfPong}, twoThird => {twoThird}");
-                if (countOfPong > twoThird)
-                {
-                    break;
-                }
-
-                await Task.Delay(TimeSpan.FromMilliseconds(10), ctx);
-            }
-        }
-
-        /// <summary>
-        /// Replies a <see cref="Pong"/> of received <paramref name="message"/>.
-        /// </summary>
-        /// <param name="message">A message to replies.</param>
-        private async Task ReplyMessagePongAsync(Message message)
-        {
-            var pong = new Pong { Identity = message.Identity };
-            await _consensusTransport.ReplyMessageAsync(pong, CancellationToken.None);
         }
     }
 }
