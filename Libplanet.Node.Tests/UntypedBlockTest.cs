@@ -72,9 +72,10 @@ namespace Libplanet.Node.Tests
             var proof = (nonce, preEvalHash);
             _preEval = new PreEvaluationBlock<NullAction>(_content, Sha256, proof);
             _block = _preEval.Evaluate(
-                _minerKey,
-                null,
-                new TrieStateStore(new MemoryKeyValueStore())
+                privateKey: _minerKey,
+                blockAction: null,
+                nativeTokenPredicate: _ => true,
+                stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );
         }
 

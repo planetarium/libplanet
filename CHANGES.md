@@ -13,6 +13,22 @@ To be released.
  -  Added `IBlockPolicy<T>.NativeTokens` property.  [[#2149], [#2150], [#2175]]
  -  Added option `IImmutableSet<Currency>? nativeTokens` to `BlockPolicy<T>()`
     constructor as its last parameter.  [[#2149], [#2150], [#2175]]
+ -  Added `IActionContext.IsNativeToken(Currency)` method.
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    all `PreEvaluationBlock<T>.Evaluate()` method as its second parameter
+    (parameter `IStateStore stateStore` remains at the last).
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    all `PreEvaluationBlock<T>.DetermineStateRootHash()` overloads as their
+    second parameter (existing second and rest parameters were shifted).
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    `BlockChain<T>.MakeGenesisBlock()` method as its last parameter.
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    `ActionEvaluator<T>()` constructor as its last parameter.
+    [[#2149], [#2150], [#2175]]
  -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
  -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
     [[#2162], [#2171]]

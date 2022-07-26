@@ -891,7 +891,11 @@ namespace Libplanet.Net.Tests
                     policy,
                     new MemoryStore(),
                     stateStore,
-                    genesisBlock: genesisBlock.Evaluate(minerKey, policy.BlockAction, stateStore)
+                    genesisBlock: genesisBlock.Evaluate(
+                        privateKey: minerKey,
+                        blockAction: policy.BlockAction,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        stateStore: stateStore)
                 );
             }
 

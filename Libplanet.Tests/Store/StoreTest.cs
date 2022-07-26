@@ -1067,8 +1067,14 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(policy.GetHashAlgorithm, GenesisMiner.PublicKey)
-                        .Evaluate(GenesisMiner, policy.BlockAction, fx.StateStore)
+                    MineGenesis<DumbAction>(
+                            hashAlgorithmGetter: policy.GetHashAlgorithm,
+                            miner: GenesisMiner.PublicKey)
+                        .Evaluate(
+                            privateKey: GenesisMiner,
+                            blockAction: policy.BlockAction,
+                            nativeTokenPredicate: policy.NativeTokens.Contains,
+                            stateStore: fx.StateStore)
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.

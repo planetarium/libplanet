@@ -69,7 +69,12 @@ namespace Libplanet.Tests.Fixtures
                 PublicKey = Miner.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = Txs,
-            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(Miner, policy.BlockAction, StateStore);
+            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(
+                privateKey: Miner,
+                blockAction: policy.BlockAction,
+                nativeTokenPredicate: policy.NativeTokens.Contains,
+                stateStore: StateStore
+            );
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
