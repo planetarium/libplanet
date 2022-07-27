@@ -632,15 +632,5 @@ namespace Libplanet.Tx
             action.LoadPlainValue(value);
             return action;
         }
-
-        private readonly struct TransactionSerializationContext
-        {
-            internal TransactionSerializationContext(bool includeSignature)
-            {
-                IncludeSignature = includeSignature;
-            }
-
-            internal bool IncludeSignature { get; }
-        }
     }
 }
