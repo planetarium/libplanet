@@ -33,6 +33,8 @@ namespace Libplanet.Tx
         // If a tx is longer than 50 KiB don't cache its bytes representation to _bytes.
         private const int BytesCacheThreshold = 50 * 1024;
 
+        private static readonly Codec Codec = new Codec();
+
         private TxId? _id;
         private TxMetadata _metadata;
         private byte[] _signature;
@@ -543,7 +545,6 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public byte[] Serialize(bool sign)
         {
-            Codec codec = null;
             if (_bytes is { })
             {
                 if (sign)
@@ -556,9 +557,8 @@ namespace Libplanet.Tx
                 //        & optimize Bencodex.Codec in general.
                 if (_signature is { } && _signature.Length > 0)
                 {
-                    codec = new Codec();
                     byte[] sigDict =
-                        codec.Encode(Dictionary.Empty.Add(TxMetadata.SignatureKey, _signature));
+                        Codec.Encode(Dictionary.Empty.Add(TxMetadata.SignatureKey, _signature));
                     var sigField = new byte[sigDict.Length - 1];
                     Array.Copy(sigDict, 1, sigField, 0, sigField.Length);
                     int sigOffset = _bytes.IndexOf(sigField);
@@ -573,8 +573,7 @@ namespace Libplanet.Tx
                 }
             }
 
-            codec ??= new Codec();
-            byte[] serialized = codec.Encode(ToBencodex(sign));
+            byte[] serialized = Codec.Encode(ToBencodex(sign));
             if (sign && serialized.Length < BytesCacheThreshold)
             {
                 _bytes = serialized;
