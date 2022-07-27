@@ -77,7 +77,7 @@ namespace Libplanet.Net.Consensus
     /// A <see cref="Context{T}"/> represents a consensus of a single height and its multiple
     /// rounds.
     /// </remarks>
-    public class Context<T> : IDisposable
+    public partial class Context<T> : IDisposable
         where T : IAction, new()
     {
         private const int TimeoutProposeBase = 5;
@@ -91,13 +91,12 @@ namespace Libplanet.Net.Consensus
         private readonly Codec _codec;
         private readonly List<PublicKey> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
-        private readonly ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>>
-            _messagesInRound;
+        private readonly ConcurrentDictionary<int, HashSet<ConsensusMessage>> _messagesInRound;
 
         private readonly PrivateKey _privateKey;
-        private readonly ConcurrentBag<int> _preVoteFlags;
-        private readonly ConcurrentBag<int> _hasTwoThirdsPreVoteFlags;
-        private readonly ConcurrentBag<int> _preCommitFlags;
+        private readonly HashSet<int> _preVoteFlags;
+        private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
+        private readonly HashSet<int> _preCommitFlags;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
 
@@ -109,7 +108,6 @@ namespace Libplanet.Net.Consensus
         private Block<T>? _validValue;
         private int _validRound;
         private BlockCommit? _lastCommit;
-        private int _requestCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context{T}"/> class.
@@ -163,10 +161,10 @@ namespace Libplanet.Net.Consensus
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
-            _messagesInRound = new ConcurrentDictionary<int, ConcurrentBag<ConsensusMessage>>();
-            _preVoteFlags = new ConcurrentBag<int>();
-            _hasTwoThirdsPreVoteFlags = new ConcurrentBag<int>();
-            _preCommitFlags = new ConcurrentBag<int>();
+            _messagesInRound = new ConcurrentDictionary<int, HashSet<ConsensusMessage>>();
+            _preVoteFlags = new HashSet<int>();
+            _hasTwoThirdsPreVoteFlags = new HashSet<int>();
+            _preCommitFlags = new HashSet<int>();
             _validators = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
@@ -231,29 +229,6 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         private int TotalValidators => _validators.Count;
 
-        /// <summary>
-        /// Starts the round #0 of consensus for <see cref="Height"/>.
-        /// </summary>
-        /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
-        /// </param>
-        /// <returns>An awaitable task without value. This task
-        /// awaits <see cref="StartRound"/> and starts <see cref="MessageConsumerTask"/>.
-        /// </returns>
-        public async Task StartAsync(BlockCommit? lastCommit = null)
-        {
-            _lastCommit = lastCommit;
-            await StartRound(0);
-            if (Proposer(0) != _privateKey.PublicKey &&
-                _messagesInRound.ContainsKey(0) &&
-                _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
-                    ConsensusPropose propose)
-            {
-                ProcessMessage(propose);
-            }
-
-            _ = MessageConsumerTask(_cancellationTokenSource.Token);
-        }
-
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
@@ -298,7 +273,6 @@ namespace Libplanet.Net.Consensus
         /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
         public void ProduceMessage(ConsensusMessage message)
         {
-            Interlocked.Increment(ref _requestCount);
             _messageRequests.Writer.WriteAsync(message);
         }
 
@@ -382,260 +356,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Validates the given <paramref name="message"/> and add into the message queue.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to be added.
-        /// </param>
-        /// <exception cref="InvalidHeightMessageException">Thrown when the Height of message and
-        /// context height does not match.
-        /// </exception>
-        /// <exception cref="InvalidProposerProposeMessageException">Thrown when the
-        /// <see cref="ConsensusPropose"/> message has proposer that is not proposer of the current
-        /// round.
-        /// </exception>
-        /// <exception cref="InvalidBlockProposeMessageException">Thrown when the
-        /// <see cref="ConsensusPropose"/> message has invalid blockHash (i.e., NIL).
-        /// </exception>
-        /// <exception cref="InvalidValidatorVoteMessageException">Thrown when the signature of
-        /// <see cref="Vote"/> is invalid or the <see cref="Vote"/> is not signed by any validator
-        /// of this context.
-        /// </exception>
-        internal void AddMessage(ConsensusMessage message)
-        {
-            if (message.Height != Height)
-            {
-                throw new InvalidHeightMessageException(
-                    "Height of message differs with working height.  " +
-                    $"(expected: {Height}, actual: {message.Height})",
-                    message);
-            }
-
-            if (message is ConsensusPropose propose)
-            {
-                if (!propose.Validator.Equals(Proposer(message.Round)))
-                {
-                    throw new InvalidProposerProposeMessageException(
-                        "Proposer for the height " +
-                        $"{message.Height} and round {message.Round} is invalid.  " +
-                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {propose.Validator} / " +
-                        $"actual: Height: {Height}, Round: {Round}, " +
-                        $"Proposer: {Proposer(message.Round)})",
-                        message);
-                }
-
-                if (message.BlockHash.Equals(default(BlockHash)))
-                {
-                    throw new InvalidBlockProposeMessageException(
-                        "Cannot propose a null block.",
-                        message);
-                }
-            }
-
-            if (message is ConsensusVote vote &&
-                (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
-                 !vote.ProposeVote.Verify(vote.Validator) ||
-                 !_validators.Contains(vote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusVote message is made by invalid validator.",
-                    vote);
-            }
-
-            if (message is ConsensusCommit commit &&
-                (!commit.Validator.Equals(commit.CommitVote.Validator) ||
-                 !commit.CommitVote.Verify(commit.Validator) ||
-                 !_validators.Contains(commit.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusCommit message is made by invalid validator.",
-                    commit);
-            }
-
-            if (!_messagesInRound.ContainsKey(message.Round))
-            {
-                _messagesInRound.TryAdd(message.Round, new ConcurrentBag<ConsensusMessage>());
-            }
-
-            // TODO: Prevent duplicated messages adding.
-            _messagesInRound[message.Round].Add(message);
-        }
-
-        /// <summary>
-        /// Processes a message and translate the <see cref="Step"/> or <see cref="Round"/>.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
-        private void ProcessMessage(ConsensusMessage message)
-        {
-            _logger.Debug(
-                "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, ValidatorAddress: {VAddress}, " +
-                "RemoteAddress: {RAddress}, Hash: {BlockHash}. " +
-                "MessageCount: {Count}. (context: {Context})",
-                nameof(ProcessMessage),
-                message,
-                message.Height,
-                message.Round,
-                message.Validator.ToAddress(),
-                message.Remote!.Address,
-                message.BlockHash,
-                _messagesInRound[Round].Count,
-                ToString());
-            if (Step == Step.Default || Step == Step.EndCommit)
-            {
-                _logger.Debug("Operation will not run in {State} state.", Step.ToString());
-                return;
-            }
-
-            if (GetPropose(Round) is (Block<T> block1, int validRound1) &&
-                validRound1 == -1 &&
-                Step == Step.Propose)
-            {
-                _logger.Debug(
-                    "Entering PreVote step due to proposal message with " +
-                    "valid round -1. (context: {Context})",
-                    ToString());
-                SetStep(Step.PreVote);
-
-                if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
-                {
-                    BroadcastMessage(
-                        new ConsensusVote(Voting(Round, block1.Hash, VoteFlag.Absent)));
-                }
-                else
-                {
-                    BroadcastMessage(
-                        new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
-                }
-            }
-
-            if (GetPropose(Round) is (Block<T> block2, int validRound2) &&
-                validRound2 >= 0 &&
-                validRound2 < Round &&
-                HasTwoThirdsPreVote(validRound2, block2.Hash) &&
-                Step == Step.Propose)
-            {
-                _logger.Debug(
-                    "Entering PreVote step due to proposal message and have collected " +
-                    "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
-                    validRound2,
-                    ToString());
-                SetStep(Step.PreVote);
-
-                if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
-                {
-                    BroadcastMessage(
-                        new ConsensusVote(Voting(Round, block2.Hash, VoteFlag.Absent)));
-                }
-                else
-                {
-                    BroadcastMessage(
-                        new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
-                }
-            }
-
-            if (HasTwoThirdsPreVote(Round, null, true) &&
-                Step == Step.PreVote &&
-                !_preVoteFlags.Contains(Round))
-            {
-                _logger.Debug(
-                    "PreVote step in round {Round} is scheduled to be timed out because " +
-                    "2/3+ PreVotes are collected for the round. (context: {Context})",
-                    Round,
-                    ToString());
-                _preVoteFlags.Add(Round);
-                _ = OnTimeoutPreVote(Height, Round);
-            }
-
-            if (GetPropose(Round) is (Block<T> block3, _) &&
-                HasTwoThirdsPreVote(Round, block3.Hash) &&
-                IsValid(block3) &&
-                Step >= Step.PreVote &&
-                !_hasTwoThirdsPreVoteFlags.Contains(Round))
-            {
-                _logger.Debug(
-                    "2/3+ PreVotes for the current round {Round} have collected. " +
-                    "(context: {Context})",
-                    Round,
-                    ToString());
-                _hasTwoThirdsPreVoteFlags.Add(Round);
-                if (Step == Step.PreVote)
-                {
-                    _logger.Debug(
-                        "Entering PreCommit step due to proposal message and have collected " +
-                        "2/3+ PreVote for current round {Round}. (context: {Context})",
-                        Round,
-                        ToString());
-                    SetStep(Step.PreCommit);
-                    _lockedValue = block3;
-                    _lockedRound = Round;
-                    BroadcastMessage(
-                        new ConsensusCommit(Voting(Round, block3.Hash, VoteFlag.Commit)));
-                }
-
-                _validValue = block3;
-                _validRound = Round;
-            }
-
-            if (HasTwoThirdsPreVote(Round, null) && Step == Step.PreVote)
-            {
-                _logger.Debug(
-                    "PreCommit nil for the round {Round} because 2/3+ PreVotes were collected. " +
-                    "(context: {Context})",
-                    Round,
-                    ToString());
-                SetStep(Step.PreCommit);
-                BroadcastMessage(
-                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
-            }
-
-            if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitFlags.Contains(Round))
-            {
-                _logger.Debug(
-                    "PreCommit step in round {Round} is scheduled to be timed out because " +
-                    "2/3+ PreCommits are collected for the round. (context: {Context})",
-                    Round,
-                    ToString());
-                _preCommitFlags.Add(Round);
-                _ = OnTimeoutPreCommit(Height, Round);
-            }
-
-            if (message is ConsensusPropose || message is ConsensusCommit)
-            {
-                int round = message.Round;
-                if (GetPropose(round) is (Block<T> block4, _) &&
-                    HasTwoThirdsPreCommit(round, block4.Hash) &&
-                    Step != Step.EndCommit &&
-                    IsValid(block4))
-                {
-                    SetStep(Step.EndCommit);
-                    CommittedRound = round;
-                    _logger.Debug(
-                        "Committed block in round {Round}. (context: {Context})",
-                        Round,
-                        ToString());
-
-                    ConsensusContext.Commit(block4);
-                }
-            }
-
-            // FIXME: _messagesInRound should not contain any duplicated messages for this.
-            if (message.Round > Round &&
-                _messagesInRound[message.Round].Count > TotalValidators / 3)
-            {
-                _logger.Debug(
-                    "1/3+ messages from the round {Round} > current round {CurrentRound}. " +
-                    "(context: {Context})",
-                    message.Round,
-                    Round,
-                    ToString());
-                _ = StartRound(message.Round);
-            }
-
-            MessageProcessed?.Invoke(this, message);
-        }
-
-        /// <summary>
         /// Creates a new <see cref="Block{T}"/> to propose.
         /// </summary>
         /// <returns>A new <see cref="Block{T}"/>.</returns>
@@ -660,55 +380,6 @@ namespace Libplanet.Net.Consensus
         {
             // return designated proposer for the height round pair.
             return _validators[(int)((Height + round) % TotalValidators)];
-        }
-
-        /// <summary>
-        /// Start a new round.
-        /// </summary>
-        /// <param name="round">A round to start.</param>
-        private async Task StartRound(int round)
-        {
-            RoundStarted?.Invoke(this, round);
-            _logger.Debug(
-                "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
-                round,
-                Round,
-                ToString());
-            Round = round;
-            SetStep(Step.Propose);
-            if (Proposer(Round) == _privateKey.PublicKey)
-            {
-                _logger.Debug(
-                    "Starting round {NewRound} and is a proposer. (context: {Context})",
-                    round,
-                    ToString());
-                Block<T> proposal;
-                if (_validValue is null)
-                {
-                    proposal = await GetValue();
-                }
-                else
-                {
-                    proposal = _validValue;
-                }
-
-                BroadcastMessage(
-                    new ConsensusPropose(
-                        _privateKey.PublicKey,
-                        Height,
-                        Round,
-                        proposal.Hash,
-                        _codec.Encode(proposal.MarshalBlock()),
-                        _validRound));
-            }
-            else
-            {
-                _logger.Debug(
-                    "Starting round {NewRound} and is not a proposer. (context: {Context})",
-                    round,
-                    ToString());
-                _ = OnTimeoutPropose(Height, Round);
-            }
         }
 
         /// <summary>
@@ -780,36 +451,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Consumes the every <see cref="ConsensusMessage"/> in the message queue.
-        /// </summary>
-        /// <param name="ctx">A cancellation token for reading message from message queue.</param>
-        private async Task MessageConsumerTask(CancellationToken ctx)
-        {
-#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
-            await foreach (ConsensusMessage message in _messageRequests.Reader.ReadAllAsync(ctx))
-            {
-#else
-            while (!ctx.IsCancellationRequested)
-            {
-                ConsensusMessage message = await _messageRequests.Reader.ReadAsync(ctx);
-#endif
-                long left = Interlocked.Decrement(ref _requestCount);
-                try
-                {
-                    HandleMessage(message);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "Unexpected exception occurred during {FName}. {E}",
-                        nameof(HandleMessage),
-                        e);
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
         /// <param name="round">A round to get.</param>
@@ -819,8 +460,7 @@ namespace Libplanet.Net.Consensus
         private (Block<T>?, int?) GetPropose(int round)
         {
             ConsensusMessage? msg = _messagesInRound[round].FirstOrDefault(
-                msg =>
-                    msg is ConsensusPropose);
+                msg => msg is ConsensusPropose);
 
             if (msg is ConsensusPropose propose)
             {
@@ -871,78 +511,6 @@ namespace Libplanet.Net.Consensus
                 msg => msg is ConsensusCommit preCommit &&
                        (any || preCommit.BlockHash.Equals(hash)));
             return count > TotalValidators * 2 / 3;
-        }
-
-        /// <summary>
-        /// A timeout task for a round if no <see cref="ConsensusPropose"/> is received in
-        /// <see cref="TimeoutPropose"/> and <see cref="Libplanet.Net.Consensus.Step.Propose"/>
-        /// step.
-        /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
-        /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPropose(long height, int round)
-        {
-            TimeSpan timeout = TimeoutPropose(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step == Step.Propose)
-            {
-                _logger.Debug(
-                    "TimeoutPropose has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
-                BroadcastMessage(
-                    new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
-                SetStep(Step.PreVote);
-            }
-        }
-
-        /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusVote"/> is received +2/3 any but has
-        /// no majority neither Block nor NIL in
-        /// <see cref="TimeoutPreVote"/> and <see cref="Libplanet.Net.Consensus.Step.PreVote"/>
-        /// step.
-        /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
-        /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPreVote(long height, int round)
-        {
-            TimeSpan timeout = TimeoutPreVote(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step == Step.PreVote)
-            {
-                _logger.Debug(
-                    "TimeoutPreVote has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
-                BroadcastMessage(
-                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
-                SetStep(Step.PreCommit);
-            }
-        }
-
-        /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusCommit"/> is received +2/3 any but has
-        /// no majority neither Block or NIL in
-        /// <see cref="TimeoutPreCommit"/> and <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
-        /// step.
-        /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
-        /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPreCommit(long height, int round)
-        {
-            TimeSpan timeout = TimeoutPreCommit(round);
-            await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step < Step.EndCommit)
-            {
-                _logger.Debug(
-                    "TimeoutPreCommit has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
-                _ = StartRound(Round + 1);
-            }
         }
     }
 }
