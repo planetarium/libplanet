@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -38,7 +37,7 @@ namespace Libplanet.Tx
         private TxId? _id;
         private TxMetadata _metadata;
         private byte[] _signature;
-        private byte[] _bytes;
+        private byte[]? _bytes;
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> instance by copying data from a specified
@@ -59,8 +58,9 @@ namespace Libplanet.Tx
             _metadata = new TxMetadata(metadata);
             Actions = actions?.ToImmutableList()
                 ?? throw new ArgumentNullException(nameof(actions));
-            Signature = signature
-                ?? throw new ArgumentNullException(nameof(signature));
+            _signature =
+                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            signature.CopyTo(_signature, 0);
         }
 
         /// <summary>
@@ -126,8 +126,9 @@ namespace Libplanet.Tx
                 Timestamp = timestamp,
             };
 
-            Signature = signature ??
-                        throw new ArgumentNullException(nameof(signature));
+            _signature =
+                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            signature.CopyTo(_signature, 0);
             Actions = actions?.ToImmutableList() ??
                       throw new ArgumentNullException(nameof(actions));
         }
@@ -209,6 +210,8 @@ namespace Libplanet.Tx
         /// <returns>A new <see cref="byte"/> array of this transaction's
         /// signature.  Changing a returned array does not affect the internal
         /// state of this <see cref="Transaction{T}"/> object.</returns>
+        /// <remarks>Although this cannot be <see langword="null"/>, it can be an empty
+        /// array if the transaction is not signed yet.</remarks>
         public byte[] Signature
         {
             get
@@ -372,7 +375,7 @@ namespace Libplanet.Tx
             PrivateKey privateKey,
             BlockHash? genesisHash,
             IEnumerable<T> actions,
-            IImmutableSet<Address> updatedAddresses = null,
+            IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         )
         {
@@ -491,17 +494,13 @@ namespace Libplanet.Tx
             PublicKey publicKey,
             BlockHash? genesisHash,
             IEnumerable<T> actions,
-            IImmutableSet<Address> updatedAddresses = null,
+            IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         )
         {
             var signer = new Address(publicKey);
 
-            if (ReferenceEquals(updatedAddresses, null))
-            {
-                updatedAddresses = ImmutableHashSet<Address>.Empty;
-            }
-
+            updatedAddresses ??= ImmutableHashSet<Address>.Empty;
             DateTimeOffset ts = timestamp ?? DateTimeOffset.UtcNow;
 
             ImmutableArray<T> actionsArray = actions.ToImmutableArray();
@@ -555,7 +554,7 @@ namespace Libplanet.Tx
                 // Poor man's way to optimize serialization without signature...
                 // FIXME: We need to rather reorganize the serialization layout
                 //        & optimize Bencodex.Codec in general.
-                if (_signature is { } && _signature.Length > 0)
+                if (_signature.Length > 0)
                 {
                     byte[] sigDict =
                         Codec.Encode(Dictionary.Empty.Add(TxMetadata.SignatureKey, _signature));
@@ -617,10 +616,10 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc />
-        public bool Equals(Transaction<T> other) => Id.Equals(other?.Id);
+        public bool Equals(Transaction<T>? other) => Id.Equals(other?.Id);
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => obj is Transaction<T> other && Equals(other);
+        public override bool Equals(object? obj) => obj is Transaction<T> other && Equals(other);
 
         /// <inheritdoc />
         public override int GetHashCode() => Id.GetHashCode();
