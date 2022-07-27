@@ -12,6 +12,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Store.Trie;
 using Libplanet.Tests;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
@@ -41,13 +42,32 @@ namespace Libplanet.Benchmarks
             _miner = TestUtils.ChainPrivateKey;
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesisBlock<DumbAction>(_policy.GetHashAlgorithm, _miner),
+                TestUtils.MineGenesisBlock<DumbAction>(
+                    _policy.GetHashAlgorithm,
+                    _miner,
+                    stateRootHash: MerkleTrie.EmptyRootHash),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[0], _policy.GetHashAlgorithm, _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[1], _policy.GetHashAlgorithm, _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[2], _policy.GetHashAlgorithm, _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[3], _policy.GetHashAlgorithm, _miner));
+            _blocks.Add(TestUtils.MineNextBlock(
+                _blocks[0],
+                _policy.GetHashAlgorithm,
+                _miner,
+                stateRootHash: MerkleTrie.EmptyRootHash));
+            _blocks.Add(TestUtils.MineNextBlock(
+                _blocks[1],
+                _policy.GetHashAlgorithm,
+                _miner,
+                stateRootHash: MerkleTrie.EmptyRootHash));
+            _blocks.Add(TestUtils.MineNextBlock(
+                _blocks[2],
+                _policy.GetHashAlgorithm,
+                _miner,
+                stateRootHash: MerkleTrie.EmptyRootHash));
+            _blocks.Add(TestUtils.MineNextBlock(
+                _blocks[3],
+                _policy.GetHashAlgorithm,
+                _miner,
+                stateRootHash: MerkleTrie.EmptyRootHash));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
@@ -59,9 +79,9 @@ namespace Libplanet.Benchmarks
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
             var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
-                _blockChains[SwarmNumber].Policy.GetHashAlgorithm(0)
+                _policy.GetHashAlgorithm(0)
             );
-            var tasks = new List<Task>();
+
             for (int i = 0; i < SwarmNumber; i++)
             {
                 _keys[i] = _keys[i] ?? new PrivateKey();
@@ -73,6 +93,11 @@ namespace Libplanet.Benchmarks
                     _keys[i],
                     _appProtocolVersion,
                     host: IPAddress.Loopback.ToString());
+            }
+
+            var tasks = new List<Task>();
+            for (int i = 0; i < SwarmNumber; i++)
+            {
                 tasks.Add(StartAsync(_swarms[i]));
             }
 
