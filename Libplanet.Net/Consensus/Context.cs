@@ -120,7 +120,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">A target <see cref="Context{T}.Height"/> of the consensus state.
         /// </param>
         /// <param name="privateKey">A private key for signing a block and message.
-        /// <seealso cref="GetValue"/><seealso cref="ProcessMessage"/><seealso cref="Voting"/>
+        /// <seealso cref="GetValue"/><seealso cref="ProcessUponRules"/><seealso cref="Voting"/>
         /// </param>
         /// <param name="validators">A list of <see cref="PublicKey"/> of validators.</param>
         public Context(
@@ -352,7 +352,7 @@ namespace Libplanet.Net.Consensus
                 throw;
             }
 
-            ProcessMessage(message);
+            ProcessUponRules(message);
         }
 
         /// <summary>

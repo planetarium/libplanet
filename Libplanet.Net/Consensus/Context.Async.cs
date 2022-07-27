@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -27,7 +26,7 @@ namespace Libplanet.Net.Consensus
                 _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
                     ConsensusPropose propose)
             {
-                ProcessMessage(propose);
+                ProcessUponRules(propose);
             }
 
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
@@ -73,17 +72,12 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPropose(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step == Step.Propose)
-            {
-                _logger.Debug(
-                    "TimeoutPropose has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
-                BroadcastMessage(
-                    new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
-                SetStep(Step.PreVote);
-            }
+            _logger.Debug(
+                "TimeoutPropose has occurred in {Timeout}. {Info}",
+                timeout,
+                ToString());
+            TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
+            ProcessTimeoutPropose(height, round);
         }
 
         /// <summary>
@@ -98,17 +92,12 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreVote(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step == Step.PreVote)
-            {
-                _logger.Debug(
-                    "TimeoutPreVote has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
-                BroadcastMessage(
-                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
-                SetStep(Step.PreCommit);
-            }
+            _logger.Debug(
+                "TimeoutPreVote has occurred in {Timeout}. {Info}",
+                timeout,
+                ToString());
+            TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
+            ProcessTimeoutPreVote(height, round);
         }
 
         /// <summary>
@@ -123,15 +112,12 @@ namespace Libplanet.Net.Consensus
         {
             TimeSpan timeout = TimeoutPreCommit(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
-            if (height == Height && round == Round && Step < Step.EndCommit)
-            {
-                _logger.Debug(
-                    "TimeoutPreCommit has occurred in {Timeout}. {Info}",
-                    timeout,
-                    ToString());
-                TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
-                _ = StartRound(Round + 1);
-            }
+            _logger.Debug(
+                "TimeoutPreCommit has occurred in {Timeout}. {Info}",
+                timeout,
+                ToString());
+            TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
+            ProcessTimeoutPreCommit(height, round);
         }
     }
 }

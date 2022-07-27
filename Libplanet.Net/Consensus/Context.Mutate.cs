@@ -12,6 +12,7 @@ namespace Libplanet.Net.Consensus
         /// Start a new round.
         /// </summary>
         /// <param name="round">A round to start.</param>
+        /// <returns>An awaitable task without value.</returns>
         internal async Task StartRound(int round)
         {
             RoundStarted?.Invoke(this, round);
@@ -138,13 +139,13 @@ namespace Libplanet.Net.Consensus
         /// Processes a message and translate the <see cref="Step"/> or <see cref="Round"/>.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
-        private void ProcessMessage(ConsensusMessage message)
+        private void ProcessUponRules(ConsensusMessage message)
         {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
                 "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
-                nameof(ProcessMessage),
+                nameof(ProcessUponRules),
                 message,
                 message.Height,
                 message.Round,
@@ -304,6 +305,57 @@ namespace Libplanet.Net.Consensus
             }
 
             MessageProcessed?.Invoke(this, message);
+        }
+
+        /// <summary>
+        /// A timeout task for a round if no <see cref="ConsensusPropose"/> is received in
+        /// <see cref="TimeoutPropose"/> and <see cref="Libplanet.Net.Consensus.Step.Propose"/>
+        /// step.
+        /// </summary>
+        /// <param name="height">A height that the timeout task is scheduled for.</param>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
+        private void ProcessTimeoutPropose(long height, int round)
+        {
+            if (height == Height && round == Round && Step == Step.Propose)
+            {
+                BroadcastMessage(
+                    new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
+                SetStep(Step.PreVote);
+            }
+        }
+
+        /// <summary>
+        /// A timeout task for a round if <see cref="ConsensusVote"/> is received +2/3 any but has
+        /// no majority neither Block nor NIL in
+        /// <see cref="TimeoutPreVote"/> and <see cref="Libplanet.Net.Consensus.Step.PreVote"/>
+        /// step.
+        /// </summary>
+        /// <param name="height">A height that the timeout task is scheduled for.</param>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
+        private void ProcessTimeoutPreVote(long height, int round)
+        {
+            if (height == Height && round == Round && Step == Step.PreVote)
+            {
+                BroadcastMessage(
+                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
+                SetStep(Step.PreCommit);
+            }
+        }
+
+        /// <summary>
+        /// A timeout task for a round if <see cref="ConsensusCommit"/> is received +2/3 any but has
+        /// no majority neither Block or NIL in
+        /// <see cref="TimeoutPreCommit"/> and <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
+        /// step.
+        /// </summary>
+        /// <param name="height">A height that the timeout task is scheduled for.</param>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
+        private void ProcessTimeoutPreCommit(long height, int round)
+        {
+            if (height == Height && round == Round && Step < Step.EndCommit)
+            {
+                _ = StartRound(Round + 1);
+            }
         }
     }
 }
