@@ -25,6 +25,7 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
+        private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
         private readonly IBlockChainStates<T> _blockChainStates;
@@ -40,15 +41,19 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
+        /// <param name="genesisHash"> A <see cref="HashDigest{SHA256}"/> value of the genesis block
+        /// </param>
         public ActionEvaluator(
             IAction? policyBlockAction,
             IBlockChainStates<T> blockChainStates,
-            Func<BlockHash, ITrie>? trieGetter)
+            Func<BlockHash, ITrie>? trieGetter,
+            BlockHash? genesisHash)
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
+            _genesisHash = genesisHash;
         }
 
         /// <summary>

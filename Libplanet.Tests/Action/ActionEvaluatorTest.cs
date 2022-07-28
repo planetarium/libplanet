@@ -84,7 +84,8 @@ namespace Libplanet.Tests.Action
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
-                    trieGetter: null);
+                    trieGetter: null,
+                    genesisHash: null);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
@@ -279,7 +280,8 @@ namespace Libplanet.Tests.Action
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
-                trieGetter: null);
+                trieGetter: null,
+                genesisHash: null);
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -581,7 +583,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
-                trieGetter: null);
+                trieGetter: null, genesisHash: null);
 
             foreach (bool rehearsal in new[] { false, true })
             {
@@ -708,7 +710,7 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
-                trieGetter: null);
+                trieGetter: null, genesisHash: null);
             var block = new BlockContent<ThrowException>
             {
                 Index = 123,

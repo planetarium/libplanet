@@ -166,7 +166,8 @@ namespace Libplanet.Blockchain
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
                 blockChainStates: this,
-                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
+                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
+                genesisBlock.Hash
             );
 
             if (Count == 0)
