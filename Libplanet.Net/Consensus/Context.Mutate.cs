@@ -127,23 +127,10 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Processes a message and translate the <see cref="Step"/> or <see cref="Round"/>.
+        /// Checks the current state to mutate <see cref="Step"/> or schedule timeouts.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
-        private void ProcessUponRules(ConsensusMessage message)
+        private void ProcessGenericUponRules()
         {
-            _logger.Debug(
-                "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
-                "MessageCount: {Count}. (context: {Context})",
-                nameof(ProcessUponRules),
-                message,
-                message.Height,
-                message.Round,
-                message.Remote!.Address,
-                message.BlockHash,
-                _messagesInRound[Round].Count,
-                ToString());
             if (Step == Step.Default || Step == Step.EndCommit)
             {
                 _logger.Debug("Operation will not run in {State} state.", Step.ToString());
@@ -262,7 +249,16 @@ namespace Libplanet.Net.Consensus
                 _preCommitFlags.Add(Round);
                 _ = OnTimeoutPreCommit(Height, Round);
             }
+        }
 
+        /// <summary>
+        /// Checks the current state to mutate <see cref="Round"/> or terminate
+        /// by setting <see cref="Step"/> to <see cref="Step.EndCommit"/>.
+        /// </summary>
+        /// <param name="message">The <see cref="ConsensusMessage"/> to process.
+        /// Although this is not strictly needed, this is used for optimization.</param>
+        private void ProcessHeightOrRoundUponRules(ConsensusMessage message)
+        {
             if (message is ConsensusPropose || message is ConsensusCommit)
             {
                 int round = message.Round;
