@@ -152,6 +152,14 @@ namespace Libplanet.Net.Consensus
         /// <param name="message">A <see cref="Message"/> instance to process and gossip.</param>
         public void AddMessage(Message message)
         {
+            if (_seen.TryGetValue(message.Id, out _))
+            {
+                _logger.Verbose(
+                    "Message {Message} of id {Id} seen recently, ignored.",
+                    message,
+                    message.Id);
+            }
+
             try
             {
                 _cache.Put(message);
