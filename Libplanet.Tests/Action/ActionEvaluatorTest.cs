@@ -583,7 +583,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
-                trieGetter: null, genesisHash: null);
+                trieGetter: null,
+                genesisHash: tx.GenesisHash);
 
             foreach (bool rehearsal in new[] { false, true })
             {
@@ -710,7 +711,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
-                trieGetter: null, genesisHash: null);
+                trieGetter: null,
+                genesisHash: tx.GenesisHash);
             var block = new BlockContent<ThrowException>
             {
                 Index = 123,
@@ -748,6 +750,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockA = await fx.Mine();
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
+                txA.GenesisHash,
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
@@ -797,6 +800,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockB = await fx.Mine();
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
+                txB.GenesisHash,
                 blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
                 txid: txB.Id,

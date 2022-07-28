@@ -12,6 +12,12 @@ namespace Libplanet.Action
     public interface IActionContext
     {
         /// <summary>
+        ///  A <see cref="BlockHash"/> value of the genesis block
+        /// </summary>
+        [Pure]
+        BlockHash? GenesisHash { get; }
+
+        /// <summary>
         /// <see cref="Address"/> of an account who made and signed
         /// a transaction that an executed <see cref="IAction"/> belongs to.
         /// </summary>

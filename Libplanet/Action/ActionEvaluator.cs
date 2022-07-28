@@ -41,7 +41,7 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
-        /// <param name="genesisHash"> A <see cref="HashDigest{SHA256}"/> value of the genesis block
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block
         /// </param>
         public ActionEvaluator(
             IAction? policyBlockAction,
@@ -164,6 +164,7 @@ namespace Libplanet.Action
                 NullAccountBalanceGetter,
                 tx.Signer);
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
+                genesisHash: tx.GenesisHash,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
                 blockIndex: default,
                 txid: tx.Id,
@@ -189,6 +190,7 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block </param>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
         /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
@@ -234,6 +236,7 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
+            BlockHash? genesisHash,
             ImmutableArray<byte> preEvaluationHash,
             long blockIndex,
             TxId? txid,
@@ -250,6 +253,7 @@ namespace Libplanet.Action
             ActionContext CreateActionContext(IAccountStateDelta prevStates, int randomSeed)
             {
                 return new ActionContext(
+                    genesisHash: genesisHash,
                     signer: signer,
                     txid: txid,
                     miner: miner,
@@ -532,6 +536,7 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null) => EvaluateActions(
+                genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: tx.Id,
@@ -614,6 +619,7 @@ namespace Libplanet.Action
                 $"{block.PreEvaluationHash}");
 
             return EvaluateActions(
+                genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
