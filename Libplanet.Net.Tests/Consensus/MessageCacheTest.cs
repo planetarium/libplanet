@@ -44,9 +44,9 @@ namespace Libplanet.Net.Tests.Consensus
         public void GetGossipIds_Shift()
         {
             var cache = new MessageCache(2, 1);
-            var msg0 = new Ping { Timestamp = DateTimeOffset.MinValue };
-            var msg1 = new Ping { Timestamp = DateTimeOffset.MinValue + TimeSpan.FromSeconds(1) };
-            var msg2 = new Ping { Timestamp = DateTimeOffset.MinValue + TimeSpan.FromSeconds(2) };
+            var msg0 = new ConsensusPropose(0, 0, TestUtils.BlockHash0, new byte[] { }, -1);
+            var msg1 = new ConsensusPropose(0, 1, TestUtils.BlockHash0, new byte[] { }, -1);
+            var msg2 = new ConsensusPropose(0, 2, TestUtils.BlockHash0, new byte[] { }, -1);
             cache.Put(msg0);
             cache.Put(msg1);
             var ids = cache.GetGossipIds();

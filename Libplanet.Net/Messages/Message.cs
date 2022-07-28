@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using System.Text;
 using Destructurama.Attributed;
 using Libplanet.Blocks;
 using Libplanet.Net.Transports;
@@ -195,20 +194,20 @@ namespace Libplanet.Net.Messages
 
         /// <summary>
         /// A bytearray representing SHA-256 digest of <see cref="Message"/>
-        /// data excluding <see cref="Identity"/> and <see cref="Remote"/> field.
+        /// data excluding <see cref="Identity"/>, <see cref="Timestamp"/>
+        /// and <see cref="Remote"/> field.
         /// </summary>
         /// <returns>A mutable <see cref="byte"/> array representing
         /// SHA-256 digest of <see cref="Message"/>.
         /// </returns>
         [Pure]
+        [NotLogged]
         public MessageId Id
         {
             get
             {
                 var bytes = new List<byte>();
-                bytes.AddRange(Encoding.ASCII.GetBytes(Version.Token));
                 bytes.AddRange(BitConverter.GetBytes((int)Type));
-                bytes.AddRange(BitConverter.GetBytes(Timestamp.Ticks));
                 foreach (byte[] ba in DataFrames)
                 {
                     bytes.AddRange(ba);
