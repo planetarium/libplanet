@@ -46,6 +46,7 @@ To be released.
 
 ### CLI tools
 
+
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
 [#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2047]: https://github.com/planetarium/libplanet/issues/2047
@@ -55,9 +56,14 @@ To be released.
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
+<<<<<<< HEAD
 [#2173]: https://github.com/planetarium/libplanet/pull/2173
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
 [#2183]: https://github.com/planetarium/libplanet/pull/2183
+=======
+[#1972]: https://github.com/planetarium/libplanet/issues/1972
+[#2179]: https://github.com/planetarium/libplanet/pull/2179
+>>>>>>> f53411653 (Add genesis hash property to IActionContext)
 
 
 Version 0.39.0
