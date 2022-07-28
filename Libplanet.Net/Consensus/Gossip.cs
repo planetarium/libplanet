@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
@@ -12,17 +13,18 @@ using Serilog;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A class gossips messages into network.
+    /// A class gossips messages into network. Peers will be stored and managed by Kademlia DHT.
     /// </summary>
     public class Gossip : IDisposable
     {
+        private const int DLazy = 6;
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
-        private readonly ImmutableArray<BoundPeer> _peers;
         private readonly MessageCache _cache;
         private readonly MemoryCache _seen;
         private readonly Action<Message> _processMessage;
+        private readonly RoutingTable _table;
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object?> _runningEvent;
@@ -46,7 +48,6 @@ namespace Libplanet.Net.Consensus
             long? seenCacheLimit = null)
         {
             _transport = transport;
-            _peers = peers;
             _cache = new MessageCache(5, 3);
             _seenTtl = seenTtl;
             _seen = new MemoryCache(
@@ -55,6 +56,12 @@ namespace Libplanet.Net.Consensus
                     SizeLimit = seenCacheLimit,
                 });
             _processMessage = processMessage;
+            _table = new RoutingTable(AsPeer.Address);
+            foreach (var peer in peers.Where(p => !p.Address.Equals(AsPeer.Address)))
+            {
+                _table.AddPeer(peer);
+            }
+
             _runningEvent = new TaskCompletionSource<object?>();
             Running = false;
 
@@ -178,6 +185,21 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Selects <paramref name="count"/> <see cref="BoundPeer"/>s from <paramref name="peers"/>.
+        /// </summary>
+        /// <param name="peers">A <see cref="BoundPeer"/> pool.</param>
+        /// <param name="count">Number of <see cref="BoundPeer"/> to choose.</param>
+        /// <returns>
+        /// An enumerable <see cref="BoundPeer"/>'s of length <paramref name="count"/>.</returns>
+        private static IEnumerable<BoundPeer> PeersToBroadcast(
+            IEnumerable<BoundPeer> peers,
+            int count)
+        {
+            var rnd = new Random();
+            return peers.OrderBy(x => rnd.Next()).Take(count);
+        }
+
+        /// <summary>
         /// Handle a message received from <see cref="ITransport.ProcessMessageHandler"/>.
         /// </summary>
         /// <param name="ctx">A cancellation token used to propagate notification
@@ -217,10 +239,9 @@ namespace Libplanet.Net.Consensus
                 MessageId[] ids = _cache.GetGossipIds();
                 if (ids.Any())
                 {
-                    var have = new HaveMessage(ids);
-
-                    // FIXME: Need logic for selecting peers to gossip.
-                    _transport.BroadcastMessage(_peers, have);
+                    _transport.BroadcastMessage(
+                        PeersToBroadcast(_table.Peers, DLazy),
+                        new HaveMessage(ids));
                 }
 
                 _cache.Shift();
@@ -336,12 +357,12 @@ namespace Libplanet.Net.Consensus
                     }
                 });
 
-                List<Task<bool>> tasks = _peers
+                List<Task<bool>> tasks = _table.Peers
                     .Select(peer => sendMessage(peer))
                     .ToList();
                 int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
 
-                var twoThird = _peers.Length * 2.0 / 3.0;
+                var twoThird = _table.Peers.Count() * 2.0 / 3.0;
                 _logger.Debug(
                     "{FName}: count of pong => {Pong}, twoThird => {TwoThirds}",
                     nameof(CheckValidatorsLiveness),
