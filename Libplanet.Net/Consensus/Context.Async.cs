@@ -14,13 +14,10 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
         /// </param>
-        /// <returns>An awaitable task without value. This task
-        /// awaits <see cref="StartRound"/> and starts <see cref="MessageConsumerTask"/>.
-        /// </returns>
-        public async Task StartAsync(BlockCommit? lastCommit = null)
+        public void StartAsync(BlockCommit? lastCommit = null)
         {
             _lastCommit = lastCommit;
-            await StartRound(0);
+            StartRound(0);
             if (Proposer(0) != _privateKey.PublicKey &&
                 _messagesInRound.ContainsKey(0) &&
                 _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is

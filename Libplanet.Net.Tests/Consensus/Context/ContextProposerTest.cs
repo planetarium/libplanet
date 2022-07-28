@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
-            await Context.StartAsync();
+            Context.StartAsync();
 
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
@@ -102,7 +102,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
             targetHash = block.Hash;
-            await Context.StartAsync();
+            Context.StartAsync();
 
             Context.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));

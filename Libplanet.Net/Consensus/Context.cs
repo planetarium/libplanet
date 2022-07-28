@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Caching;
@@ -359,12 +358,9 @@ namespace Libplanet.Net.Consensus
         /// Creates a new <see cref="Block{T}"/> to propose.
         /// </summary>
         /// <returns>A new <see cref="Block{T}"/>.</returns>
-        private async Task<Block<T>> GetValue()
+        private Block<T> GetValue()
         {
-            Block<T> block = await _blockChain.ProposeBlock(
-                _privateKey,
-                lastCommit: _lastCommit,
-                cancellationToken: _cancellationTokenSource.Token);
+            Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
             _blockChain.Store.PutBlock(block);
             return block;
         }

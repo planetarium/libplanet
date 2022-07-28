@@ -45,6 +45,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageProcessed.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -205,6 +206,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await messageProcessed.WaitAsync();
+            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -229,7 +231,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
             AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
 
-            await Context.StartAsync();
+            Context.StartAsync();
 
             Context.StepChanged += (sender, step) => stepChanged.Set();
 

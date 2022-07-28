@@ -45,7 +45,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            await Context.StartAsync();
+            Context.StartAsync();
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
 
@@ -83,7 +83,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
             var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
 
-            await Context.StartAsync(lastCommit);
+            Context.StartAsync(lastCommit);
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
 
@@ -208,7 +208,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             BlockHash? blockHash = null;
             AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
 
-            await Context.StartAsync();
+            Context.StartAsync();
 
             void WatchPropose(ConsensusMessage message)
             {

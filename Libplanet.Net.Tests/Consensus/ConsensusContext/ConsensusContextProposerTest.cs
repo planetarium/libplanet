@@ -35,7 +35,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var timeoutOccurred = new AsyncAutoResetEvent();
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageProcessed +=
                 (sender, message) =>
                 {
@@ -48,7 +47,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 };
 
             // Wait for block to be proposed.
-            await messageProcessed.WaitAsync();
             Assert.Equal(1, ConsensusContext.Height);
             Assert.Equal(0, ConsensusContext.Round);
 

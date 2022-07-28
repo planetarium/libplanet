@@ -12,8 +12,7 @@ namespace Libplanet.Net.Consensus
         /// Start a new round.
         /// </summary>
         /// <param name="round">A round to start.</param>
-        /// <returns>An awaitable task without value.</returns>
-        internal async Task StartRound(int round)
+        internal void StartRound(int round)
         {
             RoundStarted?.Invoke(this, round);
             _logger.Debug(
@@ -29,15 +28,7 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is a proposer. (context: {Context})",
                     round,
                     ToString());
-                Block<T> proposal;
-                if (_validValue is null)
-                {
-                    proposal = await GetValue();
-                }
-                else
-                {
-                    proposal = _validValue;
-                }
+                Block<T> proposal = _validValue ?? GetValue();
 
                 BroadcastMessage(
                     new ConsensusPropose(
@@ -301,7 +292,7 @@ namespace Libplanet.Net.Consensus
                     message.Round,
                     Round,
                     ToString());
-                _ = StartRound(message.Round);
+                Task.Run(() => StartRound(message.Round));
             }
 
             MessageProcessed?.Invoke(this, message);
@@ -354,7 +345,7 @@ namespace Libplanet.Net.Consensus
         {
             if (height == Height && round == Round && Step < Step.EndCommit)
             {
-                _ = StartRound(Round + 1);
+                StartRound(Round + 1);
             }
         }
     }
