@@ -352,6 +352,7 @@ namespace Libplanet.Net.Consensus
             }
 
             ProcessUponRules(message);
+            MessageProcessed?.Invoke(this, message);
         }
 
         /// <summary>

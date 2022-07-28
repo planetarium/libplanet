@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -18,13 +17,6 @@ namespace Libplanet.Net.Consensus
         {
             _lastCommit = lastCommit;
             StartRound(0);
-            if (Proposer(0) != _privateKey.PublicKey &&
-                _messagesInRound.ContainsKey(0) &&
-                _messagesInRound[0].FirstOrDefault(msg => msg is ConsensusPropose) is
-                    ConsensusPropose propose)
-            {
-                ProcessUponRules(propose);
-            }
 
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
         }

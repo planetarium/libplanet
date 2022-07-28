@@ -294,8 +294,6 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Task.Run(() => StartRound(message.Round));
             }
-
-            MessageProcessed?.Invoke(this, message);
         }
 
         /// <summary>
