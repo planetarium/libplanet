@@ -246,6 +246,13 @@ namespace Libplanet.Tests.Store
             _store.SetCanonicalChainId(chainId);
         }
 
+        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+            where T : IAction, new()
+        {
+            Log(nameof(GetCanonicalGenesisBlock));
+            return _store.GetCanonicalGenesisBlock<T>(hashAlgorithmGetter);
+        }
+
         public void Dispose()
         {
             if (!_disposed)

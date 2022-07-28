@@ -11,6 +11,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
+ -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
+    [[#2162], [#2171]]
 
 ### Backward-incompatible network protocol changes
 
@@ -44,6 +46,8 @@ To be released.
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
 [#2156]: https://github.com/planetarium/libplanet/pull/2156
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
+[#2162]: https://github.com/planetarium/libplanet/issues/2162
+[#2171]: https://github.com/planetarium/libplanet/pull/2171
 
 
 Version 0.39.0
