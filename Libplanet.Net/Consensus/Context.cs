@@ -396,10 +396,6 @@ namespace Libplanet.Net.Consensus
         /// <exception cref="InvalidBlockProposeMessageException">Thrown when the
         /// <see cref="ConsensusPropose"/> message has invalid blockHash (i.e., NIL).
         /// </exception>
-        /// <exception cref="InvalidValidatorVoteMessageException">Thrown when the signature of
-        /// <see cref="Vote"/> is invalid or the <see cref="Vote"/> is not signed by any validator
-        /// of this context.
-        /// </exception>
         internal void AddMessage(ConsensusMessage message)
         {
             if (message.Height != Height)
@@ -412,13 +408,13 @@ namespace Libplanet.Net.Consensus
 
             if (message is ConsensusPropose propose)
             {
-                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
+                if (!propose.Validator.Equals(Proposer(message.Round)))
                 {
                     throw new InvalidProposerProposeMessageException(
                         "Proposer for the height " +
                         $"{message.Height} and round {message.Round} is invalid.  " +
                         $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {message.Remote!.PublicKey} / " +
+                        $"Proposer: {propose.Validator} / " +
                         $"actual: Height: {Height}, Round: {Round}, " +
                         $"Proposer: {Proposer(message.Round)})",
                         message);
@@ -430,24 +426,6 @@ namespace Libplanet.Net.Consensus
                         "Cannot propose a null block.",
                         message);
                 }
-            }
-
-            if (message is ConsensusVote vote &&
-                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
-                 !_validators.Contains(vote.ProposeVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusVote message is made by invalid validator.",
-                    vote);
-            }
-
-            if (message is ConsensusCommit commit &&
-                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
-                 !_validators.Contains(commit.CommitVote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusCommit message is made by invalid validator.",
-                    commit);
             }
 
             if (!_messagesInRound.ContainsKey(message.Round))
@@ -467,12 +445,14 @@ namespace Libplanet.Net.Consensus
         {
             _logger.Debug(
                 "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
+                "Height: {Height}, Round: {Round}, ValidatorAddress: {VAddress}, " +
+                "RemoteAddress: {RAddress}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
                 nameof(ProcessMessage),
                 message,
                 message.Height,
                 message.Round,
+                message.Validator.ToAddress(),
                 message.Remote!.Address,
                 message.BlockHash,
                 _messagesInRound[Round].Count,
@@ -690,6 +670,7 @@ namespace Libplanet.Net.Consensus
 
                 BroadcastMessage(
                     new ConsensusPropose(
+                        _privateKey.PublicKey,
                         Height,
                         Round,
                         proposal.Hash,

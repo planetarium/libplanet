@@ -171,6 +171,7 @@ namespace Libplanet.Net.Tests
         {
             var codec = new Codec();
             return new ConsensusPropose(
+                privateKey.PublicKey,
                 height,
                 round,
                 block?.Hash ?? default,

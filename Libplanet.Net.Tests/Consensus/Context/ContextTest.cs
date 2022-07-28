@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Bencodex;
 using Bencodex.Types;
@@ -128,81 +127,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         TestUtils.CreateConsensusPropose(
                             default,
                             TestUtils.PrivateKeys[NodeId])));
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async void ThrowInvalidValidatorVote()
-        {
-            Block<DumbAction> block =
-                await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
-
-            // Vote's validator does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[0],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))
-                        {
-                            Remote = new Peer(TestUtils.Validators[NodeId]),
-                        }));
-
-            // Vote's signature does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[0],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))
-                        {
-                            Remote = new Peer(TestUtils.Validators[0]),
-                        }));
-
-            // Commit's validator does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[NodeId],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))
-                        {
-                            Remote = new Peer(TestUtils.Validators[0]),
-                        }));
-
-            // Vote's signature does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[0],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))
-                        {
-                            Remote = new Peer(TestUtils.Validators[0]),
-                        }));
         }
 
         [Fact(Timeout = Timeout)]

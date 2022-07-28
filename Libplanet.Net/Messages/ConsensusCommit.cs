@@ -15,7 +15,7 @@ namespace Libplanet.Net.Messages
         /// <see cref="Vote"/> to attach.
         /// </param>
         public ConsensusCommit(Vote vote)
-            : base(vote.Height, vote.Round, vote.BlockHash)
+            : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
             CommitVote = vote;
         }

@@ -48,8 +48,6 @@ To be released.
  -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added
     `InvalidProposerProposeMessageException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added
-    `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Message.GetHash()` method.  [[#PBFT]]
 
 ### Behavioral changes
