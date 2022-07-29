@@ -59,11 +59,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var block1 = await BlockChain.MineBlock(TestUtils.Peer1Priv, append: false);
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
+                    TestUtils.Peer1.PublicKey,
                     1,
                     0,
                     block1.Hash,
                     codec.Encode(block1.MarshalBlock()),
-                    -1) { Remote = TestUtils.Peer1, });
+                    -1));
             var expectedVotes = new Vote[4];
             for (int i = 0; i < 4; i++)
             {
@@ -225,14 +226,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Message from higher height
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
+                    TestUtils.Peer3.PublicKey,
                     3,
                     0,
                     blockHeightThree.Hash,
                     codec.Encode(blockHeightThree.MarshalBlock()),
-                    -1)
-                {
-                    Remote = TestUtils.Peer3,
-                });
+                    -1));
 
             ConsensusContext.Contexts[3].StepChanged += (sender, tuple) =>
             {

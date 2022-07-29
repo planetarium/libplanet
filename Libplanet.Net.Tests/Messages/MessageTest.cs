@@ -104,7 +104,7 @@ namespace Libplanet.Net.Tests.Messages
         }
 
         [Fact]
-        public void GetHash()
+        public void GetId()
         {
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
@@ -120,19 +120,18 @@ namespace Libplanet.Net.Tests.Messages
             );
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header)
             {
-                Version = apv,
                 Timestamp = dateTimeOffset,
                 Remote = peer,
             };
-            AssertBytesEqual(
-                new byte[32]
+            Assert.Equal(
+                new MessageId(new byte[32]
                 {
-                    0x49, 0xf1, 0x9d, 0x6b, 0x21, 0x4e, 0x46, 0x43,
-                    0x73, 0x39, 0x84, 0xec, 0x19, 0xf6, 0x55, 0xd5,
-                    0x34, 0x7e, 0xbe, 0xf3, 0x4a, 0x8c, 0x5b, 0xdd,
-                    0x2f, 0x46, 0x80, 0xe7, 0xbb, 0xdd, 0xa0, 0x0c,
-                },
-                message.GetHash());
+                    0xa1, 0x60, 0xe2, 0xec, 0xf4, 0xcc, 0x21, 0xd4,
+                    0x4a, 0x76, 0xc4, 0x1b, 0x8e, 0xa7, 0xe1, 0x0c,
+                    0x40, 0xd4, 0x1c, 0xb5, 0x75, 0xb9, 0x1d, 0xad,
+                    0x96, 0xfb, 0x93, 0x48, 0x59, 0x36, 0xc0, 0xf5,
+                }),
+                message.Id);
         }
     }
 }

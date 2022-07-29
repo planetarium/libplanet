@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 
 namespace Libplanet.Net.Messages
@@ -13,6 +14,8 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusPropose"/> class.
         /// </summary>
+        /// <param name="validator">
+        /// A <see cref="PublicKey"/> of the validator whe made this message.</param>
         /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
@@ -21,12 +24,13 @@ namespace Libplanet.Net.Messages
         /// <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
         /// </param>
         public ConsensusPropose(
+            PublicKey validator,
             long height,
             int round,
             BlockHash blockHash,
             byte[] payload,
             int validRound)
-        : base(height, round, blockHash)
+        : base(validator, height, round, blockHash)
         {
             Payload = payload;
             ValidRound = validRound;
@@ -40,8 +44,8 @@ namespace Libplanet.Net.Messages
         public ConsensusPropose(byte[][] dataframes)
         : base(dataframes)
         {
-            Payload = dataframes[3];
-            ValidRound = BitConverter.ToInt32(dataframes[4], 0);
+            Payload = dataframes[4];
+            ValidRound = BitConverter.ToInt32(dataframes[5], 0);
         }
 
         /// <summary>
@@ -61,6 +65,7 @@ namespace Libplanet.Net.Messages
             {
                 var frames = new List<byte[]>
                 {
+                    Validator.Format(true),
                     BitConverter.GetBytes(Height),
                     BitConverter.GetBytes(Round),
                     BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },

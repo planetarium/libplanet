@@ -130,7 +130,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.True(ConsensusContext.Height > 0);
             Assert.Throws<InvalidHeightMessageException>(
                 () => ConsensusContext.HandleMessage(
-                    new ConsensusPropose(0, 0, Fx.Block1.Hash, new byte[] { }, -1)));
+                    new ConsensusPropose(
+                        new PrivateKey().PublicKey,
+                        0,
+                        0,
+                        Fx.Block1.Hash,
+                        new byte[] { },
+                        -1)));
         }
     }
 }
