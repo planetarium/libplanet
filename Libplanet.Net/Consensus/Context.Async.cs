@@ -108,7 +108,7 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
-            ProcessTimeoutPropose(height, round);
+            ProduceMutation(() => ProcessTimeoutPropose(height, round));
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
-            ProcessTimeoutPreVote(height, round);
+            ProduceMutation(() => ProcessTimeoutPreVote(height, round));
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
-            ProcessTimeoutPreCommit(height, round);
+            ProduceMutation(() => ProcessTimeoutPreCommit(height, round));
         }
     }
 }

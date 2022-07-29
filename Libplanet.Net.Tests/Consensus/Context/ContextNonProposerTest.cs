@@ -257,9 +257,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            var timeoutOccurred = new AsyncAutoResetEvent();
-            var stepChanged = new AsyncAutoResetEvent();
-            Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
@@ -291,11 +288,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
-            Context.StepChanged += (sender, step) => stepChanged.Set();
 
-            await timeoutOccurred.WaitAsync();
-            await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            await Context.ConsumeMutation(default);
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -304,9 +298,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreCommit()
         {
-            var timeoutOccurred = new AsyncAutoResetEvent();
             var roundStared = new AsyncAutoResetEvent();
-            Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
             Context.RoundStarted += (sender, i) => roundStared.Set();
 
             Block<DumbAction> block =
@@ -342,9 +334,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await timeoutOccurred.WaitAsync();
-            await roundStared.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await Context.ConsumeMutation(default);
             await NewRoundSendMessageAssert();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);

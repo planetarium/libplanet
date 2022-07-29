@@ -182,7 +182,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await timeoutOccurred.WaitAsync();
-            await roundStarted.WaitAsync();
+            await Context.ConsumeMutation(default);
             // Node id 1 is not next proposer, and wait for SendMessageAfter() and broadcast
             // messages.
             await NewRoundSendMessageAssert();
