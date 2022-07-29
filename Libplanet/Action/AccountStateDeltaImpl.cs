@@ -71,14 +71,14 @@ namespace Libplanet.Action
 
         /// <inheritdoc/>
         [Pure]
-        IValue? IAccountStateDelta.GetState(Address address) =>
+        IValue? IAccountStateView.GetState(Address address) =>
             UpdatedStates.TryGetValue(address, out IValue? value)
                 ? value
                 : StateGetter(new[] { address })[0];
 
-        /// <inheritdoc cref="IAccountStateDelta.GetStates(IReadOnlyList{Address})"/>
+        /// <inheritdoc cref="IAccountStateView.GetStates(IReadOnlyList{Address})"/>
         [Pure]
-        IReadOnlyList<IValue?> IAccountStateDelta.GetStates(IReadOnlyList<Address> addresses)
+        IReadOnlyList<IValue?> IAccountStateView.GetStates(IReadOnlyList<Address> addresses)
         {
             int length = addresses.Count;
             IValue?[] values = new IValue?[length];
