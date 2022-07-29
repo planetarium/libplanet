@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -259,36 +258,36 @@ namespace Libplanet.Net.Consensus
         /// Although this is not strictly needed, this is used for optimization.</param>
         private void ProcessHeightOrRoundUponRules(ConsensusMessage message)
         {
-            if (message is ConsensusPropose || message is ConsensusCommit)
+            int round = message.Round;
+            if ((message is ConsensusPropose || message is ConsensusCommit) &&
+                GetPropose(round) is (Block<T> block4, _) &&
+                HasTwoThirdsPreCommit(round, block4.Hash) &&
+                Step != Step.EndCommit &&
+                IsValid(block4))
             {
-                int round = message.Round;
-                if (GetPropose(round) is (Block<T> block4, _) &&
-                    HasTwoThirdsPreCommit(round, block4.Hash) &&
-                    Step != Step.EndCommit &&
-                    IsValid(block4))
-                {
-                    SetStep(Step.EndCommit);
-                    CommittedRound = round;
-                    _logger.Debug(
-                        "Committed block in round {Round}. (context: {Context})",
-                        Round,
-                        ToString());
+                SetStep(Step.EndCommit);
+                CommittedRound = round;
+                _logger.Debug(
+                    "Committed block in round {Round}. (context: {Context})",
+                    Round,
+                    ToString());
 
-                    ConsensusContext.Commit(block4);
-                }
+                ConsensusContext.Commit(block4);
+                return;
             }
 
             // FIXME: _messagesInRound should not contain any duplicated messages for this.
-            if (message.Round > Round &&
-                _messagesInRound[message.Round].Count > TotalValidators / 3)
+            if (round > Round &&
+                _messagesInRound[round].Count > TotalValidators / 3)
             {
                 _logger.Debug(
                     "1/3+ messages from the round {Round} > current round {CurrentRound}. " +
                     "(context: {Context})",
-                    message.Round,
+                    round,
                     Round,
                     ToString());
-                Task.Run(() => StartRound(message.Round));
+                StartRound(round);
+                return;
             }
         }
 
