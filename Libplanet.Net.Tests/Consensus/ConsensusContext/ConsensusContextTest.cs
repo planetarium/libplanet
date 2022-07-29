@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // NewHeight also covers Commit() due to calling the method from Context<T>
             AutoResetEvent waitingCommit = new AutoResetEvent(false);
             AutoResetEvent stepChanged = new AutoResetEvent(false);
-            AutoResetEvent messageProcessed = new AutoResetEvent(false);
+            AutoResetEvent messageConsumed = new AutoResetEvent(false);
 
             Assert.Throws<InvalidHeightIncreasingException>(
                 () => ConsensusContext.NewHeight(BlockChain.Tip.Index));
@@ -70,10 +70,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
             // PreVote is sent and handled due to node is the proposer.
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StepChanged += CheckPreVote;
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageProcessed +=
-                    (sender, message) => messageProcessed.Set();
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageConsumed +=
+                    (sender, message) => messageConsumed.Set();
 
-            messageProcessed.WaitOne();
+            messageConsumed.WaitOne();
             VoteSet voteSet = ConsensusContext.Contexts[BlockChain.Tip.Index + 1].VoteSet(0);
             BlockHash blockHash = voteSet.Votes[0].BlockHash!.Value;
 

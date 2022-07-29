@@ -228,35 +228,40 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            Context.HandleMessage(
+            AsyncAutoResetEvent messageConsumed = new AsyncAutoResetEvent();
+            Context.MessageConsumed += (sender, consensusMessage) => messageConsumed.Set();
+
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[0], 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+            await messageConsumed.WaitAsync();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await messageConsumed.WaitAsync();
 
             VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[2].Flag);
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await messageProcessed.WaitAsync();
+            await messageConsumed.WaitAsync();
 
+            await messageConsumed.WaitAsync();
             roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);

@@ -94,9 +94,9 @@ namespace Libplanet.Net.Consensus
         private readonly ConcurrentDictionary<int, HashSet<ConsensusMessage>> _messagesInRound;
 
         private readonly PrivateKey _privateKey;
-        private readonly HashSet<int> _preVoteFlags;
+        private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
-        private readonly HashSet<int> _preCommitFlags;
+        private readonly HashSet<int> _preCommitTimeoutFlags;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
 
@@ -165,9 +165,9 @@ namespace Libplanet.Net.Consensus
             _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _messagesInRound = new ConcurrentDictionary<int, HashSet<ConsensusMessage>>();
-            _preVoteFlags = new HashSet<int>();
+            _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
-            _preCommitFlags = new HashSet<int>();
+            _preCommitTimeoutFlags = new HashSet<int>();
             _validators = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
@@ -179,37 +179,6 @@ namespace Libplanet.Net.Consensus
                 .ForContext<Context<T>>()
                 .ForContext("Source", nameof(Context<T>));
         }
-
-        /// <summary>
-        /// A event that invoked when any timeout occurs.
-        /// </summary>
-        internal event EventHandler<(Step, TimeSpan)>? TimeoutOccurred;
-
-        /// <summary>
-        /// A event that invoked when any step is changed.
-        /// </summary>
-        internal event EventHandler<Step>? StepChanged;
-
-        /// <summary>
-        /// A event that invoked when new round is started.
-        /// </summary>
-        internal event EventHandler<int>? RoundStarted;
-
-        /// <summary>
-        /// A event that invoked when any received <see cref="ConsensusMessage"/> from
-        /// <see cref="ConsensusContext{T}"/> is processed.
-        /// </summary>
-        internal event EventHandler<ConsensusMessage>? MessageProcessed;
-
-        /// <summary>
-        /// A event that invoked when a queued <see cref="ConsensusMessage"/> is consumed.
-        /// </summary>
-        internal event EventHandler<ConsensusMessage>? MessageConsumed;
-
-        /// <summary>
-        /// A event that invoked when a queued <see cref="System.Action"/> is consumed.
-        /// </summary>
-        internal event EventHandler<System.Action>? MutationConsumed;
 
         /// <summary>
         /// A target height of this consensus state. This is also a block index now in consensus.
@@ -246,6 +215,7 @@ namespace Libplanet.Net.Consensus
         public void Dispose()
         {
             _messageRequests.Writer.TryComplete();
+            _mutationRequests.Writer.TryComplete();
             _cancellationTokenSource.Cancel();
         }
 
@@ -350,45 +320,6 @@ namespace Libplanet.Net.Consensus
         internal TimeSpan TimeoutPropose(long round)
         {
             return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
-        }
-
-        /// <summary>
-        /// Validates and Add a <see cref="ConsensusMessage"/> and handle the message.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> that will be handled.
-        /// </param>
-        /// <remarks>This isn't thread-safe, use carefully in tests.</remarks>
-        internal void HandleMessage(ConsensusMessage message)
-        {
-            try
-            {
-                AddMessage(message);
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "An error occurred during handling message {Message}. {E}",
-                    message,
-                    e);
-                throw;
-            }
-
-            _logger.Debug(
-                "{FName}: Message: {Message} => " +
-                "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
-                "MessageCount: {Count}. (context: {Context})",
-                nameof(AddMessage),
-                message,
-                message.Height,
-                message.Round,
-                message.Remote!.Address,
-                message.BlockHash,
-                _messagesInRound[Round].Count,
-                ToString());
-            ProcessGenericUponRules();
-            ProcessHeightOrRoundUponRules(message);
-            MessageProcessed?.Invoke(this, message);
         }
 
         /// <summary>

@@ -34,18 +34,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            await messageProcessed.WaitAsync();
-            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -79,32 +76,36 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
             blockHash = block.Hash;
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
@@ -147,32 +148,36 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Block<DumbAction> block = GetInvalidBlock();
             blockHash = block.Hash;
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: null, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
@@ -195,17 +200,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[2], round: 1));
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 1, hash: null, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            await messageProcessed.WaitAsync();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -214,9 +217,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPropose()
         {
-            var stepChanged = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
-            var timeoutOccurred = new AsyncAutoResetEvent();
+            var mutationConsumed = new AsyncAutoResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
                 if (consensusMessage is ConsensusVote)
@@ -226,18 +228,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-
-            Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
+            Context.MutationConsumed += (sender, action) => mutationConsumed.Set();
 
             Context.StartAsync();
 
-            Context.StepChanged += (sender, step) => stepChanged.Set();
-
-            await timeoutOccurred.WaitAsync();
+            await mutationConsumed.WaitAsync();
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
-            await stepChanged.WaitAsync();
+
+            // Wait for timeout triggered mutation to be consumed.
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -264,31 +262,35 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[1], round: 0));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
-            await Context.ConsumeMutation(default);
+            // Wait for timeout.
+            await Context.ConsumeMutation();
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -297,9 +299,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreCommit()
         {
-            var roundStared = new AsyncAutoResetEvent();
-            Context.RoundStarted += (sender, i) => roundStared.Set();
-
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
 
@@ -307,34 +306,35 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     block, TestUtils.PrivateKeys[1], round: 0));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[1]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
-            await Context.ConsumeMutation(default);
-            await NewRoundSendMessageAssert();
+            // Wait for timeout.
+            await Context.ConsumeMutation();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);

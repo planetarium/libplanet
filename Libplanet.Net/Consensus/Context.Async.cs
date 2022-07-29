@@ -45,12 +45,26 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        internal async Task ConsumeMessage(CancellationToken cancellationToken)
+        internal async Task ConsumeMessage(CancellationToken cancellationToken = default)
         {
             ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
             try
             {
-                HandleMessage(message);
+                AddMessage(message);
+                _logger.Debug(
+                    "{FName}: Message: {Message} => " +
+                    "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
+                    "MessageCount: {Count}. (context: {Context})",
+                    nameof(AddMessage),
+                    message,
+                    message.Height,
+                    message.Round,
+                    message.Remote!.Address,
+                    message.BlockHash,
+                    _messagesInRound[Round].Count,
+                    ToString());
+                ProcessGenericUponRules();
+                ProcessHeightOrRoundUponRules(message);
                 MessageConsumed?.Invoke(this, message);
             }
             catch (Exception e)
@@ -58,7 +72,7 @@ namespace Libplanet.Net.Consensus
                 _logger.Error(
                     e,
                     "Unexpected exception occurred during {FName}. {E}",
-                    nameof(HandleMessage),
+                    nameof(AddMessage),
                     e);
             }
         }
@@ -85,7 +99,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        internal async Task ConsumeMutation(CancellationToken cancellationToken)
+        internal async Task ConsumeMutation(CancellationToken cancellationToken = default)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
             mutation();
@@ -107,7 +121,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPropose has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.Propose, TimeoutPropose(round)));
+            TimeoutOccurred?.Invoke(this, (Step.Propose, timeout));
             ProduceMutation(() => ProcessTimeoutPropose(height, round));
         }
 
@@ -127,7 +141,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPreVote has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.PreVote, TimeoutPreVote(round)));
+            TimeoutOccurred?.Invoke(this, (Step.PreVote, timeout));
             ProduceMutation(() => ProcessTimeoutPreVote(height, round));
         }
 
@@ -147,7 +161,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.PreCommit, TimeoutPreCommit(round)));
+            TimeoutOccurred?.Invoke(this, (Step.PreCommit, timeout));
             ProduceMutation(() => ProcessTimeoutPreCommit(height, round));
         }
     }

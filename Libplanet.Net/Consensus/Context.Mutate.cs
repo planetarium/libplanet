@@ -13,7 +13,6 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">A round to start.</param>
         internal void StartRound(int round)
         {
-            RoundStarted?.Invoke(this, round);
             _logger.Debug(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
                 round,
@@ -45,6 +44,8 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 _ = OnTimeoutPropose(Height, Round);
             }
+
+            RoundChanged?.Invoke(this, Round);
         }
 
         /// <summary>
@@ -185,14 +186,14 @@ namespace Libplanet.Net.Consensus
 
             if (HasTwoThirdsPreVote(Round, null, true) &&
                 Step == Step.PreVote &&
-                !_preVoteFlags.Contains(Round))
+                !_preVoteTimeoutFlags.Contains(Round))
             {
                 _logger.Debug(
                     "PreVote step in round {Round} is scheduled to be timed out because " +
                     "2/3+ PreVotes are collected for the round. (context: {Context})",
                     Round,
                     ToString());
-                _preVoteFlags.Add(Round);
+                _preVoteTimeoutFlags.Add(Round);
                 _ = OnTimeoutPreVote(Height, Round);
             }
 
@@ -238,14 +239,14 @@ namespace Libplanet.Net.Consensus
                     new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
             }
 
-            if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitFlags.Contains(Round))
+            if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitTimeoutFlags.Contains(Round))
             {
                 _logger.Debug(
                     "PreCommit step in round {Round} is scheduled to be timed out because " +
                     "2/3+ PreCommits are collected for the round. (context: {Context})",
                     Round,
                     ToString());
-                _preCommitFlags.Add(Round);
+                _preCommitTimeoutFlags.Add(Round);
                 _ = OnTimeoutPreCommit(Height, Round);
             }
         }
@@ -305,6 +306,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
                 SetStep(Step.PreVote);
+                TimeoutProcessed?.Invoke(this, (height, round));
             }
         }
 
@@ -323,6 +325,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
                 SetStep(Step.PreCommit);
+                TimeoutProcessed?.Invoke(this, (height, round));
             }
         }
 
@@ -339,6 +342,7 @@ namespace Libplanet.Net.Consensus
             if (height == Height && round == Round && Step < Step.EndCommit)
             {
                 StartRound(Round + 1);
+                TimeoutProcessed?.Invoke(this, (height, round));
             }
         }
     }

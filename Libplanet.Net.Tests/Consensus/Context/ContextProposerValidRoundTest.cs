@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             watchConsensusMessage = IsVoteSent;
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
@@ -56,8 +56,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(new
+            Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
@@ -67,10 +68,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
@@ -80,9 +80,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);
@@ -113,7 +113,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.AddMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
@@ -123,8 +123,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(new
+            Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
@@ -134,10 +135,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
@@ -147,9 +147,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);

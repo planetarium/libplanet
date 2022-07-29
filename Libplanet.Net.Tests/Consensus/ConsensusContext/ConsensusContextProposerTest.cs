@@ -31,15 +31,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void IncreaseRoundWhenTimeout()
         {
-            var messageProcessed = new AsyncAutoResetEvent();
             var timeoutOccurred = new AsyncAutoResetEvent();
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageProcessed +=
-                (sender, message) =>
-                {
-                    messageProcessed.Set();
-                };
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutOccurred +=
                 (sender, message) =>
                 {

@@ -8,7 +8,6 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using Nito.AsyncEx;
 using Serilog;
 using Xunit.Abstractions;
 
@@ -47,11 +46,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
             BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
 
             void BroadcastMessage(ConsensusMessage message) =>
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     watchConsensusMessage?.Invoke(message);
                     message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
-                    Context!.HandleMessage(message);
+                    Context!.ProduceMessage(message);
+                    await Context!.ConsumeMessage();
                 });
 
             _consensusContext = new ConsensusContext<DumbAction>(
@@ -96,14 +96,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await Libplanet.Tests.TestUtils.AssertThatEventually(
                 () => Context.Step == Step.Propose,
                 1_000);
-        }
-
-        protected AsyncAutoResetEvent WatchMessageProcessed()
-        {
-            var messageProcessed = new AsyncAutoResetEvent();
-            Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
-
-            return messageProcessed;
         }
     }
 }

@@ -45,23 +45,21 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
             Context.StartAsync();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.Absent))
                 {
@@ -104,24 +102,24 @@ namespace Libplanet.Net.Tests.Consensus.Context
             targetHash = block.Hash;
             Context.StartAsync();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0], 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2], 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3], 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
@@ -140,7 +138,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var timeoutOccurred = new AsyncAutoResetEvent();
             var stepChanged = new AsyncAutoResetEvent();
-            var roundStarted = new AsyncAutoResetEvent();
 
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
@@ -152,37 +149,39 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
             Context.TimeoutOccurred += (sender, tuple) => timeoutOccurred.Set();
-            Context.RoundStarted += (sender, i) => roundStarted.Set();
 
             Context.AddMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
             await timeoutOccurred.WaitAsync();
-            await Context.ConsumeMutation(default);
+            await Context.ConsumeMutation();
             // Node id 1 is not next proposer, and wait for SendMessageAfter() and broadcast
             // messages.
             await NewRoundSendMessageAssert();
@@ -209,31 +208,33 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.AddMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[0], 1, hash: block.Hash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: block.Hash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
+            await Context.ConsumeMessage();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, hash: block.Hash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
+            await Context.ConsumeMessage();
 
-            await stepChanged.WaitAsync();
             Assert.Equal(Step.EndCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -264,9 +265,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Block<DumbAction> invalidBlock = GetInvalidBlock();
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
                     invalidBlock, TestUtils.PrivateKeys[NodeId]));
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
@@ -303,8 +305,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
             targetHash = block.Hash;
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
+            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             await stepChanged.WaitAsync();
