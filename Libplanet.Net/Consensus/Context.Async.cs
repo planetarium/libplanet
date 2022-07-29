@@ -18,36 +18,78 @@ namespace Libplanet.Net.Consensus
             _lastCommit = lastCommit;
             StartRound(0);
 
+            // FIXME: Exceptions inside tasks should be handled properly.
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
+            _ = MutationConsumerTask(_cancellationTokenSource.Token);
         }
 
         /// <summary>
-        /// Consumes the every <see cref="ConsensusMessage"/> in the message queue.
+        /// Consumes every <see cref="ConsensusMessage"/> in the message queue.
         /// </summary>
-        /// <param name="ctx">A cancellation token for reading message from message queue.</param>
-        private async Task MessageConsumerTask(CancellationToken ctx)
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="ConsensusMessage"/>s from the message queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task MessageConsumerTask(CancellationToken cancellationToken)
         {
-#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
-            await foreach (ConsensusMessage message in _messageRequests.Reader.ReadAllAsync(ctx))
+            while (true)
             {
-#else
-            while (!ctx.IsCancellationRequested)
-            {
-                ConsensusMessage message = await _messageRequests.Reader.ReadAsync(ctx);
-#endif
                 try
                 {
-                    HandleMessage(message);
+                    await ConsumeMessage(cancellationToken);
                 }
-                catch (Exception e)
+                catch (TaskCanceledException tce)
                 {
-                    _logger.Error(
-                        e,
-                        "Unexpected exception occurred during {FName}. {E}",
-                        nameof(HandleMessage),
-                        e);
+                    _logger.Debug("Cancellation was requested", tce);
+                    throw;
                 }
             }
+        }
+
+        internal async Task ConsumeMessage(CancellationToken cancellationToken)
+        {
+            ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
+            try
+            {
+                HandleMessage(message);
+                MessageConsumed?.Invoke(this, message);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "Unexpected exception occurred during {FName}. {E}",
+                    nameof(HandleMessage),
+                    e);
+            }
+        }
+
+        /// <summary>
+        /// Consumes every <see cref="System.Action"/> in the mutation queue.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="System.Action"/>s from the mutation queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task MutationConsumerTask(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                try
+                {
+                    await ConsumeMutation(cancellationToken);
+                }
+                catch (TaskCanceledException tce)
+                {
+                    _logger.Debug("Cancellation was requested", tce);
+                    throw;
+                }
+            }
+        }
+
+        internal async Task ConsumeMutation(CancellationToken cancellationToken)
+        {
+            System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
+            mutation();
+            MutationConsumed?.Invoke(this, mutation);
         }
 
         /// <summary>

@@ -90,6 +90,7 @@ namespace Libplanet.Net.Consensus
         private readonly Codec _codec;
         private readonly List<PublicKey> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
+        private readonly Channel<System.Action> _mutationRequests;
         private readonly ConcurrentDictionary<int, HashSet<ConsensusMessage>> _messagesInRound;
 
         private readonly PrivateKey _privateKey;
@@ -162,6 +163,7 @@ namespace Libplanet.Net.Consensus
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
+            _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _messagesInRound = new ConcurrentDictionary<int, HashSet<ConsensusMessage>>();
             _preVoteFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
@@ -198,6 +200,16 @@ namespace Libplanet.Net.Consensus
         /// <see cref="ConsensusContext{T}"/> is processed.
         /// </summary>
         internal event EventHandler<ConsensusMessage>? MessageProcessed;
+
+        /// <summary>
+        /// A event that invoked when a queued <see cref="ConsensusMessage"/> is consumed.
+        /// </summary>
+        internal event EventHandler<ConsensusMessage>? MessageConsumed;
+
+        /// <summary>
+        /// A event that invoked when a queued <see cref="System.Action"/> is consumed.
+        /// </summary>
+        internal event EventHandler<System.Action>? MutationConsumed;
 
         /// <summary>
         /// A target height of this consensus state. This is also a block index now in consensus.
@@ -275,6 +287,15 @@ namespace Libplanet.Net.Consensus
         public void ProduceMessage(ConsensusMessage message)
         {
             _messageRequests.Writer.WriteAsync(message);
+        }
+
+        /// <summary>
+        /// Adds a mutating <see cref="System.Action"/> to the mutation queue.
+        /// </summary>
+        /// <param name="mutation">A <see cref="System.Action"/> to be processed.</param>
+        public void ProduceMutation(System.Action mutation)
+        {
+            _mutationRequests.Writer.WriteAsync(mutation);
         }
 
         /// <summary>
@@ -357,7 +378,7 @@ namespace Libplanet.Net.Consensus
                 "{FName}: Message: {Message} => " +
                 "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
                 "MessageCount: {Count}. (context: {Context})",
-                nameof(ProcessGenericUponRules),
+                nameof(AddMessage),
                 message,
                 message.Height,
                 message.Round,
