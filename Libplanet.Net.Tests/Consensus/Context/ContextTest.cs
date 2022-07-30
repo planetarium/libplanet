@@ -207,8 +207,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             BlockHash? blockHash = null;
             AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent mutationConsumed = new AsyncAutoResetEvent();
+            Context.MutationConsumed += (sender, message) => mutationConsumed.Set();
 
             Context.StartAsync();
+            await mutationConsumed.WaitAsync();
 
             void WatchPropose(ConsensusMessage message)
             {

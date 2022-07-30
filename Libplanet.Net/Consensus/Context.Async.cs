@@ -16,7 +16,7 @@ namespace Libplanet.Net.Consensus
         public void StartAsync(BlockCommit? lastCommit = null)
         {
             _lastCommit = lastCommit;
-            StartRound(0);
+            ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.
             _ = MessageConsumerTask(_cancellationTokenSource.Token);
