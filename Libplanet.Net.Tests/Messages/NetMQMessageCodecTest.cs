@@ -79,41 +79,41 @@ namespace Libplanet.Net.Tests.Messages
             switch (type)
             {
                 case Message.MessageType.Ping:
-                    return new Ping();
+                    return new PingMsg();
                 case Message.MessageType.Pong:
-                    return new Pong();
+                    return new PongMsg();
                 case Message.MessageType.GetBlockHashes:
-                    return new GetBlockHashes(chain.GetBlockLocator(), genesis.Hash);
+                    return new GetBlockHashesMsg(chain.GetBlockLocator(), genesis.Hash);
                 case Message.MessageType.TxIds:
-                    return new TxIds(new[] { transaction.Id });
+                    return new TxIdsMsg(new[] { transaction.Id });
                 case Message.MessageType.GetBlocks:
-                    return new GetBlocks(new[] { genesis.Hash }, 10);
+                    return new GetBlocksMsg(new[] { genesis.Hash }, 10);
                 case Message.MessageType.GetTxs:
-                    return new GetTxs(new[] { transaction.Id });
+                    return new GetTxsMsg(new[] { transaction.Id });
                 case Message.MessageType.Blocks:
-                    return new Libplanet.Net.Messages.Blocks(
+                    return new Libplanet.Net.Messages.BlocksMsg(
                         new[] { codec.Encode(genesis.MarshalBlock()) });
                 case Message.MessageType.Tx:
-                    return new Libplanet.Net.Messages.Tx(transaction.Serialize(true));
+                    return new Libplanet.Net.Messages.TxMsg(transaction.Serialize(true));
                 case Message.MessageType.FindNeighbors:
-                    return new FindNeighbors(privateKey.ToAddress());
+                    return new FindNeighborsMsg(privateKey.ToAddress());
                 case Message.MessageType.Neighbors:
-                    return new Neighbors(new[] { boundPeer });
+                    return new NeighborsMsg(new[] { boundPeer });
                 case Message.MessageType.BlockHeaderMessage:
-                    return new BlockHeaderMessage(genesis.Hash, genesis.Header);
+                    return new BlockHeaderMsg(genesis.Hash, genesis.Header);
                 case Message.MessageType.BlockHashes:
-                    return new BlockHashes(0, new[] { genesis.Hash });
+                    return new BlockHashesMsg(0, new[] { genesis.Hash });
                 case Message.MessageType.GetChainStatus:
-                    return new GetChainStatus();
+                    return new GetChainStatusMsg();
                 case Message.MessageType.ChainStatus:
-                    return new ChainStatus(
+                    return new ChainStatusMsg(
                         0,
                         genesis.Hash,
                         chain.Tip.Index,
                         chain.Tip.Hash,
                         chain.Tip.TotalDifficulty);
                 case Message.MessageType.DifferentVersion:
-                    return new DifferentVersion();
+                    return new DifferentVersionMsg();
                 default:
                     throw new Exception($"Cannot create a message of invalid type {type}");
             }

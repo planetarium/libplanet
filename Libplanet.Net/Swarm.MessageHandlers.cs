@@ -16,19 +16,19 @@ namespace Libplanet.Net
         {
             switch (message)
             {
-                case Ping _:
-                case FindNeighbors _:
+                case PingMsg _:
+                case FindNeighborsMsg _:
                     break;
 
-                case GetChainStatus getChainStatus:
+                case GetChainStatusMsg getChainStatus:
                 {
                     _logger.Debug(
                         "Received a {MessageType} message.",
-                        nameof(Messages.GetChainStatus));
+                        nameof(Messages.GetChainStatusMsg));
 
                     // This is based on the assumption that genesis block always exists.
                     Block<T> tip = BlockChain.Tip;
-                    var chainStatus = new ChainStatus(
+                    var chainStatus = new ChainStatusMsg(
                         tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
                         tip.Index,
@@ -43,11 +43,11 @@ namespace Libplanet.Net
                     break;
                 }
 
-                case GetBlockHashes getBlockHashes:
+                case GetBlockHashesMsg getBlockHashes:
                 {
                     _logger.Debug(
                         "Received a {MessageType} message (stop: {Stop}).",
-                        nameof(Messages.GetBlockHashes),
+                        nameof(Messages.GetBlockHashesMsg),
                         getBlockHashes.Stop);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
@@ -64,7 +64,7 @@ namespace Libplanet.Net
                         offset,
                         getBlockHashes.Locator.FirstOrDefault(),
                         getBlockHashes.Stop);
-                    var reply = new BlockHashes(offset, hashes)
+                    var reply = new BlockHashesMsg(offset, hashes)
                     {
                         Identity = getBlockHashes.Identity,
                     };
@@ -73,30 +73,30 @@ namespace Libplanet.Net
                     break;
                 }
 
-                case GetBlocks getBlocks:
+                case GetBlocksMsg getBlocks:
                     await TransferBlocksAsync(getBlocks);
                     break;
 
-                case GetTxs getTxs:
+                case GetTxsMsg getTxs:
                     await TransferTxsAsync(getTxs);
                     break;
 
-                case TxIds txIds:
+                case TxIdsMsg txIds:
                     await Transport.ReplyMessageAsync(
-                        new Pong { Identity = txIds.Identity },
+                        new PongMsg { Identity = txIds.Identity },
                         default);
                     ProcessTxIds(txIds);
                     break;
 
-                case BlockHashes _:
+                case BlockHashesMsg _:
                     _logger.Error(
                         "{MessageType} messages are only for IBD.",
-                        nameof(Messages.BlockHashes));
+                        nameof(Messages.BlockHashesMsg));
                     break;
 
-                case BlockHeaderMessage blockHeader:
+                case BlockHeaderMsg blockHeader:
                     await Transport.ReplyMessageAsync(
-                        new Pong { Identity = blockHeader.Identity },
+                        new PongMsg { Identity = blockHeader.Identity },
                         default);
                     ProcessBlockHeader(blockHeader);
                     break;
@@ -109,13 +109,13 @@ namespace Libplanet.Net
             }
         }
 
-        private void ProcessBlockHeader(BlockHeaderMessage message)
+        private void ProcessBlockHeader(BlockHeaderMsg message)
         {
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Debug(
                     "{MessageType} message was sent from an invalid peer {Peer}.",
-                    nameof(Messages.BlockHeaderMessage),
+                    nameof(Messages.BlockHeaderMsg),
                     message.Remote
                 );
                 return;
@@ -126,7 +126,7 @@ namespace Libplanet.Net
                 _logger.Debug(
                     "{MessageType} message was sent from a peer {Peer} with " +
                     "a different genesis block {Hash}.",
-                    nameof(Messages.BlockHeaderMessage),
+                    nameof(Messages.BlockHeaderMsg),
                     message.Remote,
                     message.GenesisHash
                 );
@@ -206,7 +206,7 @@ namespace Libplanet.Net
                 new BlockDemand(header, peer, DateTimeOffset.UtcNow));
         }
 
-        private async Task TransferTxsAsync(GetTxs getTxs)
+        private async Task TransferTxsAsync(GetTxsMsg getTxs)
         {
             foreach (TxId txid in getTxs.TxIds)
             {
@@ -219,7 +219,7 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    Message response = new Messages.Tx(tx.Serialize(true))
+                    Message response = new Messages.TxMsg(tx.Serialize(true))
                     {
                         Identity = getTxs.Identity,
                     };
@@ -232,14 +232,14 @@ namespace Libplanet.Net
             }
         }
 
-        private void ProcessTxIds(TxIds message)
+        private void ProcessTxIds(TxIdsMsg message)
         {
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Information(
                     "Ignoring a {MessageType} message because it was sent by an invalid peer: " +
                     "{PeerAddress}.",
-                    nameof(Messages.TxIds),
+                    nameof(Messages.TxIdsMsg),
                     message.Remote?.Address.ToHex()
                 );
                 return;
@@ -247,19 +247,19 @@ namespace Libplanet.Net
 
             _logger.Debug(
                 "Received a {MessageType} message with {TxIdCount} txIds.",
-                nameof(Messages.TxIds),
+                nameof(Messages.TxIdsMsg),
                 message.Ids.Count()
             );
 
             TxCompletion.Demand(peer, message.Ids);
         }
 
-        private async Task TransferBlocksAsync(GetBlocks getData)
+        private async Task TransferBlocksAsync(GetBlocksMsg getData)
         {
             string identityHex = ByteUtil.Hex(getData.Identity);
             _logger.Verbose(
                 "Preparing a {MessageType} message to reply to {Identity}...",
-                nameof(Messages.Blocks),
+                nameof(Messages.BlocksMsg),
                 identityHex
             );
 
@@ -282,7 +282,7 @@ namespace Libplanet.Net
 
                 if (blocks.Count == getData.ChunkSize)
                 {
-                    var response = new Messages.Blocks(blocks)
+                    var response = new Messages.BlocksMsg(blocks)
                     {
                         Identity = getData.Identity,
                     };
@@ -300,7 +300,7 @@ namespace Libplanet.Net
 
             if (blocks.Any())
             {
-                var response = new Messages.Blocks(blocks)
+                var response = new Messages.BlocksMsg(blocks)
                 {
                     Identity = getData.Identity,
                 };

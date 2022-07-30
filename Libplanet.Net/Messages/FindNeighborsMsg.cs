@@ -5,16 +5,16 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// Message containing request for nearby peers.
     /// </summary>
-    /// <seealso cref="Neighbors"/>
-    public class FindNeighbors : Message
+    /// <seealso cref="NeighborsMsg"/>
+    public class FindNeighborsMsg : Message
     {
         // TODO: This message may request exact peer instead of its neighbors.
-        public FindNeighbors(Address target)
+        public FindNeighborsMsg(Address target)
         {
             Target = target;
         }
 
-        public FindNeighbors(byte[][] dataFrames)
+        public FindNeighborsMsg(byte[][] dataFrames)
         {
             Target = new Address(dataFrames[0]);
         }

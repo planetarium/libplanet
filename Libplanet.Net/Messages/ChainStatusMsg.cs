@@ -6,9 +6,9 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class ChainStatus : Message, IBlockExcerpt
+    internal class ChainStatusMsg : Message, IBlockExcerpt
     {
-        public ChainStatus(
+        public ChainStatusMsg(
             int protocolVersion,
             BlockHash genesisHash,
             long tipIndex,
@@ -22,7 +22,7 @@ namespace Libplanet.Net.Messages
             TotalDifficulty = totalDifficulty;
         }
 
-        public ChainStatus(byte[][] dataFrames)
+        public ChainStatusMsg(byte[][] dataFrames)
         {
             ProtocolVersion = BitConverter.ToInt32(dataFrames[0], 0);
             GenesisHash = new BlockHash(dataFrames[1]);

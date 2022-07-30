@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Transports
                 var boundPeer = new BoundPeer(
                     new PrivateKey().PublicKey,
                     new DnsEndPoint("localhost", 1234));
-                var message = new Ping();
+                var message = new PingMsg();
                 await Assert.ThrowsAsync<ObjectDisposedException>(
                     async () => await transport.StartAsync());
                 await Assert.ThrowsAsync<ObjectDisposedException>(
@@ -168,10 +168,10 @@ namespace Libplanet.Net.Tests.Transports
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
-                if (message is Ping)
+                if (message is PingMsg)
                 {
                     await transportB.ReplyMessageAsync(
-                        new Pong
+                        new PongMsg
                         {
                             Identity = message.Identity,
                         },
@@ -186,11 +186,11 @@ namespace Libplanet.Net.Tests.Transports
 
                 Message reply = await transportA.SendMessageAsync(
                     (BoundPeer)transportB.AsPeer,
-                    new Ping(),
+                    new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     CancellationToken.None);
 
-                Assert.IsType<Pong>(reply);
+                Assert.IsType<PongMsg>(reply);
             }
             finally
             {
@@ -215,7 +215,7 @@ namespace Libplanet.Net.Tests.Transports
                 await Assert.ThrowsAsync<TaskCanceledException>(
                     async () => await transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
-                        new Ping(),
+                        new PingMsg(),
                         null,
                         cts.Token));
             }
@@ -235,16 +235,16 @@ namespace Libplanet.Net.Tests.Transports
 
             transportB.ProcessMessageHandler.Register(async message =>
             {
-                if (message is Ping)
+                if (message is PingMsg)
                 {
                     await transportB.ReplyMessageAsync(
-                        new Ping
+                        new PingMsg
                         {
                             Identity = message.Identity,
                         },
                         default);
                     await transportB.ReplyMessageAsync(
-                        new Pong
+                        new PongMsg
                         {
                             Identity = message.Identity,
                         },
@@ -259,14 +259,14 @@ namespace Libplanet.Net.Tests.Transports
 
                 var replies = (await transportA.SendMessageAsync(
                     (BoundPeer)transportB.AsPeer,
-                    new Ping(),
+                    new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     2,
                     false,
                     CancellationToken.None)).ToArray();
 
-                Assert.Contains(replies, message => message is Ping);
-                Assert.Contains(replies, message => message is Pong);
+                Assert.Contains(replies, message => message is PingMsg);
+                Assert.Contains(replies, message => message is PongMsg);
             }
             finally
             {
@@ -290,7 +290,7 @@ namespace Libplanet.Net.Tests.Transports
                 var e = await Assert.ThrowsAsync<CommunicationFailException>(
                     async () => await transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
-                        new Ping(),
+                        new PingMsg(),
                         TimeSpan.FromSeconds(3),
                         CancellationToken.None));
                 Assert.True(e.InnerException is TimeoutException ie);
@@ -322,7 +322,7 @@ namespace Libplanet.Net.Tests.Transports
                         port));
                 Task task = transport.SendMessageAsync(
                     peer,
-                    new Ping(),
+                    new PingMsg(),
                     TimeSpan.FromSeconds(5),
                     default);
 
@@ -349,7 +349,7 @@ namespace Libplanet.Net.Tests.Transports
 
                 Task t = transportA.SendMessageAsync(
                         (BoundPeer)transportB.AsPeer,
-                        new Ping(),
+                        new PingMsg(),
                         null,
                         CancellationToken.None);
 
@@ -392,7 +392,7 @@ namespace Libplanet.Net.Tests.Transports
             {
                 return async message =>
                 {
-                    if (message is Ping)
+                    if (message is PingMsg)
                     {
                         tcs.SetResult(message);
                     }
@@ -417,12 +417,12 @@ namespace Libplanet.Net.Tests.Transports
 
                 transportA.BroadcastMessage(
                     table.PeersToBroadcast(transportD.AsPeer.Address),
-                    new Ping());
+                    new PingMsg());
 
                 await Task.WhenAll(tcsB.Task, tcsC.Task);
 
-                Assert.IsType<Ping>(tcsB.Task.Result);
-                Assert.IsType<Ping>(tcsC.Task.Result);
+                Assert.IsType<PingMsg>(tcsB.Task.Result);
+                Assert.IsType<PingMsg>(tcsC.Task.Result);
                 Assert.False(tcsD.Task.IsCompleted);
 
                 tcsD.SetCanceled();

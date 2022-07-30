@@ -946,7 +946,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarm2);
 
                 var transport = swarm1.Transport;
-                var msg = new GetTxs(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
+                var msg = new GetTxsMsg(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
                 var replies = (await transport.SendMessageAsync(
                     (BoundPeer)swarm2.AsPeer,
                     msg,
@@ -960,7 +960,7 @@ namespace Libplanet.Net.Tests
                     new[] { tx1, tx2, tx3 }.ToHashSet(),
                     replies.Select(
                         m => Transaction<DumbAction>.Deserialize(
-                            ((Libplanet.Net.Messages.Tx)m).Payload)).ToHashSet());
+                            ((Libplanet.Net.Messages.TxMsg)m).Payload)).ToHashSet());
             }
             finally
             {
