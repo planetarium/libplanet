@@ -63,8 +63,8 @@ namespace Libplanet.Net.Consensus
                     message.BlockHash,
                     _messagesInRound[Round].Count,
                     ToString());
-                ProcessGenericUponRules();
-                ProcessHeightOrRoundUponRules(message);
+                ProduceMutation(() => ProcessGenericUponRules());
+                ProduceMutation(() => ProcessHeightOrRoundUponRules(message));
                 MessageConsumed?.Invoke(this, message);
             }
             catch (Exception e)

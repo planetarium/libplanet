@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -22,19 +21,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterValidRoundPreVoteBlock()
         {
-            var messageReceived = new AsyncManualResetEvent();
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
-
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
-
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
-
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
-
+            var messageReceived = new AsyncManualResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
                 if (consensusMessage is ConsensusVote vote &&
@@ -46,6 +35,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             watchConsensusMessage = IsVoteSent;
 
+            Context.AddMessage(TestUtils.CreateConsensusPropose(
+                block, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
+
+            Context.AddMessage(TestUtils.CreateConsensusPropose(
+                block, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
+
+            Context.AddMessage(TestUtils.CreateConsensusPropose(
+                block, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+
+            // Bypass StartAsync() to avoid StartRound(0).
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
+
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
@@ -56,7 +58,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
-            await Context.ConsumeMessage();
 
             Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
@@ -68,7 +69,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await Context.ConsumeMessage();
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -80,7 +80,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
-            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
@@ -91,6 +90,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterValidRoundPreVoteNil()
         {
+            Block<DumbAction> invalidBlock = GetInvalidBlock();
             var messageReceived = new AsyncManualResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
@@ -102,7 +102,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            Block<DumbAction> invalidBlock = GetInvalidBlock();
 
             Context.AddMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
@@ -112,6 +111,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.AddMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+
+            // Bypass StartAsync() to avoid StartRound(0).
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -123,7 +126,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
-            await Context.ConsumeMessage();
 
             Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
@@ -135,7 +137,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await Context.ConsumeMessage();
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -147,7 +148,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
-            await Context.ConsumeMessage();
 
             await messageReceived.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);

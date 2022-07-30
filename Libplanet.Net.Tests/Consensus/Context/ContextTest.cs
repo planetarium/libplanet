@@ -205,34 +205,23 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void VoteSet()
         {
+            // FIXME: Pretty lousy testing method.
             BlockHash? blockHash = null;
-            AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
-            AsyncAutoResetEvent mutationConsumed = new AsyncAutoResetEvent();
-            Context.MutationConsumed += (sender, message) => mutationConsumed.Set();
-
-            Context.StartAsync();
-            await mutationConsumed.WaitAsync();
-
-            void WatchPropose(ConsensusMessage message)
-            {
-                if (message is ConsensusPropose)
-                {
-                    blockHash = message.BlockHash;
-                }
-            }
-
-            watchConsensusMessage = WatchPropose;
-
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
+            var messageConsumed = new AsyncAutoResetEvent();
             Context.StepChanged += (sender, step) =>
             {
                 if (step == Step.PreCommit)
                 {
-                    stepChanged.Set();
+                    stepChangedToPreCommit.Set();
                 }
             };
+            Context.MessageConsumed += (sender, consensusMessage) =>
+            {
+                messageConsumed.Set();
+            };
 
-            AsyncAutoResetEvent messageConsumed = new AsyncAutoResetEvent();
-            Context.MessageConsumed += (sender, consensusMessage) => messageConsumed.Set();
+            Context.StartAsync();
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -241,7 +230,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
+
+            // Wait for all messages to be cleared.
             await messageConsumed.WaitAsync();
+            await messageConsumed.WaitAsync();
+            await messageConsumed.WaitAsync();
+            VoteSet roundVoteSet = Context.VoteSet(0);
+            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
+            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[2].Flag);
+            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -250,10 +248,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await messageConsumed.WaitAsync();
 
-            VoteSet roundVoteSet = Context.VoteSet(0);
+            // Wait for all messages to be cleared.
+            await messageConsumed.WaitAsync();
+            await messageConsumed.WaitAsync();
+            roundVoteSet = Context.VoteSet(0);
+            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
+            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[2].Flag);
+            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
 
             Context.ProduceMessage(
                 new ConsensusCommit(
@@ -262,14 +265,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await messageConsumed.WaitAsync();
 
+            // Wait for all messages to be cleared.
             await messageConsumed.WaitAsync();
             roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
         }

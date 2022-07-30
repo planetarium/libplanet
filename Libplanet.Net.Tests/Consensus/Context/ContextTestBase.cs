@@ -46,12 +46,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
 
             void BroadcastMessage(ConsensusMessage message) =>
-                Task.Run(async () =>
+                Task.Run(() =>
                 {
                     watchConsensusMessage?.Invoke(message);
                     message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
                     Context!.ProduceMessage(message);
-                    await Context!.ConsumeMessage();
                 });
 
             _consensusContext = new ConsensusContext<DumbAction>(

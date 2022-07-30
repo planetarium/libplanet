@@ -27,6 +27,7 @@ namespace Libplanet.Net.Consensus
                     round,
                     ToString());
                 Block<T> proposal = _validValue ?? GetValue();
+                BlockProposed?.Invoke(this, proposal);
 
                 BroadcastMessage(
                     new ConsensusPropose(

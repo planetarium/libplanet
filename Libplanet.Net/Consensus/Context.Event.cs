@@ -1,4 +1,5 @@
 using System;
+using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -14,6 +15,11 @@ namespace Libplanet.Net.Consensus
         /// An event that invoked when any timeout triggered event is processed.
         /// </summary>
         internal event EventHandler<(long, int)>? TimeoutProcessed;
+
+        /// <summary>
+        /// An event that invoked when block is proposed.
+        /// </summary>
+        internal event EventHandler<Block<T>>? BlockProposed;
 
         /// <summary>
         /// An event that is invoked when <see cref="Round"/> is changed.

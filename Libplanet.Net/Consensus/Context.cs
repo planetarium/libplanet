@@ -317,7 +317,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        internal TimeSpan TimeoutPropose(long round)
+        internal static TimeSpan TimeoutPropose(long round)
         {
             return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
         }
