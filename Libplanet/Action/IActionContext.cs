@@ -12,7 +12,7 @@ namespace Libplanet.Action
     public interface IActionContext
     {
         /// <summary>
-        ///  A <see cref="BlockHash"/> value of the genesis block
+        /// The genesis block's hash.
         /// </summary>
         [Pure]
         BlockHash? GenesisHash { get; }

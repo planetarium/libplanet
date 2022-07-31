@@ -41,7 +41,7 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
-        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
         public ActionEvaluator(
             IAction? policyBlockAction,
@@ -190,7 +190,8 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
-        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block </param>
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
+        /// </param>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
         /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>

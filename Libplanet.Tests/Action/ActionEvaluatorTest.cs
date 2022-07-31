@@ -1077,6 +1077,29 @@ namespace Libplanet.Tests.Action
             return (addresses, txs);
         }
 
+        [Fact]
+        private async void CheckGenesisHashInAction()
+        {
+            var chain = MakeBlockChain<EvaluateTestAction>(
+                    policy: new BlockPolicy<EvaluateTestAction>(),
+                    store: _storeFx.Store,
+                    stateStore: _storeFx.StateStore);
+            var privateKey = new PrivateKey();
+            var action = new EvaluateTestAction();
+            var tx = Transaction<EvaluateTestAction>.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action });
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            await chain.MineBlock(miner);
+            var evaluations = chain.ActionEvaluator.Evaluate(
+                chain.Tip,
+                StateCompleterSet<EvaluateTestAction>.Recalculate);
+            Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
+        }
+
         private sealed class EvaluateTestAction : IAction
         {
             public readonly Address SignerKey = new PrivateKey().ToAddress();
