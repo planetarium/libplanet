@@ -108,15 +108,15 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
   nameWithType: ActionEvaluator<T>
   nameWithType.vb: ActionEvaluator(Of T)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
-  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}})
-  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)))
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash})
+  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash})
+  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash))
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash))
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash))
 - uid: Libplanet.Action.ActionEvaluator`1.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
@@ -520,6 +520,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.BlockIndex
   nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GenesisHash
+  commentId: P:Libplanet.Action.IActionContext.GenesisHash
+  fullName: Libplanet.Action.IActionContext.GenesisHash
+  nameWithType: IActionContext.GenesisHash
+- uid: Libplanet.Action.IActionContext.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GenesisHash_
+  commentId: Overload:Libplanet.Action.IActionContext.GenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.GenesisHash
+  nameWithType: IActionContext.GenesisHash
 - uid: Libplanet.Action.IActionContext.GetUnconsumedContext
   name: GetUnconsumedContext()
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GetUnconsumedContext
