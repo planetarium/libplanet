@@ -42,8 +42,8 @@ To be released.
 
 ### CLI tools
 
-
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2047]: https://github.com/planetarium/libplanet/issues/2047
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
@@ -51,7 +51,6 @@ To be released.
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
-[#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
 
 

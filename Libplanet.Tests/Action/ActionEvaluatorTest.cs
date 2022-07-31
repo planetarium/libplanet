@@ -1078,7 +1078,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        private async void CheckGenesisHashInAction()
+        private async Task CheckGenesisHashInAction()
         {
             var chain = MakeBlockChain<EvaluateTestAction>(
                     policy: new BlockPolicy<EvaluateTestAction>(),
