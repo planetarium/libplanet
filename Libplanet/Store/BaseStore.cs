@@ -28,6 +28,14 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract void SetCanonicalChainId(Guid chainId);
 
+        /// <inheritdoc />
+        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+            where T : IAction, new() =>
+            GetCanonicalChainId() is { } canonicalChainId
+            && IndexBlockHash(canonicalChainId, 0) is { } genesisHash
+                ? GetBlock<T>(hashAlgorithmGetter, genesisHash)
+                : null;
+
         public abstract long CountIndex(Guid chainId);
 
         /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int?)"/>
