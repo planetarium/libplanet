@@ -11,7 +11,7 @@ namespace Libplanet.Explorer.GraphTypes
     public class BlockType<T> : ObjectGraphType<Block<T>>
         where T : IAction, new()
     {
-        public BlockType()
+        public BlockType(IStore store)
         {
             #pragma warning disable SA1118
             // We need multiple row of description for clearer, not confusing explanation of field.
@@ -64,7 +64,6 @@ namespace Libplanet.Explorer.GraphTypes
 
                 // FIXME: (BlockChain<T>) casting does not work
                 // REF COMMIT HASH: d50c90933c17a70381ad758719144e01bf9c21dc
-                var store = (IStore)ctx.UserContext[nameof(IBlockChainContext<T>.Store)];
                 return store.GetBlock<T>(h);
             });
             Field(x => x.Timestamp);
