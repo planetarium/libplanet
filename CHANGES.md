@@ -10,6 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Modified type of parameters `offset`, `limit` from int to long from verious methods. [[#1354], [#2188]]
+   - `BlockChain<T>.IterateBlocks(int, int?)`
+   - `BlockChain<T>.IterateBlockHashes(int, int?)`
+   - `IStore.IterateIndexes(Guid, int, int?)`
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -71,6 +76,7 @@ Released on July 18th, 2022.
  -  (Libplanet.Extensions.Cocona) Removed `DerivationCommand` class.
     [[#2118]]
 
+[#1354]: https://github.com/planetarium/libplanet/issues/1354
 [#1696]: https://github.com/planetarium/libplanet/issues/1696
 [#2058]: https://github.com/planetarium/libplanet/issues/2058
 [#2091]: https://github.com/planetarium/libplanet/pull/2091
@@ -83,6 +89,7 @@ Released on July 18th, 2022.
 [#2136]: https://github.com/planetarium/libplanet/pull/2136
 [#2139]: https://github.com/planetarium/libplanet/pull/2139
 [#2142]: https://github.com/planetarium/libplanet/pull/2142
+[#2188]: https://github.com/planetarium/libplanet/pull/2188
 [Cocona.Lite 2.0.0]: https://www.nuget.org/packages/Cocona.Lite/2.0.0
 
 
