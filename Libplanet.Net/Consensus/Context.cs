@@ -92,6 +92,7 @@ namespace Libplanet.Net.Consensus
         private readonly Channel<ConsensusMessage> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly ConcurrentDictionary<int, HashSet<ConsensusMessage>> _messagesInRound;
+        private readonly object _messagesInRoundLock;
 
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -165,6 +166,7 @@ namespace Libplanet.Net.Consensus
             _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _messagesInRound = new ConcurrentDictionary<int, HashSet<ConsensusMessage>>();
+            _messagesInRoundLock = new object();
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
@@ -228,14 +230,17 @@ namespace Libplanet.Net.Consensus
         /// <returns>A <see cref="Libplanet.Consensus.VoteSet"/> of given round.</returns>
         public VoteSet VoteSet(int round)
         {
-            var (block, _) = GetPropose(round);
-            var voteSet = new VoteSet(Height, round, block?.Hash, _validators);
-            var roundVotes =
-                _messagesInRound[round].Where(
-                    x => x is ConsensusVote).Cast<ConsensusVote>().ToList();
-            var roundCommits =
-                _messagesInRound[round].Where(
-                    x => x is ConsensusCommit).Cast<ConsensusCommit>().ToList();
+            (Block<T>? block, int? _) = GetPropose(round);
+            VoteSet voteSet = new VoteSet(Height, round, block?.Hash, _validators);
+            List<ConsensusVote> roundVotes;
+            List<ConsensusCommit> roundCommits;
+            lock (_messagesInRoundLock)
+            {
+                roundVotes = _messagesInRound[round]
+                    .Where(x => x is ConsensusVote).Cast<ConsensusVote>().ToList();
+                roundCommits = _messagesInRound[round]
+                    .Where(x => x is ConsensusCommit).Cast<ConsensusCommit>().ToList();
+            }
 
             foreach (var vote in roundVotes)
             {
@@ -423,10 +428,13 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private (Block<T>?, int?) GetPropose(int round)
         {
-            ConsensusMessage? msg = _messagesInRound[round].FirstOrDefault(
-                msg => msg is ConsensusPropose);
+            ConsensusMessage? message;
+            lock (_messagesInRoundLock)
+            {
+                message = _messagesInRound[round].FirstOrDefault(msg => msg is ConsensusPropose);
+            }
 
-            if (msg is ConsensusPropose propose)
+            if (message is ConsensusPropose propose)
             {
                 var block = BlockMarshaler.UnmarshalBlock<T>(
                     _blockChain.Policy.GetHashAlgorithm,
@@ -451,9 +459,14 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private bool HasTwoThirdsPreVote(int round, BlockHash? hash, bool any = false)
         {
-            int count = _messagesInRound[round].Count(
+            int count;
+            lock (_messagesInRoundLock)
+            {
+                count = _messagesInRound[round].Count(
                 msg => msg is ConsensusVote preVote &&
                        (any || preVote.BlockHash.Equals(hash)));
+            }
+
             return count > TotalValidators * 2 / 3;
         }
 
@@ -471,9 +484,14 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private bool HasTwoThirdsPreCommit(int round, BlockHash? hash, bool any = false)
         {
-            int count = _messagesInRound[round].Count(
-                msg => msg is ConsensusCommit preCommit &&
-                       (any || preCommit.BlockHash.Equals(hash)));
+            int count;
+            lock (_messagesInRoundLock)
+            {
+                count = _messagesInRound[round].Count(
+                    msg => msg is ConsensusCommit preCommit &&
+                        (any || preCommit.BlockHash.Equals(hash)));
+            }
+
             return count > TotalValidators * 2 / 3;
         }
     }

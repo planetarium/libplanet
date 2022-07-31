@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsync()
         {
-            var stepChanged = new AsyncAutoResetEvent();
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
 
             void IsProposeSent(ConsensusMessage message)
@@ -41,13 +41,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             {
                 if (step == Step.PreVote)
                 {
-                    stepChanged.Set();
+                    stepChangedToPreVote.Set();
                 }
             };
 
             Context.StartAsync();
             await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            await stepChangedToPreVote.WaitAsync();
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -57,7 +57,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsyncWithLastCommit()
         {
-            var stepChanged = new AsyncAutoResetEvent();
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             ConsensusPropose? received = null;
 
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             {
                 if (step == Step.PreVote)
                 {
-                    stepChanged.Set();
+                    stepChangedToPreVote.Set();
                 }
             };
 
@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.StartAsync(lastCommit);
             await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            await stepChangedToPreVote.WaitAsync();
 
             Assert.Equal(Step.PreVote, Context.Step);
             // Looks dirty, but compiler throws error without if statement.

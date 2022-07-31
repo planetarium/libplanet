@@ -118,13 +118,16 @@ namespace Libplanet.Net.Consensus
                     commit);
             }
 
-            if (!_messagesInRound.ContainsKey(message.Round))
+            lock (_messagesInRoundLock)
             {
-                _messagesInRound.TryAdd(message.Round, new HashSet<ConsensusMessage>());
-            }
+                if (!_messagesInRound.ContainsKey(message.Round))
+                {
+                    _messagesInRound.TryAdd(message.Round, new HashSet<ConsensusMessage>());
+                }
 
-            // TODO: Prevent duplicated messages adding.
-            _messagesInRound[message.Round].Add(message);
+                // TODO: Prevent duplicated messages adding.
+                _messagesInRound[message.Round].Add(message);
+            }
         }
 
         /// <summary>

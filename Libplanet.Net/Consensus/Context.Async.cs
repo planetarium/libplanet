@@ -45,7 +45,29 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        internal async Task ConsumeMessage(CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Consumes every <see cref="System.Action"/> in the mutation queue.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token for reading
+        /// <see cref="System.Action"/>s from the mutation queue.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task MutationConsumerTask(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                try
+                {
+                    await ConsumeMutation(cancellationToken);
+                }
+                catch (TaskCanceledException tce)
+                {
+                    _logger.Debug("Cancellation was requested", tce);
+                    throw;
+                }
+            }
+        }
+
+        private async Task ConsumeMessage(CancellationToken cancellationToken)
         {
             ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
             try
@@ -77,29 +99,7 @@ namespace Libplanet.Net.Consensus
             }
         }
 
-        /// <summary>
-        /// Consumes every <see cref="System.Action"/> in the mutation queue.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token for reading
-        /// <see cref="System.Action"/>s from the mutation queue.</param>
-        /// <returns>An awaitable task without value.</returns>
-        internal async Task MutationConsumerTask(CancellationToken cancellationToken)
-        {
-            while (true)
-            {
-                try
-                {
-                    await ConsumeMutation(cancellationToken);
-                }
-                catch (TaskCanceledException tce)
-                {
-                    _logger.Debug("Cancellation was requested", tce);
-                    throw;
-                }
-            }
-        }
-
-        internal async Task ConsumeMutation(CancellationToken cancellationToken = default)
+        private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
             mutation();
