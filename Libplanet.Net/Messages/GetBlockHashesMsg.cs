@@ -6,15 +6,15 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetBlockHashes : Message
+    internal class GetBlockHashesMsg : Message
     {
-        public GetBlockHashes(BlockLocator locator, BlockHash? stop)
+        public GetBlockHashesMsg(BlockLocator locator, BlockHash? stop)
         {
             Locator = locator;
             Stop = stop;
         }
 
-        public GetBlockHashes(byte[][] dataFrames)
+        public GetBlockHashesMsg(byte[][] dataFrames)
         {
             int requestedHashCount = BitConverter.ToInt32(dataFrames[0], 0);
             Locator = new BlockLocator(
