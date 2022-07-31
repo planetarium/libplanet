@@ -262,11 +262,27 @@ namespace Libplanet.Store
             return IndexCollection(chainId).Count();
         }
 
-        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
-        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, long, long?)"/>
+        public override IEnumerable<BlockHash> IterateIndexes(
+            Guid chainId,
+            long offset,
+            long? limit)
         {
+            int iOffSet = (offset < int.MinValue || offset > int.MaxValue)
+                ? throw new ArgumentOutOfRangeException(
+                    nameof(offset),
+                    offset,
+                    "The given value isn't supported on the storage backend.")
+                : (int)offset;
+            int? iLimit = (limit < int.MinValue || limit > int.MaxValue)
+               ? throw new ArgumentOutOfRangeException(
+                   nameof(limit),
+                   limit,
+                   "The given value isn't supported on the storage backend.")
+               : (int?)limit;
+
             return IndexCollection(chainId)
-                .Find(Query.All(), offset, limit ?? int.MaxValue)
+                .Find(Query.All(), iOffSet, iLimit ?? int.MaxValue)
                 .Select(i => i.Hash);
         }
 

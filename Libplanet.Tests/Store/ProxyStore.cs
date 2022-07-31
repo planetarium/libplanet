@@ -54,11 +54,11 @@ namespace Libplanet.Tests.Store
         public virtual long CountIndex(Guid chainId) =>
             Store.CountIndex(chainId);
 
-        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int?)"/>
+        /// <inheritdoc cref="IStore.IterateIndexes(Guid, long, long?)"/>
         public virtual IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset = 0,
-            int? limit = null
+            long offset = 0,
+            long? limit = null
         ) =>
             Store.IterateIndexes(chainId, offset, limit);
 

@@ -74,12 +74,12 @@ namespace Libplanet.Store
         long IStore.CountIndex(Guid chainId) =>
             _indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> index) ? index.Count : 0;
 
-        IEnumerable<BlockHash> IStore.IterateIndexes(Guid chainId, int offset, int? limit)
+        IEnumerable<BlockHash> IStore.IterateIndexes(Guid chainId, long offset, long? limit)
         {
             if (_indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> list))
             {
-                IEnumerable<BlockHash> index = list.Skip(offset);
-                return limit is { } l ? index.Take(l) : index;
+                IEnumerable<BlockHash> index = list.Skip((int)offset);
+                return limit is { } l ? index.Take((int)l) : index;
             }
 
             return Enumerable.Empty<BlockHash>();

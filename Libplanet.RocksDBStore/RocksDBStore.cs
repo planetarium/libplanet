@@ -143,7 +143,7 @@ namespace Libplanet.RocksDBStore
         private readonly ReaderWriterLockSlim _rwBlockLock;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
-        private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
+        private LruCache<Guid, LruCache<(long, long?), List<BlockHash>>> _indexCache;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -192,7 +192,7 @@ namespace Libplanet.RocksDBStore
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
-            _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
+            _indexCache = new LruCache<Guid, LruCache<(long, long?), List<BlockHash>>>(64);
 
             _path = path;
             _txEpochUnitSeconds = txEpochUnitSeconds > 0
@@ -515,10 +515,11 @@ namespace Libplanet.RocksDBStore
             return 0;
         }
 
-        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, int, int?)"/>
-        public override IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit)
+        /// <inheritdoc cref="BaseStore.IterateIndexes(Guid, long, long?)"/>
+        public override IEnumerable<BlockHash>
+        IterateIndexes(Guid chainId, long offset, long? limit)
         {
-            if (_indexCache.TryGetValue(chainId, out LruCache<(int, int?), List<BlockHash>> ic) &&
+            if (_indexCache.TryGetValue(chainId, out LruCache<(long, long?), List<BlockHash>> ic) &&
                 ic.TryGetValue((offset, limit), out List<BlockHash> cached))
             {
                 return cached;
@@ -529,7 +530,7 @@ namespace Libplanet.RocksDBStore
 
             if (ic is null)
             {
-                _indexCache[chainId] = new LruCache<(int, int?), List<BlockHash>>();
+                _indexCache[chainId] = new LruCache<(long, long?), List<BlockHash>>();
             }
 
             _indexCache[chainId][(offset, limit)] = indexes;
@@ -1434,8 +1435,8 @@ namespace Libplanet.RocksDBStore
 
         private IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset,
-            int? limit,
+            long offset,
+            long? limit,
             bool includeDeleted
         )
         {
@@ -1451,7 +1452,7 @@ namespace Libplanet.RocksDBStore
                 Guid prevId = chainInfo.Item1;
                 long pi = chainInfo.Item2;
 
-                int expectedCount = (int)(pi - offset + 1);
+                long expectedCount = (int)(pi - offset + 1);
                 if (limit is { } limitNotNull && limitNotNull < expectedCount)
                 {
                     expectedCount = limitNotNull;
@@ -1472,7 +1473,7 @@ namespace Libplanet.RocksDBStore
             }
 
             byte[] prefix = IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-            foreach (Iterator it in IterateDb(_chainDb, prefix).Skip(offset))
+            foreach (Iterator it in IterateDb(_chainDb, prefix).Skip((int)offset))
             {
                 if (count >= limit)
                 {
