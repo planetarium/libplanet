@@ -26,8 +26,8 @@ To be released.
    - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
    - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
    - Added `BlockChain<T>.GetBlockLocator(int)` method.
- -  Added Genesis Hash property in `IActionContext`. [[#1972], [#2179]]
-   -  Added Genesis Hash property in `ActionEvaluator`.
+ -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
 
 ### Behavioral changes
 
