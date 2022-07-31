@@ -650,34 +650,34 @@ namespace Libplanet.Tests.Store
             var indexes = store.IterateIndexes(ns).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndexes(ns, 1).ToArray();
+            indexes = store.IterateIndexes(ns, 1L).ToArray();
             Assert.Equal(new[] { Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndexes(ns, 2).ToArray();
+            indexes = store.IterateIndexes(ns, 2L).ToArray();
             Assert.Equal(new[] { Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndexes(ns, 3).ToArray();
+            indexes = store.IterateIndexes(ns, 3L).ToArray();
             Assert.Equal(new BlockHash[0], indexes);
 
-            indexes = store.IterateIndexes(ns, 4).ToArray();
+            indexes = store.IterateIndexes(ns, 4L).ToArray();
             Assert.Equal(new BlockHash[0], indexes);
 
-            indexes = store.IterateIndexes(ns, limit: 0).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 0L).ToArray();
             Assert.Equal(new BlockHash[0], indexes);
 
-            indexes = store.IterateIndexes(ns, limit: 1).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 1L).ToArray();
             Assert.Equal(new[] { Fx.Hash1 }, indexes);
 
-            indexes = store.IterateIndexes(ns, limit: 2).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 2L).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2 }, indexes);
 
-            indexes = store.IterateIndexes(ns, limit: 3).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 3L).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndexes(ns, limit: 4).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 4L).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndexes(ns, 1, 1).ToArray();
+            indexes = store.IterateIndexes(ns, 1L, 1L).ToArray();
             Assert.Equal(new[] { Fx.Hash2 }, indexes);
         }
 
