@@ -171,7 +171,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await roundChangedToOne.WaitAsync();
-            await NewRoundSendMessageAssert();
             Assert.Equal(Step.Propose, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);

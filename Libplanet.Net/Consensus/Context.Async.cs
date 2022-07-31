@@ -102,7 +102,31 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
+            int prevRound = Round;
+            Step prevStep = Step;
             mutation();
+            int nextRound = Round;
+            Step nextStep = Step;
+            if (prevStep != nextStep)
+            {
+                _logger.Debug(
+                    "Step changed from {PrevStep} to {NextStep}. {Info}",
+                    prevStep.ToString(),
+                    nextStep.ToString(),
+                    ToString());
+                StepChanged?.Invoke(this, nextStep);
+            }
+
+            if (prevRound != nextRound)
+            {
+                _logger.Debug(
+                    "Round changed from {PrevRound} to {NextRound}. {Info}",
+                    prevRound,
+                    nextRound,
+                    ToString());
+                RoundChanged?.Invoke(this, Round);
+            }
+
             MutationConsumed?.Invoke(this, mutation);
         }
 

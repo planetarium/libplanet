@@ -251,10 +251,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Wait for all messages to be cleared.
             await messageConsumed.WaitAsync();
-            await messageConsumed.WaitAsync();
             roundVoteSet = Context.VoteSet(0);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
 
@@ -272,7 +271,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
         }

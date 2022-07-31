@@ -17,7 +17,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
     public class ConsensusContextNonProposerTest : ConsensusContextTestBase
     {
-        private const int Timeout = 60_000;
         private readonly ILogger _logger;
 
         public ConsensusContextNonProposerTest(ITestOutputHelper output)
@@ -241,8 +240,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightThreeStepChanged.WaitAsync();
             // Commit ends
             await heightTwoStepChanged.WaitAsync();
-            // GST, PreVote -> Propose (NewHeight and NewRound started)
-            await NewHeightDelayAssert(3);
             // Propose -> PreVote (message consumed)
             await heightThreeStepChanged.WaitAsync();
             Assert.Equal(3, ConsensusContext.Height);

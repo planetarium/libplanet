@@ -14,6 +14,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
     public class ConsensusContextTestBase : IDisposable
     {
+        protected const int Timeout = 30_000;
+
         protected readonly StoreFixture Fx;
         protected readonly BlockChain<DumbAction> BlockChain;
         protected readonly ConsensusContext<DumbAction> ConsensusContext;
@@ -65,13 +67,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             Fx.Dispose();
             ConsensusContext.Dispose();
-        }
-
-        protected async Task NewHeightDelayAssert(long height)
-        {
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => ConsensusContext.Height == height,
-                NewHeightDelay.Duration().Milliseconds + 3_000);
         }
     }
 }

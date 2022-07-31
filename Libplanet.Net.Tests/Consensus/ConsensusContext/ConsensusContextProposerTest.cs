@@ -10,8 +10,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
     [Collection("NetMQConfiguration")]
     public class ConsensusContextProposerTest : ConsensusContextTestBase
     {
-        private const int Timeout = 60_000;
-
         private readonly ILogger _logger;
 
         public ConsensusContextProposerTest(ITestOutputHelper output)

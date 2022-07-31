@@ -19,7 +19,7 @@ namespace Libplanet.Net.Consensus
                 Round,
                 ToString());
             Round = round;
-            SetStep(Step.Propose);
+            Step = Step.Propose;
             if (Proposer(Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
@@ -45,8 +45,6 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 _ = OnTimeoutPropose(Height, Round);
             }
-
-            RoundChanged?.Invoke(this, Round);
         }
 
         /// <summary>
@@ -149,7 +147,7 @@ namespace Libplanet.Net.Consensus
                     "Entering PreVote step due to proposal message with " +
                     "valid round -1. (context: {Context})",
                     ToString());
-                SetStep(Step.PreVote);
+                Step = Step.PreVote;
 
                 if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
                 {
@@ -174,7 +172,7 @@ namespace Libplanet.Net.Consensus
                     "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
                     validRound2,
                     ToString());
-                SetStep(Step.PreVote);
+                Step = Step.PreVote;
 
                 if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
                 {
@@ -220,7 +218,7 @@ namespace Libplanet.Net.Consensus
                         "2/3+ PreVote for current round {Round}. (context: {Context})",
                         Round,
                         ToString());
-                    SetStep(Step.PreCommit);
+                    Step = Step.PreCommit;
                     _lockedValue = block3;
                     _lockedRound = Round;
                     BroadcastMessage(
@@ -238,7 +236,7 @@ namespace Libplanet.Net.Consensus
                     "(context: {Context})",
                     Round,
                     ToString());
-                SetStep(Step.PreCommit);
+                Step = Step.PreCommit;
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
             }
@@ -270,7 +268,7 @@ namespace Libplanet.Net.Consensus
                 Step != Step.EndCommit &&
                 IsValid(block4))
             {
-                SetStep(Step.EndCommit);
+                Step = Step.EndCommit;
                 CommittedRound = round;
                 _logger.Debug(
                     "Committed block in round {Round}. (context: {Context})",
@@ -309,7 +307,7 @@ namespace Libplanet.Net.Consensus
             {
                 BroadcastMessage(
                     new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
-                SetStep(Step.PreVote);
+                Step = Step.PreVote;
                 TimeoutProcessed?.Invoke(this, (height, round));
             }
         }
@@ -328,7 +326,7 @@ namespace Libplanet.Net.Consensus
             {
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
-                SetStep(Step.PreCommit);
+                Step = Step.PreCommit;
                 TimeoutProcessed?.Invoke(this, (height, round));
             }
         }

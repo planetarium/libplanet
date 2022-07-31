@@ -405,21 +405,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Changes the step of the consensus.
-        /// </summary>
-        /// <param name="step">A new step to set.</param>
-        private void SetStep(Step step)
-        {
-            _logger.Debug(
-                "Translate step from {Before} to {After}. {Info}",
-                Step.ToString(),
-                step.ToString(),
-                ToString());
-            Step = step;
-            StepChanged?.Invoke(this, step);
-        }
-
-        /// <summary>
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
         /// <param name="round">A round to get.</param>

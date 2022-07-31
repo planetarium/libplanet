@@ -15,7 +15,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 {
     public class ContextTestBase : IDisposable
     {
-        protected const int Timeout = 60_000;
+        protected const int Timeout = 30_000;
         protected readonly Context<DumbAction> Context;
         protected readonly BlockChain<DumbAction> BlockChain;
 
@@ -89,12 +89,5 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 Transactions = new List<Transaction<DumbAction>>(),
             }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, BlockChain);
-
-        protected async Task NewRoundSendMessageAssert()
-        {
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => Context.Step == Step.Propose,
-                1_000);
-        }
     }
 }
