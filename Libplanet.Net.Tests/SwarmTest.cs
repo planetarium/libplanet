@@ -471,7 +471,7 @@ namespace Libplanet.Net.Tests
 
                 ITransport transport = swarmB.Transport;
 
-                var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
+                var request = new GetBlocksMsg(hashes.Select(pair => pair.Item2), 2);
                 Message[] responses = (await transport.SendMessageAsync(
                     (BoundPeer)swarmA.AsPeer,
                     request,
@@ -479,12 +479,12 @@ namespace Libplanet.Net.Tests
                     2,
                     false,
                     default)).ToArray();
-                var blockMessage = (Libplanet.Net.Messages.Blocks)responses[0];
+                var blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[0];
 
                 Assert.Equal(2, responses.Length);
                 Assert.Equal(2, blockMessage.Payloads.Count);
 
-                blockMessage = (Libplanet.Net.Messages.Blocks)responses[1];
+                blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[1];
 
                 Assert.Single(blockMessage.Payloads);
             }

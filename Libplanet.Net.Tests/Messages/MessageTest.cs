@@ -37,7 +37,7 @@ namespace Libplanet.Net.Tests.Messages
                 _ => HashAlgorithmType.Of<SHA256>(),
                 GenesisMiner
             );
-            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
                 codec.Encode(message, privateKey, apv, peer, dateTimeOffset);
@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void InvalidCredential()
         {
-            var message = new Ping();
+            var message = new PingMsg();
             var privateKey = new PrivateKey();
             var apv = new AppProtocolVersion(
                 1,
@@ -75,7 +75,7 @@ namespace Libplanet.Net.Tests.Messages
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
-            var ping = new Ping();
+            var ping = new PingMsg();
             var codec = new NetMQMessageCodec();
             var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
 
@@ -98,7 +98,7 @@ namespace Libplanet.Net.Tests.Messages
         public void InvalidArguments()
         {
             var codec = new NetMQMessageCodec();
-            var message = new Ping();
+            var message = new PingMsg();
             var privateKey = new PrivateKey();
             var apv = new AppProtocolVersion(
                 1,

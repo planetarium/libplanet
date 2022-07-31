@@ -23,24 +23,24 @@ namespace Libplanet.Net.Tests.Messages
 
             // Within buffer window is okay.
             messageValidator.ValidateTimestamp(
-                new Ping() { Timestamp = DateTimeOffset.UtcNow + buffer.Divide(2) });
+                new PingMsg() { Timestamp = DateTimeOffset.UtcNow + buffer.Divide(2) });
             messageValidator.ValidateTimestamp(
-                new Ping() { Timestamp = DateTimeOffset.UtcNow - buffer.Divide(2) });
+                new PingMsg() { Timestamp = DateTimeOffset.UtcNow - buffer.Divide(2) });
 
             // Outside buffer throws an exception.
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping() { Timestamp = DateTimeOffset.UtcNow + buffer.Multiply(2) }));
+                    new PingMsg() { Timestamp = DateTimeOffset.UtcNow + buffer.Multiply(2) }));
             Assert.Throws<InvalidMessageTimestampException>(() =>
                 messageValidator.ValidateTimestamp(
-                    new Ping() { Timestamp = DateTimeOffset.UtcNow - buffer.Multiply(2) }));
+                    new PingMsg() { Timestamp = DateTimeOffset.UtcNow - buffer.Multiply(2) }));
 
             // If buffer is null, no exception gets thrown.
             messageValidator = new MessageValidator(default, null, null, null);
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MaxValue });
+                new PingMsg() { Remote = peer, Timestamp = DateTimeOffset.MaxValue });
             messageValidator.ValidateTimestamp(
-                new Ping() { Remote = peer, Timestamp = DateTimeOffset.MinValue });
+                new PingMsg() { Remote = peer, Timestamp = DateTimeOffset.MinValue });
         }
 
         [Fact]
@@ -67,10 +67,10 @@ namespace Libplanet.Net.Tests.Messages
             ImmutableHashSet<PublicKey>? trustedApvSigners3 = null;
             DifferentAppProtocolVersionEncountered callback = (p, pv, lv) => { called = true; };
             var peer = new Peer(trustedSigner.PublicKey);
-            var trustedPing1 = new Ping() { Remote = peer, Version = trustedApv1 };
-            var trustedPing2 = new Ping() { Remote = peer, Version = trustedApv2 };
-            var unknownPing1 = new Ping() { Remote = peer, Version = unknownApv1 };
-            var unknownPing2 = new Ping() { Remote = peer, Version = unknownApv2 };
+            var trustedPing1 = new PingMsg() { Remote = peer, Version = trustedApv1 };
+            var trustedPing2 = new PingMsg() { Remote = peer, Version = trustedApv2 };
+            var unknownPing1 = new PingMsg() { Remote = peer, Version = unknownApv1 };
+            var unknownPing2 = new PingMsg() { Remote = peer, Version = unknownApv2 };
 
             DifferentAppProtocolVersionException exception;
             MessageValidator messageValidator;

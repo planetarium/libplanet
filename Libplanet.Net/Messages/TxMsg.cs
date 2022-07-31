@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Tx : Message
+    internal class TxMsg : Message
     {
-        public Tx(byte[] payload)
+        public TxMsg(byte[] payload)
         {
             Payload = payload;
         }
 
-        public Tx(byte[][] dataFrames)
+        public TxMsg(byte[][] dataFrames)
         {
             Payload = dataFrames[0];
         }
