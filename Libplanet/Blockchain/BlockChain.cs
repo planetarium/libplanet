@@ -1279,7 +1279,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
+        internal IEnumerable<Block<T>> IterateBlocks(long offset = 0, long? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 
@@ -1296,7 +1296,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<BlockHash> IterateBlockHashes(int offset = 0, int? limit = null)
+        internal IEnumerable<BlockHash> IterateBlockHashes(long offset = 0, long? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 
