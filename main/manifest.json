@@ -2217,7 +2217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.BootstrapOptions.html",
-          "hash": "1YXoM9Qzxdir2NOjq8hODw09NZ/pjZzufNNpKk9dwI4="
+          "hash": "vDY1F5z6D0XO8qRRSgw4G3Ncexw+992x/CoZKTEFJN4="
         }
       },
       "is_incremental": false,
@@ -2297,11 +2297,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.DifferentVersion.yml",
+      "source_relative_path": "api/Libplanet.Net.Messages.DifferentVersionMsg.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.DifferentVersion.html",
-          "hash": "PH5IV5d6wrSAlZ1Co1RX96o7+smAF3x9xkQTMgN9pTQ="
+          "relative_path": "api/Libplanet.Net.Messages.DifferentVersionMsg.html",
+          "hash": "dy1ZYs0QWQmRz2ICYP2xXCjLfUZyv9FPBl3uBoWUtXM="
         }
       },
       "is_incremental": false,
@@ -2309,11 +2309,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.FindNeighbors.yml",
+      "source_relative_path": "api/Libplanet.Net.Messages.FindNeighborsMsg.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.FindNeighbors.html",
-          "hash": "rhqwZENaffnYYqpBGyWQr6QF7EE6wHxx63+Hxef7KbY="
+          "relative_path": "api/Libplanet.Net.Messages.FindNeighborsMsg.html",
+          "hash": "2kTCPWS0Ux5/2hVZQFn9bUADCsfb/+VttadXEhjjhfo="
         }
       },
       "is_incremental": false,
@@ -2361,7 +2361,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.html",
-          "hash": "z1kx099AlsIy1OSVks61hz3TB2tlHCLDIPd+eLNBJZA="
+          "hash": "AlQ4rSjuFpWgi7fHvmK49T1vONqCyEFRH97gosF6HtY="
         }
       },
       "is_incremental": false,
@@ -2381,11 +2381,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.Neighbors.yml",
+      "source_relative_path": "api/Libplanet.Net.Messages.NeighborsMsg.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.Neighbors.html",
-          "hash": "hoi6BSj0hejjLgyy/SRkK28fPmPKrugodGO1DAN5v/E="
+          "relative_path": "api/Libplanet.Net.Messages.NeighborsMsg.html",
+          "hash": "nQDA/KA8oCTdU5kkQl1CkutEBzKmS9JXAtTIGviLiUU="
         }
       },
       "is_incremental": false,
@@ -2405,11 +2405,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.Ping.yml",
+      "source_relative_path": "api/Libplanet.Net.Messages.PingMsg.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.Ping.html",
-          "hash": "q8l26omhmgtuO8tRcm52kXyNa41jAIEcTrgaStaDMb8="
+          "relative_path": "api/Libplanet.Net.Messages.PingMsg.html",
+          "hash": "AABON+sUxmCuBCfYDLQDdC7scvP7nVhPhUyE/oDhTd4="
         }
       },
       "is_incremental": false,
@@ -2417,11 +2417,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.Pong.yml",
+      "source_relative_path": "api/Libplanet.Net.Messages.PongMsg.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.Pong.html",
-          "hash": "etL8xvW5zSIJUdKmbFLHRvOr/rYyPeI+r1kDc7fOvZo="
+          "relative_path": "api/Libplanet.Net.Messages.PongMsg.html",
+          "hash": "lZ0/IQhJTGhQ2fOrAvx21M64Ly+1WJeIgBOw/QmScyg="
         }
       },
       "is_incremental": false,
@@ -2445,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.html",
-          "hash": "/DmIc2AFGADgt3deZS7EZ1nYNpuZsdJS1ab6vuKje0Q="
+          "hash": "mrnbvZxOWb1+hovfXBbw7nhaPs5HvC5/q5APIbrs2nY="
         }
       },
       "is_incremental": false,
@@ -2517,7 +2517,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.PreloadOptions.html",
-          "hash": "MWaG6WDaIaVD0yGvTZeiTTv74IayfGfb61uK4azLYiE="
+          "hash": "iF8290VoZwTkvwXczpNrsy2WejO0GBhObncjr0SDsGI="
         }
       },
       "is_incremental": false,
@@ -2541,7 +2541,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.IProtocol.html",
-          "hash": "wPhm4A+nbvCjrt7fPDcY1NmK/ZYDY0wY8fKg/r//CLk="
+          "hash": "fkUjmxkFOjyXVPlj1sYSAfj6ObfbMlTzRoHH4RFRKvk="
         }
       },
       "is_incremental": false,
@@ -2565,7 +2565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.KademliaProtocol.html",
-          "hash": "0sTP5fT9NxUONlwnFK7LSV+scyh8NuO5h74nDnaznkQ="
+          "hash": "ClEpEbfOpWje7IiLDsL9p202mgmtvKOPW7OhHFc5j2g="
         }
       },
       "is_incremental": false,
@@ -2637,7 +2637,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "omTSo8AxpfZmfMfyE+6ROc5/SYQKrsfSDu919NyrjKc="
+          "hash": "1KbwXRjx7f64iTEzwznT/+meGa6Qrs9bPO66mPzgMkw="
         }
       },
       "is_incremental": false,
@@ -2661,7 +2661,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmOptions.html",
-          "hash": "17fl2hvVImdeCmuYrDDqkZ6gcaWhdoIqovow9xhUPqo="
+          "hash": "5V+Gm2WpbzCgigZHYowCRg6PG3CTE5R3lX9OvYItQa8="
         }
       },
       "is_incremental": false,
@@ -2673,7 +2673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.TimeoutOptions.html",
-          "hash": "aqt8+gSUjGUTTRBGgHV0vC1rRgjqdqcU8tXiJp4LViA="
+          "hash": "sYFDXR0Wun+I58vs+lz/povNFGCKWCNbiGoccu8Z2yE="
         }
       },
       "is_incremental": false,
@@ -2949,7 +2949,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Node.SyncConfig.html",
-          "hash": "FauE1ETYm9iAf77Vi3m6SEzYi663xyaLKwg1WI1sVGs="
+          "hash": "nLXbR5w5WAyqi1zKwztryvpKCHpd62NB8gi3SGUxIYk="
         }
       },
       "is_incremental": false,
@@ -4101,7 +4101,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "jWYQPMOiP2M/ITJy3KOEc7nUIzWhHEQjGBQMzkAX33w="
+          "hash": "PDWkGk2s8h4KGlxodmDwKVM3r6VXVtj10qrx4mPH9C0="
         }
       },
       "is_incremental": false,

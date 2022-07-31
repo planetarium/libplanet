@@ -14545,105 +14545,105 @@ references:
   commentId: N:Libplanet.Net.Messages
   fullName: Libplanet.Net.Messages
   nameWithType: Libplanet.Net.Messages
-- uid: Libplanet.Net.Messages.DifferentVersion
-  name: DifferentVersion
-  href: api/Libplanet.Net.Messages.DifferentVersion.html
-  commentId: T:Libplanet.Net.Messages.DifferentVersion
-  fullName: Libplanet.Net.Messages.DifferentVersion
-  nameWithType: DifferentVersion
-- uid: Libplanet.Net.Messages.DifferentVersion.DataFrames
+- uid: Libplanet.Net.Messages.DifferentVersionMsg
+  name: DifferentVersionMsg
+  href: api/Libplanet.Net.Messages.DifferentVersionMsg.html
+  commentId: T:Libplanet.Net.Messages.DifferentVersionMsg
+  fullName: Libplanet.Net.Messages.DifferentVersionMsg
+  nameWithType: DifferentVersionMsg
+- uid: Libplanet.Net.Messages.DifferentVersionMsg.DataFrames
   name: DataFrames
-  href: api/Libplanet.Net.Messages.DifferentVersion.html#Libplanet_Net_Messages_DifferentVersion_DataFrames
-  commentId: P:Libplanet.Net.Messages.DifferentVersion.DataFrames
-  fullName: Libplanet.Net.Messages.DifferentVersion.DataFrames
-  nameWithType: DifferentVersion.DataFrames
-- uid: Libplanet.Net.Messages.DifferentVersion.DataFrames*
+  href: api/Libplanet.Net.Messages.DifferentVersionMsg.html#Libplanet_Net_Messages_DifferentVersionMsg_DataFrames
+  commentId: P:Libplanet.Net.Messages.DifferentVersionMsg.DataFrames
+  fullName: Libplanet.Net.Messages.DifferentVersionMsg.DataFrames
+  nameWithType: DifferentVersionMsg.DataFrames
+- uid: Libplanet.Net.Messages.DifferentVersionMsg.DataFrames*
   name: DataFrames
-  href: api/Libplanet.Net.Messages.DifferentVersion.html#Libplanet_Net_Messages_DifferentVersion_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.DifferentVersion.DataFrames
+  href: api/Libplanet.Net.Messages.DifferentVersionMsg.html#Libplanet_Net_Messages_DifferentVersionMsg_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.DifferentVersionMsg.DataFrames
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.DifferentVersion.DataFrames
-  nameWithType: DifferentVersion.DataFrames
-- uid: Libplanet.Net.Messages.DifferentVersion.Type
+  fullName: Libplanet.Net.Messages.DifferentVersionMsg.DataFrames
+  nameWithType: DifferentVersionMsg.DataFrames
+- uid: Libplanet.Net.Messages.DifferentVersionMsg.Type
   name: Type
-  href: api/Libplanet.Net.Messages.DifferentVersion.html#Libplanet_Net_Messages_DifferentVersion_Type
-  commentId: P:Libplanet.Net.Messages.DifferentVersion.Type
-  fullName: Libplanet.Net.Messages.DifferentVersion.Type
-  nameWithType: DifferentVersion.Type
-- uid: Libplanet.Net.Messages.DifferentVersion.Type*
+  href: api/Libplanet.Net.Messages.DifferentVersionMsg.html#Libplanet_Net_Messages_DifferentVersionMsg_Type
+  commentId: P:Libplanet.Net.Messages.DifferentVersionMsg.Type
+  fullName: Libplanet.Net.Messages.DifferentVersionMsg.Type
+  nameWithType: DifferentVersionMsg.Type
+- uid: Libplanet.Net.Messages.DifferentVersionMsg.Type*
   name: Type
-  href: api/Libplanet.Net.Messages.DifferentVersion.html#Libplanet_Net_Messages_DifferentVersion_Type_
-  commentId: Overload:Libplanet.Net.Messages.DifferentVersion.Type
+  href: api/Libplanet.Net.Messages.DifferentVersionMsg.html#Libplanet_Net_Messages_DifferentVersionMsg_Type_
+  commentId: Overload:Libplanet.Net.Messages.DifferentVersionMsg.Type
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.DifferentVersion.Type
-  nameWithType: DifferentVersion.Type
-- uid: Libplanet.Net.Messages.FindNeighbors
-  name: FindNeighbors
-  href: api/Libplanet.Net.Messages.FindNeighbors.html
-  commentId: T:Libplanet.Net.Messages.FindNeighbors
-  fullName: Libplanet.Net.Messages.FindNeighbors
-  nameWithType: FindNeighbors
-- uid: Libplanet.Net.Messages.FindNeighbors.#ctor(Libplanet.Address)
-  name: FindNeighbors(Address)
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors__ctor_Libplanet_Address_
-  commentId: M:Libplanet.Net.Messages.FindNeighbors.#ctor(Libplanet.Address)
-  fullName: Libplanet.Net.Messages.FindNeighbors.FindNeighbors(Libplanet.Address)
-  nameWithType: FindNeighbors.FindNeighbors(Address)
-- uid: Libplanet.Net.Messages.FindNeighbors.#ctor(System.Byte[][])
-  name: FindNeighbors(Byte[][])
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors__ctor_System_Byte_____
-  commentId: M:Libplanet.Net.Messages.FindNeighbors.#ctor(System.Byte[][])
-  name.vb: FindNeighbors(Byte()())
-  fullName: Libplanet.Net.Messages.FindNeighbors.FindNeighbors(System.Byte[][])
-  fullName.vb: Libplanet.Net.Messages.FindNeighbors.FindNeighbors(System.Byte()())
-  nameWithType: FindNeighbors.FindNeighbors(Byte[][])
-  nameWithType.vb: FindNeighbors.FindNeighbors(Byte()())
-- uid: Libplanet.Net.Messages.FindNeighbors.#ctor*
-  name: FindNeighbors
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors__ctor_
-  commentId: Overload:Libplanet.Net.Messages.FindNeighbors.#ctor
+  fullName: Libplanet.Net.Messages.DifferentVersionMsg.Type
+  nameWithType: DifferentVersionMsg.Type
+- uid: Libplanet.Net.Messages.FindNeighborsMsg
+  name: FindNeighborsMsg
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html
+  commentId: T:Libplanet.Net.Messages.FindNeighborsMsg
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg
+  nameWithType: FindNeighborsMsg
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.#ctor(Libplanet.Address)
+  name: FindNeighborsMsg(Address)
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg__ctor_Libplanet_Address_
+  commentId: M:Libplanet.Net.Messages.FindNeighborsMsg.#ctor(Libplanet.Address)
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.FindNeighborsMsg(Libplanet.Address)
+  nameWithType: FindNeighborsMsg.FindNeighborsMsg(Address)
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.#ctor(System.Byte[][])
+  name: FindNeighborsMsg(Byte[][])
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg__ctor_System_Byte_____
+  commentId: M:Libplanet.Net.Messages.FindNeighborsMsg.#ctor(System.Byte[][])
+  name.vb: FindNeighborsMsg(Byte()())
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.FindNeighborsMsg(System.Byte[][])
+  fullName.vb: Libplanet.Net.Messages.FindNeighborsMsg.FindNeighborsMsg(System.Byte()())
+  nameWithType: FindNeighborsMsg.FindNeighborsMsg(Byte[][])
+  nameWithType.vb: FindNeighborsMsg.FindNeighborsMsg(Byte()())
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.#ctor*
+  name: FindNeighborsMsg
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg__ctor_
+  commentId: Overload:Libplanet.Net.Messages.FindNeighborsMsg.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.FindNeighbors.FindNeighbors
-  nameWithType: FindNeighbors.FindNeighbors
-- uid: Libplanet.Net.Messages.FindNeighbors.DataFrames
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.FindNeighborsMsg
+  nameWithType: FindNeighborsMsg.FindNeighborsMsg
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.DataFrames
   name: DataFrames
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_DataFrames
-  commentId: P:Libplanet.Net.Messages.FindNeighbors.DataFrames
-  fullName: Libplanet.Net.Messages.FindNeighbors.DataFrames
-  nameWithType: FindNeighbors.DataFrames
-- uid: Libplanet.Net.Messages.FindNeighbors.DataFrames*
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_DataFrames
+  commentId: P:Libplanet.Net.Messages.FindNeighborsMsg.DataFrames
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.DataFrames
+  nameWithType: FindNeighborsMsg.DataFrames
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.DataFrames*
   name: DataFrames
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.FindNeighbors.DataFrames
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.FindNeighborsMsg.DataFrames
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.FindNeighbors.DataFrames
-  nameWithType: FindNeighbors.DataFrames
-- uid: Libplanet.Net.Messages.FindNeighbors.Target
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.DataFrames
+  nameWithType: FindNeighborsMsg.DataFrames
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.Target
   name: Target
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_Target
-  commentId: P:Libplanet.Net.Messages.FindNeighbors.Target
-  fullName: Libplanet.Net.Messages.FindNeighbors.Target
-  nameWithType: FindNeighbors.Target
-- uid: Libplanet.Net.Messages.FindNeighbors.Target*
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_Target
+  commentId: P:Libplanet.Net.Messages.FindNeighborsMsg.Target
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.Target
+  nameWithType: FindNeighborsMsg.Target
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.Target*
   name: Target
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_Target_
-  commentId: Overload:Libplanet.Net.Messages.FindNeighbors.Target
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_Target_
+  commentId: Overload:Libplanet.Net.Messages.FindNeighborsMsg.Target
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.FindNeighbors.Target
-  nameWithType: FindNeighbors.Target
-- uid: Libplanet.Net.Messages.FindNeighbors.Type
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.Target
+  nameWithType: FindNeighborsMsg.Target
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.Type
   name: Type
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_Type
-  commentId: P:Libplanet.Net.Messages.FindNeighbors.Type
-  fullName: Libplanet.Net.Messages.FindNeighbors.Type
-  nameWithType: FindNeighbors.Type
-- uid: Libplanet.Net.Messages.FindNeighbors.Type*
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_Type
+  commentId: P:Libplanet.Net.Messages.FindNeighborsMsg.Type
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.Type
+  nameWithType: FindNeighborsMsg.Type
+- uid: Libplanet.Net.Messages.FindNeighborsMsg.Type*
   name: Type
-  href: api/Libplanet.Net.Messages.FindNeighbors.html#Libplanet_Net_Messages_FindNeighbors_Type_
-  commentId: Overload:Libplanet.Net.Messages.FindNeighbors.Type
+  href: api/Libplanet.Net.Messages.FindNeighborsMsg.html#Libplanet_Net_Messages_FindNeighborsMsg_Type_
+  commentId: Overload:Libplanet.Net.Messages.FindNeighborsMsg.Type
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.FindNeighbors.Type
-  nameWithType: FindNeighbors.Type
+  fullName: Libplanet.Net.Messages.FindNeighborsMsg.Type
+  nameWithType: FindNeighborsMsg.Type
 - uid: Libplanet.Net.Messages.IMessageCodec`1
   name: IMessageCodec<T>
   href: api/Libplanet.Net.Messages.IMessageCodec-1.html
@@ -14993,76 +14993,76 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.MessageValidator.ValidateTimestamp
   nameWithType: MessageValidator.ValidateTimestamp
-- uid: Libplanet.Net.Messages.Neighbors
-  name: Neighbors
-  href: api/Libplanet.Net.Messages.Neighbors.html
-  commentId: T:Libplanet.Net.Messages.Neighbors
-  fullName: Libplanet.Net.Messages.Neighbors
-  nameWithType: Neighbors
-- uid: Libplanet.Net.Messages.Neighbors.#ctor(IEnumerable{Libplanet.Net.BoundPeer})
-  name: Neighbors(IEnumerable<BoundPeer>)
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors__ctor_IEnumerable_Libplanet_Net_BoundPeer__
-  commentId: M:Libplanet.Net.Messages.Neighbors.#ctor(IEnumerable{Libplanet.Net.BoundPeer})
-  name.vb: Neighbors(IEnumerable(Of BoundPeer))
-  fullName: Libplanet.Net.Messages.Neighbors.Neighbors(IEnumerable<Libplanet.Net.BoundPeer>)
-  fullName.vb: Libplanet.Net.Messages.Neighbors.Neighbors(IEnumerable(Of Libplanet.Net.BoundPeer))
-  nameWithType: Neighbors.Neighbors(IEnumerable<BoundPeer>)
-  nameWithType.vb: Neighbors.Neighbors(IEnumerable(Of BoundPeer))
-- uid: Libplanet.Net.Messages.Neighbors.#ctor(System.Byte[][])
-  name: Neighbors(Byte[][])
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors__ctor_System_Byte_____
-  commentId: M:Libplanet.Net.Messages.Neighbors.#ctor(System.Byte[][])
-  name.vb: Neighbors(Byte()())
-  fullName: Libplanet.Net.Messages.Neighbors.Neighbors(System.Byte[][])
-  fullName.vb: Libplanet.Net.Messages.Neighbors.Neighbors(System.Byte()())
-  nameWithType: Neighbors.Neighbors(Byte[][])
-  nameWithType.vb: Neighbors.Neighbors(Byte()())
-- uid: Libplanet.Net.Messages.Neighbors.#ctor*
-  name: Neighbors
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors__ctor_
-  commentId: Overload:Libplanet.Net.Messages.Neighbors.#ctor
+- uid: Libplanet.Net.Messages.NeighborsMsg
+  name: NeighborsMsg
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html
+  commentId: T:Libplanet.Net.Messages.NeighborsMsg
+  fullName: Libplanet.Net.Messages.NeighborsMsg
+  nameWithType: NeighborsMsg
+- uid: Libplanet.Net.Messages.NeighborsMsg.#ctor(IEnumerable{Libplanet.Net.BoundPeer})
+  name: NeighborsMsg(IEnumerable<BoundPeer>)
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg__ctor_IEnumerable_Libplanet_Net_BoundPeer__
+  commentId: M:Libplanet.Net.Messages.NeighborsMsg.#ctor(IEnumerable{Libplanet.Net.BoundPeer})
+  name.vb: NeighborsMsg(IEnumerable(Of BoundPeer))
+  fullName: Libplanet.Net.Messages.NeighborsMsg.NeighborsMsg(IEnumerable<Libplanet.Net.BoundPeer>)
+  fullName.vb: Libplanet.Net.Messages.NeighborsMsg.NeighborsMsg(IEnumerable(Of Libplanet.Net.BoundPeer))
+  nameWithType: NeighborsMsg.NeighborsMsg(IEnumerable<BoundPeer>)
+  nameWithType.vb: NeighborsMsg.NeighborsMsg(IEnumerable(Of BoundPeer))
+- uid: Libplanet.Net.Messages.NeighborsMsg.#ctor(System.Byte[][])
+  name: NeighborsMsg(Byte[][])
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg__ctor_System_Byte_____
+  commentId: M:Libplanet.Net.Messages.NeighborsMsg.#ctor(System.Byte[][])
+  name.vb: NeighborsMsg(Byte()())
+  fullName: Libplanet.Net.Messages.NeighborsMsg.NeighborsMsg(System.Byte[][])
+  fullName.vb: Libplanet.Net.Messages.NeighborsMsg.NeighborsMsg(System.Byte()())
+  nameWithType: NeighborsMsg.NeighborsMsg(Byte[][])
+  nameWithType.vb: NeighborsMsg.NeighborsMsg(Byte()())
+- uid: Libplanet.Net.Messages.NeighborsMsg.#ctor*
+  name: NeighborsMsg
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg__ctor_
+  commentId: Overload:Libplanet.Net.Messages.NeighborsMsg.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Neighbors.Neighbors
-  nameWithType: Neighbors.Neighbors
-- uid: Libplanet.Net.Messages.Neighbors.DataFrames
+  fullName: Libplanet.Net.Messages.NeighborsMsg.NeighborsMsg
+  nameWithType: NeighborsMsg.NeighborsMsg
+- uid: Libplanet.Net.Messages.NeighborsMsg.DataFrames
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_DataFrames
-  commentId: P:Libplanet.Net.Messages.Neighbors.DataFrames
-  fullName: Libplanet.Net.Messages.Neighbors.DataFrames
-  nameWithType: Neighbors.DataFrames
-- uid: Libplanet.Net.Messages.Neighbors.DataFrames*
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_DataFrames
+  commentId: P:Libplanet.Net.Messages.NeighborsMsg.DataFrames
+  fullName: Libplanet.Net.Messages.NeighborsMsg.DataFrames
+  nameWithType: NeighborsMsg.DataFrames
+- uid: Libplanet.Net.Messages.NeighborsMsg.DataFrames*
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.Neighbors.DataFrames
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.NeighborsMsg.DataFrames
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Neighbors.DataFrames
-  nameWithType: Neighbors.DataFrames
-- uid: Libplanet.Net.Messages.Neighbors.Found
+  fullName: Libplanet.Net.Messages.NeighborsMsg.DataFrames
+  nameWithType: NeighborsMsg.DataFrames
+- uid: Libplanet.Net.Messages.NeighborsMsg.Found
   name: Found
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_Found
-  commentId: P:Libplanet.Net.Messages.Neighbors.Found
-  fullName: Libplanet.Net.Messages.Neighbors.Found
-  nameWithType: Neighbors.Found
-- uid: Libplanet.Net.Messages.Neighbors.Found*
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_Found
+  commentId: P:Libplanet.Net.Messages.NeighborsMsg.Found
+  fullName: Libplanet.Net.Messages.NeighborsMsg.Found
+  nameWithType: NeighborsMsg.Found
+- uid: Libplanet.Net.Messages.NeighborsMsg.Found*
   name: Found
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_Found_
-  commentId: Overload:Libplanet.Net.Messages.Neighbors.Found
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_Found_
+  commentId: Overload:Libplanet.Net.Messages.NeighborsMsg.Found
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Neighbors.Found
-  nameWithType: Neighbors.Found
-- uid: Libplanet.Net.Messages.Neighbors.Type
+  fullName: Libplanet.Net.Messages.NeighborsMsg.Found
+  nameWithType: NeighborsMsg.Found
+- uid: Libplanet.Net.Messages.NeighborsMsg.Type
   name: Type
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_Type
-  commentId: P:Libplanet.Net.Messages.Neighbors.Type
-  fullName: Libplanet.Net.Messages.Neighbors.Type
-  nameWithType: Neighbors.Type
-- uid: Libplanet.Net.Messages.Neighbors.Type*
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_Type
+  commentId: P:Libplanet.Net.Messages.NeighborsMsg.Type
+  fullName: Libplanet.Net.Messages.NeighborsMsg.Type
+  nameWithType: NeighborsMsg.Type
+- uid: Libplanet.Net.Messages.NeighborsMsg.Type*
   name: Type
-  href: api/Libplanet.Net.Messages.Neighbors.html#Libplanet_Net_Messages_Neighbors_Type_
-  commentId: Overload:Libplanet.Net.Messages.Neighbors.Type
+  href: api/Libplanet.Net.Messages.NeighborsMsg.html#Libplanet_Net_Messages_NeighborsMsg_Type_
+  commentId: Overload:Libplanet.Net.Messages.NeighborsMsg.Type
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Neighbors.Type
-  nameWithType: Neighbors.Type
+  fullName: Libplanet.Net.Messages.NeighborsMsg.Type
+  nameWithType: NeighborsMsg.Type
 - uid: Libplanet.Net.Messages.NetMQMessageCodec
   name: NetMQMessageCodec
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html
@@ -15108,70 +15108,70 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode
   nameWithType: NetMQMessageCodec.Encode
-- uid: Libplanet.Net.Messages.Ping
-  name: Ping
-  href: api/Libplanet.Net.Messages.Ping.html
-  commentId: T:Libplanet.Net.Messages.Ping
-  fullName: Libplanet.Net.Messages.Ping
-  nameWithType: Ping
-- uid: Libplanet.Net.Messages.Ping.DataFrames
+- uid: Libplanet.Net.Messages.PingMsg
+  name: PingMsg
+  href: api/Libplanet.Net.Messages.PingMsg.html
+  commentId: T:Libplanet.Net.Messages.PingMsg
+  fullName: Libplanet.Net.Messages.PingMsg
+  nameWithType: PingMsg
+- uid: Libplanet.Net.Messages.PingMsg.DataFrames
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Ping.html#Libplanet_Net_Messages_Ping_DataFrames
-  commentId: P:Libplanet.Net.Messages.Ping.DataFrames
-  fullName: Libplanet.Net.Messages.Ping.DataFrames
-  nameWithType: Ping.DataFrames
-- uid: Libplanet.Net.Messages.Ping.DataFrames*
+  href: api/Libplanet.Net.Messages.PingMsg.html#Libplanet_Net_Messages_PingMsg_DataFrames
+  commentId: P:Libplanet.Net.Messages.PingMsg.DataFrames
+  fullName: Libplanet.Net.Messages.PingMsg.DataFrames
+  nameWithType: PingMsg.DataFrames
+- uid: Libplanet.Net.Messages.PingMsg.DataFrames*
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Ping.html#Libplanet_Net_Messages_Ping_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.Ping.DataFrames
+  href: api/Libplanet.Net.Messages.PingMsg.html#Libplanet_Net_Messages_PingMsg_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.PingMsg.DataFrames
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Ping.DataFrames
-  nameWithType: Ping.DataFrames
-- uid: Libplanet.Net.Messages.Ping.Type
+  fullName: Libplanet.Net.Messages.PingMsg.DataFrames
+  nameWithType: PingMsg.DataFrames
+- uid: Libplanet.Net.Messages.PingMsg.Type
   name: Type
-  href: api/Libplanet.Net.Messages.Ping.html#Libplanet_Net_Messages_Ping_Type
-  commentId: P:Libplanet.Net.Messages.Ping.Type
-  fullName: Libplanet.Net.Messages.Ping.Type
-  nameWithType: Ping.Type
-- uid: Libplanet.Net.Messages.Ping.Type*
+  href: api/Libplanet.Net.Messages.PingMsg.html#Libplanet_Net_Messages_PingMsg_Type
+  commentId: P:Libplanet.Net.Messages.PingMsg.Type
+  fullName: Libplanet.Net.Messages.PingMsg.Type
+  nameWithType: PingMsg.Type
+- uid: Libplanet.Net.Messages.PingMsg.Type*
   name: Type
-  href: api/Libplanet.Net.Messages.Ping.html#Libplanet_Net_Messages_Ping_Type_
-  commentId: Overload:Libplanet.Net.Messages.Ping.Type
+  href: api/Libplanet.Net.Messages.PingMsg.html#Libplanet_Net_Messages_PingMsg_Type_
+  commentId: Overload:Libplanet.Net.Messages.PingMsg.Type
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Ping.Type
-  nameWithType: Ping.Type
-- uid: Libplanet.Net.Messages.Pong
-  name: Pong
-  href: api/Libplanet.Net.Messages.Pong.html
-  commentId: T:Libplanet.Net.Messages.Pong
-  fullName: Libplanet.Net.Messages.Pong
-  nameWithType: Pong
-- uid: Libplanet.Net.Messages.Pong.DataFrames
+  fullName: Libplanet.Net.Messages.PingMsg.Type
+  nameWithType: PingMsg.Type
+- uid: Libplanet.Net.Messages.PongMsg
+  name: PongMsg
+  href: api/Libplanet.Net.Messages.PongMsg.html
+  commentId: T:Libplanet.Net.Messages.PongMsg
+  fullName: Libplanet.Net.Messages.PongMsg
+  nameWithType: PongMsg
+- uid: Libplanet.Net.Messages.PongMsg.DataFrames
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Pong.html#Libplanet_Net_Messages_Pong_DataFrames
-  commentId: P:Libplanet.Net.Messages.Pong.DataFrames
-  fullName: Libplanet.Net.Messages.Pong.DataFrames
-  nameWithType: Pong.DataFrames
-- uid: Libplanet.Net.Messages.Pong.DataFrames*
+  href: api/Libplanet.Net.Messages.PongMsg.html#Libplanet_Net_Messages_PongMsg_DataFrames
+  commentId: P:Libplanet.Net.Messages.PongMsg.DataFrames
+  fullName: Libplanet.Net.Messages.PongMsg.DataFrames
+  nameWithType: PongMsg.DataFrames
+- uid: Libplanet.Net.Messages.PongMsg.DataFrames*
   name: DataFrames
-  href: api/Libplanet.Net.Messages.Pong.html#Libplanet_Net_Messages_Pong_DataFrames_
-  commentId: Overload:Libplanet.Net.Messages.Pong.DataFrames
+  href: api/Libplanet.Net.Messages.PongMsg.html#Libplanet_Net_Messages_PongMsg_DataFrames_
+  commentId: Overload:Libplanet.Net.Messages.PongMsg.DataFrames
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Pong.DataFrames
-  nameWithType: Pong.DataFrames
-- uid: Libplanet.Net.Messages.Pong.Type
+  fullName: Libplanet.Net.Messages.PongMsg.DataFrames
+  nameWithType: PongMsg.DataFrames
+- uid: Libplanet.Net.Messages.PongMsg.Type
   name: Type
-  href: api/Libplanet.Net.Messages.Pong.html#Libplanet_Net_Messages_Pong_Type
-  commentId: P:Libplanet.Net.Messages.Pong.Type
-  fullName: Libplanet.Net.Messages.Pong.Type
-  nameWithType: Pong.Type
-- uid: Libplanet.Net.Messages.Pong.Type*
+  href: api/Libplanet.Net.Messages.PongMsg.html#Libplanet_Net_Messages_PongMsg_Type
+  commentId: P:Libplanet.Net.Messages.PongMsg.Type
+  fullName: Libplanet.Net.Messages.PongMsg.Type
+  nameWithType: PongMsg.Type
+- uid: Libplanet.Net.Messages.PongMsg.Type*
   name: Type
-  href: api/Libplanet.Net.Messages.Pong.html#Libplanet_Net_Messages_Pong_Type_
-  commentId: Overload:Libplanet.Net.Messages.Pong.Type
+  href: api/Libplanet.Net.Messages.PongMsg.html#Libplanet_Net_Messages_PongMsg_Type_
+  commentId: Overload:Libplanet.Net.Messages.PongMsg.Type
   isSpec: "True"
-  fullName: Libplanet.Net.Messages.Pong.Type
-  nameWithType: Pong.Type
+  fullName: Libplanet.Net.Messages.PongMsg.Type
+  nameWithType: PongMsg.Type
 - uid: Libplanet.Net.Messages.TcpMessageCodec
   name: TcpMessageCodec
   href: api/Libplanet.Net.Messages.TcpMessageCodec.html

@@ -307,8 +307,8 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   <a id="Libplanet_Net_TimeoutOptions_DialTimeout_" data-uid="Libplanet.Net.TimeoutOptions.DialTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_DialTimeout" data-uid="Libplanet.Net.TimeoutOptions.DialTimeout">DialTimeout</h4>
   <div class="markdown level1 summary"><p>Determines how long an <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> should wait before timing out
-when dialing peers for either <a class="xref" href="Libplanet.Net.Messages.Pong.html">Pong</a>, <a class="xref" href="Libplanet.Net.Messages.Neighbors.html">Neighbors</a>,
-or <span class="xref">Libplanet.Net.Messages.ChainStatus</span> for a long running process.
+when dialing peers for either <a class="xref" href="Libplanet.Net.Messages.PongMsg.html">PongMsg</a>, <a class="xref" href="Libplanet.Net.Messages.NeighborsMsg.html">NeighborsMsg</a>,
+or <span class="xref">Libplanet.Net.Messages.ChainStatusMsg</span> for a long running process.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultDialTimeout">DefaultDialTimeout</a> seconds by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -345,8 +345,8 @@ Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_Tim
   </span>
   <a id="Libplanet_Net_TimeoutOptions_GetBlockHashesTimeout_" data-uid="Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_GetBlockHashesTimeout" data-uid="Libplanet.Net.TimeoutOptions.GetBlockHashesTimeout">GetBlockHashesTimeout</h4>
-  <div class="markdown level1 summary"><p>The timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetBlockHashes</span>
-to receive a <span class="xref">Libplanet.Net.Messages.BlockHashes</span> message.
+  <div class="markdown level1 summary"><p>The timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetBlockHashesMsg</span>
+to receive a <span class="xref">Libplanet.Net.Messages.BlockHashesMsg</span> message.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlockHashesTimeout">DefaultGetBlockHashesTimeout</a> seconds by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -378,7 +378,7 @@ Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_Tim
   </span>
   <a id="Libplanet_Net_TimeoutOptions_GetBlocksBaseTimeout_" data-uid="Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_GetBlocksBaseTimeout" data-uid="Libplanet.Net.TimeoutOptions.GetBlocksBaseTimeout">GetBlocksBaseTimeout</h4>
-  <div class="markdown level1 summary"><p>The base timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetBlocks</span>
+  <div class="markdown level1 summary"><p>The base timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetBlocksMsg</span>
 to receive <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a> messages.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlocksBaseTimeout">DefaultGetBlocksBaseTimeout</a> seconds by default.</p>
 </div>
@@ -416,7 +416,7 @@ Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_Tim
   <a id="Libplanet_Net_TimeoutOptions_GetBlocksPerBlockHashTimeout_" data-uid="Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_GetBlocksPerBlockHashTimeout" data-uid="Libplanet.Net.TimeoutOptions.GetBlocksPerBlockHashTimeout">GetBlocksPerBlockHashTimeout</h4>
   <div class="markdown level1 summary"><p>The additional amount to wait for each <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> in
-<span class="xref">Libplanet.Net.Messages.GetBlocks</span> to receive <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a> messages.
+<span class="xref">Libplanet.Net.Messages.GetBlocksMsg</span> to receive <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a> messages.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetBlocksPerBlockHashTimeout">DefaultGetBlocksPerBlockHashTimeout</a> seconds by default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -452,7 +452,7 @@ Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_Tim
   </span>
   <a id="Libplanet_Net_TimeoutOptions_GetTxsBaseTimeout_" data-uid="Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_GetTxsBaseTimeout" data-uid="Libplanet.Net.TimeoutOptions.GetTxsBaseTimeout">GetTxsBaseTimeout</h4>
-  <div class="markdown level1 summary"><p>The base timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetTxs</span>
+  <div class="markdown level1 summary"><p>The base timeout used when sending a request with <span class="xref">Libplanet.Net.Messages.GetTxsMsg</span>
 to receive <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a> messages.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetTxsBaseTimeout">DefaultGetTxsBaseTimeout</a> seconds by default.</p>
 </div>
@@ -489,7 +489,7 @@ Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_Tim
   </span>
   <a id="Libplanet_Net_TimeoutOptions_GetTxsPerTxIdTimeout_" data-uid="Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout*"></a>
   <h4 id="Libplanet_Net_TimeoutOptions_GetTxsPerTxIdTimeout" data-uid="Libplanet.Net.TimeoutOptions.GetTxsPerTxIdTimeout">GetTxsPerTxIdTimeout</h4>
-  <div class="markdown level1 summary"><p>The additional amount to wait for each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> in <span class="xref">Libplanet.Net.Messages.GetTxs</span>
+  <div class="markdown level1 summary"><p>The additional amount to wait for each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> in <span class="xref">Libplanet.Net.Messages.GetTxsMsg</span>
 to receive <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a> messages.
 Set to <a class="xref" href="Libplanet.Net.TimeoutOptions.html#Libplanet_Net_TimeoutOptions_DefaultGetTxsPerTxIdTimeout">DefaultGetTxsPerTxIdTimeout</a> seconds by default.</p>
 </div>

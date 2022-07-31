@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class FindNeighbors
+    <title>Class NeighborsMsg
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class FindNeighbors
+    <meta name="title" content="Class NeighborsMsg
    | Libplanet ">
     <meta name="generator" content="docfx 2.58.2.0">
     
@@ -68,19 +68,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Messages.FindNeighbors">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Messages.NeighborsMsg">
   
   
-  <h1 id="Libplanet_Net_Messages_FindNeighbors" data-uid="Libplanet.Net.Messages.FindNeighbors" class="text-break">Class FindNeighbors
+  <h1 id="Libplanet_Net_Messages_NeighborsMsg" data-uid="Libplanet.Net.Messages.NeighborsMsg" class="text-break">Class NeighborsMsg
   </h1>
-  <div class="markdown level0 summary"><p>Message containing request for nearby peers.</p>
+  <div class="markdown level0 summary"><p>Message containing nearby peers. A reply to <a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a></div>
-    <div class="level2"><span class="xref">FindNeighbors</span></div>
+    <div class="level2"><span class="xref">NeighborsMsg</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -102,26 +102,26 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Messages.html">Libplanet.Net.Messages</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
-  <h5 id="Libplanet_Net_Messages_FindNeighbors_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_Messages_NeighborsMsg_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FindNeighbors : Message</code></pre>
+    <pre><code class="lang-csharp hljs">public class NeighborsMsg : Message</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors__ctor_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors.%23ctor(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg__ctor_IEnumerable_Libplanet_Net_BoundPeer__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg.%23ctor(IEnumerable%7BLibplanet.Net.BoundPeer%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L12">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L18">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_FindNeighbors__ctor_" data-uid="Libplanet.Net.Messages.FindNeighbors.#ctor*"></a>
-  <h4 id="Libplanet_Net_Messages_FindNeighbors__ctor_Libplanet_Address_" data-uid="Libplanet.Net.Messages.FindNeighbors.#ctor(Libplanet.Address)">FindNeighbors(Address)</h4>
+  <a id="Libplanet_Net_Messages_NeighborsMsg__ctor_" data-uid="Libplanet.Net.Messages.NeighborsMsg.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_NeighborsMsg__ctor_IEnumerable_Libplanet_Net_BoundPeer__" data-uid="Libplanet.Net.Messages.NeighborsMsg.#ctor(IEnumerable{Libplanet.Net.BoundPeer})">NeighborsMsg(IEnumerable&lt;BoundPeer&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FindNeighbors(Address target)</code></pre>
+    <pre><code class="lang-csharp hljs">public NeighborsMsg(IEnumerable&lt;BoundPeer&gt; found)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -134,26 +134,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">target</span></td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td><span class="parametername">found</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors__ctor_System_Byte_____.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors.%23ctor(System.Byte%5B%5D%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg__ctor_System_Byte_____.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg.%23ctor(System.Byte%5B%5D%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L17">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L23">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_FindNeighbors__ctor_" data-uid="Libplanet.Net.Messages.FindNeighbors.#ctor*"></a>
-  <h4 id="Libplanet_Net_Messages_FindNeighbors__ctor_System_Byte_____" data-uid="Libplanet.Net.Messages.FindNeighbors.#ctor(System.Byte[][])">FindNeighbors(Byte[][])</h4>
+  <a id="Libplanet_Net_Messages_NeighborsMsg__ctor_" data-uid="Libplanet.Net.Messages.NeighborsMsg.#ctor*"></a>
+  <h4 id="Libplanet_Net_Messages_NeighborsMsg__ctor_System_Byte_____" data-uid="Libplanet.Net.Messages.NeighborsMsg.#ctor(System.Byte[][])">NeighborsMsg(Byte[][])</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public FindNeighbors(byte[][] dataFrames)</code></pre>
+    <pre><code class="lang-csharp hljs">public NeighborsMsg(byte[][] dataFrames)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -176,13 +176,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors_DataFrames.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors.DataFrames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg_DataFrames.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg.DataFrames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L37">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_FindNeighbors_DataFrames_" data-uid="Libplanet.Net.Messages.FindNeighbors.DataFrames*"></a>
-  <h4 id="Libplanet_Net_Messages_FindNeighbors_DataFrames" data-uid="Libplanet.Net.Messages.FindNeighbors.DataFrames">DataFrames</h4>
+  <a id="Libplanet_Net_Messages_NeighborsMsg_DataFrames_" data-uid="Libplanet.Net.Messages.NeighborsMsg.DataFrames*"></a>
+  <h4 id="Libplanet_Net_Messages_NeighborsMsg_DataFrames" data-uid="Libplanet.Net.Messages.NeighborsMsg.DataFrames">DataFrames</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -208,18 +208,18 @@
   <div><a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_DataFrames">Message.DataFrames</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors_Target.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg_Found.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg.Found%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L32">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_FindNeighbors_Target_" data-uid="Libplanet.Net.Messages.FindNeighbors.Target*"></a>
-  <h4 id="Libplanet_Net_Messages_FindNeighbors_Target" data-uid="Libplanet.Net.Messages.FindNeighbors.Target">Target</h4>
+  <a id="Libplanet_Net_Messages_NeighborsMsg_Found_" data-uid="Libplanet.Net.Messages.NeighborsMsg.Found*"></a>
+  <h4 id="Libplanet_Net_Messages_NeighborsMsg_Found" data-uid="Libplanet.Net.Messages.NeighborsMsg.Found">Found</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Address Target { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IImmutableList&lt;BoundPeer&gt; Found { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -231,20 +231,20 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="xref">IImmutableList</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors_Type.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg_Type.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L24">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L35">View Source</a>
   </span>
-  <a id="Libplanet_Net_Messages_FindNeighbors_Type_" data-uid="Libplanet.Net.Messages.FindNeighbors.Type*"></a>
-  <h4 id="Libplanet_Net_Messages_FindNeighbors_Type" data-uid="Libplanet.Net.Messages.FindNeighbors.Type">Type</h4>
+  <a id="Libplanet_Net_Messages_NeighborsMsg_Type_" data-uid="Libplanet.Net.Messages.NeighborsMsg.Type*"></a>
+  <h4 id="Libplanet_Net_Messages_NeighborsMsg_Type" data-uid="Libplanet.Net.Messages.NeighborsMsg.Type">Type</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -270,7 +270,7 @@
   <div><a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Type">Message.Type</a></div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Net.Messages.Neighbors.html">Neighbors</a></div>
+      <div><a class="xref" href="Libplanet.Net.Messages.FindNeighborsMsg.html">FindNeighborsMsg</a></div>
   </div>
 </article>
           </div>
@@ -280,10 +280,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_FindNeighbors.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.FindNeighbors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Messages_NeighborsMsg.md&amp;value=---%0Auid%3A%20Libplanet.Net.Messages.NeighborsMsg%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/FindNeighbors.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Messages/NeighborsMsg.cs/#L14" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
