@@ -242,6 +242,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             await stepChangedToPreCommit.WaitAsync();
+            // Wait for the vote to change from Absent to Commit to avoid flakiness.
+            await Libplanet.Tests.TestUtils.AssertThatEventually(
+                () => Context.VoteSet(0).Votes[1].Flag == VoteFlag.Commit,
+                3_000);
             VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);

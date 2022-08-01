@@ -256,7 +256,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Add received message to the message queue.
+        /// Adds <paramref name="message"/> to the message queue.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
         public void ProduceMessage(ConsensusMessage message)
@@ -282,7 +282,7 @@ namespace Libplanet.Net.Consensus
             var dict = new Dictionary<string, object>
             {
                 { "node_id", _privateKey.ToAddress().ToString() },
-                { "number_of_validator", _validators!.Count },
+                { "number_of_validator", _validators.Count },
                 { "height", Height },
                 { "round", Round },
                 { "step", Step.ToString() },
@@ -300,7 +300,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        internal static TimeSpan TimeoutPreVote(long round)
+        private static TimeSpan TimeoutPreVote(long round)
         {
             return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
         }
@@ -311,7 +311,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        internal static TimeSpan TimeoutPreCommit(long round)
+        private static TimeSpan TimeoutPreCommit(long round)
         {
             return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
         }
@@ -322,7 +322,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        internal static TimeSpan TimeoutPropose(long round)
+        private static TimeSpan TimeoutPropose(long round)
         {
             return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
         }

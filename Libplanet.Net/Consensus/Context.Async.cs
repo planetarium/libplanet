@@ -97,7 +97,6 @@ namespace Libplanet.Net.Consensus
                         nameof(AddMessage));
                 }
             });
-            ProduceMutation(() => ProcessGenericUponRules());
             ProduceMutation(() => ProcessHeightOrRoundUponRules(message));
             MessageConsumed?.Invoke(this, message);
         }
@@ -127,6 +126,13 @@ namespace Libplanet.Net.Consensus
                     nextRound,
                     nextStep.ToString());
                 StateChanged?.Invoke(this, (nextMessageLogSize, nextRound, nextStep));
+
+                // FIXME: This is to avoid an exception.
+                // Methods accessing message log should be changed instead.
+                if (_messagesInRound.ContainsKey(Round))
+                {
+                    ProduceMutation(() => ProcessGenericUponRules());
+                }
             }
 
             MutationConsumed?.Invoke(this, mutation);

@@ -194,15 +194,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteNilOneThird()
         {
-            var stepChangedToRoundZeroPreVote = new AsyncAutoResetEvent();
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, stage) =>
             {
-                if (stage.Round == 0 && stage.Step == Step.PreVote)
-                {
-                    stepChangedToRoundZeroPreVote.Set();
-                }
-                else if (stage.Round == 1 && stage.Step == Step.PreVote)
+                if (stage.Round == 1 && stage.Step == Step.PreVote)
                 {
                     stepChangedToRoundOnePreVote.Set();
                 }
@@ -228,9 +223,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            await Task.WhenAll(
-                stepChangedToRoundZeroPreVote.WaitAsync(),
-                stepChangedToRoundOnePreVote.WaitAsync());
+            await stepChangedToRoundOnePreVote.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);

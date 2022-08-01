@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -37,7 +38,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void NewHeightWithLastCommit()
         {
             AsyncAutoResetEvent tipChanged = new AsyncAutoResetEvent();
-            AsyncAutoResetEvent proposed = new AsyncAutoResetEvent();
+            AsyncAutoResetEvent heightTwoProposed = new AsyncAutoResetEvent();
             ConsensusPropose? propose = null;
             var codec = new Codec();
             BlockChain.TipChanged += (sender, tuple) =>
@@ -47,10 +48,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             watchConsensusMessage = (message) =>
             {
-                if (message is ConsensusPropose proposeMessage)
+                if (message is ConsensusPropose proposeMessage &&
+                    message.Height == 2)
                 {
                     propose = proposeMessage;
-                    proposed.Set();
+                    heightTwoProposed.Set();
                 }
             };
 
@@ -65,14 +67,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     codec.Encode(block1.MarshalBlock()),
                     -1));
             var expectedVotes = new Vote[4];
-            for (int i = 0; i < 4; i++)
-            {
-                if (i == 2)
-                {
-                    // Peer2 will send a ConsensusVote by handling the ConsensusPropose message.
-                    continue;
-                }
 
+            // Peer2 sends a ConsensusVote via background process.
+            // Enough votes are present to proceed even without Peer3's vote.
+            for (int i = 0; i < 2; i++)
+            {
                 expectedVotes[i] = new Vote(
                     1,
                     0,
@@ -88,14 +87,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     });
             }
 
-            for (int i = 0; i < 4; i++)
+            // Peer2 sends a ConsensusVote via background process.
+            // Enough votes are present to proceed even without Peer3's vote.
+            for (int i = 0; i < 2; i++)
             {
-                if (i == 2)
-                {
-                    // Peer2 will send a ConsensusCommit by handling the ConsensusVote message.
-                    continue;
-                }
-
                 expectedVotes[i] = new Vote(
                     1,
                     0,
@@ -111,25 +106,21 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     });
             }
 
-            await tipChanged.WaitAsync();
-            // NewHeight called after the tip changed event is triggered.
-            await proposed.WaitAsync();
-
+            await heightTwoProposed.WaitAsync();
             Block<DumbAction> proposedBlock =
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
                     BlockChain.Policy.GetHashAlgorithm,
                     (Dictionary)codec.Decode(propose!.Payload));
-            if (proposedBlock.LastCommit?.Votes is null)
-            {
-                throw new NotNullException();
-            }
-
-            ImmutableArray<Vote> votes = proposedBlock.LastCommit.Value.Votes.Value;
-            foreach (Vote vote in votes)
-            {
-                Assert.True(vote.BlockHash.Equals(BlockChain[1].Hash));
-                Assert.Equal(VoteFlag.Commit, vote.Flag);
-            }
+            ImmutableArray<Vote> votes = proposedBlock.LastCommit?.Votes is { } vs
+                ? vs
+                : throw new NullReferenceException();
+            Assert.Equal(
+                votes.Count(),
+                votes.Where(vote => vote.BlockHash.Equals(BlockChain[1].Hash)).Count());
+            Assert.Equal(VoteFlag.Commit, votes[0].Flag);
+            Assert.Equal(VoteFlag.Commit, votes[1].Flag);
+            Assert.Equal(VoteFlag.Commit, votes[2].Flag);
+            Assert.Equal(VoteFlag.Null, votes[3].Flag);
         }
 
         [Fact(Timeout = Timeout)]
