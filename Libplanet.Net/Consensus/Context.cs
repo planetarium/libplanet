@@ -448,8 +448,8 @@ namespace Libplanet.Net.Consensus
             lock (_messagesInRoundLock)
             {
                 count = _messagesInRound[round].Count(
-                msg => msg is ConsensusVote preVote &&
-                       (any || preVote.BlockHash.Equals(hash)));
+                    msg => msg is ConsensusVote preVote &&
+                    (any || preVote.BlockHash.Equals(hash)));
             }
 
             return count > TotalValidators * 2 / 3;
@@ -474,7 +474,7 @@ namespace Libplanet.Net.Consensus
             {
                 count = _messagesInRound[round].Count(
                     msg => msg is ConsensusCommit preCommit &&
-                        (any || preCommit.BlockHash.Equals(hash)));
+                    (any || preCommit.BlockHash.Equals(hash)));
             }
 
             return count > TotalValidators * 2 / 3;

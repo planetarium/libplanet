@@ -137,7 +137,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             ConsensusPropose? propose = null;
             var heightTwoStepChanged = new AsyncAutoResetEvent();
-            var heightThreeStepChanged = new AsyncAutoResetEvent();
+            var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
+            var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
+            var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
+            var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
             var proposed = new AsyncAutoResetEvent();
 
             var codec = new Codec();
@@ -165,11 +168,22 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 throw new NullException(propose);
             }
 
-            ConsensusContext.Contexts[2].StepChanged += (sender, tuple) =>
+            ConsensusContext.Contexts[2].StateChanged += (sender, state) =>
             {
-                heightTwoStepChanged.Set();
+                if (state.Step == Step.PreVote)
+                {
+                    heightTwoStepChangedToPreVote.Set();
+                }
+                else if (state.Step == Step.PreCommit)
+                {
+                    heightTwoStepChangedToPreCommit.Set();
+                }
+                else if (state.Step == Step.EndCommit)
+                {
+                    heightTwoStepChangedToEndCommit.Set();
+                }
             };
-            await heightTwoStepChanged.WaitAsync();
+            await heightTwoStepChangedToPreVote.WaitAsync();
             Assert.Equal(2, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
 
@@ -196,7 +210,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     });
             }
 
-            await heightTwoStepChanged.WaitAsync();
+            await heightTwoStepChangedToPreCommit.WaitAsync();
             Assert.Equal(Step.PreCommit, ConsensusContext.Contexts[2].Step);
 
             foreach (var privateKey in TestUtils.PrivateKeys)
@@ -232,16 +246,18 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     codec.Encode(blockHeightThree.MarshalBlock()),
                     -1));
 
-            ConsensusContext.Contexts[3].StepChanged += (sender, tuple) =>
+            ConsensusContext.Contexts[3].StateChanged += (sender, state) =>
             {
-                heightThreeStepChanged.Set();
+                if (state.Step == Step.PreVote)
+                {
+                    heightThreeStepChangedToPreVote.Set();
+                }
             };
-            // Propose -> PreVote (by consuming the message)
-            await heightThreeStepChanged.WaitAsync();
+
             // Commit ends
-            await heightTwoStepChanged.WaitAsync();
+            await heightTwoStepChangedToEndCommit.WaitAsync();
             // Propose -> PreVote (message consumed)
-            await heightThreeStepChanged.WaitAsync();
+            await heightThreeStepChangedToPreVote.WaitAsync();
             Assert.Equal(3, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -23,12 +24,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlockOneThird()
         {
-            var stepChangedToPreVote = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreVote)
+                if (state.Round == 1 && state.Step == Step.PreVote)
                 {
-                    stepChangedToPreVote.Set();
+                    stateChangedToRoundOnePreVote.Set();
                 }
             };
             Context.StartAsync();
@@ -52,10 +53,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            // Wait for round 0 prevote step.
-            await stepChangedToPreVote.WaitAsync();
             // Wait for round 1 prevote step.
-            await stepChangedToPreVote.WaitAsync();
+            await stateChangedToRoundOnePreVote.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -66,9 +65,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreCommit)
+                if (state.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -117,8 +116,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await stepChangedToPreCommit.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -138,9 +136,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             BlockHash? blockHash = null;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreCommit)
+                if (state.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
@@ -187,8 +185,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await stepChangedToPreCommit.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -197,12 +194,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteNilOneThird()
         {
-            var stepChanged = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            var stepChangedToRoundZeroPreVote = new AsyncAutoResetEvent();
+            var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
+            Context.StateChanged += (sender, stage) =>
             {
-                if (step == Step.PreVote)
+                if (stage.Round == 0 && stage.Step == Step.PreVote)
                 {
-                    stepChanged.Set();
+                    stepChangedToRoundZeroPreVote.Set();
+                }
+                else if (stage.Round == 1 && stage.Step == Step.PreVote)
+                {
+                    stepChangedToRoundOnePreVote.Set();
                 }
             };
             Context.StartAsync();
@@ -226,10 +228,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            // Wait for round 0 prevote step
-            await stepChanged.WaitAsync();
-            // Wait for round 1 prevote step
-            await stepChanged.WaitAsync();
+            await Task.WhenAll(
+                stepChangedToRoundZeroPreVote.WaitAsync(),
+                stepChangedToRoundOnePreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(1, Context.Round);
@@ -239,7 +240,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void TimeoutPropose()
         {
             var messageReceived = new AsyncAutoResetEvent();
-            var mutationConsumed = new AsyncAutoResetEvent();
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
             void IsVoteSent(ConsensusMessage consensusMessage)
             {
                 if (consensusMessage is ConsensusVote)
@@ -249,14 +250,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsVoteSent;
-            Context.MutationConsumed += (sender, action) => mutationConsumed.Set();
-
+            Context.StateChanged += (sender, state) =>
+            {
+                if (state.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
             Context.StartAsync();
 
-            await mutationConsumed.WaitAsync();
-            await messageReceived.WaitAsync();
-
-            // Wait for timeout triggered mutation to be consumed.
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);

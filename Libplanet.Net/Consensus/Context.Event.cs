@@ -22,14 +22,10 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<Block<T>>? BlockProposed;
 
         /// <summary>
-        /// An event that is invoked when <see cref="Round"/> is changed.
+        /// An event that is invoked when the message log size, <see cref="Round"/>,
+        /// and/or <see cref="Step"/> is changed.
         /// </summary>
-        internal event EventHandler<int>? RoundChanged;
-
-        /// <summary>
-        /// An event that is invoked when <see cref="Step"/> is changed.
-        /// </summary>
-        internal event EventHandler<Step>? StepChanged;
+        internal event EventHandler<(int MessageLogSize, int Round, Step Step)>? StateChanged;
 
         /// <summary>
         /// An event that is invoked when a queued <see cref="ConsensusMessage"/> is consumed.

@@ -29,13 +29,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void IncreaseRoundWhenTimeout()
         {
-            var timeoutOccurred = new AsyncAutoResetEvent();
+            var timeoutProcessed = new AsyncAutoResetEvent();
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutOccurred +=
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutProcessed +=
                 (sender, message) =>
                 {
-                    timeoutOccurred.Set();
+                    timeoutProcessed.Set();
                 };
 
             // Wait for block to be proposed.
@@ -65,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer3,
                 });
 
-            await timeoutOccurred.WaitAsync();
+            await timeoutProcessed.WaitAsync();
 
             ConsensusContext.HandleMessage(
                 new ConsensusCommit(
@@ -89,13 +89,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer3,
                 });
 
-            await timeoutOccurred.WaitAsync();
-
+            await timeoutProcessed.WaitAsync();
             Assert.Equal(1, ConsensusContext.Height);
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => ConsensusContext.Round == 1,
-                5_000,
-                conditionLabel: "Round does not changed.");
+            Assert.Equal(1, ConsensusContext.Round);
         }
     }
 }

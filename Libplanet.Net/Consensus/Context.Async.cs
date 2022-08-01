@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -70,61 +71,62 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMessage(CancellationToken cancellationToken)
         {
             ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
-            try
+            ProduceMutation(() =>
             {
-                AddMessage(message);
-                _logger.Debug(
-                    "{FName}: Message: {Message} => " +
-                    "Height: {Height}, Round: {Round}, Address: {Address}, Hash: {BlockHash}. " +
-                    "MessageCount: {Count}. (context: {Context})",
-                    nameof(AddMessage),
-                    message,
-                    message.Height,
-                    message.Round,
-                    message.Remote!.Address,
-                    message.BlockHash,
-                    _messagesInRound[Round].Count,
-                    ToString());
-                ProduceMutation(() => ProcessGenericUponRules());
-                ProduceMutation(() => ProcessHeightOrRoundUponRules(message));
-                MessageConsumed?.Invoke(this, message);
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "Unexpected exception occurred during {FName}. {E}",
-                    nameof(AddMessage),
-                    e);
-            }
+                try
+                {
+                    AddMessage(message);
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => " +
+                        "Height: {Height}, Round: {Round}, Address: {Address}, " +
+                        "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                        nameof(AddMessage),
+                        message,
+                        message.Height,
+                        message.Round,
+                        message.Remote!.Address,
+                        message.BlockHash,
+                        _messagesInRound[message.Round].Count,
+                        ToString());
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Unexpected exception occurred during {FName}.",
+                        nameof(AddMessage));
+                }
+            });
+            ProduceMutation(() => ProcessGenericUponRules());
+            ProduceMutation(() => ProcessHeightOrRoundUponRules(message));
+            MessageConsumed?.Invoke(this, message);
         }
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
+            int prevMessageLogSize = _messagesInRound.Sum(x => x.Value.Count);
             int prevRound = Round;
             Step prevStep = Step;
             mutation();
+            int nextMessageLogSize = _messagesInRound.Sum(x => x.Value.Count);
             int nextRound = Round;
             Step nextStep = Step;
-            if (prevStep != nextStep)
+            if (prevMessageLogSize != nextMessageLogSize ||
+                prevRound != nextRound ||
+                prevStep != nextStep)
             {
                 _logger.Debug(
-                    "Step changed from {PrevStep} to {NextStep}. {Info}",
-                    prevStep.ToString(),
-                    nextStep.ToString(),
-                    ToString());
-                StepChanged?.Invoke(this, nextStep);
-            }
-
-            if (prevRound != nextRound)
-            {
-                _logger.Debug(
-                    "Round changed from {PrevRound} to {NextRound}. {Info}",
+                    "State (MessageLogSize, Round, Step) changed from " +
+                    "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
+                    "({NextMessageLogSize}, {NextRound}, {NextStep})",
+                    prevMessageLogSize,
                     prevRound,
+                    prevStep.ToString(),
+                    nextMessageLogSize,
                     nextRound,
-                    ToString());
-                RoundChanged?.Invoke(this, Round);
+                    nextStep.ToString());
+                StateChanged?.Invoke(this, (nextMessageLogSize, nextRound, nextStep));
             }
 
             MutationConsumed?.Invoke(this, mutation);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -37,17 +38,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsProposeSent;
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreVote)
+                if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
 
             Context.StartAsync();
-            await messageReceived.WaitAsync();
-            await stepChangedToPreVote.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -72,9 +72,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             watchConsensusMessage = IsProposeSent;
 
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreVote)
+                if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -84,8 +84,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
 
             Context.StartAsync(lastCommit);
-            await messageReceived.WaitAsync();
-            await stepChangedToPreVote.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
             // Looks dirty, but compiler throws error without if statement.
@@ -208,17 +207,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // FIXME: Pretty lousy testing method.
             BlockHash? blockHash = null;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var messageConsumed = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreCommit)
+                if (state.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
-            };
-            Context.MessageConsumed += (sender, consensusMessage) =>
-            {
-                messageConsumed.Set();
             };
 
             Context.StartAsync();
@@ -231,16 +225,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            // Wait for all messages to be cleared.
-            await messageConsumed.WaitAsync();
-            await messageConsumed.WaitAsync();
-            await messageConsumed.WaitAsync();
-            VoteSet roundVoteSet = Context.VoteSet(0);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
-            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[2].Flag);
-            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
-
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
@@ -248,14 +232,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-
-            // Wait for all messages to be cleared.
-            await messageConsumed.WaitAsync();
-            roundVoteSet = Context.VoteSet(0);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[2].Flag);
-            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
 
             Context.ProduceMessage(
                 new ConsensusCommit(
@@ -265,13 +241,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            // Wait for all messages to be cleared.
-            await messageConsumed.WaitAsync();
-            roundVoteSet = Context.VoteSet(0);
+            await stepChangedToPreCommit.WaitAsync();
+            VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
         }

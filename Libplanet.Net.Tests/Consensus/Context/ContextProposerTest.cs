@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -21,7 +22,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitNil()
         {
-            var stepChanged = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
             void IsPreCommitSent(ConsensusMessage consensusMessage)
             {
@@ -33,11 +34,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             }
 
             watchConsensusMessage = IsPreCommitSent;
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreCommit)
+                if (state.Step == Step.PreCommit)
                 {
-                    stepChanged.Set();
+                    stepChangedToPreCommit.Set();
                 }
             };
 
@@ -66,8 +67,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -77,13 +77,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterPreCommitBlock()
         {
             BlockHash? targetHash = null;
-            var stepChanged = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var messageReceived = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreCommit)
+                if (state.Step == Step.PreCommit)
                 {
-                    stepChanged.Set();
+                    stepChangedToPreCommit.Set();
                 }
             };
             void IsPreCommitSent(ConsensusMessage consensusMessage)
@@ -126,8 +126,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(Step.PreCommit, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -137,9 +136,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterNewRoundNil()
         {
             var roundChangedToOne = new AsyncAutoResetEvent();
-            Context.RoundChanged += (sender, round) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (round == 1)
+                if (state.Round == 1)
                 {
                     roundChangedToOne.Set();
                 }
@@ -187,9 +186,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 proposedBlock = block;
                 blockProposed.Set();
             };
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.EndCommit)
+                if (state.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
@@ -240,9 +239,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterPreVoteNil()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreVote)
+                if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -266,8 +265,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(
                     invalidBlock, TestUtils.PrivateKeys[NodeId]));
 
-            await messageReceived.WaitAsync();
-            await stepChangedToPreVote.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
@@ -277,9 +275,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterPreVoteBlock()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            Context.StepChanged += (sender, step) =>
+            Context.StateChanged += (sender, state) =>
             {
-                if (step == Step.PreVote)
+                if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
@@ -299,8 +297,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.StartAsync();
 
-            await messageReceived.WaitAsync();
-            await stepChangedToPreVote.WaitAsync();
+            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);

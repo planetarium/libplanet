@@ -46,9 +46,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 () => ConsensusContext.NewHeight(BlockChain.Tip.Index + 2));
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StepChanged += (sender, step) =>
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged += (sender, state) =>
             {
-                if (step == Step.EndCommit)
+                if (state.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
