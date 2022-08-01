@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Bencodex;
 using Bencodex.Types;
@@ -127,6 +128,41 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         TestUtils.CreateConsensusPropose(
                             default,
                             TestUtils.PrivateKeys[NodeId])));
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void ThrowInvalidValidatorVote()
+        {
+            Block<DumbAction> block =
+                await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+
+            // Vote's signature does not match with remote
+            Assert.Throws<InvalidValidatorVoteMessageException>(
+                () =>
+                    Context.AddMessage(
+                        new ConsensusVote(
+                            new Vote(
+                                Context.Height,
+                                Context.Round,
+                                block.Hash,
+                                DateTimeOffset.UtcNow,
+                                TestUtils.Validators[0],
+                                VoteFlag.Absent,
+                                null).Sign(TestUtils.PrivateKeys[NodeId]))));
+
+            // Vote's signature does not match with remote
+            Assert.Throws<InvalidValidatorVoteMessageException>(
+                () =>
+                    Context.AddMessage(
+                        new ConsensusVote(
+                            new Vote(
+                                Context.Height,
+                                Context.Round,
+                                block.Hash,
+                                DateTimeOffset.UtcNow,
+                                TestUtils.Validators[0],
+                                VoteFlag.Absent,
+                                null).Sign(TestUtils.PrivateKeys[NodeId]))));
         }
 
         [Fact(Timeout = Timeout)]
