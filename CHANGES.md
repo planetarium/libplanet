@@ -19,9 +19,9 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
- - (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
- - (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
-   `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
+ -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
+ -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
+    `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
  - Added `BlockLocator` class. [[#1762], [#2140]]
  - Added methods required for decoupling `Libplanet.Net` from
