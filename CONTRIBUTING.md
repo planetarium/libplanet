@@ -25,13 +25,13 @@ for purposes in the *Libplanet* category:
 Prerequisites
 -------------
 
-You need [.NET Core] SDK 3.1+ which provides the latest C# compiler and .NET VM.
+You need [.NET Core] SDK 6.0+ which provides the latest C# compiler and .NET VM.
 Read and follow the instruction to install .NET Core SDK on
 the [.NET Core downloads page][1].
 FYI if you use macOS and [Homebrew] you can install it by
 `brew cask install dotnet-sdk` command.
 
-Make sure that your .NET Core SDK is 3.1 or higher.  You could show
+Make sure that your .NET Core SDK is 6.0 or higher.  You could show
 the version you are using by `dotnet --info` command.
 
 Although it is not necessary, you should install a proper IDE for .NET
@@ -66,6 +66,16 @@ To skip the analyzer, you can use:
     dotnet build -p:SkipSonar=true
 
 [SonarAnalyzer]: https://github.com/SonarSource/sonar-dotnet
+
+### Mono
+
+To build the solution with Mono, you must use the *ReleaseMono* solution
+configuration. It is identical with *Release* target (creates built files
+under `{bin,obj}/Release` directory), except that *ReleaseMono* excludes
+projects with dependencies that are incompatible with Mono
+(*Libplanet.Explorer&ast;*):
+
+    msbuild -restore -p:Configuration=ReleaseMono -p:TestsTargetFramework=net47
 
 
 Projects
@@ -185,13 +195,14 @@ msbuild /restore /p:TestsTargetFramework=net472
   (gci *.Tests\bin\Debug\net472\*.Tests.dll)
 ~~~~
 
-Or with Mono:
+Or with Mono (As mentioned above in the [Mono](#Mono) section, use
+*ReleaseMono* solution configuration to avoid dependency issues):
 
 ~~~~ bash
 nuget install xunit.runner.console
-msbuild /restore /p:TestsTargetFramework=net47
+msbuild /restore /p:Configuration=ReleaseMono /p:TestsTargetFramework=net47
 mono xunit.runner.console.*/tools/net47/xunit.console.exe \
-    *.Tests/bin/Debug/net47/*.Tests.dll
+    *.Tests/bin/Release/net47/*.Tests.dll
 ~~~~
 
 [CircleCI]: https://app.circleci.com/pipelines/github/planetarium/libplanet
@@ -244,6 +255,8 @@ Please be sure that Mono's *bin* directory is prior to .NET Core's one
 (or it's okay too if .NET Core is not installed at all).  Mono or .NET
 Framework's `msbuild` could try to use .NET Core's version of several
 utilities during build, and this could cause some errors.
+Also be aware that you must be building the solution with the *ReleaseMono*
+configuration, as mentioned in the [Mono](#Mono) section.
 
 The way to execute the runner binary depend on the platform.  For details,
 please read [xunit-unity-runner]'s README.  FYI you can use `-h`/`--help`
@@ -251,9 +264,9 @@ option as well.
 
 To sum up, the instruction is like below (the example is assuming Linux):
 
-    msbuild -r -p:TestsTargetFramework=net47
+    msbuild -r -p:Configuration=ReleaseMono -p:TestsTargetFramework=net47
     xunit-unity-runner/StandaloneLinux64 \
-      "$PWD"/*.Tests/bin/Debug/net47/*.Tests.dll
+      "$PWD"/*.Tests/bin/Release/net47/*.Tests.dll
 
 [xunit-unity-runner]: https://github.com/planetarium/xunit-unity-runner
 [4]: https://github.com/planetarium/xunit-unity-runner/releases/latest

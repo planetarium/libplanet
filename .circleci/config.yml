@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@4.1.1
 
 commands:
   ulimit:
@@ -119,7 +119,7 @@ commands:
     - run: |
         msbuild \
           -t:Restore \
-          -p:Configuration=Release \
+          -p:Configuration=ReleaseMono \
           -p:TestsTargetFramework=net47
     - save_cache:
         key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
@@ -127,7 +127,7 @@ commands:
         - ~/.nuget/packages
     - run: |
         msbuild \
-          -p:Configuration=Release \
+          -p:Configuration=ReleaseMono \
           -p:TestsTargetFramework=net47 \
           -p:SkipSonar=true
     - persist_to_workspace:
@@ -273,7 +273,7 @@ commands:
     - ulimit: { n: 10240 }
     - restore_cache:
         keys:
-        - v1-macos-dotnet-sdk-3.1
+        - v1-macos-dotnet-sdk-6.0
     - run:
         name: Export PATH & DOTNET_ROOT
         shell: bash
@@ -283,7 +283,7 @@ commands:
             echo export DOTNET_ROOT="$HOME/.dotnet"
           } >> $BASH_ENV
     - run:
-        name: Install .NET Core 3.1 SDK
+        name: Install .NET 6.0 SDK
         shell: bash
         command: |
           set -evx
@@ -296,11 +296,11 @@ commands:
             chmod +x /tmp/dotnet-install.sh
             /tmp/dotnet-install.sh \
               --verbose \
-              --channel 3.1
+              --channel 6.0
           fi
           command -v dotnet
     - save_cache:
-        key: v1-macos-dotnet-sdk-3.1
+        key: v1-macos-dotnet-sdk-6.0
         paths:
         - ~/.dotnet/
     - netcore_test_base:
@@ -382,7 +382,7 @@ commands:
 jobs:
   linux-netcore-build:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
     steps: [netcore_build_base]
@@ -396,7 +396,7 @@ jobs:
 
   linux-netcore-test-netmq:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
       TRANSPORT_TYPE: netmq
     resource_class: large
@@ -406,7 +406,7 @@ jobs:
 
   linux-netcore-test-ar-SA:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 2
@@ -416,7 +416,7 @@ jobs:
 
   linux-netcore-test-fr-FR:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 2
@@ -433,7 +433,7 @@ jobs:
 
   windows-netcore-test:
     executor:
-      name: win/default
+      name: win/server-2022
       size: large
     parallelism: 3
     steps: [netcore_test_base]
