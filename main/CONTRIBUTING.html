@@ -77,12 +77,12 @@ Ask questions to <em>hack</em> Libplanet and to make a patch for it.  People her
 usually speak in Korean, but feel free to speak in English.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>You need <a href="https://dot.net/">.NET Core</a> SDK 3.1+ which provides the latest C# compiler and .NET VM.
+<p>You need <a href="https://dot.net/">.NET Core</a> SDK 6.0+ which provides the latest C# compiler and .NET VM.
 Read and follow the instruction to install .NET Core SDK on
 the <a href="https://dotnet.microsoft.com/download">.NET Core downloads page</a>.
 FYI if you use macOS and <a href="https://brew.sh/">Homebrew</a> you can install it by
 <code>brew cask install dotnet-sdk</code> command.</p>
-<p>Make sure that your .NET Core SDK is 3.1 or higher.  You could show
+<p>Make sure that your .NET Core SDK is 6.0 or higher.  You could show
 the version you are using by <code>dotnet --info</code> command.</p>
 <p>Although it is not necessary, you should install a proper IDE for .NET
 (or an <a href="http://www.omnisharp.net/">OmniSharp</a> extension for your favorite editor — except it takes
@@ -100,6 +100,14 @@ builds the entire <em>Libplanet</em> solution:</p>
 <p>We use <a href="https://github.com/SonarSource/sonar-dotnet">SonarAnalyzer</a> to check our code quality but it takes longer to build.
 To skip the analyzer, you can use:</p>
 <pre><code>dotnet build -p:SkipSonar=true
+</code></pre>
+<h3 id="mono">Mono</h3>
+<p>To build the solution with Mono, you must use the <em>ReleaseMono</em> solution
+configuration. It is identical with <em>Release</em> target (creates built files
+under <code>{bin,obj}/Release</code> directory), except that <em>ReleaseMono</em> excludes
+projects with dependencies that are incompatible with Mono
+(<em>Libplanet.Explorer*</em>):</p>
+<pre><code>msbuild -restore -p:Configuration=ReleaseMono -p:TestsTargetFramework=net47
 </code></pre>
 <h2 id="projects">Projects</h2>
 <p>The <a href="https://github.com/planetarium/libplanet">planetarium/libplanet</a> repository
@@ -192,11 +200,12 @@ msbuild /restore /p:TestsTargetFramework=net472
 &amp; (gci xunit.runner.console.*\tools\net472\xunit.console.exe | select -f 1) `
   (gci *.Tests\bin\Debug\net472\*.Tests.dll)
 </code></pre>
-<p>Or with Mono:</p>
+<p>Or with Mono (As mentioned above in the <a href="#Mono">Mono</a> section, use
+<em>ReleaseMono</em> solution configuration to avoid dependency issues):</p>
 <pre><code class="lang-bash">nuget install xunit.runner.console
-msbuild /restore /p:TestsTargetFramework=net47
+msbuild /restore /p:Configuration=ReleaseMono /p:TestsTargetFramework=net47
 mono xunit.runner.console.*/tools/net47/xunit.console.exe \
-    *.Tests/bin/Debug/net47/*.Tests.dll
+    *.Tests/bin/Release/net47/*.Tests.dll
 </code></pre>
 <h3 id="turn_server_urls"><code>TURN_SERVER_URLS</code></h3>
 <p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URLS</code> environment variable
@@ -228,14 +237,16 @@ which is compatible with .NET Framework 4.7.
 Please be sure that Mono's <em>bin</em> directory is prior to .NET Core's one
 (or it's okay too if .NET Core is not installed at all).  Mono or .NET
 Framework's <code>msbuild</code> could try to use .NET Core's version of several
-utilities during build, and this could cause some errors.</p>
+utilities during build, and this could cause some errors.
+Also be aware that you must be building the solution with the <em>ReleaseMono</em>
+configuration, as mentioned in the <a href="#Mono">Mono</a> section.</p>
 <p>The way to execute the runner binary depend on the platform.  For details,
 please read <a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a>'s README.  FYI you can use <code>-h</code>/<code>--help</code>
 option as well.</p>
 <p>To sum up, the instruction is like below (the example is assuming Linux):</p>
-<pre><code>msbuild -r -p:TestsTargetFramework=net47
+<pre><code>msbuild -r -p:Configuration=ReleaseMono -p:TestsTargetFramework=net47
 xunit-unity-runner/StandaloneLinux64 \
-  &quot;$PWD&quot;/*.Tests/bin/Debug/net47/*.Tests.dll
+  &quot;$PWD&quot;/*.Tests/bin/Release/net47/*.Tests.dll
 </code></pre>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
