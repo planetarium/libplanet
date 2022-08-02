@@ -315,6 +315,41 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void CanonicalGenesisBlock()
+        {
+            var chainId1 = Guid.NewGuid();
+            var chainId2 = Guid.NewGuid();
+            var chainId3 = Guid.NewGuid();
+            var canonicalGenesisBlock = new Func<Block<DumbAction>>(() =>
+                Fx.Store.GetCanonicalGenesisBlock<DumbAction>(Fx.GetHashAlgorithm));
+
+            Assert.Null(canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId1);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.PutBlock(Fx.Block1);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId1, Fx.Block1.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId2);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId2, Fx.Block1.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+            Fx.Store.PutBlock(Fx.Block2);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId2, Fx.Block2.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId3);
+            Fx.Store.PutBlock(Fx.Block3);
+            Fx.Store.AppendIndex(chainId3, Fx.Block3.Hash);
+            Assert.Equal(Fx.Block3, canonicalGenesisBlock());
+            Fx.Store.SetCanonicalChainId(chainId1);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+        }
+
+        [SkippableFact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
@@ -958,10 +993,6 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
             Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
-
-            Assert.Throws<ChainIdNotFoundException>(
-                () => store.ForkBlockIndexes(Guid.NewGuid(), Guid.NewGuid(), Fx.Block2.Hash)
-            );
         }
 
         [SkippableFact]
@@ -1108,10 +1139,6 @@ namespace Libplanet.Tests.Store
             store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
             Assert.Equal(2, store.GetTxNonce(sourceChainId, Fx.Address1));
             Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
-
-            Assert.Throws<ChainIdNotFoundException>(
-                () => store.ForkTxNonces(Guid.NewGuid(), Guid.NewGuid())
-            );
         }
 
         [SkippableFact]

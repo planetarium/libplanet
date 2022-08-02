@@ -166,7 +166,8 @@ namespace Libplanet.Blockchain
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
                 blockChainStates: this,
-                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash)
+                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
+                genesisBlock.Hash
             );
 
             if (Count == 0)
@@ -709,7 +710,8 @@ namespace Libplanet.Blockchain
         {
             if (!(Store.GetBlockPerceivedTime(blockExcerpt.Hash) is { } time))
             {
-                time = perceivedTime ?? DateTimeOffset.UtcNow;
+                time = perceivedTime ?? DateTimeOffset.FromUnixTimeMilliseconds(
+                    DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
                 Store.SetBlockPerceivedTime(blockExcerpt.Hash, time);
             }
 
@@ -838,6 +840,170 @@ namespace Libplanet.Blockchain
             }
 
             return evaluations;
+        }
+
+        /// <summary>
+        /// Find the branching point between this blockchain and <paramref name="locator"/>, and
+        /// the hashes of subsequent blocks from the point.</summary>
+        /// <param name="locator">The <see cref="BlockLocator"/> to find the branching point
+        /// from.</param>
+        /// <param name="stop">A block hash to stop looking for subsequent blocks once encountered.
+        /// </param>
+        /// <param name="count">Maximum number of block hashes to return.</param>
+        /// <returns>A tuple of the index of the branching point and block hashes.</returns>
+        public Tuple<long?, IReadOnlyList<BlockHash>> FindNextHashes(
+            BlockLocator locator,
+            BlockHash? stop = null,
+            int count = 500)
+        {
+            DateTimeOffset startTime = DateTimeOffset.Now;
+
+            // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
+            // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
+            // it had been occurred.
+            // We should find a reason for that and fix it before remote this early return.
+            BlockHash? tip = Store.IndexBlockHash(Id, -1);
+            if (tip is null)
+            {
+                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
+            }
+
+            BlockHash? branchpoint = FindBranchpoint(locator);
+            var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
+
+            // FIXME: Currently, increasing count by one to satisfy
+            // the number defined by FindNextHashesChunkSize variable
+            // when branchPointIndex didn't indicate genesis block.
+            // Since branchPointIndex is same as the latest block of
+            // requesting peer.
+            if (branchpointIndex > 0)
+            {
+                count++;
+            }
+
+            var result = new List<BlockHash>();
+            foreach (BlockHash hash in Store.IterateIndexes(Id, branchpointIndex, count))
+            {
+                if (count == 0)
+                {
+                    break;
+                }
+
+                result.Add(hash);
+
+                if (hash.Equals(stop))
+                {
+                    break;
+                }
+
+                count--;
+            }
+
+            TimeSpan duration = DateTimeOffset.Now - startTime;
+            _logger
+                .ForContext("Tag", "Metric")
+                .ForContext("Subtag", "FindHashesDuration")
+                .Debug(
+                    "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
+                    "in {DurationMs:F0}ms.",
+                    result.Count,
+                    Store.ListChainIds().Count(),
+                    duration.TotalMilliseconds);
+
+            return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
+        }
+
+        /// <summary>
+        /// Forks the chain at <paramref name="point"/> and returns the newly forked chain.
+        /// </summary>
+        /// <param name="point">The hash in which to fork from.</param>
+        /// <param name="inheritRenderers">Whether to inherit the renderers from the existing chain.
+        /// </param>
+        /// <returns>An instance of the newly forked chain.</returns>
+        /// <exception cref="ArgumentException">Throws when the provided <paramref name="point"/>
+        /// does not exist in the current chain.</exception>
+        public BlockChain<T> Fork(BlockHash point, bool inheritRenderers = true)
+        {
+            if (!ContainsBlock(point))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist.",
+                    nameof(point));
+            }
+
+            Block<T> pointBlock = this[point];
+
+            if (!point.Equals(this[pointBlock.Index].Hash))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist in the chain index.",
+                    nameof(point));
+            }
+
+            IEnumerable<IRenderer<T>> renderers = inheritRenderers
+                ? Renderers
+                : Enumerable.Empty<IRenderer<T>>();
+            var forked = new BlockChain<T>(
+                Policy, StagePolicy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
+            Guid forkedId = forked.Id;
+            _logger.Debug(
+                "Trying to fork chain at {branchPoint}" +
+                "(prevId: {prevChainId}) (forkedId: {forkedChainId})",
+                point,
+                Id,
+                forkedId);
+            try
+            {
+                _rwlock.EnterReadLock();
+
+                Store.ForkBlockIndexes(Id, forkedId, point);
+                Store.ForkTxNonces(Id, forked.Id);
+
+                for (Block<T> block = Tip;
+                     block.PreviousHash is { } hash && !block.Hash.Equals(point);
+                     block = _blocks[hash])
+                {
+                    IEnumerable<(Address, int)> signers = block
+                        .Transactions
+                        .GroupBy(tx => tx.Signer)
+                        .Select(g => (g.Key, g.Count()));
+
+                    foreach ((Address address, int txCount) in signers)
+                    {
+                        Store.IncreaseTxNonce(forked.Id, address, -txCount);
+                    }
+                }
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+
+            return forked;
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="BlockLocator"/> from the tip of current chain.
+        /// </summary>
+        /// <param name="threshold">The amount of consequent blocks to include before sampling.
+        /// </param>
+        /// <returns>A instance of block locator.</returns>
+        public BlockLocator GetBlockLocator(int threshold = 10)
+        {
+            try
+            {
+                _rwlock.EnterReadLock();
+
+                return new BlockLocator(
+                    indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
+                    indexByBlockHash: hash => _blocks[hash].Index,
+                    sampleAfter: threshold
+                );
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
         }
 
 #pragma warning disable MEN003
@@ -1085,146 +1251,6 @@ namespace Libplanet.Blockchain
                     "Failed to find a branchpoint locator [{LocatorHead}, ...].",
                     locator.FirstOrDefault());
                 return null;
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-        }
-
-        internal Tuple<long?, IReadOnlyList<BlockHash>> FindNextHashes(
-            BlockLocator locator,
-            BlockHash? stop = null,
-            int count = 500)
-        {
-            DateTimeOffset startTime = DateTimeOffset.Now;
-
-            // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
-            // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
-            // it had been occurred.
-            // We should find a reason for that and fix it before remote this early return.
-            BlockHash? tip = Store.IndexBlockHash(Id, -1);
-            if (tip is null)
-            {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, new BlockHash[0]);
-            }
-
-            BlockHash? branchpoint = FindBranchpoint(locator);
-            var branchpointIndex = branchpoint is { } h ? (int)Store.GetBlockIndex(h)! : 0;
-
-            // FIXME: Currently, increasing count by one to satisfy
-            // the number defined by FindNextHashesChunkSize variable
-            // when branchPointIndex didn't indicate genesis block.
-            // Since branchPointIndex is same as the latest block of
-            // requesting peer.
-            if (branchpointIndex > 0)
-            {
-                count++;
-            }
-
-            var result = new List<BlockHash>();
-            foreach (BlockHash hash in Store.IterateIndexes(Id, branchpointIndex, count))
-            {
-                if (count == 0)
-                {
-                    break;
-                }
-
-                result.Add(hash);
-
-                if (hash.Equals(stop))
-                {
-                    break;
-                }
-
-                count--;
-            }
-
-            TimeSpan duration = DateTimeOffset.Now - startTime;
-            _logger
-                .ForContext("Tag", "Metric")
-                .ForContext("Subtag", "FindHashesDuration")
-                .Debug(
-                    "Found {HashCount} hashes from storage with {ChainIdCount} chain ids " +
-                    "in {DurationMs:F0}ms.",
-                    result.Count,
-                    Store.ListChainIds().Count(),
-                    duration.TotalMilliseconds);
-
-            return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
-        }
-
-        internal BlockChain<T> Fork(BlockHash point, bool inheritRenderers = true)
-        {
-            if (!ContainsBlock(point))
-            {
-                throw new ArgumentException(
-                    $"The block [{point}] doesn't exist.",
-                    nameof(point));
-            }
-
-            Block<T> pointBlock = this[point];
-
-            if (!point.Equals(this[pointBlock.Index].Hash))
-            {
-                throw new ArgumentException(
-                    $"The block [{point}] doesn't exist in the chain index.",
-                    nameof(point));
-            }
-
-            IEnumerable<IRenderer<T>> renderers = inheritRenderers
-                ? Renderers
-                : Enumerable.Empty<IRenderer<T>>();
-            var forked = new BlockChain<T>(
-                Policy, StagePolicy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
-            Guid forkedId = forked.Id;
-            _logger.Debug(
-                "Trying to fork chain at {branchPoint}" +
-                "(prevId: {prevChainId}) (forkedId: {forkedChainId})",
-                point,
-                Id,
-                forkedId);
-            try
-            {
-                _rwlock.EnterReadLock();
-
-                Store.ForkBlockIndexes(Id, forkedId, point);
-                Store.ForkTxNonces(Id, forked.Id);
-
-                for (Block<T> block = Tip;
-                     block.PreviousHash is { } hash && !block.Hash.Equals(point);
-                     block = _blocks[hash])
-                {
-                    IEnumerable<(Address, int)> signers = block
-                        .Transactions
-                        .GroupBy(tx => tx.Signer)
-                        .Select(g => (g.Key, g.Count()));
-
-                    foreach ((Address address, int txCount) in signers)
-                    {
-                        Store.IncreaseTxNonce(forked.Id, address, -txCount);
-                    }
-                }
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-
-            return forked;
-        }
-
-        internal BlockLocator GetBlockLocator(int threshold = 10)
-        {
-            try
-            {
-                _rwlock.EnterReadLock();
-
-                return new BlockLocator(
-                    indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
-                    indexByBlockHash: hash => _blocks[hash].Index,
-                    sampleAfter: threshold
-                );
             }
             finally
             {

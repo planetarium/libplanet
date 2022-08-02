@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
+ -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
+    [[#2162], [#2171]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -19,13 +23,42 @@ To be released.
  - (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
    `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
+ - Added `BlockLocator` class. [[#1762], [#2140]]
+ - Added methods required for decoupling `Libplanet.Net` from
+   `Libplanet`. [[#1762], [#2140]]
+   - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
+   - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
+   - Added `BlockChain<T>.GetBlockLocator(int)` method.
+ -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `IAccountStateView` interface.  [[#2183]]
+ -  `IAccountStateDelta` now inherits `IAccountStateView` interface.
+    [[#2183]]
+
 ### Behavioral changes
+
+ -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
+    perceive time of newly perceived blocks. [[#2155], [#2159]]
+ -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
+    empty chains. [[#2047], [#2156]]
 
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#1972]: https://github.com/planetarium/libplanet/issues/1972
+[#2047]: https://github.com/planetarium/libplanet/issues/2047
+[#2140]: https://github.com/planetarium/libplanet/pull/2140
+[#2155]: https://github.com/planetarium/libplanet/issues/2155
+[#2156]: https://github.com/planetarium/libplanet/pull/2156
+[#2159]: https://github.com/planetarium/libplanet/pull/2159
+[#2162]: https://github.com/planetarium/libplanet/issues/2162
+[#2171]: https://github.com/planetarium/libplanet/pull/2171
+[#2179]: https://github.com/planetarium/libplanet/pull/2179
+[#2183]: https://github.com/planetarium/libplanet/pull/2183
 
 
 Version 0.39.0

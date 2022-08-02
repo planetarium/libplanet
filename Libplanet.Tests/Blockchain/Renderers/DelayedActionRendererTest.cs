@@ -13,6 +13,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using Serilog.Events;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -441,7 +442,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
         }
 
-        [Fact]
+        // FIXME: This should be properly addressed.
+        // https://github.com/planetarium/libplanet/issues/2166
+        [RetryFact]
         public async Task ClearRenderBufferWhenItsInterval()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -747,6 +750,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         private IActionContext FakeContext(long blockIndex = 1) =>
-            new ActionContext(default, default, default, blockIndex, _emptyStates, 0);
+            new ActionContext(default, default, default, default, blockIndex, _emptyStates, 0);
     }
 }

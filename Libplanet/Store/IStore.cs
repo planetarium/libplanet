@@ -11,9 +11,9 @@ namespace Libplanet.Store
     public interface IStore : IDisposable
     {
         /// <summary>
-        /// Lists existing chain IDs.
+        /// Lists chain IDs containing at least a single block.
         /// </summary>
-        /// <returns>Existing chain IDs.</returns>
+        /// <returns>Chain IDs with at least a single block.</returns>
         IEnumerable<Guid> ListChainIds();
 
         /// <summary>
@@ -41,6 +41,17 @@ namespace Libplanet.Store
         /// <param name="chainId">The ID of a new canonical chain.</param>
         /// <seealso cref="GetCanonicalChainId()"/>
         void SetCanonicalChainId(Guid chainId);
+
+        /// <summary>
+        /// Returns the genesis block of the current canonical chain.
+        /// </summary>
+        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
+        /// proof-of-work mining.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+        /// <returns>The genesis block of the current canonical chain.</returns>
+        Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+            where T : IAction, new();
 
         long CountIndex(Guid chainId);
 
@@ -84,8 +95,6 @@ namespace Libplanet.Store
         /// <param name="destinationChainId">The chain ID of destination
         /// block indexes.</param>
         /// <param name="branchpoint">The branchpoint <see cref="Block{T}"/> to fork.</param>
-        /// <exception cref="ChainIdNotFoundException">Thrown when the given
-        /// <paramref name="sourceChainId"/> does not exist.</exception>
         /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
@@ -329,8 +338,6 @@ namespace Libplanet.Store
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s to fork.</param>
         /// <param name="destinationChainId">The chain <see cref="BlockChain{T}.Id"/> of destination
         /// <see cref="Transaction{T}"/> <see cref="Transaction{T}.Nonce"/>s.</param>
-        /// <exception cref="ChainIdNotFoundException">Thrown when the given
-        /// <paramref name="sourceChainId"/> does not exist.</exception>
         void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
 
         /// <summary>

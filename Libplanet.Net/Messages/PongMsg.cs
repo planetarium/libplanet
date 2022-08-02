@@ -3,10 +3,10 @@ using System.Collections.Generic;
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A reply to <see cref="Ping"/>.
+    /// A reply to <see cref="PingMsg"/>.
     /// </summary>
-    /// <seealso cref="Ping"/>
-    public class Pong : Message
+    /// <seealso cref="PingMsg"/>
+    public class PongMsg : Message
     {
         public override MessageType Type => MessageType.Pong;
 

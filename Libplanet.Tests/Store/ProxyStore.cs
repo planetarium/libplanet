@@ -50,6 +50,10 @@ namespace Libplanet.Tests.Store
         public virtual void SetCanonicalChainId(Guid chainId) =>
             Store.SetCanonicalChainId(chainId);
 
+        public virtual Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+            where T : IAction, new() =>
+            Store.GetCanonicalGenesisBlock<T>(hashAlgorithmGetter);
+
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
         public virtual long CountIndex(Guid chainId) =>
             Store.CountIndex(chainId);

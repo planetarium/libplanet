@@ -12,8 +12,8 @@ namespace Libplanet.Net
 
         /// <summary>
         /// Determines how long an <see cref="ITransport"/> should wait before timimg out
-        /// when dialing peers for either <see cref="Pong"/>, <see cref="Neighbors"/>,
-        /// or <see cref="ChainStatus"/> during a bootstrapping phase.  Generally, a more relaxed
+        /// when dialing peers for either <see cref="PongMsg"/>, <see cref="NeighborsMsg"/>,
+        /// or <see cref="ChainStatusMsg"/> during a bootstrapping phase.  Generally, a more relaxed
         /// <see cref="TimeSpan"/> is used compared to <see cref="TimeoutOptions.DialTimeout"/>.
         /// Set to <see cref="DefaultDialTimeout"/> seconds by default.
         /// </summary>

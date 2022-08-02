@@ -8,19 +8,19 @@ using Destructurama.Attributed;
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// Message containing nearby peers. A reply to <see cref="FindNeighbors"/>.
+    /// Message containing nearby peers. A reply to <see cref="FindNeighborsMsg"/>.
     /// </summary>
-    /// <seealso cref="FindNeighbors"/>
-    public class Neighbors : Message
+    /// <seealso cref="FindNeighborsMsg"/>
+    public class NeighborsMsg : Message
     {
         private static readonly Codec Codec = new Codec();
 
-        public Neighbors(IEnumerable<BoundPeer> found)
+        public NeighborsMsg(IEnumerable<BoundPeer> found)
         {
             Found = found.ToImmutableList();
         }
 
-        public Neighbors(byte[][] dataFrames)
+        public NeighborsMsg(byte[][] dataFrames)
         {
             var codec = new Codec();
             int foundCount = BitConverter.ToInt32(dataFrames[0], 0);

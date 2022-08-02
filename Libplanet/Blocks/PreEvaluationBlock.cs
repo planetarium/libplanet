@@ -308,7 +308,8 @@ namespace Libplanet.Blocks
             var actionEvaluator = new ActionEvaluator<T>(
                 blockAction,
                 blockChainStates: NullChainStates<T>.Instance,
-                trieGetter: null
+                trieGetter: null,
+                genesisHash: null
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);

@@ -71,6 +71,13 @@ namespace Libplanet.Store
         void IStore.SetCanonicalChainId(Guid chainId) =>
             _canonicalChainId = chainId;
 
+        Block<T> IStore.GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter) =>
+            _canonicalChainId is { } canonicalChainId
+            && _indices.TryGetValue(canonicalChainId, out ImmutableTrieList<BlockHash> indices)
+            && indices.Count > 0
+                ? ((IStore)this).GetBlock<T>(hashAlgorithmGetter, indices[0])
+                : null;
+
         long IStore.CountIndex(Guid chainId) =>
             _indices.TryGetValue(chainId, out ImmutableTrieList<BlockHash> index) ? index.Count : 0;
 
@@ -121,16 +128,11 @@ namespace Libplanet.Store
             BlockHash branchpoint
         )
         {
-            if (!_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
+            if (_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash> source))
             {
-                throw new ChainIdNotFoundException(
-                    sourceChainId,
-                    $"No such chain ID: {sourceChainId}."
-                );
+                int bpIndex = source.FindIndex(branchpoint.Equals);
+                _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
             }
-
-            int bpIndex = source.FindIndex(branchpoint.Equals);
-            _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
         }
 
         IEnumerable<TxId> IStore.IterateTransactionIds() =>
@@ -267,13 +269,7 @@ namespace Libplanet.Store
             if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long> dict))
             {
                 _txNonces[destinationChainId] = new ConcurrentDictionary<Address, long>(dict);
-                return;
             }
-
-            throw new ChainIdNotFoundException(
-                sourceChainId,
-                $"No such chain ID: {sourceChainId}."
-            );
         }
 
         void IStore.PruneOutdatedChains(bool noopWithoutCanon)

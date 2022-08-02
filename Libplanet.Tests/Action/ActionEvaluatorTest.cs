@@ -84,7 +84,8 @@ namespace Libplanet.Tests.Action
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
-                    trieGetter: null);
+                    trieGetter: null,
+                    genesisHash: null);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
@@ -279,7 +280,8 @@ namespace Libplanet.Tests.Action
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
-                trieGetter: null);
+                trieGetter: null,
+                genesisHash: null);
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -581,7 +583,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
-                trieGetter: null);
+                trieGetter: null,
+                genesisHash: tx.GenesisHash);
 
             foreach (bool rehearsal in new[] { false, true })
             {
@@ -708,7 +711,8 @@ namespace Libplanet.Tests.Action
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
-                trieGetter: null);
+                trieGetter: null,
+                genesisHash: tx.GenesisHash);
             var block = new BlockContent<ThrowException>
             {
                 Index = 123,
@@ -746,6 +750,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockA = await fx.Mine();
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
+                txA.GenesisHash,
                 blockA.PreEvaluationHash,
                 blockIndex: blockA.Index,
                 txid: txA.Id,
@@ -795,6 +800,7 @@ namespace Libplanet.Tests.Action
 
             Block<Arithmetic> blockB = await fx.Mine();
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
+                txB.GenesisHash,
                 blockB.PreEvaluationHash,
                 blockIndex: blockB.Index,
                 txid: txB.Id,
@@ -1069,6 +1075,29 @@ namespace Libplanet.Tests.Action
             };
 
             return (addresses, txs);
+        }
+
+        [Fact]
+        private async Task CheckGenesisHashInAction()
+        {
+            var chain = MakeBlockChain<EvaluateTestAction>(
+                    policy: new BlockPolicy<EvaluateTestAction>(),
+                    store: _storeFx.Store,
+                    stateStore: _storeFx.StateStore);
+            var privateKey = new PrivateKey();
+            var action = new EvaluateTestAction();
+            var tx = Transaction<EvaluateTestAction>.Create(
+                nonce: 0,
+                privateKey: privateKey,
+                genesisHash: chain.Genesis.Hash,
+                actions: new[] { action });
+            chain.StageTransaction(tx);
+            var miner = new PrivateKey();
+            await chain.MineBlock(miner);
+            var evaluations = chain.ActionEvaluator.Evaluate(
+                chain.Tip,
+                StateCompleterSet<EvaluateTestAction>.Recalculate);
+            Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
         }
 
         private sealed class EvaluateTestAction : IAction

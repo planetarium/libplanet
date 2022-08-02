@@ -60,7 +60,7 @@ namespace Libplanet.Net
         public int MinimumBroadcastTarget { get; set; } = 10;
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMessage"/>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="BlockHeaderMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
@@ -71,7 +71,7 @@ namespace Libplanet.Net
             = TimeSpan.FromMilliseconds(15_000);
 
         /// <summary>
-        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIds"/>
+        /// Determines how often <see cref="Swarm{T}"/> braodcasts <see cref="TxIdsMsg"/>
         /// to its peers.
         /// </summary>
         /// <remarks>
