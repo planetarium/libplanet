@@ -42,7 +42,7 @@ jobs:
         WEB_FLOW_KEY_URL: https://github.com/web-flow.gpg
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 6.0.x
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
@@ -97,7 +97,7 @@ jobs:
     - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 6.0.x
     - run: dotnet build -p:SkipSonar=true
     - run: mkdir -p Docs/obj/
     - run: Docs/build.ps1
@@ -139,7 +139,7 @@ jobs:
         name: dist-bin
         path: /tmp/nupkg
     - run: |
-        targets=(netcoreapp3.1 net472 net462 net461)
+        targets=(net6.0 net472 net462 net461)
         for target in "${targets[@]}"; do
           find /tmp/nupkg \
             -name '*.nupkg' \
