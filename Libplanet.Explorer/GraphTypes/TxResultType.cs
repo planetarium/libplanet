@@ -23,6 +23,12 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The block hash which the target transaction executed.",
                 resolve: context => context.Source.BlockHash
             );
+
+            Field<StringGraphType>(
+                nameof(TxResult.ExceptionName),
+                description: "The name of exception. (when only failed)",
+                resolve: context => context.Source.ExceptionName
+            );
         }
     }
 }
