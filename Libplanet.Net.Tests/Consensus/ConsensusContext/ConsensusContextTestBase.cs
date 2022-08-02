@@ -21,8 +21,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         protected readonly ConsensusContext<DumbAction> ConsensusContext;
         protected readonly TimeSpan NewHeightDelay = TimeSpan.FromSeconds(1);
 
-        protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage;
-
         private const int Port = 19283;
         private readonly ILogger _logger;
 
@@ -48,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>
                 {
-                    watchConsensusMessage?.Invoke(message);
+                    ConsensusMessageSent?.Invoke(this, message);
                     message.Remote = new Peer(privateKey.PublicKey);
                     ConsensusContext!.HandleMessage(message);
                 });
@@ -62,6 +60,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 validators,
                 NewHeightDelay);
         }
+
+        protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;
 
         public void Dispose()
         {

@@ -19,8 +19,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         protected readonly Context<DumbAction> Context;
         protected readonly BlockChain<DumbAction> BlockChain;
 
-        protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage = null;
-
         private readonly StoreFixture _fx;
         private readonly ILogger _logger;
         private readonly TimeSpan _newHeightDelay = TimeSpan.FromSeconds(4);
@@ -48,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>
                 {
-                    watchConsensusMessage?.Invoke(message);
+                    ConsensusMessageSent?.Invoke(this, message);
                     message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
                     Context!.ProduceMessage(message);
                 });
@@ -70,6 +68,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 step,
                 round);
         }
+
+        protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;
 
         public void Dispose()
         {

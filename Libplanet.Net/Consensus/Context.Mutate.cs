@@ -8,9 +8,9 @@ namespace Libplanet.Net.Consensus
     public partial class Context<T>
     {
         /// <summary>
-        /// Start a new round.
+        /// Starts a new round.
         /// </summary>
-        /// <param name="round">A round to start.</param>
+        /// <param name="round">The round to start.</param>
         internal void StartRound(int round)
         {
             _logger.Debug(
@@ -27,10 +27,10 @@ namespace Libplanet.Net.Consensus
                     round,
                     ToString());
                 Block<T> proposal = _validValue ?? GetValue();
-                BlockProposed?.Invoke(this, proposal);
 
                 BroadcastMessage(
                     new ConsensusPropose(
+                        _privateKey.PublicKey,
                         Height,
                         Round,
                         proposal.Hash,
@@ -43,12 +43,12 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is not a proposer. (context: {Context})",
                     round,
                     ToString());
-                _ = OnTimeoutPropose(Height, Round);
+                _ = OnTimeoutPropose(Round);
             }
         }
 
         /// <summary>
-        /// Validates the given <paramref name="message"/> and add into the message queue.
+        /// Validates given <paramref name="message"/> and add it to the message queue.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMessage"/> to be added.
         /// </param>
@@ -78,13 +78,13 @@ namespace Libplanet.Net.Consensus
 
             if (message is ConsensusPropose propose)
             {
-                if (!propose.Remote!.PublicKey.Equals(Proposer(message.Round)))
+                if (!propose.Validator.Equals(Proposer(message.Round)))
                 {
                     throw new InvalidProposerProposeMessageException(
                         "Proposer for the height " +
                         $"{message.Height} and round {message.Round} is invalid.  " +
                         $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {message.Remote!.PublicKey} / " +
+                        $"Proposer: {message.Validator} / " +
                         $"actual: Height: {Height}, Round: {Round}, " +
                         $"Proposer: {Proposer(message.Round)})",
                         message);
@@ -99,8 +99,9 @@ namespace Libplanet.Net.Consensus
             }
 
             if (message is ConsensusVote vote &&
-                (!vote.ProposeVote.Verify(vote.Remote!.PublicKey) ||
-                 !_validators.Contains(vote.ProposeVote.Validator)))
+                (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
+                 !vote.ProposeVote.Verify(vote.Validator) ||
+                 !_validators.Contains(vote.Validator)))
             {
                 throw new InvalidValidatorVoteMessageException(
                     "Received ConsensusVote message is made by invalid validator.",
@@ -108,8 +109,9 @@ namespace Libplanet.Net.Consensus
             }
 
             if (message is ConsensusCommit commit &&
-                (!commit.CommitVote.Verify(commit.Remote!.PublicKey) ||
-                 !_validators.Contains(commit.CommitVote.Validator)))
+                (!commit.Validator.Equals(commit.CommitVote.Validator) ||
+                 !commit.CommitVote.Verify(commit.Validator) ||
+                 !_validators.Contains(commit.Validator)))
             {
                 throw new InvalidValidatorVoteMessageException(
                     "Received ConsensusCommit message is made by invalid validator.",
@@ -129,7 +131,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Checks the current state to mutate <see cref="Step"/> or schedule timeouts.
+        /// Checks the current state to mutate <see cref="Step"/> and/or schedule timeouts.
         /// </summary>
         private void ProcessGenericUponRules()
         {
@@ -196,7 +198,7 @@ namespace Libplanet.Net.Consensus
                     Round,
                     ToString());
                 _preVoteTimeoutFlags.Add(Round);
-                _ = OnTimeoutPreVote(Height, Round);
+                _ = OnTimeoutPreVote(Round);
             }
 
             if (GetPropose(Round) is (Block<T> block3, _) &&
@@ -249,12 +251,12 @@ namespace Libplanet.Net.Consensus
                     Round,
                     ToString());
                 _preCommitTimeoutFlags.Add(Round);
-                _ = OnTimeoutPreCommit(Height, Round);
+                _ = OnTimeoutPreCommit(Round);
             }
         }
 
         /// <summary>
-        /// Checks the current state to mutate <see cref="Round"/> or terminate
+        /// Checks the current state to mutate <see cref="Round"/> or to terminate
         /// by setting <see cref="Step"/> to <see cref="Step.EndCommit"/>.
         /// </summary>
         /// <param name="message">The <see cref="ConsensusMessage"/> to process.
@@ -295,56 +297,50 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A timeout task for a round if no <see cref="ConsensusPropose"/> is received in
-        /// <see cref="TimeoutPropose"/> and <see cref="Libplanet.Net.Consensus.Step.Propose"/>
-        /// step.
+        /// A timeout mutation to run if no <see cref="ConsensusPropose"/> is received in
+        /// <see cref="TimeoutPropose"/> and is still in <see cref="Step.Propose"/> step.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private void ProcessTimeoutPropose(long height, int round)
+        private void ProcessTimeoutPropose(int round)
         {
-            if (height == Height && round == Round && Step == Step.Propose)
+            if (round == Round && Step == Step.Propose)
             {
                 BroadcastMessage(
                     new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
                 Step = Step.PreVote;
-                TimeoutProcessed?.Invoke(this, (height, round));
+                TimeoutProcessed?.Invoke(this, round);
             }
         }
 
         /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusVote"/> is received +2/3 any but has
-        /// no majority neither Block nor NIL in
-        /// <see cref="TimeoutPreVote"/> and <see cref="Libplanet.Net.Consensus.Step.PreVote"/>
-        /// step.
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusVote"/>s were received but
+        /// is still in <paramref name="round"/> round and <see cref="Step.PreVote"/> step
+        /// after <see cref="TimeoutPreVote"/>.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private void ProcessTimeoutPreVote(long height, int round)
+        private void ProcessTimeoutPreVote(int round)
         {
-            if (height == Height && round == Round && Step == Step.PreVote)
+            if (round == Round && Step == Step.PreVote)
             {
                 BroadcastMessage(
                     new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
                 Step = Step.PreCommit;
-                TimeoutProcessed?.Invoke(this, (height, round));
+                TimeoutProcessed?.Invoke(this, round);
             }
         }
 
         /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusCommit"/> is received +2/3 any but has
-        /// no majority neither Block or NIL in
-        /// <see cref="TimeoutPreCommit"/> and <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
-        /// step.
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusCommit"/>s were received but
+        /// is still in <paramref name="round"/> round and <see cref="Step.PreCommit"/> step
+        /// after <see cref="TimeoutPreVote"/>.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private void ProcessTimeoutPreCommit(long height, int round)
+        private void ProcessTimeoutPreCommit(int round)
         {
-            if (height == Height && round == Round && Step < Step.EndCommit)
+            if (round == Round && Step < Step.EndCommit)
             {
                 StartRound(Round + 1);
-                TimeoutProcessed?.Invoke(this, (height, round));
+                TimeoutProcessed?.Invoke(this, round);
             }
         }
     }

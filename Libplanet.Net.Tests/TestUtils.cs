@@ -182,8 +182,7 @@ namespace Libplanet.Net.Tests
             };
         }
 
-        public static ConsensusContext<DumbAction>
-            CreateStandaloneConsensusContext(
+        public static ConsensusContext<DumbAction> CreateStandaloneConsensusContext(
             BlockChain<DumbAction> blockChain,
             ITransport transport,
             TimeSpan newHeightDelay,

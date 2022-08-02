@@ -27,17 +27,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void StartAsync()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var messageReceived = new AsyncAutoResetEvent();
-
-            void IsProposeSent(ConsensusMessage message)
-            {
-                if (message is ConsensusPropose)
-                {
-                    messageReceived.Set();
-                }
-            }
-
-            watchConsensusMessage = IsProposeSent;
+            var proposeSent = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
@@ -45,9 +35,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
+            ConsensusMessageSent += (observer, message) =>
+            {
+                if (message is ConsensusPropose)
+                {
+                    proposeSent.Set();
+                }
+            };
 
             Context.StartAsync();
-            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -58,20 +55,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void StartAsyncWithLastCommit()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var messageReceived = new AsyncAutoResetEvent();
-            ConsensusPropose? received = null;
-
-            void IsProposeSent(ConsensusMessage message)
-            {
-                if (message is ConsensusPropose propose)
-                {
-                    messageReceived.Set();
-                    received = propose;
-                }
-            }
-
-            watchConsensusMessage = IsProposeSent;
-
+            var proposeSent = new AsyncAutoResetEvent();
+            ConsensusPropose? proposedMessage = null;
             Context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
@@ -79,29 +64,30 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
+            ConsensusMessageSent += (observer, message) =>
+            {
+                if (message is ConsensusPropose propose)
+                {
+                    proposedMessage = propose;
+                    proposeSent.Set();
+                }
+            };
 
             var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
             var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
 
             Context.StartAsync(lastCommit);
-            await Task.WhenAll(messageReceived.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
-            // Looks dirty, but compiler throws error without if statement.
-            if (received is null)
-            {
-                Assert.NotNull(received);
-            }
-            else
-            {
-                Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    BlockChain.Policy.GetHashAlgorithm,
-                    (Dictionary)new Codec().Decode(received.Payload));
-                Assert.NotNull(mined.LastCommit);
-                Assert.Equal(
-                    new HashSet<Vote>(voteSet.Votes),
-                    new HashSet<Vote>(mined.LastCommit?.Votes!));
-            }
+            Assert.NotNull(proposedMessage);
+            Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                BlockChain.Policy.GetHashAlgorithm,
+                (Dictionary)new Codec().Decode(proposedMessage!.Payload));
+            Assert.NotNull(mined.LastCommit);
+            Assert.Equal(
+                new HashSet<Vote>(voteSet.Votes),
+                new HashSet<Vote>(mined.LastCommit?.Votes!));
         }
 
         [Fact(Timeout = Timeout)]

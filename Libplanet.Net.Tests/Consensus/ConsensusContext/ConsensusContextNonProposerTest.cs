@@ -37,22 +37,22 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightWithLastCommit()
         {
-            AsyncAutoResetEvent tipChanged = new AsyncAutoResetEvent();
-            AsyncAutoResetEvent heightTwoProposed = new AsyncAutoResetEvent();
-            ConsensusPropose? propose = null;
             var codec = new Codec();
+            var tipChanged = new AsyncAutoResetEvent();
+            Block<DumbAction>? proposedBlock = null;
+            var heightTwoProposeSent = new AsyncAutoResetEvent();
             BlockChain.TipChanged += (sender, tuple) =>
             {
                 tipChanged.Set();
             };
-
-            watchConsensusMessage = (message) =>
+            ConsensusMessageSent += (observer, message) =>
             {
-                if (message is ConsensusPropose proposeMessage &&
-                    message.Height == 2)
+                if (message is ConsensusPropose propose && message.Height == 2)
                 {
-                    propose = proposeMessage;
-                    heightTwoProposed.Set();
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        BlockChain.Policy.GetHashAlgorithm,
+                        (Dictionary)codec.Decode(propose!.Payload));
+                    heightTwoProposeSent.Set();
                 }
             };
 
@@ -106,12 +106,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     });
             }
 
-            await heightTwoProposed.WaitAsync();
-            Block<DumbAction> proposedBlock =
-                BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    BlockChain.Policy.GetHashAlgorithm,
-                    (Dictionary)codec.Decode(propose!.Payload));
-            ImmutableArray<Vote> votes = proposedBlock.LastCommit?.Votes is { } vs
+            await heightTwoProposeSent.WaitAsync();
+            ImmutableArray<Vote> votes = proposedBlock!.LastCommit?.Votes is { } vs
                 ? vs
                 : throw new NullReferenceException();
             Assert.Equal(
@@ -126,31 +122,28 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void HandleMessageFromHigherHeight()
         {
+            var codec = new Codec();
             ConsensusPropose? propose = null;
             var heightTwoStepChanged = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
             var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
-            var proposed = new AsyncAutoResetEvent();
-
-            var codec = new Codec();
-            await BlockChain.MineBlock(TestUtils.Peer1Priv, append: true);
-
-            Block<DumbAction> blockHeightThree =
-                await BlockChain.MineBlock(TestUtils.Peer3Priv, append: false);
-
-            watchConsensusMessage = (message) =>
+            var proposeSent = new AsyncAutoResetEvent();
+            ConsensusMessageSent += (observer, message) =>
             {
                 if (message is ConsensusPropose proposeMessage)
                 {
                     propose = proposeMessage;
-                    proposed.Set();
+                    proposeSent.Set();
                 }
             };
 
+            await BlockChain.MineBlock(TestUtils.Peer1Priv, append: true);
+            var blockHeightThree = await BlockChain.MineBlock(TestUtils.Peer3Priv, append: false);
+
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            await proposed.WaitAsync();
+            await proposeSent.WaitAsync();
 
             Assert.Equal(2, ConsensusContext.Height);
 

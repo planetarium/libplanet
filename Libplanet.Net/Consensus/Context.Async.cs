@@ -10,7 +10,7 @@ namespace Libplanet.Net.Consensus
     public partial class Context<T>
     {
         /// <summary>
-        /// Starts the round #0 of consensus for <see cref="Height"/>.
+        /// Starts round #0 of consensus for <see cref="Height"/>.
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
         /// </param>
@@ -104,28 +104,25 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
-            int prevMessageLogSize = _messagesInRound.Sum(x => x.Value.Count);
-            int prevRound = Round;
-            Step prevStep = Step;
+            (int MessageLogSize, int Round, Step Step) prevState =
+                (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
             mutation();
-            int nextMessageLogSize = _messagesInRound.Sum(x => x.Value.Count);
-            int nextRound = Round;
-            Step nextStep = Step;
-            if (prevMessageLogSize != nextMessageLogSize ||
-                prevRound != nextRound ||
-                prevStep != nextStep)
+            (int MessageLogSize, int Round, Step Step) nextState =
+                (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
+            if (prevState != nextState)
             {
                 _logger.Debug(
                     "State (MessageLogSize, Round, Step) changed from " +
                     "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
                     "({NextMessageLogSize}, {NextRound}, {NextStep})",
-                    prevMessageLogSize,
-                    prevRound,
-                    prevStep.ToString(),
-                    nextMessageLogSize,
-                    nextRound,
-                    nextStep.ToString());
-                StateChanged?.Invoke(this, (nextMessageLogSize, nextRound, nextStep));
+                    prevState.MessageLogSize,
+                    prevState.Round,
+                    prevState.Step.ToString(),
+                    nextState.MessageLogSize,
+                    nextState.Round,
+                    nextState.Step.ToString());
+                StateChanged?.Invoke(
+                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
 
                 // FIXME: This is to avoid an exception.
                 // Methods accessing message log should be changed instead.
@@ -139,13 +136,11 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A timeout task for a round if no <see cref="ConsensusPropose"/> is received in
-        /// <see cref="TimeoutPropose"/> and <see cref="Libplanet.Net.Consensus.Step.Propose"/>
-        /// step.
+        /// Schedules <see cref="ProcessTimeoutPropose"/> to be queued after
+        /// <see cref="TimeoutPropose"/> amount of time.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPropose(long height, int round)
+        private async Task OnTimeoutPropose(int round)
         {
             TimeSpan timeout = TimeoutPropose(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
@@ -154,18 +149,15 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.Propose, timeout));
-            ProduceMutation(() => ProcessTimeoutPropose(height, round));
+            ProduceMutation(() => ProcessTimeoutPropose(round));
         }
 
         /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusVote"/> is received +2/3 any but has
-        /// no majority neither Block nor NIL in
-        /// <see cref="TimeoutPreVote"/> and <see cref="Libplanet.Net.Consensus.Step.PreVote"/>
-        /// step.
+        /// Schedules <see cref="ProcessTimeoutPreVote"/> to be queued after
+        /// <see cref="TimeoutPreVote"/> amount of time.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPreVote(long height, int round)
+        private async Task OnTimeoutPreVote(int round)
         {
             TimeSpan timeout = TimeoutPreVote(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
@@ -174,18 +166,15 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.PreVote, timeout));
-            ProduceMutation(() => ProcessTimeoutPreVote(height, round));
+            ProduceMutation(() => ProcessTimeoutPreVote(round));
         }
 
         /// <summary>
-        /// A timeout task for a round if <see cref="ConsensusCommit"/> is received +2/3 any but has
-        /// no majority neither Block or NIL in
-        /// <see cref="TimeoutPreCommit"/> and <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
-        /// step.
+        /// Schedules <see cref="ProcessTimeoutPreCommit"/> to be queued after
+        /// <see cref="TimeoutPreCommit"/> amount of time.
         /// </summary>
-        /// <param name="height">A height that the timeout task is scheduled for.</param>
-        /// <param name="round">A round that the timeout task is scheduled for.</param>
-        private async Task OnTimeoutPreCommit(long height, int round)
+        /// <param name="round">The round that the timeout task is scheduled for.</param>
+        private async Task OnTimeoutPreCommit(int round)
         {
             TimeSpan timeout = TimeoutPreCommit(round);
             await Task.Delay(timeout, _cancellationTokenSource.Token);
@@ -194,7 +183,7 @@ namespace Libplanet.Net.Consensus
                 timeout,
                 ToString());
             TimeoutOccurred?.Invoke(this, (Step.PreCommit, timeout));
-            ProduceMutation(() => ProcessTimeoutPreCommit(height, round));
+            ProduceMutation(() => ProcessTimeoutPreCommit(round));
         }
     }
 }
