@@ -28,6 +28,9 @@ To be released.
    - Added `BlockChain<T>.GetBlockLocator(int)` method.
  -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
  -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `IAccountStateView` interface.  [[#2183]]
+ -  `IAccountStateDelta` now inherits `IAccountStateView` interface.
+    [[#2183]]
 
 ### Behavioral changes
 
@@ -52,6 +55,7 @@ To be released.
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
+[#2183]: https://github.com/planetarium/libplanet/pull/2183
 
 
 Version 0.39.0
