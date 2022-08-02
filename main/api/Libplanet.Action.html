@@ -148,6 +148,18 @@ but returns <code>null</code> instead, and</li><li>filling an <a class="xref" hr
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
 any state.</li></ul>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.IAccountStateView.html">IAccountStateView</a></h4>
+      <section><p>An interface to fetch account states.</p>
+<p>It is like a readonly map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
+is mapped to <span class="xref">null</span>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<see cref="!:KeyNotFoundException"></see>,
+but returns <span class="xref">null</span> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
+<code>null</code> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</section>
       <h4><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></h4>
       <section><p>An in-game action.  Every action should be replayable, because
 multiple nodes in a network should execute an action and get the same

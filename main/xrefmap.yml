@@ -323,48 +323,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.BurnAsset
   nameWithType: IAccountStateDelta.BurnAsset
-- uid: Libplanet.Action.IAccountStateDelta.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
-  name: GetBalance(Address, Currency)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
-  commentId: M:Libplanet.Action.IAccountStateDelta.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
-  fullName: Libplanet.Action.IAccountStateDelta.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
-  nameWithType: IAccountStateDelta.GetBalance(Address, Currency)
-- uid: Libplanet.Action.IAccountStateDelta.GetBalance*
-  name: GetBalance
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetBalance_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.GetBalance
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.GetBalance
-  nameWithType: IAccountStateDelta.GetBalance
-- uid: Libplanet.Action.IAccountStateDelta.GetState(Libplanet.Address)
-  name: GetState(Address)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetState_Libplanet_Address_
-  commentId: M:Libplanet.Action.IAccountStateDelta.GetState(Libplanet.Address)
-  fullName: Libplanet.Action.IAccountStateDelta.GetState(Libplanet.Address)
-  nameWithType: IAccountStateDelta.GetState(Address)
-- uid: Libplanet.Action.IAccountStateDelta.GetState*
-  name: GetState
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetState_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.GetState
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.GetState
-  nameWithType: IAccountStateDelta.GetState
-- uid: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList{Libplanet.Address})
-  name: GetStates(IReadOnlyList<Address>)
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetStates_IReadOnlyList_Libplanet_Address__
-  commentId: M:Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList{Libplanet.Address})
-  name.vb: GetStates(IReadOnlyList(Of Address))
-  fullName: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList<Libplanet.Address>)
-  fullName.vb: Libplanet.Action.IAccountStateDelta.GetStates(IReadOnlyList(Of Libplanet.Address))
-  nameWithType: IAccountStateDelta.GetStates(IReadOnlyList<Address>)
-  nameWithType.vb: IAccountStateDelta.GetStates(IReadOnlyList(Of Address))
-- uid: Libplanet.Action.IAccountStateDelta.GetStates*
-  name: GetStates
-  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_GetStates_
-  commentId: Overload:Libplanet.Action.IAccountStateDelta.GetStates
-  isSpec: "True"
-  fullName: Libplanet.Action.IAccountStateDelta.GetStates
-  nameWithType: IAccountStateDelta.GetStates
 - uid: Libplanet.Action.IAccountStateDelta.MintAsset(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
   name: MintAsset(Address, FungibleAssetValue)
   href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_MintAsset_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
@@ -443,6 +401,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.UpdatedFungibleAssets
   nameWithType: IAccountStateDelta.UpdatedFungibleAssets
+- uid: Libplanet.Action.IAccountStateView
+  name: IAccountStateView
+  href: api/Libplanet.Action.IAccountStateView.html
+  commentId: T:Libplanet.Action.IAccountStateView
+  fullName: Libplanet.Action.IAccountStateView
+  nameWithType: IAccountStateView
+- uid: Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  name: GetBalance(Address, Currency)
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address,Libplanet.Assets.Currency)
+  fullName: Libplanet.Action.IAccountStateView.GetBalance(Libplanet.Address, Libplanet.Assets.Currency)
+  nameWithType: IAccountStateView.GetBalance(Address, Currency)
+- uid: Libplanet.Action.IAccountStateView.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetBalance_
+  commentId: Overload:Libplanet.Action.IAccountStateView.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateView.GetBalance
+  nameWithType: IAccountStateView.GetBalance
+- uid: Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
+  name: GetState(Address)
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetState_Libplanet_Address_
+  commentId: M:Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
+  fullName: Libplanet.Action.IAccountStateView.GetState(Libplanet.Address)
+  nameWithType: IAccountStateView.GetState(Address)
+- uid: Libplanet.Action.IAccountStateView.GetState*
+  name: GetState
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetState_
+  commentId: Overload:Libplanet.Action.IAccountStateView.GetState
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateView.GetState
+  nameWithType: IAccountStateView.GetState
+- uid: Libplanet.Action.IAccountStateView.GetStates(IReadOnlyList{Libplanet.Address})
+  name: GetStates(IReadOnlyList<Address>)
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetStates_IReadOnlyList_Libplanet_Address__
+  commentId: M:Libplanet.Action.IAccountStateView.GetStates(IReadOnlyList{Libplanet.Address})
+  name.vb: GetStates(IReadOnlyList(Of Address))
+  fullName: Libplanet.Action.IAccountStateView.GetStates(IReadOnlyList<Libplanet.Address>)
+  fullName.vb: Libplanet.Action.IAccountStateView.GetStates(IReadOnlyList(Of Libplanet.Address))
+  nameWithType: IAccountStateView.GetStates(IReadOnlyList<Address>)
+  nameWithType.vb: IAccountStateView.GetStates(IReadOnlyList(Of Address))
+- uid: Libplanet.Action.IAccountStateView.GetStates*
+  name: GetStates
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetStates_
+  commentId: Overload:Libplanet.Action.IAccountStateView.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateView.GetStates
+  nameWithType: IAccountStateView.GetStates
 - uid: Libplanet.Action.IAction
   name: IAction
   href: api/Libplanet.Action.IAction.html
