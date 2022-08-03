@@ -1,9 +1,11 @@
 using System;
 using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Tests.Common.Action;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 using Random = System.Random;
 
 namespace Libplanet.Tests.Action.Sys
@@ -19,7 +21,18 @@ namespace Libplanet.Tests.Action.Sys
             Address addr = random.NextAddress();
             Bencodex.Types.Dictionary dict = Dictionary.Empty
                 .Add("type_id", 0)
-                .Add("values", Dictionary.Empty);
+                .Add(
+                    "values",
+                    Dictionary.Empty
+                        .Add("recipient", addr.ByteArray)
+                        .Add("currency", FooCurrency.Serialize())
+                        .Add("amount", 200)
+                );
+            IAction action = Registry.Deserialize(dict);
+            Assert.IsType<Transfer>(action);
+            var transfer = (Transfer)action;
+            Assert.Equal(addr, transfer.Recipient);
+            Assert.Equal(FooCurrency * 2, transfer.Amount);
 
             ArgumentException e;
             e = Assert.Throws<ArgumentException>(
@@ -54,6 +67,19 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address addr = random.NextAddress();
+            Bencodex.Types.Dictionary actual =
+                Registry.Serialize(new Transfer(addr, FooCurrency * 123));
+            Bencodex.Types.Dictionary expected = Dictionary.Empty
+                .Add("type_id", 0)
+                .Add(
+                    "values",
+                    Dictionary.Empty
+                        .Add("recipient", addr.ByteArray)
+                        .Add("currency", FooCurrency.Serialize())
+                        .Add("amount", 12300)
+                );
+            AssertBencodexEqual(expected, actual);
+
             ArgumentException e = Assert.Throws<ArgumentException>(
                 () => Registry.Serialize(new DumbAction(addr, "foo"))
             );

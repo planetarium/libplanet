@@ -83,6 +83,8 @@ To be released.
         method.
      -  Added `TxMetadata.ToBencodex(IValue, ImmutableArray<byte>?)` overloaded
         method.
+ -  Introduced new system built-in actions.  [[#2149], [#2150], [#2175]]
+     -  Added `Transfer` class.
  -  Added `NonNativeTokenException` class.  [[#2149], [#2150], [#2175]]
  -  Added `BlockLocator` class. [[#1762], [#2140]]
  -  Added methods required for decoupling *Libplanet.Net* from
