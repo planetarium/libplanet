@@ -5,11 +5,11 @@ using GraphQL.Types;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class IValueType : StringGraphType
+    public class BencodexValueType : StringGraphType
     {
         private static readonly Codec _codec = new ();
 
-        public IValueType()
+        public BencodexValueType()
         {
             Name = "IValue";
         }

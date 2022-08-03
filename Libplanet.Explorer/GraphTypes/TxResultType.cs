@@ -30,7 +30,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context => context.Source.ExceptionName
             );
 
-            Field<IValueType>(
+            Field<BencodexValueType>(
                 nameof(TxResult.ExceptionMetadata),
                 description: "The hexadecimal string of the exception metadata. (when only failed)",
                 resolve: context => context.Source.ExceptionMetadata
