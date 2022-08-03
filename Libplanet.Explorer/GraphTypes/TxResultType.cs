@@ -29,6 +29,12 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The name of exception. (when only failed)",
                 resolve: context => context.Source.ExceptionName
             );
+
+            Field<IValueType>(
+                nameof(TxResult.ExceptionMetadata),
+                description: "The hexadecimal string of the exception metadata. (when only failed)",
+                resolve: context => context.Source.ExceptionMetadata
+            );
         }
     }
 }
