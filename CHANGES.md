@@ -84,6 +84,7 @@ To be released.
      -  Added `TxMetadata.ToBencodex(IValue, ImmutableArray<byte>?)` overloaded
         method.
  -  Introduced new system built-in actions.  [[#2149], [#2150], [#2175]]
+     -  Added `Mint` class.
      -  Added `Transfer` class.
  -  Added `NonNativeTokenException` class.  [[#2149], [#2150], [#2175]]
  -  Added `BlockLocator` class. [[#1762], [#2140]]

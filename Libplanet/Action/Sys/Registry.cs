@@ -7,7 +7,8 @@ namespace Libplanet.Action.Sys
     {
         private enum TypeId : short
         {
-            Transfer = 0,
+            Mint = 0,
+            Transfer = 1,
         }
 
         public static IAction Deserialize(Bencodex.Types.Dictionary serialized)
@@ -44,6 +45,7 @@ namespace Libplanet.Action.Sys
         private static IAction Instantiate(TypeId typeId) =>
             typeId switch
             {
+                TypeId.Mint => new Mint(),
                 TypeId.Transfer => new Transfer(),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(typeId),
@@ -55,6 +57,7 @@ namespace Libplanet.Action.Sys
         private static TypeId GetTypeId(IAction action) =>
             action switch
             {
+                Mint _ => TypeId.Mint,
                 Transfer _ => TypeId.Transfer,
                 _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
             };
