@@ -56,20 +56,24 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // FIXME: StartAsync inside NewHeight makes it unreliable to try to await for
             // early events.
-            VoteSet? voteSet = null;
+            BlockHash blockHash;
             while (true)
             {
                 try
                 {
-                    voteSet = ConsensusContext.Contexts[BlockChain.Tip.Index + 1].VoteSet(0);
-                    break;
+                    var voteSet = ConsensusContext.Contexts[BlockChain.Tip.Index + 1].VoteSet(0);
+                    if (voteSet.Votes[0].BlockHash is BlockHash hash)
+                    {
+                        blockHash = hash;
+                        break;
+                    }
                 }
                 catch (Exception)
                 {
                 }
-            }
 
-            BlockHash blockHash = voteSet!.Votes[0].BlockHash!.Value;
+                await Task.Delay(100);
+            }
 
             ConsensusContext.HandleMessage(
                 new ConsensusVote(

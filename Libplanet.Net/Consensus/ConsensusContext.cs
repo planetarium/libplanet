@@ -171,7 +171,7 @@ namespace Libplanet.Net.Consensus
                     _validators);
             }
 
-            _contexts[height].StartAsync(lastCommit);
+            _contexts[height].Start(lastCommit);
         }
 
         /// <summary>

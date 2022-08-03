@@ -14,7 +14,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
         /// </param>
-        public void StartAsync(BlockCommit? lastCommit = null)
+        public void Start(BlockCommit? lastCommit = null)
         {
             _lastCommit = lastCommit;
             ProduceMutation(() => StartRound(0));
@@ -68,68 +68,69 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Adds <paramref name="message"/> to the message queue.
+        /// </summary>
+        /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
+        internal void ProduceMessage(ConsensusMessage message)
+        {
+            _messageRequests.Writer.WriteAsync(message);
+        }
+
+        /// <summary>
+        /// Adds a mutating <see cref="System.Action"/> to the mutation queue.
+        /// </summary>
+        /// <param name="mutation">A <see cref="System.Action"/> to be processed.</param>
+        private void ProduceMutation(System.Action mutation)
+        {
+            _mutationRequests.Writer.WriteAsync(mutation);
+        }
+
         private async Task ConsumeMessage(CancellationToken cancellationToken)
         {
             ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
             ProduceMutation(() =>
             {
-                try
-                {
-                    AddMessage(message);
-                    _logger.Debug(
-                        "{FName}: Message: {Message} => " +
-                        "Height: {Height}, Round: {Round}, Address: {Address}, " +
-                        "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
-                        nameof(AddMessage),
-                        message,
-                        message.Height,
-                        message.Round,
-                        message.Remote!.Address,
-                        message.BlockHash,
-                        _messagesInRound[message.Round].Count,
-                        ToString());
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "Unexpected exception occurred during {FName}.",
-                        nameof(AddMessage));
-                }
+                AddMessage(message);
+                ProcessHeightOrRoundUponRules(message);
             });
-            ProduceMutation(() => ProcessHeightOrRoundUponRules(message));
             MessageConsumed?.Invoke(this, message);
         }
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
-            (int MessageLogSize, int Round, Step Step) prevState =
-                (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
-            mutation();
-            (int MessageLogSize, int Round, Step Step) nextState =
-                (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
-            if (prevState != nextState)
+            try
             {
-                _logger.Debug(
-                    "State (MessageLogSize, Round, Step) changed from " +
-                    "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
-                    "({NextMessageLogSize}, {NextRound}, {NextStep})",
-                    prevState.MessageLogSize,
-                    prevState.Round,
-                    prevState.Step.ToString(),
-                    nextState.MessageLogSize,
-                    nextState.Round,
-                    nextState.Step.ToString());
-                StateChanged?.Invoke(
-                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
-
-                // FIXME: This is to avoid an exception.
-                // Methods accessing message log should be changed instead.
-                if (_messagesInRound.ContainsKey(Round))
+                (int MessageLogSize, int Round, Step Step) prevState =
+                    (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
+                mutation();
+                (int MessageLogSize, int Round, Step Step) nextState =
+                    (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
+                if (prevState != nextState)
                 {
+                    _logger.Debug(
+                        "State (MessageLogSize, Round, Step) changed from " +
+                        "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
+                        "({NextMessageLogSize}, {NextRound}, {NextStep})",
+                        prevState.MessageLogSize,
+                        prevState.Round,
+                        prevState.Step.ToString(),
+                        nextState.MessageLogSize,
+                        nextState.Round,
+                        nextState.Step.ToString());
+                    StateChanged?.Invoke(
+                        this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
+
                     ProduceMutation(() => ProcessGenericUponRules());
                 }
+            }
+            catch (Exception e)
+            {
+                _logger.Debug(
+                    e,
+                    "An unexpected exception has occured during {FName}",
+                    nameof(ConsumeMutation));
             }
 
             MutationConsumed?.Invoke(this, mutation);

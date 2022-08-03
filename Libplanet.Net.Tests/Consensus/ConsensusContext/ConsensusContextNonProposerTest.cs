@@ -128,6 +128,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
             var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
+            var heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
             var proposeSent = new AsyncAutoResetEvent();
             ConsensusMessageSent += (observer, message) =>
@@ -232,16 +233,27 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             ConsensusContext.Contexts[3].StateChanged += (sender, state) =>
             {
-                if (state.Step == Step.PreVote)
+                if (state.Step == Step.Propose)
+                {
+                    heightThreeStepChangedToPropose.Set();
+                }
+                else if (state.Step == Step.PreVote)
                 {
                     heightThreeStepChangedToPreVote.Set();
                 }
             };
 
-            // Commit ends
+            // Commit ends.
             await heightTwoStepChangedToEndCommit.WaitAsync();
+            var heightTwoEndTimestamp = DateTime.UtcNow;
+            // New height started.
+            await heightThreeStepChangedToPropose.WaitAsync();
+            var heightThreeStartTimestamp = DateTime.UtcNow;
             // Propose -> PreVote (message consumed)
             await heightThreeStepChangedToPreVote.WaitAsync();
+            // Check new height delay.
+            Assert.True(
+                heightThreeStartTimestamp - heightTwoEndTimestamp > NewHeightDelay);
             Assert.Equal(3, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
         }

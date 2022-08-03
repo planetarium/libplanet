@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -127,6 +128,19 @@ namespace Libplanet.Net.Consensus
 
                 // TODO: Prevent duplicated messages adding.
                 _messagesInRound[message.Round].Add(message);
+                _logger.Debug(
+                    "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                    "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
+                    "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                    nameof(AddMessage),
+                    message,
+                    message.Height,
+                    message.Round,
+                    message.Validator.ToAddress(),
+                    message.Remote!.Address,
+                    message.BlockHash,
+                    _messagesInRound.Sum(x => x.Value.Count),
+                    ToString());
             }
         }
 

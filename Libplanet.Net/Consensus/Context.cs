@@ -25,7 +25,7 @@ namespace Libplanet.Net.Consensus
     /// <list type="bullet">
     ///     <item>
     ///         <see cref="Libplanet.Net.Consensus.Step.Default"/> which is the initial state when
-    ///         the <see cref="StartAsync"/> is not called (i.e., round has not been started).
+    ///         the <see cref="Start"/> is not called (i.e., round has not been started).
     ///     </item>
     ///     <item>
     ///         <see cref="Libplanet.Net.Consensus.Step.Propose"/>, which is the state when
@@ -225,8 +225,6 @@ namespace Libplanet.Net.Consensus
         /// Returns a <see cref="Libplanet.Consensus.VoteSet"/> of the given round.
         /// </summary>
         /// <param name="round">A round to retrieve votes.</param>
-        /// <exception cref="KeyNotFoundException">Thrown if the given round does not exists in the
-        /// context.</exception>
         /// <returns>A <see cref="Libplanet.Consensus.VoteSet"/> of given round.</returns>
         public VoteSet VoteSet(int round)
         {
@@ -236,10 +234,12 @@ namespace Libplanet.Net.Consensus
             List<ConsensusCommit> roundCommits;
             lock (_messagesInRoundLock)
             {
-                roundVotes = _messagesInRound[round]
-                    .Where(x => x is ConsensusVote).Cast<ConsensusVote>().ToList();
-                roundCommits = _messagesInRound[round]
-                    .Where(x => x is ConsensusCommit).Cast<ConsensusCommit>().ToList();
+                roundVotes = _messagesInRound.ContainsKey(round)
+                    ? _messagesInRound[round].OfType<ConsensusVote>().ToList()
+                    : new List<ConsensusVote>();
+                roundCommits = _messagesInRound.ContainsKey(round)
+                    ? _messagesInRound[round].OfType<ConsensusCommit>().ToList()
+                    : new List<ConsensusCommit>();
             }
 
             foreach (var vote in roundVotes)
@@ -253,24 +253,6 @@ namespace Libplanet.Net.Consensus
             }
 
             return voteSet;
-        }
-
-        /// <summary>
-        /// Adds <paramref name="message"/> to the message queue.
-        /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to be processed.</param>
-        public void ProduceMessage(ConsensusMessage message)
-        {
-            _messageRequests.Writer.WriteAsync(message);
-        }
-
-        /// <summary>
-        /// Adds a mutating <see cref="System.Action"/> to the mutation queue.
-        /// </summary>
-        /// <param name="mutation">A <see cref="System.Action"/> to be processed.</param>
-        public void ProduceMutation(System.Action mutation)
-        {
-            _mutationRequests.Writer.WriteAsync(mutation);
         }
 
         /// <summary>
@@ -413,10 +395,13 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private (Block<T>?, int?) GetPropose(int round)
         {
-            ConsensusMessage? message;
+            ConsensusPropose? message;
             lock (_messagesInRoundLock)
             {
-                message = _messagesInRound[round].FirstOrDefault(msg => msg is ConsensusPropose);
+                message = _messagesInRound.ContainsKey(round)
+                    ? (ConsensusPropose?)_messagesInRound[round]
+                        .FirstOrDefault(msg => msg is ConsensusPropose)
+                    : null;
             }
 
             if (message is ConsensusPropose propose)
@@ -447,9 +432,11 @@ namespace Libplanet.Net.Consensus
             int count;
             lock (_messagesInRoundLock)
             {
-                count = _messagesInRound[round].Count(
-                    msg => msg is ConsensusVote preVote &&
-                    (any || preVote.BlockHash.Equals(hash)));
+                count = _messagesInRound.ContainsKey(round)
+                    ? _messagesInRound[round].Count(
+                        msg => msg is ConsensusVote preVote &&
+                        (any || preVote.BlockHash.Equals(hash)))
+                    : 0;
             }
 
             return count > TotalValidators * 2 / 3;
@@ -472,9 +459,11 @@ namespace Libplanet.Net.Consensus
             int count;
             lock (_messagesInRoundLock)
             {
-                count = _messagesInRound[round].Count(
-                    msg => msg is ConsensusCommit preCommit &&
-                    (any || preCommit.BlockHash.Equals(hash)));
+                count = _messagesInRound.ContainsKey(round)
+                    ? _messagesInRound[round].Count(
+                        msg => msg is ConsensusCommit preCommit &&
+                        (any || preCommit.BlockHash.Equals(hash)))
+                    : 0;
             }
 
             return count > TotalValidators * 2 / 3;

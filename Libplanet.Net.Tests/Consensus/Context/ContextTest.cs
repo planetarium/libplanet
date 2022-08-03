@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            Context.StartAsync();
+            Context.Start();
             await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
             var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
 
-            Context.StartAsync(lastCommit);
+            Context.Start(lastCommit);
             await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
@@ -201,7 +201,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 new ConsensusVote(

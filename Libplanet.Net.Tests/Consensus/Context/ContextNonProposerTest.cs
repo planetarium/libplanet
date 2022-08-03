@@ -31,7 +31,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stateChangedToRoundOnePreVote.Set();
                 }
             };
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
@@ -78,7 +78,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     commitSent.Set();
                 }
             };
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
@@ -143,7 +143,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     commitSent.Set();
                 }
             };
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
@@ -190,7 +190,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToRoundOnePreVote.Set();
                 }
             };
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
@@ -233,7 +233,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     voteSent.Set();
                 }
             };
-            Context.StartAsync();
+            Context.Start();
 
             await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
@@ -247,7 +247,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
@@ -290,7 +290,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
-            Context.StartAsync();
+            Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
