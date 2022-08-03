@@ -739,7 +739,6 @@ namespace Libplanet.Blockchain
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
-        /// <seealso cref="Transaction{T}.Create" />
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
             IEnumerable<T> actions,

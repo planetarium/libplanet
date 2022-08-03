@@ -169,6 +169,9 @@ namespace Libplanet.Action
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
                 tx.Signer);
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
@@ -178,7 +181,7 @@ namespace Libplanet.Action
                 miner: default,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: true,
                 previousBlockStatesTrie: null,
                 nativeTokenPredicate: _ => true);
@@ -501,20 +504,33 @@ namespace Libplanet.Action
                 // FIXME: This is dependant on when the returned value is enumerated.
                 TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                _logger
+                ILogger logger = _logger
                     .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "TxEvaluationDuration")
-                    .Debug(
-                        "{ActionCount} actions {ActionTypes} in transaction {TxId} by {Signer} " +
+                    .ForContext("Subtag", "TxEvaluationDuration");
+                if (tx.SystemAction is { } sa)
+                {
+                    logger.Debug(
+                        "A system action {SystemActionType} in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
-                        tx.Actions.Count,
-                        tx.Actions.Select(action => action.ToString()!.Split('.')
+                        sa,
+                        tx.Id,
+                        tx.Signer,
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
+                        evalDuration.TotalMilliseconds);
+                }
+                else
+                {
+                    logger.Debug(
+                        "{ActionCount} custom actions {CustomActionTypes} in transaction {TxId} " +
+                        "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                        tx.CustomActions!.Count,
+                        tx.CustomActions.Select(action => action.ToString()!.Split('.')
                             .LastOrDefault()?.Replace(">", string.Empty)),
                         tx.Id,
                         tx.Signer,
-                        tx.Timestamp.ToString(
-                            TimestampFormat, CultureInfo.InvariantCulture),
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                         evalDuration.TotalMilliseconds);
+                }
             }
         }
 
@@ -548,7 +564,12 @@ namespace Libplanet.Action
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null) => EvaluateActions(
+            ITrie? previousBlockStatesTrie = null)
+        {
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange(tx.CustomActions!.Cast<IAction>());
+            return EvaluateActions(
                 genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
@@ -557,10 +578,11 @@ namespace Libplanet.Action
                 miner: block.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 nativeTokenPredicate: _nativeTokenPredicate);
+        }
 
         /// <summary>
         /// Evaluates <see cref="Transaction{T}.Actions"/> of a given

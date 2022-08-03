@@ -109,7 +109,7 @@ namespace Libplanet.Tests.Fixtures
             (BigInteger, HashDigest<SHA256>) stagedStates = Chain.ListStagedTransactions()
                 .Where(t => t.Signer.Equals(signerAddress))
                 .OrderBy(t => t.Nonce)
-                .SelectMany(t => t.Actions)
+                .SelectMany(t => t.CustomActions)
                 .TakeWhile(a => a.Error is null)
                 .Aggregate(prevPair, (prev, act) =>
                 {
@@ -121,8 +121,8 @@ namespace Libplanet.Tests.Fixtures
                     return (nextState, nextRootHash);
                 });
             Chain.StageTransaction(tx);
-            ImmutableArray<(BigInteger, HashDigest<SHA256>)> expectedDelta = tx.Actions
-                .Take(tx.Actions.TakeWhile(a => a.Error is null).Count() + 1)
+            ImmutableArray<(BigInteger, HashDigest<SHA256>)> expectedDelta = tx.CustomActions
+                .Take(tx.CustomActions.TakeWhile(a => a.Error is null).Count() + 1)
                 .Aggregate(
                     ImmutableArray.Create(stagedStates),
                     (delta, act) =>

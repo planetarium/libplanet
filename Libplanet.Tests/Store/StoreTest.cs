@@ -906,8 +906,8 @@ namespace Libplanet.Tests.Store
             {
                 var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
                 tx.Validate();
-                Assert.Single(tx.Actions);
-                AtomicityTestAction action = tx.Actions[0];
+                Assert.Single(tx.CustomActions);
+                AtomicityTestAction action = tx.CustomActions[0];
                 Assert.Equal(
                     md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
                     action.Md5Digest.ToArray()

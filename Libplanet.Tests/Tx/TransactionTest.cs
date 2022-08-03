@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Tx
                     0,
                     _fx.PublicKey1,
                     null,
-                    _fx.TxWithActions.Actions);
+                    _fx.TxWithActions.CustomActions);
             Assert.Empty(tx.Signature);
             Assert.Equal(
                 new[] { _fx.Address1 }.ToImmutableHashSet(),
@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PublicKey1,
                 null,
-                _fx.TxWithActions.Actions);
+                _fx.TxWithActions.CustomActions);
             Bencodex.Types.Dictionary dict = expected.ToBencodex(false);
             var actual = new Transaction<PolymorphicAction<BaseAction>>(dict);
             Assert.Equal(expected, actual);
@@ -135,7 +135,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                _fx.TxWithActions.Actions
+                _fx.TxWithActions.CustomActions
             );
             Assert.Equal(
                 new[] { _fx.Address1 }.ToImmutableHashSet(),
@@ -147,7 +147,7 @@ namespace Libplanet.Tests.Tx
                 0,
                 _fx.PrivateKey1,
                 null,
-                _fx.TxWithActions.Actions,
+                _fx.TxWithActions.CustomActions,
                 new[] { additionalAddr }.ToImmutableHashSet()
             );
             Assert.Equal(
@@ -187,15 +187,15 @@ namespace Libplanet.Tests.Tx
                 )
             );
 
-            // The actions parameter cannot be null.
+            // The customActions parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
                 Transaction<DumbAction>.Create(
-                    0,
-                    _fx.PrivateKey1,
-                    null,
-                    null,
-                    ImmutableHashSet<Address>.Empty,
-                    DateTimeOffset.UtcNow
+                    nonce: 0,
+                    privateKey: _fx.PrivateKey1,
+                    genesisHash: null,
+                    customActions: null,
+                    updatedAddresses: ImmutableHashSet<Address>.Empty,
+                    timestamp: DateTimeOffset.UtcNow
                 )
             );
         }
@@ -222,14 +222,13 @@ namespace Libplanet.Tests.Tx
                 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9, 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
             var tx = new Transaction<DumbAction>(
-                0,
-                privateKey.ToAddress(),
-                privateKey.PublicKey,
-                null,
-                ImmutableHashSet<Address>.Empty,
-                timestamp,
-                new DumbAction[0],
-                signature
+                metadata: new TxMetadata(privateKey.PublicKey)
+                {
+                    Nonce = 0L,
+                    Timestamp = timestamp,
+                },
+                customActions: new DumbAction[0],
+                signature: signature
             );
 
             Assert.Equal(
@@ -267,45 +266,29 @@ namespace Libplanet.Tests.Tx
                 0x3f,
             };
 
-            // The publicKey parameter cannot be null.
+            // The customActions parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<DumbAction>(
-                    0,
-                    privateKey.ToAddress(),
-                    null,
-                    null,
-                    ImmutableHashSet<Address>.Empty,
-                    timestamp,
-                    new DumbAction[0],
-                    signature
-                )
-            );
-
-            // The actions parameter cannot be null.
-            Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<DumbAction>(
-                    0,
-                    privateKey.ToAddress(),
-                    privateKey.PublicKey,
-                    null,
-                    ImmutableHashSet<Address>.Empty,
-                    timestamp,
-                    null,
-                    signature
+                    metadata: new TxMetadata(privateKey.PublicKey)
+                    {
+                        Nonce = 0L,
+                        Timestamp = timestamp,
+                    },
+                    customActions: null,
+                    signature: signature
                 )
             );
 
             // The signature parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<DumbAction>(
-                    0,
-                    privateKey.ToAddress(),
-                    privateKey.PublicKey,
-                    null,
-                    ImmutableHashSet<Address>.Empty,
-                    timestamp,
-                    new DumbAction[0],
-                    null
+                    metadata: new TxMetadata(privateKey.PublicKey)
+                    {
+                        Nonce = 0L,
+                        Timestamp = timestamp,
+                    },
+                    customActions: new DumbAction[0],
+                    signature: null
                 )
             );
         }
@@ -517,11 +500,11 @@ namespace Libplanet.Tests.Tx
                 tx.Id
             );
 
-            Assert.Equal(2, tx.Actions.Count);
-            Assert.IsType<Attack>(tx.Actions[0].InnerAction);
+            Assert.Equal(2, tx.CustomActions.Count);
+            Assert.IsType<Attack>(tx.CustomActions[0].InnerAction);
 
             var targetAddress =
-                ((Bencodex.Types.Dictionary)tx.Actions[0].InnerAction.PlainValue)
+                ((Bencodex.Types.Dictionary)tx.CustomActions[0].InnerAction.PlainValue)
                     .GetValue<Binary>("target_address").ByteArray;
             AssertBytesEqual(
                 new Address(publicKey).ByteArray,
@@ -534,15 +517,15 @@ namespace Libplanet.Tests.Tx
                     { (Text)"target", (Text)"orc" },
                     { (Text)"target_address", (Binary)new Address(publicKey).ToByteArray() },
                 }),
-                tx.Actions[0].InnerAction.PlainValue
+                tx.CustomActions[0].InnerAction.PlainValue
             );
-            Assert.IsType<Sleep>(tx.Actions[1].InnerAction);
+            Assert.IsType<Sleep>(tx.CustomActions[1].InnerAction);
             Assert.Equal(
                 new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
                     { (Text)"zone_id", (Integer)10 },
                 }),
-                tx.Actions[1].InnerAction.PlainValue
+                tx.CustomActions[1].InnerAction.PlainValue
             );
         }
 
@@ -606,14 +589,15 @@ namespace Libplanet.Tests.Tx
             var sig2 = new byte[tx.Signature.Length];
             Array.Copy(tx.Signature, sig2, sig2.Length);
             var tx2 = new Transaction<PolymorphicAction<BaseAction>>(
-                0,
-                tx.Signer,
-                tx.PublicKey,
-                tx.GenesisHash,
-                tx.UpdatedAddresses,
-                tx.Timestamp,
-                tx.Actions,
-                sig2
+                metadata: new TxMetadata(tx.PublicKey)
+                {
+                    Nonce = 0L,
+                    GenesisHash = tx.GenesisHash,
+                    UpdatedAddresses = tx.UpdatedAddresses,
+                    Timestamp = tx.Timestamp,
+                },
+                customActions: tx.CustomActions,
+                signature: sig2
             );
             for (int i = 0; i < sig2.Length; i++)
             {
@@ -635,18 +619,17 @@ namespace Libplanet.Tests.Tx
                 actions
             );
             var t2 = new Transaction<DumbAction>(
-                0,
-                _fx.PrivateKey1.ToAddress(),
-                _fx.PrivateKey1.PublicKey,
-                null,
-                ImmutableHashSet<Address>.Empty,
-                t1.Timestamp,
-                actions,
-                t1.Signature
+                metadata: new TxMetadata(_fx.PrivateKey1.PublicKey)
+                {
+                    Nonce = 0L,
+                    Timestamp = t1.Timestamp,
+                },
+                customActions: actions,
+                signature: t1.Signature
             );
             actions.Add(new DumbAction());
-            Assert.Empty(t1.Actions);
-            Assert.Empty(t2.Actions);
+            Assert.Empty(t1.CustomActions);
+            Assert.Empty(t2.CustomActions);
         }
     }
 }

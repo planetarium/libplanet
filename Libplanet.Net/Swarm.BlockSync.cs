@@ -694,7 +694,7 @@ namespace Libplanet.Net
                     transactions = block.Transactions.ToImmutableArray();
                 txsCount += transactions.Count();
                 actionsCount +=
-                    transactions.Sum(tx => tx.Actions.Count);
+                    transactions.Sum(tx => tx.CustomActions is { } ca ? ca.Count : 1L);
 
                 _logger.Debug(
                     "Executed actions in block #{Index} {Hash}.",

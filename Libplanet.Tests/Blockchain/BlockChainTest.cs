@@ -849,7 +849,7 @@ namespace Libplanet.Tests.Blockchain
 
             Transaction<DumbAction>[][] txsA =
             {
-                new[]
+                new[] // block #2
                 {
                     _fx.MakeTransaction(
                         new[]
@@ -868,7 +868,7 @@ namespace Libplanet.Tests.Blockchain
                         nonce: 3,
                         privateKey: privateKey),
                 },
-                new[]
+                new[] // block #3
                 {
                     _fx.MakeTransaction(
                         new[]
@@ -957,9 +957,9 @@ namespace Libplanet.Tests.Blockchain
             DumbAction[] actions = actionRenders.Select(r => (DumbAction)r.Action).ToArray();
 
             int actionsCountA = txsA.Sum(
-                a => a.Sum(tx => tx.Actions.Count)
+                a => a.Sum(tx => tx.CustomActions.Count)
             );
-            int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
+            int actionsCountB = txsB.Sum(tx => tx.CustomActions.Count);
 
             int totalBlockCount = (int)_blockChain[-1].Index + 1;
             int unRenderBlockCount = 2;
@@ -1613,12 +1613,12 @@ namespace Libplanet.Tests.Blockchain
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions, transaction.Actions);
+            Assert.Equal(actions, transaction.CustomActions);
 
             transaction = txs[1];
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
-            Assert.Equal(actions, transaction.Actions);
+            Assert.Equal(actions, transaction.CustomActions);
         }
 
         [Fact]

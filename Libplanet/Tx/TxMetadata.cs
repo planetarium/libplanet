@@ -17,7 +17,8 @@ namespace Libplanet.Tx
     /// </summary>
     public sealed class TxMetadata : ITxMetadata
     {
-        internal static readonly byte[] ActionsKey = { 0x61 }; // 'a'
+        internal static readonly byte[] CustomActionsKey = { 0x61 }; // 'a'
+        internal static readonly byte[] SystemActionKey = { 0x41 }; // 'A'
         internal static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly byte[] NonceKey = { 0x6e }; // 'n'
@@ -105,41 +106,34 @@ namespace Libplanet.Tx
         /// <summary>
         /// Builds a Bencodex dictionary used for signing and calculating <see cref="TxId"/>.
         /// </summary>
-        /// <param name="actions">A list of <see cref="IAction.PlainValue"/>s to include.</param>
+        /// <param name="systemAction"><see cref="IAction.PlainValue"/> of a system built-in action
+        /// to include.</param>
         /// <param name="signature">Optionally specifies the transaction signature.  It should be
         /// <see langword="null"/> (which is the default) when you make a signature, and should be
         /// present when you make a <see cref="TxId"/>.</param>
         /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
         [Pure]
         public Bencodex.Types.Dictionary ToBencodex(
-            IEnumerable<IValue> actions,
+            IValue systemAction,
             ImmutableArray<byte>? signature = null
-        )
-        {
-            IEnumerable<IValue> updatedAddresses =
-                UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray));
-            Bencodex.Types.Dictionary dict = Dictionary.Empty
-                .Add(NonceKey, Nonce)
-                .Add(SignerKey, Signer.ByteArray)
-                .Add(UpdatedAddressesKey, updatedAddresses)
-                .Add(PublicKeyKey, PublicKey.ToImmutableArray(compress: false))
-                .Add(
-                    TimestampKey,
-                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(ActionsKey, actions);
+        ) =>
+            ToBencodex(signature).Add(SystemActionKey, systemAction);
 
-            if (GenesisHash is { } genesisHash)
-            {
-                dict = dict.Add(GenesisHashKey, genesisHash.ByteArray);
-            }
-
-            if (signature is { } sig)
-            {
-                dict = dict.Add(SignatureKey, sig);
-            }
-
-            return dict;
-        }
+        /// <summary>
+        /// Builds a Bencodex dictionary used for signing and calculating <see cref="TxId"/>.
+        /// </summary>
+        /// <param name="customActions"><see cref="IAction.PlainValue"/>s of user-defined custom
+        /// actions to include.</param>
+        /// <param name="signature">Optionally specifies the transaction signature.  It should be
+        /// <see langword="null"/> (which is the default) when you make a signature, and should be
+        /// present when you make a <see cref="TxId"/>.</param>
+        /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
+        [Pure]
+        public Bencodex.Types.Dictionary ToBencodex(
+            IEnumerable<IValue> customActions,
+            ImmutableArray<byte>? signature = null
+        ) =>
+            ToBencodex(signature).Add(CustomActionsKey, customActions);
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
@@ -156,6 +150,35 @@ namespace Libplanet.Tx
                 $"  {nameof(Timestamp)} = {Timestamp},\n" +
                 $"  {nameof(GenesisHash)} = {GenesisHash?.ToString() ?? "(null)"},\n" +
                 "}";
+        }
+
+        [Pure]
+        private Bencodex.Types.Dictionary ToBencodex(
+            ImmutableArray<byte>? signature = null
+        )
+        {
+            IEnumerable<IValue> updatedAddresses =
+                UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray));
+            Bencodex.Types.Dictionary dict = Dictionary.Empty
+                .Add(NonceKey, Nonce)
+                .Add(SignerKey, Signer.ByteArray)
+                .Add(UpdatedAddressesKey, updatedAddresses)
+                .Add(PublicKeyKey, PublicKey.ToImmutableArray(compress: false))
+                .Add(
+                    TimestampKey,
+                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture));
+
+            if (GenesisHash is { } genesisHash)
+            {
+                dict = dict.Add(GenesisHashKey, genesisHash.ByteArray);
+            }
+
+            if (signature is { } sig)
+            {
+                dict = dict.Add(SignatureKey, sig);
+            }
+
+            return dict;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -44,20 +45,42 @@ namespace Libplanet.Tx
         /// transaction <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">The transaction metadata that contains data to copy.</param>
-        /// <param name="actions">A list of <see cref="IAction"/>s to include.  This can be empty,
-        /// but cannot be <see langword="null"/>.  This goes to the <see cref="Actions"/> property.
-        /// </param>
+        /// <param name="systemAction">A system built-in action to include.  This cannot be
+        /// <see langword="null"/>, and goes to the <see cref="SystemAction"/> property.</param>
         /// <param name="signature">A digital signature of the content of this
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
         /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
-        /// is passed to <paramref name="signature"/> or <paramref name="actions"/>.</exception>
-        public Transaction(ITxMetadata metadata, IEnumerable<T> actions, byte[] signature)
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
+        /// <paramref name="signature"/> or <paramref name="systemAction"/>.</exception>
+        public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            Actions = actions?.ToImmutableList()
-                ?? throw new ArgumentNullException(nameof(actions));
+            SystemAction = systemAction ?? throw new ArgumentNullException(nameof(systemAction));
+            _signature =
+                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            signature.CopyTo(_signature, 0);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> instance by copying data from a specified
+        /// transaction <paramref name="metadata"/>.
+        /// </summary>
+        /// <param name="metadata">The transaction metadata that contains data to copy.</param>
+        /// <param name="customActions">A list of user-defined custom actions to include.  This can
+        /// be empty, but cannot be <see langword="null"/>.  This goes to
+        /// the <see cref="CustomActions"/> property.</param>
+        /// <param name="signature">A digital signature of the content of this
+        /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
+        /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
+        /// the <see cref="Signature"/> property.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
+        /// <paramref name="signature"/> or <paramref name="customActions"/>.</exception>
+        public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
+        {
+            _metadata = new TxMetadata(metadata);
+            CustomActions = customActions?.ToImmutableList()
+                ?? throw new ArgumentNullException(nameof(customActions));
             _signature =
                 new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
             signature.CopyTo(_signature, 0);
@@ -90,14 +113,14 @@ namespace Libplanet.Tx
         /// in the genesis block.
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.  This goes to
+        /// states affected by <paramref name="customActions"/>.  This goes to
         /// the <see cref="UpdatedAddresses"/> property.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.</param>
-        /// <param name="actions">A list of <see cref="IAction"/>s.  This
-        /// can be empty, but cannot be <c>null</c>.  This goes to
-        /// the <see cref="Actions"/> property.</param>
+        /// <param name="customActions">A list of user-defined custom actions to include.  This can
+        /// be empty, but cannot be <see langword="null"/>.  This goes to
+        /// the <see cref="CustomActions"/> property.</param>
         /// <param name="signature">A digital signature of the content of
         /// this <see cref="Transaction{T}"/>.  This has to be signed by
         /// the account who corresponds to <paramref name="publicKey"/>,
@@ -105,7 +128,9 @@ namespace Libplanet.Tx
         /// This is copied and then assigned to the <see cref="Signature"/>
         /// property.</param>
         /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
-        /// is passed to <paramref name="signature"/> or <paramref name="actions"/>.</exception>
+        /// is passed to <paramref name="signature"/> or <paramref name="customActions"/>.
+        /// </exception>
+        [Obsolete("Use constructors taking ITxMetadata or static factory methods instead.")]
         public Transaction(
             long nonce,
             Address signer,
@@ -113,9 +138,11 @@ namespace Libplanet.Tx
             BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
-            IEnumerable<T> actions,
+            IEnumerable<T> customActions,
             byte[] signature)
         {
+            // TODO: Remove parameter signer in the future.  Apparently no more used.
+            // FIXME: This constructor should be removed.
             _metadata = new TxMetadata(publicKey
                 ?? throw new ArgumentNullException(nameof(publicKey)))
             {
@@ -129,8 +156,8 @@ namespace Libplanet.Tx
             _signature =
                 new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
             signature.CopyTo(_signature, 0);
-            Actions = actions?.ToImmutableList() ??
-                      throw new ArgumentNullException(nameof(actions));
+            CustomActions = customActions?.ToImmutableList()
+                ?? throw new ArgumentNullException(nameof(customActions));
         }
 
         /// <summary>
@@ -142,33 +169,21 @@ namespace Libplanet.Tx
         public Transaction(Bencodex.Types.Dictionary dict)
         {
             _metadata = new TxMetadata(dict);
-            Actions = dict.GetValue<List>(TxMetadata.ActionsKey)
-                .Select(ToAction)
-                .ToImmutableList();
+            if (dict.TryGetValue(new Binary(TxMetadata.SystemActionKey), out IValue sa))
+            {
+                SystemAction = Registry.Deserialize((Dictionary)sa);
+            }
+            else
+            {
+                CustomActions = dict.GetValue<List>(TxMetadata.CustomActionsKey)
+                    .Select(ToAction)
+                    .ToImmutableList();
+            }
+
             _signature
                 = dict.TryGetValue((Binary)TxMetadata.SignatureKey, out IValue s) && s is Binary sig
                 ? sig.ToByteArray()
                 : Array.Empty<byte>();
-        }
-
-        private Transaction(
-            long nonce,
-            Address signer,
-            PublicKey publicKey,
-            BlockHash? genesisHash,
-            IImmutableSet<Address> updatedAddresses,
-            DateTimeOffset timestamp,
-            IEnumerable<T> actions)
-            : this(
-                nonce,
-                signer,
-                publicKey,
-                genesisHash,
-                updatedAddresses,
-                timestamp,
-                actions.ToImmutableList(),
-                new byte[0])
-        {
         }
 
         /// <summary>
@@ -232,7 +247,30 @@ namespace Libplanet.Tx
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
         /// This can be empty, but cannot be <c>null</c>.
         /// </summary>
-        public IImmutableList<T> Actions { get; }
+        /// <remarks>This property is deprecated.  Use <see cref="CustomActions"/> or
+        /// <see cref="SystemAction"/> instead.</remarks>
+        [Obsolete("Use " + nameof(CustomActions) + " or " + nameof(SystemAction) + " instead.")]
+        public IImmutableList<IAction> Actions =>
+            SystemAction is { } sysAction
+                ? ImmutableList.Create(sysAction)
+                : ImmutableList.CreateRange(CustomActions!.Cast<IAction>());
+
+        /// <summary>
+        /// A system action (if any) that this <see cref="Transaction{T}"/> contains.
+        /// </summary>
+        /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
+        /// either one of them must be <see langword="null"/> and the other must not be
+        /// <see langword="null"/>.</remarks>
+        public IAction? SystemAction { get; }
+
+        /// <summary>
+        /// Zero or more user-defined custom actions that this <see cref="Transaction{T}"/>
+        /// contains.  These are executed in the order.
+        /// </summary>
+        /// <remarks>This property is mutually exclusive with <see cref="SystemAction"/>;
+        /// either one of them must be <see langword="null"/> and the other must not be
+        /// <see langword="null"/>.</remarks>
+        public IImmutableList<T>? CustomActions { get; }
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;
@@ -281,6 +319,47 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
+        /// Almost same as <see cref="Create(long, PrivateKey, BlockHash?, IEnumerable{T},
+        /// IImmutableSet{Address}?, DateTimeOffset?)"/> except that this factory method takes
+        /// a <paramref name="systemAction"/> instead of user-defined custom actions.
+        /// </summary>
+        /// <param name="nonce">Specifies <see cref="Transaction{T}.Nonce"/>.</param>
+        /// <param name="privateKey">Derives <see cref="Transaction{T}.PublicKey"/>,
+        /// <see cref="Transaction{T}.Signer"/>, and <see cref="Transaction{T}.Signature"/>
+        /// from this.</param>
+        /// <param name="genesisHash">Specifies <see cref="Transaction{T}.GenesisHash"/>.</param>
+        /// <param name="systemAction">Specifies <see cref="Transaction{T}.SystemAction"/>.</param>
+        /// <param name="updatedAddresses">Specifies <see cref="Transaction{T}.UpdatedAddresses"/>.
+        /// The resulting <see cref="Transaction{T}"/> may contain more
+        /// <see cref="Transaction{T}.UpdatedAddresses"/> than this argument.</param>
+        /// <param name="timestamp">Specifies <see cref="Transaction{T}.Timestamp"/>.</param>
+        /// <returns>A created signed <see cref="Transaction{T}"/>.</returns>
+        public static Transaction<T> Create(
+            long nonce,
+            PrivateKey privateKey,
+            BlockHash? genesisHash,
+            IAction systemAction,
+            IImmutableSet<Address>? updatedAddresses = null,
+            DateTimeOffset? timestamp = null
+        )
+        {
+            Transaction<T> unsignedTransaction = CreateUnsigned(
+                nonce,
+                privateKey.PublicKey,
+                genesisHash,
+                systemAction,
+                updatedAddresses,
+                timestamp);
+            byte[] payload = unsignedTransaction.Serialize(false);
+            byte[] sig = privateKey.Sign(payload);
+            return new Transaction<T>(
+                unsignedTransaction._metadata,
+                unsignedTransaction.CustomActions!,
+                sig
+            );
+        }
+
+        /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// Unlike the <see cref="Transaction(long, Address, PublicKey, BlockHash?,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
@@ -300,7 +379,7 @@ namespace Libplanet.Tx
         /// </item>
         /// <item>
         /// <term><see cref="UpdatedAddresses"/></term>
-        /// <description><paramref name="actions"/> and
+        /// <description><paramref name="customActions"/> and
         /// <paramref name="updatedAddresses"/></description>
         /// </item>
         /// </list>
@@ -310,17 +389,17 @@ namespace Libplanet.Tx
         /// <remarks>
         /// This factory method tries its best to fill the <see
         /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
+        /// the given <paramref name="customActions"/> (we call it &#x201c;rehearsal
         /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
-        /// <paramref name="actions"/> are not deterministic until
+        /// <paramref name="customActions"/> are not deterministic until
         /// the <see cref="Transaction{T}"/> belongs to a <see
         /// cref="Libplanet.Blocks.Block{T}"/>.
         /// <para>If an <see cref="IAction"/> depends on previous states or
         /// some randomness to determine what <see cref="Address"/> to update,
         /// the automatically filled <see cref="UpdatedAddresses"/> became
         /// mismatched from the <see cref="Address"/>es
-        /// <paramref name="actions"/> actually update after
+        /// <paramref name="customActions"/> actually update after
         /// a <see cref="Libplanet.Blocks.Block{T}"/> is mined.
         /// Although such case would be rare, a programmer could manually give
         /// the <paramref name="updatedAddresses"/> parameter
@@ -347,19 +426,17 @@ namespace Libplanet.Tx
         /// This can be <c>null</c> iff the transaction is contained
         /// in the genesis block.
         /// </param>
-        /// <param name="actions">A list of <see cref="IAction"/>s.  This
-        /// can be empty, but cannot be <c>null</c>.  This goes to
-        /// the <see cref="Actions"/> property, and <see cref="IAction"/>s
-        /// are evaluated before a <see cref="Transaction{T}"/> is created
-        /// in order to fill the <see cref="UpdatedAddresses"/>.  See also
-        /// <em>Remarks</em> section.</param>
+        /// <param name="customActions">A list of user-defined custom actions to include.  This can
+        /// be empty, but cannot be <see langword="null"/>.  This goes to
+        /// the <see cref="CustomActions"/> property, and these actionss are evaluated before
+        /// a <see cref="Transaction{T}"/> is created in order to fill
+        /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.
+        /// states affected by <paramref name="customActions"/>.
         /// These <see cref="Address"/>es are also included in
         /// the <see cref="UpdatedAddresses"/> property, besides
         /// <see cref="Address"/>es projected by evaluating
-        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.
-        /// </param>
+        /// <paramref name="customActions"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.  If <c>null</c> (which is default) is passed this will
@@ -367,19 +444,18 @@ namespace Libplanet.Tx
         /// <returns>A created new <see cref="Transaction{T}"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
-        /// is passed to <paramref name="privateKey"/> or
-        /// <paramref name="actions"/>.
+        /// is passed to <paramref name="privateKey"/> or <paramref name="customActions"/>.
         /// </exception>
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,
             BlockHash? genesisHash,
-            IEnumerable<T> actions,
+            IEnumerable<T> customActions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         )
         {
-            if (ReferenceEquals(privateKey, null))
+            if (privateKey is null)
             {
                 throw new ArgumentNullException(nameof(privateKey));
             }
@@ -388,20 +464,53 @@ namespace Libplanet.Tx
                 nonce,
                 privateKey.PublicKey,
                 genesisHash,
-                actions,
+                customActions,
                 updatedAddresses,
                 timestamp);
             byte[] payload = unsignedTransaction.Serialize(false);
             byte[] sig = privateKey.Sign(payload);
             return new Transaction<T>(
-                unsignedTransaction.Nonce,
-                unsignedTransaction.Signer,
-                unsignedTransaction.PublicKey,
-                unsignedTransaction.GenesisHash,
-                unsignedTransaction.UpdatedAddresses,
-                unsignedTransaction.Timestamp,
-                unsignedTransaction.Actions,
-                sig);
+                unsignedTransaction._metadata,
+                unsignedTransaction.CustomActions!,
+                sig
+            );
+        }
+
+        /// <summary>
+        /// Almost same as <see cref="CreateUnsigned(long, PublicKey, BlockHash?, IEnumerable{T},
+        /// IImmutableSet{Address}?, DateTimeOffset?)"/> except that this factory method takes
+        /// a <paramref name="systemAction"/> instead of user-defined custom actions.
+        /// </summary>
+        /// <param name="nonce">Specifies <see cref="Transaction{T}.Nonce"/>.</param>
+        /// <param name="publicKey">Specifies <see cref="Transaction{T}.PublicKey"/>.</param>
+        /// <param name="genesisHash">Specifies <see cref="Transaction{T}.GenesisHash"/>.</param>
+        /// <param name="systemAction">Specifies <see cref="Transaction{T}.SystemAction"/>.</param>
+        /// <param name="updatedAddresses">Specifies <see cref="Transaction{T}.UpdatedAddresses"/>.
+        /// The resulting <see cref="Transaction{T}"/> may contain more
+        /// <see cref="Transaction{T}.UpdatedAddresses"/> than this argument.</param>
+        /// <param name="timestamp">Specifies <see cref="Transaction{T}.Timestamp"/>.</param>
+        /// <returns>A created unsigned <see cref="Transaction{T}"/>.</returns>
+        public static Transaction<T> CreateUnsigned(
+            long nonce,
+            PublicKey publicKey,
+            BlockHash? genesisHash,
+            IAction systemAction,
+            IImmutableSet<Address>? updatedAddresses = null,
+            DateTimeOffset? timestamp = null
+        )
+        {
+            var metadata = new TxMetadata(publicKey)
+            {
+                Nonce = nonce,
+                GenesisHash = genesisHash,
+                UpdatedAddresses = updatedAddresses ?? ImmutableHashSet<Address>.Empty,
+                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
+            };
+            var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
+                new Transaction<T>(metadata, systemAction, Array.Empty<byte>()));
+            metadata.UpdatedAddresses = metadata.UpdatedAddresses.Union(evalUpdatedAddresses);
+
+            return new Transaction<T>(metadata, systemAction, Array.Empty<byte>());
         }
 
         /// <summary>
@@ -424,7 +533,7 @@ namespace Libplanet.Tx
         /// </item>
         /// <item>
         /// <term><see cref="UpdatedAddresses"/></term>
-        /// <description><paramref name="actions"/> and
+        /// <description><paramref name="customActions"/> and
         /// <paramref name="updatedAddresses"/></description>
         /// </item>
         /// </list>
@@ -432,17 +541,17 @@ namespace Libplanet.Tx
         /// <remarks>
         /// This factory method tries its best to fill the <see
         /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
+        /// the given <paramref name="customActions"/> (we call it &#x201c;rehearsal
         /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
-        /// <paramref name="actions"/> are not deterministic until
+        /// <paramref name="customActions"/> are not deterministic until
         /// the <see cref="Transaction{T}"/> belongs to a <see
         /// cref="Libplanet.Blocks.Block{T}"/>.
         /// <para>If an <see cref="IAction"/> depends on previous states or
         /// some randomness to determine what <see cref="Address"/> to update,
         /// the automatically filled <see cref="UpdatedAddresses"/> became
         /// mismatched from the <see cref="Address"/>es
-        /// <paramref name="actions"/> actually update after
+        /// <paramref name="customActions"/> actually update after
         /// a <see cref="Libplanet.Blocks.Block{T}"/> is mined.
         /// Although such case would be rare, a programmer could manually give
         /// the <paramref name="updatedAddresses"/> parameter
@@ -468,18 +577,17 @@ namespace Libplanet.Tx
         /// This can be <c>null</c> iff the transaction is contained
         /// in the genesis block.
         /// </param>
-        /// <param name="actions">A list of <see cref="IAction"/>s.  This
-        /// can be empty, but cannot be <c>null</c>.  This goes to
-        /// the <see cref="Actions"/> property, and <see cref="IAction"/>s
-        /// are evaluated before a <see cref="Transaction{T}"/> is created
-        /// in order to fill the <see cref="UpdatedAddresses"/>.  See also
-        /// <em>Remarks</em> section.</param>
+        /// <param name="customActions">A list of user-defined custom actions to include.  This can
+        /// be empty, but cannot be <see langword="null"/>.  This goes to
+        /// the <see cref="CustomActions"/> property, and these actionss are evaluated before
+        /// a <see cref="Transaction{T}"/> is created in order to fill
+        /// the <see cref="UpdatedAddresses"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.
+        /// states affected by <paramref name="customActions"/>.
         /// These <see cref="Address"/>es are also included in
         /// the <see cref="UpdatedAddresses"/> property, besides
         /// <see cref="Address"/>es projected by evaluating
-        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.
+        /// <paramref name="customActions"/>.  See also <em>Remarks</em> section.
         /// </param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created.  This goes to the <see cref="Timestamp"/>
@@ -487,52 +595,32 @@ namespace Libplanet.Tx
         /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> unsigned.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
-        /// is passed to <paramref name="actions"/>.
-        /// </exception>
+        /// is passed to <paramref name="customActions"/>.</exception>
         public static Transaction<T> CreateUnsigned(
             long nonce,
             PublicKey publicKey,
             BlockHash? genesisHash,
-            IEnumerable<T> actions,
+            IEnumerable<T> customActions,
             IImmutableSet<Address>? updatedAddresses = null,
             DateTimeOffset? timestamp = null
         )
         {
-            var signer = new Address(publicKey);
-
-            updatedAddresses ??= ImmutableHashSet<Address>.Empty;
-            DateTimeOffset ts = timestamp ?? DateTimeOffset.UtcNow;
-
-            ImmutableArray<T> actionsArray = actions.ToImmutableArray();
+            ImmutableArray<T> actionsArray = customActions.ToImmutableArray();
+            var metadata = new TxMetadata(publicKey)
+            {
+                Nonce = nonce,
+                GenesisHash = genesisHash,
+                UpdatedAddresses = updatedAddresses ?? ImmutableHashSet<Address>.Empty,
+                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
+            };
             if (!actionsArray.IsEmpty)
             {
-                // FIXME: Although we are assuming all block hashes are SHA256 digest, we should
-                // parametrize this in the future.
-                BlockHash emptyBlockHash = BlockHash.FromHashDigest(default(HashDigest<SHA256>));
-
                 var evalUpdatedAddresses = ActionEvaluator<T>.GetUpdatedAddresses(
-                    new Transaction<T>(
-                        nonce,
-                        signer,
-                        publicKey,
-                        genesisHash,
-                        updatedAddresses,
-                        ts,
-                        actionsArray));
-                if (!updatedAddresses.IsSupersetOf(evalUpdatedAddresses))
-                {
-                    updatedAddresses = updatedAddresses.Union(evalUpdatedAddresses);
-                }
+                    new Transaction<T>(metadata, actionsArray, Array.Empty<byte>()));
+                metadata.UpdatedAddresses = metadata.UpdatedAddresses.Union(evalUpdatedAddresses);
             }
 
-            return new Transaction<T>(
-                nonce,
-                signer,
-                publicKey,
-                genesisHash,
-                updatedAddresses,
-                ts,
-                actionsArray);
+            return new Transaction<T>(metadata, actionsArray, Array.Empty<byte>());
         }
 
         /// <summary>
@@ -590,11 +678,15 @@ namespace Libplanet.Tx
         /// <returns>A <see cref="Bencodex.Types.Dictionary"/> typed
         /// <a href="https://bencodex.org/">Bencodex</a>
         /// representation of this <see cref="Transaction{T}"/>.</returns>
-        public Bencodex.Types.Dictionary ToBencodex(bool sign) =>
-            _metadata.ToBencodex(
-                Actions.Select(a => a.PlainValue),
-                sign ? ImmutableArray.Create(_signature) : (ImmutableArray<byte>?)null
-            );
+        public Bencodex.Types.Dictionary ToBencodex(bool sign)
+        {
+            ImmutableArray<byte>? sig = sign
+                ? ImmutableArray.Create(_signature)
+                : (ImmutableArray<byte>?)null;
+            return SystemAction is { } sa
+                ? _metadata.ToBencodex(sa.PlainValue, sig)
+                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue), sig);
+        }
 
         /// <summary>
         /// Validates this <see cref="Transaction{T}"/> and throws an appropriate exception

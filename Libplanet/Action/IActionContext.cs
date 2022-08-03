@@ -50,7 +50,6 @@ namespace Libplanet.Action
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
         /// in <see cref="PreviousStates"/>.
         /// </summary>
-        /// <seealso cref="Libplanet.Tx.Transaction{T}.Create"/>
         [Pure]
         bool Rehearsal { get; }
 

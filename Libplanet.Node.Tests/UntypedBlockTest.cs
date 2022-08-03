@@ -36,14 +36,14 @@ namespace Libplanet.Node.Tests
                 nonce: 0L,
                 privateKey: _signerKey,
                 genesisHash: null,
-                actions: Enumerable.Empty<NullAction>(),
+                customActions: Enumerable.Empty<NullAction>(),
                 timestamp: new DateTimeOffset(2022, 5, 24, 0, 0, 0, TimeSpan.Zero)
             );
             var txB = Transaction<NullAction>.Create(
                 nonce: 1L,
                 privateKey: _signerKey,
                 genesisHash: null,
-                actions: new[]
+                customActions: new[]
                 {
                     new NullAction(),
                     new NullAction(),
@@ -112,7 +112,7 @@ namespace Libplanet.Node.Tests
             var untypedTxs = _txs.Select(tx =>
                 new UntypedTransaction(
                     tx,
-                    tx.Actions.Select(a => a.PlainValue),
+                    tx.CustomActions.Select(a => a.PlainValue),
                     tx.Signature.ToImmutableArray()));
             var untyped = new UntypedBlock(_block, untypedTxs);
             Assert.Equal(_block.MarshalBlock(), untyped.ToBencodex());

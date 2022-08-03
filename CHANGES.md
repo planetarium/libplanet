@@ -8,8 +8,36 @@ To be released.
 
 ### Deprecated APIs
 
+ -  `Transaction<T>(long, Address, PublicKey, BlockHash?,
+    IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])` constructor
+    is now deprecated.  Use `Transaction<T>(ITxMetadata, IEnumerable<T>,
+    byte[])` constructor or `Transaction<T>.Create()` static method instead.
+    [[#2175]]
+ -  `Transaction<T>.Actions` property is now deprecated.  Use
+    `Transaction<T>.SystemAction` property or `Transaction<T>.CustomActions`
+    property instead.  [[#2149], [#2151], [#2175]]
+
 ### Backward-incompatible API changes
 
+ -  The type of `Transaction<T>.Actions` property became
+    `IImmutableList<IAction>` (was `IImmutableList<T>` where `T : IAction,
+    new()`).  [[#2149], [#2151], [#2175]]
+ -  Renamed parameters named `actions` of many methods to `customActions`.
+    [[#2149], [#2151], [#2175]]
+     -  Renamed `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])`
+        constructor's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>(long, Address, PublicKey, BlockHash?,
+        IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])`
+        constructor's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+        IEnumerable<T>, IImmutableSet<Address>?, DateTimeOffset?)` static
+        method's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>.CreateUnsigned(long, PrivateKey, BlockHash?,
+        IEnumerable<T>, IImmutableSet<Address>?, DateTimeOffset?)` static
+        method's parameter `actions` to `customActions`.
+     -  Renamed `TxMetadata.ToBencodex(IEnumerable<IValue>,
+        IImmutableArray<byte>?)` method's parameter `actions` to
+        `customActions`.
  -  Added `IBlockPolicy<T>.NativeTokens` property.  [[#2149], [#2150], [#2175]]
  -  Added option `IImmutableSet<Currency>? nativeTokens` to `BlockPolicy<T>()`
     constructor as its last parameter.  [[#2149], [#2150], [#2175]]
@@ -42,6 +70,19 @@ To be released.
  -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
     `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
+ -  Added `Transaction<T>.SystemAction` property.  [[#2149], [#2151], [#2175]]
+ -  Added `Transaction<T>.CustomActions` property.  [[#2149], [#2151], [#2175]]
+ -  Added overloads to take `systemAction` besides the existing constructors and
+    methods taking `customActions`.  [[#2149], [#2151], [#2175]]
+     -  Added `Transaction<T>(ITxMetadata, IAction, byte[])` overloaded
+        constructor.
+     -  Added `Transaction<T>.Create(long, PrivateKey, BlockHash?, IAction,
+        IImmutableSet<Address>?, DateTimeOffset?)` overloaded static method.
+     -  Added `Transaction<T>.CreateUnsigned(long, PrivateKey, BlockHash?,
+        IAction, IImmutableSet<Address>?, DateTimeOffset?)` overloaded static
+        method.
+     -  Added `TxMetadata.ToBencodex(IValue, ImmutableArray<byte>?)` overloaded
+        method.
  -  Added `NonNativeTokenException` class.  [[#2149], [#2150], [#2175]]
  -  Added `BlockLocator` class. [[#1762], [#2140]]
  -  Added methods required for decoupling *Libplanet.Net* from
@@ -76,6 +117,7 @@ To be released.
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
 [#2149]: https://github.com/planetarium/libplanet/issues/2149
 [#2150]: https://github.com/planetarium/libplanet/issues/2150
+[#2151]: https://github.com/planetarium/libplanet/issues/2151
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
 [#2156]: https://github.com/planetarium/libplanet/pull/2156
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
