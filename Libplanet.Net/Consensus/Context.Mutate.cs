@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -119,29 +117,21 @@ namespace Libplanet.Net.Consensus
                     commit);
             }
 
-            lock (_messagesInRoundLock)
-            {
-                if (!_messagesInRound.ContainsKey(message.Round))
-                {
-                    _messagesInRound.TryAdd(message.Round, new HashSet<ConsensusMessage>());
-                }
-
-                // TODO: Prevent duplicated messages adding.
-                _messagesInRound[message.Round].Add(message);
-                _logger.Debug(
-                    "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                    "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
-                    "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
-                    nameof(AddMessage),
-                    message,
-                    message.Height,
-                    message.Round,
-                    message.Validator.ToAddress(),
-                    message.Remote!.Address,
-                    message.BlockHash,
-                    _messagesInRound.Sum(x => x.Value.Count),
-                    ToString());
-            }
+            // TODO: Prevent duplicated messages adding.
+            _messageLog.Add(message);
+            _logger.Debug(
+                "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
+                "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                nameof(AddMessage),
+                message,
+                message.Height,
+                message.Round,
+                message.Validator.ToAddress(),
+                message.Remote!.Address,
+                message.BlockHash,
+                _messageLog.GetTotalCount(),
+                ToString());
         }
 
         /// <summary>
@@ -297,7 +287,7 @@ namespace Libplanet.Net.Consensus
 
             // FIXME: _messagesInRound should not contain any duplicated messages for this.
             if (round > Round &&
-                _messagesInRound[round].Count > TotalValidators / 3)
+                _messageLog.GetCount(round) > TotalValidators / 3)
             {
                 _logger.Debug(
                     "1/3+ messages from the round {Round} > current round {CurrentRound}. " +

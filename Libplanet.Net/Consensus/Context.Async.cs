@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
@@ -103,10 +102,10 @@ namespace Libplanet.Net.Consensus
             try
             {
                 (int MessageLogSize, int Round, Step Step) prevState =
-                    (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
+                    (_messageLog.GetTotalCount(), Round, Step);
                 mutation();
                 (int MessageLogSize, int Round, Step Step) nextState =
-                    (_messagesInRound.Sum(x => x.Value.Count), Round, Step);
+                    (_messageLog.GetTotalCount(), Round, Step);
                 if (prevState != nextState)
                 {
                     _logger.Debug(
