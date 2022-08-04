@@ -11,7 +11,7 @@ namespace Libplanet.Explorer.GraphTypes
 
         public BencodexValueType()
         {
-            Name = "IValue";
+            Name = "BencodexValue";
         }
 
         public override object? Serialize(object? value)
