@@ -10,7 +10,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Modified type of parameters `offset`, `limit` from int to long
+ -  Modified type of parameters `offset`, `limit` from `int` to `long`
     from verious methods. [[#1354], [#2188]]
    - `BlockChain<T>.IterateBlocks(int, int?)`
    - `BlockChain<T>.IterateBlockHashes(int, int?)`
