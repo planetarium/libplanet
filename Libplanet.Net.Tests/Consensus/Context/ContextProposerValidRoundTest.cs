@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -22,31 +21,31 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterValidRoundPreVoteBlock()
         {
-            var messageReceived = new AsyncManualResetEvent();
             Block<DumbAction> block =
                 await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var voteSent = new AsyncAutoResetEvent();
+            ConsensusMessageSent += (observer, message) =>
+            {
+                if (message is ConsensusVote vote && vote.BlockHash.Equals(block.Hash))
+                {
+                    voteSent.Set();
+                }
+            };
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            // Bypass StartAsync() to avoid StartRound(0).
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
+
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 block, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 block, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 block, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
 
-            void IsVoteSent(ConsensusMessage consensusMessage)
-            {
-                if (consensusMessage is ConsensusVote vote &&
-                    vote.BlockHash.Equals(block.Hash))
-                {
-                    messageReceived.Set();
-                }
-            }
-
-            watchConsensusMessage = IsVoteSent;
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
@@ -57,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            Context.HandleMessage(new
+            Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
@@ -68,9 +67,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
@@ -81,8 +78,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await voteSent.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);
@@ -91,29 +87,30 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterValidRoundPreVoteNil()
         {
-            var messageReceived = new AsyncManualResetEvent();
-            void IsVoteSent(ConsensusMessage consensusMessage)
-            {
-                if (consensusMessage is ConsensusVote vote &&
-                    vote.BlockHash.Equals(null))
-                {
-                    messageReceived.Set();
-                }
-            }
-
-            watchConsensusMessage = IsVoteSent;
             Block<DumbAction> invalidBlock = GetInvalidBlock();
+            var voteSent = new AsyncAutoResetEvent();
+            ConsensusMessageSent += (observer, message) =>
+            {
+                if (message is ConsensusVote vote && vote.BlockHash is null)
+                {
+                    voteSent.Set();
+                }
+            };
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            // Bypass StartAsync() to avoid StartRound(0).
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
+
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
 
-            Context.AddMessage(TestUtils.CreateConsensusPropose(
+            Context.ProduceMessage(TestUtils.CreateConsensusPropose(
                 invalidBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[0],
                     1,
@@ -124,7 +121,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            Context.HandleMessage(new
+            Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[2],
                     1,
@@ -135,9 +132,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
                     TestUtils.PrivateKeys[3],
                     1,
@@ -148,8 +143,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[3]),
                 });
 
-            await messageReceived.WaitAsync();
-            await messageProcessed.WaitAsync();
+            await voteSent.WaitAsync();
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
             Assert.Equal(2, Context.Round);

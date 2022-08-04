@@ -8,7 +8,6 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
-using Nito.AsyncEx;
 using Serilog;
 using Xunit.Abstractions;
 
@@ -16,11 +15,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 {
     public class ContextTestBase : IDisposable
     {
-        protected const int Timeout = 60_000;
+        protected const int Timeout = 30_000;
         protected readonly Context<DumbAction> Context;
         protected readonly BlockChain<DumbAction> BlockChain;
-
-        protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage = null;
 
         private readonly StoreFixture _fx;
         private readonly ILogger _logger;
@@ -49,9 +46,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>
                 {
-                    watchConsensusMessage?.Invoke(message);
+                    ConsensusMessageSent?.Invoke(this, message);
                     message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
-                    Context!.HandleMessage(message);
+                    Context!.ProduceMessage(message);
                 });
 
             _consensusContext = new ConsensusContext<DumbAction>(
@@ -72,6 +69,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 round);
         }
 
+        protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;
+
         public void Dispose()
         {
             _fx.Dispose();
@@ -90,20 +89,5 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 Transactions = new List<Transaction<DumbAction>>(),
             }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, BlockChain);
-
-        protected async Task NewRoundSendMessageAssert()
-        {
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => Context.Step == Step.Propose,
-                1_000);
-        }
-
-        protected AsyncAutoResetEvent WatchMessageProcessed()
-        {
-            var messageProcessed = new AsyncAutoResetEvent();
-            Context.MessageProcessed += (sender, consensusMessage) => messageProcessed.Set();
-
-            return messageProcessed;
-        }
     }
 }

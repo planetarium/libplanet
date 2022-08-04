@@ -14,12 +14,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
     public class ConsensusContextTestBase : IDisposable
     {
+        protected const int Timeout = 30_000;
+
         protected readonly StoreFixture Fx;
         protected readonly BlockChain<DumbAction> BlockChain;
         protected readonly ConsensusContext<DumbAction> ConsensusContext;
         protected readonly TimeSpan NewHeightDelay = TimeSpan.FromSeconds(1);
-
-        protected TestUtils.DelegateWatchConsensusMessage? watchConsensusMessage;
 
         private const int Port = 19283;
         private readonly ILogger _logger;
@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>
                 {
-                    watchConsensusMessage?.Invoke(message);
+                    ConsensusMessageSent?.Invoke(this, message);
                     message.Remote = new Peer(privateKey.PublicKey);
                     ConsensusContext!.HandleMessage(message);
                 });
@@ -61,17 +61,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 NewHeightDelay);
         }
 
+        protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;
+
         public void Dispose()
         {
             Fx.Dispose();
             ConsensusContext.Dispose();
-        }
-
-        protected async Task NewHeightDelayAssert(long height)
-        {
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => ConsensusContext.Height == height,
-                NewHeightDelay.Duration().Milliseconds + 3_000);
         }
     }
 }

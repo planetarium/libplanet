@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -25,29 +26,25 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsync()
         {
-            var stepChanged = new AsyncAutoResetEvent();
-            var messageReceived = new AsyncAutoResetEvent();
-
-            void IsProposeSent(ConsensusMessage message)
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            var proposeSent = new AsyncAutoResetEvent();
+            Context.StateChanged += (sender, state) =>
+            {
+                if (state.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
+            ConsensusMessageSent += (observer, message) =>
             {
                 if (message is ConsensusPropose)
                 {
-                    messageReceived.Set();
-                }
-            }
-
-            watchConsensusMessage = IsProposeSent;
-            Context.StepChanged += (sender, step) =>
-            {
-                if (step == Step.PreVote)
-                {
-                    stepChanged.Set();
+                    proposeSent.Set();
                 }
             };
 
-            await Context.StartAsync();
-            await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            Context.Start();
+            await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.Equal(1, Context.Height);
@@ -57,52 +54,40 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsyncWithLastCommit()
         {
-            var stepChanged = new AsyncAutoResetEvent();
-            var messageReceived = new AsyncAutoResetEvent();
-            ConsensusPropose? received = null;
-
-            void IsProposeSent(ConsensusMessage message)
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            var proposeSent = new AsyncAutoResetEvent();
+            ConsensusPropose? proposedMessage = null;
+            Context.StateChanged += (sender, state) =>
+            {
+                if (state.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
+            ConsensusMessageSent += (observer, message) =>
             {
                 if (message is ConsensusPropose propose)
                 {
-                    messageReceived.Set();
-                    received = propose;
-                }
-            }
-
-            watchConsensusMessage = IsProposeSent;
-
-            Context.StepChanged += (sender, step) =>
-            {
-                if (step == Step.PreVote)
-                {
-                    stepChanged.Set();
+                    proposedMessage = propose;
+                    proposeSent.Set();
                 }
             };
 
             var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
             var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
 
-            await Context.StartAsync(lastCommit);
-            await messageReceived.WaitAsync();
-            await stepChanged.WaitAsync();
+            Context.Start(lastCommit);
+            await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, Context.Step);
-            // Looks dirty, but compiler throws error without if statement.
-            if (received is null)
-            {
-                Assert.NotNull(received);
-            }
-            else
-            {
-                Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    BlockChain.Policy.GetHashAlgorithm,
-                    (Dictionary)new Codec().Decode(received.Payload));
-                Assert.NotNull(mined.LastCommit);
-                Assert.Equal(
-                    new HashSet<Vote>(voteSet.Votes),
-                    new HashSet<Vote>(mined.LastCommit?.Votes!));
-            }
+            Assert.NotNull(proposedMessage);
+            Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                BlockChain.Policy.GetHashAlgorithm,
+                (Dictionary)new Codec().Decode(proposedMessage!.Payload));
+            Assert.NotNull(mined.LastCommit);
+            Assert.Equal(
+                new HashSet<Vote>(voteSet.Votes),
+                new HashSet<Vote>(mined.LastCommit?.Votes!));
         }
 
         [Fact(Timeout = Timeout)]
@@ -205,30 +190,20 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void VoteSet()
         {
+            // FIXME: Pretty lousy testing method.
             BlockHash? blockHash = null;
-            AsyncAutoResetEvent stepChanged = new AsyncAutoResetEvent();
-
-            await Context.StartAsync();
-
-            void WatchPropose(ConsensusMessage message)
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
+            Context.StateChanged += (sender, state) =>
             {
-                if (message is ConsensusPropose)
+                if (state.Step == Step.PreCommit)
                 {
-                    blockHash = message.BlockHash;
-                }
-            }
-
-            watchConsensusMessage = WatchPropose;
-
-            Context.StepChanged += (sender, step) =>
-            {
-                if (step == Step.PreCommit)
-                {
-                    stepChanged.Set();
+                    stepChangedToPreCommit.Set();
                 }
             };
 
-            Context.HandleMessage(
+            Context.Start();
+
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[0], 1, hash: blockHash, flag: VoteFlag.Absent))
@@ -236,7 +211,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[0]),
                 });
 
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
@@ -244,24 +219,24 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
 
-            VoteSet roundVoteSet = Context.VoteSet(0);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[2].Flag);
-
-            AsyncAutoResetEvent messageProcessed = WatchMessageProcessed();
-            Context.HandleMessage(
+            Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
                     Remote = new Peer(TestUtils.Validators[2]),
                 });
-            await messageProcessed.WaitAsync();
 
-            roundVoteSet = Context.VoteSet(0);
+            await stepChangedToPreCommit.WaitAsync();
+            // Wait for the vote to change from Absent to Commit to avoid flakiness.
+            await Libplanet.Tests.TestUtils.AssertThatEventually(
+                () => Context.VoteSet(0).Votes[1].Flag == VoteFlag.Commit,
+                3_000);
+            VoteSet roundVoteSet = Context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
         }

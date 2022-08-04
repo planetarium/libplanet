@@ -10,8 +10,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
     [Collection("NetMQConfiguration")]
     public class ConsensusContextProposerTest : ConsensusContextTestBase
     {
-        private const int Timeout = 60_000;
-
         private readonly ILogger _logger;
 
         public ConsensusContextProposerTest(ITestOutputHelper output)
@@ -31,24 +29,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void IncreaseRoundWhenTimeout()
         {
-            var messageProcessed = new AsyncAutoResetEvent();
-            var timeoutOccurred = new AsyncAutoResetEvent();
+            var timeoutProcessed = new AsyncAutoResetEvent();
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageProcessed +=
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutProcessed +=
                 (sender, message) =>
                 {
-                    messageProcessed.Set();
-                };
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutOccurred +=
-                (sender, message) =>
-                {
-                    timeoutOccurred.Set();
+                    timeoutProcessed.Set();
                 };
 
             // Wait for block to be proposed.
-            await messageProcessed.WaitAsync();
             Assert.Equal(1, ConsensusContext.Height);
             Assert.Equal(0, ConsensusContext.Round);
 
@@ -75,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer3,
                 });
 
-            await timeoutOccurred.WaitAsync();
+            await timeoutProcessed.WaitAsync();
 
             ConsensusContext.HandleMessage(
                 new ConsensusCommit(
@@ -99,13 +89,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer3,
                 });
 
-            await timeoutOccurred.WaitAsync();
-
+            await timeoutProcessed.WaitAsync();
             Assert.Equal(1, ConsensusContext.Height);
-            await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => ConsensusContext.Round == 1,
-                5_000,
-                conditionLabel: "Round does not changed.");
+            Assert.Equal(1, ConsensusContext.Round);
         }
     }
 }
