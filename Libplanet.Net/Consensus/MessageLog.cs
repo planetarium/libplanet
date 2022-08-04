@@ -33,6 +33,12 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="ConsensusPropose"/> for given <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>The <see cref="ConsensusPropose"/> corresponding to <paramref name="round"/>
+        /// if found, otherwise <c>null</c>.</returns>
         internal ConsensusPropose? GetPropose(int round)
         {
             lock (_lock)
@@ -43,6 +49,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Gets all <see cref="ConsensusVote"/>s in given <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>All <see cref="ConsensusVote"/>s in <paramref name="round"/> given.</returns>
         internal List<ConsensusVote> GetVotes(int round)
         {
             lock (_lock)
@@ -53,6 +64,11 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Gets all <see cref="ConsensusCommit"/>s in given <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>All <see cref="ConsensusCommit"/>s in <paramref name="round"/> given.</returns>
         internal List<ConsensusCommit> GetCommits(int round)
         {
             lock (_lock)
@@ -63,6 +79,13 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Counts how many <see cref="ConsensusMessage"/>s are in a log for given
+        /// <paramref name="round"/>.
+        /// </summary>
+        /// <param name="round">The round to search.</param>
+        /// <returns>The number of <see cref="ConsensusMessage"/>s in <paramref name="round"/>.
+        /// </returns>
         internal int GetCount(int round)
         {
             lock (_lock)
@@ -73,6 +96,10 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        /// <summary>
+        /// Counts the total number of <see cref="ConsensusMessage"/>s in a log.
+        /// </summary>
+        /// <returns>The number of all <see cref="ConsensusMessage"/>s.</returns>
         internal int GetTotalCount()
         {
             lock (_lock)
