@@ -93,98 +93,146 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowInvalidProposer()
         {
-            Block<DumbAction> block =
-                await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            Exception? exceptionThrown = null;
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Context.ExceptionOccurred += (sender, e) =>
+            {
+                exceptionThrown = e;
+                exceptionOccurred.Set();
+            };
 
-            Assert.Throws<InvalidProposerProposeMessageException>(
-                () =>
-                    Context.AddMessage(
-                        TestUtils.CreateConsensusPropose(
-                            block,
-                            TestUtils.PrivateKeys[0])));
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
+
+            Context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[0]));
+            await exceptionOccurred.WaitAsync();
+
+            Assert.True(exceptionThrown is InvalidProposerProposeMessageException);
         }
 
         [Fact(Timeout = Timeout)]
-        public void ThrowNilPropose()
+        public async void ThrowNilPropose()
         {
-            Assert.Throws<InvalidBlockProposeMessageException>(
-                () =>
-                    Context.AddMessage(
-                        TestUtils.CreateConsensusPropose(
-                            default,
-                            TestUtils.PrivateKeys[NodeId])));
+            Exception? exceptionThrown = null;
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Context.ExceptionOccurred += (sender, e) =>
+            {
+                exceptionThrown = e;
+                exceptionOccurred.Set();
+            };
+
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
+
+            Context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(default, TestUtils.PrivateKeys[NodeId]));
+            await exceptionOccurred.WaitAsync();
+
+            Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
         }
 
         [Fact(Timeout = Timeout)]
         public async void ThrowInvalidValidatorVote()
         {
-            Block<DumbAction> block =
-                await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            Exception? exceptionThrown = null;
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Context.ExceptionOccurred += (sender, e) =>
+            {
+                exceptionThrown = e;
+                exceptionOccurred.Set();
+            };
+
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
 
             // Vote's signature does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[0],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))));
+            Context.ProduceMessage(
+                new ConsensusVote(
+                    new Vote(
+                        Context.Height,
+                        Context.Round,
+                        block.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.Validators[0],
+                        VoteFlag.Absent,
+                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+            await exceptionOccurred.WaitAsync();
+            Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
-            // Vote's signature does not match with remote
-            Assert.Throws<InvalidValidatorVoteMessageException>(
-                () =>
-                    Context.AddMessage(
-                        new ConsensusVote(
-                            new Vote(
-                                Context.Height,
-                                Context.Round,
-                                block.Hash,
-                                DateTimeOffset.UtcNow,
-                                TestUtils.Validators[0],
-                                VoteFlag.Absent,
-                                null).Sign(TestUtils.PrivateKeys[NodeId]))));
+            // Reset exception thrown.
+            exceptionThrown = null;
+
+            Context.ProduceMessage(
+                new ConsensusVote(
+                    new Vote(
+                        Context.Height,
+                        Context.Round,
+                        block.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.Validators[0],
+                        VoteFlag.Absent,
+                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+            await exceptionOccurred.WaitAsync();
+            Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }
 
         [Fact(Timeout = Timeout)]
         public async void ThrowDifferentHeight()
         {
-            Block<DumbAction> block =
-                await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
+            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
 
-            Assert.Throws<InvalidHeightMessageException>(
-                () => Context.AddMessage(
-                    TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], 2, 2)));
+            Exception? exceptionThrown = null;
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Context.ExceptionOccurred += (sender, e) =>
+            {
+                exceptionThrown = e;
+                exceptionOccurred.Set();
+            };
 
-            Assert.Throws<InvalidHeightMessageException>(
-                () => Context.AddMessage(
-                    new ConsensusVote(
-                        TestUtils.CreateVote(
-                            TestUtils.PrivateKeys[2],
-                            2,
-                            0,
-                            block.Hash,
-                            VoteFlag.Absent))
-                    {
-                        Remote = new Peer(TestUtils.Validators[2]),
-                    }));
+            _ = Context.MessageConsumerTask(default);
+            _ = Context.MutationConsumerTask(default);
 
-            Assert.Throws<InvalidHeightMessageException>(
-                () => Context.AddMessage(
-                    new ConsensusCommit(
-                        TestUtils.CreateVote(
-                            TestUtils.PrivateKeys[2],
-                            2,
-                            0,
-                            block.Hash,
-                            VoteFlag.Absent))
-                    {
-                        Remote = new Peer(TestUtils.Validators[2]),
-                    }));
+            Context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], 2, 2));
+            await exceptionOccurred.WaitAsync();
+            Assert.True(exceptionThrown is InvalidHeightMessageException);
+
+            // Reset exception thrown.
+            exceptionThrown = null;
+
+            Context.ProduceMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2],
+                        2,
+                        0,
+                        block.Hash,
+                        VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[2]),
+                });
+            await exceptionOccurred.WaitAsync();
+            Assert.True(exceptionThrown is InvalidHeightMessageException);
+
+            // Reset exception thrown.
+            exceptionThrown = null;
+
+            Context.ProduceMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2],
+                        2,
+                        0,
+                        block.Hash,
+                        VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[2]),
+                });
+            await exceptionOccurred.WaitAsync();
+            Assert.True(exceptionThrown is InvalidHeightMessageException);
         }
 
         [Fact(Timeout = Timeout)]

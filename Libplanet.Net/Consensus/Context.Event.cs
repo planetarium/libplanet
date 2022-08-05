@@ -6,6 +6,11 @@ namespace Libplanet.Net.Consensus
     public partial class Context<T>
     {
         /// <summary>
+        /// An event that is invoked when an exception is thrown.
+        /// </summary>
+        internal event EventHandler<Exception>? ExceptionOccurred;
+
+        /// <summary>
         /// An event that invoked when any timeout occurs.
         /// </summary>
         internal event EventHandler<(Step Step, TimeSpan TimeSpan)>? TimeoutOccurred;

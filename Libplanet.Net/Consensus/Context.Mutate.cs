@@ -4,13 +4,18 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
+    // NOTE: All methods that can potentially mutate a Context is placed here.
+    // Each mutation must be run synchronously either through MutationConsumerTask
+    // or as a part of another mutation.  All methods are made intentionally private and
+    // Exception free, i.e. any exception that is not thrown explicitly is unintentional and
+    // unexpected.
     public partial class Context<T>
     {
         /// <summary>
         /// Starts a new round.
         /// </summary>
         /// <param name="round">The round to start.</param>
-        internal void StartRound(int round)
+        private void StartRound(int round)
         {
             _logger.Debug(
                 "Starting round {NewRound} (was {PrevRound}). (context: {Context})",
@@ -47,91 +52,113 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Validates given <paramref name="message"/> and add it to the message queue.
+        /// Validates given <paramref name="message"/> and add it to the message log.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMessage"/> to be added.
         /// </param>
-        /// <exception cref="InvalidHeightMessageException">Thrown when the Height of message and
-        /// context height does not match.
-        /// </exception>
-        /// <exception cref="InvalidProposerProposeMessageException">Thrown when the
-        /// <see cref="ConsensusPropose"/> message has proposer that is not proposer of the current
-        /// round.
-        /// </exception>
-        /// <exception cref="InvalidBlockProposeMessageException">Thrown when the
-        /// <see cref="ConsensusPropose"/> message has invalid blockHash (i.e., NIL).
-        /// </exception>
-        /// <exception cref="InvalidValidatorVoteMessageException">Thrown when the signature of
-        /// <see cref="Vote"/> is invalid or the <see cref="Vote"/> is not signed by any validator
-        /// of this context.
-        /// </exception>
-        internal void AddMessage(ConsensusMessage message)
+        /// <remarks>
+        /// If an invalid <see cref="ConsensusMessage"/> is given, this method throws
+        /// an <see cref="InvalidMessageException"/> and handles it <em>internally</em> while
+        /// invoking <see cref="ExceptionOccurred"/> event.  Internally thrown and
+        /// handled <see cref="InvalidMessageException"/>s are:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         <see cref="InvalidHeightMessageException"/>: Thrown when the Height of
+        ///         <paramref name="message"/> and the context height does not match.
+        ///     </description></item>
+        ///     <item><description>
+        ///         <see cref="InvalidProposerProposeMessageException"/>: Thrown when
+        ///         <paramref name="message"/> is a <see cref="ConsensusPropose"/> and has
+        ///         a proposer that is not the proposer of the current round.
+        ///     </description></item>
+        ///         <see cref="InvalidBlockProposeMessageException"/>: Thrown when
+        ///         <paramref name="message"/> is a <see cref="ConsensusPropose"/> and
+        ///         has an invalid blockHash (i.e., NIL).
+        ///     <item><description>
+        ///         <see cref="InvalidValidatorVoteMessageException"/>: Thrown when
+        ///         <paramref name="message"/> is a vote and its signature is invalid or
+        ///         is not signed by a proper validator for the context.
+        ///     </description></item>
+        /// </list>
+        /// </remarks>
+        private void AddMessage(ConsensusMessage message)
         {
-            if (message.Height != Height)
+            try
             {
-                throw new InvalidHeightMessageException(
-                    "Height of message differs with working height.  " +
-                    $"(expected: {Height}, actual: {message.Height})",
+                if (message.Height != Height)
+                {
+                    throw new InvalidHeightMessageException(
+                        "Height of message differs with working height.  " +
+                        $"(expected: {Height}, actual: {message.Height})",
+                        message);
+                }
+
+                if (message is ConsensusPropose propose)
+                {
+                    if (!propose.Validator.Equals(Proposer(message.Round)))
+                    {
+                        throw new InvalidProposerProposeMessageException(
+                            "Proposer for the height " +
+                            $"{message.Height} and round {message.Round} is invalid.  " +
+                            $"(expected: Height: {message.Height}, Round: {message.Round}, " +
+                            $"Proposer: {message.Validator} / " +
+                            $"actual: Height: {Height}, Round: {Round}, " +
+                            $"Proposer: {Proposer(message.Round)})",
+                            message);
+                    }
+
+                    if (message.BlockHash.Equals(default(BlockHash)))
+                    {
+                        throw new InvalidBlockProposeMessageException(
+                            "Cannot propose a null block.",
+                            message);
+                    }
+                }
+
+                if (message is ConsensusVote vote &&
+                    (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
+                    !vote.ProposeVote.Verify(vote.Validator) ||
+                    !_validators.Contains(vote.Validator)))
+                {
+                    throw new InvalidValidatorVoteMessageException(
+                        "Received ConsensusVote message is made by invalid validator.",
+                        vote);
+                }
+
+                if (message is ConsensusCommit commit &&
+                    (!commit.Validator.Equals(commit.CommitVote.Validator) ||
+                    !commit.CommitVote.Verify(commit.Validator) ||
+                    !_validators.Contains(commit.Validator)))
+                {
+                    throw new InvalidValidatorVoteMessageException(
+                        "Received ConsensusCommit message is made by invalid validator.",
+                        commit);
+                }
+
+                // TODO: Prevent duplicated messages adding.
+                _messageLog.Add(message);
+                _logger.Debug(
+                    "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                    "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
+                    "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                    nameof(AddMessage),
+                    message,
+                    message.Height,
+                    message.Round,
+                    message.Validator.ToAddress(),
+                    message.Remote?.Address,
+                    message.BlockHash,
+                    _messageLog.GetTotalCount(),
+                    ToString());
+            }
+            catch (InvalidMessageException ime)
+            {
+                _logger.Debug(
+                    ime,
+                    "Failed to add invalid message {Message}.",
                     message);
+                ExceptionOccurred?.Invoke(this, ime);
             }
-
-            if (message is ConsensusPropose propose)
-            {
-                if (!propose.Validator.Equals(Proposer(message.Round)))
-                {
-                    throw new InvalidProposerProposeMessageException(
-                        "Proposer for the height " +
-                        $"{message.Height} and round {message.Round} is invalid.  " +
-                        $"(expected: Height: {message.Height}, Round: {message.Round}, " +
-                        $"Proposer: {message.Validator} / " +
-                        $"actual: Height: {Height}, Round: {Round}, " +
-                        $"Proposer: {Proposer(message.Round)})",
-                        message);
-                }
-
-                if (message.BlockHash.Equals(default(BlockHash)))
-                {
-                    throw new InvalidBlockProposeMessageException(
-                        "Cannot propose a null block.",
-                        message);
-                }
-            }
-
-            if (message is ConsensusVote vote &&
-                (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
-                 !vote.ProposeVote.Verify(vote.Validator) ||
-                 !_validators.Contains(vote.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusVote message is made by invalid validator.",
-                    vote);
-            }
-
-            if (message is ConsensusCommit commit &&
-                (!commit.Validator.Equals(commit.CommitVote.Validator) ||
-                 !commit.CommitVote.Verify(commit.Validator) ||
-                 !_validators.Contains(commit.Validator)))
-            {
-                throw new InvalidValidatorVoteMessageException(
-                    "Received ConsensusCommit message is made by invalid validator.",
-                    commit);
-            }
-
-            // TODO: Prevent duplicated messages adding.
-            _messageLog.Add(message);
-            _logger.Debug(
-                "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
-                "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
-                nameof(AddMessage),
-                message,
-                message.Height,
-                message.Round,
-                message.Validator.ToAddress(),
-                message.Remote!.Address,
-                message.BlockHash,
-                _messageLog.GetTotalCount(),
-                ToString());
         }
 
         /// <summary>

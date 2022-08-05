@@ -39,7 +39,17 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (TaskCanceledException tce)
                 {
-                    _logger.Debug("Cancellation was requested", tce);
+                    _logger.Debug(tce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, tce);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Debug(
+                        e,
+                        "Unexpected exception occurred during {FName}",
+                        nameof(ConsumeMessage));
+                    ExceptionOccurred?.Invoke(this, e);
                     throw;
                 }
             }
@@ -61,7 +71,17 @@ namespace Libplanet.Net.Consensus
                 }
                 catch (TaskCanceledException tce)
                 {
-                    _logger.Debug("Cancellation was requested", tce);
+                    _logger.Debug(tce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, tce);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Debug(
+                        e,
+                        "Unexpected exception occurred during {FName}",
+                        nameof(ConsumeMutation));
+                    ExceptionOccurred?.Invoke(this, e);
                     throw;
                 }
             }
@@ -90,8 +110,13 @@ namespace Libplanet.Net.Consensus
             ConsensusMessage message = await _messageRequests.Reader.ReadAsync(cancellationToken);
             ProduceMutation(() =>
             {
+                int prevMessageLogSize = _messageLog.GetTotalCount();
                 AddMessage(message);
-                ProcessHeightOrRoundUponRules(message);
+                int nextMessageLogSize = _messageLog.GetTotalCount();
+                if (prevMessageLogSize < nextMessageLogSize)
+                {
+                    ProcessHeightOrRoundUponRules(message);
+                }
             });
             MessageConsumed?.Invoke(this, message);
         }
@@ -99,37 +124,27 @@ namespace Libplanet.Net.Consensus
         private async Task ConsumeMutation(CancellationToken cancellationToken)
         {
             System.Action mutation = await _mutationRequests.Reader.ReadAsync(cancellationToken);
-            try
-            {
-                (int MessageLogSize, int Round, Step Step) prevState =
-                    (_messageLog.GetTotalCount(), Round, Step);
-                mutation();
-                (int MessageLogSize, int Round, Step Step) nextState =
-                    (_messageLog.GetTotalCount(), Round, Step);
-                if (prevState != nextState)
-                {
-                    _logger.Debug(
-                        "State (MessageLogSize, Round, Step) changed from " +
-                        "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
-                        "({NextMessageLogSize}, {NextRound}, {NextStep})",
-                        prevState.MessageLogSize,
-                        prevState.Round,
-                        prevState.Step.ToString(),
-                        nextState.MessageLogSize,
-                        nextState.Round,
-                        nextState.Step.ToString());
-                    StateChanged?.Invoke(
-                        this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
-
-                    ProduceMutation(() => ProcessGenericUponRules());
-                }
-            }
-            catch (Exception e)
+            (int MessageLogSize, int Round, Step Step) prevState =
+                (_messageLog.GetTotalCount(), Round, Step);
+            mutation();
+            (int MessageLogSize, int Round, Step Step) nextState =
+                (_messageLog.GetTotalCount(), Round, Step);
+            if (prevState != nextState)
             {
                 _logger.Debug(
-                    e,
-                    "An unexpected exception has occured during {FName}",
-                    nameof(ConsumeMutation));
+                    "State (MessageLogSize, Round, Step) changed from " +
+                    "({PrevMessageLogSize}, {PrevRound}, {PrevStep}) to " +
+                    "({NextMessageLogSize}, {NextRound}, {NextStep})",
+                    prevState.MessageLogSize,
+                    prevState.Round,
+                    prevState.Step.ToString(),
+                    nextState.MessageLogSize,
+                    nextState.Round,
+                    nextState.Step.ToString());
+                StateChanged?.Invoke(
+                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
+
+                ProduceMutation(() => ProcessGenericUponRules());
             }
 
             MutationConsumed?.Invoke(this, mutation);
