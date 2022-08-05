@@ -19,6 +19,9 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+ -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
+ -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
+    `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
  - Added `BlockLocator` class. [[#1762], [#2140]]
  - Added methods required for decoupling `Libplanet.Net` from
@@ -114,6 +117,7 @@ Released on July 18th, 2022.
 [#2116]: https://github.com/planetarium/libplanet/pull/2116
 [#2118]: https://github.com/planetarium/libplanet/pull/2118
 [#2128]: https://github.com/planetarium/libplanet/issues/2128
+[#2130]: https://github.com/planetarium/libplanet/pull/2130
 [#2134]: https://github.com/planetarium/libplanet/pull/2134
 [#2136]: https://github.com/planetarium/libplanet/pull/2136
 [#2139]: https://github.com/planetarium/libplanet/pull/2139
