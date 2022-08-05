@@ -75,20 +75,30 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
-<li>Added <code>BlockLocator</code> class. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</li>
-<li>Added methods required for decoupling <code>Libplanet.Net</code> from
-<code>Libplanet</code>. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]
+<li><p>(Libplanet.Explorer) Added <code>TransactionMutation&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2130">#2130</a>]</p>
+</li>
+<li><p>(Libplanet.Explorer) Added <code>unsignedTransaction</code>, <code>bindSignature</code> and
+<code>transactionResult</code> GraphQL fields to <code>TransactionQuery&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2130">#2130</a>]</p>
+</li>
+<li><p>Added <code>BlockLocator</code> class. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</p>
+</li>
+<li><p>Added methods required for decoupling <code>Libplanet.Net</code> from
+<code>Libplanet</code>. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</p>
 <ul>
 <li>Added <code>BlockChain&lt;T&gt;.FindNextHashes(BlockLocator, BlockHash?, int)</code> method.</li>
 <li>Added <code>BlockChain&lt;T&gt;.Fork(BlockHash, bool)</code> method.</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetBlockLocator(int)</code> method.</li>
 </ul>
 </li>
-<li>Added <code>IActionContext.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1972">#1972</a>, <a href="https://github.com/planetarium/libplanet/pull/2179">#2179</a>]</li>
-<li>Added <code>ActionEvaluator&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1972">#1972</a>, <a href="https://github.com/planetarium/libplanet/pull/2179">#2179</a>]</li>
-<li>Added <code>IAccountStateView</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2183">#2183</a>]</li>
-<li><code>IAccountStateDelta</code> now inherits <code>IAccountStateView</code> interface.
-[<a href="https://github.com/planetarium/libplanet/pull/2183">#2183</a>]</li>
+<li><p>Added <code>IActionContext.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1972">#1972</a>, <a href="https://github.com/planetarium/libplanet/pull/2179">#2179</a>]</p>
+</li>
+<li><p>Added <code>ActionEvaluator&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/1972">#1972</a>, <a href="https://github.com/planetarium/libplanet/pull/2179">#2179</a>]</p>
+</li>
+<li><p>Added <code>IAccountStateView</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2183">#2183</a>]</p>
+</li>
+<li><p><code>IAccountStateDelta</code> now inherits <code>IAccountStateView</code> interface.
+[<a href="https://github.com/planetarium/libplanet/pull/2183">#2183</a>]</p>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
