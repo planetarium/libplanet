@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -81,6 +83,8 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
+        /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
+        /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
@@ -95,7 +99,8 @@ namespace Libplanet.Blockchain.Policies
             Func<long, long>? getMaxBlockBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
-            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null)
+            Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
+            IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
             BlockInterval = blockInterval
@@ -105,6 +110,7 @@ namespace Libplanet.Blockchain.Policies
             MinimumDifficulty = minimumDifficulty
                 ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
+            NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
             _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
@@ -190,6 +196,10 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public IAction? BlockAction { get; }
+
+        /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
+        // TODO: This should be configurable through the constructor.
+        public IImmutableSet<Currency> NativeTokens { get; }
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.

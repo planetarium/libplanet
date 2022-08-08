@@ -128,7 +128,11 @@ namespace Libplanet.Net.Tests
                 Timestamp = DateTimeOffset.MinValue,
             }
                 .Mine(policy.GetHashAlgorithm(0))
-                .Evaluate(receiverKey, policy.BlockAction, seedStateStore);
+                .Evaluate(
+                    privateKey: receiverKey,
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: seedStateStore);
             BlockChain<DumbAction> seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),

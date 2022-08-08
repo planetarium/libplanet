@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -49,7 +50,6 @@ namespace Libplanet.Action
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
         /// in <see cref="PreviousStates"/>.
         /// </summary>
-        /// <seealso cref="Libplanet.Tx.Transaction{T}.Create"/>
         [Pure]
         bool Rehearsal { get; }
 
@@ -90,6 +90,17 @@ namespace Libplanet.Action
         /// </summary>
         [Pure]
         bool BlockAction { get; }
+
+        /// <summary>
+        /// Checks whether the specified <paramref name="currency"/> is a native token defined by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </summary>
+        /// <param name="currency">A token currency to check.</param>
+        /// <returns><see langword="true"/> if the specified <paramref name="currency"/> is a native
+        /// token, otherwise <see langword="false"/>.</returns>
+        /// <seealso cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>
+        [Pure]
+        bool IsNativeToken(Currency currency);
 
         /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed

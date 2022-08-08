@@ -200,14 +200,10 @@ namespace Libplanet.Explorer.Queries
                             false
                         );
                     var signedTransaction = new Transaction<T>(
-                        unsignedTransaction.Nonce,
-                        unsignedTransaction.Signer,
-                        unsignedTransaction.PublicKey,
-                        unsignedTransaction.GenesisHash,
-                        unsignedTransaction.UpdatedAddresses,
-                        unsignedTransaction.Timestamp,
-                        unsignedTransaction.Actions,
-                        signature);
+                        metadata: unsignedTransaction,
+                        customActions: unsignedTransaction.CustomActions,
+                        signature: signature
+                    );
 
                     return ByteUtil.Hex(signedTransaction.Serialize(true));
                 }

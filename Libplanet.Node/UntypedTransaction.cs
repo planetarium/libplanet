@@ -69,7 +69,7 @@ namespace Libplanet.Node
         public UntypedTransaction(Bencodex.Types.Dictionary dictionary)
             : this(
                 new TxMetadata(dictionary),
-                dictionary.GetValue<List>(TxMetadata.ActionsKey),
+                dictionary.GetValue<List>(TxMetadata.CustomActionsKey),
                 dictionary.GetValue<Binary>(TxMetadata.SignatureKey).ByteArray)
         {
         }

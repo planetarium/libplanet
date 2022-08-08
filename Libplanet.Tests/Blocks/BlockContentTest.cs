@@ -81,13 +81,13 @@ namespace Libplanet.Tests.Blocks
                 "ea0493b0ed67fc97b2e5e85a1d145adea294112f09df15398cb10f2ed5ad1a83"
             );
             var tx2 = new Transaction<Arithmetic>(
-                nonce: 0L,
-                signer: key.ToAddress(),
-                publicKey: key.PublicKey,
-                genesisHash: GenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty,
-                timestamp: new DateTimeOffset(2021, 9, 7, 10, 23, 12, 345, TimeSpan.FromHours(9)),
-                actions: Array.Empty<Arithmetic>(),
+                metadata: new TxMetadata(key.PublicKey)
+                {
+                    GenesisHash = GenesisHash,
+                    Timestamp = new DateTimeOffset(
+                        2021, 9, 7, 10, 23, 12, 345, TimeSpan.FromHours(9)),
+                },
+                customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
                     "304402202a8324c83390b1fe0fdd4014056a049bc02ca059369ef62145fe574cb31224f" +
                     "d022073bf8a48403cf46f5fa63f26f3e8ef4db8ef1d841684856da63d9b7eeb91759a"
@@ -104,13 +104,14 @@ namespace Libplanet.Tests.Blocks
         public void TransactionsWithDuplicateNonce()
         {
             var dupTx1 = new Transaction<Arithmetic>(
-                nonce: 1L,
-                signer: Tx1InBlock1.Signer,
-                publicKey: Tx1InBlock1.PublicKey,
-                genesisHash: GenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty.Add(Tx1InBlock1.Signer),
-                timestamp: Tx1InBlock1.Timestamp,
-                actions: Array.Empty<Arithmetic>(),
+                metadata: new TxMetadata(Tx1InBlock1.PublicKey)
+                {
+                    Nonce = 1L,
+                    GenesisHash = GenesisHash,
+                    UpdatedAddresses = ImmutableHashSet.Create(Tx1InBlock1.Signer),
+                    Timestamp = Tx1InBlock1.Timestamp,
+                },
+                customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
                     "304502210099e580e8599acf0b26ad0a80315f2d488703ffde01e9449b4bf399593b8cc" +
                     "e63022002feb21bf0e4d76d25d17c8c1c4fbb3dfbda986e0693f984fbb302183ab7ece1"
@@ -130,13 +131,14 @@ namespace Libplanet.Tests.Blocks
         public void TransactionsWithMissingNonce()
         {
             var dupTx1 = new Transaction<Arithmetic>(
-                nonce: 3L,
-                signer: Tx1InBlock1.Signer,
-                publicKey: Tx1InBlock1.PublicKey,
-                genesisHash: GenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty.Add(Tx1InBlock1.Signer),
-                timestamp: Tx1InBlock1.Timestamp,
-                actions: Array.Empty<Arithmetic>(),
+                metadata: new TxMetadata(Tx1InBlock1.PublicKey)
+                {
+                    Nonce = 3L,
+                    GenesisHash = GenesisHash,
+                    UpdatedAddresses = ImmutableHashSet.Create(Tx1InBlock1.Signer),
+                    Timestamp = Tx1InBlock1.Timestamp,
+                },
+                customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
                     "3045022100bfdf79427028efea9449ad46fbf46d5a806694aa5bbab1a01f4c76b21acd" +
                     "cb16022057c851a01dd74797121385ccfc81e7b33842941189154b4d46d05e891a28e3eb"
@@ -162,13 +164,14 @@ namespace Libplanet.Tests.Blocks
                 "76942b42f99c28da02ed916ebd2fadb189415e8288a4bd87f9ae3594127b79e6"
             );
             var txWithDifferentGenesis = new Transaction<Arithmetic>(
-                nonce: 0L,
-                signer: key.ToAddress(),
-                publicKey: key.PublicKey,
-                genesisHash: differentGenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty,
-                timestamp: new DateTimeOffset(2021, 9, 7, 12, 1, 12, 345, TimeSpan.FromHours(9)),
-                actions: Array.Empty<Arithmetic>(),
+                metadata: new TxMetadata(key.PublicKey)
+                {
+                    Nonce = 0L,
+                    GenesisHash = differentGenesisHash,
+                    Timestamp = new DateTimeOffset(
+                        2021, 9, 7, 12, 1, 12, 345, TimeSpan.FromHours(9)),
+                },
+                customActions: Array.Empty<Arithmetic>(),
                 signature: ByteUtil.ParseHex(
                     "304402202027a31e4298c685daaa944b1d120b4e6894f3bfffa13563331c0a7071a04b" +
                     "310220167507575e982d47d7c6753b782a5f1beb6415af96e7db3ccaf83b516d5133d1"

@@ -167,7 +167,8 @@ namespace Libplanet.Blockchain
                 Policy.BlockAction,
                 blockChainStates: this,
                 trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
-                genesisBlock.Hash
+                genesisHash: genesisBlock.Hash,
+                nativeTokenPredicate: Policy.NativeTokens.Contains
             );
 
             if (Count == 0)
@@ -359,13 +360,18 @@ namespace Libplanet.Blockchain
         /// <param name="blockAction">A block action to execute and be rendered for every block.
         /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
         /// </param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
+        /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
             HashAlgorithmType hashAlgorithm,
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
-            IAction blockAction = null)
+            IAction blockAction = null,
+            Predicate<Currency> nativeTokenPredicate = null)
         {
             privateKey ??= new PrivateKey();
             actions ??= ImmutableArray<T>.Empty;
@@ -385,6 +391,7 @@ namespace Libplanet.Blockchain
             return preEval.Evaluate(
                 privateKey,
                 blockAction,
+                nativeTokenPredicate,
                 new TrieStateStore(new DefaultKeyValueStore(null))
             );
         }
@@ -732,7 +739,6 @@ namespace Libplanet.Blockchain
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
-        /// <seealso cref="Transaction{T}.Create" />
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
             IEnumerable<T> actions,
