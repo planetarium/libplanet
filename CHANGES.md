@@ -12,13 +12,66 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `Currency(string, byte, IImutableSet<Address>?)` constructor.
+    [[#2200]]
+ -  Removed `Currency(string, byte, Address?)` constructor.
+    [[#2200]]
+ -  Added static methods of `Currency` that defines different kinds of
+    `Currency`.  [[#2200]]
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        IImutableSet<Address>?)` static method which defines an instance of
+        `Currency` with a hard limit on the maximum minted supply.
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        Address)` static method which defines an instance of `Currency` with a
+        hard limit on the maximum minted supply.
+     -  Added `Currency.Uncapped(string, byte, IImutableSet<Address>?)` static
+        method which defines an instance of `Currency` without an enforced
+        maximum supply limit.
+     -  Added `Currency.Uncapped(string, byte, Address)` static method which
+        defines an instance of `Currency` without an enforced maximum supply
+        limit.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
+        string, byte, IImutableSet<Address>?)` static method which defines a
+        legacy `Currency` instance which is compatible with `Currency`
+        instances defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
+        string, byte, Address)` static method which defines a legacy `Currency`
+        instance which is compatible with `Currency` instances defined before
+        total supply tracking support was introduced.
+     -  *NOTE:* if you already have some `Currency` instances defined in prior
+        to the addition of total supply tracking on a live chain, you cannot
+        modify the already-defined `Currency` instances as a capped or uncapped
+        `Currency` but have to define them with `Currency.LegacyUntracked()` as
+        the new Currency kinds are internally backwards-incompatible with the
+        legacy `Currency`.
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `Currency.MaximumSupply` property.  [[#915], [#2200]]
+ -  Added `Currency.TotalSupplyTrackable` field.  [[#915], [#2200]]
+
 ### Behavioral changes
+
+ -  Bencodex related methods in `Currency` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  For capped currencies, `Currency.Serialize()` method stores the `major`
+        and `minor` values of the maximum supply as `Integer` values under the
+        keys `maximumSupplyMajor` and `maximumSupplyMinor`. For uncapped and
+        legacy untracked currencies, the entries are omitted.
+     -  `Currency(IValue)` constructor now looks for the maximum supply and
+        total supply trackability in the given dictionary and restores them if
+        found.
+ -  `Currency`'s implementation of `ISerializable` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  `Currency`'s implementation of `ISerializable.GetObjectData` now stores
+         the maximum supply if the `Currency` is capped.
+     -  `Currency(SerializationInfo, StreamingContext)` constructor now looks
+        for the maximum supply and total supply trackability and restores it if
+        found.
 
 ### Bug fixes
 
@@ -26,7 +79,9 @@ To be released.
 
 ### CLI tools
 
+[#915]: https://github.com/planetarium/libplanet/issues/915
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
+[#2200]: https://github.com/planetarium/libplanet/pull/2200
 
 
 Version 0.40.0

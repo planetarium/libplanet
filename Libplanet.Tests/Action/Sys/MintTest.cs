@@ -12,10 +12,10 @@ namespace Libplanet.Tests.Action.Sys
     public class MintTest
     {
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency FOO = new Currency("FOO", 2, minter: null);
+        private static readonly Currency FOO = Currency.Uncapped("FOO", 2, null);
 
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency BAR = new Currency("BAR", 0, minter: null);
+        private static readonly Currency BAR = Currency.Uncapped("BAR", 0, null);
 
         [Fact]
         public void Constructor()
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            Currency bazCurrency = new Currency("BAZ", 0, minter: random.NextAddress());
+            Currency bazCurrency = Currency.Uncapped("BAZ", 0, random.NextAddress());
             var prevStates = new AccountStateDeltaImpl(
                 accountStateGetter: addr => new IValue[addr.Count],
                 accountBalanceGetter: (addr, c) => c * 0,

@@ -41,9 +41,9 @@ namespace Libplanet.Tests.Action
 
             _currencies = new[]
             {
-                new Currency("FOO", 0, minter: _addr[0]),
-                new Currency("BAR", 0, minters: _addr.Take(2).ToImmutableHashSet()),
-                new Currency("BAZ", 0, minter: null),
+                Currency.Uncapped("FOO", 0, _addr[0]),
+                Currency.Uncapped("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
+                Currency.Uncapped("BAZ", 0, null),
             };
 
             _states = new Dictionary<Address, IValue>
