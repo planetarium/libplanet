@@ -65,8 +65,52 @@
 <h2 id="version-0400">Version 0.40.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li><code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code> constructor
+is now deprecated.  Use <code>Transaction&lt;T&gt;(ITxMetadata, IEnumerable&lt;T&gt;, byte[])</code> constructor or <code>Transaction&lt;T&gt;.Create()</code> static method instead.
+[<a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li><code>Transaction&lt;T&gt;.Actions</code> property is now deprecated.  Use
+<code>Transaction&lt;T&gt;.SystemAction</code> property or <code>Transaction&lt;T&gt;.CustomActions</code>
+property instead.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>The type of <code>Transaction&lt;T&gt;.Actions</code> property became
+<code>IImmutableList&lt;IAction&gt;</code> (was <code>IImmutableList&lt;T&gt;</code> where <code>T : IAction, new()</code>).  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Renamed parameters named <code>actions</code> of many methods to <code>customActions</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]
+<ul>
+<li>Renamed <code>Transaction&lt;T&gt;(ITxMetadata, IEnumerable&lt;T&gt;, byte[])</code>
+constructor's parameter <code>actions</code> to <code>customActions</code>.</li>
+<li>Renamed <code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code>
+constructor's parameter <code>actions</code> to <code>customActions</code>.</li>
+<li>Renamed <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> static
+method's parameter <code>actions</code> to <code>customActions</code>.</li>
+<li>Renamed <code>Transaction&lt;T&gt;.CreateUnsigned(long, PrivateKey, BlockHash?, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> static
+method's parameter <code>actions</code> to <code>customActions</code>.</li>
+<li>Renamed <code>TxMetadata.ToBencodex(IEnumerable&lt;IValue&gt;, IImmutableArray&lt;byte&gt;?)</code> method's parameter <code>actions</code> to
+<code>customActions</code>.</li>
+</ul>
+</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.NativeTokens</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added option <code>IImmutableSet&lt;Currency&gt;? nativeTokens</code> to <code>BlockPolicy&lt;T&gt;()</code>
+constructor as its last parameter.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added <code>IActionContext.IsNativeToken(Currency)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added parameter <code>Predicate&lt;Currency&gt; nativeTokenPredicate</code> to
+all <code>PreEvaluationBlock&lt;T&gt;.Evaluate()</code> method as its second parameter
+(parameter <code>IStateStore stateStore</code> remains at the last).
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added parameter <code>Predicate&lt;Currency&gt; nativeTokenPredicate</code> to
+all <code>PreEvaluationBlock&lt;T&gt;.DetermineStateRootHash()</code> overloads as their
+second parameter (existing second and rest parameters were shifted).
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added parameter <code>Predicate&lt;Currency&gt; nativeTokenPredicate</code> to
+<code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> method as its last parameter.
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
+<li>Added parameter <code>Predicate&lt;Currency&gt; nativeTokenPredicate</code> to
+<code>ActionEvaluator&lt;T&gt;()</code> constructor as its last parameter.
+[<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</li>
 <li>Removed <code>ChainIdNotFoundException</code> class. [<a href="https://github.com/planetarium/libplanet/issues/2047">#2047</a>, <a href="https://github.com/planetarium/libplanet/pull/2156">#2156</a>]</li>
 <li>Added <code>IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/2162">#2162</a>, <a href="https://github.com/planetarium/libplanet/pull/2171">#2171</a>]</li>
@@ -80,12 +124,37 @@
 <li><p>(Libplanet.Explorer) Added <code>unsignedTransaction</code>, <code>bindSignature</code> and
 <code>transactionResult</code> GraphQL fields to <code>TransactionQuery&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2130">#2130</a>]</p>
 </li>
+<li><p>Added <code>Transaction&lt;T&gt;.SystemAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</p>
+</li>
+<li><p>Added <code>Transaction&lt;T&gt;.CustomActions</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</p>
+</li>
+<li><p>Added overloads to take <code>systemAction</code> besides the existing constructors and
+methods taking <code>customActions</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</p>
+<ul>
+<li>Added <code>Transaction&lt;T&gt;(ITxMetadata, IAction, byte[])</code> overloaded
+constructor.</li>
+<li>Added <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> overloaded static method.</li>
+<li>Added <code>Transaction&lt;T&gt;.CreateUnsigned(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> overloaded static
+method.</li>
+<li>Added <code>TxMetadata.ToBencodex(IValue, ImmutableArray&lt;byte&gt;?)</code> overloaded
+method.</li>
+</ul>
+</li>
+<li><p>Introduced new system built-in actions.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</p>
+<ul>
+<li>Added <code>Mint</code> class.</li>
+<li>Added <code>Transfer</code> class.</li>
+</ul>
+</li>
+<li><p>Added <code>NonNativeTokenException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/2149">#2149</a>, <a href="https://github.com/planetarium/libplanet/issues/2150">#2150</a>, <a href="https://github.com/planetarium/libplanet/issues/2175">#2175</a>]</p>
+</li>
 <li><p>Added <code>BlockLocator</code> class. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</p>
 </li>
-<li><p>Added methods required for decoupling <code>Libplanet.Net</code> from
-<code>Libplanet</code>. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</p>
+<li><p>Added methods required for decoupling <em>Libplanet.Net</em> from
+<em>Libplanet</em>. [<a href="https://github.com/planetarium/libplanet/issues/1762">#1762</a>, <a href="https://github.com/planetarium/libplanet/pull/2140">#2140</a>]</p>
 <ul>
-<li>Added <code>BlockChain&lt;T&gt;.FindNextHashes(BlockLocator, BlockHash?, int)</code> method.</li>
+<li>Added <code>BlockChain&lt;T&gt;.FindNextHashes(BlockLocator, BlockHash?, int)</code>
+method.</li>
 <li>Added <code>BlockChain&lt;T&gt;.Fork(BlockHash, bool)</code> method.</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetBlockLocator(int)</code> method.</li>
 </ul>

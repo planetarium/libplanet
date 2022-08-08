@@ -108,15 +108,15 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T)
   nameWithType: ActionEvaluator<T>
   nameWithType.vb: ActionEvaluator(Of T)
-- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash})
-  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__
-  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash})
-  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash))
-  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash))
-  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>)
-  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
+  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})
+  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency))
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
 - uid: Libplanet.Action.ActionEvaluator`1.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
@@ -552,6 +552,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.GetUnconsumedContext
   nameWithType: IActionContext.GetUnconsumedContext
+- uid: Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
+  name: IsNativeToken(Currency)
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_IsNativeToken_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
+  fullName: Libplanet.Action.IActionContext.IsNativeToken(Libplanet.Assets.Currency)
+  nameWithType: IActionContext.IsNativeToken(Currency)
+- uid: Libplanet.Action.IActionContext.IsNativeToken*
+  name: IsNativeToken
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_IsNativeToken_
+  commentId: Overload:Libplanet.Action.IActionContext.IsNativeToken
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.IsNativeToken
+  nameWithType: IActionContext.IsNativeToken
 - uid: Libplanet.Action.IActionContext.Miner
   name: Miner
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Miner
@@ -1038,6 +1051,180 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
+- uid: Libplanet.Action.Sys
+  name: Libplanet.Action.Sys
+  href: api/Libplanet.Action.Sys.html
+  commentId: N:Libplanet.Action.Sys
+  fullName: Libplanet.Action.Sys
+  nameWithType: Libplanet.Action.Sys
+- uid: Libplanet.Action.Sys.Mint
+  name: Mint
+  href: api/Libplanet.Action.Sys.Mint.html
+  commentId: T:Libplanet.Action.Sys.Mint
+  fullName: Libplanet.Action.Sys.Mint
+  nameWithType: Mint
+- uid: Libplanet.Action.Sys.Mint.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: Mint(Address, FungibleAssetValue)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.Sys.Mint.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.Sys.Mint.Mint(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: Mint.Mint(Address, FungibleAssetValue)
+- uid: Libplanet.Action.Sys.Mint.#ctor*
+  name: Mint
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint__ctor_
+  commentId: Overload:Libplanet.Action.Sys.Mint.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.Mint
+  nameWithType: Mint.Mint
+- uid: Libplanet.Action.Sys.Mint.Amount
+  name: Amount
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount
+  commentId: P:Libplanet.Action.Sys.Mint.Amount
+  fullName: Libplanet.Action.Sys.Mint.Amount
+  nameWithType: Mint.Amount
+- uid: Libplanet.Action.Sys.Mint.Amount*
+  name: Amount
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Amount_
+  commentId: Overload:Libplanet.Action.Sys.Mint.Amount
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.Amount
+  nameWithType: Mint.Amount
+- uid: Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)
+  nameWithType: Mint.Execute(IActionContext)
+- uid: Libplanet.Action.Sys.Mint.Execute*
+  name: Execute
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Execute_
+  commentId: Overload:Libplanet.Action.Sys.Mint.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.Execute
+  nameWithType: Mint.Execute
+- uid: Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)
+  name: LoadPlainValue(IValue)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_LoadPlainValue_IValue_
+  commentId: M:Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)
+  fullName: Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)
+  nameWithType: Mint.LoadPlainValue(IValue)
+- uid: Libplanet.Action.Sys.Mint.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Mint.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.LoadPlainValue
+  nameWithType: Mint.LoadPlainValue
+- uid: Libplanet.Action.Sys.Mint.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_PlainValue
+  commentId: P:Libplanet.Action.Sys.Mint.PlainValue
+  fullName: Libplanet.Action.Sys.Mint.PlainValue
+  nameWithType: Mint.PlainValue
+- uid: Libplanet.Action.Sys.Mint.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_PlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Mint.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.PlainValue
+  nameWithType: Mint.PlainValue
+- uid: Libplanet.Action.Sys.Mint.Recipient
+  name: Recipient
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient
+  commentId: P:Libplanet.Action.Sys.Mint.Recipient
+  fullName: Libplanet.Action.Sys.Mint.Recipient
+  nameWithType: Mint.Recipient
+- uid: Libplanet.Action.Sys.Mint.Recipient*
+  name: Recipient
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Recipient_
+  commentId: Overload:Libplanet.Action.Sys.Mint.Recipient
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.Recipient
+  nameWithType: Mint.Recipient
+- uid: Libplanet.Action.Sys.Transfer
+  name: Transfer
+  href: api/Libplanet.Action.Sys.Transfer.html
+  commentId: T:Libplanet.Action.Sys.Transfer
+  fullName: Libplanet.Action.Sys.Transfer
+  nameWithType: Transfer
+- uid: Libplanet.Action.Sys.Transfer.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  name: Transfer(Address, FungibleAssetValue)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_
+  commentId: M:Libplanet.Action.Sys.Transfer.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)
+  fullName: Libplanet.Action.Sys.Transfer.Transfer(Libplanet.Address, Libplanet.Assets.FungibleAssetValue)
+  nameWithType: Transfer.Transfer(Address, FungibleAssetValue)
+- uid: Libplanet.Action.Sys.Transfer.#ctor*
+  name: Transfer
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer__ctor_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.Transfer
+  nameWithType: Transfer.Transfer
+- uid: Libplanet.Action.Sys.Transfer.Amount
+  name: Amount
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Amount
+  commentId: P:Libplanet.Action.Sys.Transfer.Amount
+  fullName: Libplanet.Action.Sys.Transfer.Amount
+  nameWithType: Transfer.Amount
+- uid: Libplanet.Action.Sys.Transfer.Amount*
+  name: Amount
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Amount_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.Amount
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.Amount
+  nameWithType: Transfer.Amount
+- uid: Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)
+  nameWithType: Transfer.Execute(IActionContext)
+- uid: Libplanet.Action.Sys.Transfer.Execute*
+  name: Execute
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Execute_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.Execute
+  nameWithType: Transfer.Execute
+- uid: Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)
+  name: LoadPlainValue(IValue)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_LoadPlainValue_IValue_
+  commentId: M:Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)
+  fullName: Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)
+  nameWithType: Transfer.LoadPlainValue(IValue)
+- uid: Libplanet.Action.Sys.Transfer.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.LoadPlainValue
+  nameWithType: Transfer.LoadPlainValue
+- uid: Libplanet.Action.Sys.Transfer.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_PlainValue
+  commentId: P:Libplanet.Action.Sys.Transfer.PlainValue
+  fullName: Libplanet.Action.Sys.Transfer.PlainValue
+  nameWithType: Transfer.PlainValue
+- uid: Libplanet.Action.Sys.Transfer.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_PlainValue_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.PlainValue
+  nameWithType: Transfer.PlainValue
+- uid: Libplanet.Action.Sys.Transfer.Recipient
+  name: Recipient
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Recipient
+  commentId: P:Libplanet.Action.Sys.Transfer.Recipient
+  fullName: Libplanet.Action.Sys.Transfer.Recipient
+  nameWithType: Transfer.Recipient
+- uid: Libplanet.Action.Sys.Transfer.Recipient*
+  name: Recipient
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Recipient_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.Recipient
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.Recipient
+  nameWithType: Transfer.Recipient
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -1900,6 +2087,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.FungibleAssetValue.ToString
   nameWithType: FungibleAssetValue.ToString
+- uid: Libplanet.Assets.NonNativeTokenException
+  name: NonNativeTokenException
+  href: api/Libplanet.Assets.NonNativeTokenException.html
+  commentId: T:Libplanet.Assets.NonNativeTokenException
+  fullName: Libplanet.Assets.NonNativeTokenException
+  nameWithType: NonNativeTokenException
+- uid: Libplanet.Assets.NonNativeTokenException.#ctor(Libplanet.Assets.Currency,System.Nullable{System.String})
+  name: NonNativeTokenException(Currency, Nullable<String>)
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException__ctor_Libplanet_Assets_Currency_System_Nullable_System_String__
+  commentId: M:Libplanet.Assets.NonNativeTokenException.#ctor(Libplanet.Assets.Currency,System.Nullable{System.String})
+  name.vb: NonNativeTokenException(Currency, Nullable(Of String))
+  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeTokenException(Libplanet.Assets.Currency, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Assets.NonNativeTokenException.NonNativeTokenException(Libplanet.Assets.Currency, System.Nullable(Of System.String))
+  nameWithType: NonNativeTokenException.NonNativeTokenException(Currency, Nullable<String>)
+  nameWithType.vb: NonNativeTokenException.NonNativeTokenException(Currency, Nullable(Of String))
+- uid: Libplanet.Assets.NonNativeTokenException.#ctor*
+  name: NonNativeTokenException
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException__ctor_
+  commentId: Overload:Libplanet.Assets.NonNativeTokenException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeTokenException
+  nameWithType: NonNativeTokenException.NonNativeTokenException
+- uid: Libplanet.Assets.NonNativeTokenException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Assets.NonNativeTokenException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Assets.NonNativeTokenException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: NonNativeTokenException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Assets.NonNativeTokenException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_GetObjectData_
+  commentId: Overload:Libplanet.Assets.NonNativeTokenException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Assets.NonNativeTokenException.GetObjectData
+  nameWithType: NonNativeTokenException.GetObjectData
+- uid: Libplanet.Assets.NonNativeTokenException.NonNativeToken
+  name: NonNativeToken
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_NonNativeToken
+  commentId: P:Libplanet.Assets.NonNativeTokenException.NonNativeToken
+  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeToken
+  nameWithType: NonNativeTokenException.NonNativeToken
+- uid: Libplanet.Assets.NonNativeTokenException.NonNativeToken*
+  name: NonNativeToken
+  href: api/Libplanet.Assets.NonNativeTokenException.html#Libplanet_Assets_NonNativeTokenException_NonNativeToken_
+  commentId: Overload:Libplanet.Assets.NonNativeTokenException.NonNativeToken
+  isSpec: "True"
+  fullName: Libplanet.Assets.NonNativeTokenException.NonNativeToken
+  nameWithType: NonNativeTokenException.NonNativeToken
 - uid: Libplanet.Blockchain
   name: Libplanet.Blockchain
   href: api/Libplanet.Blockchain.html
@@ -2316,15 +2551,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
-- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(Libplanet.HashAlgorithmType,IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction)
-  name: MakeGenesisBlock(HashAlgorithmType, IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_Libplanet_HashAlgorithmType_IEnumerable__0__Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__Libplanet_Action_IAction_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(Libplanet.HashAlgorithmType,IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction)
-  name.vb: MakeGenesisBlock(HashAlgorithmType, IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock(Libplanet.HashAlgorithmType, IEnumerable<T>, Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, Libplanet.Action.IAction)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock(Libplanet.HashAlgorithmType, IEnumerable(Of T), Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), Libplanet.Action.IAction)
-  nameWithType: BlockChain<T>.MakeGenesisBlock(HashAlgorithmType, IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction)
-  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock(HashAlgorithmType, IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction)
+- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(Libplanet.HashAlgorithmType,IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency})
+  name: MakeGenesisBlock(HashAlgorithmType, IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction, Predicate<Currency>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_Libplanet_HashAlgorithmType_IEnumerable__0__Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__Libplanet_Action_IAction_Predicate_Libplanet_Assets_Currency__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(Libplanet.HashAlgorithmType,IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency})
+  name.vb: MakeGenesisBlock(HashAlgorithmType, IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction, Predicate(Of Currency))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock(Libplanet.HashAlgorithmType, IEnumerable<T>, Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, Libplanet.Action.IAction, Predicate<Libplanet.Assets.Currency>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock(Libplanet.HashAlgorithmType, IEnumerable(Of T), Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), Libplanet.Action.IAction, Predicate(Of Libplanet.Assets.Currency))
+  nameWithType: BlockChain<T>.MakeGenesisBlock(HashAlgorithmType, IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>, IAction, Predicate<Currency>)
+  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock(HashAlgorithmType, IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset), IAction, Predicate(Of Currency))
 - uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock*
   name: MakeGenesisBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_
@@ -2734,15 +2969,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException}},System.Nullable{IComparer{Libplanet.Blocks.IBlockExcerpt}},Libplanet.Blocks.HashAlgorithmGetter,System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}})
-  name: BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Nullable<Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>>, Nullable<Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>>, Nullable<IComparer<IBlockExcerpt>>, HashAlgorithmGetter, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_TimeSpan__System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException___System_Nullable_IComparer_Libplanet_Blocks_IBlockExcerpt___Libplanet_Blocks_HashAlgorithmGetter_System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException}},System.Nullable{IComparer{Libplanet.Blocks.IBlockExcerpt}},Libplanet.Blocks.HashAlgorithmGetter,System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}})
-  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException)), Nullable(Of Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException)), Nullable(Of IComparer(Of IBlockExcerpt)), HashAlgorithmGetter, Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<TimeSpan>, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>, Libplanet.Tx.TxPolicyViolationException>>, System.Nullable<Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockPolicyViolationException>>, System.Nullable<IComparer<Libplanet.Blocks.IBlockExcerpt>>, Libplanet.Blocks.HashAlgorithmGetter, System.Nullable<Func<System.Int64, System.Int64>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of TimeSpan), System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T), Libplanet.Tx.TxPolicyViolationException)), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockPolicyViolationException)), System.Nullable(Of IComparer(Of Libplanet.Blocks.IBlockExcerpt)), Libplanet.Blocks.HashAlgorithmGetter, System.Nullable(Of Func(Of System.Int64, System.Int64)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)))
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Nullable<Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>>, Nullable<Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>>, Nullable<IComparer<IBlockExcerpt>>, HashAlgorithmGetter, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException)), Nullable(Of Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException)), Nullable(Of IComparer(Of IBlockExcerpt)), HashAlgorithmGetter, Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException}},System.Nullable{IComparer{Libplanet.Blocks.IBlockExcerpt}},Libplanet.Blocks.HashAlgorithmGetter,System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{IImmutableSet{Libplanet.Assets.Currency}})
+  name: BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Nullable<Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>>, Nullable<Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>>, Nullable<IComparer<IBlockExcerpt>>, HashAlgorithmGetter, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<IImmutableSet<Currency>>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Nullable_TimeSpan__System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Tx_Transaction__0__Libplanet_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__Libplanet_Blocks_BlockPolicyViolationException___System_Nullable_IComparer_Libplanet_Blocks_IBlockExcerpt___Libplanet_Blocks_HashAlgorithmGetter_System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_IImmutableSet_Libplanet_Assets_Currency___
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Nullable{TimeSpan},System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Tx.Transaction{`0},Libplanet.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0},Libplanet.Blocks.BlockPolicyViolationException}},System.Nullable{IComparer{Libplanet.Blocks.IBlockExcerpt}},Libplanet.Blocks.HashAlgorithmGetter,System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{IImmutableSet{Libplanet.Assets.Currency}})
+  name.vb: BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException)), Nullable(Of Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException)), Nullable(Of IComparer(Of IBlockExcerpt)), HashAlgorithmGetter, Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of IImmutableSet(Of Currency)))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Nullable<TimeSpan>, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Tx.Transaction<T>, Libplanet.Tx.TxPolicyViolationException>>, System.Nullable<Func<Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>, Libplanet.Blocks.BlockPolicyViolationException>>, System.Nullable<IComparer<Libplanet.Blocks.IBlockExcerpt>>, Libplanet.Blocks.HashAlgorithmGetter, System.Nullable<Func<System.Int64, System.Int64>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<IImmutableSet<Libplanet.Assets.Currency>>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Nullable(Of TimeSpan), System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Tx.Transaction(Of T), Libplanet.Tx.TxPolicyViolationException)), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T), Libplanet.Blocks.BlockPolicyViolationException)), System.Nullable(Of IComparer(Of Libplanet.Blocks.IBlockExcerpt)), Libplanet.Blocks.HashAlgorithmGetter, System.Nullable(Of Func(Of System.Int64, System.Int64)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of IImmutableSet(Of Libplanet.Assets.Currency)))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Nullable<TimeSpan>, Nullable<Int64>, Nullable<Int64>, Nullable<Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException>>, Nullable<Func<BlockChain<T>, Block<T>, BlockPolicyViolationException>>, Nullable<IComparer<IBlockExcerpt>>, HashAlgorithmGetter, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<IImmutableSet<Currency>>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Nullable(Of TimeSpan), Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Func(Of BlockChain(Of T), Transaction(Of T), TxPolicyViolationException)), Nullable(Of Func(Of BlockChain(Of T), Block(Of T), BlockPolicyViolationException)), Nullable(Of IComparer(Of IBlockExcerpt)), HashAlgorithmGetter, Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of IImmutableSet(Of Currency)))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -2940,6 +3175,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).MinimumDifficulty
   nameWithType: BlockPolicy<T>.MinimumDifficulty
   nameWithType.vb: BlockPolicy(Of T).MinimumDifficulty
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_NativeTokens
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).NativeTokens
+  nameWithType: BlockPolicy<T>.NativeTokens
+  nameWithType.vb: BlockPolicy(Of T).NativeTokens
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens*
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_NativeTokens_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.NativeTokens
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).NativeTokens
+  nameWithType: BlockPolicy<T>.NativeTokens
+  nameWithType.vb: BlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -3190,6 +3442,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens
+  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).NativeTokens
+  nameWithType: IBlockPolicy<T>.NativeTokens
+  nameWithType.vb: IBlockPolicy(Of T).NativeTokens
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens*
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.NativeTokens
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).NativeTokens
+  nameWithType: IBlockPolicy<T>.NativeTokens
+  nameWithType.vb: IBlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -3541,6 +3810,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: NullBlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: NullBlockPolicy(Of T).GetNextBlockDifficulty
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_NativeTokens
+  commentId: P:Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NativeTokens
+  nameWithType: NullBlockPolicy<T>.NativeTokens
+  nameWithType.vb: NullBlockPolicy(Of T).NativeTokens
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens*
+  name: NativeTokens
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_NativeTokens_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.NativeTokens
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.NativeTokens
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).NativeTokens
+  nameWithType: NullBlockPolicy<T>.NativeTokens
+  nameWithType.vb: NullBlockPolicy(Of T).NativeTokens
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
   name: ValidateNextBlock(BlockChain<T>, Block<T>)
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
@@ -9425,23 +9711,24 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationBlock
   nameWithType: PreEvaluationBlock<T>.PreEvaluationBlock
   nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationBlock
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  name: DetermineStateRootHash(IAction, IStateStore)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, IStateStore)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, IStateStore)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
-  name: DetermineStateRootHash(IAction, IStateStore, out IImmutableDictionary<String, IValue>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
-  name.vb: DetermineStateRootHash(IAction, IStateStore, ByRef IImmutableDictionary(Of String, IValue))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore, out IImmutableDictionary<System.String, IValue>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Libplanet.Store.IStateStore, ByRef IImmutableDictionary(Of System.String, IValue))
-  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, IStateStore, out IImmutableDictionary<String, IValue>)
-  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, IStateStore, ByRef IImmutableDictionary(Of String, IValue))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
+  name: DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
+  name.vb: DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore)
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore)
+  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore)
+  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore)
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
+  name: DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore, out IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Action_IAction_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_IImmutableDictionary_System_String_IValue___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore,IImmutableDictionary{System.String,IValue}@)
+  name.vb: DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore, ByRef IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.DetermineStateRootHash(Libplanet.Action.IAction, Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore, out IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash(Libplanet.Action.IAction, Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore, ByRef IImmutableDictionary(Of System.String, IValue))
+  nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash(IAction, Predicate<Currency>, IStateStore, out IImmutableDictionary<String, IValue>)
+  nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash(IAction, Predicate(Of Currency), IStateStore, ByRef IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.DetermineStateRootHash(Libplanet.Blockchain.BlockChain{`0})
   name: DetermineStateRootHash(BlockChain<T>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_DetermineStateRootHash_Libplanet_Blockchain_BlockChain__0__
@@ -9469,14 +9756,15 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  name: Evaluate(PrivateKey, IAction, IStateStore)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Libplanet_Store_IStateStore_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Libplanet.Store.IStateStore)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Libplanet.Store.IStateStore)
-  nameWithType: PreEvaluationBlock<T>.Evaluate(PrivateKey, IAction, IStateStore)
-  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(PrivateKey, IAction, IStateStore)
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
+  name: Evaluate(PrivateKey, IAction, Predicate<Currency>, IStateStore)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
+  name.vb: Evaluate(PrivateKey, IAction, Predicate(Of Currency), IStateStore)
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Predicate<Libplanet.Assets.Currency>, Libplanet.Store.IStateStore)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, Predicate(Of Libplanet.Assets.Currency), Libplanet.Store.IStateStore)
+  nameWithType: PreEvaluationBlock<T>.Evaluate(PrivateKey, IAction, Predicate<Currency>, IStateStore)
+  nameWithType.vb: PreEvaluationBlock(Of T).Evaluate(PrivateKey, IAction, Predicate(Of Currency), IStateStore)
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Blockchain.BlockChain{`0})
   name: Evaluate(PrivateKey, BlockChain<T>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Blockchain_BlockChain__0__
@@ -27136,6 +27424,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.ITxMetadata, IEnumerable(Of T), System.Byte())
   nameWithType: Transaction<T>.Transaction(ITxMetadata, IEnumerable<T>, Byte[])
   nameWithType.vb: Transaction(Of T).Transaction(ITxMetadata, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,Libplanet.Action.IAction,System.Byte[])
+  name: Transaction(ITxMetadata, IAction, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_ITxMetadata_Libplanet_Action_IAction_System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.ITxMetadata,Libplanet.Action.IAction,System.Byte[])
+  name.vb: Transaction(ITxMetadata, IAction, Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.ITxMetadata, Libplanet.Action.IAction, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.ITxMetadata, Libplanet.Action.IAction, System.Byte())
+  nameWithType: Transaction<T>.Transaction(ITxMetadata, IAction, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(ITxMetadata, IAction, Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
   name: Transaction(Int64, Address, PublicKey, Nullable<BlockHash>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
@@ -27171,15 +27468,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
-- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
-  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__IEnumerable__0__System_Nullable_IImmutableSet_Libplanet_Address___System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, IEnumerable<T>, System.Nullable<IImmutableSet<Libplanet.Address>>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), IEnumerable(Of T), System.Nullable(Of IImmutableSet(Of Libplanet.Address)), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IEnumerable<T>, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IEnumerable(Of T), Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<BlockHash>, IAction, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_IAction_System_Nullable_IImmutableSet_Libplanet_Address___System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of BlockHash), IAction, Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.IAction, System.Nullable<IImmutableSet<Libplanet.Address>>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.IAction, System.Nullable(Of IImmutableSet(Of Libplanet.Address)), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<BlockHash>, IAction, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of BlockHash), IAction, Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_
@@ -27189,15 +27495,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
-- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
-  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__IEnumerable__0__System_Nullable_IImmutableSet_Libplanet_Address___System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},IEnumerable{`0},System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, IEnumerable<T>, System.Nullable<IImmutableSet<Libplanet.Address>>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), IEnumerable(Of T), System.Nullable(Of IImmutableSet(Of Libplanet.Address)), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IEnumerable<T>, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IEnumerable(Of T), Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name: CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IAction, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_System_Int64_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Action_IAction_System_Nullable_IImmutableSet_Libplanet_Address___System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.CreateUnsigned(System.Int64,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Action.IAction,System.Nullable{IImmutableSet{Libplanet.Address}},System.Nullable{DateTimeOffset})
+  name.vb: CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IAction, Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Action.IAction, System.Nullable<IImmutableSet<Libplanet.Address>>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned(System.Int64, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Action.IAction, System.Nullable(Of IImmutableSet(Of Libplanet.Address)), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.CreateUnsigned(Int64, PublicKey, Nullable<BlockHash>, IAction, Nullable<IImmutableSet<Address>>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).CreateUnsigned(Int64, PublicKey, Nullable(Of BlockHash), IAction, Nullable(Of IImmutableSet(Of Address)), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.CreateUnsigned*
   name: CreateUnsigned
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CreateUnsigned_
@@ -27207,6 +27522,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).CreateUnsigned
   nameWithType: Transaction<T>.CreateUnsigned
   nameWithType.vb: Transaction(Of T).CreateUnsigned
+- uid: Libplanet.Tx.Transaction`1.CustomActions
+  name: CustomActions
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions
+  commentId: P:Libplanet.Tx.Transaction`1.CustomActions
+  fullName: Libplanet.Tx.Transaction<T>.CustomActions
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CustomActions
+  nameWithType: Transaction<T>.CustomActions
+  nameWithType.vb: Transaction(Of T).CustomActions
+- uid: Libplanet.Tx.Transaction`1.CustomActions*
+  name: CustomActions
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_CustomActions_
+  commentId: Overload:Libplanet.Tx.Transaction`1.CustomActions
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.CustomActions
+  fullName.vb: Libplanet.Tx.Transaction(Of T).CustomActions
+  nameWithType: Transaction<T>.CustomActions
+  nameWithType.vb: Transaction(Of T).CustomActions
 - uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[],System.Boolean)
   name: Deserialize(Byte[], Boolean)
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___System_Boolean_
@@ -27234,14 +27566,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Equals(Libplanet.Tx.Transaction(Of T))
   nameWithType: Transaction<T>.Equals(Transaction<T>)
   nameWithType.vb: Transaction(Of T).Equals(Transaction(Of T))
-- uid: Libplanet.Tx.Transaction`1.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Equals_System_Object_
-  commentId: M:Libplanet.Tx.Transaction`1.Equals(System.Object)
-  fullName: Libplanet.Tx.Transaction<T>.Equals(System.Object)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Equals(System.Object)
-  nameWithType: Transaction<T>.Equals(Object)
-  nameWithType.vb: Transaction(Of T).Equals(Object)
+- uid: Libplanet.Tx.Transaction`1.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Tx.Transaction`1.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Tx.Transaction<T>.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Equals(System.Nullable(Of System.Object))
+  nameWithType: Transaction<T>.Equals(Nullable<Object>)
+  nameWithType.vb: Transaction(Of T).Equals(Nullable(Of Object))
 - uid: Libplanet.Tx.Transaction`1.Equals*
   name: Equals
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Equals_
@@ -27387,6 +27720,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Signer
   nameWithType: Transaction<T>.Signer
   nameWithType.vb: Transaction(Of T).Signer
+- uid: Libplanet.Tx.Transaction`1.SystemAction
+  name: SystemAction
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction
+  commentId: P:Libplanet.Tx.Transaction`1.SystemAction
+  fullName: Libplanet.Tx.Transaction<T>.SystemAction
+  fullName.vb: Libplanet.Tx.Transaction(Of T).SystemAction
+  nameWithType: Transaction<T>.SystemAction
+  nameWithType.vb: Transaction(Of T).SystemAction
+- uid: Libplanet.Tx.Transaction`1.SystemAction*
+  name: SystemAction
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_SystemAction_
+  commentId: Overload:Libplanet.Tx.Transaction`1.SystemAction
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.SystemAction
+  fullName.vb: Libplanet.Tx.Transaction(Of T).SystemAction
+  nameWithType: Transaction<T>.SystemAction
+  nameWithType.vb: Transaction(Of T).SystemAction
 - uid: Libplanet.Tx.Transaction`1.Timestamp
   name: Timestamp
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Timestamp
@@ -27902,6 +28252,15 @@ references:
   fullName.vb: Libplanet.Tx.TxMetadata.ToBencodex(IEnumerable(Of IValue), System.Nullable(Of ImmutableArray(Of System.Byte)))
   nameWithType: TxMetadata.ToBencodex(IEnumerable<IValue>, Nullable<ImmutableArray<Byte>>)
   nameWithType.vb: TxMetadata.ToBencodex(IEnumerable(Of IValue), Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Tx.TxMetadata.ToBencodex(IValue,System.Nullable{ImmutableArray{System.Byte}})
+  name: ToBencodex(IValue, Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex_IValue_System_Nullable_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.Tx.TxMetadata.ToBencodex(IValue,System.Nullable{ImmutableArray{System.Byte}})
+  name.vb: ToBencodex(IValue, Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Tx.TxMetadata.ToBencodex(IValue, System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Tx.TxMetadata.ToBencodex(IValue, System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: TxMetadata.ToBencodex(IValue, Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: TxMetadata.ToBencodex(IValue, Nullable(Of ImmutableArray(Of Byte)))
 - uid: Libplanet.Tx.TxMetadata.ToBencodex*
   name: ToBencodex
   href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex_

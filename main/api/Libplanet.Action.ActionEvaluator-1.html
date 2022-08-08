@@ -108,19 +108,19 @@ the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s ty
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601.%23ctor(Libplanet.Action.IAction%2CLibplanet.Blockchain.IBlockChainStates%7B%600%7D%2CSystem.Nullable%7BFunc%7BLibplanet.Blocks.BlockHash%2CLibplanet.Store.Trie.ITrie%7D%7D%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601.%23ctor(Libplanet.Action.IAction%2CLibplanet.Blockchain.IBlockChainStates%7B%600%7D%2CSystem.Nullable%7BFunc%7BLibplanet.Blocks.BlockHash%2CLibplanet.Store.Trie.ITrie%7D%7D%2CSystem.Nullable%7BLibplanet.Blocks.BlockHash%7D%2CPredicate%7BLibplanet.Assets.Currency%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator_1__ctor_" data-uid="Libplanet.Action.ActionEvaluator`1.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__" data-uid="Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash})">ActionEvaluator(IAction, IBlockChainStates&lt;T&gt;, Nullable&lt;Func&lt;BlockHash, ITrie&gt;&gt;, Nullable&lt;BlockHash&gt;)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__" data-uid="Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency})">ActionEvaluator(IAction, IBlockChainStates&lt;T&gt;, Nullable&lt;Func&lt;BlockHash, ITrie&gt;&gt;, Nullable&lt;BlockHash&gt;, Predicate&lt;Currency&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.ActionEvaluator-1.html">ActionEvaluator&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluator(IAction policyBlockAction, IBlockChainStates&lt;T&gt; blockChainStates, Func&lt;BlockHash, ITrie&gt;? trieGetter, BlockHash? genesisHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluator(IAction policyBlockAction, IBlockChainStates&lt;T&gt; blockChainStates, Func&lt;BlockHash, ITrie&gt;? trieGetter, BlockHash? genesisHash, Predicate&lt;Currency&gt; nativeTokenPredicate)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,6 +160,14 @@ a provided <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>.
         <td><p>A <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a> value of the genesis block.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">Predicate</span>&lt;<a class="xref" href="Libplanet.Assets.Currency.html">Currency</a>&gt;</td>
+        <td><span class="parametername">nativeTokenPredicate</span></td>
+        <td><p>A predicate function to determine whether
+the specified <a class="xref" href="Libplanet.Assets.Currency.html">Currency</a> is a native token defined by chain's
+<a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_NativeTokens">NativeTokens</a> or not.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="methods">Methods
@@ -169,7 +177,7 @@ a provided <a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0__.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%601.Evaluate(Libplanet.Blocks.IPreEvaluationBlock%7B%600%7D%2CLibplanet.Blockchain.StateCompleterSet%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L73">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/ActionEvaluator.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator_1_Evaluate_" data-uid="Libplanet.Action.ActionEvaluator`1.Evaluate*"></a>
   <h4 id="Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0__" data-uid="Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock{`0},Libplanet.Blockchain.StateCompleterSet{`0})">Evaluate(IPreEvaluationBlock&lt;T&gt;, StateCompleterSet&lt;T&gt;)</h4>
