@@ -242,6 +242,74 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
+        public async void UponRulesCheckAfterTimeout()
+        {
+            var block1 = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block2 = await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
+            var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
+            Context.StateChanged += (sender, state) =>
+            {
+                if (state.Round == 1 && state.Step == Step.PreVote)
+                {
+                    roundOneStepChangedToPreVote.Set();
+                }
+            };
+
+            // Push round 0 and round 1 proposes.
+            Context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    block1, TestUtils.PrivateKeys[1], round: 0));
+            Context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    block2, TestUtils.PrivateKeys[2], round: 1));
+
+            // Two additional votes should be enough to trigger prevote timeout timer.
+            Context.ProduceMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[1]),
+                });
+            Context.ProduceMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[1]),
+                });
+
+            // Two additional votes should be enough to trigger precommit timeout timer.
+            Context.ProduceMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[1]),
+                });
+            Context.ProduceMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
+                {
+                    Remote = new Peer(TestUtils.Validators[1]),
+                });
+
+            Context.Start();
+
+            // Round 0 Propose -> Round 0 PreVote (due to Round 0 Propose message) ->
+            // PreVote timeout start (due to PreVote messages) ->
+            // PreVote timeout end -> Round 0 PreCommit ->
+            // PreCommit timeout start (due to state mutation check and PreCommit messages) ->
+            // PreCommit timeout end -> Round 1 Propose ->
+            // Round 1 PreVote (due to state mutation check and Round 1 Propose message)
+            await roundOneStepChangedToPreVote.WaitAsync();
+            Assert.Equal(1, Context.Height);
+            Assert.Equal(1, Context.Round);
+            Assert.Equal(Step.PreVote, Context.Step);
+        }
+
+        [Fact(Timeout = Timeout)]
         public async void TimeoutPreVote()
         {
             var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
