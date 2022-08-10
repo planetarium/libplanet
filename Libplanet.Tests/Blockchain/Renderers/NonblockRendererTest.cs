@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
@@ -13,16 +12,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
 {
     public class NonblockRendererTest
     {
-        private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-
         private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesisBlock<DumbAction>(_ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
 
         private static Block<DumbAction> _blockA =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private static Block<DumbAction> _blockB =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
 
         [SuppressMessage(
             "SonarQube",

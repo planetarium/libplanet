@@ -27,18 +27,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
         static DelayedRendererTest()
         {
             HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(
-                hashAlgorithmGetter,
-                TestUtils.GenesisMiner
-            );
+            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
                 _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNextBlock(
                     chainA[i - 1],
-                    hashAlgorithmGetter,
                     TestUtils.GenesisMiner
                 );
             }
@@ -48,13 +43,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 chainA[i] = TestUtils.MineNextBlock(
                     chainA[i - 1],
-                    hashAlgorithmGetter,
                     TestUtils.GenesisMiner,
                     difficulty: 2
                 );
                 chainB[i] = TestUtils.MineNextBlock(
                     chainB[i - 1],
-                    hashAlgorithmGetter,
                     TestUtils.GenesisMiner,
                     difficulty: 2 + extraDifficulty
                 );

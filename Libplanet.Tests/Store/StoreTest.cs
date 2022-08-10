@@ -86,8 +86,7 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = MineNextBlock(
-                MineGenesisBlock<DumbAction>(Fx.GetHashAlgorithm, GenesisMiner),
-                Fx.GetHashAlgorithm,
+                MineGenesisBlock<DumbAction>(GenesisMiner),
                 GenesisMiner,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -1005,7 +1004,7 @@ namespace Libplanet.Tests.Store
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
             Block<DumbAction> anotherBlock3 =
-                MineNextBlock(Fx.Block2, Fx.GetHashAlgorithm, Fx.Miner);
+                MineNextBlock(Fx.Block2, Fx.Miner);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1067,9 +1066,7 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(
-                            hashAlgorithmGetter: policy.GetHashAlgorithm,
-                            miner: GenesisMiner.PublicKey)
+                    MineGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
                         .Evaluate(
                             privateKey: GenesisMiner,
                             blockAction: policy.BlockAction,
@@ -1114,7 +1111,6 @@ namespace Libplanet.Tests.Store
                 // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
                 Block<DumbAction> block = MineNextBlock(
                     genesisBlock,
-                    fx.GetHashAlgorithm,
                     miner: fx.Miner,
                     protocolVersion: 0);
 

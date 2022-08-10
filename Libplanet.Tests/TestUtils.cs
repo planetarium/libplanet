@@ -318,7 +318,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static PreEvaluationBlock<T> MineGenesis<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             PublicKey miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -341,7 +340,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static Block<T> MineGenesisBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -351,7 +349,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : IAction, new()
         {
             PreEvaluationBlock<T> preEval = MineGenesis(
-                hashAlgorithmGetter,
                 miner?.PublicKey,
                 transactions,
                 timestamp,
@@ -364,7 +361,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
             long difficulty = 1,
@@ -397,7 +393,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineNextBlock<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
@@ -410,7 +405,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             PreEvaluationBlock<T> preEval = MineNext(
                 previousBlock,
-                hashAlgorithmGetter,
                 txs,
                 nonce,
                 difficulty,

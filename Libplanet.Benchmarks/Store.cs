@@ -27,7 +27,6 @@ namespace Libplanet.Benchmarks
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
             Block<DumbAction> genesis = TestUtils.MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType,
                 TestUtils.GenesisMiner
             );
             blocks.Add(genesis);
@@ -42,7 +41,7 @@ namespace Libplanet.Benchmarks
                     blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
                 block = TestUtils.MineNextBlock(
-                    block, _ => HashAlgorithmType, TestUtils.GenesisMiner, blockTxs);
+                    block, TestUtils.GenesisMiner, blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);
             }

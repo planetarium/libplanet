@@ -44,7 +44,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_renderer.BlockRecords);
             var block1 = TestUtils.MineNext(
                 genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 miner: keys[4].PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -52,7 +51,6 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block1);
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                _blockChain.Policy.GetHashAlgorithm,
                 txs,
                 miner: keys[4].PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -206,7 +204,6 @@ namespace Libplanet.Tests.Blockchain
             );
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
-                _blockChain.Policy.GetHashAlgorithm,
                 new[] { tx1Transfer, tx2Error, tx3Transfer },
                 miner: keys[4].PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
@@ -325,7 +322,6 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var block = TestUtils.MineNext(
                 _blockChain.Genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 heavyTxs,
                 miner: miner.PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -358,7 +354,6 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             Block<DumbAction> block = TestUtils.MineNext(
                 _blockChain.Genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 manyTxs,
                 miner: miner.PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -379,7 +374,6 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block = TestUtils.MineNext(
                 genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 miner: miner.PublicKey,
                 difficulty: 1024,
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -464,7 +458,6 @@ namespace Libplanet.Tests.Blockchain
 
                 Block<DumbAction> block1 = TestUtils.MineNext(
                     fx.GenesisBlock,
-                    policy.GetHashAlgorithm,
                     new[] { validTx },
                     miner: miner.PublicKey,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -475,7 +468,6 @@ namespace Libplanet.Tests.Blockchain
 
                 Block<DumbAction> block2 = TestUtils.MineNext(
                     block1,
-                    policy.GetHashAlgorithm,
                     new[] { invalidTx },
                     miner: miner.PublicKey,
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -498,7 +490,6 @@ namespace Libplanet.Tests.Blockchain
             // Mining with empty staged.
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 miner: privateKey.PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
@@ -512,7 +503,6 @@ namespace Libplanet.Tests.Blockchain
             // Tx with nonce 0 is mined.
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                _blockChain.Policy.GetHashAlgorithm,
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 miner: privateKey.PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -533,7 +523,6 @@ namespace Libplanet.Tests.Blockchain
             // Unmined tx is left intact in the stage.
             Block<DumbAction> block3 = TestUtils.MineNext(
                 block2,
-                _blockChain.Policy.GetHashAlgorithm,
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 miner: privateKey.PublicKey,
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -564,7 +553,6 @@ namespace Libplanet.Tests.Blockchain
             // Mine nonce 0 tx.
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
-                _blockChain.Policy.GetHashAlgorithm,
                 miner: privateKey.PublicKey,
                 txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
@@ -586,7 +574,6 @@ namespace Libplanet.Tests.Blockchain
             // Mine nonce 1 tx.
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
-                _blockChain.Policy.GetHashAlgorithm,
                 miner: privateKey.PublicKey,
                 txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),

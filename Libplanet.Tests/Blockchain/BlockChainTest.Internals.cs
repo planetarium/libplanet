@@ -105,7 +105,6 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> block1 = MineNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs,
                 miner: _fx.Miner.PublicKey,
                 difficulty: _policy.GetNextBlockDifficulty(_blockChain)

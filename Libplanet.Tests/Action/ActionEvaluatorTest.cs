@@ -73,7 +73,6 @@ namespace Libplanet.Tests.Action
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             PreEvaluationBlock<RandomAction> noStateRootBlock = MineGenesis(
-                hashAlgorithmGetter: hashAlgorithmGetter,
                 miner: GenesisMiner.PublicKey,
                 timestamp: timestamp,
                 transactions: txs
@@ -272,12 +271,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmGetter hashAlgoGetter = _ => hashAlgorithm;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                hashAlgoGetter,
-                TestUtils.GenesisMiner
-            );
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -332,7 +326,6 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block1 = MineNextBlock(
                 genesis,
-                hashAlgoGetter,
                 GenesisMiner,
                 block1Txs,
                 new byte[] { }
@@ -455,7 +448,6 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block2 = MineNextBlock(
                 block1,
-                hashAlgoGetter,
                 GenesisMiner,
                 block2Txs,
                 new byte[] { }
@@ -874,7 +866,6 @@ namespace Libplanet.Tests.Action
             var genesis = chain.Genesis;
             var block = MineNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs,
                 miner: GenesisMiner.PublicKey,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)

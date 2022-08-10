@@ -68,9 +68,8 @@ namespace Libplanet.Tests.Blocks
                     signer,
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            HashAlgorithmGetter algoGetter = _ => HashAlgorithmType.Of<SHA256>();
-            var blockA = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
+            var blockA = MineGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = MineGenesis(timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
@@ -89,8 +88,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
                 MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
-                    _fx.GetHashAlgorithm,
+                    MineGenesisBlock<DumbAction>(_fx.Miner),
                     new List<Transaction<DumbAction>> { invalidTx }
                 )
             );

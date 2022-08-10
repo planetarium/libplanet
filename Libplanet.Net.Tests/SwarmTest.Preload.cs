@@ -120,7 +120,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, minerChain);
@@ -352,7 +351,6 @@ namespace Libplanet.Net.Tests
 
                 Block<ThrowException> block = MineNext(
                     minerChain.Tip,
-                    minerChain.Policy.GetHashAlgorithm,
                     new[] { tx },
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: policy.GetNextBlockDifficulty(minerChain),
@@ -831,7 +829,6 @@ namespace Libplanet.Net.Tests
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
             Block<DumbAction> block = MineNext(
                 minerChain2.Tip,
-                minerChain2.Policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty
             ).Evaluate(ChainPrivateKey, minerChain2);

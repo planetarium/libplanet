@@ -133,8 +133,6 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
-
             var metadata = new BlockMetadata
             {
                 Index = index,

@@ -202,7 +202,6 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
             var genesisBlock = TestUtils.MineGenesis<DumbAction>(
-                policy.GetHashAlgorithm,
                 TestUtils.GenesisMiner.PublicKey
             ).Evaluate(
                 TestUtils.GenesisMiner,
