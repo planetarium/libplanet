@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class DelayedActionRendererTest : DelayedRendererTest
     {
         private static readonly IAccountStateDelta _emptyStates =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
+            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
 
         public DelayedActionRendererTest(ITestOutputHelper output)
             : base(output)

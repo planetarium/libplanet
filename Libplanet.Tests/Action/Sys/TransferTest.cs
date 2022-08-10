@@ -67,6 +67,7 @@ namespace Libplanet.Tests.Action.Sys
             var prevStates = new AccountStateDeltaImpl(
                 accountStateGetter: addr => new IValue[addr.Count],
                 accountBalanceGetter: (addr, c) => c * (addr == signer ? 500 : 0),
+                totalSupplyGetter: c => c * 500,
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();

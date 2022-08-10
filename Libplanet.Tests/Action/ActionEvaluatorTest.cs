@@ -222,6 +222,7 @@ namespace Libplanet.Tests.Action
                 genesis.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 genesis.Miner);
 
             // ToList() is required for realization.
@@ -277,6 +278,7 @@ namespace Libplanet.Tests.Action
                 genesis.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 genesis.Miner);
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
@@ -324,11 +326,14 @@ namespace Libplanet.Tests.Action
                 block1.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 block1.Miner);
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
                 (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
@@ -359,12 +364,15 @@ namespace Libplanet.Tests.Action
                 block1.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 block1.Miner);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
+            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies1 =
+                evals1.GetDirtyTotalSupplies();
             Assert.Equal(
                 new Dictionary<Address, IValue>
                 {
@@ -440,25 +448,27 @@ namespace Libplanet.Tests.Action
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
                     : new FungibleAssetValue(currency);
+            TotalSupplyGetter totalSupplyGetter = currency =>
+                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
+                    ? v
+                    : (FungibleAssetValue?)null;
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
+                totalSupplyGetter,
                 block2.Miner);
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
 
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (
-                    2,
-                    0,
-                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
-                    _txFx.Address3
-                ),
+                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -488,10 +498,15 @@ namespace Libplanet.Tests.Action
                 (address, currency), out FungibleAssetValue value)
                     ? value
                     : new FungibleAssetValue(currency);
+            totalSupplyGetter = currency =>
+                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
+                    ? v
+                    : (FungibleAssetValue?)null;
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
+                totalSupplyGetter,
                 block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
@@ -566,6 +581,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -645,6 +661,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal);
                 Assert.Equal(
@@ -700,6 +717,7 @@ namespace Libplanet.Tests.Action
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                     tx.Signer),
                 rehearsal: false);
 
@@ -850,10 +868,13 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter;
             AccountBalanceGetter accountBalanceGetter =
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter;
+            TotalSupplyGetter totalSupplyGetter =
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter;
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
+                totalSupplyGetter,
                 genesis.Miner);
             var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
@@ -876,10 +897,13 @@ namespace Libplanet.Tests.Action
                     currency,
                     block.PreviousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
+            totalSupplyGetter = currency => chain.GetTotalSupply(
+                currency, block.PreviousHash, stateCompleterSet.TotalSupplyStateCompleter);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
+                totalSupplyGetter,
                 block.Miner);
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
@@ -902,6 +926,7 @@ namespace Libplanet.Tests.Action
                 block.ProtocolVersion,
                 addresses => chain.GetStates(addresses, block.PreviousHash),
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,

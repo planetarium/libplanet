@@ -1735,16 +1735,20 @@ namespace Libplanet.Tests.Blockchain
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
                 (address, currency) => new FungibleAssetValue(currency);
+            TotalSupplyGetter nullTotalSupplyGetter = currency => null;
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 b.ProtocolVersion,
                 nullAccountStateGetter,
                 nullAccountBalanceGetter,
+                nullTotalSupplyGetter,
                 b.Miner);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances =
                 evals.GetDirtyBalances();
+            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies
+                = evals.GetDirtyTotalSupplies();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
                 .Select(_ => new PrivateKey().ToAddress())
@@ -1770,6 +1774,9 @@ namespace Libplanet.Tests.Blockchain
                         b.ProtocolVersion,
                         addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                         (address, currency) => balances.GetValueOrDefault((address, currency)),
+                        currency => totalSupplies.TryGetValue(currency, out var totalSupply)
+                            ? totalSupply
+                            : (FungibleAssetValue?)null,
                         b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();

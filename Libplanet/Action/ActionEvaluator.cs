@@ -150,6 +150,12 @@ namespace Libplanet.Action
         ) =>
             currency * 0;
 
+        [Pure]
+        internal static FungibleAssetValue? NullTotalSupplyGetter(
+            Currency currency
+        ) =>
+            null;
+
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
         /// a given <see cref="Transaction{T}"/> is evaluated.
@@ -168,6 +174,7 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
+                NullTotalSupplyGetter,
                 tx.Signer);
             ImmutableList<IAction> actions = tx.SystemAction is { } sa
                 ? ImmutableList.Create(sa)
@@ -489,6 +496,7 @@ namespace Libplanet.Action
                     block.ProtocolVersion,
                     delta.GetStates,
                     delta.GetBalance,
+                    delta.GetTotalSupplyImpl,
                     tx.Signer);
 
                 DateTimeOffset startTime = DateTimeOffset.Now;
@@ -745,7 +753,7 @@ namespace Libplanet.Action
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
+            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
             Address miner = block.Miner;
 
@@ -753,15 +761,18 @@ namespace Libplanet.Action
                 block.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
+                totalSupplyGetter,
                 miner);
         }
 
-        private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(
+        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter)
+            InitializeAccountGettersPair(
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
+            TotalSupplyGetter totalSupplyGetter;
 
             if (block.PreviousHash is { } previousHash)
             {
@@ -774,14 +785,19 @@ namespace Libplanet.Action
                     currency,
                     previousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
+                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
+                    currency,
+                    previousHash,
+                    stateCompleterSet.TotalSupplyStateCompleter);
             }
             else
             {
                 accountStateGetter = NullAccountStateGetter;
                 accountBalanceGetter = NullAccountBalanceGetter;
+                totalSupplyGetter = NullTotalSupplyGetter;
             }
 
-            return (accountStateGetter, accountBalanceGetter);
+            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter);
         }
     }
 }

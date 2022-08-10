@@ -44,8 +44,23 @@ To be released.
         `Currency` but have to define them with `Currency.LegacyUntracked()` as
         the new Currency kinds are internally backwards-incompatible with the
         legacy `Currency`.
+ -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
+    [[#915], [#2200]]
+ -  Added `IAccountStateView.GetTotalSupply(Currency)` method.
+    [[#915], [#2200]]
+ -  Added `IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash,
+    TotalSupplyStateCompleter<T>` method which gets the total supply of
+    a `Currency` in `FungibleAssetValue` from the state, and if not found,
+    returns null.  [[#915], [#2200]]
 
 ### Backward-incompatible network protocol changes
+
+ -  The `Block<T>.CurrentProtocolVersion` is bumped from 3 to 4.  [[#2200]]
+     -  `IAccountStateDelta.GetTotalSupply` returns the current total supply
+        of a `Currency` if the total supply of`Currency` is trackable from
+        version 4, and throws `NotSupportedException` below version 4.
+     -  `IAccountStateDelta.MintAsset` and `IAccountStateDelta.BurnAsset`
+        tracks the total supply if trackable from version 4.
 
 ### Backward-incompatible storage format changes
 
@@ -53,6 +68,12 @@ To be released.
 
  -  Added `Currency.MaximumSupply` property.  [[#915], [#2200]]
  -  Added `Currency.TotalSupplyTrackable` field.  [[#915], [#2200]]
+ -  Added `SupplyOverflowException` class.  [[#915], [#2200]]
+ -  Added `TotalSupplyGetter` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleter<T>` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
+ -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
+    [[#915], [#2200]]
 
 ### Behavioral changes
 
@@ -72,6 +93,14 @@ To be released.
      -  `Currency(SerializationInfo, StreamingContext)` constructor now looks
         for the maximum supply and total supply trackability and restores it if
         found.
+ -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` and
+    `IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)` methods now
+    track the total supply if the total supply of the `Currency` is trackable.
+    [[#915], [#2200]]
+     -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` method now
+        throws `SupplyOverflowException` if the sum of current total supply and
+        the value to be minted exceeds the maximum supply of the `Currency`
+        instance.
 
 ### Bug fixes
 
