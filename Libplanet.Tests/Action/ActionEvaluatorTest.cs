@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Action
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -582,7 +582,7 @@ namespace Libplanet.Tests.Action
                 PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -727,7 +727,7 @@ namespace Libplanet.Tests.Action
                 PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,

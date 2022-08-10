@@ -219,7 +219,7 @@ namespace Libplanet.Tests.Blocks
             var codec = new Codec();
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
-            PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine(sha256);
+            PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine();
             Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
             AssertBytesEqual(
                 sha256.Digest(codec.Encode(Genesis.MakeCandidateData(preEvalBlock.Nonce))),
@@ -240,7 +240,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     try
                     {
-                        Block1.Mine(sha256, source.Token);
+                        Block1.Mine(source.Token);
                     }
                     catch (OperationCanceledException ce)
                     {

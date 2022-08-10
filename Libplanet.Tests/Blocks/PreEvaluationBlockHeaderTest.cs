@@ -348,7 +348,7 @@ namespace Libplanet.Tests.Blocks
                 block1.MakeCandidateData(stateRootHash)
             );
 
-            var blockPv0 = _contents.BlockPv0.Mine(_sha256);
+            var blockPv0 = _contents.BlockPv0.Mine();
             Bencodex.Types.Dictionary expectedBlockPv0 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
@@ -363,7 +363,7 @@ namespace Libplanet.Tests.Blocks
                 blockPv0.MakeCandidateData(stateRootHash)
             );
 
-            var blockPv1 = _contents.BlockPv1.Mine(_sha256);
+            var blockPv1 = _contents.BlockPv1.Mine();
             Bencodex.Types.Dictionary expectedBlockPv1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
@@ -425,7 +425,7 @@ namespace Libplanet.Tests.Blocks
 
             var blockPv1 = new PreEvaluationBlockHeader(
                 _contents.BlockPv1,
-                _contents.BlockPv1.Mine(_sha256).Nonce
+                _contents.BlockPv1.Mine().Nonce
             );
             InvalidOperationException e2 = Assert.Throws<InvalidOperationException>(
                 () => blockPv1.MakeSignature(key, arbitraryHash)
@@ -461,7 +461,7 @@ namespace Libplanet.Tests.Blocks
 
             var blockPv1 = new PreEvaluationBlockHeader(
                 _contents.BlockPv1,
-                _contents.BlockPv1.Mine(_sha256).Nonce
+                _contents.BlockPv1.Mine().Nonce
             );
             Assert.True(blockPv1.VerifySignature(null, arbitraryHash));
             Assert.False(blockPv1.VerifySignature(validSig, arbitraryHash));

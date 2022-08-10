@@ -68,7 +68,7 @@ namespace Libplanet.Node
                 {
                     PublicKey = privateKey.PublicKey,
                 })
-                .Mine(blockPolicy.GetHashAlgorithm(0L))
+                .Mine()
                 .Evaluate(
                     privateKey: privateKey,
                     blockAction: blockPolicy.BlockAction,

@@ -387,7 +387,7 @@ namespace Libplanet.Blockchain
                 Transactions = transactions,
             };
 
-            PreEvaluationBlock<T> preEval = content.Mine(hashAlgorithm);
+            PreEvaluationBlock<T> preEval = content.Mine();
             return preEval.Evaluate(
                 privateKey,
                 blockAction,

@@ -178,7 +178,7 @@ namespace Libplanet.Blockchain
             try
             {
                 preEval = await Task.Run(
-                    () => blockContent.Mine(hashAlgorithm, cancellationTokenSource.Token),
+                    () => blockContent.Mine(cancellationTokenSource.Token),
                     cancellationTokenSource.Token
                 );
             }

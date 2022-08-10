@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_policy.GetHashAlgorithm(1)).Evaluate(_fx.Miner, _blockChain);
+            }.Mine().Evaluate(_fx.Miner, _blockChain);
         }
 
         public void Dispose()

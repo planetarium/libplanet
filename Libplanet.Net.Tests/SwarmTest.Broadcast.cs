@@ -127,7 +127,7 @@ namespace Libplanet.Net.Tests
                 PublicKey = receiverKey.PublicKey,
                 Timestamp = DateTimeOffset.MinValue,
             }
-                .Mine(policy.GetHashAlgorithm(0))
+                .Mine()
                 .Evaluate(
                     privateKey: receiverKey,
                     blockAction: policy.BlockAction,

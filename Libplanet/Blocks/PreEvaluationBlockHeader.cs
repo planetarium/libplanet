@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Threading;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -133,8 +132,8 @@ namespace Libplanet.Blocks
         /// hash is invalid.</exception>
         /// <remarks>This does not verify if a <paramref name="proof"/>'s hash is derived from
         /// the block <paramref name="metadata"/> and the proof nonce.  Therefore, this unsafe
-        /// constructor shouldn't be used except for <see
-        /// cref="BlockContent{T}.Mine(HashAlgorithmType, CancellationToken)"/> method.</remarks>
+        /// constructor shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.
+        /// </remarks>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
             in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof

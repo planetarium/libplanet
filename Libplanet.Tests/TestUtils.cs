@@ -387,10 +387,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ProtocolVersion = protocolVersion,
             };
 
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
             var preEval = nonce is byte[] nonceBytes
                 ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
-                : content.Mine(hashAlgorithm);
+                : content.Mine();
 
             preEval.ValidateTimestamp();
             return preEval;
