@@ -170,7 +170,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 
@@ -205,7 +205,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 

@@ -22,8 +22,6 @@ namespace Libplanet.Store
 
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
-        // FIXME: Rather than having a BlockHeader with a thunk HashAlgorithmType, let it have
-        //        separated fields like BlockMetadata, Nonce, PreEvaluationHash, StateRootHash...
         private readonly BlockMetadata _metadata;
         private readonly Nonce _nonce;
         private readonly ImmutableArray<byte>? _preEvaluationHash;
@@ -169,12 +167,9 @@ namespace Libplanet.Store
         /// <summary>
         /// Gets the block header.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <returns>The block header.</returns>
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        public BlockHeader GetHeader()
         {
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(Index);
             var preEvalHeader = _preEvaluationHash is { } preEvalHash
                 ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
                 : new PreEvaluationBlockHeader(_metadata, _nonce);

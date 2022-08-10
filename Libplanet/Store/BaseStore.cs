@@ -73,7 +73,7 @@ namespace Libplanet.Store
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
+                BlockHeader header = blockDigest.GetHeader();
                 (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
                     .Select(txid => (txid, GetTransaction<T>(txid)))

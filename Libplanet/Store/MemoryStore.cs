@@ -159,7 +159,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            BlockHeader header = digest.GetHeader(hashAlgorithmGetter);
+            BlockHeader header = digest.GetHeader();
             ImmutableArray<TxId> txids = digest.TxIds
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
