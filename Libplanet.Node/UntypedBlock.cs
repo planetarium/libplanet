@@ -87,9 +87,6 @@ namespace Libplanet.Node
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _header.HashAlgorithm;
-
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _header.Index;
 
