@@ -227,7 +227,7 @@ namespace Libplanet.Blocks
             : this(
                 metadata,
                 hashAlgorithm,
-                (nonce, metadata.DerivePreEvaluationHash(hashAlgorithm, nonce))
+                (nonce, metadata.DerivePreEvaluationHash(nonce))
             )
         {
         }
@@ -433,7 +433,7 @@ namespace Libplanet.Blocks
             }
 
             ImmutableArray<byte> expectedPreEvaluationHash =
-                metadata.DerivePreEvaluationHash(hashAlgorithm, nonce);
+                metadata.DerivePreEvaluationHash(nonce);
             if (!ByteUtil.TimingSafelyCompare(preEvaluationHash, expectedPreEvaluationHash))
             {
                 string message =
