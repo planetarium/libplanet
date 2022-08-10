@@ -242,10 +242,7 @@ namespace Libplanet.Blocks
                 ? marshaledBlockHeader.GetValue<Binary>(SignatureKey).ByteArray
                 : (ImmutableArray<byte>?)null;
 
-        public static BlockHeader UnmarshalBlockHeader(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            Dictionary marshaled
-        )
+        public static BlockHeader UnmarshalBlockHeader(Dictionary marshaled)
         {
             PreEvaluationBlockHeader preEvalHeader = UnmarshalPreEvaluationBlockHeader(marshaled);
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
@@ -271,15 +268,11 @@ namespace Libplanet.Blocks
                 : ImmutableArray<Transaction<T>>.Empty;
 
         public static Block<T> UnmarshalBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
         )
             where T : IAction, new()
         {
-            BlockHeader header = UnmarshalBlockHeader(
-                hashAlgorithmGetter,
-                marshaled.GetValue<Dictionary>(HeaderKey)
-            );
+            BlockHeader header = UnmarshalBlockHeader(marshaled.GetValue<Dictionary>(HeaderKey));
             IReadOnlyList<Transaction<T>> txs = UnmarshalBlockTransactions<T>(marshaled);
             return new Block<T>(header, txs);
         }

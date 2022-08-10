@@ -860,7 +860,6 @@ namespace Libplanet.Net
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
-                            BlockChain.Policy.GetHashAlgorithm,
                             (Bencodex.Types.Dictionary)Codec.Decode(payload)
                         );
 

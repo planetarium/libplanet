@@ -113,7 +113,6 @@ namespace Libplanet.Node
                 Codec codec = new Codec();
                 IValue serializedBlock = codec.Decode(stream);
                 return BlockMarshaler.UnmarshalBlock<T>(
-                    blockPolicy.GetHashAlgorithm,
                     (Bencodex.Types.Dictionary)serializedBlock);
             }
         }

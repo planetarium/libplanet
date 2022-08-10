@@ -38,7 +38,7 @@ namespace Libplanet.Net.Messages
 
         public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
         {
-            return BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
+            return BlockMarshaler.UnmarshalBlockHeader(HeaderDictionary);
         }
     }
 }

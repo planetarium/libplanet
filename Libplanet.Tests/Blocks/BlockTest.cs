@@ -45,7 +45,6 @@ namespace Libplanet.Tests.Blocks
         {
             Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
             var sameBlock2 = BlockMarshaler.UnmarshalBlock<PolymorphicAction<BaseAction>>(
-                _ => _fx.Genesis.HashAlgorithm,
                 _fx.Genesis.MarshalBlock()
             );
             Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;

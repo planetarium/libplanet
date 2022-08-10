@@ -77,7 +77,6 @@ namespace Libplanet.Node
         )
             : this(
                 BlockMarshaler.UnmarshalBlockHeader(
-                    hashAlgorithmGetter,
                     dictionary.GetValue<Dictionary>(BlockMarshaler.HeaderKey)),
                 dictionary.GetValue<List>(BlockMarshaler.TransactionsKey)
                     .Select(b => new UntypedTransaction((Dictionary)Codec.Decode((Binary)b)))
@@ -143,10 +142,10 @@ namespace Libplanet.Node
         /// <see cref="BlockMarshaler.MarshalBlock{T}(Block{T})"/> method's return value.
         /// This can be decoded back to <see cref="UntypedBlock"/> using
         /// <see cref="UntypedBlock(HashAlgorithmGetter, Dictionary)"/> constructor or
-        /// <see cref="BlockMarshaler.UnmarshalBlock{T}(HashAlgorithmGetter, Dictionary)"/>
+        /// <see cref="BlockMarshaler.UnmarshalBlock{T}"/>
         /// method.</returns>
         /// <seealso cref="UntypedBlock(HashAlgorithmGetter, Dictionary)"/>
-        /// <seealso cref="BlockMarshaler.UnmarshalBlock{T}(HashAlgorithmGetter, Dictionary)"/>
+        /// <seealso cref="BlockMarshaler.UnmarshalBlock{T}"/>
         public Bencodex.Types.Dictionary ToBencodex()
         {
             Bencodex.Types.Dictionary headerDict = _header.MarshalBlockHeader();
