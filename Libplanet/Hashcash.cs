@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading;
 
 namespace Libplanet
@@ -13,6 +14,8 @@ namespace Libplanet
     /// </summary>
     public static class Hashcash
     {
+        private static HashAlgorithmType _algo = HashAlgorithmType.Of<SHA256>();
+
         /// <summary>
         /// A delegate to determine a consistent <see cref="byte"/>s
         /// representation derived from a given <paramref name="nonce"/>.
@@ -23,15 +26,13 @@ namespace Libplanet
         /// should not vary for different <paramref name="nonce"/>s.</para>
         /// </summary>
         /// <param name="nonce">An arbitrary nonce for an attempt, provided by
-        /// <see cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"/>
-        /// method.
+        /// <see cref="Hashcash.Answer"/> method.
         /// </param>
         /// <returns>Chunked <see cref="byte"/>s determined from the given <paramref name="nonce"/>.
         /// It should return consistently equivalent bytes for equivalent <paramref name="nonce"/>
         /// values.  The way how bytes are split into chunks can be flexible; regardless of the way,
         /// they are concatenated into a single byte array.</returns>
-        /// <seealso cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"
-        /// />
+        /// <seealso cref="Hashcash.Answer"/>
         /// <seealso cref="Nonce"/>
         public delegate IEnumerable<byte[]> Stamp(Nonce nonce);
 
@@ -45,7 +46,6 @@ namespace Libplanet
         /// <param name="stamp">A callback to get a &#x0201c;stamp&#x0201d;
         /// which is a <see cref="byte"/> array determined from a given
         /// <see cref="Nonce"/> value.</param>
-        /// <param name="hashAlgorithmType">The hash algorithm to use.</param>
         /// <param name="difficulty">A number to calculate the target number
         /// for which the returned answer should be less than.</param>
         /// <param name="seed">The seed number for random generator.</param>
@@ -61,7 +61,6 @@ namespace Libplanet
         /// <seealso cref="Stamp"/>
         public static (Nonce Nonce, ImmutableArray<byte> Digest) Answer(
             Stamp stamp,
-            HashAlgorithmType hashAlgorithmType,
             long difficulty,
             int seed,
             CancellationToken cancellationToken = default
@@ -75,7 +74,7 @@ namespace Libplanet
                 var nonce = new Nonce(nonceBytes);
 
                 IEnumerable<byte[]> chunks = stamp(nonce);
-                byte[] digest = hashAlgorithmType.Digest(chunks);
+                byte[] digest = _algo.Digest(chunks);
                 if (ByteUtil.Satisfies(digest, difficulty))
                 {
                     return (nonce, ImmutableArray.Create(digest));

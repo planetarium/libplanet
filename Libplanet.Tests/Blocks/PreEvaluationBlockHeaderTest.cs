@@ -44,7 +44,6 @@ namespace Libplanet.Tests.Blocks
                 (Nonce Nonce, ImmutableArray<byte> Digest) regen =
                     Hashcash.Answer(
                         n => new[] { _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(n)) },
-                        _sha256,
                         _contents.BlockMetadata1.Difficulty,
                         0
                     );

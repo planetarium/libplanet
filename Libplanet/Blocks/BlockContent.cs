@@ -230,7 +230,7 @@ namespace Libplanet.Blocks
             new PreEvaluationBlock<T>(
                 this,
                 hashAlgorithm,
-                MineNonce(hashAlgorithm, cancellationToken)
+                MineNonce(cancellationToken)
             );
 
         /// <summary>

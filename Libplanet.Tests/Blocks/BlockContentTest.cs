@@ -225,14 +225,6 @@ namespace Libplanet.Tests.Blocks
                 sha256.Digest(codec.Encode(Genesis.MakeCandidateData(preEvalBlock.Nonce))),
                 preEvalBlock.PreEvaluationHash.ToArray()
             );
-
-            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-            preEvalBlock = Block1.Mine(sha512);
-            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Block1.Difficulty));
-            AssertBytesEqual(
-                sha512.Digest(codec.Encode(Block1.MakeCandidateData(preEvalBlock.Nonce))),
-                preEvalBlock.PreEvaluationHash.ToArray()
-            );
         }
 
         [Fact]
@@ -240,7 +232,7 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
+                HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
                 Block1.Difficulty = long.MaxValue;
 
                 Exception exception = null;
@@ -248,7 +240,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     try
                     {
-                        Block1.Mine(sha512, source.Token);
+                        Block1.Mine(sha256, source.Token);
                     }
                     catch (OperationCanceledException ce)
                     {

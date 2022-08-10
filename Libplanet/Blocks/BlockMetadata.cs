@@ -307,8 +307,6 @@ namespace Libplanet.Blocks
         /// Mines the PoW (proof-of-work) nonce satisfying the block
         /// <see cref="Difficulty"/>.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
-        /// hash.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
         /// that this operation should be cancelled.</param>
         /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
@@ -316,11 +314,9 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
         ) =>
             MineNonce(
-                hashAlgorithm,
                 Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
                 cancellationToken
             );
@@ -329,8 +325,6 @@ namespace Libplanet.Blocks
         /// Mines the PoW (proof-of-work) nonce satisfying the block
         /// <see cref="Difficulty"/>.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
-        /// hash.</param>
         /// <param name="workers">The number of workers to run in parallel.
         /// Must be greater than zero.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
@@ -340,7 +334,6 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            HashAlgorithmType hashAlgorithm,
             int workers,
             CancellationToken cancellationToken = default
         )
@@ -355,7 +348,7 @@ namespace Libplanet.Blocks
             if (workers < 2)
             {
                 int seed = random.Next();
-                return Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, cancellationToken);
+                return Hashcash.Answer(stamp, Difficulty, seed, cancellationToken);
             }
 
             using var cts = new CancellationTokenSource();
@@ -364,7 +357,7 @@ namespace Libplanet.Blocks
             int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
             Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
                 Task.Run(
-                    () => Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, lts.Token),
+                    () => Hashcash.Answer(stamp, Difficulty, seed, lts.Token),
                     lts.Token
                 )
             ).ToArray();

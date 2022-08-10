@@ -256,19 +256,9 @@ namespace Libplanet.Tests.Blocks
                 ParseHex(hex).ToImmutableArray();
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(sha256, default);
             AssertBytesEqual(
                 FromHex("98866bfa9622d47dda427a7d3eb2a44397e0eacedd01078acb5cc6de36bb6a90"),
-                hash
-            );
-
-            hash = GenesisMetadata.DerivePreEvaluationHash(sha512, default);
-            AssertBytesEqual(
-                FromHex(
-                    "f68f16b3c41b46865930b61c17db21071f15dcd0c8411d846f2dff18ab66d189" +
-                    "0cf2a12349795ddb5032fbe31607ec2c0d1c67778ef5cafb5275055af6048fc5"
-                ),
                 hash
             );
 
@@ -278,18 +268,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBytesEqual(
                 FromHex("9691d5845a0d0ef5bcc99b2bb22108abe0d0168ce240ade7c40452967feb33e6"),
-                hash
-            );
-
-            hash = BlockMetadata1.DerivePreEvaluationHash(
-                sha512,
-                new Nonce(FromHex("e3fd5a6308a1979845cc"))
-            );
-            AssertBytesEqual(
-                FromHex(
-                    "e693300ac4c55f4e5ad8fd54817d1763bfa8fe50342060f855ef84d04c4e7f93" +
-                    "c798b6b6c5bb517a1ad0b3a388e1de41d031389367ab295ebdee5ba4916f4232"
-                ),
                 hash
             );
         }
@@ -304,21 +282,11 @@ namespace Libplanet.Tests.Blocks
 
             HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
             (Nonce nonce, ImmutableArray<byte> preEvalHash) = workers is int w
-                ? GenesisMetadata.MineNonce(sha256, workers: w)
-                : GenesisMetadata.MineNonce(sha256);
+                ? GenesisMetadata.MineNonce(workers: w)
+                : GenesisMetadata.MineNonce();
             Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
             ImmutableArray<byte> actual = ImmutableArray.Create(
                 sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
-            );
-            AssertBytesEqual(actual, preEvalHash);
-
-            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-            (nonce, preEvalHash) = workers is int n
-                ? BlockMetadata1.MineNonce(sha512, workers: n)
-                : BlockMetadata1.MineNonce(sha512);
-            Assert.True(Satisfies(preEvalHash, BlockMetadata1.Difficulty));
-            actual = ImmutableArray.Create(
-                sha512.Digest(codec.Encode(BlockMetadata1.MakeCandidateData(nonce)))
             );
             AssertBytesEqual(actual, preEvalHash);
         }
@@ -331,7 +299,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
                 BlockMetadata1.Difficulty = long.MaxValue;
 
                 Exception exception = null;
@@ -341,11 +308,11 @@ namespace Libplanet.Tests.Blocks
                     {
                         if (workers is int w)
                         {
-                            BlockMetadata1.MineNonce(sha512, w, source.Token);
+                            BlockMetadata1.MineNonce(w, source.Token);
                         }
                         else
                         {
-                            BlockMetadata1.MineNonce(sha512, source.Token);
+                            BlockMetadata1.MineNonce(source.Token);
                         }
                     }
                     catch (OperationCanceledException ce)
