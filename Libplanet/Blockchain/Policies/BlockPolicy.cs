@@ -129,20 +129,11 @@ namespace Libplanet.Blockchain.Policies
             {
                 _validateNextBlock = (blockchain, block) =>
                 {
-                    HashAlgorithmType hashAlgorithm = GetHashAlgorithm(block.Index);
                     long maxBlockBytes = GetMaxBlockBytes(block.Index);
                     int minTransactionsPerBlock = GetMinTransactionsPerBlock(block.Index);
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
-
-                    if (!block.HashAlgorithm.Equals(hashAlgorithm))
-                    {
-                        return new InvalidBlockHashAlgorithmTypeException(
-                            $"The hash algorithm type of block #{block.Index} {block.Hash} " +
-                            $"does not match {hashAlgorithm}: {block.HashAlgorithm}",
-                            hashAlgorithm);
-                    }
 
                     long blockBytes = block.MarshalBlock().EncodingLength;
                     if (blockBytes > maxBlockBytes)

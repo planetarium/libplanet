@@ -85,7 +85,6 @@ namespace Libplanet.Node.Tests
             Bencodex.Types.Dictionary dict = _block.MarshalBlock();
             var untyped = new UntypedBlock(_ => Sha256, dict);
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
-            Assert.Equal(_block.HashAlgorithm, untyped.HashAlgorithm);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);
             Assert.Equal(_block.Nonce, untyped.Nonce);

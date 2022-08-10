@@ -174,8 +174,7 @@ namespace Libplanet.Blocks
                 return false;
             }
 
-            return ReferenceEquals(this, other) ||
-                (Hash.Equals(other.Hash) && HashAlgorithm.Equals(other.HashAlgorithm));
+            return ReferenceEquals(this, other) || Hash.Equals(other.Hash);
         }
 
         /// <inheritdoc cref="object.Equals(object?)"/>
