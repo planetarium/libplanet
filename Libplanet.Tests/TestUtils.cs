@@ -336,7 +336,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             };
             return new PreEvaluationBlock<T>(
                 content,
-                hashAlgorithmGetter(content.Index),
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
         }
@@ -390,7 +389,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
             var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
+                ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
                 : content.Mine(hashAlgorithm);
 
             preEval.ValidateTimestamp();
@@ -460,7 +459,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 };
                 var preEval = new PreEvaluationBlock<T>(
                     content,
-                    policy.GetHashAlgorithm(0),
                     new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
                 );
                 genesisBlock = protocolVersion < 2

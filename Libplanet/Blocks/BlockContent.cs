@@ -227,11 +227,7 @@ namespace Libplanet.Blocks
             HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
         ) =>
-            new PreEvaluationBlock<T>(
-                this,
-                hashAlgorithm,
-                MineNonce(cancellationToken)
-            );
+            new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
 
         /// <summary>
         /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.

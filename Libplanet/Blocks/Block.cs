@@ -65,7 +65,6 @@ namespace Libplanet.Blocks
             : this(
                 new PreEvaluationBlock<T>(
                     new BlockContent<T>(header, transactions),
-                    header.HashAlgorithm,
                     header.Nonce,
                     header.PreEvaluationHash
                 ),

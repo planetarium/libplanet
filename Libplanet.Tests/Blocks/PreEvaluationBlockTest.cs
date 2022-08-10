@@ -27,49 +27,49 @@ namespace Libplanet.Tests.Blocks
         {
             BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock =
-                new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof);
+                new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             content = _contents.Block1.Copy();
-            preEvalBlock = new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof);
+            preEvalBlock = new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             Assert.Throws<InvalidBlockNonceException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _invalidBlock1Proof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _invalidBlock1Proof)
             );
 
             content = _contents.Block1.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof)
             );
 
             content = _contents.Genesis.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
             content = _contents.Block1.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
             content = _contents.Genesis.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
             content = _contents.Genesis.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
         }
 
@@ -79,7 +79,6 @@ namespace Libplanet.Tests.Blocks
             BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                hashAlgorithm: _sha256,
                 nonce: _validGenesisProof.Nonce,
                 preEvaluationHash: _validGenesisProof.PreEvaluationHash
             );
@@ -90,7 +89,6 @@ namespace Libplanet.Tests.Blocks
             content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                hashAlgorithm: _sha256,
                 nonce: _validBlock1Proof.Nonce,
                 preEvaluationHash: _validBlock1Proof.PreEvaluationHash
             );
@@ -106,7 +104,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     content,
-                    hashAlgorithm: _sha256,
                     nonce: _invalidBlock1Proof.Nonce,
                     preEvaluationHash: _invalidBlock1Proof.PreEvaluationHash
                 )
@@ -114,7 +111,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     content,
-                    hashAlgorithm: _sha256,
                     nonce: _validBlock1Proof.Nonce,
                     preEvaluationHash: _invalidBlock1Proof.PreEvaluationHash
                 )
@@ -127,7 +123,6 @@ namespace Libplanet.Tests.Blocks
             BlockContent<Arithmetic> content = _contents.Genesis.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                hashAlgorithm: _sha256,
                 nonce: _validGenesisProof.Nonce
             );
             AssertBlockContentsEqual(content, preEvalBlock);
@@ -137,7 +132,6 @@ namespace Libplanet.Tests.Blocks
             content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                hashAlgorithm: _sha256,
                 nonce: _validBlock1Proof.Nonce
             );
             AssertBlockContentsEqual(content, preEvalBlock);
@@ -151,7 +145,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     _contents.Block1,
-                    hashAlgorithm: _sha256,
                     nonce: _invalidBlock1Proof.Nonce
                 )
             );
@@ -159,31 +152,31 @@ namespace Libplanet.Tests.Blocks
             content = _contents.Block1.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
             content = _contents.Genesis.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof.Nonce)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof.Nonce)
             );
 
             content = _contents.Block1.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof.Nonce)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
             content = _contents.Genesis.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
             content = _contents.Genesis.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof)
+                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
         }
 
@@ -199,7 +192,6 @@ namespace Libplanet.Tests.Blocks
             contentPv0.Timestamp += TimeSpan.FromSeconds(1);
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
                 contentPv0,
-                hashAlgorithm: _sha256,
                 nonce: _validBlock1Proof.Nonce,
                 preEvaluationHash: _validBlock1Proof.PreEvaluationHash
             );
@@ -217,7 +209,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     contentPv1,
-                    hashAlgorithm: _sha256,
                     nonce: _validBlock1Proof.Nonce,
                     preEvaluationHash: _validBlock1Proof.PreEvaluationHash
                 )

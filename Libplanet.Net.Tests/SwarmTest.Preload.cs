@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -866,7 +865,6 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesisContent = new BlockContent<DumbAction>
             {
                 PublicKey = minerKey.PublicKey,
@@ -874,12 +872,10 @@ namespace Libplanet.Net.Tests
             };
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                hashAlgorithm,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
             var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                hashAlgorithm,
                 new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
             );
 
