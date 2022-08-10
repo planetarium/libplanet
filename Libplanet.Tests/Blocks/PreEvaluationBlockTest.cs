@@ -30,14 +30,12 @@ namespace Libplanet.Tests.Blocks
                 new PreEvaluationBlock<Arithmetic>(content, _sha256, _validGenesisProof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             content = _contents.Block1.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(content, _sha256, _validBlock1Proof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             Assert.Throws<InvalidBlockNonceException>(
@@ -87,7 +85,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             content = _contents.Block1.Copy();
@@ -99,7 +96,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
@@ -136,7 +132,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             content = _contents.Block1.Copy();
@@ -147,7 +142,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
-            Assert.Same(_sha256, preEvalBlock.HashAlgorithm);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
             // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
@@ -211,7 +205,6 @@ namespace Libplanet.Tests.Blocks
             );
             AssertBlockContentsEqual(contentPv0, preEvalBlockPv0);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlockPv0.Nonce);
-            Assert.Same(_sha256, preEvalBlockPv0.HashAlgorithm);
             AssertBytesEqual(
                 _validBlock1Proof.PreEvaluationHash,
                 preEvalBlockPv0.PreEvaluationHash

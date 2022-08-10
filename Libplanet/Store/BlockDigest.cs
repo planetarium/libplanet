@@ -56,10 +56,9 @@ namespace Libplanet.Store
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
-            var tuple = BlockMarshaler.UnmarshalPreEvaluationBlockHeader(headerDict);
-            _metadata = tuple.Metadata;
-            _nonce = tuple.Nonce;
-            _preEvaluationHash = tuple.PreEvaluationHash;
+            _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
+            _nonce = BlockMarshaler.UnmarshalNonce(headerDict);
+            _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
             Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
@@ -177,17 +176,8 @@ namespace Libplanet.Store
         {
             HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(Index);
             var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce,
-                    preEvalHash
-                )
-                : new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce
-                );
+                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
+                : new PreEvaluationBlockHeader(_metadata, _nonce);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 

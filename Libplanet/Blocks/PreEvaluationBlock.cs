@@ -73,11 +73,7 @@ namespace Libplanet.Blocks
             HashAlgorithmType hashAlgorithm,
             Nonce nonce
         )
-            : base(
-                new BlockContent<T>(content),
-                hashAlgorithm,
-                nonce
-            )
+            : base(new BlockContent<T>(content), nonce)
         {
         }
 
@@ -128,7 +124,7 @@ namespace Libplanet.Blocks
             Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
-            : base(new BlockContent<T>(content), hashAlgorithm, nonce, preEvaluationHash)
+            : base(new BlockContent<T>(content), nonce, preEvaluationHash)
         {
         }
 
@@ -155,7 +151,7 @@ namespace Libplanet.Blocks
             HashAlgorithmType hashAlgorithm,
             in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
         )
-            : base(content, hashAlgorithm, proof)
+            : base(content, proof)
         {
         }
 

@@ -45,7 +45,7 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Difficulty"/>.
         /// </exception>
         public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
-            : this(header, header.HashAlgorithm, header.Nonce, header.PreEvaluationHash)
+            : this(header, header.Nonce, header.PreEvaluationHash)
         {
         }
 
@@ -55,8 +55,6 @@ namespace Libplanet.Blocks
         /// satisfies the required <see cref="Difficulty"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationHash"/>.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
         /// <see cref="Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -78,10 +76,9 @@ namespace Libplanet.Blocks
         /// arguments.</remarks>
         public PreEvaluationBlockHeader(
             IBlockMetadata metadata,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce
         )
-            : this(new BlockMetadata(metadata), hashAlgorithm, nonce)
+            : this(new BlockMetadata(metadata), nonce)
         {
         }
 
@@ -92,12 +89,10 @@ namespace Libplanet.Blocks
         /// a <paramref name="preEvaluationHash"/> digest derived from them.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationHash"/>.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
         /// <see cref="Difficulty"/>.</param>
-        /// <param name="preEvaluationHash">The hash digest of the <paramref name="hashAlgorithm"/>
-        /// derived from the given arguments.</param>
+        /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
+        /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -117,11 +112,10 @@ namespace Libplanet.Blocks
         /// </exception>
         public PreEvaluationBlockHeader(
             IBlockMetadata metadata,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
-            : this(new BlockMetadata(metadata), hashAlgorithm, nonce, preEvaluationHash)
+            : this(new BlockMetadata(metadata), nonce, preEvaluationHash)
         {
         }
 
@@ -131,8 +125,6 @@ namespace Libplanet.Blocks
         /// considered as to be valid.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationHash"/>.</param>
         /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
         /// as to satisfy the required <see cref="Difficulty"/>, and the hash digest which is
         /// probably considered as to be derived from the block <paramref name="metadata"/> and the
@@ -145,7 +137,6 @@ namespace Libplanet.Blocks
         /// cref="BlockContent{T}.Mine(HashAlgorithmType, CancellationToken)"/> method.</remarks>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            HashAlgorithmType hashAlgorithm,
             in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
         )
         {
@@ -215,18 +206,15 @@ namespace Libplanet.Blocks
 
             Metadata = metadata;
             Nonce = proof.Nonce;
-            HashAlgorithm = hashAlgorithm;
             PreEvaluationHash = proof.PreEvaluationHash;
         }
 
         protected PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce
         )
             : this(
                 metadata,
-                hashAlgorithm,
                 (nonce, metadata.DerivePreEvaluationHash(nonce))
             )
         {
@@ -234,14 +222,12 @@ namespace Libplanet.Blocks
 
         protected PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
             : this(
                 metadata,
-                hashAlgorithm,
-                CheckPreEvaluationHash(hashAlgorithm, metadata, nonce, preEvaluationHash)
+                CheckPreEvaluationHash(metadata, nonce, preEvaluationHash)
             )
         {
         }
@@ -277,7 +263,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm { get; }
+        public HashAlgorithmType HashAlgorithm { get => HashAlgorithmType.Of<SHA256>(); }
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public ImmutableArray<byte> PreEvaluationHash { get; }
@@ -400,25 +386,20 @@ namespace Libplanet.Blocks
             BlockHash.DeriveFrom(Codec.Encode(MakeCandidateData(stateRootHash, signature)));
 
         /// <summary>
-        /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest of
-        /// the <paramref name="hashAlgorithm"/> derived from the given block
-        /// <paramref name="metadata"/> and <paramref name="nonce"/>.
+        /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest
+        /// derived from the given block <paramref name="metadata"/> and <paramref name="nonce"/>.
         /// If it's incorrect throws an <see cref="InvalidBlockPreEvaluationHashException"/>.
         /// Throws nothing and returns a pair of the <paramref name="nonce"/> and
         /// <paramref name="preEvaluationHash"/> instead.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <paramref name="preEvaluationHash"/>.</param>
         /// <param name="metadata">The block metadata.</param>
         /// <param name="nonce">The proof-of-work nonce.</param>
-        /// <param name="preEvaluationHash">The pre-evaluation hash digest of the <paramref
-        /// name="hashAlgorithm"/> to verify.</param>
+        /// <param name="preEvaluationHash">The pre-evaluation hash digest to verify.</param>
         /// <returns>A pair of the <paramref name="nonce"/> and <paramref name="preEvaluationHash"/>
         /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
         private static (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) CheckPreEvaluationHash(
-            HashAlgorithmType hashAlgorithm,
             BlockMetadata metadata,
             in Nonce nonce,
             in ImmutableArray<byte> preEvaluationHash
