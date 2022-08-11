@@ -126,7 +126,6 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> block =
                 await _blockChain.MineBlock(privateKeys[0], maxTransactions: 1);
             Assert.Single(block.Transactions);

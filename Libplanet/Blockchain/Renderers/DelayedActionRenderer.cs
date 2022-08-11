@@ -68,8 +68,6 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="canonicalChainComparer">The same canonical chain comparer to
         /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
         /// <param name="reorgResistantHeight">Configures the height of blocks to maintain the
@@ -80,10 +78,9 @@ namespace Libplanet.Blockchain.Renderers
             IActionRenderer<T> renderer,
             IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
-            HashAlgorithmGetter hashAlgorithmGetter,
             int confirmations,
             long reorgResistantHeight = 0)
-            : base(renderer, canonicalChainComparer, store, hashAlgorithmGetter, confirmations)
+            : base(renderer, canonicalChainComparer, store, confirmations)
         {
             ActionRenderer = renderer;
             _bufferedActionRenders = new ConcurrentDictionary<BlockHash, List<ActionEvaluation>>();

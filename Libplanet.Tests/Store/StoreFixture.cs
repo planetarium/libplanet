@@ -198,7 +198,5 @@ namespace Libplanet.Tests.Store
                 timestamp
             );
         }
-
-        public HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

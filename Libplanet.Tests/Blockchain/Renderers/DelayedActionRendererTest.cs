@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -40,7 +39,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     new AnonymousActionRenderer<DumbAction>(),
                     _canonicalChainComparer,
                     _store,
-                    _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                     confirmations: invalidConfirmations
                 )
             );
@@ -84,7 +82,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Null(renderer.Tip);
@@ -187,7 +184,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -427,7 +423,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 new AnonymousActionRenderer<DumbAction>(),
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Equal(
@@ -473,7 +468,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 2,
                 4
             );
@@ -547,7 +541,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -560,7 +553,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 validator,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 
@@ -668,7 +660,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -681,7 +672,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 validator,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 

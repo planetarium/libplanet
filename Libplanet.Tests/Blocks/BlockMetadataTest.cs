@@ -255,7 +255,6 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> FromHex(string hex) =>
                 ParseHex(hex).ToImmutableArray();
 
-            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
                 FromHex("98866bfa9622d47dda427a7d3eb2a44397e0eacedd01078acb5cc6de36bb6a90"),

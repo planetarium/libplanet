@@ -232,7 +232,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
                 Block1.Difficulty = long.MaxValue;
 
                 Exception exception = null;
