@@ -394,10 +394,7 @@ namespace Libplanet.Net.Tests
             );
         }
 
-        private IEnumerable<Block<T>> GenerateBlocks<T>(
-            int count,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
+        private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
             where T : IAction, new()
         {
             if (count >= 1)

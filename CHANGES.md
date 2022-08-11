@@ -21,6 +21,7 @@ To be released.
  -  `IBlockPolicy.GetHashAlgorithm(long)` method and its implementations
     removed.  [[#2206], [#2207]]
  -  `InvalidBlockHashAlgorithmTypeException` class removed.  [[#2206], [#2207]]
+ -  `HashAlgorithmGetter` delegate removed.  [[#2206], [#2207]]
 
 ### Backward-incompatible API changes
 
@@ -106,10 +107,10 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
  -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
  -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
     `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
-
  -  Added `Transaction<T>.SystemAction` property.  [[#2149], [#2151], [#2175]]
  -  Added `Transaction<T>.CustomActions` property.  [[#2149], [#2151], [#2175]]
  -  Added overloads to take `systemAction` besides the existing constructors and
