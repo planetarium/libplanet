@@ -485,9 +485,12 @@ namespace Libplanet.Action
             );
             foreach (Transaction<T> tx in orderedTxs)
             {
-                delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(delta.GetStates, delta.GetBalance, tx.Signer)
-                    : new AccountStateDeltaImplV0(delta.GetStates, delta.GetBalance, tx.Signer);
+                delta = AccountStateDeltaImpl.ChooseVersion(
+                    block.ProtocolVersion,
+                    delta.GetStates,
+                    delta.GetBalance,
+                    tx.Signer);
+
                 DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
@@ -746,9 +749,11 @@ namespace Libplanet.Action
                 InitializeAccountGettersPair(block, stateCompleterSet);
             Address miner = block.Miner;
 
-            return block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
-                : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
+            return AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                miner);
         }
 
         private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(

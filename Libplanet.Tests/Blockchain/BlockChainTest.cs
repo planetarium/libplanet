@@ -1735,15 +1735,11 @@ namespace Libplanet.Tests.Blockchain
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
                 (address, currency) => new FungibleAssetValue(currency);
-            IAccountStateDelta previousStates = b.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    b.Miner)
-                : new AccountStateDeltaImplV0(
-                    nullAccountStateGetter,
-                    nullAccountBalanceGetter,
-                    b.Miner);
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                b.ProtocolVersion,
+                nullAccountStateGetter,
+                nullAccountBalanceGetter,
+                b.Miner);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
@@ -1770,15 +1766,11 @@ namespace Libplanet.Tests.Blockchain
                         blockInterval: TimeSpan.FromSeconds(10),
                         miner: GenesisMiner.PublicKey
                     ).Evaluate(GenesisMiner, chain);
-                    previousStates = b.ProtocolVersion > 0
-                        ? new AccountStateDeltaImpl(
-                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
-                            (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner)
-                        : new AccountStateDeltaImplV0(
-                            addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
-                            (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner);
+                    previousStates = AccountStateDeltaImpl.ChooseVersion(
+                        b.ProtocolVersion,
+                        addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
+                        (address, currency) => balances.GetValueOrDefault((address, currency)),
+                        b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);

@@ -224,6 +224,36 @@ namespace Libplanet.Action
             );
         }
 
+        /// <summary>
+        /// Creates a null delta from the given <paramref name="accountStateGetter"/> and
+        /// <paramref name="accountBalanceGetter"/> with a subtype of
+        /// <see cref="AccountStateDeltaImpl"/> that corresponds to the
+        /// <paramref name="protocolVersion"/>.
+        /// </summary>
+        /// <param name="protocolVersion">The protocol version of which to create a delta.</param>
+        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
+        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
+        /// </param>
+        /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
+        /// to mint a currency.</param>
+        /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
+        /// corresponds to the <paramref name="protocolVersion"/>.</returns>
+        [Pure]
+        internal static AccountStateDeltaImpl ChooseVersion(
+            int protocolVersion,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
+            Address signer)
+        {
+            if (protocolVersion > 0)
+            {
+                return new AccountStateDeltaImpl(
+                    accountStateGetter, accountBalanceGetter, signer);
+            }
+
+            return new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);
+        }
+
         [Pure]
         protected virtual FungibleAssetValue GetBalance(
             Address address,
