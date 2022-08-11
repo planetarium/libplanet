@@ -71,11 +71,11 @@ namespace Libplanet.Store
         void IStore.SetCanonicalChainId(Guid chainId) =>
             _canonicalChainId = chainId;
 
-        Block<T> IStore.GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter) =>
+        Block<T> IStore.GetCanonicalGenesisBlock<T>() =>
             _canonicalChainId is { } canonicalChainId
             && _indices.TryGetValue(canonicalChainId, out ImmutableTrieList<BlockHash> indices)
             && indices.Count > 0
-                ? ((IStore)this).GetBlock<T>(hashAlgorithmGetter, indices[0])
+                ? ((IStore)this).GetBlock<T>(indices[0])
                 : null;
 
         long IStore.CountIndex(Guid chainId) =>
@@ -152,7 +152,7 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
 
-        Block<T> IStore.GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        Block<T> IStore.GetBlock<T>(BlockHash blockHash)
         {
             if (!_blocks.TryGetValue(blockHash, out BlockDigest digest))
             {

@@ -111,7 +111,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
-                    _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
+                    _blocks = new BlockSet<T>(Store);
                     foreach (Transaction<T> tx in txsToUnstage)
                     {
                         StagePolicy.Unstage(this, tx.Id);

@@ -311,7 +311,7 @@ namespace Libplanet.Blockchain.Renderers
                 for (
                     Block<T>? b = upper;
                     b is Block<T> && b.Index > lower.Index;
-                    b = b.PreviousHash is { } pv ? Store.GetBlock<T>(HashAlgorithmGetter, pv) : null
+                    b = b.PreviousHash is { } pv ? Store.GetBlock<T>(pv) : null
                 )
                 {
                     yield return b.Hash;

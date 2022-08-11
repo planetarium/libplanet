@@ -146,7 +146,7 @@ namespace Libplanet.Blockchain
                 throw new ArgumentNullException(nameof(stateStore));
             }
 
-            _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, store);
+            _blocks = new BlockSet<T>(store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;

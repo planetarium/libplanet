@@ -267,7 +267,7 @@ namespace Libplanet.Blockchain.Renderers
             BlockHash? prev = newTip.PreviousHash;
             while (
                 prev is { } prevHash
-                && Store.GetBlock<T>(HashAlgorithmGetter, prevHash) is Block<T> prevBlock
+                && Store.GetBlock<T>(prevHash) is Block<T> prevBlock
                 && prevBlock.Index >= maxDepth)
             {
                 uint c = Confirmed.GetOrAdd(prevHash, k => 0U);
@@ -304,7 +304,7 @@ namespace Libplanet.Blockchain.Renderers
 
                 if (c >= Confirmations)
                 {
-                    var confirmedBlock = Store.GetBlock<T>(HashAlgorithmGetter, hash);
+                    var confirmedBlock = Store.GetBlock<T>(hash);
 
                     if (!(Tip is Block<T> t))
                     {
@@ -353,12 +353,12 @@ namespace Libplanet.Blockchain.Renderers
         {
             while (a is Block<T> && a.Index > b.Index && a.PreviousHash is { } aPrev)
             {
-                a = Store.GetBlock<T>(HashAlgorithmGetter, aPrev);
+                a = Store.GetBlock<T>(aPrev);
             }
 
             while (b is Block<T> && b.Index > a.Index && b.PreviousHash is { } bPrev)
             {
-                b = Store.GetBlock<T>(HashAlgorithmGetter, bPrev);
+                b = Store.GetBlock<T>(bPrev);
             }
 
             if (a is null || b is null || a.Index != b.Index)
@@ -379,8 +379,8 @@ namespace Libplanet.Blockchain.Renderers
                 if (a.PreviousHash is { } aPrev &&
                     b.PreviousHash is { } bPrev)
                 {
-                    a = Store.GetBlock<T>(HashAlgorithmGetter, aPrev);
-                    b = Store.GetBlock<T>(HashAlgorithmGetter, bPrev);
+                    a = Store.GetBlock<T>(aPrev);
+                    b = Store.GetBlock<T>(bPrev);
                     continue;
                 }
 

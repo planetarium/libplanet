@@ -1879,11 +1879,8 @@ namespace Libplanet.Net.Tests
 
             public bool BlockGettable { get; set; } = true;
 
-            public override Block<T> GetBlock<T>(
-                HashAlgorithmGetter hashAlgorithmGetter,
-                BlockHash blockHash
-            ) =>
-                BlockGettable ? base.GetBlock<T>(hashAlgorithmGetter, blockHash) : null;
+            public override Block<T> GetBlock<T>(BlockHash blockHash) =>
+                BlockGettable ? base.GetBlock<T>(blockHash) : null;
         }
     }
 }
