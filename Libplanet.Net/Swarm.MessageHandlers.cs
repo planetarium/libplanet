@@ -137,7 +137,7 @@ namespace Libplanet.Net
             BlockHeader header;
             try
             {
-                header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
+                header = message.GetHeader();
             }
             catch (InvalidBlockException ibe)
             {

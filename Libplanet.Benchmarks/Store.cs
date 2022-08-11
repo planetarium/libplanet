@@ -14,7 +14,6 @@ namespace Libplanet.Benchmarks
 {
     public class Store
     {
-        private readonly HashAlgorithmType HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
         private readonly ImmutableArray<Block<DumbAction>> Blocks = default;
         private readonly int BlocksCount = default;
         private readonly ImmutableArray<Transaction<DumbAction>> Txs = default;

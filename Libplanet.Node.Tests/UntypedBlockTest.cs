@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -83,7 +82,7 @@ namespace Libplanet.Node.Tests
         public void Deserialize()
         {
             Bencodex.Types.Dictionary dict = _block.MarshalBlock();
-            var untyped = new UntypedBlock(_ => _sha256, dict);
+            var untyped = new UntypedBlock(dict);
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);

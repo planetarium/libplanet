@@ -437,8 +437,6 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
-                    HashAlgorithmType hashAlgorithm =
-                        workspace.Policy.GetHashAlgorithm(block.Index);
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||

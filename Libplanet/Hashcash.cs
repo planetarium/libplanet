@@ -14,8 +14,6 @@ namespace Libplanet
     /// </summary>
     public static class Hashcash
     {
-        private static HashAlgorithmType _algo = HashAlgorithmType.Of<SHA256>();
-
         /// <summary>
         /// A delegate to determine a consistent <see cref="byte"/>s
         /// representation derived from a given <paramref name="nonce"/>.

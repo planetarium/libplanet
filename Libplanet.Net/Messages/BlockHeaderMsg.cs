@@ -36,7 +36,7 @@ namespace Libplanet.Net.Messages
             Codec.Encode(HeaderDictionary),
         };
 
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        public BlockHeader GetHeader()
         {
             return BlockMarshaler.UnmarshalBlockHeader(HeaderDictionary);
         }
