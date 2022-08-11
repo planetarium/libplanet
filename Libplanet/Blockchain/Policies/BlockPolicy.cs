@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
@@ -25,7 +24,6 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
             _validateNextBlock;
 
-        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly Func<long, long> _getMaxBlockBytes;
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
@@ -64,8 +62,6 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
-        /// <param name="hashAlgorithmGetter">Configures <see cref="GetHashAlgorithm(long)"/>.
-        /// If omitted, SHA-256 is used for every block.</param>
         /// <param name="getMaxBlockBytes">The function determining the maximum size of
         /// a <see cref="Block{T}"/> in number of <c>byte</c>s given
         /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxBlockBytes"/>.
@@ -95,7 +91,6 @@ namespace Libplanet.Blockchain.Policies
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
             IComparer<IBlockExcerpt>? canonicalChainComparer = null,
-            HashAlgorithmGetter? hashAlgorithmGetter = null,
             Func<long, long>? getMaxBlockBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
@@ -111,7 +106,6 @@ namespace Libplanet.Blockchain.Policies
                 ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
             CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
-            _hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
@@ -246,9 +240,6 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         [Pure]
         public int GetMaxTransactionsPerBlock(long index) => _getMaxTransactionsPerBlock(index);
-
-        /// <inheritdoc/>
-        public HashAlgorithmType GetHashAlgorithm(long index) => _hashAlgorithmGetter(index);
 
         /// <inheritdoc/>
         [Pure]

@@ -1,7 +1,6 @@
 #nullable disable
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
@@ -59,9 +58,6 @@ namespace Libplanet.Blockchain.Policies
         }
 
         public long GetMaxBlockBytes(long index) => 1024 * 1024;
-
-        public virtual HashAlgorithmType GetHashAlgorithm(long index) =>
-            HashAlgorithmType.Of<SHA256>();
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);
