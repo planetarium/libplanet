@@ -46,6 +46,11 @@ namespace Libplanet.Blocks
         private BigInteger _totalDifficulty;
         private HashDigest<SHA256>? _txHash;
 
+        static BlockMetadata()
+        {
+            HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
+        }
+
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
         /// <paramref name="metadata"/>.
@@ -85,6 +90,8 @@ namespace Libplanet.Blocks
         public BlockMetadata()
         {
         }
+
+        public static HashAlgorithmType HashAlgorithmType { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
@@ -296,8 +303,7 @@ namespace Libplanet.Blocks
         /// <param name="nonce">The proof-of-work nonce.</param>
         /// <returns>A pre-evaluation block hash.</returns>
         public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
-            HashAlgorithmType.Of<SHA256>().Digest(Codec.Encode(MakeCandidateData(nonce)))
-                .ToImmutableArray();
+            HashAlgorithmType.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -344,7 +350,8 @@ namespace Libplanet.Blocks
             if (workers < 2)
             {
                 int seed = random.Next();
-                return Hashcash.Answer(stamp, Difficulty, seed, cancellationToken);
+                return Hashcash.Answer(
+                    stamp, HashAlgorithmType, Difficulty, seed, cancellationToken);
             }
 
             using var cts = new CancellationTokenSource();
@@ -353,7 +360,7 @@ namespace Libplanet.Blocks
             int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
             Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
                 Task.Run(
-                    () => Hashcash.Answer(stamp, Difficulty, seed, lts.Token),
+                    () => Hashcash.Answer(stamp, HashAlgorithmType, Difficulty, seed, lts.Token),
                     lts.Token
                 )
             ).ToArray();

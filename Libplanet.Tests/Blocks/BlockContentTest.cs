@@ -218,7 +218,7 @@ namespace Libplanet.Tests.Blocks
         {
             var codec = new Codec();
 
-            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
             PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine();
             Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
             AssertBytesEqual(

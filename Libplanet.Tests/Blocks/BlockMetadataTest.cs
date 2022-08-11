@@ -278,7 +278,7 @@ namespace Libplanet.Tests.Blocks
         {
             var codec = new Codec();
 
-            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
+            HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
             (Nonce nonce, ImmutableArray<byte> preEvalHash) = workers is int w
                 ? GenesisMetadata.MineNonce(workers: w)
                 : GenesisMetadata.MineNonce();

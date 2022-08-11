@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Blocks
     {
         protected readonly BlockContentFixture _contents;
         protected readonly Codec _codec;
-        protected readonly HashAlgorithmType _sha256;
+        protected readonly HashAlgorithmType _hashAlgorithmType;
         protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validGenesisProof;
         protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validBlock1Proof;
         protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash)
@@ -27,13 +27,13 @@ namespace Libplanet.Tests.Blocks
         {
             _contents = new BlockContentFixture();
             _codec = new Codec();
-            _sha256 = HashAlgorithmType.Of<SHA256>();
+            _hashAlgorithmType = BlockMetadata.HashAlgorithmType;
 
             var validGenesisNonce = default(Nonce);
             byte[] validGenesisBytes =
                 _codec.Encode(_contents.GenesisMetadata.MakeCandidateData(validGenesisNonce));
             ImmutableArray<byte> validGenesisPreEvalHash =
-                _sha256.Digest(validGenesisBytes).ToImmutableArray();
+                _hashAlgorithmType.Digest(validGenesisBytes).ToImmutableArray();
             _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
 
             // Checks if the hard-coded proof of the fixture is up-to-date.  If it's outdated,
@@ -44,6 +44,7 @@ namespace Libplanet.Tests.Blocks
                 (Nonce Nonce, ImmutableArray<byte> Digest) regen =
                     Hashcash.Answer(
                         n => new[] { _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(n)) },
+                        _hashAlgorithmType,
                         _contents.BlockMetadata1.Difficulty,
                         0
                     );
@@ -66,14 +67,14 @@ namespace Libplanet.Tests.Blocks
             byte[] validBlock1Bytes =
                 _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(validBlock1Nonce));
             ImmutableArray<byte> validBlock1PreEvalHash =
-                _sha256.Digest(validBlock1Bytes).ToImmutableArray();
+                _hashAlgorithmType.Digest(validBlock1Bytes).ToImmutableArray();
             _validBlock1Proof = (validBlock1Nonce, validBlock1PreEvalHash);
 
             var invalidBlock1Nonce = default(Nonce);
             byte[] invalidBlock1Bytes =
                 _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(invalidBlock1Nonce));
             ImmutableArray<byte> invalidBlock1PreEvalHash =
-                _sha256.Digest(invalidBlock1Bytes).ToImmutableArray();
+                _hashAlgorithmType.Digest(invalidBlock1Bytes).ToImmutableArray();
             _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
         }
 
