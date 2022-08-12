@@ -94,6 +94,9 @@ block that is not yet mined.</p>
       <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_CurrentProtocolVersion">BlockMetadata.CurrentProtocolVersion</a>
     </div>
     <div>
+      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_HashAlgorithmType">BlockMetadata.HashAlgorithmType</a>
+    </div>
+    <div>
       <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_ProtocolVersion">BlockMetadata.ProtocolVersion</a>
     </div>
     <div>
@@ -121,13 +124,13 @@ block that is not yet mined.</p>
       <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MakeCandidateData_Libplanet_Nonce_">BlockMetadata.MakeCandidateData(Nonce)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_DerivePreEvaluationHash_Libplanet_HashAlgorithmType_Libplanet_Nonce_">BlockMetadata.DerivePreEvaluationHash(HashAlgorithmType, Nonce)</a>
+      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_DerivePreEvaluationHash_Libplanet_Nonce_">BlockMetadata.DerivePreEvaluationHash(Nonce)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_Libplanet_HashAlgorithmType_CancellationToken_">BlockMetadata.MineNonce(HashAlgorithmType, CancellationToken)</a>
+      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_CancellationToken_">BlockMetadata.MineNonce(CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_Libplanet_HashAlgorithmType_System_Int32_CancellationToken_">BlockMetadata.MineNonce(HashAlgorithmType, Int32, CancellationToken)</a>
+      <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_MineNonce_System_Int32_CancellationToken_">BlockMetadata.MineNonce(Int32, CancellationToken)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
@@ -610,13 +613,13 @@ inconsistent with <a class="xref" href="Libplanet.Blocks.BlockContent-1.html#Lib
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockContent_1_Mine_Libplanet_HashAlgorithmType_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockContent%601.Mine(Libplanet.HashAlgorithmType%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_BlockContent_1_Mine_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockContent%601.Mine(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockContent.cs/#L226">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/BlockContent.cs/#L224">View Source</a>
   </span>
   <a id="Libplanet_Blocks_BlockContent_1_Mine_" data-uid="Libplanet.Blocks.BlockContent`1.Mine*"></a>
-  <h4 id="Libplanet_Blocks_BlockContent_1_Mine_Libplanet_HashAlgorithmType_CancellationToken_" data-uid="Libplanet.Blocks.BlockContent`1.Mine(Libplanet.HashAlgorithmType,CancellationToken)">Mine(HashAlgorithmType, CancellationToken)</h4>
+  <h4 id="Libplanet_Blocks_BlockContent_1_Mine_CancellationToken_" data-uid="Libplanet.Blocks.BlockContent`1.Mine(CancellationToken)">Mine(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Mines the PoW (proof-of-work) nonce satisfying the block
 <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_Difficulty">Difficulty</a>, and returns a valid
 <a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html">PreEvaluationBlock&lt;T&gt;</a> instance.</p>
@@ -624,7 +627,7 @@ inconsistent with <a class="xref" href="Libplanet.Blocks.BlockContent-1.html#Lib
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PreEvaluationBlock&lt;T&gt; Mine(HashAlgorithmType hashAlgorithm, CancellationToken cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public PreEvaluationBlock&lt;T&gt; Mine(CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -636,13 +639,6 @@ inconsistent with <a class="xref" href="Libplanet.Blocks.BlockContent-1.html#Lib
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.HashAlgorithmType.html">HashAlgorithmType</a></td>
-        <td><span class="parametername">hashAlgorithm</span></td>
-        <td><p>The hash algorithm to use for calculating pre-evaluation
-hash.</p>
-</td>
-      </tr>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>

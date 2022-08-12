@@ -723,20 +723,20 @@ block indexes.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(Libplanet.Blocks.HashAlgorithmGetter%2CLibplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(Libplanet.Blocks.BlockHash)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/BaseStore.cs/#L71">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlock_" data-uid="Libplanet.Store.BaseStore.GetBlock*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.BaseStore.GetBlock``1(Libplanet.Blocks.HashAlgorithmGetter,Libplanet.Blocks.BlockHash)">GetBlock&lt;T&gt;(HashAlgorithmGetter, BlockHash)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetBlock__1_Libplanet_Blocks_BlockHash_" data-uid="Libplanet.Store.BaseStore.GetBlock``1(Libplanet.Blocks.BlockHash)">GetBlock&lt;T&gt;(BlockHash)</h4>
   <div class="markdown level1 summary"><p>Gets the corresponding stored <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to the given
 <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; GetBlock&lt;T&gt;(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; GetBlock&lt;T&gt;(BlockHash blockHash)
     where T : IAction, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -749,13 +749,6 @@ block indexes.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
-        <td><span class="parametername">hashAlgorithmGetter</span></td>
-        <td><p>The function to determine hash algorithm used for
-proof-of-work mining.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a></td>
         <td><span class="parametername">blockHash</span></td>
@@ -903,7 +896,7 @@ such <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is
   </table>
   <h5 id="Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_Blocks_BlockHash__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It provides only limited information, but can be called without any type parameter
-unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock__1_Libplanet_Blocks_HashAlgorithmGetter_Libplanet_Blocks_BlockHash_">GetBlock&lt;T&gt;(HashAlgorithmGetter, BlockHash)</a>.</p>
+unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock__1_Libplanet_Blocks_BlockHash_">GetBlock&lt;T&gt;(BlockHash)</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -993,40 +986,21 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BaseStore_GetCanonicalGenesisBlock__1_Libplanet_Blocks_HashAlgorithmGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetCanonicalGenesisBlock%60%601(Libplanet.Blocks.HashAlgorithmGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Store_BaseStore_GetCanonicalGenesisBlock__1.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetCanonicalGenesisBlock%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Store/BaseStore.cs/#L32">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetCanonicalGenesisBlock_" data-uid="Libplanet.Store.BaseStore.GetCanonicalGenesisBlock*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetCanonicalGenesisBlock__1_Libplanet_Blocks_HashAlgorithmGetter_" data-uid="Libplanet.Store.BaseStore.GetCanonicalGenesisBlock``1(Libplanet.Blocks.HashAlgorithmGetter)">GetCanonicalGenesisBlock&lt;T&gt;(HashAlgorithmGetter)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetCanonicalGenesisBlock__1" data-uid="Libplanet.Store.BaseStore.GetCanonicalGenesisBlock``1">GetCanonicalGenesisBlock&lt;T&gt;()</h4>
   <div class="markdown level1 summary"><p>Returns the genesis block of the current canonical chain.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; GetCanonicalGenesisBlock&lt;T&gt;(HashAlgorithmGetter hashAlgorithmGetter)
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; GetCanonicalGenesisBlock&lt;T&gt;()
     where T : IAction, new()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.HashAlgorithmGetter.html">HashAlgorithmGetter</a></td>
-        <td><span class="parametername">hashAlgorithmGetter</span></td>
-        <td><p>The function to determine hash algorithm used for
-proof-of-work mining.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
