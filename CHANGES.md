@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.40.0
 --------------
 
-To be released.
+Released on Auguest 12th, 2022.
 
 ### Deprecated APIs
 
@@ -102,10 +102,6 @@ To be released.
  -  (Libplanet.Node) Parameter `HashAlgorithmGetter hashAlgorithm` removed
     from `UntypedBlock()` constructor.  [[#2206], [#2207]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
@@ -153,12 +149,6 @@ To be released.
     empty chains.  [[#2047], [#2156]]
  -  `Libplanet.Explorer` now targets .NET 6.0.  [[#2173]]
  -  Behavior of `Block<T>.GetHashCode()` changed.  [[#2206], [#2207]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
 [#1972]: https://github.com/planetarium/libplanet/issues/1972
