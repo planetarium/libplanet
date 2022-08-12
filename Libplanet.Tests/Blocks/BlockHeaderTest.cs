@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Blocks
             Block<FxAction> fx = _fx.HasTx;
             var preEval = new PreEvaluationBlockHeader(fx);
             HashDigest<SHA256> arbitraryHash = new Random().NextHashDigest<SHA256>();
-            ImmutableArray<byte> invalidSig = preEval.MakeSignature(_fx.Miner, arbitraryHash);
+            ImmutableArray<byte> invalidSig = preEval.MakeSignature(_fx.Proposer, arbitraryHash);
             InvalidBlockSignatureException e = Assert.Throws<InvalidBlockSignatureException>(() =>
                 new BlockHeader(preEval, fx.StateRootHash, invalidSig)
             );

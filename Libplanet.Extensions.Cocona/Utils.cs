@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex.Types;
@@ -144,7 +143,6 @@ namespace Libplanet.Extensions.Cocona
                     {
                         new ByteArrayStringJsonConverter(),
                         new DateTimeOffsetJsonConverter(),
-                        new HashAlgorithmTypeConverter(),
                     },
                 }
             );
@@ -278,23 +276,6 @@ namespace Libplanet.Extensions.Cocona
                         CultureInfo.InvariantCulture
                     ));
             }
-        }
-
-        private class HashAlgorithmTypeConverter : JsonConverter<HashAlgorithmType>
-        {
-            // FIXME: Placeholder implementation.
-            public override HashAlgorithmType Read(
-                ref Utf8JsonReader reader,
-                Type typeToConvert,
-                JsonSerializerOptions options)
-                => HashAlgorithmType.Of<SHA256>();
-
-            // FIXME: Placeholder implementation.
-            public override void Write(
-                Utf8JsonWriter writer,
-                HashAlgorithmType value,
-                JsonSerializerOptions options)
-                => writer.WriteStringValue(nameof(SHA256));
         }
     }
 }

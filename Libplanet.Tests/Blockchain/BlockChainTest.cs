@@ -84,13 +84,11 @@ namespace Libplanet.Tests.Blockchain
             _validNext = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1024L,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
+                PublicKey = _fx.Proposer.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
-            }.Mine(_policy.GetHashAlgorithm(1)).Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Proposer, _blockChain);
         }
 
         public void Dispose()
@@ -141,25 +139,26 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void CanFindBlockByIndex()
+        public void CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
             Assert.Equal(genesis, _blockChain[0]);
 
-            Block<DumbAction> block = await _blockChain.MineBlock(new PrivateKey());
+            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(block);
             Assert.Equal(block, _blockChain[1]);
         }
 
         [Fact]
-        public async void CanonicalId()
+        public void CanonicalId()
         {
             var x = _blockChain;
             var key = new PrivateKey();
-            await x.MineBlock(key);
-            await x.MineBlock(key);
+            x.Append(x.ProposeBlock(key));
+            x.Append(x.ProposeBlock(key));
             Assert.Equal(x.Id, _fx.Store.GetCanonicalChainId());
             var y = x.Fork(x.Tip.Hash);
-            await y.MineBlock(key);
+            y.Append(y.ProposeBlock(key));
             Assert.Equal(x.Id, _fx.Store.GetCanonicalChainId());
 
             var z = new BlockChain<DumbAction>(
@@ -174,23 +173,26 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void BlockHashes()
+        public void BlockHashes()
         {
             var key = new PrivateKey();
             var genesis = _blockChain.Genesis;
 
             Assert.Single(_blockChain.BlockHashes);
 
-            Block<DumbAction> b1 = await _blockChain.MineBlock(key);
+            Block<DumbAction> b1 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b1);
             Assert.Equal(new[] { genesis.Hash, b1.Hash }, _blockChain.BlockHashes);
 
-            Block<DumbAction> b2 = await _blockChain.MineBlock(key);
+            Block<DumbAction> b2 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b2);
             Assert.Equal(
                 new[] { genesis.Hash, b1.Hash, b2.Hash },
                 _blockChain.BlockHashes
             );
 
-            Block<DumbAction> b3 = await _blockChain.MineBlock(key);
+            Block<DumbAction> b3 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b3);
             Assert.Equal(
                 new[] { genesis.Hash, b1.Hash, b2.Hash, b3.Hash },
                 _blockChain.BlockHashes
@@ -198,11 +200,10 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void ProcessActions()
+        public void ProcessActions()
         {
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<PolymorphicAction<BaseAction>> genesisBlock =
-                BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock(hashAlgorithm);
+                BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
@@ -242,7 +243,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             chain.StageTransaction(tx1);
-            await chain.MineBlock(new PrivateKey());
+            chain.Append(chain.ProposeBlock(new PrivateKey()));
 
             IValue state = chain.GetState(_fx.Address1);
             Assert.NotNull(state);
@@ -270,7 +271,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             chain.StageTransaction(tx2);
-            await chain.MineBlock(new PrivateKey());
+            chain.Append(chain.ProposeBlock(new PrivateKey()));
 
             state = chain.GetState(_fx.Address1);
             result = BattleResult.FromBencodex((Bencodex.Types.Dictionary)state);
@@ -291,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
                 }
             );
             chain.StageTransaction(tx3);
-            await chain.MineBlock(new PrivateKey());
+            chain.Append(chain.ProposeBlock(new PrivateKey()));
             state = chain.GetState(_fx.Address1);
 
             Assert.NotNull(state);
@@ -320,12 +321,10 @@ namespace Libplanet.Tests.Blockchain
                 );
                 var actions = new[] { new DumbAction(miner, "foo") };
                 var tx = chain.MakeTransaction(key, actions);
-                var block = MineNext(
+                var block = ProposeNext(
                     chain.Genesis,
-                    policy.GetHashAlgorithm,
                     new[] { tx },
-                    miner: key.PublicKey,
-                    difficulty: policy.GetNextBlockDifficulty(_blockChain)
+                    proposer: key.PublicKey
                 ).Evaluate(key, chain);
                 chain.Append(block);
                 var forked = chain.Fork(chain.Genesis.Hash);
@@ -354,7 +353,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task ActionRenderersHaveDistinctContexts()
+        public void ActionRenderersHaveDistinctContexts()
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
@@ -382,8 +381,7 @@ namespace Libplanet.Tests.Blockchain
             var action = new DumbAction(default, string.Empty);
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
-            Block<DumbAction> block =
-                await blockChain.MineBlock(new PrivateKey(), append: false);
+            Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
 
             generatedRandomValueLogs.Clear();
             Assert.Empty(generatedRandomValueLogs);
@@ -393,7 +391,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task RenderActionsAfterBlockIsRendered()
+        public void RenderActionsAfterBlockIsRendered()
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
@@ -409,7 +407,8 @@ namespace Libplanet.Tests.Blockchain
             blockChain.MakeTransaction(privateKey, actions);
             recordingRenderer.ResetRecords();
             Block<DumbAction> prevBlock = blockChain.Tip;
-            Block<DumbAction> block = await blockChain.MineBlock(new PrivateKey());
+            Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
+            blockChain.Append(block);
 
             Assert.Equal(2, blockChain.Count);
             Assert.Empty(recordingRenderer.ReorgRecords);
@@ -430,7 +429,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task RenderActionsAfterAppendComplete()
+        public void RenderActionsAfterAppendComplete()
         {
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
@@ -449,15 +448,15 @@ namespace Libplanet.Tests.Blockchain
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
 
-            SomeException e = await Assert.ThrowsAsync<SomeException>(
-                async () => await blockChain.MineBlock(new PrivateKey())
+            SomeException e = Assert.Throws<SomeException>(
+                () => blockChain.Append(blockChain.ProposeBlock(new PrivateKey()))
             );
             Assert.Equal("thrown by renderer", e.Message);
             Assert.Equal(2, blockChain.Count);
         }
 
         [Fact]
-        public async void FindNextHashes()
+        public void FindNextHashes()
         {
             var key = new PrivateKey();
             long? offsetIndex;
@@ -467,9 +466,12 @@ namespace Libplanet.Tests.Blockchain
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Single(hashes);
             var block0 = _blockChain.Genesis;
-            var block1 = await _blockChain.MineBlock(key);
-            var block2 = await _blockChain.MineBlock(key);
-            var block3 = await _blockChain.MineBlock(key);
+            var block1 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block1);
+            var block2 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block2);
+            var block3 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block3);
 
             _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }))
                 .Deconstruct(out offsetIndex, out hashes);
@@ -493,16 +495,16 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void FindNextHashesAfterFork()
+        public void FindNextHashesAfterFork()
         {
             var key = new PrivateKey();
 
-            await _blockChain.MineBlock(key);
-            await _blockChain.MineBlock(key);
-            await _blockChain.MineBlock(key);
+            _blockChain.Append(_blockChain.ProposeBlock(key));
+            _blockChain.Append(_blockChain.ProposeBlock(key));
+            _blockChain.Append(_blockChain.ProposeBlock(key));
 
             BlockChain<DumbAction> forked = _blockChain.Fork(_blockChain.Genesis.Hash);
-            await forked.MineBlock(key);
+            forked.Append(forked.ProposeBlock(key));
 
             BlockLocator locator = _blockChain.GetBlockLocator();
             forked.FindNextHashes(locator)
@@ -513,13 +515,16 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void Fork()
+        public void Fork()
         {
             var key = new PrivateKey();
 
-            var block1 = await _blockChain.MineBlock(key);
-            var block2 = await _blockChain.MineBlock(key);
-            var block3 = await _blockChain.MineBlock(key);
+            var block1 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block1);
+            var block2 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block2);
+            var block3 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block3);
 
             BlockChain<DumbAction> forked = _blockChain.Fork(block2.Hash);
 
@@ -551,21 +556,20 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task ForkWithBlockNotExistInChain()
+        public void ForkWithBlockNotExistInChain()
         {
             var key = new PrivateKey();
-            var genesis = await _blockChain.MineBlock(key);
+            var genesis = _blockChain.ProposeBlock(key);
+            _blockChain.Append(genesis);
 
             for (var i = 0; i < 2; i++)
             {
-                await _blockChain.MineBlock(key);
+                _blockChain.Append(_blockChain.ProposeBlock(key));
             }
 
-            Block<DumbAction> newBlock = MineNext(
+            Block<DumbAction> newBlock = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
-                difficulty: 1024,
-                miner: key.PublicKey
+                proposer: key.PublicKey
             ).Evaluate(key, _blockChain);
 
             Assert.Throws<ArgumentException>(() =>
@@ -586,7 +590,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task StateAfterForkingAndAddingExistingBlock()
+        public void StateAfterForkingAndAddingExistingBlock()
         {
             var miner = new PrivateKey();
             var signer = new PrivateKey();
@@ -595,10 +599,12 @@ namespace Libplanet.Tests.Blockchain
             var actions2 = new[] { new DumbAction(address, "bar") };
 
             _blockChain.MakeTransaction(signer, actions1);
-            var b1 = await _blockChain.MineBlock(miner);
+            var b1 = _blockChain.ProposeBlock(miner);
+            _blockChain.Append(b1);
 
             _blockChain.MakeTransaction(signer, actions2);
-            var b2 = await _blockChain.MineBlock(miner);
+            var b2 = _blockChain.ProposeBlock(miner);
+            _blockChain.Append(b2);
             var state = _blockChain.GetState(address);
 
             Assert.Equal((Text)"foo,bar", state);
@@ -613,7 +619,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task ForkShouldSkipExecuteAndRenderGenesis()
+        public void ForkShouldSkipExecuteAndRenderGenesis()
         {
             Address stateKey = _fx.Address1;
             var miner = new PrivateKey();
@@ -622,11 +628,10 @@ namespace Libplanet.Tests.Blockchain
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
-                var genesis = MineGenesis(
-                    _policy.GetHashAlgorithm,
-                    GenesisMiner.PublicKey,
+                var genesis = ProposeGenesis(
+                    GenesisProposer.PublicKey,
                     transactions: new[] { _fx.MakeTransaction(new[] { action }) }
-                ).Evaluate(GenesisMiner, _policy.BlockAction, stateStore);
+                ).Evaluate(GenesisProposer, _policy.BlockAction, stateStore);
                 store.PutBlock(genesis);
                 var renderer = new RecordingActionRenderer<DumbAction>();
                 var blockChain = new BlockChain<DumbAction>(
@@ -643,8 +648,8 @@ namespace Libplanet.Tests.Blockchain
                 // NOTE: AttachStateRootHash, Append
                 Assert.Equal(2, DumbAction.ExecuteRecords.Value.Count(r => !r.Rehearsal));
 
-                await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
-                await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
+                blockChain.Append(blockChain.ProposeBlock(miner, DateTimeOffset.UtcNow));
+                blockChain.Append(blockChain.ProposeBlock(miner, DateTimeOffset.UtcNow));
 
                 int blockRecordsBeforeFork = renderer.BlockRecords.Count;
 
@@ -670,26 +675,20 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey),
             };
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1);
 
-            Block<DumbAction> b2 = MineNext(
+            Block<DumbAction> b2 = ProposeNext(
                 b1,
-                _policy.GetHashAlgorithm,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             Assert.Throws<InvalidTxNonceException>(() =>
                 _blockChain.Append(b2));
 
@@ -700,15 +699,12 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 1,
                     privateKey: privateKey),
             };
-            b2 = MineNext(
+            b2 = ProposeNext(
                 b1,
-                _policy.GetHashAlgorithm,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b2);
         }
 
@@ -736,15 +732,12 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txsA,
-                null,
-                _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1);
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -756,15 +749,12 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 1,
                     privateKey: privateKey),
             };
-            Block<DumbAction> b2 = MineNext(
+            Block<DumbAction> b2 = ProposeNext(
                 b1,
-                _policy.GetHashAlgorithm,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b2);
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
@@ -775,13 +765,14 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetBlockLocator()
+        public void GetBlockLocator()
         {
             var key = new PrivateKey();
             List<Block<DumbAction>> blocks = new List<Block<DumbAction>>();
             foreach (var i in Enumerable.Range(0, 10))
             {
-                var block = await _blockChain.MineBlock(key);
+                var block = _blockChain.ProposeBlock(key);
+                _blockChain.Append(block);
                 blocks.Add(block);
             }
 
@@ -813,12 +804,10 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var minerAddress = miner.ToAddress();
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs1,
-                miner: miner.PublicKey,
-                difficulty: _policy.GetNextBlockDifficulty(_blockChain),
+                proposer: miner.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
             _blockChain.Append(block1);
@@ -878,14 +867,11 @@ namespace Libplanet.Tests.Blockchain
 
             foreach (Transaction<DumbAction>[] txs in txsA)
             {
-                Block<DumbAction> b = MineNext(
+                Block<DumbAction> b = ProposeNext(
                     _blockChain.Tip,
-                    _policy.GetHashAlgorithm,
                     txs,
-                    null,
-                    _policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10),
-                    miner: miner.PublicKey
+                    proposer: miner.PublicKey
                 ).Evaluate(miner, _blockChain);
                 _blockChain.Append(b);
             }
@@ -911,14 +897,11 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
 
-            Block<DumbAction> forkTip = MineNext(
+            Block<DumbAction> forkTip = ProposeNext(
                 fork.Tip,
-                _policy.GetHashAlgorithm,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: miner.PublicKey
+                proposer: miner.PublicKey
             ).Evaluate(miner, fork);
             fork.Append(
                 forkTip,
@@ -1016,12 +999,12 @@ namespace Libplanet.Tests.Blockchain
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public async Task SwapWithoutReorg(bool render)
+        public void SwapWithoutReorg(bool render)
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
 
             // The lower  chain goes to the higher chain  [#N -> #N+1]
-            await fork.MineBlock(new PrivateKey());
+            fork.Append(fork.ProposeBlock(new PrivateKey()));
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
             _blockChain.Swap(fork, render: render)();
 
@@ -1030,12 +1013,12 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task TreatGoingBackwardAsReorg()
+        public void TreatGoingBackwardAsReorg()
         {
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
 
             // The higher chain goes to the lower  chain  [#N -> #N-1]
-            await _blockChain.MineBlock(new PrivateKey());
+            _blockChain.Append(_blockChain.ProposeBlock(new PrivateKey()));
             IReadOnlyList<RenderRecord<DumbAction>.Reorg> prevRecords = _renderer.ReorgRecords;
             _blockChain.Swap(fork, render: true)();
 
@@ -1051,15 +1034,14 @@ namespace Libplanet.Tests.Blockchain
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public async Task ReorgIsUnableToHeterogenousChain(bool render)
+        public void ReorgIsUnableToHeterogenousChain(bool render)
         {
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
-                Block<DumbAction> genesis2 = MineGenesis<DumbAction>(
-                    _policy.GetHashAlgorithm,
+                Block<DumbAction> genesis2 = ProposeGenesis<DumbAction>(
                     timestamp: DateTimeOffset.UtcNow,
-                    miner: GenesisMiner.PublicKey
-                ).Evaluate(GenesisMiner, _policy.BlockAction, fx2.StateStore);
+                    proposer: GenesisProposer.PublicKey
+                ).Evaluate(GenesisProposer, _policy.BlockAction, fx2.StateStore);
                 var chain2 = new BlockChain<DumbAction>(
                     _policy,
                     _stagePolicy,
@@ -1070,8 +1052,8 @@ namespace Libplanet.Tests.Blockchain
                 var key = new PrivateKey();
                 for (int i = 0; i < 5; i++)
                 {
-                    await _blockChain.MineBlock(key);
-                    await chain2.MineBlock(key);
+                    _blockChain.Append(_blockChain.ProposeBlock(key));
+                    chain2.Append(chain2.ProposeBlock(key));
                 }
 
                 Log.Logger.CompareBothChains(
@@ -1106,9 +1088,8 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = MineGenesis(
-                policy.GetHashAlgorithm,
-                GenesisMiner.PublicKey,
+            Block<DumbAction> genesisWithTx = ProposeGenesis(
+                GenesisProposer.PublicKey,
                 new[]
                 {
                     Transaction<DumbAction>.Create(
@@ -1118,7 +1099,7 @@ namespace Libplanet.Tests.Blockchain
                         Array.Empty<DumbAction>()
                     ),
                 }
-            ).Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+            ).Evaluate(GenesisProposer, policy.BlockAction, stateStore);
             var chain = new BlockChain<DumbAction>(
                 policy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1164,12 +1145,11 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Transaction<DumbAction>.Create(0, privateKey, chain.Genesis.Hash, actions),
                 };
-                b = MineNext(
+                b = ProposeNext(
                     b,
-                    policy.GetHashAlgorithm,
                     txs,
-                    miner: _fx.Miner.PublicKey
-                ).Evaluate(_fx.Miner, chain);
+                    proposer: _fx.Proposer.PublicKey
+                ).Evaluate(_fx.Proposer, chain);
                 chain.Append(b);
             }
 
@@ -1204,12 +1184,11 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> b = chain.Genesis;
             for (int i = 0; i < 20; ++i)
             {
-                b = MineNext(
+                b = ProposeNext(
                     b,
-                    blockPolicy.GetHashAlgorithm,
                     blockInterval: TimeSpan.FromSeconds(10),
-                    miner: _fx.Miner.PublicKey
-                ).Evaluate(_fx.Miner, chain);
+                    proposer: _fx.Proposer.PublicKey
+                ).Evaluate(_fx.Proposer, chain);
                 chain.Append(b);
             }
 
@@ -1227,11 +1206,9 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetStateReturnsValidStateAfterFork()
+        public void GetStateReturnsValidStateAfterFork()
         {
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
-                hashAlgorithm,
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
             );
             var privateKey = new PrivateKey();
@@ -1252,7 +1229,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey,
                 new[] { new DumbAction(_fx.Address1, "item1.0"), }
             );
-            await chain.MineBlock(new PrivateKey());
+            chain.Append(chain.ProposeBlock(new PrivateKey()));
             Assert.Equal(
                 new IValue[] { (Text)"item0.0,item1.0" },
                 chain.GetStates(new[] { _fx.Address1 })
@@ -1323,7 +1300,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetStateReturnsLatestStatesWhenMultipleAddresses()
+        public void GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
@@ -1346,7 +1323,7 @@ namespace Libplanet.Tests.Blockchain
                 chain.MakeTransaction(key, new[] { new DumbAction(address, "1") });
             }
 
-            await chain.MineBlock(privateKeys[0]);
+            chain.Append(chain.ProposeBlock(privateKeys[0]));
 
             Assert.All(chain.GetStates(addresses), v => Assert.Equal((Text)"1", v));
             foreach (var address in addresses)
@@ -1355,7 +1332,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             chain.MakeTransaction(privateKeys[0], new[] { new DumbAction(addresses[0], "2") });
-            await chain.MineBlock(privateKeys[0]);
+            chain.Append(chain.ProposeBlock(privateKeys[0]));
             Assert.Equal((Text)"1,2", chain.GetState(addresses[0]));
             Assert.All(
                 chain.GetStates(addresses.Skip(1).ToArray()),
@@ -1364,14 +1341,17 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void FindBranchPoint()
+        public void FindBranchPoint()
         {
             var key = new PrivateKey();
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> b1 = await _blockChain.MineBlock(key);
-            Block<DumbAction> b2 = await _blockChain.MineBlock(key);
-            Block<DumbAction> b3 = await _blockChain.MineBlock(key);
-            Block<DumbAction> b4 = await _blockChain.MineBlock(key);
+            Block<DumbAction> b1 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b1);
+            Block<DumbAction> b2 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b2);
+            Block<DumbAction> b3 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b3);
+            Block<DumbAction> b4 = _blockChain.ProposeBlock(key);
+            _blockChain.Append(b4);
 
             Assert.Equal(b1.PreviousHash, _blockChain.Genesis.Hash);
 
@@ -1381,7 +1361,7 @@ namespace Libplanet.Tests.Blockchain
             using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
             using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
             {
-                var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
+                var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
                 var emptyChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -1396,7 +1376,7 @@ namespace Libplanet.Tests.Blockchain
                     forkFx.GenesisBlock);
                 fork.Append(b1);
                 fork.Append(b2);
-                await fork.MineBlock(key);
+                fork.Append(fork.ProposeBlock(key));
 
                 Assert.Null(emptyChain.FindBranchpoint(emptyLocator));
                 Assert.Null(emptyChain.FindBranchpoint(locator));
@@ -1424,15 +1404,12 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
-                miner: _fx.Miner.PublicKey
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
             _blockChain.Append(b1);
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));
@@ -1486,7 +1463,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task GetNextTxNonceWithStaleTx()
+        public void GetNextTxNonceWithStaleTx()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -1499,7 +1476,7 @@ namespace Libplanet.Tests.Blockchain
             };
 
             StageTransactions(txs);
-            await _blockChain.MineBlock(privateKey);
+            _blockChain.Append(_blockChain.ProposeBlock(privateKey));
 
             Transaction<DumbAction>[] staleTxs =
             {
@@ -1529,14 +1506,12 @@ namespace Libplanet.Tests.Blockchain
                 Block<DumbAction> block,
                 IReadOnlyList<Transaction<DumbAction>> txs
             ) =>
-                TestUtils.MineNext(
+                TestUtils.ProposeNext(
                     block,
-                    _policy.GetHashAlgorithm,
                     txs,
-                    difficulty: 1024,
                     blockInterval: TimeSpan.FromSeconds(10),
-                    miner: _fx.Miner.PublicKey
-                ).Evaluate(_fx.Miner, _blockChain);
+                    proposer: _fx.Proposer.PublicKey
+                ).Evaluate(_fx.Proposer, _blockChain);
 
             Transaction<DumbAction>[] txsA =
             {
@@ -1626,16 +1601,16 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void BlockActionWithMultipleAddress()
+        public void BlockActionWithMultipleAddress()
         {
-            var miner0 = _blockChain.Genesis.Miner;
+            var miner0 = _blockChain.Genesis.Proposer;
             var miner1 = new PrivateKey();
             var miner2 = new PrivateKey();
             var rewardRecordAddress = MinerReward.RewardRecordAddress;
 
-            await _blockChain.MineBlock(miner1);
-            await _blockChain.MineBlock(miner1);
-            await _blockChain.MineBlock(miner2);
+            _blockChain.Append(_blockChain.ProposeBlock(miner1));
+            _blockChain.Append(_blockChain.ProposeBlock(miner1));
+            _blockChain.Append(_blockChain.ProposeBlock(miner2));
 
             IValue miner1state = _blockChain.GetState(miner1.ToAddress());
             IValue miner2state = _blockChain.GetState(miner2.ToAddress());
@@ -1698,10 +1673,9 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block<DumbAction> genesisBlock = MineGenesis<DumbAction>(
-                blockPolicy.GetHashAlgorithm,
-                GenesisMiner.PublicKey
-            ).Evaluate(GenesisMiner, blockPolicy.BlockAction, stateStore);
+            Block<DumbAction> genesisBlock = ProposeGenesis<DumbAction>(
+                GenesisProposer.PublicKey
+            ).Evaluate(GenesisProposer, blockPolicy.BlockAction, stateStore);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1733,11 +1707,11 @@ namespace Libplanet.Tests.Blockchain
                 ? new AccountStateDeltaImpl(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    b.Miner)
+                    b.Proposer)
                 : new AccountStateDeltaImplV0(
                     nullAccountStateGetter,
                     nullAccountBalanceGetter,
-                    b.Miner);
+                    b.Proposer);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
@@ -1758,22 +1732,21 @@ namespace Libplanet.Tests.Blockchain
                         chain.Genesis.Hash,
                         new[] { new DumbAction(addresses[j], index.ToString()) }
                     );
-                    b = MineNext(
+                    b = ProposeNext(
                         b,
-                        blockPolicy.GetHashAlgorithm,
                         new[] { tx },
                         blockInterval: TimeSpan.FromSeconds(10),
-                        miner: GenesisMiner.PublicKey
-                    ).Evaluate(GenesisMiner, chain);
+                        proposer: GenesisProposer.PublicKey
+                    ).Evaluate(GenesisProposer, chain);
                     previousStates = b.ProtocolVersion > 0
                         ? new AccountStateDeltaImpl(
                             addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner)
+                            b.Proposer)
                         : new AccountStateDeltaImplV0(
                             addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                             (address, currency) => balances.GetValueOrDefault((address, currency)),
-                            b.Miner);
+                            b.Proposer);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
                     Assert.NotEmpty(dirty);
@@ -1856,14 +1829,14 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void Reorged()
+        private void Reorged()
         {
             _renderer.ResetRecords();
             var branchpoint = _blockChain.Tip;
             var fork = _blockChain.Fork(_blockChain.Tip.Hash);
-            await fork.MineBlock(new PrivateKey());
-            await fork.MineBlock(new PrivateKey());
-            await _blockChain.MineBlock(new PrivateKey());
+            fork.Append(fork.ProposeBlock(new PrivateKey()));
+            fork.Append(fork.ProposeBlock(new PrivateKey()));
+            _blockChain.Append(_blockChain.ProposeBlock(new PrivateKey()));
 
             var oldTip = _blockChain.Tip;
             var newTip = fork.Tip;
@@ -1897,14 +1870,13 @@ namespace Libplanet.Tests.Blockchain
                 addresses
                     .Select((address, index) => new DumbAction(address, index.ToString()))
                     .ToArray();
-            HashAlgorithmType hashAlgorithm = policy.GetHashAlgorithm(0);
             BlockChain<DumbAction> blockChain =
                 new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
-                    BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm, actions));
+                    BlockChain<DumbAction>.MakeGenesisBlock(actions));
 
             Assert.Equal(addresses, blockChain.Genesis.Transactions.First().UpdatedAddresses);
 
@@ -1920,12 +1892,11 @@ namespace Libplanet.Tests.Blockchain
         private void ConstructWithUnexpectedGenesisBlock()
         {
             var policy = new NullBlockPolicy<DumbAction>();
-            HashAlgorithmType hashAlgorithm = policy.GetHashAlgorithm(0);
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(hashAlgorithm);
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock();
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,
@@ -1948,7 +1919,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async Task FilterLowerNonceTxAfterStaging()
+        private void FilterLowerNonceTxAfterStaging()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -1957,13 +1928,14 @@ namespace Libplanet.Tests.Blockchain
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txsA);
-            Block<DumbAction> b1 = await _blockChain.MineBlock(privateKey);
+            Block<DumbAction> b1 = _blockChain.ProposeBlock(privateKey);
+            _blockChain.Append(b1);
             Assert.Equal(
                 txsA,
                 ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
                     b1.ProtocolVersion,
                     b1.Transactions,
-                    b1.PreEvaluationHash
+                    b1.PreviousHash?.ByteArray
                 )
             );
 
@@ -1993,9 +1965,8 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = MineGenesis(
-                policy.GetHashAlgorithm,
-                GenesisMiner.PublicKey,
+            Block<DumbAction> genesisWithTx = ProposeGenesis(
+                GenesisProposer.PublicKey,
                 new[]
                 {
                     Transaction<DumbAction>.Create(
@@ -2005,7 +1976,7 @@ namespace Libplanet.Tests.Blockchain
                         Array.Empty<DumbAction>()
                     ),
                 }
-            ).Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+            ).Evaluate(GenesisProposer, policy.BlockAction, stateStore);
 
             Assert.Throws<TxPolicyViolationException>(() =>
             {

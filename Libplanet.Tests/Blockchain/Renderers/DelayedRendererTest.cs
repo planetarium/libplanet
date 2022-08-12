@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -19,51 +17,34 @@ namespace Libplanet.Tests.Blockchain.Renderers
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainA;
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainB;
         protected static readonly Block<DumbAction> _branchpoint;
-        protected IComparer<IBlockExcerpt> _canonicalChainComparer;
         protected IStore _store;
         protected ILogger _logger;
 
 #pragma warning disable S3963
         static DelayedRendererTest()
         {
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmGetter hashAlgorithmGetter = _ => hashAlgorithm;
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(
-                hashAlgorithmGetter,
-                TestUtils.GenesisMiner
-            );
+            chainA[0] = chainB[0] =
+                TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNextBlock(
+                _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    hashAlgorithmGetter,
-                    TestUtils.GenesisMiner
+                    TestUtils.GenesisProposer
                 );
             }
 
-            int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNextBlock(
+                chainA[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    hashAlgorithmGetter,
-                    TestUtils.GenesisMiner,
-                    difficulty: 2
+                    TestUtils.GenesisProposer
                 );
-                chainB[i] = TestUtils.MineNextBlock(
+                chainB[i] = TestUtils.ProposeNextBlock(
                     chainB[i - 1],
-                    hashAlgorithmGetter,
-                    TestUtils.GenesisMiner,
-                    difficulty: 2 + extraDifficulty
+                    TestUtils.GenesisProposer
                 );
-
-                // The block right next the branchpoint in the chainB has 1 more difficulty than
-                // the block with the same index in the chainA, and then rest blocks have the
-                // same difficulty 2.  That means, every block after the branchpoint in the chainB
-                // has exactly 1 more difficulty than a block with the same index in the chainA.
-                extraDifficulty = 0;
             }
 
             _chainA = chainA;
@@ -88,8 +69,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 _chainB
             );
 
-            _canonicalChainComparer = new TotalDifficultyComparer();
-
             _store = new MemoryStore();
             foreach (Block<DumbAction> b in _chainA.Concat(_chainB))
             {
@@ -105,9 +84,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedRenderer<DumbAction>(
                     new AnonymousRenderer<DumbAction>(),
-                    _canonicalChainComparer,
                     _store,
-                    _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                     confirmations: invalidConfirmations
                 )
             );
@@ -130,9 +107,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var renderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Null(renderer.Tip);
@@ -173,7 +148,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0U, reorgs);
         }
 
-        [Fact]
+        [Fact(Skip = "No fork in PBFT.")]
         public virtual void BlocksBeingAppendedInParallel()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
@@ -189,9 +164,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             var renderer = new LoggedRenderer<DumbAction>(

@@ -117,8 +117,6 @@ namespace Libplanet.Store
         /// Gets the corresponding stored <see cref="Block{T}"/> to the given
         /// <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
         /// <returns>A found block, or <c>null</c> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
@@ -126,7 +124,7 @@ namespace Libplanet.Store
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         // FIXME: We need to get rid of <T> and let this method be agnostic about Block<T>,
         // which is too high-level abstraction for IStore.
-        Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new();
 
         /// <summary>

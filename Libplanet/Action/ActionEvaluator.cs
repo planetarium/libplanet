@@ -70,11 +70,13 @@ namespace Libplanet.Action
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
+            ImmutableArray<byte> hash = block.PreviousHash?.ByteArray ??
+                                        ImmutableArray<byte>.Empty;
             _logger.Debug(
                 "Evaluating actions in the block #{BlockIndex} " +
-                "pre-evaluation hash: {PreEvaluationHash}...",
+                "previous hash: {PreviousHash}...",
                 block.Index,
-                ByteUtil.Hex(block.PreEvaluationHash)
+                ByteUtil.Hex(hash)
             );
             DateTimeOffset evaluateActionStarted = DateTimeOffset.Now;
             try
@@ -117,10 +119,10 @@ namespace Libplanet.Action
                     .ForContext("Subtag", "BlockEvaluationDuration")
                     .Debug(
                         "Actions in {TxCount} transactions for block #{BlockIndex} " +
-                        "pre-evaluation hash: {PreEvaluationHash} evaluated in {DurationMs:F0}ms.",
+                        "previous hash: {PreviousHash} evaluated in {DurationMs:F0}ms.",
                         block.Transactions.Count,
                         block.Index,
-                        ByteUtil.Hex(block.PreEvaluationHash),
+                        ByteUtil.Hex(hash),
                         evalDuration.TotalMilliseconds
                     );
             }
@@ -159,7 +161,7 @@ namespace Libplanet.Action
                 NullAccountBalanceGetter,
                 tx.Signer);
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
-                preEvaluationHash: ImmutableArray<byte>.Empty,
+                previousHash: ImmutableArray<byte>.Empty,
                 blockIndex: default,
                 txid: tx.Id,
                 previousStates: previousStates,
@@ -184,7 +186,7 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
+        /// <param name="previousHash">The <see cref="Block{T}.PreviousHash"/> of
         /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// that <paramref name="actions"/> belong to.</param>
@@ -229,7 +231,7 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
-            ImmutableArray<byte> preEvaluationHash,
+            ImmutableArray<byte>? previousHash,
             long blockIndex,
             TxId? txid,
             IAccountStateDelta previousStates,
@@ -262,10 +264,11 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] preEvaluationHashBytes = preEvaluationHash.ToBuilder().ToArray();
+            byte[] previousHashBytes =
+                (previousHash ?? ImmutableArray<byte>.Empty).ToBuilder().ToArray();
             int seed =
-                (preEvaluationHashBytes.Length > 0
-                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
+                (previousHashBytes.Length > 0
+                    ? BitConverter.ToInt32(previousHashBytes, 0) : 0)
                 ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;
@@ -287,7 +290,7 @@ namespace Libplanet.Action
                     // of the node, we should throw without further handling.
                     var message =
                         "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                        "pre-evaluation hash {PreEvaluationHash} threw an exception " +
+                        "previous hash {PreviousHash} threw an exception " +
                         "during execution.";
                     logger?.Error(
                         e,
@@ -295,7 +298,7 @@ namespace Libplanet.Action
                         action,
                         txid,
                         blockIndex,
-                        ByteUtil.Hex(preEvaluationHash));
+                        ByteUtil.Hex(previousHashBytes));
                     throw;
                 }
                 catch (Exception e)
@@ -319,7 +322,7 @@ namespace Libplanet.Action
                         var stateRootHash = context.PreviousStateRootHash;
                         var message =
                             "Action {Action} of tx {TxId} of block #{BlockIndex} with " +
-                            "pre-evaluation hash {PreEvaluationHash} and previous " +
+                            "previous hash {PreviousHash} and previous " +
                             "state root hash {StateRootHash} threw an exception " +
                             "during execution.";
                         logger?.Error(
@@ -328,18 +331,18 @@ namespace Libplanet.Action
                             action,
                             txid,
                             blockIndex,
-                            ByteUtil.Hex(preEvaluationHash),
+                            ByteUtil.Hex(previousHashBytes),
                             stateRootHash);
                         var innerMessage =
                             $"The action {action} (block #{blockIndex}, " +
-                            $"pre-evaluation hash {ByteUtil.Hex(preEvaluationHash)}, tx {txid}, " +
+                            $"previous hash {ByteUtil.Hex(previousHashBytes)}, tx {txid}, " +
                             $"previous state root hash {stateRootHash}) threw " +
                             "an exception during execution.  " +
                             "See also this exception's InnerException property.";
                         logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
-                            preEvaluationHash,
+                            previousHash,
                             blockIndex,
                             txid,
                             stateRootHash,
@@ -374,12 +377,12 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Deterministically shuffles <paramref name="txs"/> for evaluation using
-        /// <paramref name="preEvaluationHash"/> as a random seed.
+        /// <paramref name="previousHash"/> as a random seed.
         /// </summary>
         /// <param name="protocolVersion">The <see cref="Block{T}.ProtocolVersion"/> that
         /// <paramref name="txs"/> belong to.</param>
         /// <param name="txs">The list of <see cref="Transaction{T}"/>s to shuffle.</param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> to use
+        /// <param name="previousHash">The <see cref="Block{T}.PreviousHash"/> to use
         /// as a random seed when shuffling.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Transaction{T}"/>s in evaluation
         /// order with the following properties:
@@ -397,11 +400,11 @@ namespace Libplanet.Action
         internal static IEnumerable<Transaction<T>> OrderTxsForEvaluation(
             int protocolVersion,
             IEnumerable<Transaction<T>> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte>? previousHash)
         {
             return protocolVersion >= 3
-                ? OrderTxsForEvaluationV3(txs, preEvaluationHash)
-                : OrderTxsForEvaluationV0(txs, preEvaluationHash);
+                ? OrderTxsForEvaluationV3(txs, previousHash)
+                : OrderTxsForEvaluationV0(txs, previousHash);
         }
 
         /// <summary>
@@ -451,7 +454,7 @@ namespace Libplanet.Action
             IEnumerable<Transaction<T>> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
-                block.PreEvaluationHash
+                block.PreviousHash?.ByteArray
             ).WithMeasuringTime(
                 sw => _logger.Verbose(
                     "Took {ElapsedMilliseconds}ms to order transactions.",
@@ -527,11 +530,11 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null) => EvaluateActions(
-                preEvaluationHash: block.PreEvaluationHash,
+                previousHash: block.PreviousHash?.ByteArray,
                 blockIndex: block.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: block.Miner,
+                miner: block.Proposer,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: tx.Actions.Cast<IAction>().ToImmutableList(),
@@ -606,15 +609,15 @@ namespace Libplanet.Action
 
             _logger.Debug(
                 $"Evaluating policy block action for block #{block.Index} " +
-                $"{block.PreEvaluationHash}");
+                $"{block.PreviousHash}");
 
             return EvaluateActions(
-                preEvaluationHash: block.PreEvaluationHash,
+                previousHash: block.PreviousHash?.ByteArray,
                 blockIndex: block.Index,
                 txid: null,
                 previousStates: previousStates,
-                miner: block.Miner,
-                signer: block.Miner,
+                miner: block.Proposer,
+                signer: block.Proposer,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
@@ -625,15 +628,16 @@ namespace Libplanet.Action
         [Pure]
         private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV0(
             IEnumerable<Transaction<T>> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte>? previousHash)
         {
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
-            var maskInteger = new BigInteger(preEvaluationHash.ToBuilder().ToArray());
+            var maskInteger =
+                new BigInteger(previousHash?.ToBuilder().ToArray() ?? new byte[] { 0x00 });
 
             // Transactions with the same signers are grouped first and the ordering of the groups
             // is determined by the XOR aggregate of the txid's in the group with XOR bitmask
-            // applied using the pre-evaluation hash provided.  Then within each group,
+            // applied using the previous hash provided.  Then within each group,
             // transactions are ordered by nonce.
             return txs
                 .GroupBy(tx => tx.Signer)
@@ -647,22 +651,25 @@ namespace Libplanet.Action
         [Pure]
         private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV3(
             IEnumerable<Transaction<T>> txs,
-            ImmutableArray<byte> preEvaluationHash)
+            ImmutableArray<byte>? previousHash)
         {
             using SHA256 sha256 = SHA256.Create();
 
             // Some deterministic preordering is necessary.
             var groups = txs.GroupBy(tx => tx.Signer).OrderBy(group => group.Key).ToList();
 
+            byte[] previousHashBytes =
+                (previousHash ?? ImmutableArray<byte>.Empty).ToBuilder().ToArray();
+
             // Although strictly not necessary, additional hash computation removes zero padding
             // just in case.
-            byte[] reHash = sha256.ComputeHash(preEvaluationHash.ToBuilder().ToArray());
+            byte[] reHash = sha256.ComputeHash(previousHashBytes);
 
             // As BigInteger uses little-endian, we take the last byte for parity to prevent
             // the value of reverse directly tied to the parity of startIndex below.
             bool reverse = reHash.Last() % 2 == 1;
 
-            // This assumes the entropy of preEvaluationHash, thus reHash, is large enough and
+            // This assumes the entropy of previousHash, thus reHash, is large enough and
             // its range with BigInteger conversion also is large enough that selection of
             // startIndex is approximately uniform.
             int startIndex = groups.Count <= 1
@@ -695,7 +702,7 @@ namespace Libplanet.Action
         {
             (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
-            Address miner = block.Miner;
+            Address miner = block.Proposer;
 
             return block.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)

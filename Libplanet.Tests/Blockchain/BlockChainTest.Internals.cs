@@ -103,13 +103,11 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs,
-                miner: _fx.Miner.PublicKey,
-                difficulty: _policy.GetNextBlockDifficulty(_blockChain)
-            ).Evaluate(_fx.Miner, _blockChain);
+                proposer: _fx.Proposer.PublicKey
+            ).Evaluate(_fx.Proposer, _blockChain);
 
             _blockChain.Append(
                 block1,
@@ -118,7 +116,7 @@ namespace Libplanet.Tests.Blockchain
                 renderActions: false
             );
 
-            var minerAddress = genesis.Miner;
+            var minerAddress = genesis.Proposer;
 
             var expectedStates = new Dictionary<Address, IValue>
             {

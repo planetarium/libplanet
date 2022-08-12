@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
 using Libplanet.Action;
 using Libplanet.Tx;
 
@@ -36,12 +35,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -72,11 +65,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -107,11 +95,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -210,36 +193,8 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying the block
-        /// <see cref="BlockMetadata.Difficulty"/>, and returns a valid
-        /// <see cref="PreEvaluationBlock{T}"/> instance.
-        /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
-        /// hash.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A <see cref="PreEvaluationBlock{T}"/> instance with a valid proof-of-work.
-        /// </returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public PreEvaluationBlock<T> Mine(
-            HashAlgorithmType hashAlgorithm,
-            CancellationToken cancellationToken = default
-        ) =>
-            new PreEvaluationBlock<T>(
-                this,
-                hashAlgorithm,
-                MineNonce(hashAlgorithm, cancellationToken)
-            );
-
-        public PreEvaluationBlock<T> Propose(
-            HashAlgorithmType hashAlgorithm,
-            ImmutableArray<byte> preEvaluationHash) =>
-            new PreEvaluationBlock<T>(
-                this,
-                hashAlgorithm,
-                (default, preEvaluationHash));
+        public PreEvaluationBlock<T> Propose() =>
+            new PreEvaluationBlock<T>(this);
 
         /// <summary>
         /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.

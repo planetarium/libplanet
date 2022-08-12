@@ -50,14 +50,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 if (message is ConsensusPropose propose && message.Height == 2)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        BlockChain.Policy.GetHashAlgorithm,
                         (Dictionary)codec.Decode(propose!.Payload));
                     heightTwoProposeSent.Set();
                 }
             };
 
             ConsensusContext.NewHeight(1);
-            var block1 = await BlockChain.MineBlock(TestUtils.Peer1Priv, append: false);
+            var block1 = BlockChain.ProposeBlock(TestUtils.Peer1Priv);
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
                     TestUtils.Peer1.PublicKey,
@@ -140,8 +139,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            await BlockChain.MineBlock(TestUtils.Peer1Priv, append: true);
-            var blockHeightThree = await BlockChain.MineBlock(TestUtils.Peer3Priv, append: false);
+            BlockChain.Append(BlockChain.ProposeBlock(TestUtils.Peer1Priv));
+            var blockHeightThree = BlockChain.ProposeBlock(TestUtils.Peer3Priv);
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
             await proposeSent.WaitAsync();

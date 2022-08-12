@@ -158,7 +158,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
-                    header.PreEvaluationHash
+                    header.PreviousHash?.ByteArray
                 );
 
                 expectedUnrenderedActions.AddRange(
@@ -167,7 +167,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 
@@ -180,7 +180,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
-                    header.PreEvaluationHash
+                    header.PreviousHash?.ByteArray
                 );
                 IEnumerable<IAction> actions =
                     transactions.SelectMany(t => t.Actions).Cast<IAction>();
@@ -201,7 +201,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 

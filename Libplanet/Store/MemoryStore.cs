@@ -150,14 +150,14 @@ namespace Libplanet.Store
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
 
-        Block<T> IStore.GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        Block<T> IStore.GetBlock<T>(BlockHash blockHash)
         {
             if (!_blocks.TryGetValue(blockHash, out BlockDigest digest))
             {
                 return null;
             }
 
-            BlockHeader header = digest.GetHeader(hashAlgorithmGetter);
+            BlockHeader header = digest.GetHeader();
             ImmutableArray<TxId> txids = digest.TxIds
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();

@@ -65,11 +65,7 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives delayed events.</param>
-        /// <param name="canonicalChainComparer">The same canonical chain comparer to
-        /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
         /// <param name="reorgResistantHeight">Configures the height of blocks to maintain the
@@ -78,12 +74,10 @@ namespace Libplanet.Blockchain.Renderers
         /// If zero, which is a default value, is passed the buffer is not cleared.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
-            IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
-            HashAlgorithmGetter hashAlgorithmGetter,
             int confirmations,
             long reorgResistantHeight = 0)
-            : base(renderer, canonicalChainComparer, store, hashAlgorithmGetter, confirmations)
+            : base(renderer, store, confirmations)
         {
             ActionRenderer = renderer;
             _bufferedActionRenders = new ConcurrentDictionary<BlockHash, List<ActionEvaluation>>();
@@ -311,7 +305,7 @@ namespace Libplanet.Blockchain.Renderers
                 for (
                     Block<T>? b = upper;
                     b is Block<T> && b.Index > lower.Index;
-                    b = b.PreviousHash is { } pv ? Store.GetBlock<T>(HashAlgorithmGetter, pv) : null
+                    b = b.PreviousHash is { } pv ? Store.GetBlock<T>(pv) : null
                 )
                 {
                     yield return b.Hash;

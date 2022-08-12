@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Action
         public void Serializable()
         {
             var innerExc = new Exception("inner");
-            ImmutableArray<byte> preEvaluationHash =
+            ImmutableArray<byte> previousHash =
                 TestUtils.GetRandomBytes(32).ToImmutableArray();
             long blockIndex = 100;
             var txId = new TxId(TestUtils.GetRandomBytes(TxId.Size));
@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Action
             };
 
             var exc = new UnexpectedlyTerminatedActionException(
-                preEvaluationHash,
+                previousHash,
                 blockIndex,
                 txId,
                 previousStateRootHash,
@@ -49,7 +49,7 @@ namespace Libplanet.Tests.Action
                 Assert.IsType<Exception>(deserialized.InnerException);
                 Assert.Equal(innerExc.Message, deserialized.InnerException.Message);
 
-                Assert.Equal(preEvaluationHash, deserialized.PreEvaluationHash);
+                Assert.Equal(previousHash, deserialized.PreviousHash);
                 Assert.Equal(blockIndex, deserialized.BlockIndex);
                 Assert.Equal(txId, deserialized.TxId);
                 Assert.Equal(previousStateRootHash, deserialized.PreviousStateRootHash);

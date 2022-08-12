@@ -25,12 +25,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <seealso cref="BlockMetadata(IBlockMetadata)"/>
         public static BlockMetadata Copy(this IBlockMetadata metadata) =>
             new BlockMetadata(metadata);

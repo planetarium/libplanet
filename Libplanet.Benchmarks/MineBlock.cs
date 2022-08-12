@@ -29,9 +29,11 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockEmpty()
+        public Block<DumbAction> MineBlockEmpty()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            var block = _blockChain.ProposeBlock(_privateKey);
+            _blockChain.Append(block);
+            return block;
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionNoAction")]
@@ -41,9 +43,11 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockOneTransactionNoAction()
+        public Block<DumbAction> MineBlockOneTransactionNoAction()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            var block = _blockChain.ProposeBlock(_privateKey);
+            _blockChain.Append(block);
+            return block;
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsNoAction")]
@@ -56,9 +60,11 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockTenTransactionsNoAction()
+        public Block<DumbAction> MineBlockTenTransactionsNoAction()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            var block = _blockChain.ProposeBlock(_privateKey);
+            _blockChain.Append(block);
+            return block;
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionWithActions")]
@@ -77,9 +83,11 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockOneTransactionWithActions()
+        public Block<DumbAction> MineBlockOneTransactionWithActions()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            var block = _blockChain.ProposeBlock(_privateKey);
+            _blockChain.Append(block);
+            return block;
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsWithActions")]
@@ -101,9 +109,11 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockTenTransactionsWithActions()
+        public Block<DumbAction> MineBlockTenTransactionsWithActions()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            var block = _blockChain.ProposeBlock(_privateKey);
+            _blockChain.Append(block);
+            return block;
         }
     }
 }

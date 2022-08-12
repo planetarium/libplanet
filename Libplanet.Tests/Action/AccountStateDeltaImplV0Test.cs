@@ -55,11 +55,10 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            PreEvaluationBlock<DumbAction> preEval = TestUtils.MineNext(
+            PreEvaluationBlock<DumbAction> preEval = TestUtils.ProposeNext(
                 chain.Tip,
-                chain.Policy.GetHashAlgorithm,
                 new[] { tx },
-                miner: _keys[1].PublicKey,
+                proposer: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion
             );
             chain.Append(

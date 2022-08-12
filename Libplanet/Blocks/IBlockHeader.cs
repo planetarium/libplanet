@@ -6,8 +6,8 @@ using Libplanet.Store.Trie;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A common interface for blocks that have their proof-of-work <see cref="Nonce"/>s and
-    /// <see cref="StateRootHash"/>es, but no transactions.
+    /// A common interface for blocks that have their <see cref="StateRootHash"/>es,
+    /// but no transactions.
     /// </summary>
     public interface IBlockHeader : IPreEvaluationBlockHeader, IBlockExcerpt
     {
@@ -21,7 +21,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The digital signature of the whole block content (except for
         /// <see cref="IBlockExcerpt.Hash"/>, which is derived from the signature and other
-        /// contents).  This is made by the <see cref="IBlockMetadata.Miner"/>'s
+        /// contents).  This is made by the <see cref="IBlockMetadata.Proposer"/>'s
         /// <see cref="PrivateKey"/>.
         /// <para>As the block signature is introduced since the protocol version 2, it is
         /// <c>null</c> for blocks with earlier protocol versions than 2.  Although the property

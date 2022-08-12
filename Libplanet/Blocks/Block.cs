@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -37,12 +36,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -55,19 +48,10 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
         /// <paramref name="header"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
         /// its <paramref name="transactions"/>.</exception>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
-        /// <paramref name="header"/> has an invalid
-        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given
-        /// <paramref name="header"/>'s <see cref="IPreEvaluationBlockHeader.Nonce"/> does not
-        /// satisfy the required <see cref="PreEvaluationBlockHeader.Difficulty"/>.</exception>
         public Block(IBlockHeader header, IEnumerable<Transaction<T>> transactions)
             : this(
                 new PreEvaluationBlock<T>(
-                    new BlockContent<T>(header, transactions),
-                    header.HashAlgorithm,
-                    header.Nonce,
-                    header.PreEvaluationHash
+                    new BlockContent<T>(header, transactions)
                 ),
                 header.StateRootHash,
                 header.Signature
@@ -99,17 +83,11 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlock.ProtocolVersion;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _preEvaluationBlock.HashAlgorithm;
-
         /// <inheritdoc cref="IBlockExcerpt.Hash"/>
         public BlockHash Hash => Header.Hash;
 
         /// <inheritdoc cref="IBlockHeader.Signature"/>
         public ImmutableArray<byte>? Signature => Header.Signature;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash => _preEvaluationBlock.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash => Header.StateRootHash;
@@ -117,17 +95,8 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _preEvaluationBlock.Index;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _preEvaluationBlock.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _preEvaluationBlock.TotalDifficulty;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlock.Nonce;
-
-        /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner => _preEvaluationBlock.Miner;
+        /// <inheritdoc cref="IBlockMetadata.Proposer"/>
+        public Address Proposer => _preEvaluationBlock.Proposer;
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _preEvaluationBlock.PublicKey;
@@ -178,8 +147,7 @@ namespace Libplanet.Blocks
                 return false;
             }
 
-            return ReferenceEquals(this, other) ||
-                (Hash.Equals(other.Hash) && HashAlgorithm.Equals(other.HashAlgorithm));
+            return ReferenceEquals(this, other) || Hash.Equals(other.Hash);
         }
 
         /// <inheritdoc cref="object.Equals(object?)"/>
@@ -188,7 +156,7 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode() =>
-            unchecked((17 * 31 + Hash.GetHashCode()) * 31 + HashAlgorithm.GetHashCode());
+            unchecked((17 * 31 + Hash.GetHashCode()) * 31);
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() =>

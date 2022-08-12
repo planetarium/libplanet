@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -42,7 +41,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await minerChain.MineBlock(minerKey);
+                minerChain.Append(minerChain.ProposeBlock(minerKey));
             }
 
             try
@@ -82,13 +81,13 @@ namespace Libplanet.Net.Tests
                 transfer: Tuple.Create<Address, Address, BigInteger>(address1, address2, 10));
 
             minerChain.MakeTransaction(key, new[] { action });
-            await minerChain.MineBlock(minerKey);
+            minerChain.Append(minerChain.ProposeBlock(minerKey));
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "bar") });
-            await minerChain.MineBlock(minerKey);
+            minerChain.Append(minerChain.ProposeBlock(minerKey));
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "baz") });
-            await minerChain.MineBlock(minerKey);
+            minerChain.Append(minerChain.ProposeBlock(minerKey));
 
             try
             {
@@ -119,11 +118,9 @@ namespace Libplanet.Net.Tests
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 11))
             {
-                Block<DumbAction> block = MineNext(
+                Block<DumbAction> block = ProposeNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: 1024
+                    proposer: ChainPrivateKey.PublicKey
                 ).Evaluate(ChainPrivateKey, minerChain);
                 blocks.Add(block);
                 if (i != 10)
@@ -289,7 +286,7 @@ namespace Libplanet.Net.Tests
             for (var i = 0; i < iteration; i++)
             {
                 sender.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
-                await sender.BlockChain.MineBlock(senderKey);
+                sender.BlockChain.Append(sender.BlockChain.ProposeBlock(senderKey));
             }
 
             renderer1.RenderEventHandler += (_, a) =>
@@ -329,7 +326,7 @@ namespace Libplanet.Net.Tests
 
             foreach (var unused in Enumerable.Range(0, 10))
             {
-                await minerSwarm.BlockChain.MineBlock(minerKey);
+                minerSwarm.BlockChain.Append(minerSwarm.BlockChain.ProposeBlock(minerKey));
             }
 
             try
@@ -351,12 +348,10 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block<ThrowException> block = MineNext(
+                Block<ThrowException> block = ProposeNext(
                     minerChain.Tip,
-                    minerChain.Policy.GetHashAlgorithm,
                     new[] { tx },
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: policy.GetNextBlockDifficulty(minerChain),
+                    proposer: ChainPrivateKey.PublicKey,
                     blockInterval: TimeSpan.FromSeconds(1)
                 ).Evaluate(ChainPrivateKey, minerChain);
                 minerSwarm.BlockChain.Append(block, false, true, false);
@@ -401,7 +396,7 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await minerChain.MineBlock(minerKey);
+                minerChain.Append(minerChain.ProposeBlock(minerKey));
             }
 
             var actualStates = new List<PreloadState>();
@@ -523,7 +518,8 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < blockCount; ++i)
             {
-                var block = await swarm0.BlockChain.MineBlock(key0);
+                var block = swarm0.BlockChain.ProposeBlock(key0);
+                swarm0.BlockChain.Append(block);
                 swarm1.BlockChain.Append(block);
             }
 
@@ -577,7 +573,7 @@ namespace Libplanet.Net.Tests
             Guid receiverChainId = receiverChain.Id;
 
             (Address address, IEnumerable<Block<DumbAction>> blocks) =
-                await MakeFixtureBlocksForPreloadAsyncCancellationTest();
+                MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
             var blockArray = blocks.ToArray();
             foreach (Block<DumbAction> block in blockArray)
@@ -656,7 +652,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             (_, IEnumerable<Block<DumbAction>> blocks) =
-                await MakeFixtureBlocksForPreloadAsyncCancellationTest();
+                MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -697,21 +693,22 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 25))
             {
-                Block<DumbAction> block = await minerChain.MineBlock(minerKey);
+                Block<DumbAction> block = minerChain.ProposeBlock(minerKey);
+                minerChain.Append(block);
                 receiverChain.Append(block);
             }
 
             var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
             foreach (int i in Enumerable.Range(0, 20))
             {
-                await receiverForked.MineBlock(minerKey);
+                receiverForked.Append(receiverForked.ProposeBlock(minerKey));
             }
 
             receiverChain.Swap(receiverForked, false);
 
             foreach (int i in Enumerable.Range(0, 1))
             {
-                await minerChain.MineBlock(minerKey);
+                minerChain.Append(minerChain.ProposeBlock(minerKey));
             }
 
             minerSwarm.FindNextHashesChunkSize = 1;
@@ -742,7 +739,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             Block<DumbAction>[] blocks =
-                (await MakeFixtureBlocksForPreloadAsyncCancellationTest()).Item2;
+                MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -752,7 +749,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> forked = minerChain.Fork(minerChain.Genesis.Hash);
             while (forked.Count <= minerChain.Count)
             {
-                await forked.MineBlock(minerKey);
+                forked.Append(forked.ProposeBlock(minerKey));
             }
 
             minerSwarm.FindNextHashesChunkSize = 2;
@@ -792,7 +789,7 @@ namespace Libplanet.Net.Tests
 
             receiverChain = receiverChain.Fork(receiverChain.Genesis.Hash);
             Block<DumbAction>[] blocks =
-                (await MakeFixtureBlocksForPreloadAsyncCancellationTest()).Item2;
+                MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -815,73 +812,22 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFromTheMostDifficultChain()
-        {
-            var minerKey1 = new PrivateKey();
-            Swarm<DumbAction> minerSwarm1 = CreateSwarm(minerKey1);
-            Swarm<DumbAction> minerSwarm2 = CreateSwarm();
-            Swarm<DumbAction> receiverSwarm = CreateSwarm();
-            BlockChain<DumbAction> minerChain1 = minerSwarm1.BlockChain;
-            BlockChain<DumbAction> minerChain2 = minerSwarm2.BlockChain;
-            BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
-
-            await minerChain1.MineBlock(minerKey1);
-            await minerChain1.MineBlock(minerKey1);
-
-            long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
-                                  minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
-            Block<DumbAction> block = MineNext(
-                minerChain2.Tip,
-                minerChain2.Policy.GetHashAlgorithm,
-                miner: ChainPrivateKey.PublicKey,
-                difficulty: nextDifficulty
-            ).Evaluate(ChainPrivateKey, minerChain2);
-            minerChain2.Append(block);
-
-            Assert.True(minerChain1.Count > minerChain2.Count);
-            Assert.True(minerChain1.Tip.TotalDifficulty < minerChain2.Tip.TotalDifficulty);
-
-            try
-            {
-                await StartAsync(minerSwarm1);
-                await StartAsync(minerSwarm2);
-                await receiverSwarm.AddPeersAsync(
-                    new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
-                    null);
-                await receiverSwarm.PreloadAsync();
-            }
-            finally
-            {
-                await StopAsync(minerSwarm1);
-                await StopAsync(minerSwarm2);
-                await StopAsync(receiverSwarm);
-            }
-
-            Assert.Equal(minerChain2.Count, receiverChain.Count);
-            Assert.Equal(minerChain2.Tip, receiverChain.Tip);
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task PreloadIgnorePeerWithDifferentGenesisBlock()
         {
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            var genesisContent = new BlockContent<DumbAction>
+            var genesisContent1 = new BlockContent<DumbAction>
             {
                 PublicKey = minerKey.PublicKey,
                 Timestamp = DateTimeOffset.MinValue,
             };
-            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
-                genesisContent,
-                hashAlgorithm,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
-            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
-                genesisContent,
-                hashAlgorithm,
-                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
-            );
+            var genesisContent2 = new BlockContent<DumbAction>
+            {
+                PublicKey = minerKey.PublicKey,
+                Timestamp = DateTimeOffset.MinValue + TimeSpan.FromSeconds(1),
+            };
+            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(genesisContent1);
+            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(genesisContent2);
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
                 PreEvaluationBlock<DumbAction> genesisBlock)
@@ -907,12 +853,12 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                await validSeedChain.MineBlock(minerKey);
+                validSeedChain.Append(validSeedChain.ProposeBlock(minerKey));
             }
 
             for (int i = 0; i < 20; i++)
             {
-                await invalidSeedChain.MineBlock(minerKey);
+                invalidSeedChain.Append(invalidSeedChain.ProposeBlock(minerKey));
             }
 
             try
@@ -955,7 +901,8 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var block = await seedChain.MineBlock(seedKey);
+                var block = seedChain.ProposeBlock(seedKey);
+                seedChain.Append(block);
                 receiverChain.Append(block);
             }
 
@@ -963,7 +910,7 @@ namespace Libplanet.Net.Tests
             seedChain.Swap(forked, false);
             for (int i = 0; i < 10; i++)
             {
-                await seedChain.MineBlock(seedKey);
+                seedChain.Append(seedChain.ProposeBlock(seedKey));
             }
 
             var actionExecutionCount = 0;
@@ -1014,7 +961,7 @@ namespace Libplanet.Net.Tests
                     {
                         new DumbAction(default, $"Item{i}"),
                     });
-                await seedChain.MineBlock(seedKey);
+                seedChain.Append(seedChain.ProposeBlock(seedKey));
                 transactions.Add(transaction);
             }
 

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Bencodex;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -21,7 +20,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitNil()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
@@ -75,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlock()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var targetHash = block.Hash;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
@@ -178,8 +177,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EndCommitBlock()
         {
-            var codec = new Codec();
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
@@ -264,7 +262,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlock()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             var targetHash = block.Hash;
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var voteSent = new AsyncAutoResetEvent();

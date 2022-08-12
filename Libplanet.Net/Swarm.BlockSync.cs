@@ -182,10 +182,7 @@ namespace Libplanet.Net
 
                     block.ValidateTimestamp();
                     blocks.Add(block);
-                    if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                    if (tempTip is null || block.Index > tempTip.Index)
                     {
                         tempTip = block;
                     }
@@ -195,9 +192,7 @@ namespace Libplanet.Net
                 Block<T> branchpoint;
                 if (previousHash != null)
                 {
-                    branchpoint = BlockChain.Store.GetBlock<T>(
-                        BlockChain.Policy.GetHashAlgorithm,
-                        (BlockHash)previousHash);
+                    branchpoint = BlockChain.Store.GetBlock<T>((BlockHash)previousHash);
                 }
                 else
                 {
@@ -438,14 +433,9 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
-                    HashAlgorithmType hashAlgorithm =
-                        workspace.Policy.GetHashAlgorithm(block.Index);
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
-                    if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                    if (tempTip is null || block.Index > tempTip.Index)
                     {
                         tempTip = block;
                     }
@@ -490,19 +480,14 @@ namespace Libplanet.Net
                         Block<T> b = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(
-                                BlockChain.Policy.GetHashAlgorithm,
-                                p
-                            );
+                            blockToAdd = workspace.Store.GetBlock<T>(p);
                         }
                         else
                         {
                             break;
                         }
                     }
-                    else if (BlockChain.Policy.CanonicalChainComparer.Compare(
-                                 BlockChain.PerceiveBlock(tipCandidate),
-                                 BlockChain.PerceiveBlock(tempTip)) <= 0)
+                    else if (tipCandidate.Index <= tempTip.Index)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -595,8 +580,6 @@ namespace Libplanet.Net
                     _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
                 }
 
-                IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-
                 if (!complete
                     || workspace.Tip == BlockChain.Tip
                     || cancellationToken.IsCancellationRequested)
@@ -613,9 +596,7 @@ namespace Libplanet.Net
                         BlockChain.Tip.Hash
                     );
                 }
-                else if (canonComparer.Compare(
-                        BlockChain.PerceiveBlock(workspace.Tip),
-                        BlockChain.PerceiveBlock(BlockChain.Tip)) < 0)
+                else if (BlockChain.Tip.Index >= workspace.Tip.Index)
                 {
                     _logger.Debug(
                         $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +

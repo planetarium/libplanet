@@ -25,25 +25,11 @@ namespace Libplanet.Explorer.GraphTypes
             description: "The height of the block.",
             resolve: x => x.Source.Index
             );
-            Field<NonNullGraphType<LongGraphType>>(
-            name: "Difficulty",
-            description: "The mining difficulty that the block's Nonce has to satisfy.",
-            resolve: x => x.Source.Difficulty);
-            Field<NonNullGraphType<BigIntGraphType>>(
-            name: "TotalDifficulty",
-            description: @"The total mining difficulty since the genesis including
-            the block's Difficulty.",
-            resolve: x => x.Source.TotalDifficulty);
-            Field<NonNullGraphType<ByteStringType>>(
-            name: "Nonce",
-            description: "The proof-of-work nonce which satisfies the required Difficulty.",
-            resolve: ctx => ctx.Source.Nonce.ToByteArray()
-            );
             Field(
             type: typeof(NonNullGraphType<AddressType>),
-            name: "Miner",
-            description: "The address of the miner.",
-            resolve: x => x.Source.Miner
+            name: "Proposer",
+            description: "The address of the proposer.",
+            resolve: x => x.Source.Proposer
             );
             Field(
             type: typeof(PublicKeyType),
@@ -64,9 +50,8 @@ namespace Libplanet.Explorer.GraphTypes
 
                 // FIXME: (BlockChain<T>) casting does not work
                 // REF COMMIT HASH: d50c90933c17a70381ad758719144e01bf9c21dc
-                HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
                 var store = (IStore)ctx.UserContext[nameof(IBlockChainContext<T>.Store)];
-                return store.GetBlock<T>(hashAlgorithmGetter, h);
+                return store.GetBlock<T>(h);
             });
             Field(x => x.Timestamp);
             Field<NonNullGraphType<ByteStringType>>(

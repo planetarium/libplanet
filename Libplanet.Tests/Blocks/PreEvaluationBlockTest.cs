@@ -29,14 +29,11 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                minimumDifficulty: 2,
-                difficultyStability: 1
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
+            PreEvaluationBlock<Arithmetic> preEvalGenesis = _contents.Genesis.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -60,9 +57,8 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
@@ -84,14 +80,11 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                minimumDifficulty: 2,
-                difficultyStability: 1
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
-            PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
+            PreEvaluationBlock<Arithmetic> preEvalGenesis = _contents.Genesis.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -117,9 +110,8 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);

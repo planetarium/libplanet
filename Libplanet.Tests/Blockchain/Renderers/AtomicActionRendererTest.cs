@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
@@ -41,9 +40,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public async Task Block()
+        public void Block()
         {
-            await _fx.Mine();
+            _fx.ProposeAndAppend();
             IReadOnlyList<RenderRecord<Arithmetic>> records = _record.Records;
             Assert.Equal(5, records.Count);
             AssertTypeAnd<RenderRecord<Arithmetic>.Block>(records[0], r => Assert.True(r.Begin));
@@ -66,10 +65,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public async Task Reorg()
+        public void Reorg()
         {
             BlockChain<Arithmetic> @base = _fx.Chain.Fork(_fx.Genesis.Hash);
-            await _fx.Mine();
+            _fx.ProposeAndAppend();
             _record.ResetRecords();
             _fx.Chain.Swap(@base, true)();
             IReadOnlyList<RenderRecord<Arithmetic>> records = _record.Records;

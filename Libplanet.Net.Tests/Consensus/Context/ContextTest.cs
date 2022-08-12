@@ -82,7 +82,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.NotNull(proposedMessage);
             Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                BlockChain.Policy.GetHashAlgorithm,
                 (Dictionary)new Codec().Decode(proposedMessage!.Payload));
             Assert.NotNull(mined.LastCommit);
             Assert.Equal(
@@ -93,7 +92,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowInvalidProposer()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
             Context.ExceptionOccurred += (sender, e) =>
@@ -136,7 +135,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowInvalidValidatorVote()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
             Context.ExceptionOccurred += (sender, e) =>
@@ -182,7 +181,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowDifferentHeight()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
 
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();

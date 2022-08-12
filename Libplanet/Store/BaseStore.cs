@@ -60,12 +60,12 @@ namespace Libplanet.Store
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
         /// <inheritdoc cref="IStore.GetBlock{T}"/>
-        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
+                BlockHeader header = blockDigest.GetHeader();
                 (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
                     .Select(txid => (txid, GetTransaction<T>(txid)))

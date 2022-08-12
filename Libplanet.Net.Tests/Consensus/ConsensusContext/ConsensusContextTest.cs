@@ -110,7 +110,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void NewHeightWhenTipChanged()
         {
             Assert.Equal(1, ConsensusContext.Height);
-            await BlockChain.MineBlock(new PrivateKey(), append: true);
+            BlockChain.Append(BlockChain.ProposeBlock(new PrivateKey()));
             Assert.Equal(1, ConsensusContext.Height);
             await Task.Delay(NewHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, ConsensusContext.Height);

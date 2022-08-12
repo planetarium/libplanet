@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -37,9 +35,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedActionRenderer<DumbAction>(
                     new AnonymousActionRenderer<DumbAction>(),
-                    _canonicalChainComparer,
                     _store,
-                    _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                     confirmations: invalidConfirmations
                 )
             );
@@ -81,9 +77,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var renderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Null(renderer.Tip);
@@ -158,7 +152,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0U, unintendedCalls);
         }
 
-        [Fact]
+        [Fact(Skip = "No fork in PBFT.")]
         public override void BlocksBeingAppendedInParallel()
         {
             // FIXME: Eliminate duplication between this and DelayedRendererTest
@@ -184,9 +178,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -424,9 +416,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var renderer = new DelayedActionRenderer<DumbAction>(
                 new AnonymousActionRenderer<DumbAction>(),
-                _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Equal(
@@ -441,8 +431,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
         }
 
-        [Fact]
-        public async Task ClearRenderBufferWhenItsInterval()
+        [Fact(Skip = "No fork in PBFT.")]
+        public void ClearRenderBufferWhenItsInterval()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -468,9 +458,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 2,
                 4
             );
@@ -491,10 +479,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var repeatCount = 10;
             for (int i = 0; i < repeatCount; i++)
             {
-                await chain.MineBlock(key);
-                await fork1.MineBlock(key);
-                await fork2.MineBlock(key);
-                await fork3.MineBlock(key);
+                chain.Append(chain.ProposeBlock(key));
+                fork1.Append(fork1.ProposeBlock(key));
+                fork2.Append(fork2.ProposeBlock(key));
+                fork3.Append(fork3.ProposeBlock(key));
             }
 
             Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
@@ -508,7 +496,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             for (int i = 0; i < 5; i++)
             {
-                await chain.MineBlock(key);
+                chain.Append(chain.ProposeBlock(key));
             }
 
             Assert.Equal(2, delayedRenderer.GetBufferedActionRendererCount());
@@ -516,7 +504,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public async Task DelayedRendererInReorg()
+        public void DelayedRendererInReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -542,9 +530,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -555,9 +541,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
                 validator,
-                _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 
@@ -579,7 +563,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var key = new PrivateKey();
 
             var tx1 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#1") });
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -587,7 +571,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -596,7 +580,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var forked = chain.Fork(chain[0].Hash);
             chain.StagePolicy.Stage(chain, tx1);
-            var block = await forked.MineBlock(key, append: false);
+            var block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -604,7 +588,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
             chain.StagePolicy.Stage(chain, tx2);
-            block = await forked.MineBlock(key, append: false);
+            block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -612,7 +596,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#3") });
-            block = await forked.MineBlock(key, append: false);
+            block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -620,7 +604,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#4") });
-            block = await forked.MineBlock(key, append: false);
+            block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -637,7 +621,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public async Task DelayedRendererAfterReorg()
+        public void DelayedRendererAfterReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -663,9 +647,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -676,9 +658,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
                 validator,
-                _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 
@@ -700,7 +680,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var key = new PrivateKey();
 
             var tx1 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#1") });
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
 
             Assert.Null(delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -708,7 +688,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -717,14 +697,14 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var forked = chain.Fork(chain[1].Hash);
             chain.StagePolicy.Stage(chain, tx2);
-            var block = await forked.MineBlock(key, append: false);
+            var block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
                 );
-            block = await forked.MineBlock(key, append: false);
+            block = forked.ProposeBlock(key);
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -739,7 +719,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(new[] { (chain[0], chain[1]) }, blockLogs);
             Assert.Equal(2, renderLogs.Count);
 
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);

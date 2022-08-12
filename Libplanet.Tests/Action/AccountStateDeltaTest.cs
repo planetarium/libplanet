@@ -215,11 +215,10 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            var preEvalBlock = TestUtils.MineNext(
+            var preEvalBlock = TestUtils.ProposeNext(
                 chain.Tip,
-                chain.Policy.GetHashAlgorithm,
                 new[] { tx },
-                miner: privateKey.PublicKey,
+                proposer: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion
             );
             chain.Append(

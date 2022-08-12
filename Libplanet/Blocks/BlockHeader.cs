@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
 
@@ -120,29 +119,17 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlockHeader.ProtocolVersion;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _preEvaluationBlockHeader.HashAlgorithm;
-
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _preEvaluationBlockHeader.Index;
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _preEvaluationBlockHeader.Timestamp;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlockHeader.Nonce;
-
-        /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner => _preEvaluationBlockHeader.Miner;
+        /// <inheritdoc cref="IBlockMetadata.Proposer"/>
+        public Address Proposer => _preEvaluationBlockHeader.Proposer;
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _preEvaluationBlockHeader.PublicKey;
-
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _preEvaluationBlockHeader.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _preEvaluationBlockHeader.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _preEvaluationBlockHeader.PreviousHash;
@@ -157,10 +144,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockExcerpt.Hash"/>
         public BlockHash Hash { get; }
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash =>
-            _preEvaluationBlockHeader.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash { get; }

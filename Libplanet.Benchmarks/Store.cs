@@ -14,7 +14,6 @@ namespace Libplanet.Benchmarks
 {
     public class Store
     {
-        private readonly HashAlgorithmType HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
         private readonly ImmutableArray<Block<DumbAction>> Blocks = default;
         private readonly int BlocksCount = default;
         private readonly ImmutableArray<Transaction<DumbAction>> Txs = default;
@@ -26,10 +25,8 @@ namespace Libplanet.Benchmarks
         {
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
-            Block<DumbAction> genesis = TestUtils.MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType,
-                TestUtils.GenesisMiner
-            );
+            Block<DumbAction> genesis =
+                TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
             blocks.Add(genesis);
             Block<DumbAction> block = genesis;
             var key = new PrivateKey();
@@ -41,8 +38,7 @@ namespace Libplanet.Benchmarks
                 {
                     blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
-                block = TestUtils.MineNextBlock(
-                    block, _ => HashAlgorithmType, TestUtils.GenesisMiner, blockTxs);
+                block = TestUtils.ProposeNextBlock(block, TestUtils.GenesisProposer, blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);
             }
@@ -113,7 +109,7 @@ namespace Libplanet.Benchmarks
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(_ => HashAlgorithmType, Blocks[0].Hash);
+            return _store.GetBlock<DumbAction>(Blocks[0].Hash);
         }
 
         [Benchmark]
@@ -123,7 +119,7 @@ namespace Libplanet.Benchmarks
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(_ => HashAlgorithmType, Blocks[BlocksCount - 2].Hash);
+            return _store.GetBlock<DumbAction>(Blocks[BlocksCount - 2].Hash);
         }
 
         [Benchmark]
@@ -133,7 +129,7 @@ namespace Libplanet.Benchmarks
             // because without this JIT can remove the below statement at all
             // during dead code elimination optimization.
             // https://benchmarkdotnet.org/articles/guides/good-practices.html#avoid-dead-code-elimination
-            return _store.GetBlock<DumbAction>(_ => HashAlgorithmType, default);
+            return _store.GetBlock<DumbAction>(default);
         }
 
         [Benchmark]

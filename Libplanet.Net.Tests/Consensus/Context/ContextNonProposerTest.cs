@@ -22,7 +22,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlockOneThird()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
@@ -59,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlockTwoThird()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var blockHash = block.Hash;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
@@ -125,7 +125,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterPreCommitNilTwoThird()
         {
             var block = GetInvalidBlock();
-            var blockHash = block.Hash;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
@@ -181,7 +180,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteNilOneThird()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, stage) =>
             {
@@ -244,8 +243,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void UponRulesCheckAfterTimeout()
         {
-            var block1 = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
-            var block2 = await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
+            var block1 = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block2 = BlockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
             var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
@@ -312,7 +311,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreVote()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
             Context.Start();
@@ -355,7 +354,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void TimeoutPreCommit()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
             Context.Start();

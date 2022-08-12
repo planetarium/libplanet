@@ -28,7 +28,7 @@ namespace Libplanet.Tests
 {
     public static class TestUtils
     {
-        public static readonly PrivateKey GenesisMiner = PrivateKey.FromString(
+        public static readonly PrivateKey GenesisProposer = PrivateKey.FromString(
             "2a15e7deaac09ce631e1faa184efadb175b6b90989cf1faed9dfc321ad1db5ac");
 
         public static readonly PrivateKey ChainPrivateKey = PrivateKey.FromString(
@@ -211,12 +211,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
         }
 
-        public static void AssertBytesEqual(Nonce expected, Nonce actual) =>
-            AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
-
-        public static void AssertBytesEqual(Nonce? expected, Nonce? actual) =>
-            AssertBytesEqual(expected?.ToByteArray(), actual?.ToByteArray());
-
         public static void AssertBytesEqual(Address expected, Address actual) =>
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
 
@@ -273,9 +267,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Assert.Equal(expected.ProtocolVersion, actual.ProtocolVersion);
             Assert.Equal(expected.Index, actual.Index);
             Assert.Equal(expected.Timestamp, actual.Timestamp);
-            AssertBytesEqual(expected.Miner, actual.Miner);
-            Assert.Equal(expected.Difficulty, actual.Difficulty);
-            Assert.Equal(expected.TotalDifficulty, actual.TotalDifficulty);
+            AssertBytesEqual(expected.Proposer, actual.Proposer);
             AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
             AssertBytesEqual(expected.TxHash, actual.TxHash);
         }
@@ -296,8 +288,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
         {
             AssertBlockMetadataEqual(expected, actual);
-            Assert.Same(expected.HashAlgorithm, actual.HashAlgorithm);
-            AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
         }
 
         public static void AssertPreEvaluationBlocksEqual<T>(
@@ -318,9 +308,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static PreEvaluationBlock<T> MineGenesis<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            PublicKey miner = null,
+        public static PreEvaluationBlock<T> ProposeGenesis<T>(
+            PublicKey proposer = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion
@@ -329,22 +318,17 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             var content = new BlockContent<T>
             {
-                Miner = (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                PublicKey = protocolVersion < 2 ? null : miner ?? GenesisMiner.PublicKey,
+                Proposer = (proposer ?? GenesisProposer.PublicKey).ToAddress(),
+                PublicKey = protocolVersion < 2 ? null : proposer ?? GenesisProposer.PublicKey,
                 Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                 Transactions = transactions ?? Array.Empty<Transaction<T>>(),
                 ProtocolVersion = protocolVersion,
             };
-            return new PreEvaluationBlock<T>(
-                content,
-                hashAlgorithmGetter(content.Index),
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+            return new PreEvaluationBlock<T>(content);
         }
 
-        public static Block<T> MineGenesisBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            PrivateKey miner,
+        public static Block<T> ProposeGenesisBlock<T>(
+            PrivateKey proposer,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
@@ -352,25 +336,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            PreEvaluationBlock<T> preEval = MineGenesis(
-                hashAlgorithmGetter,
-                miner?.PublicKey,
+            PreEvaluationBlock<T> preEval = ProposeGenesis(
+                proposer?.PublicKey,
                 transactions,
                 timestamp,
                 protocolVersion
             );
             return protocolVersion < 2
                 ? new Block<T>(preEval, stateRootHash, null)
-                : preEval.Sign(miner, stateRootHash);
+                : preEval.Sign(proposer, stateRootHash);
         }
 
-        public static PreEvaluationBlock<T> MineNext<T>(
+        public static PreEvaluationBlock<T> ProposeNext<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
-            byte[] nonce = null,
-            long difficulty = 1,
-            PublicKey miner = null,
+            PublicKey proposer = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             BlockCommit? lastCommit = null
@@ -380,10 +360,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var content = new BlockContent<T>
             {
                 Index = previousBlock.Index + 1,
-                Difficulty = difficulty,
-                TotalDifficulty = previousBlock.TotalDifficulty + difficulty,
-                Miner = miner?.ToAddress() ?? previousBlock.Miner,
-                PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
+                Proposer = proposer?.ToAddress() ?? previousBlock.Proposer,
+                PublicKey = protocolVersion < 2 ? null : proposer ?? previousBlock.PublicKey,
                 PreviousHash = previousBlock.Hash,
                 Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
                 Transactions = txs ?? Array.Empty<Transaction<T>>(),
@@ -391,22 +369,16 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 LastCommit = lastCommit,
             };
 
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
-            var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
-                : content.Mine(hashAlgorithm);
+            var preEval = new PreEvaluationBlock<T>(content);
 
             preEval.ValidateTimestamp();
             return preEval;
         }
 
-        public static Block<T> MineNextBlock<T>(
+        public static Block<T> ProposeNextBlock<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
-            PrivateKey miner,
+            PrivateKey proposer,
             IReadOnlyList<Transaction<T>> txs = null,
-            byte[] nonce = null,
-            long difficulty = 1,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
@@ -414,20 +386,17 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            PreEvaluationBlock<T> preEval = MineNext(
+            PreEvaluationBlock<T> preEval = ProposeNext(
                 previousBlock,
-                hashAlgorithmGetter,
                 txs,
-                nonce,
-                difficulty,
-                miner?.PublicKey,
+                proposer?.PublicKey,
                 blockInterval,
                 protocolVersion,
                 lastCommit
             );
             return protocolVersion < 2
                 ? new Block<T>(preEval, stateRootHash, null)
-                : preEval.Sign(miner, stateRootHash);
+                : preEval.Sign(proposer, stateRootHash);
         }
 
         public static BlockChain<T> MakeBlockChain<T>(
@@ -457,23 +426,19 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             {
                 var content = new BlockContent<T>()
                 {
-                    Miner = GenesisMiner.ToAddress(),
-                    PublicKey = protocolVersion < 2 ? null : GenesisMiner.PublicKey,
+                    Proposer = GenesisProposer.ToAddress(),
+                    PublicKey = protocolVersion < 2 ? null : GenesisProposer.PublicKey,
                     Timestamp = timestamp ?? DateTimeOffset.MinValue,
                     Transactions = new[] { tx },
                     ProtocolVersion = protocolVersion,
                 };
-                var preEval = new PreEvaluationBlock<T>(
-                    content,
-                    policy.GetHashAlgorithm(0),
-                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-                );
+                var preEval = new PreEvaluationBlock<T>(content);
                 genesisBlock = protocolVersion < 2
                  ? new Block<T>(
                      preEval,
                      preEval.DetermineStateRootHash(policy.BlockAction, stateStore),
                      signature: null)
-                 : preEval.Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+                 : preEval.Evaluate(GenesisProposer, policy.BlockAction, stateStore);
             }
 
             ValidatingActionRenderer<T> validator = null;

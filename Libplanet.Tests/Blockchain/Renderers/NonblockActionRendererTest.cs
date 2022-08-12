@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
@@ -22,16 +21,15 @@ namespace Libplanet.Tests.Blockchain.Renderers
             new ActionContext(default, default, default, 1, _stateDelta, default);
 
         private static Exception _exception = new Exception("EXPECTED");
-        private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
 
         private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesisBlock<DumbAction>(_ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockA =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         private static Block<DumbAction> _blockB =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisProposer);
 
         [RetryFact]
         public void Test()

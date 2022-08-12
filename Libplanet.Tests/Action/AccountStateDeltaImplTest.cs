@@ -56,11 +56,10 @@ namespace Libplanet.Tests.Action
                 new[] { action }
             );
             chain.Append(
-                TestUtils.MineNext(
+                TestUtils.ProposeNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     new[] { tx },
-                    miner: _keys[1].PublicKey,
+                    proposer: _keys[1].PublicKey,
                     protocolVersion: ProtocolVersion
                 ).Evaluate(_keys[1], chain)
             );

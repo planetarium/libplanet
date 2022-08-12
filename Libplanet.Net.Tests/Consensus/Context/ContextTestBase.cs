@@ -82,12 +82,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             new BlockContent<DumbAction>
             {
                 Index = BlockChain.Tip.Index + 1,
-                Difficulty = BlockChain.Tip.Difficulty,
-                TotalDifficulty = BlockChain.Tip.TotalDifficulty + BlockChain.Tip.Difficulty,
-                PublicKey = _fx.Miner.PublicKey,
+                PublicKey = _fx.Proposer.PublicKey,
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 Transactions = new List<Transaction<DumbAction>>(),
-            }.Mine(_fx.GetHashAlgorithm(2)).Evaluate(_fx.Miner, BlockChain);
+            }.Propose().Evaluate(_fx.Proposer, BlockChain);
     }
 }

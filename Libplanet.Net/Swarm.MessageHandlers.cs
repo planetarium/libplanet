@@ -32,8 +32,7 @@ namespace Libplanet.Net
                         tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
                         tip.Index,
-                        tip.Hash,
-                        tip.TotalDifficulty
+                        tip.Hash
                     )
                     {
                         Identity = getChainStatus.Identity,
@@ -137,7 +136,7 @@ namespace Libplanet.Net
             BlockHeader header;
             try
             {
-                header = message.GetHeader(BlockChain.Policy.GetHashAlgorithm);
+                header = message.GetHeader();
             }
             catch (InvalidBlockException ibe)
             {
@@ -274,7 +273,7 @@ namespace Libplanet.Net
             foreach (BlockHash hash in hashes)
             {
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
-                if (_store.GetBlock<T>(BlockChain.Policy.GetHashAlgorithm, hash) is { } block)
+                if (_store.GetBlock<T>(hash) is { } block)
                 {
                     byte[] payload = Codec.Encode(block.MarshalBlock());
                     blocks.Add(payload);

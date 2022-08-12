@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -71,14 +69,13 @@ namespace Libplanet.Extensions.Cocona.Commands
                 BlockDigest blockDigest = store.GetBlockDigest(hash) ??
                     throw Utils.Error($"Failed to load the block {hash}.");
                 BlockHeader blockHeader =
-                    blockDigest.GetHeader(_ => HashAlgorithmType.Of<SHA256>());
+                    blockDigest.GetHeader();
                 var perceivedTime = store.GetBlockPerceivedTime(hash);
 
                 Console.WriteLine(
                     $"{blockHeader.Index}," +
                     $"{blockHeader.Hash}," +
-                    $"{blockHeader.Difficulty}," +
-                    $"{blockHeader.Miner}," +
+                    $"{blockHeader.Proposer}," +
                     $"{blockDigest.TxIds.Length}," +
                     $"{blockHeader.Timestamp.ToUnixTimeMilliseconds()}," +
                     $"{perceivedTime?.ToUnixTimeMilliseconds()}");

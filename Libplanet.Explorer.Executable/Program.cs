@@ -75,16 +75,6 @@ in DefaultStore is used.")]
 consecutive blocks.")]
             int blockIntervalMilliseconds = 5000,
             [Option(
-                "minimum-difficulty",
-                new[] { 'm' },
-                Description = "Allowed minimum difficulty for mining blocks.")]
-            long minimumDifficulty = 1024L,
-            [Option(
-                "difficulty-bound-divisor",
-                new[] { 'D' },
-                Description = "A bound divisor to determine precision of block difficulties.")]
-            int difficultyBoundDivisor = 128,
-            [Option(
                 "workers",
                 new[] { 'W' },
                 Description = "The number of swarm workers.")]
@@ -148,8 +138,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 host,
                 port,
                 blockIntervalMilliseconds,
-                minimumDifficulty,
-                difficultyBoundDivisor,
                 workers,
                 appProtocolVersionToken,
                 mysqlServer,
@@ -353,8 +341,6 @@ If omitted (default) explorer only the local blockchain store.")]
             return new BlockPolicy<T>(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
-                difficultyStability: options.DifficultyBoundDivisor,
-                minimumDifficulty: options.MinimumDifficulty,
                 getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
@@ -398,9 +384,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IAction BlockAction => _impl.BlockAction;
 
-            public IComparer<IBlockExcerpt> CanonicalChainComparer =>
-                _impl.CanonicalChainComparer;
-
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
 
@@ -409,11 +392,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public long GetMaxBlockBytes(long index) =>
                 _impl.GetMaxBlockBytes(index);
-
-            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
-            {
-                return 0;
-            }
 
             public TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
@@ -427,9 +405,6 @@ If omitted (default) explorer only the local blockchain store.")]
             {
                 return _impl.ValidateNextBlock(blockChain, nextBlock);
             }
-
-            public HashAlgorithmType GetHashAlgorithm(long index) =>
-                _impl.GetHashAlgorithm(index);
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);

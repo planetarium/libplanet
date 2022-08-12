@@ -102,14 +102,11 @@ namespace Libplanet.Tests.Store
         public virtual IEnumerable<BlockHash> IterateBlockHashes() =>
             Store.IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(HashAlgorithmGetter, BlockHash)"/>
-        public virtual Block<T> GetBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            BlockHash blockHash
-        )
+        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
+        public virtual Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         =>
-            Store.GetBlock<T>(hashAlgorithmGetter, blockHash);
+            Store.GetBlock<T>(blockHash);
 
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public virtual long? GetBlockIndex(BlockHash blockHash) =>

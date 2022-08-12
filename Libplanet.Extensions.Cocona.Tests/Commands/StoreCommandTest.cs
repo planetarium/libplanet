@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -50,23 +49,23 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            _genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(
-                GetHashAlgorithm, TestUtils.GenesisMiner);
+            _genesisBlock =
+                TestUtils.ProposeGenesisBlock<Utils.DummyAction>(TestUtils.GenesisProposer);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
-            _block1 = TestUtils.MineNextBlock(
-                _genesisBlock, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction1 });
-            _block2 = TestUtils.MineNextBlock(
-                _block1, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction2 });
-            _block3 = TestUtils.MineNextBlock(
-                _block2, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction3 });
-            _block4 = TestUtils.MineNextBlock(
-                _block3, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction3 });
-            _block5 = TestUtils.MineNextBlock(
-                _block4, GetHashAlgorithm, TestUtils.GenesisMiner);
+            _block1 = TestUtils.ProposeNextBlock(
+                _genesisBlock, TestUtils.GenesisProposer, new[] { _transaction1 });
+            _block2 = TestUtils.ProposeNextBlock(
+                _block1, TestUtils.GenesisProposer, new[] { _transaction2 });
+            _block3 = TestUtils.ProposeNextBlock(
+                _block2, TestUtils.GenesisProposer, new[] { _transaction3 });
+            _block4 = TestUtils.ProposeNextBlock(
+                _block3, TestUtils.GenesisProposer, new[] { _transaction3 });
+            _block5 = TestUtils.ProposeNextBlock(
+                _block4, TestUtils.GenesisProposer);
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)
@@ -331,9 +330,6 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             Console.SetOut(_originalOut);
             Console.SetError(_originalError);
         }
-
-        private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
-            HashAlgorithmType.Of<SHA256>();
 
         private Transaction<Utils.DummyAction> DummyTransaction()
         {

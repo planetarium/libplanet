@@ -17,16 +17,14 @@ namespace Libplanet.Blocks
                 $" {nameof(excerpt.ProtocolVersion)} = {excerpt.ProtocolVersion}," +
                 $" {nameof(excerpt.Index)} = {excerpt.Index}," +
                 $" {nameof(excerpt.Hash)} = {excerpt.Hash}," +
-                $" {nameof(excerpt.TotalDifficulty)} = {excerpt.TotalDifficulty}" +
                 " }";
         }
 
         public static bool ExcerptEquals(this IBlockExcerpt excerpt, IBlockExcerpt other)
         {
             return excerpt.ProtocolVersion.Equals(other.ProtocolVersion)
-                && excerpt.Index.Equals(other.Index)
-                && excerpt.Hash.Equals(other.Hash)
-                && excerpt.TotalDifficulty.Equals(other.TotalDifficulty);
+                   && excerpt.Index.Equals(other.Index)
+                   && excerpt.Hash.Equals(other.Hash);
         }
     }
 }

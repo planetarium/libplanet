@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -25,8 +24,6 @@ namespace Libplanet.Store
         // FIXME: Rather than having a BlockHeader with a thunk HashAlgorithmType, let it have
         //        separated fields like BlockMetadata, Nonce, PreEvaluationHash, StateRootHash...
         private readonly BlockMetadata _metadata;
-        private readonly Nonce _nonce;
-        private readonly ImmutableArray<byte>? _preEvaluationHash;
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
@@ -38,8 +35,6 @@ namespace Libplanet.Store
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
             _metadata = header.Copy();
-            _nonce = header.Nonce;
-            _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
             Signature = header.Signature;
             Hash = header.Hash;
@@ -56,10 +51,7 @@ namespace Libplanet.Store
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
-            var tuple = BlockMarshaler.UnmarshalPreEvaluationBlockHeader(headerDict);
-            _metadata = tuple.Metadata;
-            _nonce = tuple.Nonce;
-            _preEvaluationHash = tuple.PreEvaluationHash;
+            _metadata = BlockMarshaler.UnmarshalPreEvaluationBlockHeader(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
             Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
@@ -78,17 +70,11 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public System.DateTimeOffset Timestamp => _metadata.Timestamp;
 
-        /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner => _metadata.Miner;
+        /// <inheritdoc cref="IBlockMetadata.Proposer"/>
+        public Address Proposer => _metadata.Proposer;
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _metadata.PublicKey;
-
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _metadata.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _metadata.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _metadata.PreviousHash;
@@ -173,24 +159,10 @@ namespace Libplanet.Store
         /// <summary>
         /// Gets the block header.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <returns>The block header.</returns>
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        public BlockHeader GetHeader()
         {
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(Index);
-            var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce,
-                    preEvalHash
-                )
-                : new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce
-                );
+            var preEvalHeader = new PreEvaluationBlockHeader(_metadata);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
@@ -202,11 +174,9 @@ namespace Libplanet.Store
         /// <see cref="BlockDigest"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex()
         {
-            var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
-                BlockMarshaler.MarshalBlockMetadata(_metadata),
-                _nonce,
-                _preEvaluationHash ?? ImmutableArray<byte>.Empty
-            );
+            var preEvalHeaderDict =
+                BlockMarshaler.MarshalPreEvaluationBlockHeader(
+                    new PreEvaluationBlockHeader(_metadata));
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
                 preEvalHeaderDict,
                 StateRootHash,

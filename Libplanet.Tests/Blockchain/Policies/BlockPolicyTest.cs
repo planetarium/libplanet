@@ -1,11 +1,7 @@
 using System;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Crypto;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -48,72 +44,12 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void DifficultyAdjustment()
-        {
-            TimeSpan defaultInterval =
-                DifficultyAdjustment<DumbAction>.DefaultTargetBlockInterval;
-            long defaultStability =
-                DifficultyAdjustment<DumbAction>.DefaultDifficultyStability;
-            long defaultMinimum =
-                DifficultyAdjustment<DumbAction>.DefaultMinimumDifficulty;
-
-            // Should work with defaults.
-            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                defaultInterval,
-                defaultStability,
-                defaultMinimum);
-
-            // Negative block interval.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    TimeSpan.FromMilliseconds(-5),
-                    defaultStability,
-                    defaultMinimum));
-
-            // Zero block interval.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    TimeSpan.FromMilliseconds(0),
-                    defaultStability,
-                    defaultMinimum));
-
-            // Invalid stability due to being too low.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    0,
-                    defaultMinimum));
-
-            // Stability being equal to minimum difficulty should be fine.
-            DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                defaultInterval,
-                defaultMinimum,
-                defaultMinimum);
-
-            // Invalid stability in relation to minimum difficulty for stability being too high.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    defaultMinimum + 1,
-                    defaultMinimum));
-
-            // Invalid minimum difficulty for being too low.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                DifficultyAdjustment<DumbAction>.AlgorithmFactory(
-                    defaultInterval,
-                    defaultStability,
-                    0));
-        }
-
-        [Fact]
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy<DumbAction>(
                 blockAction: null,
-                blockInterval: tenSec,
-                difficultyStability: 128,
-                minimumDifficulty: 1024L);
+                blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(
@@ -201,75 +137,6 @@ namespace Libplanet.Tests.Blockchain.Policies
             expected = policy.ValidateNextBlockTx(_chain, invalidTx);
             Assert.NotNull(expected);
             Assert.NotNull(expected.InnerException);
-        }
-
-        [Fact]
-        public async Task GetNextBlockDifficulty()
-        {
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var dateTimeOffset = FixtureEpoch;
-            var chain =
-                TestUtils.MakeBlockChain(_policy, store, stateStore, timestamp: dateTimeOffset);
-            var miner = new PrivateKey();
-            Assert.Equal(
-                1024,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(1);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1032,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(3);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1040,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(7);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1040,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(9);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1048,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-            dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(13);
-            await chain.MineBlock(miner, dateTimeOffset);
-
-            Assert.Equal(
-                1048,
-                _policy.GetNextBlockDifficulty(chain)
-            );
-        }
-
-        [Fact]
-        public void GetHashAlgorithm()
-        {
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(0));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(1));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(2));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(10));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(15));
-
-            var p = new BlockPolicy<DumbAction>(hashAlgorithmGetter: i =>
-                i % 2 == 0 ? HashAlgorithmType.Of<MD5>() : HashAlgorithmType.Of<SHA1>()
-            );
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(0));
-            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(1));
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(2));
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(10));
-            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(15));
         }
     }
 }

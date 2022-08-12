@@ -2,9 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
-using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -33,9 +30,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
             Assert.Equal(0, m.Index);
             Assert.InRange(m.Timestamp, before, after);
-            AssertBytesEqual(default(Address), m.Miner);
-            Assert.Equal(0, m.Difficulty);
-            Assert.Equal(0, m.TotalDifficulty);
+            AssertBytesEqual(default(Address), m.Proposer);
             AssertBytesEqual(null, m.PreviousHash);
             AssertBytesEqual(null, m.TxHash);
             Assert.Empty(m.Transactions);
@@ -211,57 +206,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Mine()
-        {
-            var codec = new Codec();
-
-            HashAlgorithmType sha256 = HashAlgorithmType.Of<SHA256>();
-            PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine(sha256);
-            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
-            AssertBytesEqual(
-                sha256.Digest(codec.Encode(Genesis.MakeCandidateData(preEvalBlock.Nonce))),
-                preEvalBlock.PreEvaluationHash.ToArray()
-            );
-
-            HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-            preEvalBlock = Block1.Mine(sha512);
-            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Block1.Difficulty));
-            AssertBytesEqual(
-                sha512.Digest(codec.Encode(Block1.MakeCandidateData(preEvalBlock.Nonce))),
-                preEvalBlock.PreEvaluationHash.ToArray()
-            );
-        }
-
-        [Fact]
-        public void CancelMine()
-        {
-            using (CancellationTokenSource source = new CancellationTokenSource())
-            {
-                HashAlgorithmType sha512 = HashAlgorithmType.Of<SHA512>();
-                Block1.Difficulty = long.MaxValue;
-
-                Exception exception = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        Block1.Mine(sha512, source.Token);
-                    }
-                    catch (OperationCanceledException ce)
-                    {
-                        exception = ce;
-                    }
-                });
-
-                source.Cancel();
-                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
-                Assert.True(taskEnded);
-                Assert.NotNull(exception);
-                Assert.IsAssignableFrom<OperationCanceledException>(exception);
-            }
-        }
-
-        [Fact]
         public void DeriveTxHash()
         {
             Assert.Null(
@@ -275,5 +219,7 @@ namespace Libplanet.Tests.Blocks
                 () => BlockContent<Arithmetic>.DeriveTxHash(Block1.Transactions.Reverse())
             );
         }
+
+        // TODO: Should add test related to Propose()
     }
 }

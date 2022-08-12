@@ -20,8 +20,6 @@ namespace Libplanet.Explorer.Executable
             string host,
             int port,
             int blockIntervalMilliseconds,
-            long minimumDifficulty,
-            int difficultyBoundDivisor,
             int workers,
             string appProtocolVersionToken,
             string mysqlServer,
@@ -43,8 +41,6 @@ namespace Libplanet.Explorer.Executable
             Host = host;
             Port = port;
             BlockIntervalMilliseconds = blockIntervalMilliseconds;
-            MinimumDifficulty = minimumDifficulty;
-            DifficultyBoundDivisor = difficultyBoundDivisor;
             Workers = workers;
             AppProtocolVersionToken = appProtocolVersionToken;
             MySQLServer = mysqlServer;
@@ -69,10 +65,6 @@ namespace Libplanet.Explorer.Executable
         public int Port { get; set; }
 
         public int BlockIntervalMilliseconds { get; set; }
-
-        public long MinimumDifficulty { get; set; }
-
-        public int DifficultyBoundDivisor { get; set; }
 
         public int Workers { get; set; }
 
@@ -144,7 +136,7 @@ namespace Libplanet.Explorer.Executable
             {
                 var serialized = client.DownloadData(uri);
                 var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
-                return BlockMarshaler.UnmarshalBlock<NullAction>(policy.GetHashAlgorithm, dict);
+                return BlockMarshaler.UnmarshalBlock<NullAction>(dict);
             }
         }
     }

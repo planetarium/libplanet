@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
@@ -10,7 +8,6 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
-using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
@@ -25,12 +22,10 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             var preEval = new BlockContent<NullAction>
             {
                 Index = 1,
-                Difficulty = 1,
-                TotalDifficulty = 1,
                 PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(
@@ -42,10 +37,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 @"{
                     index
                     hash
-                    nonce
-                    difficulty
-                    totalDifficulty
-                    miner
+                    proposer
                     publicKey
                     timestamp
                     stateRootHash
@@ -61,16 +53,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 resultData["hash"]);
-            Assert.Equal(block.Difficulty, resultData["difficulty"]);
             Assert.Equal(
-                block.TotalDifficulty,
-                resultData["totalDifficulty"]);
-            Assert.Equal(
-                block.Miner.ToString(),
-                resultData["miner"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.Nonce.ToByteArray()),
-                resultData["nonce"]);
+                block.Proposer.ToString(),
+                resultData["proposer"]);
             Assert.Equal(
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
                 resultData["timestamp"]);

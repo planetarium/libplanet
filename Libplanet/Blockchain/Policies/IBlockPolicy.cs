@@ -23,14 +23,6 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         /// <summary>
-        /// A comparer to determine which branch is the canonical chain (i.e., best chain).
-        /// The most greater one according to this comparer is considered to be the canon.
-        /// </summary>
-        /// <seealso cref="IBlockExcerpt"/>
-        /// <seealso cref="TotalDifficultyComparer"/>
-        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
-
-        /// <summary>
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }
@@ -84,31 +76,12 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
-        /// Determines a right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined
-        /// right after the given <paramref name="blockChain"/>.
-        /// </summary>
-        /// <param name="blockChain">Consecutive <see cref="Block{T}"/>s to be
-        /// followed by a new <see cref="Block{T}"/> to be mined.</param>
-        /// <returns>A right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T> blockChain);
-
-        /// <summary>
         /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// for which this constraint should apply.</param>
         /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
         long GetMaxBlockBytes(long index);
-
-        /// <summary>
-        /// Gets the <see cref="HashAlgorithmType"/> to use for block's proof-of-work.
-        /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> to
-        /// do proof-of-work.</param>
-        /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
-        HashAlgorithmType GetHashAlgorithm(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for

@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -24,7 +22,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly IReadOnlyList<PrivateKey> PrivateKeys;
         public readonly IReadOnlyList<Address> Addresses;
         public readonly IReadOnlyList<Transaction<Arithmetic>> Txs;
-        public readonly PrivateKey Miner;
+        public readonly PrivateKey Proposer;
         public readonly Block<Arithmetic> Genesis;
         public readonly BlockChain<Arithmetic> Chain;
         public readonly IStore Store;
@@ -59,17 +57,17 @@ namespace Libplanet.Tests.Fixtures
                     )
                 )
                 .ToImmutableArray();
-            Miner = new PrivateKey();
+            Proposer = new PrivateKey();
             policy = policy ?? new NullBlockPolicy<Arithmetic>();
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>
             {
-                PublicKey = Miner.PublicKey,
+                PublicKey = Proposer.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = Txs,
-            }.Mine(policy.GetHashAlgorithm(0)).Evaluate(Miner, policy.BlockAction, StateStore);
+            }.Propose().Evaluate(Proposer, policy.BlockAction, StateStore);
             Chain = new BlockChain<Arithmetic>(
                 policy,
                 new VolatileStagePolicy<Arithmetic>(),
@@ -141,12 +139,12 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(int signerIndex, params Arithmetic[] actions) =>
             Sign(PrivateKeys[signerIndex], actions);
 
-        public Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default) =>
-            Chain.MineBlock(
-                Miner,
-                DateTimeOffset.UtcNow,
-                cancellationToken: cancellationToken
-            );
+        public Block<Arithmetic> ProposeAndAppend()
+        {
+            var block = Chain.ProposeBlock(Proposer, DateTimeOffset.UtcNow);
+            Chain.Append(block);
+            return block;
+        }
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
         {

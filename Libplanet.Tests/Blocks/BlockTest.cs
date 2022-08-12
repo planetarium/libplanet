@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Blocks
             var contents = new BlockContentFixture();
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();
-            PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Mine(_fx.GetHashAlgorithm(0));
+            PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Propose();
             ImmutableArray<byte> sig = preEval.MakeSignature(contents.GenesisKey, stateRootHash);
             var block = new Block<Arithmetic>(preEval, stateRootHash, sig);
             AssertPreEvaluationBlocksEqual(preEval, block);
@@ -45,7 +45,6 @@ namespace Libplanet.Tests.Blocks
         {
             Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
             var sameBlock2 = BlockMarshaler.UnmarshalBlock<PolymorphicAction<BaseAction>>(
-                _ => _fx.Genesis.HashAlgorithm,
                 _fx.Genesis.MarshalBlock()
             );
             Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
@@ -69,9 +68,8 @@ namespace Libplanet.Tests.Blocks
                     signer,
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            HashAlgorithmGetter algoGetter = _ => HashAlgorithmType.Of<SHA256>();
-            var blockA = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(algoGetter, timestamp: timestamp, transactions: txs);
+            var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
@@ -89,9 +87,8 @@ namespace Libplanet.Tests.Blocks
                 Array.Empty<byte>()
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                MineNext(
-                    MineGenesisBlock<DumbAction>(_fx.GetHashAlgorithm, _fx.Miner),
-                    _fx.GetHashAlgorithm,
+                ProposeNext(
+                    ProposeGenesisBlock<DumbAction>(_fx.Proposer),
                     new List<Transaction<DumbAction>> { invalidTx }
                 )
             );

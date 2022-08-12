@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -27,10 +26,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
@@ -114,10 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisProposer);
             var message = new BlockHeaderMessage(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,
@@ -126,10 +119,10 @@ namespace Libplanet.Net.Tests.Messages
             Assert.Equal(
                 new MessageId(new byte[32]
                 {
-                    0xa1, 0x60, 0xe2, 0xec, 0xf4, 0xcc, 0x21, 0xd4,
-                    0x4a, 0x76, 0xc4, 0x1b, 0x8e, 0xa7, 0xe1, 0x0c,
-                    0x40, 0xd4, 0x1c, 0xb5, 0x75, 0xb9, 0x1d, 0xad,
-                    0x96, 0xfb, 0x93, 0x48, 0x59, 0x36, 0xc0, 0xf5,
+                    0xaa, 0x35, 0x33, 0x30, 0xa1, 0x2f, 0x8c, 0xf3,
+                    0x98, 0x7e, 0xbd, 0x42, 0xa2, 0xd0, 0x59, 0xb9,
+                    0xa9, 0x1f, 0x37, 0xc3, 0xe9, 0x14, 0x76, 0x32,
+                    0xeb, 0x56, 0xd7, 0x9b, 0x8f, 0x88, 0xc2, 0x8f,
                 }),
                 message.Id);
         }

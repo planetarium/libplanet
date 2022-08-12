@@ -61,7 +61,7 @@ namespace Libplanet.Explorer.Queries
 
             while (limit is null || limit > 0)
             {
-                bool isMinerValid = miner is null || miner == block.Miner;
+                bool isMinerValid = miner is null || miner == block.Proposer;
                 bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
 
                 if (isMinerValid && isTxValid)
@@ -177,7 +177,7 @@ namespace Libplanet.Explorer.Queries
         }
 
         internal static Block<T> GetBlockByHash(BlockHash hash) =>
-            Store.GetBlock<T>(Chain.Policy.GetHashAlgorithm, hash);
+            Store.GetBlock<T>(hash);
 
         internal static Block<T> GetBlockByIndex(long index)
         {

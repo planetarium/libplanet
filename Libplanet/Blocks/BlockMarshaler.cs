@@ -26,17 +26,13 @@ namespace Libplanet.Blocks
         private static readonly byte[] ProtocolVersionKey = { 0x00 };
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
-        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
-        private static readonly byte[] MinerKey = { 0x6d }; // 'm'
+        private static readonly byte[] ProposerKey = { 0x6d }; // 'm', is trace of "miner"
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
-        private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
@@ -45,9 +41,7 @@ namespace Libplanet.Blocks
                 metadata.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture);
             Dictionary dict = Dictionary.Empty
                 .Add(IndexKey, metadata.Index)
-                .Add(TimestampKey, timestamp)
-                .Add(DifficultyKey, metadata.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)new Integer(metadata.TotalDifficulty));
+                .Add(TimestampKey, timestamp);
 
             if (metadata.ProtocolVersion != 0)
             {
@@ -66,7 +60,7 @@ namespace Libplanet.Blocks
 
             dict = metadata.PublicKey is { } pubKey
                 ? dict.Add(PublicKeyKey, pubKey.Format(compress: true))
-                : dict.Add(MinerKey, metadata.Miner.ByteArray);
+                : dict.Add(ProposerKey, metadata.Proposer.ByteArray);
 
             if (metadata.LastCommit is { } commit)
             {
@@ -76,30 +70,9 @@ namespace Libplanet.Blocks
             return dict;
         }
 
-        public static Dictionary MarshalPreEvaluationBlockHeader(
-            Dictionary marshaledMetadata,
-            Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
-        )
-        {
-            Dictionary dict = marshaledMetadata
-                .Add(NonceKey, nonce.ByteArray);
-
-            if (!preEvaluationHash.IsDefaultOrEmpty)
-            {
-                dict = dict.Add(PreEvaluationHashKey, preEvaluationHash);
-            }
-
-            return dict;
-        }
-
         public static Dictionary MarshalPreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
         {
-            return MarshalPreEvaluationBlockHeader(
-                MarshalBlockMetadata(header),
-                header.Nonce,
-                header.PreEvaluationHash
-            );
+            return MarshalBlockMetadata(header);
         }
 
         public static Dictionary MarshalBlockHeader(
@@ -192,8 +165,6 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                Difficulty = marshaled.GetValue<Integer>(DifficultyKey),
-                TotalDifficulty = marshaled.GetValue<Integer>(TotalDifficultyKey),
                 PreviousHash = marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,
@@ -213,43 +184,16 @@ namespace Libplanet.Blocks
             }
             else
             {
-                metadata.Miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+                metadata.Proposer = new Address(marshaled.GetValue<Binary>(ProposerKey).ByteArray);
             }
 
             return metadata;
         }
 
-        public static (BlockMetadata Metadata, Nonce Nonce, ImmutableArray<byte>? PreEvaluationHash)
-        UnmarshalPreEvaluationBlockHeader(Dictionary marshaled)
+        public static BlockMetadata UnmarshalPreEvaluationBlockHeader(Dictionary marshaled)
         {
             BlockMetadata metadata = UnmarshalBlockMetadata(marshaled);
-            var nonce = new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);
-            ImmutableArray<byte>? preEvalHash = marshaled.ContainsKey(PreEvaluationHashKey)
-                ? marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray
-                : (ImmutableArray<byte>?)null;
-            return (metadata, nonce, preEvalHash);
-        }
-
-        public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            Dictionary marshaled
-        )
-        {
-            (BlockMetadata metadata, Nonce nonce, ImmutableArray<byte>? preEvalHash) =
-                UnmarshalPreEvaluationBlockHeader(marshaled);
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(metadata.Index);
-
-            if (preEvalHash is { } peh)
-            {
-                return new PreEvaluationBlockHeader(
-                    metadata,
-                    hashAlgorithm,
-                    nonce,
-                    preEvaluationHash: peh
-                );
-            }
-
-            return new PreEvaluationBlockHeader(metadata, hashAlgorithm, nonce);
+            return metadata;
         }
 
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
@@ -270,12 +214,11 @@ namespace Libplanet.Blocks
                 : (ImmutableArray<byte>?)null;
 
         public static BlockHeader UnmarshalBlockHeader(
-            HashAlgorithmGetter hashAlgorithmGetter,
             Dictionary marshaled
         )
         {
             PreEvaluationBlockHeader preEvalHeader =
-                UnmarshalPreEvaluationBlockHeader(hashAlgorithmGetter, marshaled);
+                new PreEvaluationBlockHeader(UnmarshalPreEvaluationBlockHeader(marshaled));
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
             ImmutableArray<byte>? sig = UnmarshalBlockHeaderSignature(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
@@ -298,14 +241,10 @@ namespace Libplanet.Blocks
                 ? UnmarshalTransactions<T>(marshaledBlock.GetValue<List>(TransactionsKey))
                 : ImmutableArray<Transaction<T>>.Empty;
 
-        public static Block<T> UnmarshalBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            Dictionary marshaled
-        )
+        public static Block<T> UnmarshalBlock<T>(Dictionary marshaled)
             where T : IAction, new()
         {
             BlockHeader header = UnmarshalBlockHeader(
-                hashAlgorithmGetter,
                 marshaled.GetValue<Dictionary>(HeaderKey)
             );
             IReadOnlyList<Transaction<T>> txs = UnmarshalBlockTransactions<T>(marshaled);

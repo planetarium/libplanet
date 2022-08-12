@@ -110,8 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                         0,
                         genesis.Hash,
                         chain.Tip.Index,
-                        chain.Tip.Hash,
-                        chain.Tip.TotalDifficulty);
+                        chain.Tip.Hash);
                 case Message.MessageType.DifferentVersion:
                     return new DifferentVersion();
                 default:
