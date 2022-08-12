@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -777,7 +776,6 @@ namespace Libplanet.Net.Tests
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
             Block<DumbAction> block3 = MineNext(
                 chain2.Tip,
-                policy2.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
@@ -891,7 +889,6 @@ namespace Libplanet.Net.Tests
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
             Block<DumbAction> block = MineNext(
                 chain2.Tip,
-                policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
@@ -1205,36 +1202,30 @@ namespace Libplanet.Net.Tests
             var policyA = new NullBlockPolicy<DumbAction>();
             var policyB = new NullBlockPolicy<DumbAction>();
             Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                policy.GetHashAlgorithm,
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock1 = MineNextBlock(
                 genesis,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 10,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock2 = MineNextBlock(
                 aBlock1,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock3 = MineNextBlock(
                 aBlock2,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> bBlock1 = MineNextBlock(
                 genesis,
-                policyB.GetHashAlgorithm,
                 keyB,
                 difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> bBlock2 = MineNextBlock(
                 bBlock1,
-                policyB.GetHashAlgorithm,
                 keyB,
                 difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
@@ -1327,9 +1318,8 @@ namespace Libplanet.Net.Tests
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            HashAlgorithmType alg = HashAlgorithmType.Of<SHA256>();
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsB, privateKeyB);
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
 
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
@@ -1545,7 +1535,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1589,7 +1578,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1634,7 +1622,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1892,11 +1879,8 @@ namespace Libplanet.Net.Tests
 
             public bool BlockGettable { get; set; } = true;
 
-            public override Block<T> GetBlock<T>(
-                HashAlgorithmGetter hashAlgorithmGetter,
-                BlockHash blockHash
-            ) =>
-                BlockGettable ? base.GetBlock<T>(hashAlgorithmGetter, blockHash) : null;
+            public override Block<T> GetBlock<T>(BlockHash blockHash) =>
+                BlockGettable ? base.GetBlock<T>(blockHash) : null;
         }
     }
 }

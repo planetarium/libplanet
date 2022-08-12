@@ -120,9 +120,6 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlockHeader.ProtocolVersion;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _preEvaluationBlockHeader.HashAlgorithm;
-
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _preEvaluationBlockHeader.Index;
 

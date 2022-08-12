@@ -860,7 +860,6 @@ namespace Libplanet.Net
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
-                            BlockChain.Policy.GetHashAlgorithm,
                             (Bencodex.Types.Dictionary)Codec.Decode(payload)
                         );
 
@@ -1071,10 +1070,7 @@ namespace Libplanet.Net
                             },
                             hash =>
                             {
-                                Block<T> block = blockChain.Store.GetBlock<T>(
-                                    blockChain.Policy.GetHashAlgorithm,
-                                    hash
-                                );
+                                Block<T> block = blockChain.Store.GetBlock<T>(hash);
                                 return block is { } b
                                     ? b.Index
                                     : branchingIndex + 1 + downloaded.IndexOf(hash);

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -71,9 +70,7 @@ namespace Libplanet.Tests.Action
                     customActions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             PreEvaluationBlock<RandomAction> noStateRootBlock = MineGenesis(
-                hashAlgorithmGetter: hashAlgorithmGetter,
                 miner: GenesisMiner.PublicKey,
                 timestamp: timestamp,
                 transactions: txs
@@ -220,7 +217,7 @@ namespace Libplanet.Tests.Action
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
                 ? new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -272,12 +269,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmGetter hashAlgoGetter = _ => hashAlgorithm;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                hashAlgoGetter,
-                TestUtils.GenesisMiner
-            );
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -332,7 +324,6 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block1 = MineNextBlock(
                 genesis,
-                hashAlgoGetter,
                 GenesisMiner,
                 block1Txs,
                 new byte[] { }
@@ -455,7 +446,6 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block2 = MineNextBlock(
                 block1,
-                hashAlgoGetter,
                 GenesisMiner,
                 block2Txs,
                 new byte[] { }
@@ -582,7 +572,7 @@ namespace Libplanet.Tests.Action
                 PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -727,7 +717,7 @@ namespace Libplanet.Tests.Action
                 PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
@@ -874,7 +864,6 @@ namespace Libplanet.Tests.Action
             var genesis = chain.Genesis;
             var block = MineNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs,
                 miner: GenesisMiner.PublicKey,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)

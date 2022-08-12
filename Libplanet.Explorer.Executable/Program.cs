@@ -431,9 +431,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 return _impl.ValidateNextBlock(blockChain, nextBlock);
             }
 
-            public HashAlgorithmType GetHashAlgorithm(long index) =>
-                _impl.GetHashAlgorithm(index);
-
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
         }

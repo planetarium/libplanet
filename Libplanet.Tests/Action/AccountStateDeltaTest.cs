@@ -217,7 +217,6 @@ namespace Libplanet.Tests.Action
             );
             var preEvalBlock = TestUtils.MineNext(
                 chain.Tip,
-                chain.Policy.GetHashAlgorithm,
                 new[] { tx },
                 miner: privateKey.PublicKey,
                 protocolVersion: ProtocolVersion

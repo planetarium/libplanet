@@ -46,6 +46,11 @@ namespace Libplanet.Blocks
         private BigInteger _totalDifficulty;
         private HashDigest<SHA256>? _txHash;
 
+        static BlockMetadata()
+        {
+            HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
+        }
+
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
         /// <paramref name="metadata"/>.
@@ -85,6 +90,8 @@ namespace Libplanet.Blocks
         public BlockMetadata()
         {
         }
+
+        public static HashAlgorithmType HashAlgorithmType { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
@@ -291,24 +298,17 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Derives a hash digest of <paramref name="hashAlgorithm"/> from the block metadata and
-        /// <paramref name="nonce"/>.
+        /// Derives a hash digest from the block metadata and <paramref name="nonce"/>.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use.</param>
         /// <param name="nonce">The proof-of-work nonce.</param>
         /// <returns>A pre-evaluation block hash.</returns>
-        public ImmutableArray<byte> DerivePreEvaluationHash(
-            HashAlgorithmType hashAlgorithm,
-            Nonce nonce
-        ) =>
-            hashAlgorithm.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
+        public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
+            HashAlgorithmType.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
         /// <see cref="Difficulty"/>.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
-        /// hash.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
         /// that this operation should be cancelled.</param>
         /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
@@ -316,11 +316,9 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            HashAlgorithmType hashAlgorithm,
             CancellationToken cancellationToken = default
         ) =>
             MineNonce(
-                hashAlgorithm,
                 Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
                 cancellationToken
             );
@@ -329,8 +327,6 @@ namespace Libplanet.Blocks
         /// Mines the PoW (proof-of-work) nonce satisfying the block
         /// <see cref="Difficulty"/>.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm to use for calculating pre-evaluation
-        /// hash.</param>
         /// <param name="workers">The number of workers to run in parallel.
         /// Must be greater than zero.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
@@ -340,7 +336,6 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            HashAlgorithmType hashAlgorithm,
             int workers,
             CancellationToken cancellationToken = default
         )
@@ -355,7 +350,8 @@ namespace Libplanet.Blocks
             if (workers < 2)
             {
                 int seed = random.Next();
-                return Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, cancellationToken);
+                return Hashcash.Answer(
+                    stamp, HashAlgorithmType, Difficulty, seed, cancellationToken);
             }
 
             using var cts = new CancellationTokenSource();
@@ -364,7 +360,7 @@ namespace Libplanet.Blocks
             int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
             Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
                 Task.Run(
-                    () => Hashcash.Answer(stamp, hashAlgorithm, Difficulty, seed, lts.Token),
+                    () => Hashcash.Answer(stamp, HashAlgorithmType, Difficulty, seed, lts.Token),
                     lts.Token
                 )
             ).ToArray();

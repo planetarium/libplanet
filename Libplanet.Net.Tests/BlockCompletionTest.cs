@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Dasync.Collections;
@@ -294,11 +293,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            HashAlgorithmGetter hashAlgoGetter = _ => HashAlgorithmType.Of<SHA256>();
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                    hashAlgoGetter, GenesisMiner),
-                demand = MineNextBlock(genesis, hashAlgoGetter, GenesisMiner),
-                wrong = MineNextBlock(genesis, hashAlgoGetter, GenesisMiner);
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner),
+                demand = MineNextBlock(genesis, GenesisMiner),
+                wrong = MineNextBlock(genesis, GenesisMiner);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -397,23 +394,19 @@ namespace Libplanet.Net.Tests
             );
         }
 
-        private IEnumerable<Block<T>> GenerateBlocks<T>(
-            int count,
-            HashAlgorithmGetter hashAlgorithmGetter = null
-        )
+        private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
             where T : IAction, new()
         {
-            hashAlgorithmGetter = hashAlgorithmGetter ?? (_ => HashAlgorithmType.Of<SHA256>());
             if (count >= 1)
             {
                 Block<T> block =
-                    MineGenesisBlock<T>(hashAlgorithmGetter, GenesisMiner);
+                    MineGenesisBlock<T>(GenesisMiner);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
                     block =
-                        MineNextBlock(block, hashAlgorithmGetter, GenesisMiner);
+                        MineNextBlock(block, GenesisMiner);
                     yield return block;
                 }
             }

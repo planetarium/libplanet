@@ -176,18 +176,11 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block<T> GetBlockByHash(BlockHash hash) =>
-            Store.GetBlock<T>(Chain.Policy.GetHashAlgorithm, hash);
+        internal static Block<T> GetBlockByHash(BlockHash hash) => Store.GetBlock<T>(hash);
 
-        internal static Block<T> GetBlockByIndex(long index)
-        {
-            return Chain[index];
-        }
+        internal static Block<T> GetBlockByIndex(long index) => Chain[index];
 
-        internal static Transaction<T> GetTransaction(TxId id)
-        {
-            return Chain.GetTransaction(id);
-        }
+        internal static Transaction<T> GetTransaction(TxId id) => Chain.GetTransaction(id);
 
         private static Block<T> GetNextBlock(Block<T> block, bool desc)
         {

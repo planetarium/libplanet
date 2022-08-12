@@ -16,6 +16,12 @@ To be released.
  -  `Transaction<T>.Actions` property is now deprecated.  Use
     `Transaction<T>.SystemAction` property or `Transaction<T>.CustomActions`
     property instead.  [[#2149], [#2151], [#2175]]
+ -  `IPreEvaluationBlockHeader.HashAlgorithm` property and its implementations
+    removed.  [[#2206], [#2207]]
+ -  `IBlockPolicy.GetHashAlgorithm(long)` method and its implementations
+    removed.  [[#2206], [#2207]]
+ -  `InvalidBlockHashAlgorithmTypeException` class removed.  [[#2206], [#2207]]
+ -  `HashAlgorithmGetter` delegate removed.  [[#2206], [#2207]]
 
 ### Backward-incompatible API changes
 
@@ -60,16 +66,51 @@ To be released.
  -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
  -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
     [[#2162], [#2171]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockChain<T>.MakeGenesisBlock()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockContent<T>.Mine()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `PreEvaluationBlock<T>()` constructors.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `PreEvaluationBlockHeader<T>()` constructors.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockMetadata<T>.DerivePreEvaluationHash()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockMetadata<T>.MineNonce()` methods.  [[#2206], [#2207]]
+ -  Return type for `BlockMarshaler
+    .UnmarshalPreEvaluationBlockHeader(Dictionary)` changed from
+    `(BlockMetadata, Nonce, ImmutableArray<bytes>?)` to
+    `PreEvaluationBlockHeader`.  Removed overload method
+    `BlockMarshaler
+    .UnmarshalPreEvaluationBlockHeader(HashAlgorithm, Dictionary)`.
+    [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockMarshaler.UnmarshalBlockHeader()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `IStore<T>.GetCanonicalGenesisBlock<T>()` and
+    `IStore<T>.GetBlock<T>()` interface methods and their implementations.
+    [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockSet<T>()` constructor.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockDigest.GetHeader()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `DelayedRenderer<T>()` constructor.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `DelayedActionRenderer<T>()` constructor.  [[#2206], [#2207]]
+ -  (Libplanet.Node) Parameter `HashAlgorithmGetter hashAlgorithm` removed
+    from `UntypedBlock()` constructor.  [[#2206], [#2207]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
  -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
  -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
     `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
-
  -  Added `Transaction<T>.SystemAction` property.  [[#2149], [#2151], [#2175]]
  -  Added `Transaction<T>.CustomActions` property.  [[#2149], [#2151], [#2175]]
  -  Added overloads to take `systemAction` besides the existing constructors and
@@ -99,6 +140,10 @@ To be released.
  -  Added `IAccountStateView` interface.  [[#2183]]
  -  `IAccountStateDelta` now inherits `IAccountStateView` interface.
     [[#2183]]
+ -  Added `BlockMetadata.HashAlgorithmType` static property.  [[#2206], [#2207]]
+ -  Added `BlockMarshaler.UnmarshalNonce(Dictionary)` and
+    `BlockMarshaler.UnmarshalPreEvaluationHash(Dictionary)` methods.
+    [[#2206], [#2207]]
 
 ### Behavioral changes
 
@@ -107,6 +152,7 @@ To be released.
  -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
     empty chains. [[#2047], [#2156]]
  -  `Libplanet.Explorer` now targets .NET 6.0. [[#2173]]
+ -  Behavior of `Block<T>.GetHashCode()` changed.  [[#2206], [#2207]]
 
 ### Bug fixes
 
@@ -130,6 +176,8 @@ To be released.
 [#2175]: https://github.com/planetarium/libplanet/issues/2175
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
 [#2183]: https://github.com/planetarium/libplanet/pull/2183
+[#2206]: https://github.com/planetarium/libplanet/issues/2206
+[#2207]: https://github.com/planetarium/libplanet/pull/2207
 
 
 Version 0.39.0

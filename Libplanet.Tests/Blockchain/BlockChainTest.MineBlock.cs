@@ -126,7 +126,6 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             Block<DumbAction> block =
                 await _blockChain.MineBlock(privateKeys[0], maxTransactions: 1);
             Assert.Single(block.Transactions);
@@ -564,7 +563,6 @@ namespace Libplanet.Tests.Blockchain
             };
             var preEvalGenesis = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                HashAlgorithmType.Of<SHA256>(),
                 new Nonce(new byte[] { 0x01, 0, 0, 0 })
             );
             var genesis = new Block<DumbAction>(
@@ -596,7 +594,6 @@ namespace Libplanet.Tests.Blockchain
             };
             var preEvalBlock1 = new PreEvaluationBlock<DumbAction>(
                 block1Content,
-                HashAlgorithmType.Of<SHA256>(),
                 new Nonce(new byte[] { 0x0a, 0x24, 0xc6, 0x92, 0xde, 0xfa, 0x5c, 0x64, 0xd0, 0x26 })
             );
             var block = new Block<DumbAction>(
