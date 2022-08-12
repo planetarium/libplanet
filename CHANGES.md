@@ -8,15 +8,81 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Removed `HashAlgorithmType` class.  [[#PBFT]]
+ -  Removed `Hashcash` class.  [[#PBFT]]
+ -  Removed `Nonce` class.  [[#PBFT]]
+ -  Removed `TotalDifficultyComparer` class.  [[#PBFT]]
+ -  Removed `DifficultyAdjustment` class.  [[#PBFT]]
+ -  Removed `HashAlgorithmGetter` class.  [[#PBFT]]
+ -  Removed `InvalidBlockHashAlgorithmTypeException` class.  [[#PBFT]]
+ -  Removed `InvalidBlockNonceException` class.  [[#PBFT]]
+ -  Removed `InvalidBlockPreEvaluationHashException` class.  [[#PBFT]]
+
 ### Backward-incompatible API changes
 
- -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
- -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
+ -  `IBlockMetadata` and its implementations overhauled.  [[#PBFT]]
+     -  Added `LastCommit` property to `IBlockMetadata`.
+     -  Added `Proposer` property to `IBlockMetadata`.
+     -  Removed `Miner` property from `IBlockMetadata`.
+     -  Removed `Difficulty` property from `IBlockMetadata`.
+     -  Removed `TotalDifficulty` property from `IBlockMetadata`.
+ -  `IPreEvaluationBlockHeader` and its implementations overhauled.  [[#PBFT]]
+     -  Removed `Nonce` property from `IPreEvaluationBlockHeader`.
+     -  Removed `HashAlgorithm` property from `IPreEvaluationBlockHeader`.
+     -  Removed `PreEvaluationHash` property from `IPreEvaluationBlockHeader`.
+ -  `IBlockExcerpt` and its implementations overhauled.  [[#PBFT]]
+     -  Removed `TotalDifficulty` property from `IBlockExcerpt`.
+ -  Removed
+    `BlockMarshaler.MarshalPreEvaluationBlockHeader(Dictionary,
+     Nonce, ImmutableArray<byte>)` method.  [[#PBFT]]
+ -  Removed `UnexpectedlyTerminatedActionException.PreEvaluationHash` property.
+    [[#PBFT]]
+ -  Removed `BlockChain<T>.MakeGenesisBlock(HashAlgorithmType, IEnumerable<T>,
+    PrivateKey, DateTimeOffset?, IAction)` method. Instead, added
+    `BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, PrivateKey,
+    DateTimeOffset?, IAction)` method.  [[#PBFT]]
+ -  Removed `BlockChain<T>.MineBlock()` method.  [[#PBFT]]
+ -  `IBlockPolicy` and its implementations overhauled.  [[#PBFT]]
+     -  Removed `CanonicalChainComparer` property from `IBlockPolicy`.
+     -  Removed `GetNextBlockDifficulty()` method from `IBlockPolicy`.
+     -  Removed `GetHashAlgorithm()` method from `IBlockPolicy`.
+ -  Removed `long? difficultyStability`, `long? minimumDifficulty`,
+    `IComparer<IBlockExcerpt>? canonicalChainComparer`,
+    `HashAlgorithmGetter? hashAlgorithmGetter` parameters from
+    `BlockPolicy`'s constructor.  [[#PBFT]]
+ -  `DelayedRenderer` class and its inheritors modified.  [[#PBFT]]
+     -  Removed `CanonicalChainComparer` property.
+     -  Removed `HashAlgorithmGetter` property.
+     -  Removed `IComparer<IBlockExcerpt> canonicalChainComparer` and
+        `HashAlgorithmGetter hashAlgorithmGetter` parameters from constructors.
+ -  (Libplanet.Explorer) Modified program arguments.  [[#PBFT]]
+     -  Removed `MinimumDifficulty` option.
+     -  Removed `Difficulty` option.
+ -  (Libplanet.Explorer) Modified block graphql property.  [[#PBFT]]
+     -  Removed `Miner` block graphql property.
+        Instead, added `Proposer` block graphql property.
+     -  Removed `Difficulty` block graphql property.
+     -  Removed `TotalDifficulty` block graphql property.
+     -  Removed `Nonce` block graphql property.
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  (Libplanet.Net) Removed `BlockHeaderMessage.GetHeader(HashAlgorithmGetter)`
+    method. Instead, added `BlockHeaderMessage.GetHeader()` method.  [[#PBFT]]
+ -  (Libplanet.Store) `IStore` and its implementations overhauled.  [[#PBFT]]
+     -  Added `IStore.GetBlock<T>(BlockHash)` method.
+     -  Removed `IStore.GetBlock<T>(HashAlgorithmGetter, BlockHash)` method.
+ -  (Libplanet.Store) Removed `HashAlgorithmGetter hashAlgorithmGetter`
+    parameter from `BlockSet()` constructor.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
+ -  (Libplanet.Net) Removed `TotalDifficulty` property from
+    `Messages.ChainStatus` and `Messages.ChainStatus`'s `MessageType` value
+    bumped to `0x26`.  [[#PBFT]]
+
 ### Backward-incompatible storage format changes
+
+ -  Stored block will not have `Difficulty`, `TotalDifficulty`,
+    `Nonce` and `PreEvaluationHash`.  [[#PBFT]]
 
 ### Added APIs
 
@@ -26,6 +92,9 @@ To be released.
  -  Added `BlockContent.Propose()` method.  [[#PBFT]]
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
+ -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
+ -  Added `UnexpectedlyTerminatedActionException.PreviousHash` property.
+    [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -58,6 +127,9 @@ To be released.
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
+ -  Random seed used in `ActionEvaluator` is now derived from
+    `IPreEvaluationBlock<T>.PreviousHash`.
+    (was `IPreEvaluationBlock<T>.PreEvaluationHash`)  [[#PBFT]]
 
 ### Bug fixes
 
