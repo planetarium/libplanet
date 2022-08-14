@@ -40,8 +40,12 @@ namespace Libplanet.Tests.Blocks
 
             using (var fx = new MemoryStoreFixture())
             {
-                Block<Arithmetic> genesis =
-                    preEvalGenesis.Evaluate(_contents.GenesisKey, blockAction, fx.StateStore);
+                Block<Arithmetic> genesis = preEvalGenesis.Evaluate(
+                    privateKey: _contents.GenesisKey,
+                    blockAction: blockAction,
+                    nativeTokenPredicate: _ => true,
+                    stateStore: fx.StateStore
+                );
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -95,8 +99,11 @@ namespace Libplanet.Tests.Blocks
 
             using (var fx = new MemoryStoreFixture())
             {
-                HashDigest<SHA256> genesisStateRootHash =
-                    preEvalGenesis.DetermineStateRootHash(blockAction, fx.StateStore);
+                HashDigest<SHA256> genesisStateRootHash = preEvalGenesis.DetermineStateRootHash(
+                    blockAction: blockAction,
+                    nativeTokenPredicate: _ => true,
+                    stateStore: fx.StateStore
+                );
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block<Arithmetic> genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);

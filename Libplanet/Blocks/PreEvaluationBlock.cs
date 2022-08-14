@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -178,6 +179,9 @@ namespace Libplanet.Blocks
         /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
         /// It is signed by the given <paramref name="privateKey"/>.</returns>
@@ -198,9 +202,10 @@ namespace Libplanet.Blocks
         public Block<T> Evaluate(
             PrivateKey privateKey,
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         ) =>
-            Sign(privateKey, DetermineStateRootHash(blockAction, stateStore));
+            Sign(privateKey, DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and an optional
@@ -261,6 +266,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
@@ -270,9 +278,10 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         )
-            => DetermineStateRootHash(blockAction, stateStore, out _);
+            => DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore, out _);
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -281,6 +290,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <param name="statesDelta">Returns made changes on states.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
@@ -291,6 +303,7 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore,
             out IImmutableDictionary<string, IValue> statesDelta
         )
@@ -309,7 +322,8 @@ namespace Libplanet.Blocks
                 blockAction,
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
-                genesisHash: null
+                genesisHash: null,
+                nativeTokenPredicate: nativeTokenPredicate
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);

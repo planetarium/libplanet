@@ -1,7 +1,9 @@
 #nullable disable
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -27,6 +29,9 @@ namespace Libplanet.Blockchain.Policies
             new TotalDifficultyComparer();
 
         public IAction BlockAction => null;
+
+        /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
+        public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
         public int GetMinTransactionsPerBlock(long index) => 0;
 

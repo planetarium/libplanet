@@ -66,7 +66,7 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            return (blocks[1].Transactions.First().Actions.First().TargetAddress, blocks);
+            return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
         }
 
         private Swarm<DumbAction> CreateSwarm(

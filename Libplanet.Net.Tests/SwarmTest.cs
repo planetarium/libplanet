@@ -852,7 +852,7 @@ namespace Libplanet.Net.Tests
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,
-                        actions: new[] { new Sleep() }
+                        customActions: new[] { new Sleep() }
                     )
                 );
                 var b = await miner1.BlockChain.MineBlock(key1);

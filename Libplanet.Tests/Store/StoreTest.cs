@@ -906,8 +906,8 @@ namespace Libplanet.Tests.Store
             {
                 var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
                 tx.Validate();
-                Assert.Single(tx.Actions);
-                AtomicityTestAction action = tx.Actions[0];
+                Assert.Single(tx.CustomActions);
+                AtomicityTestAction action = tx.CustomActions[0];
                 Assert.Equal(
                     md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
                     action.Md5Digest.ToArray()
@@ -1067,8 +1067,14 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(policy.GetHashAlgorithm, GenesisMiner.PublicKey)
-                        .Evaluate(GenesisMiner, policy.BlockAction, fx.StateStore)
+                    MineGenesis<DumbAction>(
+                            hashAlgorithmGetter: policy.GetHashAlgorithm,
+                            miner: GenesisMiner.PublicKey)
+                        .Evaluate(
+                            privateKey: GenesisMiner,
+                            blockAction: policy.BlockAction,
+                            nativeTokenPredicate: policy.NativeTokens.Contains,
+                            stateStore: fx.StateStore)
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.

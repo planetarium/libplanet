@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -14,7 +15,10 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        protected StoreFixture(IAction blockAction = null)
+        protected StoreFixture(
+            IAction blockAction = null,
+            IImmutableSet<Currency> nativeTokens = null
+        )
         {
             Path = null;
 
@@ -100,7 +104,14 @@ namespace Libplanet.Tests.Store
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(
                 GetHashAlgorithm,
                 Miner.PublicKey
-            ).Evaluate(Miner, blockAction, stateStore);
+            ).Evaluate(
+                privateKey: Miner,
+                blockAction: blockAction,
+                nativeTokenPredicate: nativeTokens is null
+                    ? _ => true
+                    : (Predicate<Currency>)nativeTokens.Contains,
+                stateStore: stateStore
+            );
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
             Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm, miner: Miner);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;

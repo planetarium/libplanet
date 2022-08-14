@@ -469,11 +469,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
                 );
                 genesisBlock = protocolVersion < 2
-                 ? new Block<T>(
-                     preEval,
-                     preEval.DetermineStateRootHash(policy.BlockAction, stateStore),
-                     signature: null)
-                 : preEval.Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+                    ? new Block<T>(
+                         preEval,
+                         preEval.DetermineStateRootHash(
+                             blockAction: policy.BlockAction,
+                             nativeTokenPredicate: policy.NativeTokens.Contains,
+                             stateStore: stateStore),
+                         signature: null)
+                    : preEval.Evaluate(
+                         privateKey: GenesisMiner,
+                         blockAction: policy.BlockAction,
+                         nativeTokenPredicate: policy.NativeTokens.Contains,
+                         stateStore: stateStore);
             }
 
             ValidatingActionRenderer<T> validator = null;

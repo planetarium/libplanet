@@ -130,7 +130,12 @@ namespace Libplanet.Tests.Blockchain
             var genesisBlock = TestUtils.MineGenesis<DumbAction>(
                 policy.GetHashAlgorithm,
                 TestUtils.GenesisMiner.PublicKey
-            ).Evaluate(TestUtils.GenesisMiner, policy.BlockAction, stateStore);
+            ).Evaluate(
+                TestUtils.GenesisMiner,
+                policy.BlockAction,
+                policy.NativeTokens.Contains,
+                stateStore
+            );
             store.PutBlock(genesisBlock);
             Assert.NotNull(store.GetStateRootHash(genesisBlock.Hash));
 

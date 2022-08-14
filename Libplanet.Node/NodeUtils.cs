@@ -70,9 +70,10 @@ namespace Libplanet.Node
                 })
                 .Mine(blockPolicy.GetHashAlgorithm(0L))
                 .Evaluate(
-                    privateKey,
-                    blockPolicy.BlockAction,
-                    new TrieStateStore(new MemoryKeyValueStore()));
+                    privateKey: privateKey,
+                    blockAction: blockPolicy.BlockAction,
+                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
+                    stateStore: new TrieStateStore(new MemoryKeyValueStore()));
         }
 
         /// <summary>
