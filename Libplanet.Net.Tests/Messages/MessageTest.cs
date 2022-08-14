@@ -17,7 +17,7 @@ namespace Libplanet.Net.Tests.Messages
     public class MessageTest
     {
         [Fact]
-        public void BlockHeaderMessage()
+        public void BlockHeaderMsg()
         {
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Tests.Messages
                 _ => HashAlgorithmType.Of<SHA256>(),
                 GenesisMiner
             );
-            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header)
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,
                 Remote = peer,

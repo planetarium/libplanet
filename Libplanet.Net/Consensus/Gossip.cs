@@ -219,7 +219,7 @@ namespace Libplanet.Net.Consensus
             _logger.Verbose("HandleMessage: {Message}", msg);
             switch (msg)
             {
-                case Ping p:
+                case PingMsg p:
                     await ReplyMessagePongAsync(p, ctx);
                     break;
                 case HaveMessage h:
@@ -350,10 +350,10 @@ namespace Libplanet.Net.Consensus
                     {
                         Message? pong = await _transport.SendMessageAsync(
                             peer,
-                            new Ping(),
+                            new PingMsg(),
                             TimeSpan.FromSeconds(1),
                             ctx);
-                        return pong is Pong;
+                        return pong is PongMsg;
                     }
                     catch (Exception e)
                     {
@@ -386,7 +386,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Replies a <see cref="Pong"/> of received <paramref name="message"/>.
+        /// Replies a <see cref="PongMsg"/> of received <paramref name="message"/>.
         /// </summary>
         /// <param name="message">A message to replies.</param>
         /// <param name="ctx">A cancellation token used to propagate notification
@@ -394,7 +394,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         private async Task ReplyMessagePongAsync(Message message, CancellationToken ctx)
         {
-            var pong = new Pong { Identity = message.Identity };
+            var pong = new PongMsg { Identity = message.Identity };
             await _transport.ReplyMessageAsync(pong, ctx);
         }
     }

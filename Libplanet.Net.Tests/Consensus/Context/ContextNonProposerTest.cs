@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -112,8 +113,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(1, Context.Height);
             Assert.Equal(0, Context.Round);
 
-            var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                Context.ToString());
+            var json =
+                JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(Context.ToString())
+                    ?? throw new NullReferenceException("Failed to deserialize context");
 
             Assert.Equal(0, json["locked_round"].GetInt64());
             Assert.Equal(0, json["valid_round"].GetInt64());
