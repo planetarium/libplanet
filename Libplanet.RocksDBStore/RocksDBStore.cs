@@ -582,15 +582,7 @@ namespace Libplanet.RocksDBStore
             BlockHash[] bottoms = IterateIndexes(sourceChainId, 0, 1, true).ToArray();
             BlockHash? genesisHash = bottoms.Any() ? bottoms[0] : (BlockHash?)null;
 
-            if (genesisHash is null)
-            {
-                throw new ChainIdNotFoundException(
-                    sourceChainId,
-                    $"No such chain ID: {sourceChainId}."
-                );
-            }
-
-            if (branchpoint.Equals(genesisHash))
+            if (genesisHash is null || branchpoint.Equals(genesisHash))
             {
                 return;
             }
@@ -702,7 +694,7 @@ namespace Libplanet.RocksDBStore
             }
 
             long timestamp = tx.Timestamp.ToUnixTimeSeconds();
-            string txDbName = $"epoch{(int)timestamp / _txEpochUnitSeconds}";
+            string txDbName = $"epoch{timestamp / _txEpochUnitSeconds}";
             _rwTxLock.EnterWriteLock();
             try
             {
@@ -1199,14 +1191,6 @@ namespace Libplanet.RocksDBStore
                     _chainDb.Write(writeBatch);
                     writeBatch.Dispose();
                 }
-            }
-
-            if (!exist)
-            {
-                throw new ChainIdNotFoundException(
-                    sourceChainId,
-                    $"No such chain ID: {sourceChainId}."
-                );
             }
         }
 

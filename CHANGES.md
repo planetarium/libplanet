@@ -75,19 +75,40 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ - Added `BlockLocator` class. [[#1762], [#2140]]
+ - Added methods required for decoupling `Libplanet.Net` from
+   `Libplanet`. [[#1762], [#2140]]
+   - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
+   - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
+   - Added `BlockChain<T>.GetBlockLocator(int)` method.
+
 ### Behavioral changes
+
+ -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
+    perceive time of newly perceived blocks. [[#2155], [#2159]]
+ -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
+    empty chains. [[#2047], [#2156]]
 
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#2047]: https://github.com/planetarium/libplanet/issues/2047
+[#2140]: https://github.com/planetarium/libplanet/pull/2140
+[#2155]: https://github.com/planetarium/libplanet/issues/2155
+[#2156]: https://github.com/planetarium/libplanet/pull/2156
+[#2159]: https://github.com/planetarium/libplanet/pull/2159
 
 
 Version 0.39.0

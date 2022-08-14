@@ -43,6 +43,13 @@ namespace Libplanet.Tests.Blockchain
         private IStagePolicy<DumbAction> _stagePolicy;
 
         public BlockChainTest(ITestOutputHelper output)
+            : this(output, action => new MemoryStoreFixture(blockAction: action))
+        {
+        }
+
+        protected BlockChainTest(
+            ITestOutputHelper output,
+            Func<IAction, StoreFixture> getStoreFixture)
         {
             Log.Logger = _logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
@@ -59,7 +66,7 @@ namespace Libplanet.Tests.Blockchain
                 getMaxBlockBytes: _ => 50 * 1024,
                 getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
-            _fx = new MemoryStoreFixture(blockAction: _policy.BlockAction);
+            _fx = getStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
@@ -128,7 +135,8 @@ namespace Libplanet.Tests.Blockchain
                 TotalDifficulty = 21584061959429,
             };
 
-            DateTimeOffset timeBMin = DateTimeOffset.UtcNow;
+            DateTimeOffset timeBMin = DateTimeOffset.FromUnixTimeMilliseconds(
+                DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
             BlockPerception perceptionB = _blockChain.PerceiveBlock(blockB);
             DateTimeOffset timeBMax = DateTimeOffset.UtcNow;
             Assert.True(blockB.ExcerptEquals(perceptionB));
