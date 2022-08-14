@@ -23,15 +23,13 @@ namespace Libplanet
         /// should not vary for different <paramref name="nonce"/>s.</para>
         /// </summary>
         /// <param name="nonce">An arbitrary nonce for an attempt, provided by
-        /// <see cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"/>
-        /// method.
+        /// <see cref="Hashcash.Answer"/> method.
         /// </param>
         /// <returns>Chunked <see cref="byte"/>s determined from the given <paramref name="nonce"/>.
         /// It should return consistently equivalent bytes for equivalent <paramref name="nonce"/>
         /// values.  The way how bytes are split into chunks can be flexible; regardless of the way,
         /// they are concatenated into a single byte array.</returns>
-        /// <seealso cref="Hashcash.Answer(Stamp, HashAlgorithmType, long, int, CancellationToken)"
-        /// />
+        /// <seealso cref="Hashcash.Answer"/>
         /// <seealso cref="Nonce"/>
         public delegate IEnumerable<byte[]> Stamp(Nonce nonce);
 

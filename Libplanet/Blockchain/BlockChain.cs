@@ -145,7 +145,7 @@ namespace Libplanet.Blockchain
                 throw new ArgumentNullException(nameof(stateStore));
             }
 
-            _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, store);
+            _blocks = new BlockSet<T>(store);
             Renderers = renderers is IEnumerable<IRenderer<T>> r
                 ? r.ToImmutableArray()
                 : ImmutableArray<IRenderer<T>>.Empty;
@@ -347,8 +347,6 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Mine the genesis block of the blockchain.
         /// </summary>
-        /// <param name="hashAlgorithm">The hash algorithm for proof-of-work on the genesis block.
-        /// </param>
         /// <param name="actions">List of actions will be included in the genesis block.
         /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
         /// as default.</param>
@@ -365,7 +363,6 @@ namespace Libplanet.Blockchain
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> MakeGenesisBlock(
-            HashAlgorithmType hashAlgorithm,
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -386,7 +383,7 @@ namespace Libplanet.Blockchain
                 Transactions = transactions,
             };
 
-            PreEvaluationBlock<T> preEval = content.Mine(hashAlgorithm);
+            PreEvaluationBlock<T> preEval = content.Mine();
             return preEval.Evaluate(
                 privateKey,
                 blockAction,

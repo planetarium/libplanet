@@ -22,8 +22,6 @@ namespace Libplanet.Store
 
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
-        // FIXME: Rather than having a BlockHeader with a thunk HashAlgorithmType, let it have
-        //        separated fields like BlockMetadata, Nonce, PreEvaluationHash, StateRootHash...
         private readonly BlockMetadata _metadata;
         private readonly Nonce _nonce;
         private readonly ImmutableArray<byte>? _preEvaluationHash;
@@ -56,10 +54,9 @@ namespace Libplanet.Store
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
-            var tuple = BlockMarshaler.UnmarshalPreEvaluationBlockHeader(headerDict);
-            _metadata = tuple.Metadata;
-            _nonce = tuple.Nonce;
-            _preEvaluationHash = tuple.PreEvaluationHash;
+            _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
+            _nonce = BlockMarshaler.UnmarshalNonce(headerDict);
+            _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
             Hash = BlockMarshaler.UnmarshalBlockHeaderHash(headerDict);
@@ -173,24 +170,12 @@ namespace Libplanet.Store
         /// <summary>
         /// Gets the block header.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <returns>The block header.</returns>
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        public BlockHeader GetHeader()
         {
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(Index);
             var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce,
-                    preEvalHash
-                )
-                : new PreEvaluationBlockHeader(
-                    _metadata,
-                    hashAlgorithm,
-                    _nonce
-                );
+                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
+                : new PreEvaluationBlockHeader(_metadata, _nonce);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 

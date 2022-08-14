@@ -239,12 +239,12 @@ namespace Libplanet.Explorer.Store
             _store.SetCanonicalChainId(chainId);
         }
 
-        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}(HashAlgorithmGetter)"/>
-        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}"/>
+        public Block<T> GetCanonicalGenesisBlock<T>()
             where T : IAction, new() =>
             _store.GetCanonicalChainId() is { } canonicalChainId
             && _store.IndexBlockHash(canonicalChainId, 0) is { } genesisHash
-                ? _store.GetBlock<T>(hashAlgorithmGetter, genesisHash)
+                ? _store.GetBlock<T>(genesisHash)
                 : null;
 
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
@@ -303,11 +303,11 @@ namespace Libplanet.Explorer.Store
         public IEnumerable<BlockHash> IterateBlockHashes() =>
             _store.IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
-        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
-            return _store.GetBlock<T>(hashAlgorithmGetter, blockHash);
+            return _store.GetBlock<T>(blockHash);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)

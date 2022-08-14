@@ -10,13 +10,11 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<BlockHash, Block<T>>
         where T : IAction, new()
     {
-        private readonly HashAlgorithmGetter _hashAlgorithmGetter;
         private readonly LRUCache<BlockHash, Block<T>> _cache;
 
-        public BlockSet(HashAlgorithmGetter hashAlgorithmGetter, IStore store, int cacheSize = 4096)
+        public BlockSet(IStore store, int cacheSize = 4096)
             : base(store)
         {
-            _hashAlgorithmGetter = hashAlgorithmGetter;
             _cache = new LRUCache<BlockHash, Block<T>>(cacheSize, Math.Max(cacheSize / 64, 8));
         }
 
@@ -64,7 +62,6 @@ namespace Libplanet.Store
                 }
 
                 value.ValidateTimestamp();
-                HashAlgorithmType hashAlgorithm = _hashAlgorithmGetter(value.Index);
                 Store.PutBlock(value);
                 _cache.AddReplace(value.Hash, value);
             }
@@ -100,7 +97,7 @@ namespace Libplanet.Store
                 }
             }
 
-            Block<T> fetched = Store.GetBlock<T>(_hashAlgorithmGetter, key);
+            Block<T> fetched = Store.GetBlock<T>(key);
             if (fetched is { })
             {
                 _cache.AddReplace(key, fetched);

@@ -139,9 +139,6 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
-
-            // TODO: Should validate LastCommit somewhere?
             var metadata = new BlockMetadata
             {
                 Index = index,
@@ -186,7 +183,7 @@ namespace Libplanet.Blockchain
             try
             {
                 preEval = await Task.Run(
-                    () => blockContent.Mine(hashAlgorithm, cancellationTokenSource.Token),
+                    () => blockContent.Mine(cancellationTokenSource.Token),
                     cancellationTokenSource.Token
                 );
             }
@@ -432,8 +429,7 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            // FIXME: Possibly better to not directly refer to policy.
-            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
+            int digestSize = BlockMetadata.HashAlgorithmType.DigestSize;
 
             // Makes an empty block payload to estimate the length of bytes without transactions.
             // FIXME: We'd better to estimate only transactions rather than the whole block.
@@ -445,7 +441,7 @@ namespace Libplanet.Blockchain
                     marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
                         marshaledMetadata: MarshalBlockMetadata(metadata),
                         nonce: default,
-                        preEvaluationHash: new byte[hashAlgorithm.DigestSize].ToImmutableArray()
+                        preEvaluationHash: new byte[digestSize].ToImmutableArray()
                     ),
                     stateRootHash: default,
                     signature: dumbSig,

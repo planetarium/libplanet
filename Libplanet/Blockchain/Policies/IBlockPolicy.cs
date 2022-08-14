@@ -112,14 +112,6 @@ namespace Libplanet.Blockchain.Policies
         long GetMaxBlockBytes(long index);
 
         /// <summary>
-        /// Gets the <see cref="HashAlgorithmType"/> to use for block's proof-of-work.
-        /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> to
-        /// do proof-of-work.</param>
-        /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
-        HashAlgorithmType GetHashAlgorithm(long index);
-
-        /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for
         /// a valid <see cref="Block{T}"/>.
         /// </summary>

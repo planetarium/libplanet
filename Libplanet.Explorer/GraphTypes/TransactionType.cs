@@ -71,10 +71,9 @@ namespace Libplanet.Explorer.GraphTypes
                     if (ctx.UserContext[storeKey] is IRichStore richStore &&
                         ctx.UserContext[blockChainKey] is BlockChain<T> chain)
                     {
-                        HashAlgorithmGetter hashAlgorithmGetter = chain.Policy.GetHashAlgorithm;
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => richStore.GetBlock<T>(hashAlgorithmGetter, r.Item2));
+                            .Select(r => richStore.GetBlock<T>(r.Item2));
                     }
                     else
                     {

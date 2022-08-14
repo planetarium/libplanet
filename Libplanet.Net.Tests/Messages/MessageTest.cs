@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -27,10 +26,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =

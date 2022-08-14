@@ -127,7 +127,7 @@ namespace Libplanet.Net.Tests
                 PublicKey = receiverKey.PublicKey,
                 Timestamp = DateTimeOffset.MinValue,
             }
-                .Mine(policy.GetHashAlgorithm(0))
+                .Mine()
                 .Evaluate(
                     privateKey: receiverKey,
                     blockAction: policy.BlockAction,
@@ -672,7 +672,6 @@ namespace Libplanet.Net.Tests
 
             Block<DumbAction> block1 = MineNext(
                 blockChain.Genesis,
-                policy.GetHashAlgorithm,
                 new[] { transactions[0] },
                 null,
                 policy.GetNextBlockDifficulty(blockChain),
@@ -681,7 +680,6 @@ namespace Libplanet.Net.Tests
             blockChain.Append(block1, true, true, false);
             Block<DumbAction> block2 = MineNext(
                 block1,
-                policy.GetHashAlgorithm,
                 new[] { transactions[1] },
                 null,
                 policy.GetNextBlockDifficulty(blockChain),
@@ -886,7 +884,6 @@ namespace Libplanet.Net.Tests
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
             Block<DumbAction> block = MineNext(
                 chain2.Tip,
-                policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)

@@ -144,7 +144,7 @@ namespace Libplanet.Explorer.Executable
             {
                 var serialized = client.DownloadData(uri);
                 var dict = (Bencodex.Types.Dictionary)Codec.Decode(serialized);
-                return BlockMarshaler.UnmarshalBlock<NullAction>(policy.GetHashAlgorithm, dict);
+                return BlockMarshaler.UnmarshalBlock<NullAction>(dict);
             }
         }
     }

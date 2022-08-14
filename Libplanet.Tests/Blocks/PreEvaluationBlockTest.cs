@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
+                _contents.Genesis.Mine();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Blocks
                 content1.PreviousHash = genesis.Hash;
                 content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine(policy.GetHashAlgorithm(0));
+                _contents.Genesis.Mine();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Blocks
                 content1.PreviousHash = genesis.Hash;
                 content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine(policy.GetHashAlgorithm(1));
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);
