@@ -110,10 +110,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,

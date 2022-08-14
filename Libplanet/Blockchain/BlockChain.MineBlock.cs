@@ -325,8 +325,6 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            HashAlgorithmType hashAlgorithm = Policy.GetHashAlgorithm(index);
-
             // TODO: Should validate LastCommit somewhere?
             var metadata = new BlockMetadata
             {
@@ -372,7 +370,7 @@ namespace Libplanet.Blockchain
                 throw new InvalidBlockPreviousHashException("Need PreviousHash.");
             }
 
-            preEval = blockContent.Propose(hashAlgorithm, ph.ByteArray);
+            preEval = blockContent.Propose(ph.ByteArray);
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
                 preEval.EvaluateActions(proposer, this);

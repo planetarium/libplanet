@@ -225,11 +225,9 @@ namespace Libplanet.Blocks
             new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
 
         public PreEvaluationBlock<T> Propose(
-            HashAlgorithmType hashAlgorithm,
             ImmutableArray<byte> preEvaluationHash) =>
             new PreEvaluationBlock<T>(
                 this,
-                hashAlgorithm,
                 (default, preEvaluationHash));
 
         /// <summary>

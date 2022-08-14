@@ -136,7 +136,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(
                     metadata: invalidHeightMetadata,
-                    hashAlgorithm: _sha256,
                     nonce: _validGenesisProof.Nonce));
 
             // BlockHash of the last commit is invalid.
@@ -162,7 +161,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(
                     metadata: invalidBlockHashMetadata,
-                    hashAlgorithm: _sha256,
                     nonce: _validGenesisProof.Nonce));
 
             // Some of the vote's signature are invalid.
@@ -198,7 +196,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(
                     metadata: invalidVoteSignatureMetadata,
-                    hashAlgorithm: _sha256,
                     nonce: _validGenesisProof.Nonce));
 
             // Some of the vote's height are invalid.
@@ -234,7 +231,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(
                     metadata: invalidVoteHeightMetadata,
-                    hashAlgorithm: _sha256,
                     nonce: _validGenesisProof.Nonce));
 
             // Signature can be null for null or unknown votes.
@@ -276,7 +272,6 @@ namespace Libplanet.Tests.Blocks
             };
             _ = new PreEvaluationBlockHeader(
                 metadata: validMetadata,
-                hashAlgorithm: _sha256,
                 nonce: _validGenesisProof.Nonce);
         }
 

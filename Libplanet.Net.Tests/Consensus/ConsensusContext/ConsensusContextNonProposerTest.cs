@@ -50,7 +50,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 if (message is ConsensusPropose propose && message.Height == 2)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        BlockChain.Policy.GetHashAlgorithm,
                         (Dictionary)codec.Decode(propose!.Payload));
                     heightTwoProposeSent.Set();
                 }

@@ -82,7 +82,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, Context.Step);
             Assert.NotNull(proposedMessage);
             Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                BlockChain.Policy.GetHashAlgorithm,
                 (Dictionary)new Codec().Decode(proposedMessage!.Payload));
             Assert.NotNull(mined.LastCommit);
             Assert.Equal(
