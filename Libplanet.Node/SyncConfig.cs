@@ -21,12 +21,12 @@ namespace Libplanet.Node
         public TimeSpan DialTimeout { get; set; } = TimeSpan.FromSeconds(5);
 
         /// <summary>
-        /// Determines how often to broadcast <see cref="BlockHeaderMessage"/>.
+        /// Determines how often to broadcast <see cref="BlockHeaderMsg"/>.
         /// </summary>
         public TimeSpan BlockBroadcastInterval { get; set; } = TimeSpan.FromSeconds(15);
 
         /// <summary>
-        /// Determines how often to broadcast <see cref="TxIds"/>.
+        /// Determines how often to broadcast <see cref="TxIdsMsg"/>.
         /// </summary>
         public TimeSpan TxBroadcastInterval { get; set; } = TimeSpan.FromSeconds(5);
 

@@ -537,11 +537,11 @@ namespace Libplanet.Net.Transports
                         "Received request {Message} from {Peer} has an invalid APV.",
                         message,
                         message.Remote);
-                    var differentVersion = new DifferentVersion() { Identity = message.Identity };
+                    var diffVersion = new DifferentVersionMsg() { Identity = message.Identity };
                     _logger.Debug(
                         "Replying to {Peer} with {Reply}.",
-                        differentVersion);
-                    _ = ReplyMessageAsync(differentVersion, _runtimeCancellationTokenSource.Token);
+                        diffVersion);
+                    _ = ReplyMessageAsync(diffVersion, _runtimeCancellationTokenSource.Token);
                     return;
                 }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetChainStatus : Message
+    internal class GetChainStatusMsg : Message
     {
         public override MessageType Type => MessageType.GetChainStatus;
 

@@ -1,18 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
         <RootNamespace>Libplanet.Extensions.Cocona.Tests</RootNamespace>
         <LangVersion>8</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="
-      '$([System.Runtime.InteropServices.RuntimeInformation]::
-        OSArchitecture.ToString())' == 'Arm64' ">
-      <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">

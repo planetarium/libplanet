@@ -672,7 +672,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Use <see cref="FindNeighbors"/> messages to to find a <see cref="BoundPeer"/> with
+        /// Use <see cref="FindNeighborsMsg"/> messages to to find a <see cref="BoundPeer"/> with
         /// <see cref="Address"/> of <paramref name="target"/>.
         /// </summary>
         /// <param name="target">The <see cref="Address"/> to find.</param>
@@ -680,7 +680,7 @@ namespace Libplanet.Net
         /// will recursive until the closest <see cref="BoundPeer"/> to the
         /// <paramref name="target"/> is found.</param>
         /// <param name="timeout">
-        /// <see cref="TimeSpan"/> for waiting reply of <see cref="FindNeighbors"/>.
+        /// <see cref="TimeSpan"/> for waiting reply of <see cref="FindNeighborsMsg"/>.
         /// If <c>null</c> is given, <see cref="TimeoutException"/> will not be thrown.
         /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
@@ -763,7 +763,7 @@ namespace Libplanet.Net
             var sessionRandom = new System.Random();
             int logSessionId = logSessionIds is (int i, _) ? i : sessionRandom.Next();
             int subSessionId = logSessionIds is (_, int j) ? j : sessionRandom.Next();
-            var request = new GetBlockHashes(locator, stop);
+            var request = new GetBlockHashesMsg(locator, stop);
 
             TimeSpan transportTimeout = timeout is { } t
                 && t > Options.TimeoutOptions.GetBlockHashesTimeout
@@ -776,7 +776,7 @@ namespace Libplanet.Net
                 sendMsg,
                 logSessionId,
                 subSessionId,
-                nameof(Messages.GetBlockHashes),
+                nameof(Messages.GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
             Message parsedMessage = await Transport.SendMessageAsync(
@@ -786,13 +786,14 @@ namespace Libplanet.Net
                 cancellationToken: cancellationToken
             );
 
-            if (parsedMessage is BlockHashes blockHashes)
+            if (parsedMessage is BlockHashesMsg blockHashes)
             {
                 if (blockHashes.StartIndex is long idx)
                 {
                     BlockHash[] hashes = blockHashes.Hashes.ToArray();
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " + nameof(Messages.BlockHashes) +
+                        "{SessionId}/{SubSessionId}: Received a " +
+                        nameof(Messages.BlockHashesMsg) +
                         " message with an offset index {OffsetIndex} (total {Length} hashes).";
                     _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongLength);
                     foreach (BlockHash hash in hashes)
@@ -804,7 +805,8 @@ namespace Libplanet.Net
                 else
                 {
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " + nameof(Messages.BlockHashes) +
+                        "{SessionId}/{SubSessionId}: Received a " +
+                        nameof(Messages.BlockHashesMsg) +
                         " message, but it has zero hashes.";
                     _logger.Debug(msg, logSessionId, subSessionId);
                 }
@@ -814,7 +816,7 @@ namespace Libplanet.Net
 
             string errorMessage =
                 $"The response of {nameof(GetBlockHashes)} is expected to be " +
-                $"{nameof(BlockHashes)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
+                $"{nameof(BlockHashesMsg)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
             throw new InvalidMessageException(errorMessage, parsedMessage);
         }
 
@@ -831,7 +833,7 @@ namespace Libplanet.Net
                 peer
             );
 
-            var request = new GetBlocks(blockHashesAsArray);
+            var request = new GetBlocksMsg(blockHashesAsArray);
             int hashCount = blockHashesAsArray.Count();
 
             if (hashCount < 1)
@@ -862,7 +864,7 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (message is Messages.Blocks blockMessage)
+                if (message is Messages.BlocksMsg blockMessage)
                 {
                     IList<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
@@ -885,7 +887,7 @@ namespace Libplanet.Net
                 {
                     string errorMessage =
                         $"Expected a {nameof(Blocks)} message as a response of " +
-                        $"the {nameof(GetBlocks)} message, but got a {message.GetType().Name} " +
+                        $"the {nameof(GetBlocksMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
                     throw new InvalidMessageException(errorMessage, message);
                 }
@@ -900,7 +902,7 @@ namespace Libplanet.Net
             [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
-            var request = new GetTxs(txIdsAsArray);
+            var request = new GetTxsMsg(txIdsAsArray);
             int txCount = txIdsAsArray.Count();
 
             _logger.Debug("Required tx count: {Count}.", txCount);
@@ -923,7 +925,7 @@ namespace Libplanet.Net
 
             foreach (Message message in replies)
             {
-                if (message is Messages.Tx parsed)
+                if (message is Messages.TxMsg parsed)
                 {
                     Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
                     yield return tx;
@@ -932,7 +934,7 @@ namespace Libplanet.Net
                 {
                     string errorMessage =
                         $"Expected {nameof(Tx)} messages as response of " +
-                        $"the {nameof(GetTxs)} message, but got a {message.GetType().Name} " +
+                        $"the {nameof(GetTxsMsg)} message, but got a {message.GetType().Name} " +
                         $"message instead: {message}";
                     throw new InvalidMessageException(errorMessage, message);
                 }
@@ -1173,7 +1175,7 @@ namespace Libplanet.Net
         private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHeaderMessage(BlockChain.Genesis.Hash, block.Header);
+            var message = new BlockHeaderMsg(BlockChain.Genesis.Hash, block.Header);
             BroadcastMessage(except, message);
             _logger.Debug("Block broadcasting complete.");
         }
@@ -1226,8 +1228,8 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Gets <see cref="ChainStatus"/>es from randomly selected <see cref="BoundPeer"/>s
-        /// from <see cref="Peers"/> with each <see cref="ChainStatus"/> tied to
+        /// Gets <see cref="ChainStatusMsg"/>es from randomly selected <see cref="BoundPeer"/>s
+        /// from <see cref="Peers"/> with each <see cref="ChainStatusMsg"/> tied to
         /// its originating <see cref="BoundPeer"/>.
         /// </summary>
         /// <param name="dialTimeout">Timeout for each dialing operation to
@@ -1237,10 +1239,10 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with an <see cref="Array"/> of tuples
-        /// of <see cref="BoundPeer"/> and <see cref="ChainStatus"/> where
-        /// <see cref="ChainStatus"/> can be <c>null</c> if dialing fails for
+        /// of <see cref="BoundPeer"/> and <see cref="ChainStatusMsg"/> where
+        /// <see cref="ChainStatusMsg"/> can be <c>null</c> if dialing fails for
         /// a selected <see cref="BoundPeer"/>.</returns>
-        private Task<(BoundPeer, ChainStatus)[]> DialExistingPeers(
+        private Task<(BoundPeer, ChainStatusMsg)[]> DialExistingPeers(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
             CancellationToken cancellationToken)
@@ -1269,19 +1271,19 @@ namespace Libplanet.Net
             }
 
             var rnd = new System.Random();
-            IEnumerable<Task<(BoundPeer, ChainStatus)>> tasks = Peers.OrderBy(_ => rnd.Next())
+            IEnumerable<Task<(BoundPeer, ChainStatusMsg)>> tasks = Peers.OrderBy(_ => rnd.Next())
                 .Take(maxPeersToDial)
                 .Select(
                     peer => Transport.SendMessageAsync(
                         peer,
-                        new GetChainStatus(),
+                        new GetChainStatusMsg(),
                         dialTimeout,
                         cancellationToken
-                    ).ContinueWith<(BoundPeer, ChainStatus)>(
+                    ).ContinueWith<(BoundPeer, ChainStatusMsg)>(
                         task =>
                         {
                             if (task.IsFaulted || task.IsCanceled ||
-                                !(task.Result is ChainStatus chainStatus))
+                                !(task.Result is ChainStatusMsg chainStatus))
                             {
                                 // Log and mark to skip
                                 LogException(peer, task);
@@ -1383,7 +1385,7 @@ namespace Libplanet.Net
 
         private void BroadcastTxIds(Address? except, IEnumerable<TxId> txIds)
         {
-            var message = new TxIds(txIds);
+            var message = new TxIdsMsg(txIds);
             BroadcastMessage(except, message);
         }
 

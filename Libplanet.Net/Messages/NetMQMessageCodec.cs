@@ -148,35 +148,35 @@ namespace Libplanet.Net.Messages
             switch (type)
             {
                 case Message.MessageType.Ping:
-                    return new Ping();
+                    return new PingMsg();
                 case Message.MessageType.Pong:
-                    return new Pong();
+                    return new PongMsg();
                 case Message.MessageType.GetBlockHashes:
-                    return new GetBlockHashes(dataframes);
+                    return new GetBlockHashesMsg(dataframes);
                 case Message.MessageType.TxIds:
-                    return new TxIds(dataframes);
+                    return new TxIdsMsg(dataframes);
                 case Message.MessageType.GetBlocks:
-                    return new GetBlocks(dataframes);
+                    return new GetBlocksMsg(dataframes);
                 case Message.MessageType.GetTxs:
-                    return new GetTxs(dataframes);
+                    return new GetTxsMsg(dataframes);
                 case Message.MessageType.Blocks:
-                    return new Blocks(dataframes);
+                    return new BlocksMsg(dataframes);
                 case Message.MessageType.Tx:
-                    return new Tx(dataframes);
+                    return new TxMsg(dataframes);
                 case Message.MessageType.FindNeighbors:
-                    return new FindNeighbors(dataframes);
+                    return new FindNeighborsMsg(dataframes);
                 case Message.MessageType.Neighbors:
-                    return new Neighbors(dataframes);
+                    return new NeighborsMsg(dataframes);
                 case Message.MessageType.BlockHeaderMessage:
-                    return new BlockHeaderMessage(dataframes);
+                    return new BlockHeaderMsg(dataframes);
                 case Message.MessageType.BlockHashes:
-                    return new BlockHashes(dataframes);
+                    return new BlockHashesMsg(dataframes);
                 case Message.MessageType.GetChainStatus:
-                    return new GetChainStatus();
+                    return new GetChainStatusMsg();
                 case Message.MessageType.ChainStatus:
-                    return new ChainStatus(dataframes);
+                    return new ChainStatusMsg(dataframes);
                 case Message.MessageType.DifferentVersion:
-                    return new DifferentVersion();
+                    return new DifferentVersionMsg();
                 case Message.MessageType.ConsensusPropose:
                     return new ConsensusPropose(dataframes);
                 case Message.MessageType.ConsensusVote:

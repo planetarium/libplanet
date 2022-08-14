@@ -76,12 +76,17 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
+ -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
+    [[#2162], [#2171]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+ -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
+ -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
+    `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
 
  - Added `BlockLocator` class. [[#1762], [#2140]]
  - Added methods required for decoupling `Libplanet.Net` from
@@ -89,6 +94,11 @@ To be released.
    - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
    - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
    - Added `BlockChain<T>.GetBlockLocator(int)` method.
+ -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `IAccountStateView` interface.  [[#2183]]
+ -  `IAccountStateDelta` now inherits `IAccountStateView` interface.
+    [[#2183]]
 
 ### Behavioral changes
 
@@ -96,6 +106,7 @@ To be released.
     perceive time of newly perceived blocks. [[#2155], [#2159]]
  -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
     empty chains. [[#2047], [#2156]]
+ -  `Libplanet.Explorer` now targets .NET 6.0. [[#2173]]
 
 ### Bug fixes
 
@@ -104,11 +115,17 @@ To be released.
 ### CLI tools
 
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
+[#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2047]: https://github.com/planetarium/libplanet/issues/2047
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
 [#2156]: https://github.com/planetarium/libplanet/pull/2156
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
+[#2162]: https://github.com/planetarium/libplanet/issues/2162
+[#2171]: https://github.com/planetarium/libplanet/pull/2171
+[#2173]: https://github.com/planetarium/libplanet/pull/2173
+[#2179]: https://github.com/planetarium/libplanet/pull/2179
+[#2183]: https://github.com/planetarium/libplanet/pull/2183
 
 
 Version 0.39.0
@@ -165,6 +182,7 @@ Released on July 18th, 2022.
 [#2116]: https://github.com/planetarium/libplanet/pull/2116
 [#2118]: https://github.com/planetarium/libplanet/pull/2118
 [#2128]: https://github.com/planetarium/libplanet/issues/2128
+[#2130]: https://github.com/planetarium/libplanet/pull/2130
 [#2134]: https://github.com/planetarium/libplanet/pull/2134
 [#2136]: https://github.com/planetarium/libplanet/pull/2136
 [#2139]: https://github.com/planetarium/libplanet/pull/2139

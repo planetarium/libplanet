@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Libplanet.Benchmarks</RootNamespace>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -16,12 +16,6 @@
     </AdditionalFiles>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
-
-  <PropertyGroup Condition="
-    '$([System.Runtime.InteropServices.RuntimeInformation]::
-      OSArchitecture.ToString())' == 'Arm64' ">
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
                              '$(BuildingByReSharper)'!='true'">

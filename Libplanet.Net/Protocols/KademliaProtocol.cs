@@ -281,13 +281,13 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Use <see cref="FindNeighbors"/> messages to to find a <see cref="BoundPeer"/> with
+        /// Use <see cref="FindNeighborsMsg"/> messages to to find a <see cref="BoundPeer"/> with
         /// <see cref="Address"/> of <paramref name="target"/>.
         /// </summary>
         /// <param name="target">The <see cref="Address"/> to find.</param>
         /// <param name="depth">Target depth of recursive operation.</param>
         /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
-        /// <see cref="FindNeighbors"/>.</param>
+        /// <see cref="FindNeighborsMsg"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>A <see cref="BoundPeer"/> with <paramref name="target"/> as its
@@ -404,11 +404,11 @@ namespace Libplanet.Net.Protocols
                 _logger.Verbose("Trying to ping async to {Peer}.", peer);
                 Message reply = await _transport.SendMessageAsync(
                     peer,
-                    new Ping(),
+                    new PingMsg(),
                     timeout,
                     cancellationToken
                 );
-                if (!(reply is Pong pong))
+                if (!(reply is PongMsg pong))
                 {
                     throw new InvalidMessageException(
                         $"Expected pong, but received {reply.Type}.", reply);
@@ -436,13 +436,13 @@ namespace Libplanet.Net.Protocols
         {
             switch (message)
             {
-                case Ping ping:
+                case PingMsg ping:
                 {
                     await ReceivePingAsync(ping);
                     break;
                 }
 
-                case FindNeighbors findNeighbors:
+                case FindNeighborsMsg findNeighbors:
                 {
                     await ReceiveFindPeerAsync(findNeighbors);
                     break;
@@ -458,11 +458,11 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>. If target peer
+        /// Validate peer by send <see cref="PingMsg"/> to <paramref name="peer"/>. If target peer
         /// does not responds, remove it from the table.
         /// </summary>
         /// <param name="peer">A <see cref="BoundPeer"/> to validate.</param>
-        /// <param name="timeout">Timeout for waiting reply of <see cref="Ping"/>.</param>
+        /// <param name="timeout">Timeout for waiting reply of <see cref="PingMsg"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -502,18 +502,19 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Send <see cref="FindNeighbors"/> messages to <paramref name="viaPeer"/>
+        /// Send <see cref="FindNeighborsMsg"/> messages to <paramref name="viaPeer"/>
         /// to find <see cref="Peer"/>s near <paramref name="target"/>.
         /// </summary>
         /// <param name="history">The <see cref="Peer"/> that searched.</param>
         /// <param name="dialHistory">The <see cref="Peer"/> that ping was sent.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
-        /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
-        /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
+        /// <param name="viaPeer">The target <see cref="Peer"/>
+        /// to send <see cref="FindNeighborsMsg"/> message.
+        /// If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
         /// self.</param>
         /// <param name="depth">Target depth of recursive operation.</param>
         /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
-        /// <see cref="FindNeighbors"/>.</param>
+        /// <see cref="FindNeighborsMsg"/>.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -588,7 +589,7 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            var findPeer = new Messages.FindNeighbors(target);
+            var findPeer = new Messages.FindNeighborsMsg(target);
             try
             {
                 Message reply = await _transport.SendMessageAsync(
@@ -596,10 +597,10 @@ namespace Libplanet.Net.Protocols
                     findPeer,
                     timeout,
                     cancellationToken);
-                if (!(reply is Messages.Neighbors neighbors))
+                if (!(reply is Messages.NeighborsMsg neighbors))
                 {
                     throw new InvalidMessageException(
-                        $"Reply to {nameof(Messages.FindNeighbors)} is invalid.",
+                        $"Reply to {nameof(Messages.FindNeighborsMsg)} is invalid.",
                         reply);
                 }
 
@@ -615,7 +616,7 @@ namespace Libplanet.Net.Protocols
         }
 
         // Send pong back to remote
-        private async Task ReceivePingAsync(Ping ping)
+        private async Task ReceivePingAsync(PingMsg ping)
         {
             if (!(ping.Remote is Peer remote))
             {
@@ -626,7 +627,7 @@ namespace Libplanet.Net.Protocols
                 throw new InvalidMessageException("Cannot receive ping from self.", ping);
             }
 
-            var pong = new Pong
+            var pong = new PongMsg
             {
                 Identity = ping.Identity,
             };
@@ -635,7 +636,7 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighbors"/>
+        /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighborsMsg"/>
         /// request.
         /// </summary>
         /// <param name="history"><see cref="Peer"/>s that already searched.</param>
@@ -754,12 +755,12 @@ namespace Libplanet.Net.Protocols
 
         // FIXME: this method is not safe from amplification attack
         // maybe ping/pong/ping/pong is required
-        private async Task ReceiveFindPeerAsync(Messages.FindNeighbors findNeighbors)
+        private async Task ReceiveFindPeerAsync(Messages.FindNeighborsMsg findNeighbors)
         {
             IEnumerable<BoundPeer> found =
                 _table.Neighbors(findNeighbors.Target, _table.BucketSize, true);
 
-            Messages.Neighbors neighbors = new Messages.Neighbors(found)
+            Messages.NeighborsMsg neighbors = new Messages.NeighborsMsg(found)
             {
                 Identity = findNeighbors.Identity,
             };

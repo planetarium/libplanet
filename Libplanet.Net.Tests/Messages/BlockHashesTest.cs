@@ -23,10 +23,10 @@ namespace Libplanet.Net.Tests.Messages
         public void Constructor()
         {
             Assert.Throws<ArgumentException>(() =>
-                new BlockHashes(null, new[] { default(BlockHash) })
+                new BlockHashesMsg(null, new[] { default(BlockHash) })
             );
             Assert.Throws<ArgumentException>(() =>
-                new BlockHashes(123, new BlockHash[0])
+                new BlockHashesMsg(123, new BlockHash[0])
             );
         }
 
@@ -34,7 +34,7 @@ namespace Libplanet.Net.Tests.Messages
         public void Decode()
         {
             BlockHash[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
-            var msg = new BlockHashes(123, blockHashes);
+            var msg = new BlockHashesMsg(123, blockHashes);
             Assert.Equal(123, msg.StartIndex);
             Assert.Equal(blockHashes, msg.Hashes);
             var privateKey = new PrivateKey();
@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Messages
                 apv,
                 peer,
                 DateTimeOffset.UtcNow);
-            BlockHashes restored = (BlockHashes)messageCodec.Decode(encoded, true);
+            BlockHashesMsg restored = (BlockHashesMsg)messageCodec.Decode(encoded, true);
             Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);
         }

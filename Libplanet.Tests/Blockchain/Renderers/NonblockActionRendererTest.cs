@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
 
         private static IActionContext _actionContext =
-            new ActionContext(default, default, default, 1, _stateDelta, default);
+            new ActionContext(default, default, default, default, 1, _stateDelta, default);
 
         private static Exception _exception = new Exception("EXPECTED");
         private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
