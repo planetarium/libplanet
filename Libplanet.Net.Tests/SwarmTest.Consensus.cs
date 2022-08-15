@@ -72,7 +72,6 @@ namespace Libplanet.Net.Tests
                         (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
                     bestBlock = MineNext(
                         chain2.Tip,
-                        policy.GetHashAlgorithm,
                         difficulty: nextDifficulty,
                         blockInterval: TimeSpan.FromMilliseconds(1),
                         miner: ChainPrivateKey.PublicKey
@@ -88,7 +87,6 @@ namespace Libplanet.Net.Tests
                     {
                         bestBlock = MineNext(
                             chain2.Tip,
-                            policy.GetHashAlgorithm,
                             difficulty: policy.GetNextBlockDifficulty(chain2),
                             blockInterval: TimeSpan.FromMilliseconds(1),
                             miner: ChainPrivateKey.PublicKey

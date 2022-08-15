@@ -64,9 +64,8 @@ namespace Libplanet.Explorer.GraphTypes
 
                 // FIXME: (BlockChain<T>) casting does not work
                 // REF COMMIT HASH: d50c90933c17a70381ad758719144e01bf9c21dc
-                HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
                 var store = (IStore)ctx.UserContext[nameof(IBlockChainContext<T>.Store)];
-                return store.GetBlock<T>(hashAlgorithmGetter, h);
+                return store.GetBlock<T>(h);
             });
             Field(x => x.Timestamp);
             Field<NonNullGraphType<ByteStringType>>(

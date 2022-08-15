@@ -4,17 +4,17 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class BlockHeaderMessage : Message
+    internal class BlockHeaderMsg : Message
     {
         private static readonly Codec Codec = new Codec();
 
-        public BlockHeaderMessage(BlockHash genesisHash, BlockHeader header)
+        public BlockHeaderMsg(BlockHash genesisHash, BlockHeader header)
         {
             GenesisHash = genesisHash;
             HeaderDictionary = header.MarshalBlockHeader();
         }
 
-        public BlockHeaderMessage(byte[][] dataFrames)
+        public BlockHeaderMsg(byte[][] dataFrames)
         {
             GenesisHash = new BlockHash(dataFrames[0]);
             HeaderDictionary = (Bencodex.Types.Dictionary)Codec.Decode(dataFrames[1]);
@@ -36,9 +36,9 @@ namespace Libplanet.Net.Messages
             Codec.Encode(HeaderDictionary),
         };
 
-        public BlockHeader GetHeader(HashAlgorithmGetter hashAlgorithmGetter)
+        public BlockHeader GetHeader()
         {
-            return BlockMarshaler.UnmarshalBlockHeader(hashAlgorithmGetter, HeaderDictionary);
+            return BlockMarshaler.UnmarshalBlockHeader(HeaderDictionary);
         }
     }
 }

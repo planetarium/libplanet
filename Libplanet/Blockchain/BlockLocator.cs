@@ -5,10 +5,23 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
-    internal class BlockLocator : IEnumerable<BlockHash>
+    /// <summary>
+    /// A class that contains the hashes for a series of blocks.
+    /// </summary>
+    public class BlockLocator : IEnumerable<BlockHash>
     {
         private readonly IEnumerable<BlockHash> _impl;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BlockLocator"/> with a set of indexer
+        /// functions, sampling after <paramref name="sampleAfter"/> number of blocks.
+        /// </summary>
+        /// <param name="indexBlockHash">A function that converts an index to a
+        /// <see cref="BlockHash"/>.</param>
+        /// <param name="indexByBlockHash">A function that converts a <see cref="BlockHash"/> to its
+        /// index.</param>
+        /// <param name="sampleAfter">The number of consequent blocks to include before sampling.
+        /// </param>
         public BlockLocator(
             Func<long, BlockHash?> indexBlockHash,
             Func<BlockHash, long> indexByBlockHash,
@@ -40,11 +53,19 @@ namespace Libplanet.Blockchain
             _impl = hashes;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
+        /// </summary>
+        /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
         public BlockLocator(IEnumerable<BlockHash> hashes)
         {
             _impl = hashes;
         }
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>The enumerator.</returns>
         public IEnumerator<BlockHash> GetEnumerator()
         {
             return _impl.GetEnumerator();

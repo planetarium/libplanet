@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@4.1.1
 
 commands:
   ulimit:
@@ -91,7 +91,10 @@ commands:
           fi
           dotnet test --no-restore --no-build -c Release --list-tests \
           > .dotnet-list-tests.txt
-          grep -E '^    ' .dotnet-list-tests.txt \
+          grep '    ' .dotnet-list-tests.txt \
+          | sed 's/    /\n    /g' \
+          | sed '/^$/d' \
+          | grep '^    ' \
           | sed -E 's/^    |\(.*?\)$//g' \
           | uniq \
           | /usr/bin/sort -R --random-source=CHANGES.md \
@@ -116,7 +119,7 @@ commands:
     - run: |
         msbuild \
           -t:Restore \
-          -p:Configuration=Release \
+          -p:Configuration=ReleaseMono \
           -p:TestsTargetFramework=net47
     - save_cache:
         key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
@@ -124,7 +127,7 @@ commands:
         - ~/.nuget/packages
     - run: |
         msbuild \
-          -p:Configuration=Release \
+          -p:Configuration=ReleaseMono \
           -p:TestsTargetFramework=net47 \
           -p:SkipSonar=true
     - persist_to_workspace:
@@ -234,6 +237,27 @@ commands:
         - store_test_results:
             path: /tmp/junit
 
+  linux_netcore_test_base:
+    parameters:
+      collect_tests_from:
+        type: string
+        default: .tests.txt
+      locale:
+        type: string
+        default: en_US.UTF-8
+      code_coverage:
+        type: boolean
+        default: true
+    steps:
+      - run:
+          name: Install lib6c-dev (for RocksDBSharp)
+          shell: bash
+          command: apt update -y && apt install -y libc6-dev
+      - netcore_test_base:
+          collect_tests_from: "<<parameters.collect_tests_from>>"
+          locale: "<<parameters.locale>>"
+          code_coverage: "<<parameters.code_coverage>>"
+
   macos_netcore_test_base:
     parameters:
       collect_tests_from:
@@ -249,7 +273,7 @@ commands:
     - ulimit: { n: 10240 }
     - restore_cache:
         keys:
-        - v1-macos-dotnet-sdk-3.1
+        - v1-macos-dotnet-sdk-6.0
     - run:
         name: Export PATH & DOTNET_ROOT
         shell: bash
@@ -259,7 +283,7 @@ commands:
             echo export DOTNET_ROOT="$HOME/.dotnet"
           } >> $BASH_ENV
     - run:
-        name: Install .NET Core 3.1 SDK
+        name: Install .NET 6.0 SDK
         shell: bash
         command: |
           set -evx
@@ -272,11 +296,11 @@ commands:
             chmod +x /tmp/dotnet-install.sh
             /tmp/dotnet-install.sh \
               --verbose \
-              --channel 3.1
+              --channel 6.0
           fi
           command -v dotnet
     - save_cache:
-        key: v1-macos-dotnet-sdk-3.1
+        key: v1-macos-dotnet-sdk-6.0
         paths:
         - ~/.dotnet/
     - netcore_test_base:
@@ -333,7 +357,10 @@ commands:
             args+=("--exclude-class=$c")
           done
           for project in *.Tests; do
-            if [[ $project !=  *"Explorer"* ]]
+            if [[
+              $project !=  *"Explorer"*
+              && $project != *"RocksDBStore"*
+            ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")
             fi
@@ -355,7 +382,7 @@ commands:
 jobs:
   linux-netcore-build:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: xlarge
     working_directory: /mnt/ramdisk
     steps: [netcore_build_base]
@@ -369,32 +396,32 @@ jobs:
 
   linux-netcore-test-netmq:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
       TRANSPORT_TYPE: netmq
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 2
-    steps: [netcore_test_base]
+    steps: [linux_netcore_test_base]
 
   linux-netcore-test-ar-SA:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
-    - netcore_test_base:
+    - linux_netcore_test_base:
         locale: ar_SA.UTF-8
 
   linux-netcore-test-fr-FR:
     docker:
-    - image: mcr.microsoft.com/dotnet/sdk:3.1
+    - image: mcr.microsoft.com/dotnet/sdk:6.0
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 2
     steps:
-    - netcore_test_base:
+    - linux_netcore_test_base:
         locale: fr_FR.UTF-8
 
   macos-netcore-test:
@@ -406,7 +433,7 @@ jobs:
 
   windows-netcore-test:
     executor:
-      name: win/default
+      name: win/server-2022
       size: large
     parallelism: 3
     steps: [netcore_test_base]

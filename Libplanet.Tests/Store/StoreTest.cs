@@ -86,8 +86,7 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = MineNextBlock(
-                MineGenesisBlock<DumbAction>(Fx.GetHashAlgorithm, GenesisMiner),
-                Fx.GetHashAlgorithm,
+                MineGenesisBlock<DumbAction>(GenesisMiner),
                 GenesisMiner,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -315,12 +314,47 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void CanonicalGenesisBlock()
+        {
+            var chainId1 = Guid.NewGuid();
+            var chainId2 = Guid.NewGuid();
+            var chainId3 = Guid.NewGuid();
+            var canonicalGenesisBlock = new Func<Block<DumbAction>>(() =>
+                Fx.Store.GetCanonicalGenesisBlock<DumbAction>());
+
+            Assert.Null(canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId1);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.PutBlock(Fx.Block1);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId1, Fx.Block1.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId2);
+            Assert.Null(canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId2, Fx.Block1.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+            Fx.Store.PutBlock(Fx.Block2);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+            Fx.Store.AppendIndex(chainId2, Fx.Block2.Hash);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+
+            Fx.Store.SetCanonicalChainId(chainId3);
+            Fx.Store.PutBlock(Fx.Block3);
+            Fx.Store.AppendIndex(chainId3, Fx.Block3.Hash);
+            Assert.Equal(Fx.Block3, canonicalGenesisBlock());
+            Fx.Store.SetCanonicalChainId(chainId1);
+            Assert.Equal(Fx.Block1, canonicalGenesisBlock());
+        }
+
+        [SkippableFact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block3.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -336,9 +370,9 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -353,11 +387,11 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block1.Hash));
+                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -370,11 +404,11 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<BlockHash> { Fx.Block2.Hash },
                 Fx.Store.IterateBlockHashes().ToHashSet());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
@@ -871,8 +905,8 @@ namespace Libplanet.Tests.Store
             {
                 var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
                 tx.Validate();
-                Assert.Single(tx.Actions);
-                AtomicityTestAction action = tx.Actions[0];
+                Assert.Single(tx.CustomActions);
+                AtomicityTestAction action = tx.CustomActions[0];
                 Assert.Equal(
                     md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
                     action.Md5Digest.ToArray()
@@ -958,10 +992,6 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
             Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
-
-            Assert.Throws<ChainIdNotFoundException>(
-                () => store.ForkBlockIndexes(Guid.NewGuid(), Guid.NewGuid(), Fx.Block2.Hash)
-            );
         }
 
         [SkippableFact]
@@ -974,7 +1004,7 @@ namespace Libplanet.Tests.Store
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
             Block<DumbAction> anotherBlock3 =
-                MineNextBlock(Fx.Block2, Fx.GetHashAlgorithm, Fx.Miner);
+                MineNextBlock(Fx.Block2, Fx.Miner);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1036,8 +1066,12 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(policy.GetHashAlgorithm, GenesisMiner.PublicKey)
-                        .Evaluate(GenesisMiner, policy.BlockAction, fx.StateStore)
+                    MineGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
+                        .Evaluate(
+                            privateKey: GenesisMiner,
+                            blockAction: policy.BlockAction,
+                            nativeTokenPredicate: policy.NativeTokens.Contains,
+                            stateStore: fx.StateStore)
                 );
 
                 // FIXME: Need to add more complex blocks/transactions.
@@ -1057,8 +1091,8 @@ namespace Libplanet.Tests.Store
                     foreach (BlockHash blockHash in s1.IterateIndexes(chainId))
                     {
                         Assert.Equal(
-                            s1.GetBlock<DumbAction>(fx.GetHashAlgorithm, blockHash),
-                            s2.GetBlock<DumbAction>(fx2.GetHashAlgorithm, blockHash)
+                            s1.GetBlock<DumbAction>(blockHash),
+                            s2.GetBlock<DumbAction>(blockHash)
                         );
                     }
                 }
@@ -1077,13 +1111,12 @@ namespace Libplanet.Tests.Store
                 // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
                 Block<DumbAction> block = MineNextBlock(
                     genesisBlock,
-                    fx.GetHashAlgorithm,
                     miner: fx.Miner,
                     protocolVersion: 0);
 
                 fx.Store.PutBlock(block);
                 Block<DumbAction> storedBlock =
-                    fx.Store.GetBlock<DumbAction>(Fx.GetHashAlgorithm, block.Hash);
+                    fx.Store.GetBlock<DumbAction>(block.Hash);
 
                 Assert.Equal(block, storedBlock);
             }
@@ -1108,10 +1141,6 @@ namespace Libplanet.Tests.Store
             store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
             Assert.Equal(2, store.GetTxNonce(sourceChainId, Fx.Address1));
             Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
-
-            Assert.Throws<ChainIdNotFoundException>(
-                () => store.ForkTxNonces(Guid.NewGuid(), Guid.NewGuid())
-            );
         }
 
         [SkippableFact]

@@ -57,7 +57,6 @@ namespace Libplanet.Tests.Action
             );
             PreEvaluationBlock<DumbAction> preEval = TestUtils.MineNext(
                 chain.Tip,
-                chain.Policy.GetHashAlgorithm,
                 new[] { tx },
                 miner: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
@@ -19,19 +18,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
             new AccountStateDeltaImpl(_ => null, (_, __) => default, default);
 
         private static IActionContext _actionContext =
-            new ActionContext(default, default, default, 1, _stateDelta, default);
+            new ActionContext(default, default, default, default, 1, _stateDelta, default);
 
         private static Exception _exception = new Exception("EXPECTED");
-        private static HashAlgorithmType _hashAlgorithm = HashAlgorithmType.Of<SHA256>();
 
         private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesisBlock<DumbAction>(_ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
 
         private static Block<DumbAction> _blockA =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private static Block<DumbAction> _blockB =
-            TestUtils.MineNextBlock(_genesis, _ => _hashAlgorithm, TestUtils.GenesisMiner);
+            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
 
         [RetryFact]
         public void Test()

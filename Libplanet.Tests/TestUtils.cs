@@ -296,7 +296,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
         {
             AssertBlockMetadataEqual(expected, actual);
-            Assert.Same(expected.HashAlgorithm, actual.HashAlgorithm);
             AssertBytesEqual(expected.PreEvaluationHash, actual.PreEvaluationHash);
         }
 
@@ -319,7 +318,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         public static PreEvaluationBlock<T> MineGenesis<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             PublicKey miner = null,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -337,13 +335,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             };
             return new PreEvaluationBlock<T>(
                 content,
-                hashAlgorithmGetter(content.Index),
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
         }
 
         public static Block<T> MineGenesisBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
@@ -353,7 +349,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : IAction, new()
         {
             PreEvaluationBlock<T> preEval = MineGenesis(
-                hashAlgorithmGetter,
                 miner?.PublicKey,
                 transactions,
                 timestamp,
@@ -366,7 +361,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
             long difficulty = 1,
@@ -391,10 +385,9 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 LastCommit = lastCommit,
             };
 
-            HashAlgorithmType hashAlgorithm = hashAlgorithmGetter(previousBlock.Index + 1);
             var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, hashAlgorithm, new Nonce(nonceBytes))
-                : content.Mine(hashAlgorithm);
+                ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
+                : content.Mine();
 
             preEval.ValidateTimestamp();
             return preEval;
@@ -402,7 +395,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static Block<T> MineNextBlock<T>(
             Block<T> previousBlock,
-            HashAlgorithmGetter hashAlgorithmGetter,
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> txs = null,
             byte[] nonce = null,
@@ -416,7 +408,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             PreEvaluationBlock<T> preEval = MineNext(
                 previousBlock,
-                hashAlgorithmGetter,
                 txs,
                 nonce,
                 difficulty,
@@ -465,15 +456,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 };
                 var preEval = new PreEvaluationBlock<T>(
                     content,
-                    policy.GetHashAlgorithm(0),
                     new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
                 );
                 genesisBlock = protocolVersion < 2
-                 ? new Block<T>(
-                     preEval,
-                     preEval.DetermineStateRootHash(policy.BlockAction, stateStore),
-                     signature: null)
-                 : preEval.Evaluate(GenesisMiner, policy.BlockAction, stateStore);
+                    ? new Block<T>(
+                         preEval,
+                         preEval.DetermineStateRootHash(
+                             blockAction: policy.BlockAction,
+                             nativeTokenPredicate: policy.NativeTokens.Contains,
+                             stateStore: stateStore),
+                         signature: null)
+                    : preEval.Evaluate(
+                         privateKey: GenesisMiner,
+                         blockAction: policy.BlockAction,
+                         nativeTokenPredicate: policy.NativeTokens.Contains,
+                         stateStore: stateStore);
             }
 
             ValidatingActionRenderer<T> validator = null;

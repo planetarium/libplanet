@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -15,7 +14,7 @@ namespace Libplanet.Node.Tests
 {
     public class UntypedBlockTest
     {
-        private static readonly HashAlgorithmType Sha256 = HashAlgorithmType.Of<SHA256>();
+        private static readonly HashAlgorithmType _sha256 = BlockMetadata.HashAlgorithmType;
         private static readonly Codec Codec = new Codec();
         private readonly PrivateKey _signerKey;
         private readonly Transaction<NullAction>[] _txs;
@@ -36,14 +35,14 @@ namespace Libplanet.Node.Tests
                 nonce: 0L,
                 privateKey: _signerKey,
                 genesisHash: null,
-                actions: Enumerable.Empty<NullAction>(),
+                customActions: Enumerable.Empty<NullAction>(),
                 timestamp: new DateTimeOffset(2022, 5, 24, 0, 0, 0, TimeSpan.Zero)
             );
             var txB = Transaction<NullAction>.Create(
                 nonce: 1L,
                 privateKey: _signerKey,
                 genesisHash: null,
-                actions: new[]
+                customActions: new[]
                 {
                     new NullAction(),
                     new NullAction(),
@@ -68,13 +67,14 @@ namespace Libplanet.Node.Tests
             };
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
-            ImmutableArray<byte> preEvalHash = Sha256.Digest(blockBytes).ToImmutableArray();
+            ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
             var proof = (nonce, preEvalHash);
-            _preEval = new PreEvaluationBlock<NullAction>(_content, Sha256, proof);
+            _preEval = new PreEvaluationBlock<NullAction>(_content, proof);
             _block = _preEval.Evaluate(
-                _minerKey,
-                null,
-                new TrieStateStore(new MemoryKeyValueStore())
+                privateKey: _minerKey,
+                blockAction: null,
+                nativeTokenPredicate: _ => true,
+                stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );
         }
 
@@ -82,9 +82,8 @@ namespace Libplanet.Node.Tests
         public void Deserialize()
         {
             Bencodex.Types.Dictionary dict = _block.MarshalBlock();
-            var untyped = new UntypedBlock(_ => Sha256, dict);
+            var untyped = new UntypedBlock(dict);
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
-            Assert.Equal(_block.HashAlgorithm, untyped.HashAlgorithm);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);
             Assert.Equal(_block.Nonce, untyped.Nonce);
@@ -111,7 +110,7 @@ namespace Libplanet.Node.Tests
             var untypedTxs = _txs.Select(tx =>
                 new UntypedTransaction(
                     tx,
-                    tx.Actions.Select(a => a.PlainValue),
+                    tx.CustomActions.Select(a => a.PlainValue),
                     tx.Signature.ToImmutableArray()));
             var untyped = new UntypedBlock(_block, untypedTxs);
             Assert.Equal(_block.MarshalBlock(), untyped.ToBencodex());

@@ -6,9 +6,9 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class BlockHashes : Message
+    internal class BlockHashesMsg : Message
     {
-        public BlockHashes(long? startIndex, IEnumerable<BlockHash> hashes)
+        public BlockHashesMsg(long? startIndex, IEnumerable<BlockHash> hashes)
         {
             StartIndex = startIndex;
             Hashes = hashes.ToList();
@@ -22,7 +22,7 @@ namespace Libplanet.Net.Messages
             }
         }
 
-        public BlockHashes(byte[][] dataFrames)
+        public BlockHashesMsg(byte[][] dataFrames)
         {
             int hashCount = BitConverter.ToInt32(dataFrames[0], 0);
             var hashes = new List<BlockHash>(hashCount);

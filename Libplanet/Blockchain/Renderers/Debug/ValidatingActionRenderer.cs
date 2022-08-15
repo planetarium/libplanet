@@ -162,12 +162,15 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 );
 
                 expectedUnrenderedActions.AddRange(
-                    transactions.SelectMany(t => t.Actions).Cast<IAction>().Reverse());
+                    transactions.SelectMany(t =>
+                        t.SystemAction is { } sa ? new[] { sa } : t.CustomActions!.Cast<IAction>()
+                    ).Reverse()
+                );
 
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 
@@ -182,8 +185,9 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     transactions,
                     header.PreEvaluationHash
                 );
-                IEnumerable<IAction> actions =
-                    transactions.SelectMany(t => t.Actions).Cast<IAction>();
+                IEnumerable<IAction> actions = transactions.SelectMany(t =>
+                    t.SystemAction is { } sa ? new[] { sa } : t.CustomActions!.Cast<IAction>()
+                );
                 if (policy.BlockAction is IAction blockAction)
                 {
 #if NET472 || NET471 || NET47 || NET462 || NET461
@@ -201,7 +205,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 BlockDigest prevDigest = store.GetBlockDigest(
                     header.PreviousHash ?? throw heterogeneousGenesisError
                 ) ?? throw Error(Records, $"Failed to load block {header.PreviousHash}.");
-                header = prevDigest.GetHeader(policy.GetHashAlgorithm);
+                header = prevDigest.GetHeader();
                 txIds = prevDigest.TxIds.Select(b => new TxId(b.ToBuilder().ToArray()));
             }
 

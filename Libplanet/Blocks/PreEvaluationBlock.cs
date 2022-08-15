@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -34,8 +35,6 @@ namespace Libplanet.Blocks
         /// which satisfies the required <see cref="PreEvaluationBlockHeader.Difficulty"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
         /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -69,14 +68,9 @@ namespace Libplanet.Blocks
         /// derived from the given arguments.</remarks>
         public PreEvaluationBlock(
             IBlockContent<T> content,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce
         )
-            : base(
-                new BlockContent<T>(content),
-                hashAlgorithm,
-                nonce
-            )
+            : base(new BlockContent<T>(content), nonce)
         {
         }
 
@@ -87,12 +81,10 @@ namespace Libplanet.Blocks
         /// and a <paramref name="preEvaluationHash"/> digest derived from them.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
         /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</param>
-        /// <param name="preEvaluationHash">The hash digest of the <paramref name="hashAlgorithm"/>
-        /// derived from the given arguments.</param>
+        /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
+        /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="content"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -123,11 +115,10 @@ namespace Libplanet.Blocks
         /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</exception>
         public PreEvaluationBlock(
             IBlockContent<T> content,
-            HashAlgorithmType hashAlgorithm,
             Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
-            : base(new BlockContent<T>(content), hashAlgorithm, nonce, preEvaluationHash)
+            : base(new BlockContent<T>(content), nonce, preEvaluationHash)
         {
         }
 
@@ -137,8 +128,6 @@ namespace Libplanet.Blocks
         /// considered as to be valid.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="hashAlgorithm">The hash algorithm used for calculating
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
         /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
         /// as to satisfy the required <see cref="PreEvaluationBlockHeader.Difficulty"/>,
         /// and the hash digest which is probably considered as to be derived from
@@ -147,14 +136,12 @@ namespace Libplanet.Blocks
         /// hash is invalid.</exception>
         /// <remarks>This does not verify if if a proof's hash is derived from the block
         /// <paramref name="content"/> and the proof nonce.  Therefore, this unsafe constructor
-        /// shouldn't be used except for <see
-        /// cref="BlockContent{T}.Mine(HashAlgorithmType, CancellationToken)"/> method.</remarks>
+        /// shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.</remarks>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            HashAlgorithmType hashAlgorithm,
             in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
         )
-            : base(content, hashAlgorithm, proof)
+            : base(content, proof)
         {
         }
 
@@ -178,6 +165,9 @@ namespace Libplanet.Blocks
         /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
         /// It is signed by the given <paramref name="privateKey"/>.</returns>
@@ -198,9 +188,10 @@ namespace Libplanet.Blocks
         public Block<T> Evaluate(
             PrivateKey privateKey,
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         ) =>
-            Sign(privateKey, DetermineStateRootHash(blockAction, stateStore));
+            Sign(privateKey, DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and an optional
@@ -261,6 +252,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
@@ -270,9 +264,10 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         )
-            => DetermineStateRootHash(blockAction, stateStore, out _);
+            => DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore, out _);
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -281,6 +276,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <param name="statesDelta">Returns made changes on states.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
@@ -291,6 +289,7 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore,
             out IImmutableDictionary<string, IValue> statesDelta
         )
@@ -308,7 +307,9 @@ namespace Libplanet.Blocks
             var actionEvaluator = new ActionEvaluator<T>(
                 blockAction,
                 blockChainStates: NullChainStates<T>.Instance,
-                trieGetter: null
+                trieGetter: null,
+                genesisHash: null,
+                nativeTokenPredicate: nativeTokenPredicate
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);

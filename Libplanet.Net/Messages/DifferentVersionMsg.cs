@@ -7,7 +7,7 @@ namespace Libplanet.Net.Messages
     /// Contains the expected and actual <see cref="AppProtocolVersion"/>
     /// value of the message.
     /// </summary>
-    public class DifferentVersion : Message
+    public class DifferentVersionMsg : Message
     {
         public override MessageType Type => MessageType.DifferentVersion;
 

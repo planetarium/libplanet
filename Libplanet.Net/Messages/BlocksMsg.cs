@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Blocks : Message
+    internal class BlocksMsg : Message
     {
-        public Blocks(IEnumerable<byte[]> payloads)
+        public BlocksMsg(IEnumerable<byte[]> payloads)
         {
             Payloads = payloads.ToList();
         }
 
-        public Blocks(byte[][] dataFrames)
+        public BlocksMsg(byte[][] dataFrames)
         {
             var count = BitConverter.ToInt32(dataFrames.First(), 0);
             Payloads = dataFrames.Skip(1).Take(count).ToList();

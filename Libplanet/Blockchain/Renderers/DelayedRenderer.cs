@@ -34,8 +34,7 @@ namespace Libplanet.Blockchain.Renderers
     /// ]]></code>
     /// </example>
     /// <remarks>Since <see cref="IActionRenderer{T}"/> is a subtype of <see cref="IRenderer{T}"/>,
-    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{IBlockExcerpt}, IStore,
-    /// HashAlgorithmGetter, int)"/>
+    /// <see cref="DelayedRenderer{T}(IRenderer{T}, IComparer{IBlockExcerpt}, IStore, int)"/>
     /// constructor can take an <see cref="IActionRenderer{T}"/> instance as well.
     /// However, even it takes an action renderer, action-level fine-grained events won't hear.
     /// For action renderers, please use <see cref="DelayedActionRenderer{T}"/> instead.</remarks>
@@ -53,8 +52,6 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="canonicalChainComparer">The same canonical chain comparer to
         /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// It must be greater than zero (note that zero <paramref name="confirmations"/> mean
         /// nothing is delayed so that it is equivalent to the bare <paramref name="renderer"/>).
@@ -65,7 +62,6 @@ namespace Libplanet.Blockchain.Renderers
             IRenderer<T> renderer,
             IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
-            HashAlgorithmGetter hashAlgorithmGetter,
             int confirmations
         )
         {
@@ -88,7 +84,6 @@ namespace Libplanet.Blockchain.Renderers
             Renderer = renderer;
             CanonicalChainComparer = canonicalChainComparer;
             Store = store;
-            HashAlgorithmGetter = hashAlgorithmGetter;
             Confirmations = confirmations;
             Confirmed = new ConcurrentDictionary<BlockHash, uint>();
         }
@@ -109,11 +104,6 @@ namespace Libplanet.Blockchain.Renderers
         /// The same store to what <see cref="BlockChain{T}"/> uses.
         /// </summary>
         public IStore Store { get; }
-
-        /// <summary>
-        /// The function to determine hash algorithm used for proof-of-work mining.
-        /// </summary>
-        public HashAlgorithmGetter HashAlgorithmGetter { get; }
 
         /// <summary>
         /// The required number of confirmations to recognize a block.
@@ -267,7 +257,7 @@ namespace Libplanet.Blockchain.Renderers
             BlockHash? prev = newTip.PreviousHash;
             while (
                 prev is { } prevHash
-                && Store.GetBlock<T>(HashAlgorithmGetter, prevHash) is Block<T> prevBlock
+                && Store.GetBlock<T>(prevHash) is Block<T> prevBlock
                 && prevBlock.Index >= maxDepth)
             {
                 uint c = Confirmed.GetOrAdd(prevHash, k => 0U);
@@ -304,7 +294,7 @@ namespace Libplanet.Blockchain.Renderers
 
                 if (c >= Confirmations)
                 {
-                    var confirmedBlock = Store.GetBlock<T>(HashAlgorithmGetter, hash);
+                    var confirmedBlock = Store.GetBlock<T>(hash);
 
                     if (!(Tip is Block<T> t))
                     {
@@ -353,12 +343,12 @@ namespace Libplanet.Blockchain.Renderers
         {
             while (a is Block<T> && a.Index > b.Index && a.PreviousHash is { } aPrev)
             {
-                a = Store.GetBlock<T>(HashAlgorithmGetter, aPrev);
+                a = Store.GetBlock<T>(aPrev);
             }
 
             while (b is Block<T> && b.Index > a.Index && b.PreviousHash is { } bPrev)
             {
-                b = Store.GetBlock<T>(HashAlgorithmGetter, bPrev);
+                b = Store.GetBlock<T>(bPrev);
             }
 
             if (a is null || b is null || a.Index != b.Index)
@@ -379,8 +369,8 @@ namespace Libplanet.Blockchain.Renderers
                 if (a.PreviousHash is { } aPrev &&
                     b.PreviousHash is { } bPrev)
                 {
-                    a = Store.GetBlock<T>(HashAlgorithmGetter, aPrev);
-                    b = Store.GetBlock<T>(HashAlgorithmGetter, bPrev);
+                    a = Store.GetBlock<T>(aPrev);
+                    b = Store.GetBlock<T>(bPrev);
                     continue;
                 }
 

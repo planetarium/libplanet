@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -34,6 +36,13 @@ namespace Libplanet.Blockchain.Policies
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }
+
+        /// <summary>
+        /// A fixed set of <see cref="Currency"/> objects that are supported by the blockchain
+        /// as first-class citizens.
+        /// </summary>
+        [Pure]
+        IImmutableSet<Currency> NativeTokens { get; }
 
         /// <summary>
         /// Checks if a <see cref="Transaction{T}"/> can be included in a yet to be mined
@@ -101,14 +110,6 @@ namespace Libplanet.Blockchain.Policies
         /// for which this constraint should apply.</param>
         /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
         long GetMaxBlockBytes(long index);
-
-        /// <summary>
-        /// Gets the <see cref="HashAlgorithmType"/> to use for block's proof-of-work.
-        /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> to
-        /// do proof-of-work.</param>
-        /// <returns>The <see cref="HashAlgorithmType"/> to use.</returns>
-        HashAlgorithmType GetHashAlgorithm(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for

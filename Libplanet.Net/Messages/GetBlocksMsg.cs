@@ -5,9 +5,9 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetBlocks : Message
+    internal class GetBlocksMsg : Message
     {
-        public GetBlocks(IEnumerable<BlockHash> hashes, int chunkSize = 100)
+        public GetBlocksMsg(IEnumerable<BlockHash> hashes, int chunkSize = 100)
         {
             if (chunkSize <= 0)
             {
@@ -20,7 +20,7 @@ namespace Libplanet.Net.Messages
             ChunkSize = chunkSize;
         }
 
-        public GetBlocks(byte[][] dataFrames)
+        public GetBlocksMsg(byte[][] dataFrames)
         {
             int hashCount = BitConverter.ToInt32(dataFrames[0], 0);
             BlockHashes = dataFrames

@@ -375,7 +375,6 @@ namespace Libplanet.Net.Consensus
             if (_messageLog.GetPropose(round) is ConsensusPropose propose)
             {
                 var block = BlockMarshaler.UnmarshalBlock<T>(
-                    _blockChain.Policy.GetHashAlgorithm,
                     (Dictionary)_codec.Decode(propose.Payload));
                 return (block, propose.ValidRound);
             }

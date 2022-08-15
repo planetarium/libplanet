@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -37,9 +38,10 @@ namespace Libplanet.Net.Tests.Consensus
 
             for (var node = 0; node < Count; ++node)
             {
-                json =
-                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                        ConsensusReactors[node].ToString());
+                json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                    ConsensusReactors[node].ToString())
+                        ?? throw new NullReferenceException(
+                            $"Failed to deserialize consensus reactor");
 
                 // Genesis block exists, add 1 to the height.
                 if (json["step"].GetString() == "EndCommit")
@@ -60,9 +62,10 @@ namespace Libplanet.Net.Tests.Consensus
 
             for (var node = 0; node < Count; ++node)
             {
-                json =
-                    JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
-                        ConsensusReactors[node].ToString());
+                json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(
+                    ConsensusReactors[node].ToString())
+                        ?? throw new NullReferenceException(
+                            $"Failed to deserialize consensus reactor");
 
                 Assert.Equal(ValidatorPeers[node].Address.ToString(), json["node_id"].GetString());
                 Assert.Equal(1, json["height"].GetInt32());

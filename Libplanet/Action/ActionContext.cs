@@ -1,5 +1,8 @@
+using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using Libplanet.Assets;
+using Libplanet.Blocks;
 using Libplanet.Store.Trie;
 using Libplanet.Tx;
 
@@ -9,10 +12,11 @@ namespace Libplanet.Action
     {
         private readonly int _randomSeed;
         private readonly ITrie? _previousBlockStatesTrie;
-
+        private readonly Predicate<Currency>? _nativeTokenPredicate;
         private HashDigest<SHA256>? _previousStateRootHash;
 
         public ActionContext(
+            BlockHash? genesisHash,
             Address signer,
             TxId? txid,
             Address miner,
@@ -21,9 +25,10 @@ namespace Libplanet.Action
             int randomSeed,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
-            bool blockAction = false
-        )
+            bool blockAction = false,
+            Predicate<Currency>? nativeTokenPredicate = null)
         {
+            GenesisHash = genesisHash;
             Signer = signer;
             TxId = txid;
             Miner = miner;
@@ -34,7 +39,10 @@ namespace Libplanet.Action
             _randomSeed = randomSeed;
             _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
+            _nativeTokenPredicate = nativeTokenPredicate;
         }
+
+        public BlockHash? GenesisHash { get; }
 
         public Address Signer { get; }
 
@@ -63,9 +71,13 @@ namespace Libplanet.Action
 
         public bool BlockAction { get; }
 
+        public bool IsNativeToken(Currency currency) =>
+            _nativeTokenPredicate is { } && _nativeTokenPredicate(currency);
+
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
+                GenesisHash,
                 Signer,
                 TxId,
                 Miner,
@@ -74,6 +86,7 @@ namespace Libplanet.Action
                 _randomSeed,
                 Rehearsal,
                 _previousBlockStatesTrie,
-                BlockAction);
+                BlockAction,
+                _nativeTokenPredicate);
     }
 }

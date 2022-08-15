@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -13,6 +12,7 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using Serilog.Events;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -39,7 +39,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     new AnonymousActionRenderer<DumbAction>(),
                     _canonicalChainComparer,
                     _store,
-                    _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                     confirmations: invalidConfirmations
                 )
             );
@@ -83,7 +82,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Null(renderer.Tip);
@@ -186,7 +184,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -426,7 +423,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 new AnonymousActionRenderer<DumbAction>(),
                 _canonicalChainComparer,
                 _store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 3
             );
             Assert.Equal(
@@ -441,7 +437,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             );
         }
 
-        [Fact]
+        // FIXME: This should be properly addressed.
+        // https://github.com/planetarium/libplanet/issues/2166
+        [RetryFact]
         public async Task ClearRenderBufferWhenItsInterval()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -470,7 +468,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 2,
                 4
             );
@@ -544,7 +541,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -557,7 +553,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 validator,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 
@@ -665,7 +660,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 innerRenderer,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
             var renderer = new LoggedActionRenderer<DumbAction>(
@@ -678,7 +672,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 validator,
                 _canonicalChainComparer,
                 fx.Store,
-                _ => HashAlgorithmType.Of<SHA256>(),  // thunk getter; doesn't matter here
                 confirmations: 2
             );
 
@@ -747,6 +740,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         private IActionContext FakeContext(long blockIndex = 1) =>
-            new ActionContext(default, default, default, blockIndex, _emptyStates, 0);
+            new ActionContext(default, default, default, default, blockIndex, _emptyStates, 0);
     }
 }

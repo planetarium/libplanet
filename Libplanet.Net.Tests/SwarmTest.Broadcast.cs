@@ -127,8 +127,12 @@ namespace Libplanet.Net.Tests
                 PublicKey = receiverKey.PublicKey,
                 Timestamp = DateTimeOffset.MinValue,
             }
-                .Mine(policy.GetHashAlgorithm(0))
-                .Evaluate(receiverKey, policy.BlockAction, seedStateStore);
+                .Mine()
+                .Evaluate(
+                    privateKey: receiverKey,
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: seedStateStore);
             BlockChain<DumbAction> seedChain = MakeBlockChain(
                 policy,
                 new MemoryStore(),
@@ -668,7 +672,6 @@ namespace Libplanet.Net.Tests
 
             Block<DumbAction> block1 = MineNext(
                 blockChain.Genesis,
-                policy.GetHashAlgorithm,
                 new[] { transactions[0] },
                 null,
                 policy.GetNextBlockDifficulty(blockChain),
@@ -677,7 +680,6 @@ namespace Libplanet.Net.Tests
             blockChain.Append(block1, true, true, false);
             Block<DumbAction> block2 = MineNext(
                 block1,
-                policy.GetHashAlgorithm,
                 new[] { transactions[1] },
                 null,
                 policy.GetNextBlockDifficulty(blockChain),
@@ -882,7 +884,6 @@ namespace Libplanet.Net.Tests
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
             Block<DumbAction> block = MineNext(
                 chain2.Tip,
-                policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
@@ -946,7 +947,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarm2);
 
                 var transport = swarm1.Transport;
-                var msg = new GetTxs(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
+                var msg = new GetTxsMsg(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
                 var replies = (await transport.SendMessageAsync(
                     (BoundPeer)swarm2.AsPeer,
                     msg,
@@ -960,7 +961,7 @@ namespace Libplanet.Net.Tests
                     new[] { tx1, tx2, tx3 }.ToHashSet(),
                     replies.Select(
                         m => Transaction<DumbAction>.Deserialize(
-                            ((Libplanet.Net.Messages.Tx)m).Payload)).ToHashSet());
+                            ((Libplanet.Net.Messages.TxMsg)m).Payload)).ToHashSet());
             }
             finally
             {

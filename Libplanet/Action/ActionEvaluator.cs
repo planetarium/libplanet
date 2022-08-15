@@ -25,10 +25,12 @@ namespace Libplanet.Action
     public class ActionEvaluator<T>
         where T : IAction, new()
     {
+        private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
+        private readonly Predicate<Currency> _nativeTokenPredicate;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
@@ -40,15 +42,24 @@ namespace Libplanet.Action
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
         /// a provided <see cref="BlockHash"/>.</param>
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
+        /// </param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         public ActionEvaluator(
             IAction? policyBlockAction,
             IBlockChainStates<T> blockChainStates,
-            Func<BlockHash, ITrie>? trieGetter)
+            Func<BlockHash, ITrie>? trieGetter,
+            BlockHash? genesisHash,
+            Predicate<Currency> nativeTokenPredicate)
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
+            _genesisHash = genesisHash;
+            _nativeTokenPredicate = nativeTokenPredicate;
         }
 
         /// <summary>
@@ -158,7 +169,11 @@ namespace Libplanet.Action
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
                 tx.Signer);
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
+                genesisHash: tx.GenesisHash,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
                 blockIndex: default,
                 txid: tx.Id,
@@ -166,9 +181,10 @@ namespace Libplanet.Action
                 miner: default,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: true,
-                previousBlockStatesTrie: null);
+                previousBlockStatesTrie: null,
+                nativeTokenPredicate: _ => true);
 
             if (evaluations.Any())
             {
@@ -184,6 +200,8 @@ namespace Libplanet.Action
         /// Executes <see cref="IAction"/>s in <paramref name="actions"/>.  All other evaluation
         /// calls resolve to this method.
         /// </summary>
+        /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
+        /// </param>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
         /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
@@ -199,6 +217,9 @@ namespace Libplanet.Action
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -229,6 +250,7 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         internal static IEnumerable<ActionEvaluation> EvaluateActions(
+            BlockHash? genesisHash,
             ImmutableArray<byte> preEvaluationHash,
             long blockIndex,
             TxId? txid,
@@ -237,6 +259,7 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
+            Predicate<Currency> nativeTokenPredicate,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
@@ -245,6 +268,7 @@ namespace Libplanet.Action
             ActionContext CreateActionContext(IAccountStateDelta prevStates, int randomSeed)
             {
                 return new ActionContext(
+                    genesisHash: genesisHash,
                     signer: signer,
                     txid: txid,
                     miner: miner,
@@ -253,7 +277,8 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
-                    blockAction: blockAction);
+                    blockAction: blockAction,
+                    nativeTokenPredicate: nativeTokenPredicate);
             }
 
             byte[] hashedSignature;
@@ -479,20 +504,33 @@ namespace Libplanet.Action
                 // FIXME: This is dependant on when the returned value is enumerated.
                 TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                _logger
+                ILogger logger = _logger
                     .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "TxEvaluationDuration")
-                    .Debug(
-                        "{ActionCount} actions {ActionTypes} in transaction {TxId} by {Signer} " +
+                    .ForContext("Subtag", "TxEvaluationDuration");
+                if (tx.SystemAction is { } sa)
+                {
+                    logger.Debug(
+                        "A system action {SystemActionType} in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
-                        tx.Actions.Count,
-                        tx.Actions.Select(action => action.ToString()!.Split('.')
+                        sa,
+                        tx.Id,
+                        tx.Signer,
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
+                        evalDuration.TotalMilliseconds);
+                }
+                else
+                {
+                    logger.Debug(
+                        "{ActionCount} custom actions {CustomActionTypes} in transaction {TxId} " +
+                        "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                        tx.CustomActions!.Count,
+                        tx.CustomActions.Select(action => action.ToString()!.Split('.')
                             .LastOrDefault()?.Replace(">", string.Empty)),
                         tx.Id,
                         tx.Signer,
-                        tx.Timestamp.ToString(
-                            TimestampFormat, CultureInfo.InvariantCulture),
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                         evalDuration.TotalMilliseconds);
+                }
             }
         }
 
@@ -526,7 +564,13 @@ namespace Libplanet.Action
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null) => EvaluateActions(
+            ITrie? previousBlockStatesTrie = null)
+        {
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange(tx.CustomActions!.Cast<IAction>());
+            return EvaluateActions(
+                genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: tx.Id,
@@ -534,9 +578,11 @@ namespace Libplanet.Action
                 miner: block.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: rehearsal,
-                previousBlockStatesTrie: previousBlockStatesTrie);
+                previousBlockStatesTrie: previousBlockStatesTrie,
+                nativeTokenPredicate: _nativeTokenPredicate);
+        }
 
         /// <summary>
         /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
@@ -609,6 +655,7 @@ namespace Libplanet.Action
                 $"{block.PreEvaluationHash}");
 
             return EvaluateActions(
+                genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
                 txid: null,
@@ -619,7 +666,9 @@ namespace Libplanet.Action
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                blockAction: true).Single();
+                blockAction: true,
+                nativeTokenPredicate: _nativeTokenPredicate
+            ).Single();
         }
 
         [Pure]

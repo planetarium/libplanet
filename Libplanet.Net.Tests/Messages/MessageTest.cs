@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -17,7 +16,7 @@ namespace Libplanet.Net.Tests.Messages
     public class MessageTest
     {
         [Fact]
-        public void BlockHeaderMessage()
+        public void BlockHeaderMsg()
         {
             var privateKey = new PrivateKey();
             var peer = new Peer(privateKey.PublicKey);
@@ -27,11 +26,8 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
-            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header);
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
                 codec.Encode(message, privateKey, apv, peer, dateTimeOffset);
@@ -42,7 +38,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void InvalidCredential()
         {
-            var message = new Ping();
+            var message = new PingMsg();
             var privateKey = new PrivateKey();
             var apv = new AppProtocolVersion(
                 1,
@@ -69,7 +65,7 @@ namespace Libplanet.Net.Tests.Messages
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
-            var ping = new Ping();
+            var ping = new PingMsg();
             var codec = new NetMQMessageCodec();
             var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
 
@@ -92,7 +88,7 @@ namespace Libplanet.Net.Tests.Messages
         public void InvalidArguments()
         {
             var codec = new NetMQMessageCodec();
-            var message = new Ping();
+            var message = new PingMsg();
             var privateKey = new PrivateKey();
             var apv = new AppProtocolVersion(
                 1,
@@ -114,11 +110,8 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                _ => HashAlgorithmType.Of<SHA256>(),
-                GenesisMiner
-            );
-            var message = new BlockHeaderMessage(genesis.Hash, genesis.Header)
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,
                 Remote = peer,

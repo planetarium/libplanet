@@ -5,14 +5,14 @@ using Libplanet.Tx;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetTxs : Message
+    internal class GetTxsMsg : Message
     {
-        public GetTxs(IEnumerable<TxId> txIds)
+        public GetTxsMsg(IEnumerable<TxId> txIds)
         {
             TxIds = txIds;
         }
 
-        public GetTxs(byte[][] dataFrames)
+        public GetTxsMsg(byte[][] dataFrames)
         {
             int txCount = BitConverter.ToInt32(dataFrames[0], 0);
             TxIds = dataFrames

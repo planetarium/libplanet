@@ -14,7 +14,7 @@ name: check-build
 jobs:
   build:
     name: check-build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
       if: github.event_name != 'pull_request'
@@ -24,6 +24,6 @@ jobs:
         ref: ${{ github.pull_request.head.sha }}
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 6.0.x
     - run: 'hooks/pre-commit'
     - run: 'dotnet build -p:SkipSonar=false'

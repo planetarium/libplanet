@@ -119,11 +119,11 @@ namespace Libplanet.Tests.Store
             return _store.DeleteTransaction(txid);
         }
 
-        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             Log(nameof(GetBlock), blockHash);
-            return _store.GetBlock<T>(hashAlgorithmGetter, blockHash);
+            return _store.GetBlock<T>(blockHash);
         }
 
         public long? GetBlockIndex(BlockHash blockHash)
@@ -244,6 +244,13 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(SetCanonicalChainId), chainId);
             _store.SetCanonicalChainId(chainId);
+        }
+
+        public Block<T> GetCanonicalGenesisBlock<T>()
+            where T : IAction, new()
+        {
+            Log(nameof(GetCanonicalGenesisBlock));
+            return _store.GetCanonicalGenesisBlock<T>();
         }
 
         public void Dispose()

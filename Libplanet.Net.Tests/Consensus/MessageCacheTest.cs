@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void Put()
         {
             var cache = new MessageCache(3, 3);
-            var msg = new Ping();
+            var msg = new PingMsg();
             cache.Put(msg);
             Assert.Throws<ArgumentException>("message", () => cache.Put(msg));
         }
@@ -34,7 +34,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void Get()
         {
             var cache = new MessageCache(3, 3);
-            var msg = new Ping();
+            var msg = new PingMsg();
             Assert.Throws<KeyNotFoundException>(() => cache.Get(msg.Id));
             cache.Put(msg);
             var ret = cache.Get(msg.Id);

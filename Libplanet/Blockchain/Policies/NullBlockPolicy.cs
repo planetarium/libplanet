@@ -1,7 +1,8 @@
 #nullable disable
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -27,6 +28,9 @@ namespace Libplanet.Blockchain.Policies
             new TotalDifficultyComparer();
 
         public IAction BlockAction => null;
+
+        /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
+        public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
         public int GetMinTransactionsPerBlock(long index) => 0;
 
@@ -55,9 +59,6 @@ namespace Libplanet.Blockchain.Policies
         }
 
         public long GetMaxBlockBytes(long index) => 1024 * 1024;
-
-        public virtual HashAlgorithmType GetHashAlgorithm(long index) =>
-            HashAlgorithmType.Of<SHA256>();
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);

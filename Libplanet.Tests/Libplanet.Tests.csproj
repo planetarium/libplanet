@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -17,12 +17,6 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup Condition="
-    '$([System.Runtime.InteropServices.RuntimeInformation]::
-      OSArchitecture.ToString())' == 'Arm64' ">
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
-
   <PropertyGroup Condition=" '$(TestsTargetFramework)'!='' ">
     <TargetFramework>$(TestsTargetFramework)</TargetFramework>
   </PropertyGroup>
@@ -34,6 +28,7 @@
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
@@ -62,10 +57,6 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="Mono.HttpUtility" Version="1.0.0.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
