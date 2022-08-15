@@ -72,7 +72,8 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                Assert.Equal(swarmA.AsPeer, swarmB.AsPeer);
+                Assert.Equal(swarmA.AsPeer.Address, swarmB.AsPeer.Address);
+                Assert.Equal(swarmA.AsPeer.PublicIPAddress, swarmB.AsPeer.PublicIPAddress);
 
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await StopAsync(swarmA);
@@ -503,8 +504,8 @@ namespace Libplanet.Net.Tests
                 chainA.UnstageTransaction(tx2);
                 Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
 
-                swarmA.RoutingTable.RemovePeer((BoundPeer)swarmB.AsPeer);
-                swarmB.RoutingTable.RemovePeer((BoundPeer)swarmA.AsPeer);
+                swarmA.RoutingTable.RemovePeer(swarmB.AsPeer);
+                swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
 
@@ -949,7 +950,7 @@ namespace Libplanet.Net.Tests
                 var transport = swarm1.Transport;
                 var msg = new GetTxsMsg(new[] { tx1.Id, tx2.Id, tx3.Id, tx4.Id });
                 var replies = (await transport.SendMessageAsync(
-                    (BoundPeer)swarm2.AsPeer,
+                    swarm2.AsPeer,
                     msg,
                     TimeSpan.FromSeconds(1),
                     4,

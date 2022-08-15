@@ -168,7 +168,7 @@ namespace Libplanet.Net
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => Transport?.AsPeer;
+        public BoundPeer AsPeer => Transport?.AsPeer;
 
         /// <summary>
         /// The last time when any message was arrived.

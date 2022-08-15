@@ -172,9 +172,7 @@ namespace Libplanet.Net.Transports
         public AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <inheritdoc/>
-        public Peer AsPeer => EndPoint is null
-            ? new Peer(_privateKey.PublicKey, PublicIPAddress)
-            : new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
+        public BoundPeer AsPeer => new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
 
         /// <inheritdoc/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }

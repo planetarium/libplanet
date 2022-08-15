@@ -22,10 +22,10 @@ namespace Libplanet.Net.Transports
         AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <summary>
-        /// <see cref="Peer"/> representation of <see cref="ITransport"/>.
+        /// <see cref="BoundPeer"/> representation of <see cref="ITransport"/>.
         /// </summary>
         [Pure]
-        Peer AsPeer { get; }
+        BoundPeer AsPeer { get; }
 
         /// <summary>
         /// The <see cref="DateTimeOffset"/> of the last message was received.

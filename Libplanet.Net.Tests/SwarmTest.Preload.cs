@@ -187,7 +187,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = 1,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -200,7 +200,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -439,7 +439,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -451,7 +451,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -665,7 +665,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
@@ -757,7 +757,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithBlockExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             long receivedCount = 0;

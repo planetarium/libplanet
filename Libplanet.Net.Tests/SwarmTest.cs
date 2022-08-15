@@ -251,7 +251,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmD);
 
                 var bootstrappedAt = DateTimeOffset.UtcNow;
-                swarmC.RoutingTable.AddPeer((BoundPeer)swarmD.AsPeer);
+                swarmC.RoutingTable.AddPeer(swarmD.AsPeer);
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
@@ -298,8 +298,8 @@ namespace Libplanet.Net.Tests
                 {
                     StaticPeers = new[]
                     {
-                        (BoundPeer)swarmA.AsPeer,
-                        (BoundPeer)swarmB.AsPeer,
+                        swarmA.AsPeer,
+                        swarmB.AsPeer,
                         // Unreachable peer:
                         new BoundPeer(
                             new PrivateKey().PublicKey,
@@ -390,7 +390,7 @@ namespace Libplanet.Net.Tests
 
                 (long, BlockHash)[] inventories1 = (
                     await swarmB.GetBlockHashes(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         null
                     ).ToArrayAsync()
@@ -406,7 +406,7 @@ namespace Libplanet.Net.Tests
 
                 (long, BlockHash)[] inventories2 = (
                     await swarmB.GetBlockHashes(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         block1.Hash
                     ).ToArrayAsync()
@@ -417,7 +417,7 @@ namespace Libplanet.Net.Tests
 
                 Block<DumbAction>[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         inventories1.Select(pair => pair.Item2),
                         cancellationToken: default
                     ).ToArrayAsync();
@@ -452,7 +452,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                var peer = swarmA.AsPeer as BoundPeer;
+                var peer = swarmA.AsPeer;
 
                 await swarmB.AddPeersAsync(new[] { peer }, null);
 
@@ -466,7 +466,7 @@ namespace Libplanet.Net.Tests
 
                 var request = new GetBlocksMsg(hashes.Select(pair => pair.Item2), 2);
                 Message[] responses = (await transport.SendMessageAsync(
-                    (BoundPeer)swarmA.AsPeer,
+                    swarmA.AsPeer,
                     request,
                     null,
                     2,
@@ -518,7 +518,7 @@ namespace Libplanet.Net.Tests
 
                 List<Transaction<DumbAction>> txs =
                     await swarmA.GetTxsAsync(
-                        swarmB.AsPeer as BoundPeer,
+                        swarmB.AsPeer,
                         new[] { tx.Id },
                         cancellationToken: default
                     ).ToListAsync();
@@ -567,7 +567,7 @@ namespace Libplanet.Net.Tests
             using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
             {
                 Assert.Equal(expected, s.EndPoint);
-                Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
+                Assert.Equal(expected, s.AsPeer?.EndPoint);
             }
         }
 
@@ -622,15 +622,15 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new HashSet<BoundPeer>
                     {
-                        swarmA.AsPeer as BoundPeer,
-                        swarmB.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
+                        swarmB.AsPeer,
                     },
                     seed.Peers.ToHashSet());
                 Assert.Equal(
-                    new HashSet<BoundPeer> { seed.AsPeer as BoundPeer, swarmB.AsPeer as BoundPeer },
+                    new HashSet<BoundPeer> { seed.AsPeer, swarmB.AsPeer },
                     swarmA.Peers.ToHashSet());
                 Assert.Equal(
-                    new HashSet<BoundPeer> { seed.AsPeer as BoundPeer, swarmA.AsPeer as BoundPeer },
+                    new HashSet<BoundPeer> { seed.AsPeer, swarmA.AsPeer },
                     swarmB.Peers.ToHashSet());
             }
             finally
@@ -1682,7 +1682,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState((BoundPeer)swarm2.AsPeer, 0, 0),
+                    new PeerChainState(swarm2.AsPeer, 0, 0),
                     peerChainState.First()
                 );
 
@@ -1690,7 +1690,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                    new PeerChainState(swarm2.AsPeer, 1, 1024),
                     peerChainState.First()
                 );
 
@@ -1700,8 +1700,8 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new[]
                     {
-                        new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
-                        new PeerChainState((BoundPeer)swarm3.AsPeer, 0, 0),
+                        new PeerChainState(swarm2.AsPeer, 1, 1024),
+                        new PeerChainState(swarm3.AsPeer, 0, 0),
                     }.ToHashSet(),
                     peerChainState.ToHashSet()
                 );
