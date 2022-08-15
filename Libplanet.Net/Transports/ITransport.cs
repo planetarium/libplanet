@@ -41,24 +41,22 @@ namespace Libplanet.Net.Transports
         bool Running { get; }
 
         /// <summary>
-        /// Initiates and runs transport layer.
+        /// Starts running a transport layer.
         /// </summary>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
+        /// <param name="cancellationToken">The cancellation token used to propagate a notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> without a value.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the <see cref="ITransport"/>
+        /// instance is already disposed.</exception>
         Task StartAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Stops running transport layer.
+        /// Stops running a transport layer.
         /// </summary>
         /// <param name="waitFor">The <see cref="TimeSpan"/> of delay
         /// before actual stopping.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
+        /// <param name="cancellationToken">The cancellation token used to propagate a notification
+        /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         /// <exception cref="ObjectDisposedException">
         /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>

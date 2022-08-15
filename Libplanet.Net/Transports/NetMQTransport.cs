@@ -52,7 +52,8 @@ namespace Libplanet.Net.Transports
         private long _requestCount;
         private long _socketCount;
 
-        private bool _disposed;
+        private bool _initialized = false;
+        private bool _disposed = false;
 
         static NetMQTransport()
         {
@@ -213,7 +214,11 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
-            await Initialize(cancellationToken);
+            if (!_initialized)
+            {
+                await Initialize(cancellationToken);
+                _initialized = true;
+            }
 
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -252,7 +257,6 @@ namespace Libplanet.Net.Transports
 
                 _replyQueue.ReceiveReady -= DoReply;
                 _router.ReceiveReady -= ReceiveMessage;
-                _router.Unbind($"tcp://*:{_listenPort}");
 
                 if (_routerPoller.IsRunning)
                 {
@@ -260,8 +264,6 @@ namespace Libplanet.Net.Transports
                 }
 
                 _replyQueue.Dispose();
-                _router.Dispose();
-                _turnClient?.Dispose();
 
                 _runtimeCancellationTokenSource.Cancel();
                 Running = false;
@@ -282,6 +284,14 @@ namespace Libplanet.Net.Transports
                 _runtimeProcessorCancellationTokenSource.Dispose();
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
+
+                if (_router is { } router && !router.IsDisposed)
+                {
+                    _router.Unbind($"tcp://*:{_listenPort}");
+                    _router.Dispose();
+                    _turnClient?.Dispose();
+                }
+
                 _disposed = true;
             }
         }

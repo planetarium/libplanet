@@ -318,6 +318,7 @@ namespace Libplanet.Net.Tests
 
                 _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
                 await StopAsync(swarmA);
+                swarmA.Dispose();
                 await Task.Delay(100);
                 await swarm.PeerDiscovery.RefreshTableAsync(
                     TimeSpan.Zero,
@@ -338,7 +339,6 @@ namespace Libplanet.Net.Tests
             }
             finally
             {
-                await StopAsync(swarmA);
                 await StopAsync(swarmB);
                 await StopAsync(swarmC);
             }

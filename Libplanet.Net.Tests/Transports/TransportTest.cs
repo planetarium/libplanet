@@ -58,10 +58,6 @@ namespace Libplanet.Net.Tests.Transports
                 Assert.True(transport.Running);
                 await transport.StopAsync(TimeSpan.Zero);
                 Assert.False(transport.Running);
-                if (transport is NetMQTransport)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
 
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
@@ -69,6 +65,10 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 transport.Dispose();
+                if (transport is NetMQTransport)
+                {
+                    NetMQConfig.Cleanup(false);
+                }
             }
         }
 
