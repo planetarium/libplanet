@@ -181,7 +181,7 @@ namespace Libplanet.Net.Tests
                 await a.AddPeersAsync(new Peer[] { b.AsPeer }, null);
 
                 Assert.Contains(b.AsPeer, a.Peers);
-                Assert.Empty(b.Peers);
+                Assert.Contains(a.AsPeer, b.Peers);
             }
             finally
             {
@@ -256,7 +256,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 Assert.Contains(swarmB.AsPeer, swarmC.Peers);
-                Assert.DoesNotContain(swarmC.AsPeer, swarmB.Peers);
+                Assert.Contains(swarmC.AsPeer, swarmB.Peers);
                 foreach (PeerState state in swarmB.RoutingTable.PeerStates)
                 {
                     Assert.InRange(state.LastUpdated, bootstrappedAt, DateTimeOffset.UtcNow);
@@ -287,61 +287,55 @@ namespace Libplanet.Net.Tests
         public async Task MaintainStaticPeers()
         {
             var keyA = new PrivateKey();
+
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, listenPort: 20000);
             Swarm<DumbAction> swarmB = CreateSwarm(listenPort: 20001);
-            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
+            await StartAsync(swarmA);
+            await StartAsync(swarmB);
 
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                Swarm<DumbAction> swarm = CreateSwarm(
-                    options: new SwarmOptions
+            Swarm<DumbAction> swarm = CreateSwarm(
+                options: new SwarmOptions
+                {
+                    StaticPeers = new[]
                     {
-                        StaticPeers = new[]
-                        {
-                            (BoundPeer)swarmA.AsPeer,
-                            (BoundPeer)swarmB.AsPeer,
-                            // Unreachable peer:
-                            new BoundPeer(
-                                new PrivateKey().PublicKey,
-                                new DnsEndPoint("127.0.0.1", 65535)
-                            ),
-                        }.ToImmutableHashSet(),
-                        StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
-                    });
+                        (BoundPeer)swarmA.AsPeer,
+                        (BoundPeer)swarmB.AsPeer,
+                        // Unreachable peer:
+                        new BoundPeer(
+                            new PrivateKey().PublicKey,
+                            new DnsEndPoint("127.0.0.1", 65535)
+                        ),
+                    }.ToImmutableHashSet(),
+                    StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
+                });
 
-                await StartAsync(swarm);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+            await StartAsync(swarm);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
 
-                _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
-                await StopAsync(swarmA);
-                swarmA.Dispose();
-                await Task.Delay(100);
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default);
-                // Invoke once more in case of swarmA and swarmB is in the same bucket,
-                // and swarmA is last updated.
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default);
-                Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
-                Assert.Contains(swarmB.AsPeer, swarm.Peers);
+            _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
+            await StopAsync(swarmA);
+            swarmA.Dispose();
+            await Task.Delay(100);
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            // Invoke once more in case of swarmA and swarmB is in the same bucket,
+            // and swarmA is last updated.
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+            Assert.Contains(swarmB.AsPeer, swarm.Peers);
 
-                await StartAsync(swarmC);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
+            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
+            await StartAsync(swarmC);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
 
-                await StopAsync(swarm);
-            }
-            finally
-            {
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-            }
+            await StopAsync(swarm);
+            await StopAsync(swarmB);
+            await StopAsync(swarmC);
         }
 
         [Fact(Timeout = Timeout)]
@@ -567,17 +561,11 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanResolveEndPoint()
+        public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
             using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
             {
-                // Looks weired, but inevitable because Initialize() is internal.
-                if (s.Transport is NetMQTransport n)
-                {
-                    await n.Initialize();
-                }
-
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
             }
@@ -606,7 +594,7 @@ namespace Libplanet.Net.Tests
         public async Task AsPeer()
         {
             Swarm<DumbAction> swarm = CreateSwarm();
-            Assert.IsNotType<BoundPeer>(swarm.AsPeer);
+            Assert.IsType<BoundPeer>(swarm.AsPeer);
 
             await StartAsync(swarm);
             Assert.IsType<BoundPeer>(swarm.AsPeer);

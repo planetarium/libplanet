@@ -134,8 +134,8 @@ namespace Libplanet.Net.Tests.Transports
             try
             {
                 var peer = transport.AsPeer;
-                Assert.IsType<Peer>(peer);
-                Assert.IsNotType<BoundPeer>(peer);
+                Assert.IsNotType<Peer>(peer);
+                Assert.IsType<BoundPeer>(peer);
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
 
                 await InitializeAsync(transport);

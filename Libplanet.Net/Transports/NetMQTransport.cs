@@ -51,8 +51,6 @@ namespace Libplanet.Net.Transports
         // Used only for logging.
         private long _requestCount;
         private long _socketCount;
-
-        private bool _initialized = false;
         private bool _disposed = false;
 
         static NetMQTransport()
@@ -166,6 +164,8 @@ namespace Libplanet.Net.Transports
             ProcessMessageHandler = new AsyncDelegate<Message>();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
+
+            Initialize(default).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -212,12 +212,6 @@ namespace Libplanet.Net.Transports
             if (Running)
             {
                 throw new TransportException("Transport is already running.");
-            }
-
-            if (!_initialized)
-            {
-                await Initialize(cancellationToken);
-                _initialized = true;
             }
 
             _runtimeCancellationTokenSource =
