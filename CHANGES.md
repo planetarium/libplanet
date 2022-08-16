@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Unused `TcpMessageCodec` class removed.  [[#2216]]
+
 ### Backward-incompatible API changes
 
 ### Backward-incompatible network protocol changes
@@ -23,6 +25,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#2216]: https://github.com/planetarium/libplanet/pull/2216
 
 
 Version 0.40.0
