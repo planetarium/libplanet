@@ -9,6 +9,11 @@ To be released.
 ### Deprecated APIs
 
  -  Unused `TcpMessageCodec` class removed.  [[#2216]]
+ -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
+    [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient()` constructor.
+    Use `TurnClient.Create()` instead.  [[#2219]]
 
 ### Backward-incompatible API changes
 
@@ -74,6 +79,8 @@ To be released.
  -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
  -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
     [[#915], [#2200]]
+ -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
+ -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
 
 ### Behavioral changes
 
@@ -109,8 +116,9 @@ To be released.
 ### CLI tools
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
-[#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2216]: https://github.com/planetarium/libplanet/pull/2216
+[#2219]: https://github.com/planetarium/libplanet/pull/2219
 
 
 Version 0.40.0
