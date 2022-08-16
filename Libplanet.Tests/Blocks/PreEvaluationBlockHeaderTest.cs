@@ -448,10 +448,13 @@ namespace Libplanet.Tests.Blocks
                 _contents.BlockMetadata1,
                 nonce: _validBlock1Proof.Nonce
             );
+
+            // Same as block1.MakeSignature(_contents.Block1Key, arbitraryHash)
             ImmutableArray<byte> validSig = ByteUtil.ParseHex(
-                "3045022100e0c6bc5ccbde4a6fc0bc255b663972904373543247e6c7ea082817ebe6ae6" +
-                "3f202201a4fa72853caddca4027be60b88652106d096a901521c59d22ec980ff6a8d184"
+                "3044022028e6e601515b98bf4a2e1f62f60f25af64ce9f07fe05de841e3b8343afbb37" +
+                "5002201aedbe000c2eeb4d2133952b0f73f6b8fe391b0b320b7338e115555f17d1bb76"
             ).ToImmutableArray();
+
             Assert.True(block1.VerifySignature(validSig, arbitraryHash));
             Assert.False(block1.VerifySignature(null, arbitraryHash));
             Assert.False(block1.VerifySignature(validSig, default));
