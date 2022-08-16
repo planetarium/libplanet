@@ -15337,54 +15337,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.PongMsg.Type
   nameWithType: PongMsg.Type
-- uid: Libplanet.Net.Messages.TcpMessageCodec
-  name: TcpMessageCodec
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html
-  commentId: T:Libplanet.Net.Messages.TcpMessageCodec
-  fullName: Libplanet.Net.Messages.TcpMessageCodec
-  nameWithType: TcpMessageCodec
-- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor
-  name: TcpMessageCodec()
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor
-  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.#ctor
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec()
-  nameWithType: TcpMessageCodec.TcpMessageCodec()
-- uid: Libplanet.Net.Messages.TcpMessageCodec.#ctor*
-  name: TcpMessageCodec
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec__ctor_
-  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.TcpMessageCodec
-  nameWithType: TcpMessageCodec.TcpMessageCodec
-- uid: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[],System.Boolean)
-  name: Decode(Byte[], Boolean)
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Decode_System_Byte___System_Boolean_
-  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[],System.Boolean)
-  name.vb: Decode(Byte(), Boolean)
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte[], System.Boolean)
-  fullName.vb: Libplanet.Net.Messages.TcpMessageCodec.Decode(System.Byte(), System.Boolean)
-  nameWithType: TcpMessageCodec.Decode(Byte[], Boolean)
-  nameWithType.vb: TcpMessageCodec.Decode(Byte(), Boolean)
-- uid: Libplanet.Net.Messages.TcpMessageCodec.Decode*
-  name: Decode
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Decode_
-  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.Decode
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.Decode
-  nameWithType: TcpMessageCodec.Decode
-- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
-  name: Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_Libplanet_Net_Messages_Message_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_Peer_DateTimeOffset_
-  commentId: M:Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message,Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.Peer,DateTimeOffset)
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode(Libplanet.Net.Messages.Message, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.Peer, DateTimeOffset)
-  nameWithType: TcpMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer, DateTimeOffset)
-- uid: Libplanet.Net.Messages.TcpMessageCodec.Encode*
-  name: Encode
-  href: api/Libplanet.Net.Messages.TcpMessageCodec.html#Libplanet_Net_Messages_TcpMessageCodec_Encode_
-  commentId: Overload:Libplanet.Net.Messages.TcpMessageCodec.Encode
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.TcpMessageCodec.Encode
-  nameWithType: TcpMessageCodec.Encode
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html

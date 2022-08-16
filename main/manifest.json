@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "8RGqlDr5Vndp8mmQoiSzxYcJmawQcRROitRQNigSxoA="
+          "hash": "GB7X+Rg5Xvuq7Jyy75hRnDqKCyt/1e6mDUl8mv9uyX0="
         }
       },
       "is_incremental": false,
@@ -2465,23 +2465,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.Messages.TcpMessageCodec.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Net.Messages.TcpMessageCodec.html",
-          "hash": "ozkKoCM9+o1CfpAcHbRV8n43pLf55xJXvv/7/iLkufs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Messages.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.html",
-          "hash": "mrnbvZxOWb1+hovfXBbw7nhaPs5HvC5/q5APIbrs2nY="
+          "hash": "qgxGFW5igoS+dPvaf9r2LO9KfVkjrnfeYJ8c/vIDNHg="
         }
       },
       "is_incremental": false,
@@ -4137,7 +4125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "al9F+ybnSmK1OBaALs3tegMrTtqWCNnNzq0kUbhqldU="
+          "hash": "XshQYBD8/ZWM6uPFd+J+u0MqLLPnZLbuR4/Q9Bt7mr8="
         }
       },
       "is_incremental": false,
@@ -4246,7 +4234,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 334,
+          "total_file_count": 333,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
