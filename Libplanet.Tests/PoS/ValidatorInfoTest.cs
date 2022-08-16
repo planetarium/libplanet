@@ -1,5 +1,4 @@
 using System;
-using Bencodex.Types;
 using Libplanet.PoS;
 using Xunit;
 
@@ -26,7 +25,7 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void MarshallingTest()
         {
-            ValidatorInfo newValidatorInfo = new ValidatorInfo((List)_validatorInfo.Serialize());
+            ValidatorInfo newValidatorInfo = new ValidatorInfo(_validatorInfo.Serialize());
             Assert.Equal(_validatorInfo.Address, newValidatorInfo.Address);
             Assert.Equal(_validatorInfo.OperatorAddress, newValidatorInfo.OperatorAddress);
             Assert.Equal(_validatorInfo.Jailed, newValidatorInfo.Jailed);

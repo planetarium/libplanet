@@ -1,4 +1,3 @@
-using Bencodex.Types;
 using Libplanet.PoS;
 using Xunit;
 
@@ -17,7 +16,7 @@ namespace Libplanet.Tests.PoS
         public void MarshallingTest()
         {
             UndelegationInfo newUndelegationInfo
-                = new UndelegationInfo((List)_undelegationInfo.Serialize());
+                = new UndelegationInfo(_undelegationInfo.Serialize());
             Assert.Equal(
                 _undelegationInfo.Address,
                 newUndelegationInfo.Address);

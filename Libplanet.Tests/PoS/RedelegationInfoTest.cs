@@ -1,4 +1,3 @@
-using Bencodex.Types;
 using Libplanet.PoS;
 using Xunit;
 
@@ -18,7 +17,7 @@ namespace Libplanet.Tests.PoS
         public void MarshallingTest()
         {
             RedelegationInfo newRedelegationInfo
-                = new RedelegationInfo((List)_redelegationInfo.Serialize());
+                = new RedelegationInfo(_redelegationInfo.Serialize());
             Assert.Equal(
                 _redelegationInfo.Address,
                 newRedelegationInfo.Address);

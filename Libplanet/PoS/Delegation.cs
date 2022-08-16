@@ -84,8 +84,8 @@ namespace Libplanet.PoS
 
             FungibleAssetValue consensusToken = Asset.ConsensusFromGovernance(governanceToken);
             Address poolAddress = validator.Status == BondingStatus.Bonded
-                ? Pool.BondedPool
-                : Pool.UnbondedPool;
+                ? ReservedAddress.BondedPool
+                : ReservedAddress.UnbondedPool;
             states = states.TransferAsset(
                 DelegatorAddress, poolAddress, governanceToken);
 

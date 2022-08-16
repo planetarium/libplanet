@@ -201,7 +201,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
             Assert.Equal(
                 Asset.GovernanceToken * (2 * selfDelegateAmount + delegateAmount),
-                _states.GetBalance(Pool.UnbondedPool, Asset.GovernanceToken));
+                _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             RedelegationEntry entry = new RedelegationEntry(
                 _states.GetState(RedelegationInstance.RedelegationEntryAddresses[0]));
             Assert.Equal(

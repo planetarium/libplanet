@@ -75,7 +75,7 @@ namespace Libplanet.PoS
             // On Libplanet, it will be burnt on CompleteUnbonding()
             states = states.TransferAsset(
                         validatorAddress,
-                        Pool.UnbondedPool,
+                        ReservedAddress.UnbondedPool,
                         unbondingConsensusToken);
 
             validator.UpdateBondingStatus(states);
@@ -119,8 +119,8 @@ namespace Libplanet.PoS
             if (validator.Status == BondingStatus.Bonded)
             {
                 states = states.TransferAsset(
-                        Pool.BondedPool,
-                        Pool.UnbondedPool,
+                        ReservedAddress.BondedPool,
+                        ReservedAddress.UnbondedPool,
                         Asset.GovernanceFromConsensus(unbondingConsensusToken));
             }
 
@@ -164,7 +164,7 @@ namespace Libplanet.PoS
 
             // Recover consensus token of validator
             states = states.TransferAsset(
-                Pool.UnbondedPool,
+                ReservedAddress.UnbondedPool,
                 ValidatorAddress,
                 cancelledConsensusToken);
 
@@ -189,8 +189,8 @@ namespace Libplanet.PoS
             if (validator.Status == BondingStatus.Bonded)
             {
                 states = states.TransferAsset(
-                        Pool.UnbondedPool,
-                        Pool.BondedPool,
+                        ReservedAddress.UnbondedPool,
+                        ReservedAddress.BondedPool,
                         Asset.GovernanceFromConsensus(cancelledConsensusToken));
             }
 
@@ -301,13 +301,13 @@ namespace Libplanet.PoS
                 {
                     // Pay back governance token to delegator
                     states = states.TransferAsset(
-                        Pool.UnbondedPool,
+                        ReservedAddress.UnbondedPool,
                         DelegatorAddress,
                         Asset.GovernanceFromConsensus(undelegationEntry.UnbondingConsensusToken));
 
                     // Burn consensus token
                     states = states.BurnAsset(
-                        Pool.UnbondedPool,
+                        ReservedAddress.UnbondedPool,
                         undelegationEntry.UnbondingConsensusToken);
 
                     // Remove entry
