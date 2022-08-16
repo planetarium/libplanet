@@ -462,7 +462,7 @@ namespace Libplanet.Net.Transports
             _replyCompletionSources.TryRemove(identityHex, out _);
         }
 
-        internal async Task Initialize(CancellationToken cancellationToken = default)
+        private async Task Initialize(CancellationToken cancellationToken = default)
         {
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
