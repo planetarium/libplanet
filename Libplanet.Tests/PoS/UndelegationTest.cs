@@ -128,7 +128,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
-                _states.GetBalance(Pool.UnbondedPool, Asset.GovernanceToken));
+                _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             _states = undelegation.CompleteUnbonding(_states, 1000);
             Assert.Single(UndelegationInstance.UndelegationEntryAddresses);
             Assert.Equal(
@@ -136,7 +136,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
-                _states.GetBalance(Pool.UnbondedPool, Asset.GovernanceToken));
+                _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             _states = undelegation.CompleteUnbonding(_states, 50400 * 5);
             Assert.Empty(UndelegationInstance.UndelegationEntryAddresses);
             Assert.Equal(
@@ -144,7 +144,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount - undelegateAmount),
-                _states.GetBalance(Pool.UnbondedPool, Asset.GovernanceToken));
+                _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
         }
 
         [Theory]
@@ -232,7 +232,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
-                _states.GetBalance(Pool.UnbondedPool, Asset.GovernanceToken));
+                _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             Assert.Equal(
                 ValidatorInstance.DelegatorShares,
                 _states.GetBalance(

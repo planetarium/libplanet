@@ -81,7 +81,8 @@ namespace Libplanet.PoS
         // This have to be called for each block,
         // to update staking status and generate block with updated validators.
         // Would it be better to declare this on out of this class?
-        internal IAccountStateDelta CompleteRedelegation(IAccountStateDelta states, long blockHeight)
+        internal IAccountStateDelta CompleteRedelegation(
+            IAccountStateDelta states, long blockHeight)
         {
             List<long> completedIndices = new List<long>();
             foreach (KeyValuePair<long, Address> redelegationEntryAddressKV
