@@ -13,6 +13,7 @@ To be released.
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
