@@ -28,6 +28,12 @@ public class CurrencyType : ObjectGraphType<Currency>
                 ?.OrderBy(a => a)
                 ?.ToList()
         );
+        Field<FungibleAssetValueType>(
+            "maximumSupply",
+            "The uppermost quantity of currency allowed to exist.  " +
+                "null means unlimited supply.",
+            resolve: context => context.Source.MaximumSupply
+        );
         Field<NonNullGraphType<BooleanGraphType>>(
             "totalSupplyTrackable",
             "Whether the total supply of this currency is trackable.",
