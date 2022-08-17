@@ -27,6 +27,10 @@ namespace Libplanet.Explorer.Queries
                 "nodeState",
                 resolve: context => chainContext
             );
+            Field<NonNullGraphType<PolicyType<T>>>(
+                "policy",
+                resolve: context => chainContext.BlockChain.Policy
+            );
 
             Name = "ExplorerQuery";
         }
