@@ -324,22 +324,17 @@ namespace Libplanet.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
-            Address signer)
-        {
-            if (protocolVersion > 3)
-            {
-                return new AccountStateDeltaImpl(
-                    accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer);
-            }
-
-            if (protocolVersion > 0)
-            {
-                return new AccountStateDeltaImplV3(
-                    accountStateGetter, accountBalanceGetter, signer);
-            }
-
-            return new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);
-        }
+            Address signer) => protocolVersion > 0
+            ? new AccountStateDeltaImpl(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                signer)
+            : new AccountStateDeltaImplV0(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                signer);
 
         [Pure]
         protected virtual FungibleAssetValue GetBalance(

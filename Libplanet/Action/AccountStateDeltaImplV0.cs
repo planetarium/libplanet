@@ -8,18 +8,19 @@ using Libplanet.Assets;
 namespace Libplanet.Action
 {
     /// <summary>
-    /// Equivalent to <see cref="AccountStateDeltaImplV3"/> except that it maintains its old (v0)
+    /// Equivalent to <see cref="AccountStateDeltaImpl"/> except that it maintains its old (v0)
     /// incorrect behavior of <see cref="TransferAsset"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImplV0 : AccountStateDeltaImplV3
+    internal class AccountStateDeltaImplV0 : AccountStateDeltaImpl
     {
         internal AccountStateDeltaImplV0(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         )
-            : base(accountStateGetter, accountBalanceGetter, signer)
+            : base(accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer)
         {
         }
 
@@ -68,7 +69,7 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
@@ -78,7 +79,7 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,

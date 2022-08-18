@@ -75,13 +75,6 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  The `Block<T>.CurrentProtocolVersion` is bumped from 3 to 4.  [[#2200]]
-     -  `IAccountStateDelta.GetTotalSupply` returns the current total supply
-        of a `Currency` if the total supply of`Currency` is trackable from
-        version 4, and throws `NotSupportedException` below version 4.
-     -  `IAccountStateDelta.MintAsset` and `IAccountStateDelta.BurnAsset`
-        tracks the total supply if trackable from version 4.
-
 ### Backward-incompatible storage format changes
 
 ### Added APIs
