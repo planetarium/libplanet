@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Net) Removed `NetMQTransport()` constructor.  Use
+    `NetMQTransport.Create()` instead.  [[#2215]]
  -  Unused `TcpMessageCodec` class removed.  [[#2216]]
  -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
@@ -112,7 +114,8 @@ To be released.
         instance.
  -  (Libplanet.Net) `NetMQTransport`'s general behavior has changed.  [[#2215]]
      -  `NetMQTransport` is now able to send requests and receive
-        replies as soon as it is created.
+        replies as soon as it is created through `NetMQTransport.Create()`
+        factory method.
      -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
         to recieve requests and send replies.
      -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance

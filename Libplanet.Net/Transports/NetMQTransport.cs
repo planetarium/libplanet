@@ -62,7 +62,7 @@ namespace Libplanet.Net.Transports
         }
 
         /// <summary>
-        /// Creates <see cref="NetMQTransport"/> instance.
+        /// Creates a <see cref="NetMQTransport"/> instance.
         /// </summary>
         /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
@@ -91,7 +91,7 @@ namespace Libplanet.Net.Transports
         /// If <c>null</c>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
-        public NetMQTransport(
+        private NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
@@ -164,8 +164,6 @@ namespace Libplanet.Net.Transports
             ProcessMessageHandler = new AsyncDelegate<Message>();
             _replyCompletionSources =
                 new ConcurrentDictionary<string, TaskCompletionSource<object>>();
-
-            Initialize(default).GetAwaiter().GetResult();
         }
 
         /// <inheritdoc/>
@@ -198,6 +196,66 @@ namespace Libplanet.Net.Transports
         internal IPAddress PublicIPAddress => _turnClient?.PublicAddress;
 
         internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
+
+        /// <summary>
+        /// Creates an initialized <see cref="NetMQTransport"/> instance.
+        /// </summary>
+        /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
+        /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
+        /// version of the transport layer.</param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
+        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
+        /// <c>null</c>.</param>
+        /// <param name="workers">The number of background workers (i.e., threads).</param>
+        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
+        /// they connect to this node.  Note that this is not a hostname to listen to;
+        /// <see cref="NetMQTransport"/> always listens to 0.0.0.0 &amp; ::/0.</param>
+        /// <param name="listenPort">A port number to listen to.</param>
+        /// <param name="iceServers">
+        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
+        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
+        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
+        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// </param>
+        /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
+        /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
+        /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
+        /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
+        /// If <c>null</c>, any timestamp is accepted.</param>
+        /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
+        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
+        /// <returns>
+        /// An awaitable <see cref="Task"/> returning a <see cref="NetMQTransport"/>
+        /// when awaited that is ready to send request <see cref="Message"/>s and
+        /// receive reply <see cref="Message"/>s.
+        /// </returns>
+        public static async Task<NetMQTransport> Create(
+            PrivateKey privateKey,
+            AppProtocolVersion appProtocolVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            int workers,
+            string host,
+            int? listenPort,
+            IEnumerable<IceServer> iceServers,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
+            TimeSpan? messageTimestampBuffer = null)
+        {
+            var transport = new NetMQTransport(
+                privateKey,
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                workers,
+                host,
+                listenPort,
+                iceServers,
+                differentAppProtocolVersionEncountered,
+                messageTimestampBuffer);
+            await transport.Initialize();
+            return transport;
+        }
 
         /// <inheritdoc/>
         public async Task StartAsync(CancellationToken cancellationToken = default)
@@ -462,6 +520,13 @@ namespace Libplanet.Net.Transports
             _replyCompletionSources.TryRemove(identityHex, out _);
         }
 
+        /// <summary>
+        /// Initializes a <see cref="NetMQTransport"/> as to make it ready to
+        /// send request <see cref="Message"/>s and recieve reply <see cref="Message"/>s.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token to propagate a notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> without value.</returns>
         private async Task Initialize(CancellationToken cancellationToken = default)
         {
             _router = new RouterSocket();
@@ -484,7 +549,7 @@ namespace Libplanet.Net.Transports
             }
             else if (_iceServers is { } iceServers)
             {
-                _turnClient = await TurnClient.Create(_iceServers);
+                _turnClient = await TurnClient.Create(_iceServers, cancellationToken);
                 await _turnClient.StartAsync(_listenPort, cancellationToken);
                 if (!_turnClient.BehindNAT)
                 {
