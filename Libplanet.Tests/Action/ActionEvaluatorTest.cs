@@ -471,13 +471,13 @@ namespace Libplanet.Tests.Action
 
             expectations = new[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
                 (
-                    2,
+                    1,
                     0,
                     new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
-                    _txFx.Address3
+                    _txFx.Address2
                 ),
             };
             Assert.Equal(expectations.Length, evals.Length);
