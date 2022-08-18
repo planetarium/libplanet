@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Action.Sys
 {
     public class RegistryTest
     {
-        private static readonly Currency FooCurrency = new Currency("FOO", 2, minters: null);
+        private static readonly Currency FooCurrency = Currency.Uncapped("FOO", 2, null);
 
         [Fact]
         public void Deserialize()

@@ -21,18 +21,23 @@ namespace Libplanet.Action
         /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
         /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
         /// </param>
+        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
+        /// currencies.</param>
         /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
         /// to mint a currency.</param>
         internal AccountStateDeltaImpl(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         )
         {
             StateGetter = accountStateGetter;
             BalanceGetter = accountBalanceGetter;
+            TotalSupplyGetter = totalSupplyGetter;
             UpdatedStates = ImmutableDictionary<Address, IValue>.Empty;
             UpdatedFungibles = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
+            UpdatedTotalSupply = ImmutableDictionary<Currency, BigInteger>.Empty;
             Signer = signer;
         }
 
@@ -55,9 +60,15 @@ namespace Libplanet.Action
                 g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2).ToImmutableHashSet()
             );
 
+        [Pure]
+        IImmutableSet<Currency> IAccountStateDelta.TotalSupplyUpdatedCurrencies =>
+            UpdatedTotalSupply.Keys.ToImmutableHashSet();
+
         protected AccountStateGetter StateGetter { get; set; }
 
         protected AccountBalanceGetter BalanceGetter { get; set; }
+
+        protected TotalSupplyGetter TotalSupplyGetter { get; set; }
 
         protected Address Signer { get; set; }
 
@@ -68,6 +79,8 @@ namespace Libplanet.Action
             get;
             set;
         }
+
+        protected IImmutableDictionary<Currency, BigInteger> UpdatedTotalSupply { get; set; }
 
         /// <inheritdoc/>
         [Pure]
@@ -119,6 +132,22 @@ namespace Libplanet.Action
             GetBalance(address, currency, UpdatedFungibles);
 
         /// <inheritdoc/>
+        public virtual FungibleAssetValue GetTotalSupply(Currency currency)
+        {
+            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } totalValue)
+            {
+                return totalValue;
+            }
+
+            var msg =
+                $"The total supply value of the currency {currency} is not trackable because it is"
+                + " a legacy untracked currency which might have been established before protocol"
+                + " version 4 which started supporting total supply tracking.";
+
+            throw new TotalSupplyNotTrackableException(currency, msg);
+        }
+
+        /// <inheritdoc/>
         [Pure]
         public virtual IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value)
         {
@@ -141,6 +170,22 @@ namespace Libplanet.Action
             }
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
+
+            // If total supply is trackable, this will be true.
+            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } currentTotalSupply)
+            {
+                if (currency.MaximumSupply < currentTotalSupply + value)
+                {
+                    var msg = $"The amount {value} attempted to be minted added to the current"
+                              + $" total supply of {currentTotalSupply} exceeds the"
+                              + $" maximum allowed supply of {currency.MaximumSupply}.";
+                    throw new SupplyOverflowException(value, msg);
+                }
+
+                UpdatedTotalSupply =
+                    UpdatedTotalSupply.SetItem(currency, (currentTotalSupply + value).RawValue);
+            }
+
             return UpdateFungibleAssets(
                 UpdatedFungibles.SetItem((recipient, currency), (balance + value).RawValue)
             );
@@ -219,9 +264,81 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(owner, balance, msg);
             }
 
+            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } totalSupply)
+            {
+                UpdatedTotalSupply =
+                    UpdatedTotalSupply.SetItem(currency, (totalSupply - value).RawValue);
+            }
+
             return UpdateFungibleAssets(
                 UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue)
             );
+        }
+
+        FungibleAssetValue? IAccountStateDelta.GetTotalSupplyImpl(Currency currency)
+        {
+            // Return null if total supply is not trackable.
+            if (!currency.TotalSupplyTrackable)
+            {
+                return null;
+            }
+
+            // Return dirty state if it exists.
+            if (UpdatedTotalSupply.TryGetValue(currency, out BigInteger totalSupplyValue))
+            {
+                return FungibleAssetValue.FromRawValue(currency, totalSupplyValue);
+            }
+
+            // Look up states to see if total supply exists.
+            if (TotalSupplyGetter(currency) is { } totalSupply)
+            {
+                return totalSupply;
+            }
+
+            // If total supply is trackable and it does not exist, return an initial value.
+            var initialTotalSupply = currency * 0;
+            UpdatedTotalSupply =
+                UpdatedTotalSupply.SetItem(currency, initialTotalSupply.RawValue);
+            return initialTotalSupply;
+        }
+
+        /// <summary>
+        /// Creates a null delta from the given <paramref name="accountStateGetter"/>,
+        /// <paramref name="accountBalanceGetter"/>, and <paramref name="totalSupplyGetter"/>,
+        /// with a subtype of <see cref="AccountStateDeltaImpl"/> that corresponds to the
+        /// <paramref name="protocolVersion"/>.
+        /// </summary>
+        /// <param name="protocolVersion">The protocol version of which to create a delta.</param>
+        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d; states.</param>
+        /// <param name="accountBalanceGetter">A view to the &#x201c;epoch&#x201d; asset balances.
+        /// </param>
+        /// <param name="totalSupplyGetter">A view to the &#x201c;epoch&#x201d; total supplies of
+        /// currencies.</param>
+        /// <param name="signer">A signer address. Used for authenticating if a signer is allowed
+        /// to mint a currency.</param>
+        /// <returns>A instance of a subtype of <see cref="AccountStateDeltaImpl"/> which
+        /// corresponds to the <paramref name="protocolVersion"/>.</returns>
+        [Pure]
+        internal static AccountStateDeltaImpl ChooseVersion(
+            int protocolVersion,
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
+            Address signer)
+        {
+            if (protocolVersion > 3)
+            {
+                return new AccountStateDeltaImpl(
+                    accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer);
+            }
+
+            if (protocolVersion > 0)
+            {
+                return new AccountStateDeltaImplV3(
+                    accountStateGetter, accountBalanceGetter, signer);
+            }
+
+            return new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);
         }
 
         [Pure]
@@ -237,20 +354,22 @@ namespace Libplanet.Action
         protected virtual AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImpl(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImpl(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
+                UpdatedTotalSupply = UpdatedTotalSupply,
             };
 
         [Pure]
         protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImpl(StateGetter, BalanceGetter, Signer)
+            new AccountStateDeltaImpl(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
+                UpdatedTotalSupply = UpdatedTotalSupply,
             };
     }
 }

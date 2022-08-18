@@ -159,6 +159,7 @@ namespace Libplanet.Tests.Fixtures
             return new AccountStateDeltaImpl(
                 a => Chain.GetStates(a, offset),
                 (a, c) => Chain.GetBalance(a, c, offset),
+                c => Chain.GetTotalSupply(c),
                 signer
             );
         }

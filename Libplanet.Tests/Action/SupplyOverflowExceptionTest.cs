@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Libplanet.Tests.Action
 {
-    public class InsufficientBalanceExceptionTest
+    public class SupplyOverflowExceptionTest
     {
         [Fact]
         public void Serializable()
@@ -16,15 +16,9 @@ namespace Libplanet.Tests.Action
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
             });
-            var account = new Address(new byte[]
-            {
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
-            });
 
             var currency = Currency.Uncapped("PLT", 0, minter);
-            var exc = new InsufficientBalanceException(
-                account,
+            var exc = new SupplyOverflowException(
                 FungibleAssetValue.FromRawValue(currency, 99),
                 "for testing"
             );
@@ -35,10 +29,9 @@ namespace Libplanet.Tests.Action
                 formatter.Serialize(ms, exc);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                var deserialized = (InsufficientBalanceException)formatter.Deserialize(ms);
+                var deserialized = (SupplyOverflowException)formatter.Deserialize(ms);
                 Assert.Equal("for testing", deserialized.Message);
-                Assert.Equal(account, deserialized.Address);
-                Assert.Equal(FungibleAssetValue.FromRawValue(currency, 99), deserialized.Balance);
+                Assert.Equal(FungibleAssetValue.FromRawValue(currency, 99), deserialized.Amount);
             }
         }
     }
