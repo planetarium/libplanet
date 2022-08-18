@@ -1,6 +1,6 @@
 using System;
 
-namespace Libplanet.Net
+namespace Libplanet.Stun
 {
     [Serializable]
     public class IceServerException : Exception
