@@ -1,7 +1,6 @@
 Libplanet changelog
 ===================
 
-
 Version PBFT
 --------------
 
