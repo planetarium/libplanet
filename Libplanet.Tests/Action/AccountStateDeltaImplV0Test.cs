@@ -20,6 +20,7 @@ namespace Libplanet.Tests.Action
         public override IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         ) =>
             new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);

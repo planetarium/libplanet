@@ -8,11 +8,11 @@ using Libplanet.Assets;
 namespace Libplanet.Action
 {
     /// <summary>
-    /// Equivalent to <see cref="AccountStateDeltaImpl"/> except that it maintains its old (v0)
+    /// Equivalent to <see cref="AccountStateDeltaImplV3"/> except that it maintains its old (v0)
     /// incorrect behavior of <see cref="TransferAsset"/>.
     /// </summary>
     [Pure]
-    internal class AccountStateDeltaImplV0 : AccountStateDeltaImpl
+    internal class AccountStateDeltaImplV0 : AccountStateDeltaImplV3
     {
         internal AccountStateDeltaImplV0(
             AccountStateGetter accountStateGetter,
