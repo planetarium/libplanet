@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "GB7X+Rg5Xvuq7Jyy75hRnDqKCyt/1e6mDUl8mv9uyX0="
+          "hash": "sxldIDj6FCXdCRZXQb/rPoC1Fa93fM3yxzd9GKBdK6k="
         }
       },
       "is_incremental": false,
@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IAccountStateDelta.html",
-          "hash": "h15ylqvb0bFoHYfLi/LtvGO/2ShA0oHslEH8nrqyBe8="
+          "hash": "N/BWTP3UV8Gj7xHuldvxaFLCxitsu9jWaQ3jn7UIHd0="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IAccountStateView.html",
-          "hash": "YJ26z7X+F0gNURc+ao52Q9vlhAwaSzT7LWevv9jqrk0="
+          "hash": "9OPuRKg4SsVooDCHycXnQ7JAgDrKqqC4j76x8zZnkYc="
         }
       },
       "is_incremental": false,
@@ -341,6 +341,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.SupplyOverflowException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.SupplyOverflowException.html",
+          "hash": "DmFGcAj3TnDBYoDpCEi2XzHvGTWl5NA8P6P44oaqvHo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.Sys.Mint.yml",
       "output": {
         ".html": {
@@ -377,6 +389,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.TotalSupplyGetter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.TotalSupplyGetter.html",
+          "hash": "uYI2owol9nlobuomZfXtdngYU2jN/yF351vPgt35/t0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.TotalSupplyNotTrackableException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.TotalSupplyNotTrackableException.html",
+          "hash": "k76luluJSs6dmnU7XEVzE/HbcbFwthmV8iJJZnbVxaM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.UnexpectedlyTerminatedActionException.yml",
       "output": {
         ".html": {
@@ -393,7 +429,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.html",
-          "hash": "GoNwATEFrivfW77WjZYujFQbPNEl99OkPTjtDmromkM="
+          "hash": "xS43bQLAjrcP07xX6gYqPmTAVcxvzgLIdbeeAXfUkgk="
         }
       },
       "is_incremental": false,
@@ -429,7 +465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Assets.Currency.html",
-          "hash": "0R5j+QER772v/UD72C8fwZXm8sabLfxFHA/b8XVthPQ="
+          "hash": "eHriPp/qRNlBzaRf+WEtY2Tjet0E+vk0n77PlJ25mW4="
         }
       },
       "is_incremental": false,
@@ -477,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "tlykysSnd0MxSsiwozYGI40ynoF5FV21bLeM9MLnDJU="
+          "hash": "BW9V74UtfPIO8LTI7NrfD+BbMB2XxFUoAcsMBVsvggI="
         }
       },
       "is_incremental": false,
@@ -525,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.IBlockChainStates-1.html",
-          "hash": "wKnYpBEWMO8g5z+afCs/7YtpjFbr0jk02eKZwNNdcE8="
+          "hash": "DwTvcJJDjVkfh4DaIEzCnEYWxLWMm0FjNV/gzU54UAo="
         }
       },
       "is_incremental": false,
@@ -957,7 +993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.StateCompleterSet-1.html",
-          "hash": "q86aVRO+e7YayeJ31WklOh0dVoWIgT5hkNVO8W6SmYg="
+          "hash": "3Llxt15GyKbDUdIrFLrth46u5QgB8oA58rU30uhw5Mg="
         }
       },
       "is_incremental": false,
@@ -989,11 +1025,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.TotalSupplyStateCompleter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.TotalSupplyStateCompleter-1.html",
+          "hash": "B1sUa0gB92xOimS9VcaAg43YmI9TsZLa8qPuKdgDIfI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html",
+          "hash": "Hr0V9uZaABdPsiuqduWFR7sqvbJt+dTspm56nHj4W+w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Blockchain.yml",
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.html",
-          "hash": "YDFqi3kxy2mgPolTaofzIq7cHWMhohVMexHukHdp5zU="
+          "hash": "n8YCtKp7gFbdMg+1NxTYuS/I/0wPgsByGow9wCCH+Eg="
         }
       },
       "is_incremental": false,
@@ -1425,7 +1485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.PreEvaluationBlock-1.html",
-          "hash": "5ZFL/D/bYf2nDQckIF/cddajm8ZXytqi7gvW6cJGtzg="
+          "hash": "uNhltQh5lPiWvb/oNgOE2UPSzuNC0kk+KXS/zAqxBf0="
         }
       },
       "is_incremental": false,
@@ -4125,7 +4185,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "XshQYBD8/ZWM6uPFd+J+u0MqLLPnZLbuR4/Q9Bt7mr8="
+          "hash": "Te1L8odc9qPFsqkLAcLtj0fLBOWN1SFyU0kfXzTzBio="
         }
       },
       "is_incremental": false,
@@ -4234,7 +4294,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 333,
+          "total_file_count": 338,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

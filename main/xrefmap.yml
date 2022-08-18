@@ -362,6 +362,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateDelta.StateUpdatedAddresses
   nameWithType: IAccountStateDelta.StateUpdatedAddresses
+- uid: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  name: TotalSupplyUpdatedCurrencies
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TotalSupplyUpdatedCurrencies
+  commentId: P:Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  fullName: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
+- uid: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies*
+  name: TotalSupplyUpdatedCurrencies
+  href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TotalSupplyUpdatedCurrencies_
+  commentId: Overload:Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateDelta.TotalSupplyUpdatedCurrencies
+  nameWithType: IAccountStateDelta.TotalSupplyUpdatedCurrencies
 - uid: Libplanet.Action.IAccountStateDelta.TransferAsset(Libplanet.Address,Libplanet.Address,Libplanet.Assets.FungibleAssetValue,System.Boolean)
   name: TransferAsset(Address, Address, FungibleAssetValue, Boolean)
   href: api/Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_TransferAsset_Libplanet_Address_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_System_Boolean_
@@ -449,6 +462,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAccountStateView.GetStates
   nameWithType: IAccountStateView.GetStates
+- uid: Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  name: GetTotalSupply(Currency)
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_
+  commentId: M:Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  fullName: Libplanet.Action.IAccountStateView.GetTotalSupply(Libplanet.Assets.Currency)
+  nameWithType: IAccountStateView.GetTotalSupply(Currency)
+- uid: Libplanet.Action.IAccountStateView.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_
+  commentId: Overload:Libplanet.Action.IAccountStateView.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Action.IAccountStateView.GetTotalSupply
+  nameWithType: IAccountStateView.GetTotalSupply
 - uid: Libplanet.Action.IAction
   name: IAction
   href: api/Libplanet.Action.IAction.html
@@ -1051,6 +1077,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
+- uid: Libplanet.Action.SupplyOverflowException
+  name: SupplyOverflowException
+  href: api/Libplanet.Action.SupplyOverflowException.html
+  commentId: T:Libplanet.Action.SupplyOverflowException
+  fullName: Libplanet.Action.SupplyOverflowException
+  nameWithType: SupplyOverflowException
+- uid: Libplanet.Action.SupplyOverflowException.#ctor(Libplanet.Assets.FungibleAssetValue,System.Nullable{System.String})
+  name: SupplyOverflowException(FungibleAssetValue, Nullable<String>)
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException__ctor_Libplanet_Assets_FungibleAssetValue_System_Nullable_System_String__
+  commentId: M:Libplanet.Action.SupplyOverflowException.#ctor(Libplanet.Assets.FungibleAssetValue,System.Nullable{System.String})
+  name.vb: SupplyOverflowException(FungibleAssetValue, Nullable(Of String))
+  fullName: Libplanet.Action.SupplyOverflowException.SupplyOverflowException(Libplanet.Assets.FungibleAssetValue, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Action.SupplyOverflowException.SupplyOverflowException(Libplanet.Assets.FungibleAssetValue, System.Nullable(Of System.String))
+  nameWithType: SupplyOverflowException.SupplyOverflowException(FungibleAssetValue, Nullable<String>)
+  nameWithType.vb: SupplyOverflowException.SupplyOverflowException(FungibleAssetValue, Nullable(Of String))
+- uid: Libplanet.Action.SupplyOverflowException.#ctor*
+  name: SupplyOverflowException
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException__ctor_
+  commentId: Overload:Libplanet.Action.SupplyOverflowException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.SupplyOverflowException.SupplyOverflowException
+  nameWithType: SupplyOverflowException.SupplyOverflowException
+- uid: Libplanet.Action.SupplyOverflowException.Amount
+  name: Amount
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_Amount
+  commentId: P:Libplanet.Action.SupplyOverflowException.Amount
+  fullName: Libplanet.Action.SupplyOverflowException.Amount
+  nameWithType: SupplyOverflowException.Amount
+- uid: Libplanet.Action.SupplyOverflowException.Amount*
+  name: Amount
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_Amount_
+  commentId: Overload:Libplanet.Action.SupplyOverflowException.Amount
+  isSpec: "True"
+  fullName: Libplanet.Action.SupplyOverflowException.Amount
+  nameWithType: SupplyOverflowException.Amount
+- uid: Libplanet.Action.SupplyOverflowException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Action.SupplyOverflowException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Action.SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Action.SupplyOverflowException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Action.SupplyOverflowException.html#Libplanet_Action_SupplyOverflowException_GetObjectData_
+  commentId: Overload:Libplanet.Action.SupplyOverflowException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Action.SupplyOverflowException.GetObjectData
+  nameWithType: SupplyOverflowException.GetObjectData
 - uid: Libplanet.Action.Sys
   name: Libplanet.Action.Sys
   href: api/Libplanet.Action.Sys.html
@@ -1225,6 +1299,60 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Transfer.Recipient
   nameWithType: Transfer.Recipient
+- uid: Libplanet.Action.TotalSupplyGetter
+  name: TotalSupplyGetter
+  href: api/Libplanet.Action.TotalSupplyGetter.html
+  commentId: T:Libplanet.Action.TotalSupplyGetter
+  fullName: Libplanet.Action.TotalSupplyGetter
+  nameWithType: TotalSupplyGetter
+- uid: Libplanet.Action.TotalSupplyNotTrackableException
+  name: TotalSupplyNotTrackableException
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html
+  commentId: T:Libplanet.Action.TotalSupplyNotTrackableException
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException
+  nameWithType: TotalSupplyNotTrackableException
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.#ctor(Libplanet.Assets.Currency,System.Nullable{System.String})
+  name: TotalSupplyNotTrackableException(Currency, Nullable<String>)
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException__ctor_Libplanet_Assets_Currency_System_Nullable_System_String__
+  commentId: M:Libplanet.Action.TotalSupplyNotTrackableException.#ctor(Libplanet.Assets.Currency,System.Nullable{System.String})
+  name.vb: TotalSupplyNotTrackableException(Currency, Nullable(Of String))
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(Libplanet.Assets.Currency, System.Nullable<System.String>)
+  fullName.vb: Libplanet.Action.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(Libplanet.Assets.Currency, System.Nullable(Of System.String))
+  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(Currency, Nullable<String>)
+  nameWithType.vb: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException(Currency, Nullable(Of String))
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.#ctor*
+  name: TotalSupplyNotTrackableException
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException__ctor_
+  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
+  nameWithType: TotalSupplyNotTrackableException.TotalSupplyNotTrackableException
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.Currency
+  name: Currency
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_Currency
+  commentId: P:Libplanet.Action.TotalSupplyNotTrackableException.Currency
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.Currency
+  nameWithType: TotalSupplyNotTrackableException.Currency
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.Currency*
+  name: Currency
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_Currency_
+  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.Currency
+  isSpec: "True"
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.Currency
+  nameWithType: TotalSupplyNotTrackableException.Currency
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(SerializationInfo,StreamingContext)
+  name: GetObjectData(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData(SerializationInfo, StreamingContext)
+  nameWithType: TotalSupplyNotTrackableException.GetObjectData(SerializationInfo, StreamingContext)
+- uid: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData*
+  name: GetObjectData
+  href: api/Libplanet.Action.TotalSupplyNotTrackableException.html#Libplanet_Action_TotalSupplyNotTrackableException_GetObjectData_
+  commentId: Overload:Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData
+  isSpec: "True"
+  fullName: Libplanet.Action.TotalSupplyNotTrackableException.GetObjectData
+  nameWithType: TotalSupplyNotTrackableException.GetObjectData
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -1549,24 +1677,6 @@ references:
   commentId: M:Libplanet.Assets.Currency.#ctor(IValue)
   fullName: Libplanet.Assets.Currency.Currency(IValue)
   nameWithType: Currency.Currency(IValue)
-- uid: Libplanet.Assets.Currency.#ctor(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
-  name: Currency(String, Byte, Nullable<IImmutableSet<Address>>)
-  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
-  commentId: M:Libplanet.Assets.Currency.#ctor(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
-  name.vb: Currency(String, Byte, Nullable(Of IImmutableSet(Of Address)))
-  fullName: Libplanet.Assets.Currency.Currency(System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>)
-  fullName.vb: Libplanet.Assets.Currency.Currency(System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
-  nameWithType: Currency.Currency(String, Byte, Nullable<IImmutableSet<Address>>)
-  nameWithType.vb: Currency.Currency(String, Byte, Nullable(Of IImmutableSet(Of Address)))
-- uid: Libplanet.Assets.Currency.#ctor(System.String,System.Byte,System.Nullable{Libplanet.Address})
-  name: Currency(String, Byte, Nullable<Address>)
-  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_System_String_System_Byte_System_Nullable_Libplanet_Address__
-  commentId: M:Libplanet.Assets.Currency.#ctor(System.String,System.Byte,System.Nullable{Libplanet.Address})
-  name.vb: Currency(String, Byte, Nullable(Of Address))
-  fullName: Libplanet.Assets.Currency.Currency(System.String, System.Byte, System.Nullable<Libplanet.Address>)
-  fullName.vb: Libplanet.Assets.Currency.Currency(System.String, System.Byte, System.Nullable(Of Libplanet.Address))
-  nameWithType: Currency.Currency(String, Byte, Nullable<Address>)
-  nameWithType.vb: Currency.Currency(String, Byte, Nullable(Of Address))
 - uid: Libplanet.Assets.Currency.#ctor*
   name: Currency
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_
@@ -1587,6 +1697,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.Currency.AllowsToMint
   nameWithType: Currency.AllowsToMint
+- uid: Libplanet.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},Libplanet.Address)
+  name: Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__Libplanet_Address_
+  commentId: M:Libplanet.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},Libplanet.Address)
+  name.vb: Capped(String, Byte, (Major As BigInteger, Minor As BigInteger)(Of BigInteger, BigInteger), Address)
+  fullName: Libplanet.Assets.Currency.Capped(System.String, System.Byte, System.ValueTuple<BigInteger, BigInteger>, Libplanet.Address)
+  fullName.vb: Libplanet.Assets.Currency.Capped(System.String, System.Byte, System.ValueTuple(Of BigInteger, BigInteger), Libplanet.Address)
+  nameWithType: Currency.Capped(String, Byte, (BigInteger Major, BigInteger Minor), Address)
+  nameWithType.vb: Currency.Capped(String, Byte, (Major As BigInteger, Minor As BigInteger)(Of BigInteger, BigInteger), Address)
+- uid: Libplanet.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},System.Nullable{IImmutableSet{Libplanet.Address}})
+  name: Capped(String, Byte, (BigInteger Major, BigInteger Minor), Nullable<IImmutableSet<Address>>)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Capped_System_String_System_Byte_System_ValueTuple_BigInteger_BigInteger__System_Nullable_IImmutableSet_Libplanet_Address___
+  commentId: M:Libplanet.Assets.Currency.Capped(System.String,System.Byte,System.ValueTuple{BigInteger,BigInteger},System.Nullable{IImmutableSet{Libplanet.Address}})
+  name.vb: Capped(String, Byte, (Major As BigInteger, Minor As BigInteger)(Of BigInteger, BigInteger), Nullable(Of IImmutableSet(Of Address)))
+  fullName: Libplanet.Assets.Currency.Capped(System.String, System.Byte, System.ValueTuple<BigInteger, BigInteger>, System.Nullable<IImmutableSet<Libplanet.Address>>)
+  fullName.vb: Libplanet.Assets.Currency.Capped(System.String, System.Byte, System.ValueTuple(Of BigInteger, BigInteger), System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
+  nameWithType: Currency.Capped(String, Byte, (BigInteger Major, BigInteger Minor), Nullable<IImmutableSet<Address>>)
+  nameWithType.vb: Currency.Capped(String, Byte, (Major As BigInteger, Minor As BigInteger)(Of BigInteger, BigInteger), Nullable(Of IImmutableSet(Of Address)))
+- uid: Libplanet.Assets.Currency.Capped*
+  name: Capped
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Capped_
+  commentId: Overload:Libplanet.Assets.Currency.Capped
+  isSpec: "True"
+  fullName: Libplanet.Assets.Currency.Capped
+  nameWithType: Currency.Capped
 - uid: Libplanet.Assets.Currency.DecimalPlaces
   name: DecimalPlaces
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_DecimalPlaces
@@ -1634,6 +1769,41 @@ references:
   commentId: F:Libplanet.Assets.Currency.Hash
   fullName: Libplanet.Assets.Currency.Hash
   nameWithType: Currency.Hash
+- uid: Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,Libplanet.Address)
+  name: LegacyUntracked(String, Byte, Address)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_System_String_System_Byte_Libplanet_Address_
+  commentId: M:Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,Libplanet.Address)
+  fullName: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, Libplanet.Address)
+  nameWithType: Currency.LegacyUntracked(String, Byte, Address)
+- uid: Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name: LegacyUntracked(String, Byte, Nullable<IImmutableSet<Address>>)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
+  commentId: M:Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name.vb: LegacyUntracked(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+  fullName: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>)
+  fullName.vb: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
+  nameWithType: Currency.LegacyUntracked(String, Byte, Nullable<IImmutableSet<Address>>)
+  nameWithType.vb: Currency.LegacyUntracked(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+- uid: Libplanet.Assets.Currency.LegacyUntracked*
+  name: LegacyUntracked
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_
+  commentId: Overload:Libplanet.Assets.Currency.LegacyUntracked
+  isSpec: "True"
+  fullName: Libplanet.Assets.Currency.LegacyUntracked
+  nameWithType: Currency.LegacyUntracked
+- uid: Libplanet.Assets.Currency.MaximumSupply
+  name: MaximumSupply
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_MaximumSupply
+  commentId: P:Libplanet.Assets.Currency.MaximumSupply
+  fullName: Libplanet.Assets.Currency.MaximumSupply
+  nameWithType: Currency.MaximumSupply
+- uid: Libplanet.Assets.Currency.MaximumSupply*
+  name: MaximumSupply
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_MaximumSupply_
+  commentId: Overload:Libplanet.Assets.Currency.MaximumSupply
+  isSpec: "True"
+  fullName: Libplanet.Assets.Currency.MaximumSupply
+  nameWithType: Currency.MaximumSupply
 - uid: Libplanet.Assets.Currency.Minters
   name: Minters
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Minters
@@ -1691,6 +1861,34 @@ references:
   isSpec: "True"
   fullName: Libplanet.Assets.Currency.ToString
   nameWithType: Currency.ToString
+- uid: Libplanet.Assets.Currency.TotalSupplyTrackable
+  name: TotalSupplyTrackable
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable
+  commentId: F:Libplanet.Assets.Currency.TotalSupplyTrackable
+  fullName: Libplanet.Assets.Currency.TotalSupplyTrackable
+  nameWithType: Currency.TotalSupplyTrackable
+- uid: Libplanet.Assets.Currency.Uncapped(System.String,System.Byte,Libplanet.Address)
+  name: Uncapped(String, Byte, Address)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Uncapped_System_String_System_Byte_Libplanet_Address_
+  commentId: M:Libplanet.Assets.Currency.Uncapped(System.String,System.Byte,Libplanet.Address)
+  fullName: Libplanet.Assets.Currency.Uncapped(System.String, System.Byte, Libplanet.Address)
+  nameWithType: Currency.Uncapped(String, Byte, Address)
+- uid: Libplanet.Assets.Currency.Uncapped(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name: Uncapped(String, Byte, Nullable<IImmutableSet<Address>>)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Uncapped_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
+  commentId: M:Libplanet.Assets.Currency.Uncapped(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name.vb: Uncapped(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+  fullName: Libplanet.Assets.Currency.Uncapped(System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>)
+  fullName.vb: Libplanet.Assets.Currency.Uncapped(System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
+  nameWithType: Currency.Uncapped(String, Byte, Nullable<IImmutableSet<Address>>)
+  nameWithType.vb: Currency.Uncapped(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+- uid: Libplanet.Assets.Currency.Uncapped*
+  name: Uncapped
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Uncapped_
+  commentId: Overload:Libplanet.Assets.Currency.Uncapped
+  isSpec: "True"
+  fullName: Libplanet.Assets.Currency.Uncapped
+  nameWithType: Currency.Uncapped
 - uid: Libplanet.Assets.FungibleAssetValue
   name: FungibleAssetValue
   href: api/Libplanet.Assets.FungibleAssetValue.html
@@ -2464,6 +2662,33 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates
   nameWithType: BlockChain<T>.GetStates
   nameWithType.vb: BlockChain(Of T).GetStates
+- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name: GetTotalSupply(Currency, Nullable<BlockHash>, TotalSupplyStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_Libplanet_Assets_Currency_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_TotalSupplyStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetTotalSupply(Libplanet.Assets.Currency,System.Nullable{Libplanet.Blocks.BlockHash},Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name.vb: GetTotalSupply(Currency, Nullable(Of BlockHash), TotalSupplyStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply(Libplanet.Assets.Currency, System.Nullable<Libplanet.Blocks.BlockHash>, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply(Libplanet.Assets.Currency, System.Nullable(Of Libplanet.Blocks.BlockHash), Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
+  nameWithType: BlockChain<T>.GetTotalSupply(Currency, Nullable<BlockHash>, TotalSupplyStateCompleter<T>)
+  nameWithType.vb: BlockChain(Of T).GetTotalSupply(Currency, Nullable(Of BlockHash), TotalSupplyStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTotalSupply_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetTotalSupply
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetTotalSupply
+  nameWithType: BlockChain<T>.GetTotalSupply
+  nameWithType.vb: BlockChain(Of T).GetTotalSupply
 - uid: Libplanet.Blockchain.BlockChain`1.GetTransaction(Libplanet.Tx.TxId)
   name: GetTransaction(TxId)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetTransaction_Libplanet_Tx_TxId_
@@ -2875,6 +3100,24 @@ references:
   fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetStates
   nameWithType: IBlockChainStates<T>.GetStates
   nameWithType.vb: IBlockChainStates(Of T).GetStates
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
+  nameWithType: IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  nameWithType.vb: IBlockChainStates(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+- uid: Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_
+  commentId: Overload:Libplanet.Blockchain.IBlockChainStates`1.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IBlockChainStates<T>.GetTotalSupply
+  fullName.vb: Libplanet.Blockchain.IBlockChainStates(Of T).GetTotalSupply
+  nameWithType: IBlockChainStates<T>.GetTotalSupply
+  nameWithType.vb: IBlockChainStates(Of T).GetTotalSupply
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
@@ -6764,6 +7007,23 @@ references:
   fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).StateCompleter
   nameWithType: StateCompleterSet<T>.StateCompleter
   nameWithType.vb: StateCompleterSet(Of T).StateCompleter
+- uid: Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
+  name: TotalSupplyStateCompleter
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter
+  commentId: P:Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.TotalSupplyStateCompleter
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).TotalSupplyStateCompleter
+  nameWithType: StateCompleterSet<T>.TotalSupplyStateCompleter
+  nameWithType.vb: StateCompleterSet(Of T).TotalSupplyStateCompleter
+- uid: Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter*
+  name: TotalSupplyStateCompleter
+  href: api/Libplanet.Blockchain.StateCompleterSet-1.html#Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter_
+  commentId: Overload:Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.StateCompleterSet<T>.TotalSupplyStateCompleter
+  fullName.vb: Libplanet.Blockchain.StateCompleterSet(Of T).TotalSupplyStateCompleter
+  nameWithType: StateCompleterSet<T>.TotalSupplyStateCompleter
+  nameWithType.vb: StateCompleterSet(Of T).TotalSupplyStateCompleter
 - uid: Libplanet.Blockchain.TotalDifficultyComparer
   name: TotalDifficultyComparer
   href: api/Libplanet.Blockchain.TotalDifficultyComparer.html
@@ -6796,6 +7056,56 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.TotalDifficultyComparer.Compare
   nameWithType: TotalDifficultyComparer.Compare
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleter`1
+  name: TotalSupplyStateCompleter<T>
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleter-1.html
+  commentId: T:Libplanet.Blockchain.TotalSupplyStateCompleter`1
+  name.vb: TotalSupplyStateCompleter(Of T)
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleter<T>
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleter(Of T)
+  nameWithType: TotalSupplyStateCompleter<T>
+  nameWithType.vb: TotalSupplyStateCompleter(Of T)
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1
+  name: TotalSupplyStateCompleters<T>
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html
+  commentId: T:Libplanet.Blockchain.TotalSupplyStateCompleters`1
+  name.vb: TotalSupplyStateCompleters(Of T)
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T)
+  nameWithType: TotalSupplyStateCompleters<T>
+  nameWithType.vb: TotalSupplyStateCompleters(Of T)
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementAll
+  name: ComplementAll
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_ComplementAll
+  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementAll
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.ComplementAll
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).ComplementAll
+  nameWithType: TotalSupplyStateCompleters<T>.ComplementAll
+  nameWithType.vb: TotalSupplyStateCompleters(Of T).ComplementAll
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementLatest
+  name: ComplementLatest
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_ComplementLatest
+  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.ComplementLatest
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.ComplementLatest
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).ComplementLatest
+  nameWithType: TotalSupplyStateCompleters<T>.ComplementLatest
+  nameWithType.vb: TotalSupplyStateCompleters(Of T).ComplementLatest
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.Recalculate
+  name: Recalculate
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_Recalculate
+  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.Recalculate
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.Recalculate
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).Recalculate
+  nameWithType: TotalSupplyStateCompleters<T>.Recalculate
+  nameWithType.vb: TotalSupplyStateCompleters(Of T).Recalculate
+- uid: Libplanet.Blockchain.TotalSupplyStateCompleters`1.Reject
+  name: Reject
+  href: api/Libplanet.Blockchain.TotalSupplyStateCompleters-1.html#Libplanet_Blockchain_TotalSupplyStateCompleters_1_Reject
+  commentId: F:Libplanet.Blockchain.TotalSupplyStateCompleters`1.Reject
+  fullName: Libplanet.Blockchain.TotalSupplyStateCompleters<T>.Reject
+  fullName.vb: Libplanet.Blockchain.TotalSupplyStateCompleters(Of T).Reject
+  nameWithType: TotalSupplyStateCompleters<T>.Reject
+  nameWithType.vb: TotalSupplyStateCompleters(Of T).Reject
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html

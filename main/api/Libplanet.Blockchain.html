@@ -105,11 +105,16 @@ is requested that requires the missing states.</p>
 <p>The chain which has the most <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_TotalDifficulty">TotalDifficulty</a> is considered
 the greatest, i.e., canonical chain.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleters-1.html">TotalSupplyStateCompleters&lt;T&gt;</a></h4>
+      <section><p>Predefined built-in state completers that satisfy the
+<a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleter-1.html">TotalSupplyStateCompleter&lt;T&gt;</a> delegate.</p>
+</section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Libplanet.Blockchain.StateCompleterSet-1.html">StateCompleterSet&lt;T&gt;</a></h4>
-      <section><p>Groups two kinds of state completers, <a class="xref" href="Libplanet.Blockchain.StateCompleters-1.html">StateCompleters&lt;T&gt;</a>
-and <a class="xref" href="Libplanet.Blockchain.FungibleAssetStateCompleters-1.html">FungibleAssetStateCompleters&lt;T&gt;</a>.</p>
+      <section><p>Groups three kinds of state completers, <a class="xref" href="Libplanet.Blockchain.StateCompleters-1.html">StateCompleters&lt;T&gt;</a>,
+<a class="xref" href="Libplanet.Blockchain.FungibleAssetStateCompleters-1.html">FungibleAssetStateCompleters&lt;T&gt;</a>, and
+<a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleters-1.html">TotalSupplyStateCompleters&lt;T&gt;</a>.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -128,6 +133,12 @@ returns this delegate's return value instead for such case.</p>
       <section><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__">GetState(Address, Nullable&lt;BlockHash&gt;, StateCompleter&lt;T&gt;)</a> method encounters a block
 having incomplete dirty states. <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_Blocks_BlockHash__Libplanet_Blockchain_StateCompleter__0__">GetState(Address, Nullable&lt;BlockHash&gt;, StateCompleter&lt;T&gt;)</a> method returns this
 delegate's return value instead for such case.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleter-1.html">TotalSupplyStateCompleter&lt;T&gt;</a></h4>
+      <section><p>A delegate to be called when <a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__">GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;)</a>
+method encounters a block having incomplete dirty states.
+<a class="xref" href="Libplanet.Blockchain.IBlockChainStates-1.html#Libplanet_Blockchain_IBlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__">GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;)</a> method returns this delegate's
+return value instead for such case.</p>
 </section>
 </article>
           </div>

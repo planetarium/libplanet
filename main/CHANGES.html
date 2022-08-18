@@ -69,10 +69,106 @@
 <li>Unused <code>TcpMessageCodec</code> class removed.  [<a href="https://github.com/planetarium/libplanet/pull/2216">#2216</a>]</li>
 </ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>Currency(string, byte, IImutableSet&lt;Address&gt;?)</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Removed <code>Currency(string, byte, Address?)</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added static methods of <code>Currency</code> that defines different kinds of
+<code>Currency</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
+<ul>
+<li>Added <code>Currency.Capped(string, byte, (BigInteger, BigInteger), IImutableSet&lt;Address&gt;?)</code> static method which defines an instance of
+<code>Currency</code> with a hard limit on the maximum minted supply.</li>
+<li>Added <code>Currency.Capped(string, byte, (BigInteger, BigInteger), Address)</code> static method which defines an instance of <code>Currency</code> with a
+hard limit on the maximum minted supply.</li>
+<li>Added <code>Currency.Uncapped(string, byte, IImutableSet&lt;Address&gt;?)</code> static
+method which defines an instance of <code>Currency</code> without an enforced
+maximum supply limit.</li>
+<li>Added <code>Currency.Uncapped(string, byte, Address)</code> static method which
+defines an instance of <code>Currency</code> without an enforced maximum supply
+limit.</li>
+<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.LegacyUntracked( string, byte, IImutableSet&lt;Address&gt;?)</code> static method which defines a
+legacy <code>Currency</code> instance which is compatible with <code>Currency</code>
+instances defined before total supply tracking support was introduced.</li>
+<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.LegacyUntracked( string, byte, Address)</code> static method which defines a legacy <code>Currency</code>
+instance which is compatible with <code>Currency</code> instances defined before
+total supply tracking support was introduced.</li>
+<li><em>NOTE:</em> if you already have some <code>Currency</code> instances defined in prior
+to the addition of total supply tracking on a live chain, you cannot
+modify the already-defined <code>Currency</code> instances as a capped or uncapped
+<code>Currency</code> but have to define them with <code>Currency.LegacyUntracked()</code> as
+the new Currency kinds are internally backwards-incompatible with the
+legacy <code>Currency</code>.</li>
+</ul>
+</li>
+<li>Added <code>IAccountStateDelta.TotalSupplyUpdatedCurrencies</code> property.
+[<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>IAccountStateView.GetTotalSupply(Currency)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>IBlockChainStates&lt;T&gt;.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;</code> method which gets the total supply of
+a <code>Currency</code> in <code>FungibleAssetValue</code> from the state, and if not found,
+returns null.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The <code>Block&lt;T&gt;.CurrentProtocolVersion</code> is bumped from 3 to 4.  [<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
+<ul>
+<li><code>IAccountStateDelta.GetTotalSupply</code> returns the current total supply
+of a <code>Currency</code> if the total supply of<code>Currency</code> is trackable from
+version 4, and throws <code>NotSupportedException</code> below version 4.</li>
+<li><code>IAccountStateDelta.MintAsset</code> and <code>IAccountStateDelta.BurnAsset</code>
+tracks the total supply if trackable from version 4.</li>
+</ul>
+</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>Currency.MaximumSupply</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>Currency.TotalSupplyTrackable</code> field.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>SupplyOverflowException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>TotalSupplyGetter</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>TotalSupplyStateCompleter&lt;T&gt;</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>TotalSupplyStateCompleters&lt;T&gt;</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>Added <code>StateCompleterSet&lt;T&gt;.TotalSupplyStateCompleter</code> property.
+[<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Bencodex related methods in <code>Currency</code> now accounts for the maximum
+supply and total supply tracking.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
+<ul>
+<li>For capped currencies, <code>Currency.Serialize()</code> method stores the <code>major</code>
+and <code>minor</code> values of the maximum supply as <code>Integer</code> values under the
+keys <code>maximumSupplyMajor</code> and <code>maximumSupplyMinor</code>. For uncapped and
+legacy untracked currencies, the entries are omitted.</li>
+<li><code>Currency(IValue)</code> constructor now looks for the maximum supply and
+total supply trackability in the given dictionary and restores them if
+found.</li>
+</ul>
+</li>
+<li><code>Currency</code>'s implementation of <code>ISerializable</code> now accounts for the maximum
+supply and total supply tracking.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
+<ul>
+<li><code>Currency</code>'s implementation of <code>ISerializable.GetObjectData</code> now stores
+the maximum supply if the <code>Currency</code> is capped.</li>
+<li><code>Currency(SerializationInfo, StreamingContext)</code> constructor now looks
+for the maximum supply and total supply trackability and restores it if
+found.</li>
+</ul>
+</li>
+<li><code>IAccountStateDelta.MintAsset(Address, FungibleAssetValue)</code> and
+<code>IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)</code> methods now
+track the total supply if the total supply of the <code>Currency</code> is trackable.
+[<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
+<ul>
+<li><code>IAccountStateDelta.MintAsset(Address, FungibleAssetValue)</code> method now
+throws <code>SupplyOverflowException</code> if the sum of current total supply and
+the value to be minted exceeds the maximum supply of the <code>Currency</code>
+instance.</li>
+</ul>
+</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>

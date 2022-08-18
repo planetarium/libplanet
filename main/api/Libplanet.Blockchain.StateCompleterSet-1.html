@@ -73,8 +73,9 @@
   
   <h1 id="Libplanet_Blockchain_StateCompleterSet_1" data-uid="Libplanet.Blockchain.StateCompleterSet`1" class="text-break">Struct StateCompleterSet&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Groups two kinds of state completers, <a class="xref" href="Libplanet.Blockchain.StateCompleters-1.html">StateCompleters&lt;T&gt;</a>
-and <a class="xref" href="Libplanet.Blockchain.FungibleAssetStateCompleters-1.html">FungibleAssetStateCompleters&lt;T&gt;</a>.</p>
+  <div class="markdown level0 summary"><p>Groups three kinds of state completers, <a class="xref" href="Libplanet.Blockchain.StateCompleters-1.html">StateCompleters&lt;T&gt;</a>,
+<a class="xref" href="Libplanet.Blockchain.FungibleAssetStateCompleters-1.html">FungibleAssetStateCompleters&lt;T&gt;</a>, and
+<a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleters-1.html">TotalSupplyStateCompleters&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
@@ -108,7 +109,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_ComplementAll.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.ComplementAll%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L35">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L37">View Source</a>
   </span>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_ComplementAll" data-uid="Libplanet.Blockchain.StateCompleterSet`1.ComplementAll">ComplementAll</h4>
   <div class="markdown level1 summary"><p>Recalculates and complements all <em>missing</em> block states including and upto
@@ -142,7 +143,7 @@ a given hash starting from the genesis block.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_ComplementLatest.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.ComplementLatest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L49">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L52">View Source</a>
   </span>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_ComplementLatest" data-uid="Libplanet.Blockchain.StateCompleterSet`1.ComplementLatest">ComplementLatest</h4>
   <div class="markdown level1 summary"><p>Recalculates and complements all <em>missing</em> block states including and upto
@@ -177,7 +178,7 @@ the given hash if the states are missing for the given hash.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_Recalculate.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.Recalculate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L23">View Source</a>
   </span>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_Recalculate" data-uid="Libplanet.Blockchain.StateCompleterSet`1.Recalculate">Recalculate</h4>
   <div class="markdown level1 summary"><p>Recalculates <em>all</em> block states and complements missing states including and upto
@@ -211,7 +212,7 @@ a given hash starting from the genesis block.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_Reject.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.Reject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L59">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L63">View Source</a>
   </span>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_Reject" data-uid="Libplanet.Blockchain.StateCompleterSet`1.Reject">Reject</h4>
   <div class="markdown level1 summary"><p>Rejects to complement incomplete state and throws
@@ -244,7 +245,7 @@ an <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.htm
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.FungibleAssetStateCompleter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L73">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter_" data-uid="Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter*"></a>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_FungibleAssetStateCompleter" data-uid="Libplanet.Blockchain.StateCompleterSet`1.FungibleAssetStateCompleter">FungibleAssetStateCompleter</h4>
@@ -275,7 +276,7 @@ an <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.htm
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_StateCompleter.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.StateCompleter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L73">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_StateCompleterSet_1_StateCompleter_" data-uid="Libplanet.Blockchain.StateCompleterSet`1.StateCompleter*"></a>
   <h4 id="Libplanet_Blockchain_StateCompleterSet_1_StateCompleter" data-uid="Libplanet.Blockchain.StateCompleterSet`1.StateCompleter">StateCompleter</h4>
@@ -301,6 +302,37 @@ an <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.htm
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601.TotalSupplyStateCompleter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter_" data-uid="Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter*"></a>
+  <h4 id="Libplanet_Blockchain_StateCompleterSet_1_TotalSupplyStateCompleter" data-uid="Libplanet.Blockchain.StateCompleterSet`1.TotalSupplyStateCompleter">TotalSupplyStateCompleter</h4>
+  <div class="markdown level1 summary"><p>Holds a <a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleter-1.html">TotalSupplyStateCompleter&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TotalSupplyStateCompleter&lt;T&gt; TotalSupplyStateCompleter { readonly get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.TotalSupplyStateCompleter-1.html">TotalSupplyStateCompleter</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -312,7 +344,7 @@ an <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.htm
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_StateCompleterSet_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.StateCompleterSet%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blockchain/StateCompleterSet.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
