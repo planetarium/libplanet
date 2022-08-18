@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -53,7 +52,11 @@ namespace Libplanet.Net.Tests.Consensus
             cache.Put(msg1);
             var ids = cache.GetGossipIds();
             Assert.Equal(2, ids.Length);
-            Assert.Equal(new[] { msg0.Id, msg1.Id }.ToHashSet(), ids.ToHashSet());
+
+            // NOTE: For linux-mono-build compatibility.
+            Assert.Equal(
+                new HashSet<MessageId>(new[] { msg0.Id, msg1.Id }),
+                new HashSet<MessageId>(ids));
             Assert.Equal(msg0, cache.Get(msg0.Id));
             Assert.Equal(msg1, cache.Get(msg1.Id));
 
