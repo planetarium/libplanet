@@ -25,11 +25,16 @@ namespace Libplanet.Net
         private readonly ConcurrentDictionary<BlockHash, bool> _satisfiedBlocks;
         private readonly ConcurrentQueue<BlockHash> _demands;
         private readonly SemaphoreSlim _demandEnqueued;
+        private readonly BlockFetcher _blockFetcher;
         private bool _started;
 
-        public BlockCompletion(Func<BlockHash, bool> completionPredicate = null, int window = 100)
+        public BlockCompletion(
+            BlockFetcher blockFetcher,
+            Func<BlockHash, bool> completionPredicate = null,
+            int window = 100)
         {
             _logger = Log.ForContext<BlockCompletion<TPeer, TAction>>();
+            _blockFetcher = blockFetcher;
             _completionPredicate = completionPredicate;
             _window = window;
             _satisfiedBlocks = new ConcurrentDictionary<BlockHash, bool>();
@@ -174,19 +179,15 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Downloads blocks from <paramref name="peers"/> in parallel,
-        /// using the given <paramref name="blockFetcher"/> function.
+        /// Downloads blocks from <paramref name="peers"/> in parallel.
         /// </summary>
         /// <param name="peers">A list of peers to download blocks.</param>
-        /// <param name="blockFetcher">A function to take demands and a peer, and then
-        /// download corresponding blocks.</param>
         /// <param name="cancellationToken">A cancellation token to observe while waiting
         /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
         public async IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
-            BlockFetcher blockFetcher,
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
@@ -212,7 +213,6 @@ namespace Libplanet.Net
                         await pool.SpawnAsync(
                             CreateEnqueuing(
                                 blockHashes,
-                                blockFetcher,
                                 cancellationToken,
                                 queue
                             ),
@@ -290,7 +290,6 @@ namespace Libplanet.Net
 
         private Func<TPeer, CancellationToken, Task> CreateEnqueuing(
             IList<BlockHash> blockHashes,
-            BlockFetcher blockFetcher,
             CancellationToken cancellationToken,
             AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>> queue
         ) =>
@@ -309,7 +308,7 @@ namespace Libplanet.Net
                     try
                     {
                         ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
-                            blockFetcher(peer, blockHashes, cancellationToken)
+                            _blockFetcher(peer, blockHashes, cancellationToken)
                                 .WithCancellation(cancellationToken);
                         await foreach (Block<TAction> block in blocks)
                         {

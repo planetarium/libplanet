@@ -118,7 +118,13 @@ namespace Libplanet.Net.Tests
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
             const int initialHeight = 2;
             const int window = 5;
+            BlockCompletion<int, DumbAction>.BlockFetcher dumbBlockFetcher =
+                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                {
+                    await yield.ReturnAsync(default);
+                });
             var bc = new BlockCompletion<int, DumbAction>(
+                dumbBlockFetcher,
                 fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
                 window
             );
@@ -248,18 +254,7 @@ namespace Libplanet.Net.Tests
 
             const int initialHeight = 2;
             const int window = 5;
-            var bc = new BlockCompletion<char, DumbAction>(
-                fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
-                window
-            );
-            ImmutableArray<BlockHash> initialDemands = fixture
-                .Skip(initialHeight + 10)
-                .Select(b => b.Hash)
-                .ToImmutableArray();
-            bc.Demand(initialDemands);
-            _logger.Verbose("Initial demands: {0}", initialDemands);
-            IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv = bc.Complete(
-                new[] { 'A', 'B', 'C', 'D' },
+            BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
                 (peer, hashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
                     var blocksPeerHas = peerBlocks[peer];
@@ -275,8 +270,20 @@ namespace Libplanet.Net.Tests
                     }
 
                     _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}.", peer, sent);
-                })
+                });
+            var bc = new BlockCompletion<char, DumbAction>(
+                blockFetcher,
+                fixture.Take(initialHeight).Select(b => b.Hash).ToImmutableHashSet().Contains,
+                window
             );
+            ImmutableArray<BlockHash> initialDemands = fixture
+                .Skip(initialHeight + 10)
+                .Select(b => b.Hash)
+                .ToImmutableArray();
+            bc.Demand(initialDemands);
+            _logger.Verbose("Initial demands: {0}", initialDemands);
+            IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv = bc.Complete(
+                new[] { 'A', 'B', 'C', 'D' });
 
             var downloadedBlocks = new HashSet<Block<DumbAction>>();
             var sourcePeers = new HashSet<char>();
@@ -299,12 +306,6 @@ namespace Libplanet.Net.Tests
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
-            var bc = new BlockCompletion<char, DumbAction>(
-                ((IEquatable<BlockHash>)genesis.Hash).Equals,
-                5
-            );
-            bc.Demand(demand.Hash);
-
             long counter = 0;
             BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
                 (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
@@ -314,9 +315,15 @@ namespace Libplanet.Net.Tests
                     await yield.ReturnAsync(Interlocked.Read(ref counter) < 1 ? wrong : demand);
                     Interlocked.Increment(ref counter);
                 });
+            var bc = new BlockCompletion<char, DumbAction>(
+                wrongBlockFetcher,
+                ((IEquatable<BlockHash>)genesis.Hash).Equals,
+                5
+            );
+            bc.Demand(demand.Hash);
 
             Tuple<Block<DumbAction>, char>[] result =
-                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A' }, wrongBlockFetcher));
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A' }));
             Assert.Equal(new[] { Tuple.Create(demand, 'A') }, result);
         }
 
@@ -325,9 +332,6 @@ namespace Libplanet.Net.Tests
         {
             ImmutableArray<Block<DumbAction>> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
-            var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
-            bc.Demand(fixture.Select(b => b.Hash));
-
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
@@ -350,10 +354,11 @@ namespace Libplanet.Net.Tests
                         }
                     }
                 });
+            var bc = new BlockCompletion<char, DumbAction>(blockFetcher, _ => false, 5);
+            bc.Demand(fixture.Select(b => b.Hash));
 
             Tuple<Block<DumbAction>, char>[] result =
-                await AsyncEnumerable.ToArrayAsync(
-                    bc.Complete(new[] { 'A', 'B' }, blockFetcher));
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }));
             Assert.Equal(
                 fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
                 result.ToHashSet()
@@ -365,9 +370,6 @@ namespace Libplanet.Net.Tests
         {
             ImmutableArray<Block<DumbAction>> fixture =
                 GenerateBlocks<DumbAction>(15).ToImmutableArray();
-            var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
-            bc.Demand(fixture.Select(b => b.Hash));
-
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
                 (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
@@ -385,9 +387,11 @@ namespace Libplanet.Net.Tests
                         }
                     }
                 });
+            var bc = new BlockCompletion<char, DumbAction>(blockFetcher, _ => false, 5);
+            bc.Demand(fixture.Select(b => b.Hash));
 
             Tuple<Block<DumbAction>, char>[] result =
-                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }));
             Assert.Equal(
                 fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
                 result.ToHashSet()

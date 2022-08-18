@@ -81,6 +81,7 @@ namespace Libplanet.Net
             try
             {
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
+                    blockFetcher: GetBlocksAsync,
                     completionPredicate: BlockChain.Store.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
@@ -136,9 +137,7 @@ namespace Libplanet.Net
                 IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
                     blockCompletion.Complete(
                         peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
+                        cancellationToken: cancellationToken);
 
                 await foreach (
                     (Block<T> block, BoundPeer sourcePeer)
@@ -321,6 +320,7 @@ namespace Libplanet.Net
                 FillBlocksAsyncStarted.Set();
 
                 var blockCompletion = new BlockCompletion<BoundPeer, T>(
+                    blockFetcher: GetBlocksAsync,
                     completionPredicate: workspace.Store.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
@@ -386,9 +386,7 @@ namespace Libplanet.Net
                 IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
+                        cancellationToken: cancellationToken);
 
                 BlockDownloadStarted.Set();
 
