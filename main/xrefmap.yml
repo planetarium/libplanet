@@ -14926,25 +14926,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.IceServer.Username
   nameWithType: IceServer.Username
-- uid: Libplanet.Net.IceServerException
-  name: IceServerException
-  href: api/Libplanet.Net.IceServerException.html
-  commentId: T:Libplanet.Net.IceServerException
-  fullName: Libplanet.Net.IceServerException
-  nameWithType: IceServerException
-- uid: Libplanet.Net.IceServerException.#ctor(System.String)
-  name: IceServerException(String)
-  href: api/Libplanet.Net.IceServerException.html#Libplanet_Net_IceServerException__ctor_System_String_
-  commentId: M:Libplanet.Net.IceServerException.#ctor(System.String)
-  fullName: Libplanet.Net.IceServerException.IceServerException(System.String)
-  nameWithType: IceServerException.IceServerException(String)
-- uid: Libplanet.Net.IceServerException.#ctor*
-  name: IceServerException
-  href: api/Libplanet.Net.IceServerException.html#Libplanet_Net_IceServerException__ctor_
-  commentId: Overload:Libplanet.Net.IceServerException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.IceServerException.IceServerException
-  nameWithType: IceServerException.IceServerException
 - uid: Libplanet.Net.InvalidMessageException
   name: InvalidMessageException
   href: api/Libplanet.Net.InvalidMessageException.html
@@ -25927,6 +25908,70 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.Crc32.Calculate
   nameWithType: Crc32.Calculate
+- uid: Libplanet.Stun.IceServerException
+  name: IceServerException
+  href: api/Libplanet.Stun.IceServerException.html
+  commentId: T:Libplanet.Stun.IceServerException
+  fullName: Libplanet.Stun.IceServerException
+  nameWithType: IceServerException
+- uid: Libplanet.Stun.IceServerException.#ctor(System.String)
+  name: IceServerException(String)
+  href: api/Libplanet.Stun.IceServerException.html#Libplanet_Stun_IceServerException__ctor_System_String_
+  commentId: M:Libplanet.Stun.IceServerException.#ctor(System.String)
+  fullName: Libplanet.Stun.IceServerException.IceServerException(System.String)
+  nameWithType: IceServerException.IceServerException(String)
+- uid: Libplanet.Stun.IceServerException.#ctor*
+  name: IceServerException
+  href: api/Libplanet.Stun.IceServerException.html#Libplanet_Stun_IceServerException__ctor_
+  commentId: Overload:Libplanet.Stun.IceServerException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Stun.IceServerException.IceServerException
+  nameWithType: IceServerException.IceServerException
+- uid: Libplanet.Stun.IIceServer
+  name: IIceServer
+  href: api/Libplanet.Stun.IIceServer.html
+  commentId: T:Libplanet.Stun.IIceServer
+  fullName: Libplanet.Stun.IIceServer
+  nameWithType: IIceServer
+- uid: Libplanet.Stun.IIceServer.Credential
+  name: Credential
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Credential
+  commentId: P:Libplanet.Stun.IIceServer.Credential
+  fullName: Libplanet.Stun.IIceServer.Credential
+  nameWithType: IIceServer.Credential
+- uid: Libplanet.Stun.IIceServer.Credential*
+  name: Credential
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Credential_
+  commentId: Overload:Libplanet.Stun.IIceServer.Credential
+  isSpec: "True"
+  fullName: Libplanet.Stun.IIceServer.Credential
+  nameWithType: IIceServer.Credential
+- uid: Libplanet.Stun.IIceServer.Url
+  name: Url
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Url
+  commentId: P:Libplanet.Stun.IIceServer.Url
+  fullName: Libplanet.Stun.IIceServer.Url
+  nameWithType: IIceServer.Url
+- uid: Libplanet.Stun.IIceServer.Url*
+  name: Url
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Url_
+  commentId: Overload:Libplanet.Stun.IIceServer.Url
+  isSpec: "True"
+  fullName: Libplanet.Stun.IIceServer.Url
+  nameWithType: IIceServer.Url
+- uid: Libplanet.Stun.IIceServer.Username
+  name: Username
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Username
+  commentId: P:Libplanet.Stun.IIceServer.Username
+  fullName: Libplanet.Stun.IIceServer.Username
+  nameWithType: IIceServer.Username
+- uid: Libplanet.Stun.IIceServer.Username*
+  name: Username
+  href: api/Libplanet.Stun.IIceServer.html#Libplanet_Stun_IIceServer_Username_
+  commentId: Overload:Libplanet.Stun.IIceServer.Username
+  isSpec: "True"
+  fullName: Libplanet.Stun.IIceServer.Username
+  nameWithType: IIceServer.Username
 - uid: Libplanet.Stun.IStunContext
   name: IStunContext
   href: api/Libplanet.Stun.IStunContext.html
@@ -26929,19 +26974,6 @@ references:
   commentId: T:Libplanet.Stun.TurnClient
   fullName: Libplanet.Stun.TurnClient
   nameWithType: TurnClient
-- uid: Libplanet.Stun.TurnClient.#ctor(System.String,System.String,System.String,System.Int32)
-  name: TurnClient(String, String, String, Int32)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient__ctor_System_String_System_String_System_String_System_Int32_
-  commentId: M:Libplanet.Stun.TurnClient.#ctor(System.String,System.String,System.String,System.Int32)
-  fullName: Libplanet.Stun.TurnClient.TurnClient(System.String, System.String, System.String, System.Int32)
-  nameWithType: TurnClient.TurnClient(String, String, String, Int32)
-- uid: Libplanet.Stun.TurnClient.#ctor*
-  name: TurnClient
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient__ctor_
-  commentId: Overload:Libplanet.Stun.TurnClient.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Stun.TurnClient.TurnClient
-  nameWithType: TurnClient.TurnClient
 - uid: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)
   name: AcceptRelayedStreamAsync(CancellationToken)
   href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_CancellationToken_
@@ -26981,19 +27013,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.BehindNAT
   nameWithType: TurnClient.BehindNAT
-- uid: Libplanet.Stun.TurnClient.BindProxies(System.Int32,CancellationToken)
-  name: BindProxies(Int32, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_BindProxies_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.BindProxies(System.Int32,CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.BindProxies(System.Int32, CancellationToken)
-  nameWithType: TurnClient.BindProxies(Int32, CancellationToken)
-- uid: Libplanet.Stun.TurnClient.BindProxies*
-  name: BindProxies
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_BindProxies_
-  commentId: Overload:Libplanet.Stun.TurnClient.BindProxies
+- uid: Libplanet.Stun.TurnClient.Create(IEnumerable{Libplanet.Stun.IIceServer},CancellationToken)
+  name: Create(IEnumerable<IIceServer>, CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_Create_IEnumerable_Libplanet_Stun_IIceServer__CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.Create(IEnumerable{Libplanet.Stun.IIceServer},CancellationToken)
+  name.vb: Create(IEnumerable(Of IIceServer), CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.Create(IEnumerable<Libplanet.Stun.IIceServer>, CancellationToken)
+  fullName.vb: Libplanet.Stun.TurnClient.Create(IEnumerable(Of Libplanet.Stun.IIceServer), CancellationToken)
+  nameWithType: TurnClient.Create(IEnumerable<IIceServer>, CancellationToken)
+  nameWithType.vb: TurnClient.Create(IEnumerable(Of IIceServer), CancellationToken)
+- uid: Libplanet.Stun.TurnClient.Create*
+  name: Create
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_Create_
+  commentId: Overload:Libplanet.Stun.TurnClient.Create
   isSpec: "True"
-  fullName: Libplanet.Stun.TurnClient.BindProxies
-  nameWithType: TurnClient.BindProxies
+  fullName: Libplanet.Stun.TurnClient.Create
+  nameWithType: TurnClient.Create
 - uid: Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint,CancellationToken)
   name: CreatePermissionAsync(IPEndPoint, CancellationToken)
   href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_CreatePermissionAsync_IPEndPoint_CancellationToken_
@@ -27072,19 +27107,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.IsBehindNAT
   nameWithType: TurnClient.IsBehindNAT
-- uid: Libplanet.Stun.TurnClient.IsConnectable(CancellationToken)
-  name: IsConnectable(CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_IsConnectable_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.IsConnectable(CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.IsConnectable(CancellationToken)
-  nameWithType: TurnClient.IsConnectable(CancellationToken)
-- uid: Libplanet.Stun.TurnClient.IsConnectable*
-  name: IsConnectable
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_IsConnectable_
-  commentId: Overload:Libplanet.Stun.TurnClient.IsConnectable
-  isSpec: "True"
-  fullName: Libplanet.Stun.TurnClient.IsConnectable
-  nameWithType: TurnClient.IsConnectable
 - uid: Libplanet.Stun.TurnClient.Nonce
   name: Nonce
   href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_Nonce

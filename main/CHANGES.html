@@ -67,6 +67,11 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <ul>
 <li>Unused <code>TcpMessageCodec</code> class removed.  [<a href="https://github.com/planetarium/libplanet/pull/2216">#2216</a>]</li>
+<li>(Libplanet.Stun) Removed <code>TurnClient.IsConnectable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
+<li>(Libplanet.Stun) Removed <code>TurnClient.BindProxies()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
+<li>(Libplanet.Stun) Removed <code>TurnClient()</code> constructor.
+Use <code>TurnClient.Create()</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 </ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -132,6 +137,8 @@ tracks the total supply if trackable from version 4.</li>
 <li>Added <code>TotalSupplyStateCompleters&lt;T&gt;</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
 <li>Added <code>StateCompleterSet&lt;T&gt;.TotalSupplyStateCompleter</code> property.
 [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>(Libplanet.Stun) Added <code>IIceServer</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
+<li>(Libplanet.Stun) Added <code>TurnClient.Create()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
