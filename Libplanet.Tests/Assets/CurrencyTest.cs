@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Assets
         public void Constructor()
         {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            var foo = Currency.LegacyUntracked("FOO", 2, ImmutableHashSet<Address>.Empty);
+            var foo = Currency.Legacy("FOO", 2, ImmutableHashSet<Address>.Empty);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             Assert.Equal("FOO", foo.Ticker);
             Assert.Equal(2, foo.DecimalPlaces);
@@ -88,27 +88,26 @@ namespace Libplanet.Tests.Assets
         public void Hash()
         {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            Currency currency = Currency.LegacyUntracked("GOLD", 2, AddressA);
+            Currency currency = Currency.Legacy("GOLD", 2, AddressA);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             HashDigest<SHA1> expected =
                 HashDigest<SHA1>.FromString("81446cd346c1be9e686835742bfd3772194dea21");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            currency =
-                Currency.LegacyUntracked("NCG", 8, ImmutableHashSet.Create(AddressA, AddressB));
+            currency = Currency.Legacy("NCG", 8, ImmutableHashSet.Create(AddressA, AddressB));
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             expected = HashDigest<SHA1>.FromString("42ce3a098fe14084e89d3d4449f56126693aeed1");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            currency = Currency.LegacyUntracked("FOO", 0, ImmutableHashSet<Address>.Empty);
+            currency = Currency.Legacy("FOO", 0, ImmutableHashSet<Address>.Empty);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             expected = HashDigest<SHA1>.FromString("801990ea2885bd51eebca0e826cc0e27f0917a9b");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            currency = Currency.LegacyUntracked("BAR", 1, null);
+            currency = Currency.Legacy("BAR", 1, null);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             expected = HashDigest<SHA1>.FromString("da42781871890f1e1b7d6f49c7f2733d3ba7b8bd");
             AssertBytesEqual(expected, currency.Hash);
@@ -151,7 +150,7 @@ namespace Libplanet.Tests.Assets
         public void String()
         {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            Currency currency = Currency.LegacyUntracked("GOLD", 0, AddressA);
+            Currency currency = Currency.Legacy("GOLD", 0, AddressA);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             Assert.Equal("GOLD (688ded7b7ae6e551e14e58ec23fef3540d442a35)", currency.ToString());
 
@@ -169,7 +168,7 @@ namespace Libplanet.Tests.Assets
             {
                 Currency.Uncapped("GOLD", 2, AddressA),
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.LegacyUntracked("GOLD", 2, AddressA),
+                Currency.Legacy("GOLD", 2, AddressA),
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
                 Currency.Capped("GOLD", 2, (100, 0), AddressA),
             };
@@ -197,7 +196,7 @@ namespace Libplanet.Tests.Assets
             var currencyD = Currency.Uncapped("GOLD", 0, AddressB);
             var currencyE = Currency.Uncapped("SILVER", 2, AddressA);
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            var currencyF = Currency.LegacyUntracked("GOLD", 0, AddressA);
+            var currencyF = Currency.Legacy("GOLD", 0, AddressA);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             var currencyG = Currency.Capped("GOLD", 0, (100, 0), AddressA);
             var currencyH = Currency.Capped("GOLD", 0, (200, 0), AddressA);
@@ -226,7 +225,7 @@ namespace Libplanet.Tests.Assets
         public void Serialize()
         {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            var foo = Currency.LegacyUntracked("FOO", 2,  null);
+            var foo = Currency.Legacy("FOO", 2,  null);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
 
             Assert.Equal(

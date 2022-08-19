@@ -43,9 +43,9 @@ namespace Libplanet.Tests.Action
             _currencies = new[]
             {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.LegacyUntracked("FOO", 0, _addr[0]),
-                Currency.LegacyUntracked("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
-                Currency.LegacyUntracked("BAZ", 0, null),
+                Currency.Legacy("FOO", 0, _addr[0]),
+                Currency.Legacy("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
+                Currency.Legacy("BAZ", 0, null),
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
                 Currency.Uncapped("QUX", 0, minter: _addr[0]),
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),

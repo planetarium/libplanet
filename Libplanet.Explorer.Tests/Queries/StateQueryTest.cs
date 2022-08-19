@@ -79,9 +79,9 @@ public class StateQueryTest
     public async Task TotalSupply()
     {
          var currency = Currency.Uncapped("ABC", 2, minters: null);
-#pragma warning disable CS0612  // LegacyUntracked, which is obsolete, is the only way to test this:
-         var legacyToken = Currency.LegacyUntracked("LEG", 0, null);
-#pragma warning restore CS0612
+#pragma warning disable CS0618  // Legacy, which is obsolete, is the only way to test this:
+         var legacyToken = Currency.Legacy("LEG", 0, null);
+#pragma warning restore CS0618
          (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
             new MockChainStates<NullAction>(),
             new BlockPolicy<NullAction>(

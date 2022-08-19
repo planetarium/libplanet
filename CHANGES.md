@@ -43,18 +43,18 @@ To be released.
      -  Added `Currency.Uncapped(string, byte, Address)` static method which
         defines an instance of `Currency` without an enforced maximum supply
         limit.
-     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
-        string, byte, IImutableSet<Address>?)` static method which defines a
-        legacy `Currency` instance which is compatible with `Currency`
-        instances defined before total supply tracking support was introduced.
-     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
-        string, byte, Address)` static method which defines a legacy `Currency`
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, IImutableSet<Address>?)` static method which defines a legacy
+        `Currency` instance which is compatible with `Currency` instances
+        defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, Address)` static method which defines a legacy `Currency`
         instance which is compatible with `Currency` instances defined before
         total supply tracking support was introduced.
      -  *NOTE:* if you already have some `Currency` instances defined in prior
         to the addition of total supply tracking on a live chain, you cannot
         modify the already-defined `Currency` instances as a capped or uncapped
-        `Currency` but have to define them with `Currency.LegacyUntracked()` as
+        `Currency` but have to define them with `Currency.Legacy()` as
         the new Currency kinds are internally backwards-incompatible with the
         legacy `Currency`.
  -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
