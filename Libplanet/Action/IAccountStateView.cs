@@ -73,6 +73,7 @@ namespace Libplanet.Action
         /// <exception cref="TotalSupplyNotTrackableException">Thrown when the total supply of the
         /// given <paramref name="currency"/> is not trackable.</exception>
         /// <seealso cref="Currency.MaximumSupply"/>
+        [Pure]
         FungibleAssetValue GetTotalSupply(Currency currency);
     }
 }

@@ -613,7 +613,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset = null,
             TotalSupplyStateCompleter<T> stateCompleter = null
@@ -625,15 +625,20 @@ namespace Libplanet.Blockchain
             );
 
         /// <inheritdoc cref="IBlockChainStates{T}.GetTotalSupply"/>
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         )
         {
-            if (currency.TotalSupplyTrackable || Count < 1)
+            if (!currency.TotalSupplyTrackable)
             {
-                return null;
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            if (Count < 1)
+            {
+                return currency * 0;
             }
 
             HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
@@ -642,12 +647,9 @@ namespace Libplanet.Blockchain
                 string rawKey = ToTotalSupplyKey(currency);
                 IReadOnlyList<IValue> values =
                     StateStore.GetStates(stateRootHash, new[] { rawKey });
-                if (values.Count > 0 && values[0] is Bencodex.Types.Integer i)
-                {
-                    return FungibleAssetValue.FromRawValue(currency, i);
-                }
-
-                return null;
+                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
             }
 
             return stateCompleter(this, offset, currency);

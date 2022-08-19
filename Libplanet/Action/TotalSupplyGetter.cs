@@ -10,11 +10,9 @@ namespace Libplanet.Action
     /// <param name="currency">The currency type to query the total supply.
     /// </param>
     /// <returns>The total supply value of the <paramref name="currency"/> in
-    /// <see cref="FungibleAssetValue"/>, or null if there were no former total supply value.
+    /// <see cref="FungibleAssetValue"/>.
+    /// <exception cref="TotalSupplyNotTrackableException">Thrown when the total supply of the
+    /// given <paramref name="currency"/> is not trackable.</exception>
     /// </returns>
-    /// <remarks>Note that you must not return the value of <paramref name="currency"/> * 0 if
-    /// <see cref="Currency.TotalSupplyTrackable"/> is <c>true</c> and there is no former
-    /// total supply value, as this will stop <see cref="IAccountStateDelta"/> from initializing
-    /// the total supply of the <paramref name="currency"/>.</remarks>
-    public delegate FungibleAssetValue? TotalSupplyGetter(Currency currency);
+    public delegate FungibleAssetValue TotalSupplyGetter(Currency currency);
 }

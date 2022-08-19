@@ -354,9 +354,16 @@ namespace Libplanet.Tests.Action
                 0
             );
 
-        protected FungibleAssetValue? GetTotalSupply(Currency currency) =>
-            _totalSupplies.TryGetValue(currency, out var totalSupply)
+        protected FungibleAssetValue GetTotalSupply(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return _totalSupplies.TryGetValue(currency, out var totalSupply)
                 ? new FungibleAssetValue(currency, totalSupply.Item1, totalSupply.Item2)
-                : (FungibleAssetValue?)null;
+                : currency * 0;
+        }
     }
 }

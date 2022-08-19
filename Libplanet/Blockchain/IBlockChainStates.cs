@@ -65,8 +65,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, return
-        /// null.
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, return 0.
         /// </summary>
         /// <param name="currency">The currency type to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
@@ -81,7 +80,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
-        FungibleAssetValue? GetTotalSupply(
+        FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter

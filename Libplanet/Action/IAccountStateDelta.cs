@@ -152,7 +152,5 @@ namespace Libplanet.Action
         /// has insufficient balance than <paramref name="value"/> to burn.</exception>
         [Pure]
         IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value);
-
-        internal FungibleAssetValue? GetTotalSupplyImpl(Currency currency);
     }
 }

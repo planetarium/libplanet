@@ -151,10 +151,15 @@ namespace Libplanet.Action
             currency * 0;
 
         [Pure]
-        internal static FungibleAssetValue? NullTotalSupplyGetter(
-            Currency currency
-        ) =>
-            null;
+        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return currency * 0;
+        }
 
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
@@ -496,7 +501,7 @@ namespace Libplanet.Action
                     block.ProtocolVersion,
                     delta.GetStates,
                     delta.GetBalance,
-                    delta.GetTotalSupplyImpl,
+                    delta.GetTotalSupply,
                     tx.Signer);
 
                 DateTimeOffset startTime = DateTimeOffset.Now;

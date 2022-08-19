@@ -167,7 +167,7 @@ public class StateQueryTest
         ) =>
             currency * 123;
 
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter

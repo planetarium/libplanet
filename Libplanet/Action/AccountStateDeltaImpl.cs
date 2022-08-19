@@ -132,19 +132,21 @@ namespace Libplanet.Action
             GetBalance(address, currency, UpdatedFungibles);
 
         /// <inheritdoc/>
+        [Pure]
         public virtual FungibleAssetValue GetTotalSupply(Currency currency)
         {
-            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } totalValue)
+            if (!currency.TotalSupplyTrackable)
             {
-                return totalValue;
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
             }
 
-            var msg =
-                $"The total supply value of the currency {currency} is not trackable because it is"
-                + " a legacy untracked currency which might have been established before protocol"
-                + " version 4 which started supporting total supply tracking.";
+            // Return dirty state if it exists.
+            if (UpdatedTotalSupply.TryGetValue(currency, out BigInteger totalSupplyValue))
+            {
+                return FungibleAssetValue.FromRawValue(currency, totalSupplyValue);
+            }
 
-            throw new TotalSupplyNotTrackableException(currency, msg);
+            return TotalSupplyGetter(currency);
         }
 
         /// <inheritdoc/>
@@ -171,9 +173,9 @@ namespace Libplanet.Action
 
             FungibleAssetValue balance = GetBalance(recipient, currency);
 
-            // If total supply is trackable, this will be true.
-            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } currentTotalSupply)
+            if (currency.TotalSupplyTrackable)
             {
+                var currentTotalSupply = GetTotalSupply(currency);
                 if (currency.MaximumSupply < currentTotalSupply + value)
                 {
                     var msg = $"The amount {value} attempted to be minted added to the current"
@@ -182,8 +184,10 @@ namespace Libplanet.Action
                     throw new SupplyOverflowException(value, msg);
                 }
 
-                UpdatedTotalSupply =
-                    UpdatedTotalSupply.SetItem(currency, (currentTotalSupply + value).RawValue);
+                return UpdateFungibleAssets(
+                    UpdatedFungibles.SetItem((recipient, currency), (balance + value).RawValue),
+                    UpdatedTotalSupply.SetItem(currency, (currentTotalSupply + value).RawValue)
+                );
             }
 
             return UpdateFungibleAssets(
@@ -264,42 +268,19 @@ namespace Libplanet.Action
                 throw new InsufficientBalanceException(owner, balance, msg);
             }
 
-            if (((IAccountStateDelta)this).GetTotalSupplyImpl(currency) is { } totalSupply)
+            if (currency.TotalSupplyTrackable)
             {
-                UpdatedTotalSupply =
-                    UpdatedTotalSupply.SetItem(currency, (totalSupply - value).RawValue);
+                return UpdateFungibleAssets(
+                    UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue),
+                    UpdatedTotalSupply.SetItem(
+                        currency,
+                        (GetTotalSupply(currency) - value).RawValue)
+                );
             }
 
             return UpdateFungibleAssets(
                 UpdatedFungibles.SetItem((owner, currency), (balance - value).RawValue)
             );
-        }
-
-        FungibleAssetValue? IAccountStateDelta.GetTotalSupplyImpl(Currency currency)
-        {
-            // Return null if total supply is not trackable.
-            if (!currency.TotalSupplyTrackable)
-            {
-                return null;
-            }
-
-            // Return dirty state if it exists.
-            if (UpdatedTotalSupply.TryGetValue(currency, out BigInteger totalSupplyValue))
-            {
-                return FungibleAssetValue.FromRawValue(currency, totalSupplyValue);
-            }
-
-            // Look up states to see if total supply exists.
-            if (TotalSupplyGetter(currency) is { } totalSupply)
-            {
-                return totalSupply;
-            }
-
-            // If total supply is trackable and it does not exist, return an initial value.
-            var initialTotalSupply = currency * 0;
-            UpdatedTotalSupply =
-                UpdatedTotalSupply.SetItem(currency, initialTotalSupply.RawValue);
-            return initialTotalSupply;
         }
 
         /// <summary>
@@ -360,11 +341,18 @@ namespace Libplanet.Action
         protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
+            UpdateFungibleAssets(updatedFungibleAssets, UpdatedTotalSupply);
+
+        [Pure]
+        protected virtual AccountStateDeltaImpl UpdateFungibleAssets(
+            IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets,
+            IImmutableDictionary<Currency, BigInteger> updatedTotalSupply
+        ) =>
             new AccountStateDeltaImpl(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,
-                UpdatedTotalSupply = UpdatedTotalSupply,
+                UpdatedTotalSupply = updatedTotalSupply,
             };
     }
 }
