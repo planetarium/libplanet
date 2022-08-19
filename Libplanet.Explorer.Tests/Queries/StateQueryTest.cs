@@ -75,6 +75,80 @@ public class StateQueryTest
         Assert.Contains("native token", result.Errors[0].Message);
     }
 
+    [Fact]
+    public async Task TotalSupply()
+    {
+         var currency = Currency.Uncapped("ABC", 2, minters: null);
+#pragma warning disable CS0612  // LegacyUntracked, which is obsolete, is the only way to test this:
+         var legacyToken = Currency.LegacyUntracked("LEG", 0, null);
+#pragma warning restore CS0612
+         (IBlockChainStates<NullAction>, IBlockPolicy<NullAction>) source = (
+            new MockChainStates<NullAction>(),
+            new BlockPolicy<NullAction>(
+                nativeTokens: ImmutableHashSet.Create(currency, legacyToken)
+            )
+        );
+        ExecutionResult result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        {
+            totalSupply(
+                 currencyHash: ""84ba810ca5ac342c122eb7ef455939a8a05d1d40"",
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            ) {
+                currency { ticker, hash }
+                sign
+                majorUnit
+                minorUnit
+                quantity
+                string
+            }
+        }
+        ", source: source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        IDictionary<string, object> totalSupplyDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultDict["totalSupply"]);
+        IDictionary<string, object> currencyDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
+        Assert.Equal("ABC", currencyDict["ticker"]);
+        Assert.Equal("84ba810ca5ac342c122eb7ef455939a8a05d1d40", currencyDict["hash"]);
+        Assert.Equal(1, Assert.IsAssignableFrom<int>(totalSupplyDict["sign"]));
+        Assert.Equal(10000, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["majorUnit"]));
+        Assert.Equal(0, Assert.IsAssignableFrom<BigInteger>(totalSupplyDict["minorUnit"]));
+        Assert.Equal("10000", totalSupplyDict["quantity"]);
+        Assert.Equal("10000 ABC", totalSupplyDict["string"]);
+
+        result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        {
+            totalSupply(
+                 currencyHash: ""0000000000000000000000000000000000000000"",
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            ) {
+                quantity
+            }
+        }
+        ", source: source);
+        Assert.Single(result.Errors);
+        Assert.Contains("native token", result.Errors[0].Message);
+
+        result = await ExecuteQueryAsync<StateQuery<NullAction>>(@"
+        {
+            totalSupply(
+                 currencyHash: ""d9d45abf192b6c337027063cda2d4a61e76e66d8"",
+                 offsetBlockHash:
+                     ""01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b""
+            ) {
+                quantity
+            }
+        }
+        ", source: source);
+        Assert.Single(result.Errors);
+        Assert.Contains("not trackable", result.Errors[0].Message);
+    }
+
     private class MockChainStates<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
