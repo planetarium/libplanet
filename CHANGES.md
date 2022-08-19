@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  (Libplanet.Net) Removed `NetMQTransport()` constructor.  Use
+    `NetMQTransport.Create()` instead.  [[#2215]]
  -  Unused `TcpMessageCodec` class removed.  [[#2216]]
  -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
@@ -57,6 +59,8 @@ To be released.
     TotalSupplyStateCompleter<T>` method which gets the total supply of
     a `Currency` in `FungibleAssetValue` from the state, and if not found,
     returns null.  [[#915], [#2200]]
+ -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
+    `Peer` to `BoundPeer`.  [[#2215]]
 
 ### Backward-incompatible network protocol changes
 
@@ -108,6 +112,14 @@ To be released.
         throws `SupplyOverflowException` if the sum of current total supply and
         the value to be minted exceeds the maximum supply of the `Currency`
         instance.
+ -  (Libplanet.Net) `NetMQTransport`'s general behavior has changed.  [[#2215]]
+     -  `NetMQTransport` is now able to send requests and receive
+        replies as soon as it is created through `NetMQTransport.Create()`
+        factory method.
+     -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
+        to recieve requests and send replies.
+     -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
+        to stop recieving requests and sending replies.
 
 ### Bug fixes
 
@@ -117,6 +129,7 @@ To be released.
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
 

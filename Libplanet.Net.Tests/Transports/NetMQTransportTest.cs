@@ -68,9 +68,9 @@ namespace Libplanet.Net.Tests.Transports
         {
             privateKey = privateKey ?? new PrivateKey();
             host = host ?? IPAddress.Loopback.ToString();
-            iceServers = iceServers ?? new IceServer[] { };
+            iceServers = iceServers ?? new List<IceServer>();
 
-            return new NetMQTransport(
+            return NetMQTransport.Create(
                 privateKey,
                 appProtocolVersion,
                 trustedAppProtocolVersionSigners,
@@ -79,7 +79,7 @@ namespace Libplanet.Net.Tests.Transports
                 listenPort,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                messageTimestampBuffer);
+                messageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
