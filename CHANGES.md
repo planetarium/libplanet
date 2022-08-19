@@ -97,10 +97,14 @@ To be released.
  -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
     to `Currency` type.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
     it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `PolicyType` class.  In GraphQL, it corresponds
     to `Policy` type.  [[#2149], [#2227]]
 
