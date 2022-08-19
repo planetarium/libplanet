@@ -66,6 +66,8 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <ul>
+<li>(Libplanet.Net) Removed <code>NetMQTransport()</code> constructor.  Use
+<code>NetMQTransport.Create()</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2215">#2215</a>]</li>
 <li>Unused <code>TcpMessageCodec</code> class removed.  [<a href="https://github.com/planetarium/libplanet/pull/2216">#2216</a>]</li>
 <li>(Libplanet.Stun) Removed <code>TurnClient.IsConnectable()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 <li>(Libplanet.Stun) Removed <code>TurnClient.BindProxies()</code> method.
@@ -113,6 +115,8 @@ legacy <code>Currency</code>.</li>
 <li>Added <code>IBlockChainStates&lt;T&gt;.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter&lt;T&gt;</code> method which gets the total supply of
 a <code>Currency</code> in <code>FungibleAssetValue</code> from the state, and if not found,
 returns null.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
+<li>(Libplanet.Net) <code>ITransport.AsPeer</code> and <code>Swarm&lt;T&gt;.AsPeer</code> type changed from
+<code>Peer</code> to <code>BoundPeer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2215">#2215</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -173,6 +177,17 @@ track the total supply if the total supply of the <code>Currency</code> is track
 throws <code>SupplyOverflowException</code> if the sum of current total supply and
 the value to be minted exceeds the maximum supply of the <code>Currency</code>
 instance.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) <code>NetMQTransport</code>'s general behavior has changed.  [<a href="https://github.com/planetarium/libplanet/pull/2215">#2215</a>]
+<ul>
+<li><code>NetMQTransport</code> is now able to send requests and receive
+replies as soon as it is created through <code>NetMQTransport.Create()</code>
+factory method.</li>
+<li><code>NetMQTransport.StartAsync()</code> enables a <code>NetMQTransport</code> instance
+to recieve requests and send replies.</li>
+<li><code>NetMQTransport.StopAsync()</code> only disables a <code>NetMQTransport</code> instance
+to stop recieving requests and sending replies.</li>
 </ul>
 </li>
 </ul>

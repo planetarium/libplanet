@@ -18152,22 +18152,6 @@ references:
   commentId: T:Libplanet.Net.Transports.NetMQTransport
   fullName: Libplanet.Net.Transports.NetMQTransport
   nameWithType: NetMQTransport
-- uid: Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
-  commentId: M:Libplanet.Net.Transports.NetMQTransport.#ctor(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
-  name.vb: NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
-  fullName.vb: Libplanet.Net.Transports.NetMQTransport.NetMQTransport(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
-  nameWithType: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
-  nameWithType.vb: NetMQTransport.NetMQTransport(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
-- uid: Libplanet.Net.Transports.NetMQTransport.#ctor*
-  name: NetMQTransport
-  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport__ctor_
-  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.NetMQTransport.NetMQTransport
-  nameWithType: NetMQTransport.NetMQTransport
 - uid: Libplanet.Net.Transports.NetMQTransport.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_AsPeer
@@ -18197,6 +18181,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.NetMQTransport.BroadcastMessage
   nameWithType: NetMQTransport.BroadcastMessage
+- uid: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
+  name: Create(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Create_Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_IImmutableSet_Libplanet_Crypto_PublicKey__System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_System_Nullable_TimeSpan__
+  commentId: M:Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,IImmutableSet{Libplanet.Crypto.PublicKey},System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,System.Nullable{TimeSpan})
+  name.vb: Create(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+  fullName: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet<Libplanet.Crypto.PublicKey>, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable<TimeSpan>)
+  fullName.vb: Libplanet.Net.Transports.NetMQTransport.Create(Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, IImmutableSet(Of Libplanet.Crypto.PublicKey), System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, System.Nullable(Of TimeSpan))
+  nameWithType: NetMQTransport.Create(PrivateKey, AppProtocolVersion, IImmutableSet<PublicKey>, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, Nullable<TimeSpan>)
+  nameWithType.vb: NetMQTransport.Create(PrivateKey, AppProtocolVersion, IImmutableSet(Of PublicKey), Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, Nullable(Of TimeSpan))
+- uid: Libplanet.Net.Transports.NetMQTransport.Create*
+  name: Create
+  href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Create_
+  commentId: Overload:Libplanet.Net.Transports.NetMQTransport.Create
+  isSpec: "True"
+  fullName: Libplanet.Net.Transports.NetMQTransport.Create
+  nameWithType: NetMQTransport.Create
 - uid: Libplanet.Net.Transports.NetMQTransport.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Transports.NetMQTransport.html#Libplanet_Net_Transports_NetMQTransport_Dispose
