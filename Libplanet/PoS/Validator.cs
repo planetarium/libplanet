@@ -40,7 +40,7 @@ namespace Libplanet.PoS
             IValue? serializedDelegation = states.GetState(delegationAddress);
             Delegation delegation = (serializedDelegation == null)
                 ? new Delegation(OperatorAddress, Address)
-                : new Delegation((List)serializedDelegation);
+                : new Delegation(serializedDelegation);
             states = delegation.Delegate(states, governanceToken);
 
             // Does not save current instance, since it's done on delegation
@@ -50,12 +50,6 @@ namespace Libplanet.PoS
         internal FungibleAssetValue GetConsensusToken(IAccountStateDelta states)
         {
             return states.GetBalance(Address, Asset.ConsensusToken);
-        }
-
-        // Status update via consensus power index
-        internal IAccountStateDelta UpdateBondingStatus(IAccountStateDelta states)
-        {
-            return states;
         }
 
         internal FungibleAssetValue? ShareFromConsensusToken(
@@ -107,6 +101,74 @@ namespace Libplanet.PoS
                 .DivRem(DelegatorShares.RawValue, out _);
 
             return consensusToken;
+        }
+
+        internal bool IsMatured(long blockHeight)
+            => UnbondingCompletionBlockHeight > 0
+            && Status != BondingStatus.Bonded
+            && blockHeight >= UnbondingCompletionBlockHeight;
+
+        internal IAccountStateDelta Bond(IAccountStateDelta states)
+        {
+            UnbondingCompletionBlockHeight = -1;
+            if (Status != BondingStatus.Bonded)
+            {
+                states = states.TransferAsset(
+                    ReservedAddress.UnbondedPool,
+                    ReservedAddress.BondedPool,
+                    Asset.ConsensusFromGovernance(
+                        states.GetBalance(Address, Asset.ConsensusToken)));
+            }
+
+            Status = BondingStatus.Bonded;
+            states = states.SetState(Address, Serialize());
+            return states;
+        }
+
+        internal IAccountStateDelta Unbond(IAccountStateDelta states, long blockHeight)
+        {
+            UnbondingCompletionBlockHeight = blockHeight + UnbondingSetInfo.Period;
+            if (Status == BondingStatus.Bonded)
+            {
+                states = states.TransferAsset(
+                    ReservedAddress.BondedPool,
+                    ReservedAddress.UnbondedPool,
+                    Asset.ConsensusFromGovernance(
+                        states.GetBalance(Address, Asset.ConsensusToken)));
+            }
+
+            Status = BondingStatus.Unbonding;
+
+            IValue? serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet);
+            UnbondingSet unbondingSet = (serializedUnbondingSet == null)
+                ? new UnbondingSet()
+                : new UnbondingSet(serializedUnbondingSet);
+            states = unbondingSet.AddUnbondingValidatorAddressSet(states, Address);
+            states = states.SetState(Address, Serialize());
+            return states;
+        }
+
+        internal IAccountStateDelta CompleteUnbonding(IAccountStateDelta states, long blockHeight)
+        {
+            if (!IsMatured(blockHeight) || (Status != BondingStatus.Unbonding))
+            {
+                return states;
+            }
+
+            Status = BondingStatus.Unbonded;
+
+            IValue serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet)
+                ?? throw new InvalidOperationException();
+            UnbondingSet unbondingSet = new UnbondingSet(serializedUnbondingSet);
+            states = unbondingSet.DelUnbondingValidatorAddressSet(states, Address);
+
+            // Later implemented get rid of validator
+            if (DelegatorShares == Asset.Share * 0)
+            {
+            }
+
+            states = states.SetState(Address, Serialize());
+            return states;
         }
     }
 }

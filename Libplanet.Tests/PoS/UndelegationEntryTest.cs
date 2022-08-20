@@ -11,7 +11,7 @@ namespace Libplanet.Tests.PoS
         public UndelegationEntryTest()
         {
             _undelegationEntry = new UndelegationEntry(
-                CreateAddress(), Asset.ConsensusToken * 1, 1, 1, 1);
+                CreateAddress(), Asset.ConsensusToken * 1, 1, 1);
         }
 
         [Fact]

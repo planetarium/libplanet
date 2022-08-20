@@ -10,5 +10,8 @@ namespace Libplanet.PoS
 
         public static readonly Address ConsensusPowerIndex
             = new Address("0000000000000000000000000000000000000003");
+
+        public static readonly Address UnbondingSet
+            = new Address("0000000000000000000000000000000000000004");
     }
 }

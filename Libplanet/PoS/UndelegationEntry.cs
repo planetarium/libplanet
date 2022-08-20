@@ -13,14 +13,13 @@ namespace Libplanet.PoS
             Address undelegationAddress,
             FungibleAssetValue unbondingConsensusToken,
             long index,
-            long blockHeight,
-            long boundBlockHeight = 50400 * 4)
+            long blockHeight)
         {
             Address = DeriveAddress(undelegationAddress, index);
             UndelegationAddress = undelegationAddress;
             UnbondingConsensusToken = unbondingConsensusToken;
             Index = index;
-            CompletionBlockHeight = blockHeight + boundBlockHeight;
+            CompletionBlockHeight = blockHeight + UnbondingSetInfo.Period;
         }
 
         public UndelegationEntry(IValue serialized)
