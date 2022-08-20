@@ -116,7 +116,7 @@ namespace Libplanet.PoS
                 states = states.TransferAsset(
                     ReservedAddress.UnbondedPool,
                     ReservedAddress.BondedPool,
-                    Asset.ConsensusFromGovernance(
+                    Asset.GovernanceFromConsensus(
                         states.GetBalance(Address, Asset.ConsensusToken)));
             }
 
@@ -133,7 +133,7 @@ namespace Libplanet.PoS
                 states = states.TransferAsset(
                     ReservedAddress.BondedPool,
                     ReservedAddress.UnbondedPool,
-                    Asset.ConsensusFromGovernance(
+                    Asset.GovernanceFromConsensus(
                         states.GetBalance(Address, Asset.ConsensusToken)));
             }
 

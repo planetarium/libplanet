@@ -30,12 +30,15 @@ namespace Libplanet.PoS
             states = unbondingSet.CompleteUnbondingValidatorSet(states, blockHeight);
             states = unbondingSet.CompleteUndelegationSet(states, blockHeight);
             states = unbondingSet.CompleteRedelegationSet(states, blockHeight);
+            states = states.SetState(ReservedAddress.Validators, Serialize());
             return states;
         }
 
         internal IAccountStateDelta UpdateSets(IAccountStateDelta states)
         {
             PreviousValidatorAddressSet = ValidatorAddressSet.ToList();
+            ValidatorAddressSet.Clear();
+            LatentAddressSet.Clear();
             IValue serializedConsensusPowerIndex
                 = states.GetState(ReservedAddress.ConsensusPowerIndex)
                 ?? throw new InvalidOperationException();
@@ -65,6 +68,8 @@ namespace Libplanet.PoS
                 }
             }
 
+            states = states.SetState(ReservedAddress.Validators, Serialize());
+
             return states;
         }
 
@@ -91,6 +96,8 @@ namespace Libplanet.PoS
                 Validator latent = new Validator(serializedLatent);
                 states = latent.Unbond(states, blockHeight);
             }
+
+            states = states.SetState(ReservedAddress.Validators, Serialize());
 
             return states;
         }
