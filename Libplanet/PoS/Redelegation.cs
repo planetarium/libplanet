@@ -61,6 +61,38 @@ namespace Libplanet.PoS
                 DstValidatorAddress,
                 DelegationAddress);
 
+            // Governance token pool transfer
+            IValue serializedSrcValidator
+                = states.GetState(SrcValidatorAddress)
+                ?? throw new InvalidOperationException();
+            Validator srcValidator = new Validator(serializedSrcValidator);
+
+            IValue serializedDstValidator
+                = states.GetState(DstValidatorAddress)
+                ?? throw new InvalidOperationException();
+            Validator dstValidator = new Validator(serializedDstValidator);
+
+            states = (srcValidator.Status, dstValidator.Status) switch
+            {
+                (BondingStatus.Bonded, BondingStatus.Unbonding) => states.TransferAsset(
+                    ReservedAddress.BondedPool,
+                    ReservedAddress.UnbondedPool,
+                    Asset.GovernanceFromConsensus(unbondingConsensusToken)),
+                (BondingStatus.Bonded, BondingStatus.Unbonded) => states.TransferAsset(
+                    ReservedAddress.BondedPool,
+                    ReservedAddress.UnbondedPool,
+                    Asset.GovernanceFromConsensus(unbondingConsensusToken)),
+                (BondingStatus.Unbonding, BondingStatus.Bonded) => states.TransferAsset(
+                    ReservedAddress.UnbondedPool,
+                    ReservedAddress.BondedPool,
+                    Asset.GovernanceFromConsensus(unbondingConsensusToken)),
+                (BondingStatus.Unbonded, BondingStatus.Bonded) => states.TransferAsset(
+                    ReservedAddress.UnbondedPool,
+                    ReservedAddress.BondedPool,
+                    Asset.GovernanceFromConsensus(unbondingConsensusToken)),
+                _ => states,
+            };
+
             RedelegationEntry redelegationEntry = new RedelegationEntry(
                 Address,
                 redelegatingShare,
@@ -74,6 +106,13 @@ namespace Libplanet.PoS
 
             // TODO: Global state indexing is also needed
             states = states.SetState(redelegationEntry.Address, redelegationEntry.Serialize());
+
+            IValue? serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet);
+            UnbondingSet unbondingSet = (serializedUnbondingSet == null)
+                ? new UnbondingSet()
+                : new UnbondingSet(serializedUnbondingSet);
+            states = unbondingSet.AddRedelegationAddressSet(states, Address);
+
             states = states.SetState(Address, Serialize());
             return states;
         }
@@ -96,7 +135,7 @@ namespace Libplanet.PoS
                 }
 
                 RedelegationEntry redelegationEntry
-                    = new RedelegationEntry((List)serializedRedelegationEntry);
+                    = new RedelegationEntry(serializedRedelegationEntry);
 
                 if (redelegationEntry.IsMatured(blockHeight))
                 {
@@ -107,6 +146,14 @@ namespace Libplanet.PoS
             foreach (long index in completedIndices)
             {
                 RedelegationEntryAddresses.Remove(index);
+            }
+
+            if (RedelegationEntryAddresses.Count == 0)
+            {
+                IValue serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet)
+                ?? throw new InvalidOperationException();
+                UnbondingSet unbondingSet = new UnbondingSet(serializedUnbondingSet);
+                states = unbondingSet.DelRedelegationAddressSet(states, Address);
             }
 
             states = states.SetState(Address, Serialize());

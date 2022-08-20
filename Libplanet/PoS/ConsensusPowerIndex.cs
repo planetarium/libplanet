@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
@@ -21,6 +22,14 @@ namespace Libplanet.PoS
         internal IAccountStateDelta Update(IAccountStateDelta states, Address validatorAddress)
         {
             Index.RemoveWhere(key => key.ValidatorAddress.Equals(validatorAddress));
+            IValue serializedValidator = states.GetState(validatorAddress)
+                ?? throw new InvalidOperationException();
+            Validator validator = new Validator(serializedValidator);
+            if (validator.Jailed)
+            {
+                return states;
+            }
+
             FungibleAssetValue consensusToken = states.GetBalance(
                 validatorAddress, Asset.ConsensusToken);
             ConsensusPowerKey consensusPowerKey
@@ -41,9 +50,30 @@ namespace Libplanet.PoS
             return states;
         }
 
-        internal ConsensusPowerKey[] TopN(int n)
+        internal List<ConsensusPowerKey> TopNKeys(int n)
         {
-            return Index.Take(n).ToArray();
+            return Index.Take(n).ToList();
+        }
+
+        internal List<ConsensusPowerKey> BelowNKeys(int n)
+        {
+            return Index.Skip(n).ToList();
+        }
+
+        internal List<Address> TopNValidatorAddresses(int n)
+        {
+            List<Address> validatorAddresses =
+                TopNKeys(n).Select(key => key.ValidatorAddress).ToList();
+
+            return validatorAddresses;
+        }
+
+        internal List<Address> BelowNValidatorAddresses(int n)
+        {
+            List<Address> validatorAddresses =
+                BelowNKeys(n).Select(key => key.ValidatorAddress).ToList();
+
+            return validatorAddresses;
         }
     }
 }

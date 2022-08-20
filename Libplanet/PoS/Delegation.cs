@@ -41,7 +41,7 @@ namespace Libplanet.PoS
             IValue serializedValidator
                 = states.GetState(validatorAddress)
                 ?? throw new InvalidOperationException();
-            Validator validator = new Validator((List)serializedValidator);
+            Validator validator = new Validator(serializedValidator);
 
             // If validator share is zero, exchange rate is 1
             // Else, exchange rate is validator share / token
@@ -58,7 +58,13 @@ namespace Libplanet.PoS
             // Track total shares minted from validator
             validator.DelegatorShares += issuedShare;
 
-            validator.UpdateBondingStatus(states);
+            IValue? serializedConsensusPowerIndex
+                = states.GetState(ReservedAddress.ConsensusPowerIndex);
+            ConsensusPowerIndex consensusPowerIndex
+                = serializedConsensusPowerIndex == null
+                ? new ConsensusPowerIndex()
+                : new ConsensusPowerIndex(serializedConsensusPowerIndex);
+            states = consensusPowerIndex.Update(states, validatorAddress);
             states = states.SetState(validatorAddress, validator.Serialize());
 
             return (states, issuedShare);
@@ -80,7 +86,7 @@ namespace Libplanet.PoS
             IValue serializedValidator
                 = states.GetState(ValidatorAddress)
                 ?? throw new InvalidOperationException();
-            Validator validator = new Validator((List)serializedValidator);
+            Validator validator = new Validator(serializedValidator);
 
             FungibleAssetValue consensusToken = Asset.ConsensusFromGovernance(governanceToken);
             Address poolAddress = validator.Status == BondingStatus.Bonded

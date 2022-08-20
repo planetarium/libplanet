@@ -129,7 +129,7 @@ namespace Libplanet.Tests.PoS
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
-            _states = undelegation.CompleteUnbonding(_states, 1000);
+            _states = undelegation.CompleteUndelegation(_states, 1000);
             Assert.Single(UndelegationInstance.UndelegationEntryAddresses);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
@@ -137,7 +137,7 @@ namespace Libplanet.Tests.PoS
             Assert.Equal(
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
-            _states = undelegation.CompleteUnbonding(_states, 50400 * 5);
+            _states = undelegation.CompleteUndelegation(_states, 50400 * 5);
             Assert.Empty(UndelegationInstance.UndelegationEntryAddresses);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount + undelegateAmount),
@@ -176,7 +176,7 @@ namespace Libplanet.Tests.PoS
                 Asset.ConsensusToken
                 * (selfDelegateAmount + delegateAmount - undelegateAmount + cancelAmount),
                 _states.GetBalance(_validatorAddress, Asset.ConsensusToken));
-            _states = undelegation.CompleteUnbonding(_states, 1000);
+            _states = undelegation.CompleteUndelegation(_states, 1000);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
@@ -184,7 +184,7 @@ namespace Libplanet.Tests.PoS
                 Asset.ConsensusToken
                 * (selfDelegateAmount + delegateAmount - undelegateAmount + cancelAmount),
                 _states.GetBalance(_validatorAddress, Asset.ConsensusToken));
-            _states = undelegation.CompleteUnbonding(_states, 50400 * 5);
+            _states = undelegation.CompleteUndelegation(_states, 50400 * 5);
             Assert.Equal(
                 Asset.GovernanceToken
                 * (delegatorMintAmount - delegateAmount + undelegateAmount - cancelAmount),

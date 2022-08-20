@@ -17,8 +17,7 @@ namespace Libplanet.PoS
             FungibleAssetValue unbondingConsensusToken,
             FungibleAssetValue issuedShare,
             long index,
-            long blockHeight,
-            long boundBlockHeight = 50400 * 4)
+            long blockHeight)
         {
             Address = DeriveAddress(redelegationAddress, index);
             RedelegationAddress = redelegationAddress;
@@ -26,7 +25,7 @@ namespace Libplanet.PoS
             UnbondingConsensusToken = unbondingConsensusToken;
             IssuedShare = issuedShare;
             Index = index;
-            CompletionBlockHeight = blockHeight + boundBlockHeight;
+            CompletionBlockHeight = blockHeight + UnbondingSetInfo.Period;
         }
 
         public RedelegationEntry(IValue serialized)

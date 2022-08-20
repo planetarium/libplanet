@@ -45,7 +45,7 @@ namespace Libplanet.PoS
             IValue serializedValidator
                 = states.GetState(validatorAddress)
                 ?? throw new InvalidOperationException();
-            Validator validator = new Validator((List)serializedValidator);
+            Validator validator = new Validator(serializedValidator);
 
             // Delegator share burn
             states = states.BurnAsset(delegationAddress, share);
@@ -78,7 +78,13 @@ namespace Libplanet.PoS
                         ReservedAddress.UnbondedPool,
                         unbondingConsensusToken);
 
-            validator.UpdateBondingStatus(states);
+            IValue? serializedConsensusPowerIndex
+                = states.GetState(ReservedAddress.ConsensusPowerIndex);
+            ConsensusPowerIndex consensusPowerIndex
+                = serializedConsensusPowerIndex == null
+                ? new ConsensusPowerIndex()
+                : new ConsensusPowerIndex(serializedConsensusPowerIndex);
+            states = consensusPowerIndex.Update(states, validatorAddress);
             states = states.SetState(validatorAddress, validator.Serialize());
 
             return (states, unbondingConsensusToken);
@@ -108,7 +114,7 @@ namespace Libplanet.PoS
             IValue serializedValidator
                 = states.GetState(ValidatorAddress)
                 ?? throw new InvalidOperationException();
-            Validator validator = new Validator((List)serializedValidator);
+            Validator validator = new Validator(serializedValidator);
 
             // Unbonding
             FungibleAssetValue unbondingConsensusToken;
@@ -136,6 +142,13 @@ namespace Libplanet.PoS
 
             // TODO: Global state indexing is also needed
             states = states.SetState(undelegationEntry.Address, undelegationEntry.Serialize());
+
+            IValue? serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet);
+            UnbondingSet unbondingSet = (serializedUnbondingSet == null)
+                ? new UnbondingSet()
+                : new UnbondingSet(serializedUnbondingSet);
+            states = unbondingSet.AddUndelegationAddressSet(states, Address);
+
             states = states.SetState(Address, Serialize());
 
             return states;
@@ -155,7 +168,7 @@ namespace Libplanet.PoS
             IValue serializedValidator
                 = states.GetState(ValidatorAddress)
                 ?? throw new InvalidOperationException();
-            Validator validator = new Validator((List)serializedValidator);
+            Validator validator = new Validator(serializedValidator);
 
             // Calculate consensus token equivalent share
             FungibleAssetValue cancelledShare
@@ -186,15 +199,13 @@ namespace Libplanet.PoS
             // Track total shares minted from validator
             validator.DelegatorShares += cancelledShare;
 
-            if (validator.Status == BondingStatus.Bonded)
-            {
-                states = states.TransferAsset(
-                        ReservedAddress.UnbondedPool,
-                        ReservedAddress.BondedPool,
-                        Asset.GovernanceFromConsensus(cancelledConsensusToken));
-            }
-
-            validator.UpdateBondingStatus(states);
+            IValue? serializedConsensusPowerIndex
+                = states.GetState(ReservedAddress.ConsensusPowerIndex);
+            ConsensusPowerIndex consensusPowerIndex
+                = serializedConsensusPowerIndex == null
+                ? new ConsensusPowerIndex()
+                : new ConsensusPowerIndex(serializedConsensusPowerIndex);
+            states = consensusPowerIndex.Update(states, ValidatorAddress);
             states = states.SetState(ValidatorAddress, validator.Serialize());
 
             return states;
@@ -210,6 +221,12 @@ namespace Libplanet.PoS
             {
                 throw new ArgumentException();
             }
+
+            // Validator loading
+            IValue serializedValidator
+                = states.GetState(ValidatorAddress)
+                ?? throw new InvalidOperationException();
+            Validator validator = new Validator(serializedValidator);
 
             // Copy of cancelling amount
             FungibleAssetValue cancellingConsensusToken =
@@ -234,12 +251,12 @@ namespace Libplanet.PoS
                 }
 
                 UndelegationEntry undelegationEntry
-                    = new UndelegationEntry((List)serializedUndelegationEntry);
+                    = new UndelegationEntry(serializedUndelegationEntry);
 
                 // Double check for unbonded entry
                 if (blockHeight >= undelegationEntry.CompletionBlockHeight)
                 {
-                    break;
+                    throw new InvalidOperationException();
                 }
 
                 // Check if cancelledConsensusToken is less than total undelegation
@@ -252,9 +269,6 @@ namespace Libplanet.PoS
                 if (cancellingConsensusToken < undelegationEntry.UnbondingConsensusToken)
                 {
                     undelegationEntry.UnbondingConsensusToken -= cancellingConsensusToken;
-                    states = CancelUnbonding(states, cancelledConsensusToken);
-                    undelegationEntryIndices.ForEach(
-                        idx => UndelegationEntryAddresses.Remove(idx));
                     states = states.SetState(
                         undelegationEntry.Address, undelegationEntry.Serialize());
                     break;
@@ -268,6 +282,28 @@ namespace Libplanet.PoS
                 }
             }
 
+            states = CancelUnbonding(states, cancelledConsensusToken);
+
+            // Governance token pool transfer? have to be moved to undelegate?
+            if (validator.Status == BondingStatus.Bonded)
+            {
+                states = states.TransferAsset(
+                        ReservedAddress.UnbondedPool,
+                        ReservedAddress.BondedPool,
+                        Asset.GovernanceFromConsensus(cancelledConsensusToken));
+            }
+
+            undelegationEntryIndices.ForEach(
+                idx => UndelegationEntryAddresses.Remove(idx));
+
+            if (UndelegationEntryAddresses.Count == 0)
+            {
+                IValue serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet)
+                ?? throw new InvalidOperationException();
+                UnbondingSet unbondingSet = new UnbondingSet(serializedUnbondingSet);
+                states = unbondingSet.DelUndelegationAddressSet(states, Address);
+            }
+
             states = states.SetState(Address, Serialize());
             return states;
         }
@@ -275,7 +311,8 @@ namespace Libplanet.PoS
         // This have to be called for each block,
         // to update staking status and generate block with updated validators.
         // Would it be better to declare this on out of this class?
-        internal IAccountStateDelta CompleteUnbonding(IAccountStateDelta states, long blockHeight)
+        internal IAccountStateDelta CompleteUndelegation(
+            IAccountStateDelta states, long blockHeight)
         {
             List<long> completedIndices = new List<long>();
 
@@ -294,7 +331,7 @@ namespace Libplanet.PoS
                 }
 
                 UndelegationEntry undelegationEntry
-                    = new UndelegationEntry((List)serializedUndelegationEntry);
+                    = new UndelegationEntry(serializedUndelegationEntry);
 
                 // Complete matured entries
                 if (undelegationEntry.IsMatured(blockHeight))
@@ -318,6 +355,14 @@ namespace Libplanet.PoS
             foreach (long index in completedIndices)
             {
                 UndelegationEntryAddresses.Remove(index);
+            }
+
+            if (UndelegationEntryAddresses.Count == 0)
+            {
+                IValue serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet)
+                ?? throw new InvalidOperationException();
+                UnbondingSet unbondingSet = new UnbondingSet(serializedUnbondingSet);
+                states = unbondingSet.DelUndelegationAddressSet(states, Address);
             }
 
             states = states.SetState(Address, Serialize());

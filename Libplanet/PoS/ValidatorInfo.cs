@@ -16,6 +16,7 @@ namespace Libplanet.PoS
             OperatorAddress = operatorAddress;
             Jailed = false;
             Status = BondingStatus.Unbonded;
+            UnbondingCompletionBlockHeight = -1;
             DelegatorShares = Asset.Share * 0;
         }
 
@@ -26,7 +27,8 @@ namespace Libplanet.PoS
             OperatorAddress = serializedList[1].ToAddress();
             Jailed = serializedList[2].ToBoolean();
             Status = serializedList[3].ToEnum<BondingStatus>();
-            DelegatorShares = serializedList[4].ToFungibleAssetValue();
+            UnbondingCompletionBlockHeight = serializedList[4].ToLong();
+            DelegatorShares = serializedList[5].ToFungibleAssetValue();
         }
 
         public ValidatorInfo(ValidatorInfo validatorInfo)
@@ -35,6 +37,7 @@ namespace Libplanet.PoS
             OperatorAddress = validatorInfo.OperatorAddress;
             Jailed = validatorInfo.Jailed;
             Status = validatorInfo.Status;
+            UnbondingCompletionBlockHeight = validatorInfo.UnbondingCompletionBlockHeight;
             DelegatorShares = validatorInfo.DelegatorShares;
         }
 
@@ -45,6 +48,8 @@ namespace Libplanet.PoS
         public bool Jailed { get; set; }
 
         public BondingStatus Status { get; set; }
+
+        public long UnbondingCompletionBlockHeight { get; set; }
 
         public FungibleAssetValue DelegatorShares
         {
@@ -89,6 +94,7 @@ namespace Libplanet.PoS
                 .Add(OperatorAddress.Serialize())
                 .Add(Jailed.Serialize())
                 .Add(Status.Serialize())
+                .Add(UnbondingCompletionBlockHeight.Serialize())
                 .Add(DelegatorShares.Serialize());
         }
     }
