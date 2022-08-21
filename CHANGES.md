@@ -88,6 +88,7 @@ To be released.
  -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
  -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
     [[#915], [#2200]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
 
@@ -134,11 +135,13 @@ To be released.
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
+[#2187]:https://github.com/planetarium/libplanet/issues/2187
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
 [#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2232]: https://github.com/planetarium/libplanet/pull/2231
 
 
 Version 0.40.0
