@@ -91,6 +91,7 @@ To be released.
  -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ - (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.  [#2065]
 
 ### Behavioral changes
 
