@@ -61,6 +61,8 @@ namespace Libplanet.Net
         [Pure]
         public DnsEndPoint EndPoint { get; }
 
+        public string PeerString => $"{PublicKey},{EndPoint.Host},{EndPoint.Port}";
+
         public static bool operator ==(BoundPeer left, BoundPeer right) => left.Equals(right);
 
         public static bool operator !=(BoundPeer left, BoundPeer right) => !left.Equals(right);
