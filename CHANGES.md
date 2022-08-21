@@ -19,7 +19,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Removed unused tx related methods from IStore [[#1538], [#2201]]
+ -  Removed unused transaction related methods from `IStore` and its
+    implementations [[#1538], [#2201]]
     - `IterateTransactionIds()`
     - `DeleteTransaction()`
     - `CountTransactions()`
