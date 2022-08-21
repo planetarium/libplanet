@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Messages
             var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
 
             // Attacker
-            var fakePeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
+            var fakePeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 0));
             var fakeMessage = codec.Encode(ping, privateKey, apv, fakePeer, timestamp).ToArray();
 
             var frames = new NetMQMessage();
