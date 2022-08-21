@@ -6,13 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Libplanet.Explorer.Schemas
 {
-    public class TransactionSchema<T> : Schema
+    public class LibplanetExplorerSchema<T> : Schema
         where T : IAction, new()
     {
-        public TransactionSchema(IServiceProvider serviceProvider)
+        public LibplanetExplorerSchema(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            Query = serviceProvider.GetRequiredService<TransactionQuery<T>>();
+            Query = serviceProvider.GetRequiredService<ExplorerQuery<T>>();
         }
     }
 }
