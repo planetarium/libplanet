@@ -88,7 +88,7 @@ To be released.
  -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
  -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
     [[#915], [#2200]]
- -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
 
