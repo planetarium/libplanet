@@ -620,21 +620,6 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateTransactionIds()
-        {
-            byte[] prefix = TxKeyPrefix;
-
-            foreach (Iterator it in IterateDb(_txIndexDb, prefix) )
-            {
-                byte[] key = it.Key();
-                byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
-
-                var txId = new TxId(txIdBytes);
-                yield return txId;
-            }
-        }
-
-        /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             if (_txCache.TryGetValue(txid, out object cachedTx))
@@ -715,47 +700,6 @@ namespace Libplanet.RocksDBStore
             catch (Exception e)
             {
                 LogUnexpectedException(nameof(PutTransaction), e);
-                throw;
-            }
-            finally
-            {
-                _rwTxLock.ExitWriteLock();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override bool DeleteTransaction(TxId txid)
-        {
-            byte[] key = TxKey(txid);
-
-            if (!(_txIndexDb.Get(key) is byte[] txDbNameBytes))
-            {
-                return false;
-            }
-
-            _rwTxLock.EnterWriteLock();
-            try
-            {
-                string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
-                RocksDb txDb;
-                lock (_txDbCache)
-                {
-                    if (!_txDbCache.TryGetValue(txDbName, out txDb))
-                    {
-                        txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
-                        _txDbCache.AddOrUpdate(txDbName, txDb);
-                    }
-                }
-
-                _txCache.Remove(txid);
-                _txIndexDb.Remove(key);
-                txDb.Remove(key);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogUnexpectedException(nameof(DeleteTransaction), e);
                 throw;
             }
             finally
@@ -1110,12 +1054,6 @@ namespace Libplanet.RocksDBStore
                 LogUnexpectedException(nameof(IncreaseTxNonce), e);
                 throw;
             }
-        }
-
-        /// <inheritdoc/>
-        public override long CountTransactions()
-        {
-            return IterateTransactionIds().LongCount();
         }
 
         /// <inheritdoc/>

@@ -19,6 +19,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed unused transaction related methods from `IStore` and its
+    implementations [[#1538], [#2201]]
+    - `IterateTransactionIds()`
+    - `DeleteTransaction()`
+    - `CountTransactions()`
  -  Removed `Currency(string, byte, IImutableSet<Address>?)` constructor.
     [[#2200]]
  -  Removed `Currency(string, byte, Address?)` constructor.
@@ -128,7 +133,9 @@ To be released.
 ### CLI tools
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
+[#1538]: https://github.com/planetarium/libplanet/issues/1538
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
