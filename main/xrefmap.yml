@@ -20174,19 +20174,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.CountIndex
   nameWithType: RocksDBStore.CountIndex
-- uid: Libplanet.RocksDBStore.RocksDBStore.CountTransactions
-  name: CountTransactions()
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_CountTransactions
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.CountTransactions
-  fullName: Libplanet.RocksDBStore.RocksDBStore.CountTransactions()
-  nameWithType: RocksDBStore.CountTransactions()
-- uid: Libplanet.RocksDBStore.RocksDBStore.CountTransactions*
-  name: CountTransactions
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_CountTransactions_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.CountTransactions
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.CountTransactions
-  nameWithType: RocksDBStore.CountTransactions
 - uid: Libplanet.RocksDBStore.RocksDBStore.DeleteBlock(Libplanet.Blocks.BlockHash)
   name: DeleteBlock(BlockHash)
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteBlock_Libplanet_Blocks_BlockHash_
@@ -20213,19 +20200,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteChainId
   nameWithType: RocksDBStore.DeleteChainId
-- uid: Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  name: DeleteTransaction(TxId)
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: RocksDBStore.DeleteTransaction(TxId)
-- uid: Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction*
-  name: DeleteTransaction
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteTransaction_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.DeleteTransaction
-  nameWithType: RocksDBStore.DeleteTransaction
 - uid: Libplanet.RocksDBStore.RocksDBStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
   name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
@@ -20414,19 +20388,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.RocksDBStore.RocksDBStore.IterateIndexes
   nameWithType: RocksDBStore.IterateIndexes
-- uid: Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds
-  name: IterateTransactionIds()
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IterateTransactionIds
-  commentId: M:Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds
-  fullName: Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds()
-  nameWithType: RocksDBStore.IterateTransactionIds()
-- uid: Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds*
-  name: IterateTransactionIds
-  href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.RocksDBStore.RocksDBStore.IterateTransactionIds
-  nameWithType: RocksDBStore.IterateTransactionIds
 - uid: Libplanet.RocksDBStore.RocksDBStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IterateTxIdBlockHashIndex(TxId)
   href: api/Libplanet.RocksDBStore.RocksDBStore.html#Libplanet_RocksDBStore_RocksDBStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -20989,19 +20950,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.CountIndex
   nameWithType: BaseStore.CountIndex
-- uid: Libplanet.Store.BaseStore.CountTransactions
-  name: CountTransactions()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountTransactions
-  commentId: M:Libplanet.Store.BaseStore.CountTransactions
-  fullName: Libplanet.Store.BaseStore.CountTransactions()
-  nameWithType: BaseStore.CountTransactions()
-- uid: Libplanet.Store.BaseStore.CountTransactions*
-  name: CountTransactions
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountTransactions_
-  commentId: Overload:Libplanet.Store.BaseStore.CountTransactions
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.CountTransactions
-  nameWithType: BaseStore.CountTransactions
 - uid: Libplanet.Store.BaseStore.DeleteBlock(Libplanet.Blocks.BlockHash)
   name: DeleteBlock(BlockHash)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_Blocks_BlockHash_
@@ -21028,19 +20976,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteChainId
   nameWithType: BaseStore.DeleteChainId
-- uid: Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)
-  name: DeleteTransaction(TxId)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: BaseStore.DeleteTransaction(TxId)
-- uid: Libplanet.Store.BaseStore.DeleteTransaction*
-  name: DeleteTransaction
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_
-  commentId: Overload:Libplanet.Store.BaseStore.DeleteTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.DeleteTransaction
-  nameWithType: BaseStore.DeleteTransaction
 - uid: Libplanet.Store.BaseStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
   name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
@@ -21300,19 +21235,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateIndexes
   nameWithType: BaseStore.IterateIndexes
-- uid: Libplanet.Store.BaseStore.IterateTransactionIds
-  name: IterateTransactionIds()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTransactionIds
-  commentId: M:Libplanet.Store.BaseStore.IterateTransactionIds
-  fullName: Libplanet.Store.BaseStore.IterateTransactionIds()
-  nameWithType: BaseStore.IterateTransactionIds()
-- uid: Libplanet.Store.BaseStore.IterateTransactionIds*
-  name: IterateTransactionIds
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.Store.BaseStore.IterateTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.IterateTransactionIds
-  nameWithType: BaseStore.IterateTransactionIds
 - uid: Libplanet.Store.BaseStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IterateTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -22028,19 +21950,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.CountIndex
   nameWithType: DefaultStore.CountIndex
-- uid: Libplanet.Store.DefaultStore.CountTransactions
-  name: CountTransactions()
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountTransactions
-  commentId: M:Libplanet.Store.DefaultStore.CountTransactions
-  fullName: Libplanet.Store.DefaultStore.CountTransactions()
-  nameWithType: DefaultStore.CountTransactions()
-- uid: Libplanet.Store.DefaultStore.CountTransactions*
-  name: CountTransactions
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountTransactions_
-  commentId: Overload:Libplanet.Store.DefaultStore.CountTransactions
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.CountTransactions
-  nameWithType: DefaultStore.CountTransactions
 - uid: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.Blocks.BlockHash)
   name: DeleteBlock(BlockHash)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_Blocks_BlockHash_
@@ -22067,19 +21976,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.DeleteChainId
   nameWithType: DefaultStore.DeleteChainId
-- uid: Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
-  name: DeleteTransaction(TxId)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: DefaultStore.DeleteTransaction(TxId)
-- uid: Libplanet.Store.DefaultStore.DeleteTransaction*
-  name: DeleteTransaction
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTransaction_
-  commentId: Overload:Libplanet.Store.DefaultStore.DeleteTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.DeleteTransaction
-  nameWithType: DefaultStore.DeleteTransaction
 - uid: Libplanet.Store.DefaultStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
   name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
@@ -22268,19 +22164,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.IterateIndexes
   nameWithType: DefaultStore.IterateIndexes
-- uid: Libplanet.Store.DefaultStore.IterateTransactionIds
-  name: IterateTransactionIds()
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTransactionIds
-  commentId: M:Libplanet.Store.DefaultStore.IterateTransactionIds
-  fullName: Libplanet.Store.DefaultStore.IterateTransactionIds()
-  nameWithType: DefaultStore.IterateTransactionIds()
-- uid: Libplanet.Store.DefaultStore.IterateTransactionIds*
-  name: IterateTransactionIds
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.Store.DefaultStore.IterateTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.IterateTransactionIds
-  nameWithType: DefaultStore.IterateTransactionIds
 - uid: Libplanet.Store.DefaultStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IterateTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -22532,19 +22415,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.CountIndex
   nameWithType: IStore.CountIndex
-- uid: Libplanet.Store.IStore.CountTransactions
-  name: CountTransactions()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_CountTransactions
-  commentId: M:Libplanet.Store.IStore.CountTransactions
-  fullName: Libplanet.Store.IStore.CountTransactions()
-  nameWithType: IStore.CountTransactions()
-- uid: Libplanet.Store.IStore.CountTransactions*
-  name: CountTransactions
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_CountTransactions_
-  commentId: Overload:Libplanet.Store.IStore.CountTransactions
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.CountTransactions
-  nameWithType: IStore.CountTransactions
 - uid: Libplanet.Store.IStore.DeleteBlock(Libplanet.Blocks.BlockHash)
   name: DeleteBlock(BlockHash)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteBlock_Libplanet_Blocks_BlockHash_
@@ -22571,19 +22441,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteChainId
   nameWithType: IStore.DeleteChainId
-- uid: Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
-  name: DeleteTransaction(TxId)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: IStore.DeleteTransaction(TxId)
-- uid: Libplanet.Store.IStore.DeleteTransaction*
-  name: DeleteTransaction
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTransaction_
-  commentId: Overload:Libplanet.Store.IStore.DeleteTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.DeleteTransaction
-  nameWithType: IStore.DeleteTransaction
 - uid: Libplanet.Store.IStore.DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
   name: DeleteTxIdBlockHashIndex(TxId, BlockHash)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
@@ -22817,19 +22674,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateIndexes
   nameWithType: IStore.IterateIndexes
-- uid: Libplanet.Store.IStore.IterateTransactionIds
-  name: IterateTransactionIds()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateTransactionIds
-  commentId: M:Libplanet.Store.IStore.IterateTransactionIds
-  fullName: Libplanet.Store.IStore.IterateTransactionIds()
-  nameWithType: IStore.IterateTransactionIds()
-- uid: Libplanet.Store.IStore.IterateTransactionIds*
-  name: IterateTransactionIds
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.Store.IStore.IterateTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.IterateTransactionIds
-  nameWithType: IStore.IterateTransactionIds
 - uid: Libplanet.Store.IStore.IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IterateTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_
@@ -23076,23 +22920,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountIndex
   nameWithType: MemoryStore.IStore.CountIndex
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountIndex
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
-  name: IStore.CountTransactions()
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountTransactions
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
-  name.vb: Libplanet.Store.IStore.CountTransactions()
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountTransactions()
-  nameWithType: MemoryStore.IStore.CountTransactions()
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountTransactions()
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions*
-  name: IStore.CountTransactions
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_CountTransactions_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#CountTransactions
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.CountTransactions
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.CountTransactions
-  nameWithType: MemoryStore.IStore.CountTransactions
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.CountTransactions
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteBlock(Libplanet.Blocks.BlockHash)
   name: IStore.DeleteBlock(BlockHash)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteBlock_Libplanet_Blocks_BlockHash_
@@ -23127,23 +22954,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteChainId
   nameWithType: MemoryStore.IStore.DeleteChainId
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteChainId
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction(Libplanet.Tx.TxId)
-  name: IStore.DeleteTransaction(TxId)
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction(Libplanet.Tx.TxId)
-  name.vb: Libplanet.Store.IStore.DeleteTransaction(TxId)
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: MemoryStore.IStore.DeleteTransaction(TxId)
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTransaction(TxId)
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction*
-  name: IStore.DeleteTransaction
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTransaction_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTransaction
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.DeleteTransaction
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.DeleteTransaction
-  nameWithType: MemoryStore.IStore.DeleteTransaction
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.DeleteTransaction
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#DeleteTxIdBlockHashIndex(Libplanet.Tx.TxId,Libplanet.Blocks.BlockHash)
   name: IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_DeleteTxIdBlockHashIndex_Libplanet_Tx_TxId_Libplanet_Blocks_BlockHash_
@@ -23420,23 +23230,6 @@ references:
   fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateIndexes
   nameWithType: MemoryStore.IStore.IterateIndexes
   nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateIndexes
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
-  name: IStore.IterateTransactionIds()
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTransactionIds
-  commentId: M:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
-  name.vb: Libplanet.Store.IStore.IterateTransactionIds()
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTransactionIds()
-  nameWithType: MemoryStore.IStore.IterateTransactionIds()
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTransactionIds()
-- uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds*
-  name: IStore.IterateTransactionIds
-  href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTransactionIds
-  isSpec: "True"
-  name.vb: Libplanet.Store.IStore.IterateTransactionIds
-  fullName: Libplanet.Store.MemoryStore.Libplanet.Store.IStore.IterateTransactionIds
-  nameWithType: MemoryStore.IStore.IterateTransactionIds
-  nameWithType.vb: MemoryStore.Libplanet.Store.IStore.IterateTransactionIds
 - uid: Libplanet.Store.MemoryStore.Libplanet#Store#IStore#IterateTxIdBlockHashIndex(Libplanet.Tx.TxId)
   name: IStore.IterateTxIdBlockHashIndex(TxId)
   href: api/Libplanet.Store.MemoryStore.html#Libplanet_Store_MemoryStore_Libplanet_Store_IStore_IterateTxIdBlockHashIndex_Libplanet_Tx_TxId_

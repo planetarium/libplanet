@@ -77,6 +77,14 @@ Use <code>TurnClient.Create()</code> instead.  [<a href="https://github.com/plan
 </ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Removed unused transaction related methods from <code>IStore</code> and its
+implementations [<a href="https://github.com/planetarium/libplanet/issues/1538">#1538</a>, <a href="https://github.com/planetarium/libplanet/pull/2201">#2201</a>]
+<ul>
+<li><code>IterateTransactionIds()</code></li>
+<li><code>DeleteTransaction()</code></li>
+<li><code>CountTransactions()</code></li>
+</ul>
+</li>
 <li>Removed <code>Currency(string, byte, IImutableSet&lt;Address&gt;?)</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
 <li>Removed <code>Currency(string, byte, Address?)</code> constructor.
