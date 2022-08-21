@@ -438,7 +438,7 @@ namespace Libplanet.Net
                     if (tasks.Any())
                     {
                         var tcs = new TaskCompletionSource<object>();
-                        using CancellationTokenRegistration ctr = cancellationToken.Register(
+                        cancellationToken.Register(
                             () => tcs.TrySetCanceled(),
                             useSynchronizationContext: false
                         );

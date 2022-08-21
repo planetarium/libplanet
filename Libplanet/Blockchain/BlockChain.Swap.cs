@@ -78,9 +78,6 @@ namespace Libplanet.Blockchain
                 ImmutableList<Block<T>> fastForwardPath =
                     GetFastForwardPath(other, branchpoint.Hash);
 
-                // If there is no rewind, it is not considered as a reorg.
-                bool reorg = rewindPath.Count > 0;
-
                 _rwlock.EnterWriteLock();
                 try
                 {

@@ -402,8 +402,7 @@ namespace Libplanet.Net.Transports
                 Interlocked.Increment(ref _requestCount);
 
                 // FIXME should we also cancel tcs sender side too?
-                using CancellationTokenRegistration ctr =
-                    cts.Token.Register(() => tcs.TrySetCanceled());
+                cts.Token.Register(() => tcs.TrySetCanceled());
                 MessageRequest req = new MessageRequest(
                     reqId,
                     message,
@@ -510,8 +509,7 @@ namespace Libplanet.Net.Transports
 
             string identityHex = ByteUtil.Hex(message.Identity);
             var tcs = new TaskCompletionSource<object>();
-            using CancellationTokenRegistration ctr =
-                cancellationToken.Register(() => tcs.TrySetCanceled());
+            cancellationToken.Register(() => tcs.TrySetCanceled());
             _replyCompletionSources.TryAdd(identityHex, tcs);
             _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
             _replyQueue.Enqueue(message);

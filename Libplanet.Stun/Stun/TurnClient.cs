@@ -486,8 +486,7 @@ namespace Libplanet.Stun
             CancellationToken cancellationToken)
         {
             TaskCompletionSource<StunMessage> tcs = _responses[transactionId];
-            using CancellationTokenRegistration ctr =
-                cancellationToken.Register(() => tcs.TrySetCanceled());
+            cancellationToken.Register(() => tcs.TrySetCanceled());
             StunMessage response = await tcs.Task;
             _responses.Remove(transactionId);
 

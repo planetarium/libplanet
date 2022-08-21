@@ -102,7 +102,6 @@ namespace Libplanet.Net.Messages
                 (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
             var ticks = remains[(int)Message.MessageFrame.Timestamp].ConvertToInt64();
             var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
-            var currentTime = DateTimeOffset.UtcNow;
 
             byte[] signature = remains[(int)Message.MessageFrame.Sign].ToByteArray();
 

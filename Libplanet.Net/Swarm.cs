@@ -578,7 +578,7 @@ namespace Libplanet.Net
             bool render = false,
             CancellationToken cancellationToken = default)
         {
-            using CancellationTokenRegistration ctr = cancellationToken.Register(() =>
+            cancellationToken.Register(() =>
                 _logger.Information("Preloading is requested to be cancelled.")
             );
 
@@ -937,9 +937,7 @@ namespace Libplanet.Net
         )
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
-            int peersCount = peersWithExcerpts.Count;
             var exceptions = new List<Exception>();
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
                 long peerIndex = excerpt.Index;

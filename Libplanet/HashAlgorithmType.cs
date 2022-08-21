@@ -36,9 +36,6 @@ namespace Libplanet
                 _instanceCtor?.Invoke(null, new object[0]) as HashAlgorithm
                     ?? throw new InvalidCastException(excMsg)
             );
-
-            // Immediately create an instance to check if the constructor works well:
-            HashAlgorithm unused = _instance.Value!;
         }
 
         /// <summary>
