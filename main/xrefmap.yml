@@ -14830,6 +14830,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.ParsePeer
   nameWithType: BoundPeer.ParsePeer
+- uid: Libplanet.Net.BoundPeer.PeerString
+  name: PeerString
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PeerString
+  commentId: P:Libplanet.Net.BoundPeer.PeerString
+  fullName: Libplanet.Net.BoundPeer.PeerString
+  nameWithType: BoundPeer.PeerString
+- uid: Libplanet.Net.BoundPeer.PeerString*
+  name: PeerString
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PeerString_
+  commentId: Overload:Libplanet.Net.BoundPeer.PeerString
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.PeerString
+  nameWithType: BoundPeer.PeerString
 - uid: Libplanet.Net.BoundPeer.ToBencodex
   name: ToBencodex()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex
