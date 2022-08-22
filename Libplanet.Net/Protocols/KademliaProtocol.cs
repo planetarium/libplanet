@@ -121,7 +121,7 @@ namespace Libplanet.Net.Protocols
 
         /// <inheritdoc />
         public async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {

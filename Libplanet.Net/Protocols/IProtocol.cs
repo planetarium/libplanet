@@ -14,7 +14,7 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// Conducts peer discovery for given <paramref name="bootstrapPeers"/>.
         /// </summary>
-        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="Peer"/>s
+        /// <param name="bootstrapPeers">A <see cref="IEnumerable{T}"/> of <see cref="BoundPeer"/>s
         /// to bootstrap.</param>
         /// <param name="dialTimeout">The timeout used when waiting a reply for either
         /// <see cref="PingMsg"/> or <see cref="FindNeighborsMsg"/>.
@@ -45,7 +45,7 @@ namespace Libplanet.Net.Protocols
         /// operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken);
 

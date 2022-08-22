@@ -84,7 +84,7 @@ namespace Libplanet.Net
             _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
-                new ConcurrentDictionary<Peer, DateTimeOffset>();
+                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -131,7 +131,7 @@ namespace Libplanet.Net
             _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
-                new ConcurrentDictionary<Peer, DateTimeOffset>();
+                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -181,7 +181,7 @@ namespace Libplanet.Net
         public DateTimeOffset? LastMessageTimestamp =>
             Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
 
-        public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps { get; private set; }
+        public IDictionary<BoundPeer, DateTimeOffset> LastSeenTimestamps { get; private set; }
 
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
@@ -428,7 +428,7 @@ namespace Libplanet.Net
         /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
         /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(
-            IEnumerable<Peer> seedPeers,
+            IEnumerable<BoundPeer> seedPeers,
             TimeSpan? dialTimeout,
             int searchDepth,
             CancellationToken cancellationToken = default)
@@ -438,7 +438,6 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(seedPeers));
             }
 
-            IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
             IReadOnlyList<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
             if (Options.StaticPeers.Any())
@@ -447,7 +446,7 @@ namespace Libplanet.Net
             }
 
             await PeerDiscovery.BootstrapAsync(
-                peers,
+                seedPeers,
                 dialTimeout,
                 searchDepth,
                 cancellationToken);
@@ -722,7 +721,7 @@ namespace Libplanet.Net
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         public async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
         {
