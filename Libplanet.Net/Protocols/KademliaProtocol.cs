@@ -128,15 +128,12 @@ namespace Libplanet.Net.Protocols
             try
             {
                 var tasks = new List<Task>();
-                foreach (Peer peer in peers)
+                foreach (BoundPeer peer in peers)
                 {
-                    if (peer is BoundPeer boundPeer)
-                    {
-                        tasks.Add(PingAsync(
-                            boundPeer,
-                            timeout: timeout,
-                            cancellationToken: cancellationToken));
-                    }
+                    tasks.Add(PingAsync(
+                        peer,
+                        timeout: timeout,
+                        cancellationToken: cancellationToken));
                 }
 
                 _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
@@ -413,7 +410,7 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException(
                         $"Expected pong, but received {reply.Type}.", reply);
                 }
-                else if (!(pong.Remote is Peer remote))
+                else if (!(pong.Remote is BoundPeer remote))
                 {
                     throw new InvalidMessageException($"Received pong's remote is null.", pong);
                 }
@@ -618,7 +615,7 @@ namespace Libplanet.Net.Protocols
         // Send pong back to remote
         private async Task ReceivePingAsync(PingMsg ping)
         {
-            if (!(ping.Remote is Peer remote))
+            if (!(ping.Remote is BoundPeer remote))
             {
                 throw new InvalidMessageException("Received ping's remote is null.", ping);
             }
@@ -636,8 +633,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Process <see cref="BoundPeer"/>s that is replied by sending <see cref="FindNeighborsMsg"/>
-        /// request.
+        /// Process <see cref="BoundPeer"/>s that is replied by sending
+        /// <see cref="FindNeighborsMsg"/> request.
         /// </summary>
         /// <param name="history"><see cref="BoundPeer"/>s that already searched.</param>
         /// <param name="dialHistory"><see cref="BoundPeer"/>s that ping sent.</param>

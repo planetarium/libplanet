@@ -268,7 +268,7 @@ namespace Libplanet.Net.Tests.Protocols
             return DoAddPeersAsync();
         }
 
-        public void SendPing(Peer target, TimeSpan? timeSpan = null)
+        public void SendPing(BoundPeer peer, TimeSpan? timeSpan = null)
         {
             if (_disposed)
             {
@@ -280,15 +280,10 @@ namespace Libplanet.Net.Tests.Protocols
                 throw new TransportException("Start transport before use.");
             }
 
-            if (!(target is BoundPeer boundPeer))
-            {
-                throw new ArgumentException("Target peer does not have endpoint.", nameof(target));
-            }
-
             Task.Run(() =>
             {
                 _ = (Protocol as KademliaProtocol).PingAsync(
-                    boundPeer,
+                    peer,
                     timeSpan,
                     default);
             });
