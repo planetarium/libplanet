@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -13,7 +14,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void ValidateTimestamp()
         {
-            var peer = new Peer(new PrivateKey().PublicKey);
+            var peer = new BoundPeer(new PrivateKey().PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var buffer = TimeSpan.FromSeconds(1);
             var messageValidator = new MessageValidator(
                 appProtocolVersion: default,
@@ -66,7 +67,7 @@ namespace Libplanet.Net.Tests.Messages
                 new HashSet<PublicKey>() { }.ToImmutableHashSet();
             ImmutableHashSet<PublicKey>? trustedApvSigners3 = null;
             DifferentAppProtocolVersionEncountered callback = (p, pv, lv) => { called = true; };
-            var peer = new Peer(trustedSigner.PublicKey);
+            var peer = new BoundPeer(trustedSigner.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var trustedPing1 = new PingMsg() { Remote = peer, Version = trustedApv1 };
             var trustedPing2 = new PingMsg() { Remote = peer, Version = trustedApv2 };
             var unknownPing1 = new PingMsg() { Remote = peer, Version = unknownApv1 };

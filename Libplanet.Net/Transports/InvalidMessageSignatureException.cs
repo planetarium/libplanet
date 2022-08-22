@@ -15,7 +15,7 @@ namespace Libplanet.Net.Transports
     {
         internal InvalidMessageSignatureException(
             string message,
-            Peer peer,
+            BoundPeer peer,
             PublicKey publicKey,
             byte[] messageToVerify,
             byte[] signature)

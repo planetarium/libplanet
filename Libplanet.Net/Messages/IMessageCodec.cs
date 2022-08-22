@@ -29,7 +29,7 @@ namespace Libplanet.Net.Messages
             Message message,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            Peer peer,
+            BoundPeer peer,
             DateTimeOffset timestamp);
 
         /// <summary>
