@@ -50,7 +50,7 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken);
 
         /// <summary>
-        /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
+        /// Checks whether <see cref="BoundPeer"/>s in <see cref="RoutingTable"/> is online by
         /// sending <see cref="PingMsg"/>.
         /// </summary>
         /// <param name="maxAge">Maximum age of peer to validate.</param>
@@ -70,7 +70,7 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
-        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
+        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="BoundPeer"/>s
         /// in the <see cref="KBucket.ReplacementCache"/>.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token used to propagate notification

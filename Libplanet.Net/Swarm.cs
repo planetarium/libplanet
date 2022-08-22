@@ -421,7 +421,7 @@ namespace Libplanet.Net
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="dialTimeout">Timeout for connecting to peers.</param>
         /// <param name="searchDepth">Maximum recursion depth when finding neighbors of
-        /// current <see cref="Peer"/> from seed peers.</param>
+        /// current <see cref="BoundPeer"/> from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -509,7 +509,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// Preemptively downloads blocks from registered <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
@@ -542,7 +542,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// Preemptively downloads blocks from registered <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
@@ -692,7 +692,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Validates all <see cref="Peer"/>s in the routing table by sending a simple message.
+        /// Validates all <see cref="BoundPeer"/>s in the routing table by sending a simple message.
         /// </summary>
         /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
         /// wait infinitely until the requested operation is finished.</param>
@@ -1145,7 +1145,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
         /// is equivalent to setting this value to <c>null</c>.</param>
-        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
@@ -1178,7 +1178,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
         /// is equivalent to setting this value to <c>null</c>.</param>
-        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with an <see cref="Array"/> of tuples

@@ -3,7 +3,7 @@ using System;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// Represents a <see cref="Peer"/>'s state in the routing table.
+    /// Represents a <see cref="BoundPeer"/>'s state in the routing table.
     /// </summary>
     public class PeerState
     {

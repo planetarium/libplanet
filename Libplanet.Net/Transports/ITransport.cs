@@ -10,7 +10,7 @@ namespace Libplanet.Net.Transports
 {
     /// <summary>
     /// An interface to handle peer-to-peer networking, including <see cref="Message"/> exchanging
-    /// and <see cref="Peer"/> managing.
+    /// and <see cref="BoundPeer"/> managing.
     /// </summary>
     public interface ITransport : IDisposable
     {
