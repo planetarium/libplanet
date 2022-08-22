@@ -1769,7 +1769,7 @@ namespace Libplanet.Net.Tests
 
         private Task BootstrapAsync<T>(
             Swarm<T> swarm,
-            Peer seed,
+            BoundPeer seed,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new() =>
@@ -1777,7 +1777,7 @@ namespace Libplanet.Net.Tests
 
         private async Task BootstrapAsync<T>(
             Swarm<T> swarm,
-            IEnumerable<Peer> seeds,
+            IEnumerable<BoundPeer> seeds,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new()
