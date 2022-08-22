@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "uadXeNX67xBNDQnOYIUIUBSu+uX7P/r1vaAsU8Hdt0Q="
+          "hash": "jAc0o8hhQjr8ZZqP4bQ9LF5Kq4gHYSbXi6Etzaf0OuE="
         }
       },
       "is_incremental": false,
@@ -2337,7 +2337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.DifferentAppProtocolVersionEncountered.html",
-          "hash": "XoLGS3tHf/x62QzREA+t5+51FRANP4DZ5QyIJOeF840="
+          "hash": "MjqOTkKPHkCsZaw6pXsiD7iP4ZVimqIhLjXynqkodOs="
         }
       },
       "is_incremental": false,
@@ -2409,7 +2409,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.IMessageCodec-1.html",
-          "hash": "sQ+Thd4k+Jwy3Z6Qw8TJW/1PW6eiuZ/z22ZnZ84RQfU="
+          "hash": "kIt7PLVVF5sfqQsqySP6l/nR2PcIoizeB4MX+kgKYBE="
         }
       },
       "is_incremental": false,
@@ -2445,7 +2445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.Message.html",
-          "hash": "AlQ4rSjuFpWgi7fHvmK49T1vONqCyEFRH97gosF6HtY="
+          "hash": "DuCiFvYBum3exoW2/udpgUAECHR+PV+1qxwJKp44uAQ="
         }
       },
       "is_incremental": false,
@@ -2457,7 +2457,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.MessageValidator.html",
-          "hash": "JFlSDajdZB1BehYTjPuzPo1xHjUpypUdHOuYgg2o9QQ="
+          "hash": "A0yQOQl6lCEK6agIEXPzMhjSr7WZ7y4WjjBMDygnS8Y="
         }
       },
       "is_incremental": false,
@@ -2481,7 +2481,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Messages.NetMQMessageCodec.html",
-          "hash": "AEaXK+SHlLZQrmEQigz1E/qXOufKMSXx7VFtxDr2f8M="
+          "hash": "QrJsOO5pwZKhY7y3xWdfzpLVQISHyn/RMk1S/73T+Zk="
         }
       },
       "is_incremental": false,
@@ -2757,7 +2757,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Transports.BoundPeerExtensions.html",
-          "hash": "MrnC9h2zCTvjmV54ddZZrITdf7H1pwknYnBT0d+9G78="
+          "hash": "pvHSAy042aG8UeeJPl9zPE9bPvzaGCjJ6b5yj1ISBpc="
         }
       },
       "is_incremental": false,

@@ -82,7 +82,7 @@ a trusted signer in the network.</p>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_DifferentAppProtocolVersionEncountered_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate void DifferentAppProtocolVersionEncountered(Peer peer, AppProtocolVersion peerVersion, AppProtocolVersion localVersion);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate void DifferentAppProtocolVersionEncountered(BoundPeer peer, AppProtocolVersion peerVersion, AppProtocolVersion localVersion);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -95,7 +95,7 @@ a trusted signer in the network.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
         <td><span class="parametername">peer</span></td>
         <td><p>The encountered <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> with
 a different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
