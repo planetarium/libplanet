@@ -16,6 +16,7 @@ To be released.
     [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient()` constructor.
     Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
 
 ### Backward-incompatible API changes
 
@@ -68,6 +69,9 @@ To be released.
     `Peer` to `BoundPeer`.  [[#2215]]
  -  (Libplanet.Net) All public return type, parameter type, and property type
     of `Peer` changed to `BoundPeer`.   [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.   [[#2233]]
 
 ### Backward-incompatible network protocol changes
 
@@ -144,7 +148,8 @@ To be released.
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
 [#2228]: https://github.com/planetarium/libplanet/pull/2228
-[#2232]: https://github.com/planetarium/libplanet/pull/2231
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
 
 
 Version 0.40.0
