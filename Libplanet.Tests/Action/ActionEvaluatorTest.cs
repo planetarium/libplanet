@@ -1100,6 +1100,85 @@ namespace Libplanet.Tests.Action
             Assert.Equal(chain.Genesis.Hash, evaluations[0].InputContext.GenesisHash);
         }
 
+        [Fact]
+        private void GenerateRandomSeed()
+        {
+            byte[] preEvaluationHashBytes =
+            {
+                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+            };
+            var signature = new byte[]
+            {
+                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb,
+                0xe8, 0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e,
+                0x97, 0x44, 0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c,
+                0x06, 0x02, 0x1f, 0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96,
+                0xa8, 0x63, 0x04, 0xb0, 0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9,
+                0x7d, 0x37, 0x67, 0xe1, 0xe9,
+            };
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(signature);
+            }
+
+            int seed =
+                ActionEvaluator<RandomAction>.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    hashedSignature,
+                    signature,
+                    0);
+            Assert.Equal(353767086, seed);
+        }
+
+        [Fact]
+        private async void CheckRandomSeedInAction()
+        {
+            IntegerSet fx = new IntegerSet(new[] { 5, 10 });
+
+            // txA: ((5 + 1) * 2) + 3 = 15
+            (Transaction<Arithmetic> txA, var deltaA) = fx.Sign(
+                0,
+                Arithmetic.Add(1),
+                Arithmetic.Mul(2),
+                Arithmetic.Add(3));
+
+            Block<Arithmetic> blockA = await fx.Mine();
+            ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
+                txA.GenesisHash,
+                blockA.PreEvaluationHash,
+                blockIndex: blockA.Index,
+                txid: txA.Id,
+                previousStates: fx.CreateAccountStateDelta(0, blockA.PreviousHash),
+                miner: blockA.Miner,
+                signer: txA.Signer,
+                signature: txA.Signature,
+                actions: txA.Actions.ToImmutableArray<IAction>(),
+                rehearsal: true,
+                previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
+                blockAction: false).ToArray();
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(txA.Signature);
+            }
+
+            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToBuilder().ToArray();
+            int initialRandomSeed =
+                ActionEvaluator<DumbAction>.GenerateRandomSeed(
+                    preEvaluationHashBytes,
+                    hashedSignature,
+                    txA.Signature,
+                    0);
+            for (int i = 0; i < evalsA.Length; i++)
+            {
+                ActionEvaluation eval = evalsA[i];
+                IActionContext context = eval.InputContext;
+                Assert.Equal(initialRandomSeed + i, context.Random.Seed);
+            }
+        }
+
         private sealed class EvaluateTestAction : IAction
         {
             public readonly Address SignerKey = new PrivateKey().ToAddress();
