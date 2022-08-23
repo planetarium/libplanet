@@ -78,16 +78,15 @@ namespace Libplanet.Crypto
             var kCalculator = new HMacDsaKCalculator(h);
             kCalculator.Init(privateKey.KeyParam.Parameters.N, privateKey.KeyParam.D, message);
 
-            // k in here is r in google
-            BigInteger k = kCalculator.NextK();
+            BigInteger nonce = kCalculator.NextK();
 
             ECPoint messagePoint = MessageToPoint(message);
 
             byte[] vrf = messagePoint.Multiply(privateKey.KeyParam.D).GetEncoded(false);
 
             ECMultiplier eCMultiplier = new FixedPointCombMultiplier();
-            ECPoint pointFromGen = eCMultiplier.Multiply(privateKey.KeyParam.Parameters.G, k);
-            ECPoint pointFromMessage = eCMultiplier.Multiply(messagePoint, k);
+            ECPoint pointFromGen = eCMultiplier.Multiply(privateKey.KeyParam.Parameters.G, nonce);
+            ECPoint pointFromMessage = eCMultiplier.Multiply(messagePoint, nonce);
 
             byte[] payload
                 = privateKey.KeyParam.Parameters.G.GetEncoded(false)
@@ -98,12 +97,16 @@ namespace Libplanet.Crypto
                 .Concat(pointFromMessage.GetEncoded(false)).ToArray();
 
             BigInteger checksum = MessageToInteger(payload);
-
-            BigInteger t = k.Subtract(checksum.Multiply(privateKey.KeyParam.D))
+            BigInteger nonceChecksum = nonce.Subtract(checksum.Multiply(privateKey.KeyParam.D))
                 .Mod(privateKey.KeyParam.Parameters.N);
             HashDigest<SHA256> vrfDigest = HashDigest<SHA256>.DeriveFrom(vrf);
 
-            byte[] proof = checksum.ToByteArray().Concat(t.ToByteArray()).Concat(vrf).ToArray();
+            byte[] checksumArr = checksum.ToByteArray();
+            byte[] nonceChecksumArr = nonceChecksum.ToByteArray();
+            byte[] proof = new byte[129];
+            Array.Copy(checksumArr, 0, proof, 0, checksumArr.Length);
+            Array.Copy(nonceChecksumArr, 0, proof, 32, nonceChecksumArr.Length);
+            Array.Copy(vrf, 0, proof, 64, vrf.Length);
 
             return (vrfDigest, proof);
         }
