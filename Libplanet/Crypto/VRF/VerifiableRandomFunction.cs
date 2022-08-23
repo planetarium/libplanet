@@ -7,7 +7,6 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Math.EC.Multiplier;
 using ECPoint = Org.BouncyCastle.Math.EC.ECPoint;
 
 namespace Libplanet.Crypto
@@ -74,41 +73,116 @@ namespace Libplanet.Crypto
 
         internal static (HashDigest<SHA256>, byte[]) Evaluate(byte[] message, PrivateKey privateKey)
         {
-            var h = new Sha256Digest();
-            var kCalculator = new HMacDsaKCalculator(h);
-            kCalculator.Init(privateKey.KeyParam.Parameters.N, privateKey.KeyParam.D, message);
+            // n : modulus
+            BigInteger n = privateKey.KeyParam.Parameters.N;
 
-            BigInteger nonce = kCalculator.NextK();
+            // d : private key
+            BigInteger d = privateKey.KeyParam.D;
+            var digest = new Sha256Digest();
 
-            ECPoint messagePoint = MessageToPoint(message);
+            // k(nonce) generator is deterministic
+            var kCalculator = new HMacDsaKCalculator(digest);
+            kCalculator.Init(n, d, message);
 
-            byte[] vrf = messagePoint.Multiply(privateKey.KeyParam.D).GetEncoded(false);
+            // k : nonce
+            BigInteger k = kCalculator.NextK();
 
-            ECMultiplier eCMultiplier = new FixedPointCombMultiplier();
-            ECPoint pointFromGen = eCMultiplier.Multiply(privateKey.KeyParam.Parameters.G, nonce);
-            ECPoint pointFromMessage = eCMultiplier.Multiply(messagePoint, nonce);
+            // G : generator point
+            ECPoint pointG = privateKey.KeyParam.Parameters.G;
+
+            // H : message hash point
+            ECPoint pointH = MessageToPoint(message);
+
+            // dH : VRF
+            byte[] dPointHArr = pointH.Multiply(d).GetEncoded(false);
+
+            // kG : r
+            ECPoint kPointG = privateKey.KeyParam.Parameters.G.Multiply(k);
+
+            // kH
+            ECPoint kPointH = pointH.Multiply(k);
+
+            // dG : public key
+            ECPoint dPointG = privateKey.PublicKey.KeyParam.Q;
 
             byte[] payload
-                = privateKey.KeyParam.Parameters.G.GetEncoded(false)
-                .Concat(messagePoint.GetEncoded(false))
-                .Concat(privateKey.PublicKey.KeyParam.Q.GetEncoded(false))
-                .Concat(vrf)
-                .Concat(pointFromGen.GetEncoded(false))
-                .Concat(pointFromMessage.GetEncoded(false)).ToArray();
+                = pointG.GetEncoded(false)
+                .Concat(pointH.GetEncoded(false))
+                .Concat(dPointG.GetEncoded(false))
+                .Concat(dPointHArr)
+                .Concat(kPointG.GetEncoded(false))
+                .Concat(kPointH.GetEncoded(false)).ToArray();
 
-            BigInteger checksum = MessageToInteger(payload);
-            BigInteger nonceChecksum = nonce.Subtract(checksum.Multiply(privateKey.KeyParam.D))
-                .Mod(privateKey.KeyParam.Parameters.N);
-            HashDigest<SHA256> vrfDigest = HashDigest<SHA256>.DeriveFrom(vrf);
+            // c = checksum(payload)
+            BigInteger c = MessageToInteger(payload);
 
-            byte[] checksumArr = checksum.ToByteArray();
-            byte[] nonceChecksumArr = nonceChecksum.ToByteArray();
+            // s = (k - c * d) % N
+            BigInteger s = k.Subtract(c.Multiply(d)).Mod(n);
+            HashDigest<SHA256> dPointHDigest = HashDigest<SHA256>.DeriveFrom(dPointHArr);
+
+            byte[] cArr = c.ToByteArray();
+            byte[] sArr = s.ToByteArray();
             byte[] proof = new byte[129];
-            Array.Copy(checksumArr, 0, proof, 0, checksumArr.Length);
-            Array.Copy(nonceChecksumArr, 0, proof, 32, nonceChecksumArr.Length);
-            Array.Copy(vrf, 0, proof, 64, vrf.Length);
+            Array.Copy(cArr, 0, proof, 0, cArr.Length);
+            Array.Copy(sArr, 0, proof, 32, sArr.Length);
+            Array.Copy(dPointHArr, 0, proof, 64, dPointHArr.Length);
 
-            return (vrfDigest, proof);
+            return (dPointHDigest, proof);
+        }
+
+        internal static HashDigest<SHA256> ProofToHash(
+            byte[] message, byte[] proof, PublicKey publicKey)
+        {
+            ECDomainParameters dp = GetECParameters();
+            if (proof.Length != 129)
+            {
+                throw new ArgumentException();
+            }
+
+            byte[] cArr = proof.Take(32).ToArray();
+            byte[] sArr = proof.Skip(32).Take(32).ToArray();
+            byte[] dPointHArr = proof.Skip(64).ToArray();
+
+            BigInteger c = new BigInteger(cArr);
+            BigInteger s = new BigInteger(sArr);
+
+            // dH : VRF point
+            ECPoint dPointH = dp.Curve.DecodePoint(dPointHArr);
+
+            // G : generator point
+            ECPoint pointG = publicKey.KeyParam.Parameters.G;
+
+            // dG : public key
+            ECPoint dPointG = publicKey.KeyParam.Q;
+
+            // sG + cdG = (s+cd)G = kG
+            ECPoint sPointG = dp.G.Multiply(s);
+            ECPoint cdPointG = publicKey.KeyParam.Q.Multiply(c);
+            ECPoint scdPointG = sPointG.Add(cdPointG);
+
+            // sH + cdH = (s+cd)H = kH
+            ECPoint pointH = MessageToPoint(message);
+            ECPoint sPointH = pointH.Multiply(s);
+            ECPoint cdPointH = dPointH.Multiply(c);
+            ECPoint scdPointH = sPointH.Add(cdPointH);
+
+            byte[] payload
+                = pointG.GetEncoded(false)
+                .Concat(pointH.GetEncoded(false))
+                .Concat(dPointG.GetEncoded(false))
+                .Concat(dPointHArr)
+                .Concat(scdPointG.GetEncoded(false))
+                .Concat(scdPointH.GetEncoded(false)).ToArray();
+
+            HashDigest<SHA256> dPointHDigest = HashDigest<SHA256>.DeriveFrom(dPointHArr);
+
+            // check if checksum of payload is same
+            if (!c.Equals(MessageToInteger(payload)))
+            {
+                throw new ArgumentException();
+            }
+
+            return dPointHDigest;
         }
     }
 }
