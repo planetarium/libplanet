@@ -24,7 +24,7 @@ namespace Libplanet.Crypto
             }
 
             _signature = signature;
-            _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativeSignature(this);
+            _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativeSignature(ToByteArray());
         }
 
         [Pure]

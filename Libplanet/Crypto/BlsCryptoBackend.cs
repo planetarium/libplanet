@@ -6,24 +6,38 @@ using PublicKeyBLS = Planetarium.Cryptography.BLS12_381.PublicKey;
 
 namespace Libplanet.Crypto
 {
-    public class BlsCryptoBackend<T>
+    public class BlsCryptoBackend<T> : ICryptoBackend<T>
         where T : HashAlgorithm
     {
-        public BlsSignature Sign(HashDigest<T> messageHash, BlsPrivateKey privateKey)
+        public byte[] Sign(HashDigest<T> messageHash, IPrivateKey privateKey)
         {
-            SecretKey sk = ValidateGetNativePrivateKey(privateKey);
+            if (!(privateKey is BlsPrivateKey blsPk))
+            {
+                throw new ArgumentException(
+                    $"Given public key is not {nameof(BlsPrivateKey)}",
+                    nameof(privateKey));
+            }
+
+            SecretKey sk = ValidateGetNativePrivateKey(blsPk);
             Msg msg = ConvertHashDigestToNativeMessage(messageHash);
 
             Signature sign = sk.Sign(msg);
-            return new BlsSignature(sign.Serialize());
+            return sign.Serialize();
         }
 
         public bool Verify(
             HashDigest<T> messageHash,
-            BlsSignature signature,
-            BlsPublicKey publicKey)
+            byte[] signature,
+            IPublicKey publicKey)
         {
-            PublicKeyBLS pk = ValidateGetNativePublicKey(publicKey);
+            if (!(publicKey is BlsPublicKey blsPk))
+            {
+                throw new ArgumentException(
+                    $"Given public key is not {nameof(BlsPublicKey)}",
+                    nameof(publicKey));
+            }
+
+            PublicKeyBLS pk = ValidateGetNativePublicKey(blsPk);
             Signature sign = ValidateGetNativeSignature(signature);
             Msg msg = ConvertHashDigestToNativeMessage(messageHash);
 
@@ -100,12 +114,12 @@ namespace Libplanet.Crypto
             return sk;
         }
 
-        public Signature ValidateGetNativeSignature(BlsSignature signature)
+        public Signature ValidateGetNativeSignature(byte[] signature)
         {
             Signature sig = default;
             try
             {
-                sig.Deserialize(signature.ToByteArray());
+                sig.Deserialize(signature);
             }
             catch (Exception e) when (e is ArithmeticException || e is ArgumentException)
             {
@@ -117,8 +131,8 @@ namespace Libplanet.Crypto
 
         public BlsSignature AggregateSignature(BlsSignature lhs, BlsSignature rhs)
         {
-            Signature lhsSig = ValidateGetNativeSignature(lhs);
-            Signature rhsSig = ValidateGetNativeSignature(rhs);
+            Signature lhsSig = ValidateGetNativeSignature(lhs.ToByteArray());
+            Signature rhsSig = ValidateGetNativeSignature(rhs.ToByteArray());
             lhsSig.Add(rhsSig);
             return new BlsSignature(lhsSig.Serialize());
         }
@@ -134,7 +148,7 @@ namespace Libplanet.Crypto
                 pks[i] = ValidateGetNativePublicKey(publicKeys[i]);
             }
 
-            Signature sig = ValidateGetNativeSignature(signature);
+            Signature sig = ValidateGetNativeSignature(signature.ToByteArray());
             return sig.FastAggregateVerify(in pks, msg);
         }
 
@@ -150,7 +164,7 @@ namespace Libplanet.Crypto
                 msgs[i] = ConvertHashDigestToNativeMessage(messages[i]);
             }
 
-            Signature sig = ValidateGetNativeSignature(signature);
+            Signature sig = ValidateGetNativeSignature(signature.ToByteArray());
             return sig.AggregateVerify(in pks, in msgs);
         }
 

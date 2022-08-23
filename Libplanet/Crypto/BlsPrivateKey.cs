@@ -8,7 +8,7 @@ using Planetarium.Cryptography.BLS12_381;
 
 namespace Libplanet.Crypto
 {
-    public class BlsPrivateKey : IEquatable<BlsPrivateKey>
+    public class BlsPrivateKey : IEquatable<BlsPrivateKey>, IPrivateKey
     {
         private const int KeyByteSize = BLS.SECRETKEY_SERIALIZE_SIZE;
         private readonly IReadOnlyList<byte> _privateKey;
@@ -16,7 +16,8 @@ namespace Libplanet.Crypto
         private BlsSignature? _proofOfPossession;
 
         /// <summary>
-        /// Instantiates a new random <see cref="BlsPrivateKey"/>.
+        /// Instantiates a new random <see cref="BlsPrivateKey"/> with CSPRNG (Cryptographically
+        /// Secure Random Number Generator).
         /// </summary>
         public BlsPrivateKey()
         {
@@ -24,17 +25,6 @@ namespace Libplanet.Crypto
             _proofOfPossession = CryptoConfig.ConsensusCryptoBackend.GetProofOfPossession(this);
         }
 
-        /// <summary>
-        /// Instantiates a new <see cref="BlsPrivateKey"/> from a byte array.
-        /// </summary>
-        /// <param name="privateKey">A <see cref="byte"/> array representation of private key.
-        /// </param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if given private key is not
-        /// <see cref="KeyByteSize"/>.
-        /// </exception>
-        /// <exception cref="CryptographicException">Thrown if deserialization has been failed
-        /// in library.
-        /// </exception>
         public BlsPrivateKey(IReadOnlyList<byte> privateKey)
         {
             if (privateKey.Count != KeyByteSize)
@@ -75,6 +65,10 @@ namespace Libplanet.Crypto
             }
         }
 
+        IPublicKey IPrivateKey.PublicKey => PublicKey;
+
+        IReadOnlyList<byte> IPrivateKey.KeyBytes => ByteArray;
+
         public BlsSignature ProofOfPossession
         {
             get
@@ -109,13 +103,13 @@ namespace Libplanet.Crypto
 
         public override int GetHashCode() => ByteUtil.CalculateHashCode(ToByteArray());
 
-        public BlsSignature Sign(byte[] message)
+        public byte[] Sign(byte[] message)
         {
             HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
-            return new BlsSignature(CryptoConfig.ConsensusCryptoBackend.Sign(hashed, this));
+            return CryptoConfig.ConsensusCryptoBackend.Sign(hashed, this);
         }
 
-        public BlsSignature Sign(ImmutableArray<byte> message) => Sign(message.ToArray());
+        public byte[] Sign(ImmutableArray<byte> message) => Sign(message.ToArray());
 
         [Pure]
         public byte[] ToByteArray() => _privateKey.ToArray();

@@ -8,7 +8,7 @@ using Planetarium.Cryptography.BLS12_381;
 
 namespace Libplanet.Crypto
 {
-    public class BlsPublicKey : IEquatable<BlsPublicKey>
+    public class BlsPublicKey : IEquatable<BlsPublicKey>, IPublicKey
     {
         private const int KeyByteSize = BLS.PUBLICKEY_SERIALIZE_SIZE;
 
@@ -29,6 +29,8 @@ namespace Libplanet.Crypto
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativePublicKey(this);
         }
 
+        public IReadOnlyList<byte> KeyBytes => ToImmutableArray();
+
         public static bool operator ==(BlsPublicKey left, BlsPublicKey right) =>
             left.Equals(right);
 
@@ -44,7 +46,7 @@ namespace Libplanet.Crypto
 
         [Pure]
         public bool VerifyProofOfPossession(BlsSignature proofOfPossession) =>
-            CryptoConfig.ConsensusCryptoBackend.VerifyPoP(proofOfPossession);
+            CryptoConfig.ConsensusCryptoBackend.VerifyPoP(this, proofOfPossession);
 
         [Pure]
         public byte[] ToByteArray() => _publicKey.ToArray();
@@ -54,16 +56,31 @@ namespace Libplanet.Crypto
             ToByteArray().ToImmutableArray();
 
         [Pure]
-        public bool Verify(IReadOnlyList<byte> message, BlsSignature signature)
+        public bool Verify(IReadOnlyList<byte> message, IReadOnlyList<byte> signature)
         {
             if (message == null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
 
+            if (signature == null)
+            {
+                throw new ArgumentNullException(nameof(signature));
+            }
+
+            if (signature is ImmutableArray<byte> j ? j.IsDefaultOrEmpty : !signature.Any())
+            {
+                throw new ArgumentException("Signature is empty.", nameof(signature));
+            }
+
+            if (message is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !message.Any())
+            {
+                throw new ArgumentException("Message is empty.", nameof(message));
+            }
+
             HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message.ToImmutableArray());
             return CryptoConfig.ConsensusCryptoBackend.Verify(
-                hashed, signature.ToByteArray(), this);
+                hashed, signature.ToArray(), this);
         }
 
         public override string ToString() => ByteUtil.Hex(ToByteArray());

@@ -29,6 +29,12 @@ To be released.
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
+ -  Parameter type `PrivateKey privateKey` in
+    `Crypto.ICryptoBackend.Sign(HashDigest<T>, PrivateKey)` is now
+    `IPrivateKey`.  [[#PBFT]]
+ -  Parameter type `PublicKey publicKey` in
+    `Crypto.ICryptoBackend.Verify(HashDigest<T>, byte[], PublicKey)` is
+    now `IPublicKey`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
@@ -50,9 +56,15 @@ To be released.
  -  Added `Crypto.ConsensusCryptoBackend` class.  [[#PBFT]]
  -  Added static `BlsCryptoBackend<T> ConsensusCryptoBackend` property to
     `Crypto.CryptoConfig`.  [[#PBFT]]
- -  Added `Crypto.BlsPrivateKey` class.  [[#PBFT]]
- -  Added `Crypto.BlsPublicKey` class.  [[#PBFT]]
+ -  Added `Crypto.IPublicKey` interface.  [[#PBFT]]
+ -  Added `Crypto.IPrivateKey` interface.  [[#PBFT]]
+ -  Added `Crypto.IPrivateKey` inherited `Crypto.BlsPrivateKey` class.
+    [[#PBFT]]
+ -  Added `Crypto.IPublicKey` inherited `Crypto.BlsPublicKey` class.
+    [[#PBFT]]
  -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
+ -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
+ -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
