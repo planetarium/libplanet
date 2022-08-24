@@ -530,7 +530,7 @@ namespace Libplanet.Assets
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
         /// is an empty string.</exception>
-        [Obsolete]
+        [Obsolete("Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.")]
         public static Currency LegacyUntracked(
             string ticker,
             byte decimalPlaces,
@@ -556,7 +556,7 @@ namespace Libplanet.Assets
         /// <seealso cref="LegacyUntracked(string,byte,IImmutableSet{Address}?)"/>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
         /// is an empty string.</exception>
-        [Obsolete]
+        [Obsolete("Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.")]
         public static Currency LegacyUntracked(
             string ticker,
             byte decimalPlaces,

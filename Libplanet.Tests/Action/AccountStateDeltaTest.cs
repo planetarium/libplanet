@@ -40,16 +40,16 @@ namespace Libplanet.Tests.Action
 
             _addr = _keys.Select(AddressExtensions.ToAddress).ToArray();
 
-#pragma warning disable CS0612
             _currencies = new[]
             {
+#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
                 Currency.LegacyUntracked("FOO", 0, _addr[0]),
                 Currency.LegacyUntracked("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
                 Currency.LegacyUntracked("BAZ", 0, null),
+#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
                 Currency.Uncapped("QUX", 0, minter: _addr[0]),
                 Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
-#pragma warning restore CS0612
 
             _states = new Dictionary<Address, IValue>
             {
