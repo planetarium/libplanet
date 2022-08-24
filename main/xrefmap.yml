@@ -14730,6 +14730,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.BoundPeer
   nameWithType: BoundPeer.BoundPeer
+- uid: Libplanet.Net.BoundPeer.Address
+  name: Address
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_Address
+  commentId: P:Libplanet.Net.BoundPeer.Address
+  fullName: Libplanet.Net.BoundPeer.Address
+  nameWithType: BoundPeer.Address
+- uid: Libplanet.Net.BoundPeer.Address*
+  name: Address
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_Address_
+  commentId: Overload:Libplanet.Net.BoundPeer.Address
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.Address
+  nameWithType: BoundPeer.Address
 - uid: Libplanet.Net.BoundPeer.EndPoint
   name: EndPoint
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_EndPoint
@@ -14843,6 +14856,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.PeerString
   nameWithType: BoundPeer.PeerString
+- uid: Libplanet.Net.BoundPeer.PublicIPAddress
+  name: PublicIPAddress
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PublicIPAddress
+  commentId: P:Libplanet.Net.BoundPeer.PublicIPAddress
+  fullName: Libplanet.Net.BoundPeer.PublicIPAddress
+  nameWithType: BoundPeer.PublicIPAddress
+- uid: Libplanet.Net.BoundPeer.PublicIPAddress*
+  name: PublicIPAddress
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PublicIPAddress_
+  commentId: Overload:Libplanet.Net.BoundPeer.PublicIPAddress
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.PublicIPAddress
+  nameWithType: BoundPeer.PublicIPAddress
+- uid: Libplanet.Net.BoundPeer.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PublicKey
+  commentId: P:Libplanet.Net.BoundPeer.PublicKey
+  fullName: Libplanet.Net.BoundPeer.PublicKey
+  nameWithType: BoundPeer.PublicKey
+- uid: Libplanet.Net.BoundPeer.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_PublicKey_
+  commentId: Overload:Libplanet.Net.BoundPeer.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.PublicKey
+  nameWithType: BoundPeer.PublicKey
 - uid: Libplanet.Net.BoundPeer.ToBencodex
   name: ToBencodex()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToBencodex
@@ -15678,176 +15717,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.NoSwarmContextException.NoSwarmContextException
   nameWithType: NoSwarmContextException.NoSwarmContextException
-- uid: Libplanet.Net.Peer
-  name: Peer
-  href: api/Libplanet.Net.Peer.html
-  commentId: T:Libplanet.Net.Peer
-  fullName: Libplanet.Net.Peer
-  nameWithType: Peer
-- uid: Libplanet.Net.Peer.#ctor(Bencodex.Types.Dictionary)
-  name: Peer(Bencodex.Types.Dictionary)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Bencodex_Types_Dictionary_
-  commentId: M:Libplanet.Net.Peer.#ctor(Bencodex.Types.Dictionary)
-  fullName: Libplanet.Net.Peer.Peer(Bencodex.Types.Dictionary)
-  nameWithType: Peer.Peer(Bencodex.Types.Dictionary)
-- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey)
-  name: Peer(PublicKey)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey)
-  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey)
-  nameWithType: Peer.Peer(PublicKey)
-- uid: Libplanet.Net.Peer.#ctor(SerializationInfo,StreamingContext)
-  name: Peer(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Peer.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Peer.Peer(SerializationInfo, StreamingContext)
-  nameWithType: Peer.Peer(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Peer.#ctor*
-  name: Peer
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_
-  commentId: Overload:Libplanet.Net.Peer.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.Peer
-  nameWithType: Peer.Peer
-- uid: Libplanet.Net.Peer.Address
-  name: Address
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_Address
-  commentId: P:Libplanet.Net.Peer.Address
-  fullName: Libplanet.Net.Peer.Address
-  nameWithType: Peer.Address
-- uid: Libplanet.Net.Peer.Address*
-  name: Address
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_Address_
-  commentId: Overload:Libplanet.Net.Peer.Address
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.Address
-  nameWithType: Peer.Address
-- uid: Libplanet.Net.Peer.Equals(Libplanet.Net.Peer)
-  name: Equals(Peer)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_Equals_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Peer.Equals(Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Peer.Equals(Libplanet.Net.Peer)
-  nameWithType: Peer.Equals(Peer)
-- uid: Libplanet.Net.Peer.Equals(System.Nullable{System.Object})
-  name: Equals(Nullable<Object>)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_Equals_System_Nullable_System_Object__
-  commentId: M:Libplanet.Net.Peer.Equals(System.Nullable{System.Object})
-  name.vb: Equals(Nullable(Of Object))
-  fullName: Libplanet.Net.Peer.Equals(System.Nullable<System.Object>)
-  fullName.vb: Libplanet.Net.Peer.Equals(System.Nullable(Of System.Object))
-  nameWithType: Peer.Equals(Nullable<Object>)
-  nameWithType.vb: Peer.Equals(Nullable(Of Object))
-- uid: Libplanet.Net.Peer.Equals*
-  name: Equals
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_Equals_
-  commentId: Overload:Libplanet.Net.Peer.Equals
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.Equals
-  nameWithType: Peer.Equals
-- uid: Libplanet.Net.Peer.GetHashCode
-  name: GetHashCode()
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_GetHashCode
-  commentId: M:Libplanet.Net.Peer.GetHashCode
-  fullName: Libplanet.Net.Peer.GetHashCode()
-  nameWithType: Peer.GetHashCode()
-- uid: Libplanet.Net.Peer.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_GetHashCode_
-  commentId: Overload:Libplanet.Net.Peer.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.GetHashCode
-  nameWithType: Peer.GetHashCode
-- uid: Libplanet.Net.Peer.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Peer.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Peer.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: Peer.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Peer.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_GetObjectData_
-  commentId: Overload:Libplanet.Net.Peer.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.GetObjectData
-  nameWithType: Peer.GetObjectData
-- uid: Libplanet.Net.Peer.op_Equality(Libplanet.Net.Peer,Libplanet.Net.Peer)
-  name: Equality(Peer, Peer)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Equality_Libplanet_Net_Peer_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Peer.op_Equality(Libplanet.Net.Peer,Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Peer.Equality(Libplanet.Net.Peer, Libplanet.Net.Peer)
-  nameWithType: Peer.Equality(Peer, Peer)
-- uid: Libplanet.Net.Peer.op_Equality*
-  name: Equality
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Equality_
-  commentId: Overload:Libplanet.Net.Peer.op_Equality
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.Equality
-  nameWithType: Peer.Equality
-- uid: Libplanet.Net.Peer.op_Inequality(Libplanet.Net.Peer,Libplanet.Net.Peer)
-  name: Inequality(Peer, Peer)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Inequality_Libplanet_Net_Peer_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Peer.op_Inequality(Libplanet.Net.Peer,Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Peer.Inequality(Libplanet.Net.Peer, Libplanet.Net.Peer)
-  nameWithType: Peer.Inequality(Peer, Peer)
-- uid: Libplanet.Net.Peer.op_Inequality*
-  name: Inequality
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Inequality_
-  commentId: Overload:Libplanet.Net.Peer.op_Inequality
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.Inequality
-  nameWithType: Peer.Inequality
-- uid: Libplanet.Net.Peer.PublicIPAddress
-  name: PublicIPAddress
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicIPAddress
-  commentId: P:Libplanet.Net.Peer.PublicIPAddress
-  fullName: Libplanet.Net.Peer.PublicIPAddress
-  nameWithType: Peer.PublicIPAddress
-- uid: Libplanet.Net.Peer.PublicIPAddress*
-  name: PublicIPAddress
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicIPAddress_
-  commentId: Overload:Libplanet.Net.Peer.PublicIPAddress
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.PublicIPAddress
-  nameWithType: Peer.PublicIPAddress
-- uid: Libplanet.Net.Peer.PublicKey
-  name: PublicKey
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicKey
-  commentId: P:Libplanet.Net.Peer.PublicKey
-  fullName: Libplanet.Net.Peer.PublicKey
-  nameWithType: Peer.PublicKey
-- uid: Libplanet.Net.Peer.PublicKey*
-  name: PublicKey
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicKey_
-  commentId: Overload:Libplanet.Net.Peer.PublicKey
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.PublicKey
-  nameWithType: Peer.PublicKey
-- uid: Libplanet.Net.Peer.ToBencodex
-  name: ToBencodex()
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToBencodex
-  commentId: M:Libplanet.Net.Peer.ToBencodex
-  fullName: Libplanet.Net.Peer.ToBencodex()
-  nameWithType: Peer.ToBencodex()
-- uid: Libplanet.Net.Peer.ToBencodex*
-  name: ToBencodex
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToBencodex_
-  commentId: Overload:Libplanet.Net.Peer.ToBencodex
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.ToBencodex
-  nameWithType: Peer.ToBencodex
-- uid: Libplanet.Net.Peer.ToString
-  name: ToString()
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToString
-  commentId: M:Libplanet.Net.Peer.ToString
-  fullName: Libplanet.Net.Peer.ToString()
-  nameWithType: Peer.ToString()
-- uid: Libplanet.Net.Peer.ToString*
-  name: ToString
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToString_
-  commentId: Overload:Libplanet.Net.Peer.ToString
-  isSpec: "True"
-  fullName: Libplanet.Net.Peer.ToString
-  nameWithType: Peer.ToString
 - uid: Libplanet.Net.PeerChainState
   name: PeerChainState
   href: api/Libplanet.Net.PeerChainState.html
@@ -16156,15 +16025,15 @@ references:
   commentId: T:Libplanet.Net.Protocols.IProtocol
   fullName: Libplanet.Net.Protocols.IProtocol
   nameWithType: IProtocol
-- uid: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: IProtocol.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: IProtocol.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name: AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.IProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: IProtocol.AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: IProtocol.AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Protocols.IProtocol.AddPeersAsync*
   name: AddPeersAsync
   href: api/Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_AddPeersAsync_
@@ -16334,15 +16203,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.KademliaProtocol.KademliaProtocol
   nameWithType: KademliaProtocol.KademliaProtocol
-- uid: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: KademliaProtocol.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: KademliaProtocol.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name: AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: KademliaProtocol.AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: KademliaProtocol.AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync*
   name: AddPeersAsync
   href: api/Libplanet.Net.Protocols.KademliaProtocol.html#Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_
@@ -16790,15 +16659,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Swarm
   nameWithType: Swarm<T>.Swarm
   nameWithType.vb: Swarm(Of T).Swarm
-- uid: Libplanet.Net.Swarm`1.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name: AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.AddPeersAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).AddPeersAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), CancellationToken)
-  nameWithType: Swarm<T>.AddPeersAsync(IEnumerable<Peer>, Nullable<TimeSpan>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).AddPeersAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name: AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AddPeersAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.AddPeersAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).AddPeersAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: Swarm<T>.AddPeersAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).AddPeersAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.AddPeersAsync*
   name: AddPeersAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AddPeersAsync_
@@ -16918,15 +16787,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(CancellationToken)
   nameWithType: Swarm<T>.BootstrapAsync(CancellationToken)
   nameWithType.vb: Swarm(Of T).BootstrapAsync(CancellationToken)
-- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name: BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
-  name.vb: BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.Peer>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<Peer>, Nullable<TimeSpan>, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of Peer), Nullable(Of TimeSpan), Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name: BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},System.Int32,CancellationToken)
+  name.vb: BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.BootstrapAsync(IEnumerable<Libplanet.Net.BoundPeer>, System.Nullable<TimeSpan>, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync(IEnumerable(Of Libplanet.Net.BoundPeer), System.Nullable(Of TimeSpan), System.Int32, CancellationToken)
+  nameWithType: Swarm<T>.BootstrapAsync(IEnumerable<BoundPeer>, Nullable<TimeSpan>, Int32, CancellationToken)
+  nameWithType.vb: Swarm(Of T).BootstrapAsync(IEnumerable(Of BoundPeer), Nullable(Of TimeSpan), Int32, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync*
   name: BootstrapAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_

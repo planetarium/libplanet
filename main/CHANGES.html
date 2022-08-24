@@ -74,6 +74,7 @@
 [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 <li>(Libplanet.Stun) Removed <code>TurnClient()</code> constructor.
 Use <code>TurnClient.Create()</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
+<li>(Libplanet.Net) Removed <code>Peer</code> class.  Use <code>BoundPeer</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/2233">#2233</a>]</li>
 </ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -127,6 +128,9 @@ returns null.  [<a href="https://github.com/planetarium/libplanet/issues/915">#9
 <code>Peer</code> to <code>BoundPeer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2215">#2215</a>]</li>
 <li>(Libplanet.Net) All public return type, parameter type, and property type
 of <code>Peer</code> changed to <code>BoundPeer</code>.   [<a href="https://github.com/planetarium/libplanet/pull/2228">#2228</a>]</li>
+<li>(Libplanet.Net) Additional public return type, parameter type, and
+property type of <code>Peer</code> that weren't handled by <a href="https://github.com/planetarium/libplanet/pull/2228">#2228</a> changed to
+<code>BoundPeer</code>.   [<a href="https://github.com/planetarium/libplanet/pull/2233">#2233</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -151,7 +155,7 @@ tracks the total supply if trackable from version 4.</li>
 <li>Added <code>TotalSupplyStateCompleters&lt;T&gt;</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
 <li>Added <code>StateCompleterSet&lt;T&gt;.TotalSupplyStateCompleter</code> property.
 [<a href="https://github.com/planetarium/libplanet/issues/915">#915</a>, <a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]</li>
-<li>(Libplanet.Net) Added <code>BoundPeer.PeerString</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2187">#2187</a>, <a href="https://github.com/planetarium/libplanet/pull/2231">#2232</a>]</li>
+<li>(Libplanet.Net) Added <code>BoundPeer.PeerString</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/2187">#2187</a>, <a href="https://github.com/planetarium/libplanet/pull/2232">#2232</a>]</li>
 <li>(Libplanet.Stun) Added <code>IIceServer</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 <li>(Libplanet.Stun) Added <code>TurnClient.Create()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/2219">#2219</a>]</li>
 </ul>

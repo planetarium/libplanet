@@ -122,7 +122,7 @@
       <tr>
         <td><a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a></td>
         <td><span class="parametername">table</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> where <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s are stored.</p>
+        <td><p>The <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> where <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s are stored.</p>
 </td>
       </tr>
       <tr>
@@ -134,7 +134,7 @@
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> of the <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> of the <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>
 to be the reference point.</p>
 </td>
       </tr>
@@ -157,20 +157,20 @@ If it's omitted or <code>null</code> is given, will automatically be set to 5 se
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable%7BLibplanet.Net.BoundPeer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync*"></a>
-  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
+  <h4 id="Libplanet_Net_Protocols_KademliaProtocol_AddPeersAsync_IEnumerable_Libplanet_Net_BoundPeer__System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.AddPeersAsync(IEnumerable{Libplanet.Net.BoundPeer},System.Nullable{TimeSpan},CancellationToken)">AddPeersAsync(IEnumerable&lt;BoundPeer&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Tries to add given <code data-dev-comment-type="paramref" class="paramref">peers</code> to routing table
 by sending <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task AddPeersAsync(IEnumerable&lt;Peer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task AddPeersAsync(IEnumerable&lt;BoundPeer&gt; peers, TimeSpan? timeout, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -183,7 +183,7 @@ by sending <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.Peer.html">Peer</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><span class="parametername">peers</span></td>
         <td><p>The peers to add.</p>
 </td>
@@ -251,7 +251,7 @@ operation should be canceled.</p>
       <tr>
         <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
         <td><span class="parametername">bootstrapPeers</span></td>
-        <td><p>A <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s
+        <td><p>A <see cref="!:IEnumerable&lt;T>"></see> of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s
 to bootstrap.</p>
 </td>
       </tr>
@@ -300,7 +300,7 @@ operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L201">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L198">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)">CheckAllPeersAsync(Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -359,12 +359,12 @@ operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L257">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L254">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_CheckReplacementCacheAsync_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.CheckReplacementCacheAsync(CancellationToken)">CheckReplacementCacheAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Checks the <span class="xref">Libplanet.Net.Protocols.KBucket</span> in the <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> and if
-there is an empty <span class="xref">Libplanet.Net.Protocols.KBucket</span>, fill it with <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s
+there is an empty <span class="xref">Libplanet.Net.Protocols.KBucket</span>, fill it with <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s
 in the <span class="xref">Libplanet.Net.Protocols.KBucket.ReplacementCache</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -412,7 +412,7 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address%2CSystem.Int32%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L295">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L292">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_FindSpecificPeerAsync_Libplanet_Address_System_Int32_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.FindSpecificPeerAsync(Libplanet.Address,System.Int32,System.Nullable{TimeSpan},CancellationToken)">FindSpecificPeerAsync(Address, Int32, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -484,7 +484,7 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L218">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L215">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_RebuildConnectionAsync_System_Int32_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RebuildConnectionAsync(System.Int32,CancellationToken)">RebuildConnectionAsync(Int32, CancellationToken)</h4>
@@ -541,11 +541,11 @@ that this operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L164">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet.Net/Protocols/KademliaProtocol.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync*"></a>
   <h4 id="Libplanet_Net_Protocols_KademliaProtocol_RefreshTableAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Net.Protocols.KademliaProtocol.RefreshTableAsync(TimeSpan,CancellationToken)">RefreshTableAsync(TimeSpan, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Checks whether <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s in <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> is online by
+  <div class="markdown level1 summary"><p>Checks whether <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s in <a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a> is online by
 sending <a class="xref" href="Libplanet.Net.Messages.PingMsg.html">PingMsg</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
