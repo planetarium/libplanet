@@ -27,6 +27,12 @@ namespace Libplanet.Crypto
 
         public BlsPrivateKey(IReadOnlyList<byte> privateKey)
         {
+            if (privateKey is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !privateKey.Any())
+            {
+                throw new ArgumentNullException(
+                    nameof(privateKey), "PublicKey is empty.");
+            }
+
             if (privateKey.Count != KeyByteSize)
             {
                 throw new ArgumentOutOfRangeException(

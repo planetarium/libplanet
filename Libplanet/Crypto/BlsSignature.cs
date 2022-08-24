@@ -15,6 +15,12 @@ namespace Libplanet.Crypto
 
         public BlsSignature(IReadOnlyList<byte> signature)
         {
+            if (signature is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !signature.Any())
+            {
+                throw new ArgumentNullException(
+                    nameof(signature), "Signature is empty.");
+            }
+
             if (signature.Count != KeyByteSize)
             {
                 throw new ArgumentOutOfRangeException(
