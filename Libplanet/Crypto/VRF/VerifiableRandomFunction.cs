@@ -36,7 +36,7 @@ namespace Libplanet.Crypto
                 byte[] byteArr = nonce.Concat(message).ToArray();
                 HashDigest<SHA512> hashed = HashDigest<SHA512>.DeriveFrom(byteArr);
                 byte[] encoded = new byte[] { 2 }.Concat(hashed.ToByteArray()
-                    .Take(dp.Curve.FieldSize / 8)).ToArray();
+                    .Take((dp.Curve.FieldSize + 7) >> 3)).ToArray();
                 try
                 {
                     return dp.Curve.DecodePoint(encoded);
@@ -61,7 +61,7 @@ namespace Libplanet.Crypto
                 byte[] byteArr = nonce.Concat(message).ToArray();
                 HashDigest<SHA512> hashed = HashDigest<SHA512>.DeriveFrom(byteArr);
                 BigInteger integer = new BigInteger(1, hashed.ToByteArray()
-                    .Take(dp.Curve.FieldSize / 8).ToArray());
+                    .Take((dp.Curve.FieldSize + 7) >> 3).ToArray());
                 if (integer.CompareTo(GetECParameters().N.Subtract(BigInteger.One)) == -1)
                 {
                     return integer.Add(BigInteger.One);
@@ -121,8 +121,8 @@ namespace Libplanet.Crypto
             HashDigest<SHA256> dPointHDigest = HashDigest<SHA256>.DeriveFrom(dPointHArr);
             byte[] index = dPointHDigest.ToByteArray();
 
-            byte[] cArr = c.ToByteArray();
-            byte[] sArr = s.ToByteArray();
+            byte[] cArr = c.ToByteArrayUnsigned();
+            byte[] sArr = s.ToByteArrayUnsigned();
             byte[] proof = new byte[129];
             Array.Copy(cArr, 0, proof, 0, cArr.Length);
             Array.Copy(sArr, 0, proof, 32, sArr.Length);
@@ -144,8 +144,8 @@ namespace Libplanet.Crypto
             byte[] sArr = proof.Skip(32).Take(32).ToArray();
             byte[] dPointHArr = proof.Skip(64).Take(65).ToArray();
 
-            BigInteger c = new BigInteger(cArr);
-            BigInteger s = new BigInteger(sArr);
+            BigInteger c = new BigInteger(1, cArr);
+            BigInteger s = new BigInteger(1, sArr);
 
             // dH : VRF point
             ECPoint dPointH = dp.Curve.DecodePoint(dPointHArr);
