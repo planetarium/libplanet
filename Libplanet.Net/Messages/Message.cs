@@ -111,7 +111,7 @@ namespace Libplanet.Net.Messages
             Type = 1,
 
             /// <summary>
-            /// Frame containing the sender <see cref="Peer"/> of the <see cref="Message"/>.
+            /// Frame containing the sender <see cref="BoundPeer"/> of the <see cref="Message"/>.
             /// </summary>
             Peer = 2,
 
