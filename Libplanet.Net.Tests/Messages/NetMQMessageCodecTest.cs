@@ -44,7 +44,7 @@ namespace Libplanet.Net.Tests.Messages
         public void CheckMessages(Message.MessageType type)
         {
             var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var dateTimeOffset = DateTimeOffset.UtcNow;
             var apv = new AppProtocolVersion(
                 1,

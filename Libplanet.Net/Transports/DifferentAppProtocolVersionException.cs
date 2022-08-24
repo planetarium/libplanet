@@ -20,8 +20,9 @@ namespace Libplanet.Net.Transports
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
         /// <param name="expectedAppProtocolVersion">The protocol version of
         /// the local <see cref="Swarm{T}"/>.</param>
-        /// <param name="actualAppProtocolVersion">The protocol version of the <see cref="Peer"/>
-        /// that the local <see cref="Swarm{T}"/> is trying to connect to.</param>
+        /// <param name="actualAppProtocolVersion">The protocol version of the
+        /// <see cref="BoundPeer"/> that the local <see cref="Swarm{T}"/> is trying to connect
+        /// to.</param>
         /// <param name="trusted">Whether <paramref name="actualAppProtocolVersion"/>
         /// is signed by a trusted signer.</param>
         public DifferentAppProtocolVersionException(
@@ -54,7 +55,7 @@ namespace Libplanet.Net.Transports
         public AppProtocolVersion ExpectedApv { get; }
 
         /// <summary>
-        /// The protocol version of the <see cref="Peer"/> that the
+        /// The protocol version of the <see cref="BoundPeer"/> that the
         /// <see cref="Swarm{T}" /> is trying to connect to.
         /// </summary>
         public AppProtocolVersion ActualApv { get; }

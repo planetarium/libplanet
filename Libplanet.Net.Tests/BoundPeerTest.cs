@@ -40,7 +40,7 @@ namespace Libplanet.Net.Tests
                 formatter.Serialize(stream, peer);
                 byte[] serialized = stream.ToArray();
                 stream.Seek(0, SeekOrigin.Begin);
-                Peer deserialized = (Peer)formatter.Deserialize(stream);
+                BoundPeer deserialized = (BoundPeer)formatter.Deserialize(stream);
                 Assert.IsType(peer.GetType(), deserialized);
                 Assert.Equal(peer, deserialized);
             }
@@ -51,7 +51,7 @@ namespace Libplanet.Net.Tests
         public void Serialize(BoundPeer peer)
         {
             Bencodex.Types.Dictionary serialized = peer.ToBencodex();
-            var deserialized = new Peer(serialized);
+            var deserialized = new BoundPeer(serialized);
 
             Assert.Equal(peer, deserialized);
         }
@@ -67,6 +67,19 @@ namespace Libplanet.Net.Tests
             );
 #pragma warning restore MEN002 // Line is too long
             Assert.Equal(expected, BoundPeer.ParsePeer(peerInfo));
+        }
+
+        [Fact]
+        public void PeerString()
+        {
+#pragma warning disable MEN002 // Line is too long
+            var expected = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
+            var boundPeer = new BoundPeer(
+                new PublicKey(ByteUtil.ParseHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
+                new DnsEndPoint("192.168.0.1", 3333)
+            );
+#pragma warning restore MEN002 // Line is too long
+            Assert.Equal(expected, boundPeer.PeerString);
         }
 
         [Fact]

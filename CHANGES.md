@@ -16,6 +16,7 @@ To be released.
     [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient()` constructor.
     Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
 
 ### Backward-incompatible API changes
 
@@ -66,6 +67,11 @@ To be released.
     returns null.  [[#915], [#2200]]
  -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
     `Peer` to `BoundPeer`.  [[#2215]]
+ -  (Libplanet.Net) All public return type, parameter type, and property type
+    of `Peer` changed to `BoundPeer`.   [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.   [[#2233]]
 
 ### Backward-incompatible network protocol changes
 
@@ -88,6 +94,7 @@ To be released.
  -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
  -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
     [[#915], [#2200]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
 
@@ -134,11 +141,15 @@ To be released.
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
+[#2187]: https://github.com/planetarium/libplanet/issues/2187
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
 [#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2228]: https://github.com/planetarium/libplanet/pull/2228
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
 
 
 Version 0.40.0
@@ -2055,7 +2066,7 @@ Released on October 28, 2021.  Mainly backported critical bug fixes from
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
 
-[#1562]: https://github.com/planetarium/libplanet/pull/1561
+[#1562]: https://github.com/planetarium/libplanet/pull/1562
 
 
 Version 0.18.2
@@ -3049,7 +3060,7 @@ Released on July 23, 2021.
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
-[#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1228]: https://github.com/planetarium/libplanet/pull/1228
 [#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235

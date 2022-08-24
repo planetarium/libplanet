@@ -119,43 +119,23 @@ namespace Libplanet.Net.Tests.Transports
         }
 
         [SkippableFact(Timeout = Timeout)]
-        public async Task AsPeer()
+        public void AsPeer()
         {
             var privateKey = new PrivateKey();
-            var boundPrivateKey = new PrivateKey();
             string host = IPAddress.Loopback.ToString();
             const int listenPort = 50000;
-            ITransport transport = CreateTransport(privateKey: privateKey);
-            ITransport boundTransport = CreateTransport(
-                privateKey: boundPrivateKey,
-                host: host,
-                listenPort: listenPort);
+            ITransport transport = CreateTransport(privateKey: privateKey, listenPort: listenPort);
 
             try
             {
                 var peer = transport.AsPeer;
-                Assert.IsNotType<Peer>(peer);
-                Assert.IsType<BoundPeer>(peer);
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
-
-                await InitializeAsync(transport);
-                peer = transport.AsPeer;
-                Assert.IsNotType<Peer>(peer);
-                Assert.IsType<BoundPeer>(peer);
-                Assert.Equal(privateKey.ToAddress(), peer.Address);
-
-                await InitializeAsync(boundTransport);
-                peer = boundTransport.AsPeer;
-                Assert.IsType<BoundPeer>(peer);
-                var boundPeer = peer;
-                Assert.Equal(boundPrivateKey.ToAddress(), boundPeer.Address);
-                Assert.Equal(listenPort, boundPeer.EndPoint.Port);
-                Assert.Equal(host, boundPeer.EndPoint.Host);
+                Assert.Equal(listenPort, peer.EndPoint.Port);
+                Assert.Equal(host, peer.EndPoint.Host);
             }
             finally
             {
                 transport.Dispose();
-                boundTransport.Dispose();
             }
         }
 

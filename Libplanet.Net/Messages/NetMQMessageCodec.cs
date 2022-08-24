@@ -27,7 +27,7 @@ namespace Libplanet.Net.Messages
             Message message,
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
-            Peer peer,
+            BoundPeer peer,
             DateTimeOffset timestamp)
         {
             if (!privateKey.PublicKey.Equals(peer.PublicKey))
@@ -85,18 +85,10 @@ namespace Libplanet.Net.Messages
             var versionToken = remains[(int)Message.MessageFrame.Version].ConvertToString();
 
             AppProtocolVersion remoteVersion = AppProtocolVersion.FromToken(versionToken);
-            Peer remotePeer;
             var dictionary =
                 (Bencodex.Types.Dictionary)_codec.Decode(
                     remains[(int)Message.MessageFrame.Peer].ToByteArray());
-            try
-            {
-                remotePeer = new BoundPeer(dictionary);
-            }
-            catch (KeyNotFoundException)
-            {
-                remotePeer = new Peer(dictionary);
-            }
+            BoundPeer remotePeer = new BoundPeer(dictionary);
 
             var type =
                 (Message.MessageType)remains[(int)Message.MessageFrame.Type].ConvertToInt32();
