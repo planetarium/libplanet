@@ -36,7 +36,7 @@ namespace Libplanet.Crypto
                 byte[] byteArr = nonce.Concat(message).ToArray();
                 HashDigest<SHA512> hashed = HashDigest<SHA512>.DeriveFrom(byteArr);
                 byte[] encoded = new byte[] { 2 }.Concat(hashed.ToByteArray()
-                    .Take(dp.Curve.FieldSize)).ToArray();
+                    .Take(dp.Curve.FieldSize / 8)).ToArray();
                 try
                 {
                     return dp.Curve.DecodePoint(encoded);
@@ -61,7 +61,7 @@ namespace Libplanet.Crypto
                 byte[] byteArr = nonce.Concat(message).ToArray();
                 HashDigest<SHA512> hashed = HashDigest<SHA512>.DeriveFrom(byteArr);
                 BigInteger integer = new BigInteger(1, hashed.ToByteArray()
-                    .Take(dp.Curve.FieldSize).ToArray());
+                    .Take(dp.Curve.FieldSize / 8).ToArray());
                 if (integer.CompareTo(GetECParameters().N.Subtract(BigInteger.One)) == -1)
                 {
                     return integer.Add(BigInteger.One);
@@ -71,7 +71,7 @@ namespace Libplanet.Crypto
             throw new ArgumentException();
         }
 
-        internal static (HashDigest<SHA256>, byte[]) Evaluate(byte[] message, PrivateKey privateKey)
+        internal static (byte[], byte[]) Evaluate(byte[] message, PrivateKey privateKey)
         {
             // n : modulus
             BigInteger n = privateKey.KeyParam.Parameters.N;
@@ -119,6 +119,7 @@ namespace Libplanet.Crypto
             // s = (k - c * d) % N
             BigInteger s = k.Subtract(c.Multiply(d)).Mod(n);
             HashDigest<SHA256> dPointHDigest = HashDigest<SHA256>.DeriveFrom(dPointHArr);
+            byte[] index = dPointHDigest.ToByteArray();
 
             byte[] cArr = c.ToByteArray();
             byte[] sArr = s.ToByteArray();
@@ -127,10 +128,10 @@ namespace Libplanet.Crypto
             Array.Copy(sArr, 0, proof, 32, sArr.Length);
             Array.Copy(dPointHArr, 0, proof, 64, dPointHArr.Length);
 
-            return (dPointHDigest, proof);
+            return (index, proof);
         }
 
-        internal static HashDigest<SHA256> ProofToHash(
+        internal static byte[] ProofToHash(
             byte[] message, byte[] proof, PublicKey publicKey)
         {
             ECDomainParameters dp = GetECParameters();
@@ -141,7 +142,7 @@ namespace Libplanet.Crypto
 
             byte[] cArr = proof.Take(32).ToArray();
             byte[] sArr = proof.Skip(32).Take(32).ToArray();
-            byte[] dPointHArr = proof.Skip(64).ToArray();
+            byte[] dPointHArr = proof.Skip(64).Take(65).ToArray();
 
             BigInteger c = new BigInteger(cArr);
             BigInteger s = new BigInteger(sArr);
@@ -175,6 +176,7 @@ namespace Libplanet.Crypto
                 .Concat(scdPointH.GetEncoded(false)).ToArray();
 
             HashDigest<SHA256> dPointHDigest = HashDigest<SHA256>.DeriveFrom(dPointHArr);
+            byte[] index = dPointHDigest.ToByteArray();
 
             // check if checksum of payload is same
             if (!c.Equals(MessageToInteger(payload)))
@@ -182,7 +184,7 @@ namespace Libplanet.Crypto
                 throw new ArgumentException();
             }
 
-            return dPointHDigest;
+            return index;
         }
     }
 }
