@@ -1624,7 +1624,7 @@ shorter or longer than 64 characters.  [<a href="https://github.com/planetarium/
 </ul>
 <h2 id="version-0183">Version 0.18.3</h2>
 <p>Released on October 28, 2021.  Mainly backported critical bug fixes from
-0.19.0.  [<a href="https://github.com/planetarium/libplanet/pull/1561">#1562</a>]</p>
+0.19.0.  [<a href="https://github.com/planetarium/libplanet/pull/1562">#1562</a>]</p>
 <ul>
 <li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to poll neighbor peers if they have
 any new blocks whether <code>Swarm&lt;T&gt;.BlockDemandTable</code> is empty or not.
@@ -2352,7 +2352,7 @@ constructor.</li>
 <li>Removed <code>compress</code> parameter from <code>DefaultStore()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Removed <code>statesCacheSize</code> parameter from <code>DefaultStore()</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
-<li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+<li>Removed <code>StunMessage.Parse(Stream)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1228">#1228</a>]</li>
 <li>Moved <code>ITransport</code> and <code>NetMQTransport</code> from <code>Libplanet.Net</code> to
 <code>Libplanet.Net.Transports</code>.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 <li><code>Block&lt;T&gt;</code> now enforces a collection of <code>Transaction&lt;T&gt;</code>s to be less
@@ -2412,7 +2412,7 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/pull/1379">#137
 <li>Added <code>HashAlgorithmTable</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/1314">#1314</a>, <a href="https://github.com/planetarium/libplanet/pull/1352">#1352</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetTxExecution()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/1156">#1156</a>, <a href="https://github.com/planetarium/libplanet/pull/1289">#1289</a>]</li>
 <li>Added <code>StunMessage.ParseAsync(Stream, CancellationToken)</code> method.
-[<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/1228">#1228</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/1234">#1234</a>]</li>
 <li>Added <code>NetMQTransport.QueryAppProtocolVersion()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1235">#1235</a>]</li>
 <li>Added <code>BoundPeer.Parse()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/1240">#1240</a>]</li>
@@ -2494,7 +2494,7 @@ wrap your action renderer with <code>AtomicActionRenderer&lt;T&gt;</code>.</li>
 <li>Fixed a bug where <code>KademliaProtocol.CheckReplacementCacheAsync()</code> has
 updated cached peers multiple times.  [<a href="https://github.com/planetarium/libplanet/pull/1219">#1219</a>]</li>
 <li>Fixed memory leak due to undisposed <code>CancellationTokenRegistration</code>s.
-[<a href="https://github.com/planetarium/libplanet/pull/1218">#1228</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/pull/1228">#1228</a>]</li>
 <li>Fixed a bug where <code>DefaultStore.Dispose()</code> and <code>TrieStateStore.Dispose()</code>
 had not been idempotent.  [<a href="https://github.com/planetarium/libplanet/pull/1272">#1272</a>]</li>
 <li>(Libplanet.RocksDBStore) Fixed a bug where <code>RocksDBStore.Dispose()</code>,
