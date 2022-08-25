@@ -137,6 +137,7 @@ namespace Libplanet.Net.Consensus
             _heartbeatCts?.Cancel();
             _heartbeatCts?.Dispose();
             _seen.Dispose();
+            _transport.Dispose();
         }
 
         /// <summary>

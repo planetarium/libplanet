@@ -124,15 +124,19 @@ namespace Libplanet.Net
 
             if (consensusOption is { } consensusReactorOption)
             {
+                NetMQTransport consensusTransport = NetMQTransport.Create(
+                    privateKey: _privateKey,
+                    appProtocolVersion: _appProtocolVersion,
+                    trustedAppProtocolVersionSigners: TrustedAppProtocolVersionSigners,
+                    workers: consensusReactorOption.ConsensusWorkers,
+                    host: host,
+                    listenPort: consensusReactorOption.ConsensusPort,
+                    iceServers: iceServers ?? new List<IceServer>(),
+                    differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
+                    messageTimestampBuffer: Options.MessageTimestampBuffer)
+                        .ConfigureAwait(false).GetAwaiter().GetResult();
                 _consensusReactor = new ConsensusReactor<T>(
-                    InitTransport.Init(
-                        GetTransportParam(
-                            consensusReactorOption.ConsensusWorkers,
-                            host,
-                            consensusReactorOption.ConsensusPort,
-                            iceServers,
-                            differentAppProtocolVersionEncountered)
-                    ),
+                    consensusTransport,
                     BlockChain,
                     consensusReactorOption.ConsensusPrivateKey,
                     consensusReactorOption.ConsensusPeers,
@@ -1129,47 +1133,6 @@ namespace Libplanet.Net
                 "Failed to fetch demand block hashes from peers: " +
                 string.Join(", ", peers.Select(p => p.ToString())),
                 exceptions);
-        }
-
-        private InitTransport.TransportParam GetTransportParam(
-            int workers,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered
-        ) => new InitTransport.TransportParam
-        {
-            Workers = workers,
-            AppProtocolVersion = _appProtocolVersion,
-            DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
-            Host = host,
-            IceServers = iceServers,
-            ListenPort = listenPort,
-            MessageSigner = _privateKey,
-            MessageTimestampBuffer = Options.MessageTimestampBuffer,
-            TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
-        };
-
-        private ITransport InitializeTransport(
-            int workers,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
-        {
-            var param = new InitTransport.TransportParam
-            {
-                Workers = workers,
-                AppProtocolVersion = _appProtocolVersion,
-                DifferentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered,
-                Host = host,
-                IceServers = iceServers,
-                ListenPort = listenPort,
-                MessageSigner = _privateKey,
-                MessageTimestampBuffer = Options.MessageTimestampBuffer,
-                TrustedAppProtocolVersionSigners = TrustedAppProtocolVersionSigners,
-            };
-            return InitTransport.Init(param);
         }
 
         private void BroadcastBlock(Address? except, Block<T> block)

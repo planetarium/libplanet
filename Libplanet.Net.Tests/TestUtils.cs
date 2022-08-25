@@ -152,7 +152,7 @@ namespace Libplanet.Net.Tests
         public static ITransport CreateNetMQTransport(
             PrivateKey? privateKey = null,
             string host = "localhost",
-            int port = 5000) => new NetMQTransport(
+            int port = 5000) => NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
                 TestUtils.AppProtocolVersion,
                 null,
@@ -160,7 +160,7 @@ namespace Libplanet.Net.Tests
                 host,
                 port,
                 Array.Empty<IceServer>(),
-                null);
+                null).ConfigureAwait(false).GetAwaiter().GetResult();
 
         public static ConsensusPropose CreateConsensusPropose(
             Block<DumbAction>? block,

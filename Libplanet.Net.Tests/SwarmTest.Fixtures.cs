@@ -140,7 +140,7 @@ namespace Libplanet.Net.Tests
                 consensusOption: consensusReactorOption ?? new ConsensusReactorOption
                 {
                     ConsensusPeers = ImmutableList<BoundPeer>.Empty,
-                    ConsensusPort = 5000,
+                    ConsensusPort = 0,
                     ConsensusPrivateKey = new PrivateKey(),
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(10),

@@ -166,7 +166,7 @@ namespace Libplanet.Net.Tests.Consensus
             int? port = null,
             IEnumerable<BoundPeer>? peers = null)
         {
-            var transport = new NetMQTransport(
+            var transport = NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
                 TestUtils.AppProtocolVersion,
                 null,
@@ -174,7 +174,7 @@ namespace Libplanet.Net.Tests.Consensus
                 "localhost",
                 port,
                 null,
-                null);
+                null).ConfigureAwait(false).GetAwaiter().GetResult();
             return new Gossip(
                 transport,
                 peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,

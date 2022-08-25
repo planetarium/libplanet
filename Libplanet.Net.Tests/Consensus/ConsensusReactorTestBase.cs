@@ -112,7 +112,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             key ??= new PrivateKey();
 
-            var consensusTransport = new NetMQTransport(
+            var consensusTransport = NetMQTransport.Create(
                 key,
                 TestUtils.AppProtocolVersion,
                 null,
@@ -120,7 +120,7 @@ namespace Libplanet.Net.Tests.Consensus
                 host,
                 consensusPort,
                 Array.Empty<IceServer>(),
-                null);
+                null).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return new ConsensusReactor<DumbAction>(
                 consensusTransport,
