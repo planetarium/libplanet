@@ -23,9 +23,14 @@ namespace Libplanet.Explorer.Queries
             ChainContext = chainContext;
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
+            Field<StateQuery<T>>("stateQuery", resolve: context => new { });
             Field<NonNullGraphType<NodeStateType<T>>>(
                 "nodeState",
                 resolve: context => chainContext
+            );
+            Field<NonNullGraphType<BlockPolicyType<T>>>(
+                "blockPolicy",
+                resolve: context => chainContext.BlockChain.Policy
             );
 
             Name = "ExplorerQuery";

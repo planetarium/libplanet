@@ -38,7 +38,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// A fixed set of <see cref="Currency"/> objects that are supported by the blockchain
-        /// as first-class citizens.
+        /// as first-class assets.
         /// </summary>
         [Pure]
         IImmutableSet<Currency> NativeTokens { get; }

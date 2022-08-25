@@ -97,6 +97,18 @@ To be released.
  -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
+    to `Currency` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
+    it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
 
 ### Behavioral changes
 
@@ -147,6 +159,7 @@ To be released.
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2227]: https://github.com/planetarium/libplanet/pull/2227
 [#2228]: https://github.com/planetarium/libplanet/pull/2228
 [#2232]: https://github.com/planetarium/libplanet/pull/2232
 [#2233]: https://github.com/planetarium/libplanet/pull/2233
