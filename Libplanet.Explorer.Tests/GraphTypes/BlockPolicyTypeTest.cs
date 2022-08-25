@@ -13,7 +13,7 @@ using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
 namespace Libplanet.Explorer.Tests.GraphTypes;
 
-public class PolicyTypeTest
+public class BlockPolicyTypeTest
 {
     [Fact]
     public async Task Query()
@@ -23,7 +23,7 @@ public class PolicyTypeTest
         var foo = Currency.Uncapped("FOO", 2, minters: null);
         var bar = Currency.Uncapped("BAR", 0, ImmutableHashSet.Create(addrA, addrB));
         var policy = new BlockPolicy<NullAction>(nativeTokens: ImmutableHashSet.Create(foo, bar));
-        ExecutionResult result = await ExecuteQueryAsync<PolicyType<NullAction>>(
+        ExecutionResult result = await ExecuteQueryAsync<BlockPolicyType<NullAction>>(
             @"{
                 nativeTokens {
                     ticker

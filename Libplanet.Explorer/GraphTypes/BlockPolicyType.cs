@@ -6,12 +6,12 @@ using Libplanet.Blockchain.Policies;
 
 namespace Libplanet.Explorer.GraphTypes;
 
-public class PolicyType<T> : ObjectGraphType<IBlockPolicy<T>>
+public class BlockPolicyType<T> : ObjectGraphType<IBlockPolicy<T>>
     where T : IAction, new()
 {
-    public PolicyType()
+    public BlockPolicyType()
     {
-        Name = "Policy";
+        Name = "BlockPolicy";
         Field<NonNullGraphType<ListGraphType<NonNullGraphType<CurrencyType>>>>(
             "nativeTokens",
             "A fixed set of native tokens, which are supported by the blockchain as " +

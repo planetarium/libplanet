@@ -99,14 +99,16 @@ To be released.
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
  -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
     endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
     to `Currency` type.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
     it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
  -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
     corresponds to `StateQuery` type.  [[#2149], [#2227]]
- -  (Libplanet.Explorer) Added `PolicyType` class.  In GraphQL, it corresponds
-    to `Policy` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
 
 ### Behavioral changes
 
