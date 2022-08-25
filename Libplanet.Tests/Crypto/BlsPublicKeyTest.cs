@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using Libplanet.Crypto;
 using Xunit;
 using Xunit.Abstractions;
@@ -10,6 +11,9 @@ namespace Libplanet.Tests.Crypto
 {
     public class BlsPublicKeyTest
     {
+        internal static readonly byte[] InfinitePublicKey =
+            new byte[] { 0xc0 }.Concat(new byte[47]).ToArray();
+
         private readonly ITestOutputHelper _output;
 
         private readonly byte[] _key1 =
@@ -104,6 +108,28 @@ namespace Libplanet.Tests.Crypto
             var publicKey = new BlsPublicKey(_key1);
             IPublicKey pub = publicKey;
             TestUtils.AssertBytesEqual(_key1, pub.KeyBytes.ToArray());
+        }
+
+        [Fact]
+        public void InfiniteKeyVerifyFails()
+        {
+            var message = "test";
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+
+            var pk = new BlsPrivateKey(new byte[32]);
+            var pubKey = new BlsPublicKey(InfinitePublicKey);
+
+            byte[] signature = pk.Sign(messageBytes);
+            Assert.Equal(signature, BlsSignatureTest.InfiniteSignature);
+
+            Assert.False(pubKey.Verify(messageBytes, signature));
+
+            var pk2 = new BlsPrivateKey(BlsPrivateKeyTest.PrivKey1);
+
+            byte[] signature2 = pk2.Sign(messageBytes);
+            Assert.NotEqual(signature2, BlsSignatureTest.InfiniteSignature);
+
+            Assert.False(pubKey.Verify(messageBytes, signature2));
         }
 
         [Fact]

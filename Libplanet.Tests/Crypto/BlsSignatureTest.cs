@@ -12,6 +12,9 @@ namespace Libplanet.Tests.Crypto
 {
     public class BlsSignatureTest
     {
+        internal static readonly byte[] InfiniteSignature =
+            new byte[] { 0xc0 }.Concat(new byte[95]).ToArray();
+
         private readonly BlsPrivateKey _privKey1 = new BlsPrivateKey(
             new byte[]
             {
@@ -79,6 +82,9 @@ namespace Libplanet.Tests.Crypto
                 () => new BlsSignature(default(ImmutableArray<byte>)));
             Assert.Throws<CryptographicException>(
                 () => new BlsSignature(new byte[96]));
+
+            var infinite = new BlsSignature(InfiniteSignature);
+            Assert.Equal(infinite.ToByteArray(), InfiniteSignature);
         }
 
         [Fact]
@@ -318,6 +324,38 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
+        public void AggregateWithInfinite()
+        {
+            // NOTE: Aggregating with infinite signature will creates a signature without infinite
+            // signature.
+            var message = "test";
+
+            var sign1Message = Encoding.UTF8.GetBytes(message + "1");
+            var sign2Message = Encoding.UTF8.GetBytes(message + "2");
+
+            var sign1 = new BlsSignature(_privKey1.Sign(sign1Message));
+            var sign2 = new BlsSignature(_privKey2.Sign(sign2Message));
+            var sign3 = new BlsSignature(InfiniteSignature);
+
+            var aggSign = new[] { sign1, sign2, sign3 }.AggregateAll();
+            var aggSignWithoutInfinite = new[] { sign1, sign2 }.AggregateAll();
+
+            var tp = new byte[]
+            {
+                0xa0, 0x82, 0x88, 0x93, 0xad, 0x3e, 0x75, 0x4a, 0x7b, 0x9a, 0x92, 0xde, 0x9e, 0xc4,
+                0x3b, 0x07, 0xb3, 0xb1, 0x27, 0x91, 0x67, 0xb4, 0xf6, 0x8b, 0x1b, 0xed, 0x25, 0x88,
+                0x64, 0x7f, 0xe2, 0x1a, 0x11, 0x28, 0xc1, 0x6c, 0x55, 0xc9, 0x67, 0x55, 0x80, 0xb2,
+                0xed, 0x60, 0x6e, 0xaa, 0xb1, 0x90, 0x18, 0xd3, 0xd6, 0xc0, 0xb5, 0xb8, 0x7a, 0x86,
+                0x12, 0x9a, 0x34, 0xdf, 0xa6, 0x99, 0x6f, 0x3c, 0xc2, 0x30, 0x2e, 0x8e, 0x10, 0xb8,
+                0xeb, 0xe3, 0xa2, 0x30, 0xeb, 0x46, 0x14, 0xd3, 0xd4, 0x62, 0x5c, 0xec, 0x18, 0xa8,
+                0x0a, 0xdc, 0x71, 0x85, 0x7b, 0xc3, 0x86, 0x38, 0xd7, 0x3f, 0x4d, 0xc7,
+            };
+
+            Assert.Equal(tp, aggSign.ToByteArray());
+            Assert.Equal(aggSign.ToByteArray(), aggSignWithoutInfinite.ToByteArray());
+        }
+
+        [Fact]
         public void AggregateWithSameMessage()
         {
             var message = "test";
@@ -408,6 +446,40 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
+        public void MultiVerifyWithInfinite()
+        {
+            var message = "test";
+            var message1Bytes = Encoding.UTF8.GetBytes(message + "1");
+            var message2Bytes = Encoding.UTF8.GetBytes(message + "2");
+            var message3Bytes = Encoding.UTF8.GetBytes(message + "3");
+
+            var sign1 = new BlsSignature(_privKey1.Sign(message1Bytes));
+            var sign2 = new BlsSignature(_privKey2.Sign(message2Bytes));
+            var sign3 = new BlsSignature(InfiniteSignature);
+
+            Assert.False(
+                BlsSignature.MultiVerify(
+                    new BlsSignature[]
+                    {
+                        sign1,
+                        sign2,
+                        sign3,
+                    },
+                    new BlsPublicKey[]
+                    {
+                        _privKey1.PublicKey,
+                        _privKey2.PublicKey,
+                        new BlsPublicKey(BlsPublicKeyTest.InfinitePublicKey),
+                    },
+                    new IReadOnlyList<byte>[]
+                    {
+                        message1Bytes,
+                        message2Bytes,
+                        message3Bytes,
+                    }));
+        }
+
+        [Fact]
         public void AggregateVerifyWithDifferentMessages()
         {
             var message = "test";
@@ -457,6 +529,36 @@ namespace Libplanet.Tests.Crypto
                     Encoding.UTF8.GetBytes(message),
                     Encoding.UTF8.GetBytes(message),
                     Encoding.UTF8.GetBytes(message),
+                }));
+        }
+
+        [Fact]
+        public void AggregateVerifyWithInfinite()
+        {
+            var message = "test";
+
+            var sign1Message = Encoding.UTF8.GetBytes(message + "1");
+            var sign2Message = Encoding.UTF8.GetBytes(message + "2");
+            var sign3Message = Encoding.UTF8.GetBytes(message + "3");
+
+            var sign1 = new BlsSignature(_privKey1.Sign(sign1Message));
+            var sign2 = new BlsSignature(_privKey2.Sign(sign2Message));
+            var sign3 = new BlsSignature(InfiniteSignature);
+
+            var aggSign = new[] { sign1, sign2, sign3, }.AggregateAll();
+
+            Assert.False(aggSign.AggregateVerify(
+                new[]
+                {
+                    _privKey1.PublicKey,
+                    _privKey2.PublicKey,
+                    new BlsPublicKey(BlsPublicKeyTest.InfinitePublicKey),
+                },
+                new IReadOnlyList<byte>[]
+                {
+                    sign1Message,
+                    sign2Message,
+                    sign3Message,
                 }));
         }
     }
