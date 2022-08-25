@@ -251,6 +251,21 @@ namespace Libplanet.Crypto
             return Unsafe.As<byte[], ImmutableArray<byte>>(ref sig);
         }
 
+        public (byte[], byte[]) VrfEvaluate(byte[] message)
+        {
+            return CryptoConfig.CryptoBackend.VrfEvaluate(message, this);
+        }
+
+        public (ImmutableArray<byte>, ImmutableArray<byte>) VrfEvaluate(
+            ImmutableArray<byte> message)
+        {
+            (byte[] proof, byte[] result)
+                = CryptoConfig.CryptoBackend.VrfEvaluate(message.ToArray(), this);
+            return (
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref proof),
+                Unsafe.As<byte[], ImmutableArray<byte>>(ref result));
+        }
+
         /// <summary>
         /// Decrypts a <paramref name="ciphertext"/> which was encrypted with the corresponding
         /// <see cref="PublicKey"/> to the original plain text.

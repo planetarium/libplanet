@@ -42,5 +42,9 @@ namespace Libplanet.Crypto
             HashDigest<T> messageHash,
             byte[] signature,
             PublicKey publicKey);
+
+        (byte[], byte[]) VrfEvaluate(byte[] alphaBytes, PrivateKey privateKey);
+
+        (bool, byte[]) VrfVerify(byte[] piBytes, byte[] alphaBytes, PublicKey publicKey);
     }
 }

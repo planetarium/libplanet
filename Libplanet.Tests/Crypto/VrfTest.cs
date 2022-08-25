@@ -15,9 +15,10 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            (byte[] index1, byte[] proof) = VerifiableRandomFunction.Evaluate(message, privateKey);
-            byte[] index2 = VerifiableRandomFunction.ProofToHash(message, proof, publicKey);
-            Assert.Equal(index1, index2);
+            (byte[] proof, byte[] result1) = privateKey.VrfEvaluate(message);
+            (bool verified, byte[] result2) = publicKey.VrfVerify(message, proof);
+            Assert.True(verified);
+            Assert.Equal(result1, result2);
         }
 
         [Fact]
@@ -31,9 +32,13 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            (byte[] index1, byte[] proof) = VerifiableRandomFunction.Evaluate(message, privateKeyA);
-            Assert.Throws<ArgumentException>(
-                () => VerifiableRandomFunction.ProofToHash(message, proof, publicKeyB));
+            (byte[] proof1, _) = privateKeyA.VrfEvaluate(message);
+            (bool verified1, _) = publicKeyB.VrfVerify(message, proof1);
+            Assert.False(verified1);
+
+            (byte[] proof2, _) = privateKeyB.VrfEvaluate(message);
+            (bool verified2, _) = publicKeyA.VrfVerify(message, proof2);
+            Assert.False(verified2);
         }
     }
 }
