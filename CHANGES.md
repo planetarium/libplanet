@@ -72,6 +72,20 @@ To be released.
  -  (Libplanet.Net) Additional public return type, parameter type, and
     property type of `Peer` that weren't handled by [#2228] changed to
     `BoundPeer`.   [[#2233]]
+ -  Reworked constructors of exception classes. Affected classes are:
+     - (Libplanet.Net) `PingTimeoutException`
+     - (Libplanet) `CurrencyPermissionException`,
+     `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
+     `InvalidBlockPreEvaluationHashException`,
+     `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
+     `InvalidBlockSignatureException`, `InvalidBlockStateRootHashException`,
+     `InvalidBlockTotalDifficultyException`, `InvalidGenesisBlockException`,
+     `InvalidTxException`, `InvalidTxGenesisHashException`,
+     `InvalidTxIdException`, `InvalidTxNonceException`,
+     `InvalidTxSignatureException`, `MissingActionTypeException`,
+     `NoKeyException`, `SupplyOverflowException`,
+     `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
+     `UnexpectedlyTerminatedActionException` [[ #2239], [#2239]]
 
 ### Backward-incompatible network protocol changes
 
@@ -147,6 +161,7 @@ To be released.
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
 [#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2239]: https://github.com/planetarium/libplanet/issues/2239
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
 [#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
@@ -156,6 +171,7 @@ To be released.
 [#2228]: https://github.com/planetarium/libplanet/pull/2228
 [#2232]: https://github.com/planetarium/libplanet/pull/2232
 [#2233]: https://github.com/planetarium/libplanet/pull/2233
+[#2241]: https://github.com/planetarium/libplanet/pull/2241
 
 
 Version 0.40.0
