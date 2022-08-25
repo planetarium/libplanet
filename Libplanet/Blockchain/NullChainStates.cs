@@ -29,5 +29,12 @@ namespace Libplanet.Blockchain
             FungibleAssetStateCompleter<T> stateCompleter
         ) =>
             currency * 0;
+
+        public FungibleAssetValue? GetTotalSupply(
+            Currency currency,
+            BlockHash offset,
+            TotalSupplyStateCompleter<T> stateCompleter
+        ) =>
+            null;
     }
 }

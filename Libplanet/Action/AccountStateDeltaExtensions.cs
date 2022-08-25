@@ -32,6 +32,18 @@ namespace Libplanet.Action
                 )
             ).ToImmutableDictionary();
 
+        internal static IImmutableDictionary<Currency, FungibleAssetValue>
+            GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>
+            delta.TotalSupplyUpdatedCurrencies
+                .Where(currency => currency.TotalSupplyTrackable)
+                .Select(currency => (currency, totalSupply: delta.GetTotalSupplyImpl(currency)))
+                .Where(t => t.totalSupply.HasValue)
+                .Select(t =>
+                    new KeyValuePair<Currency, FungibleAssetValue>(
+                        t.currency,
+                        t.totalSupply!.Value))
+                .ToImmutableDictionary();
+
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(
             this IAccountStateDelta delta) =>
             delta.GetUpdatedStates()
@@ -43,6 +55,11 @@ namespace Libplanet.Action
                     delta.GetUpdatedBalances().Select(pair =>
                         new KeyValuePair<string, IValue?>(
                             ToFungibleAssetKey(pair.Key),
+                            (Integer)pair.Value.RawValue)))
+                .Union(
+                    delta.GetUpdatedTotalSupplies().Select(pair =>
+                        new KeyValuePair<string, IValue?>(
+                            ToTotalSupplyKey(pair.Key),
                             (Integer)pair.Value.RawValue))).ToImmutableDictionary();
     }
 }

@@ -482,7 +482,7 @@ namespace Libplanet.Net.Transports
             }
             else if (_iceServers is { } iceServers)
             {
-                _turnClient = await IceServer.CreateTurnClient(_iceServers);
+                _turnClient = await TurnClient.Create(_iceServers);
                 await _turnClient.StartAsync(_listenPort, cancellationToken);
                 if (!_turnClient.BehindNAT)
                 {

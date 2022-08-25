@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Bencodex.Types;
@@ -63,5 +64,18 @@ namespace Libplanet.Action
         /// </returns>
         [Pure]
         FungibleAssetValue GetBalance(Address address, Currency currency);
+
+        /// <summary>
+        /// Returns the total supply of a <paramref name="currency"/>.
+        /// </summary>
+        /// <param name="currency">The currency type to query.</param>
+        /// <returns>The total supply of the <paramref name="currency"/>.
+        /// </returns>
+        /// <exception cref="NotSupportedException">Thrown when the method is not supported under
+        /// the protocol version.</exception>
+        /// <exception cref="TotalSupplyNotTrackableException">Thrown when the total supply of the
+        /// given <paramref name="currency"/> is not trackable.</exception>
+        /// <seealso cref="Currency.MaximumSupply"/>
+        FungibleAssetValue GetTotalSupply(Currency currency);
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -20,9 +22,11 @@ namespace Libplanet.Tests.Action
         public override IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         ) =>
-            new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, signer);
+            new AccountStateDeltaImpl(
+                accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer);
 
         [Fact]
         public override void TransferAsset()
@@ -69,6 +73,84 @@ namespace Libplanet.Tests.Action
             );
 
             return chain;
+        }
+
+        [Fact]
+        public void TotalSupplyTracking()
+        {
+            IAccountStateDelta delta = _init;
+
+            Assert.Empty(delta.GetUpdatedTotalSupplies());
+            Assert.Empty(delta.TotalSupplyUpdatedCurrencies);
+
+            Assert.Equal(
+                new FungibleAssetValue(
+                    _currencies[3],
+                    _totalSupplies[_currencies[3]].Item1,
+                    _totalSupplies[_currencies[3]].Item2),
+                _init.GetTotalSupply(_currencies[3])
+            );
+            Assert.Equal(
+                new FungibleAssetValue(
+                    _currencies[3],
+                    _totalSupplies[_currencies[3]].Item1,
+                    _totalSupplies[_currencies[3]].Item2),
+                _init.GetTotalSupplyImpl(_currencies[3])
+            );
+
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                _init.GetTotalSupply(_currencies[0]));
+            Assert.Null(_init.GetTotalSupplyImpl(_currencies[0]));
+            Assert.DoesNotContain(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[0], Value(0, 5)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
+
+            Assert.Equal(Value(4, 0), _init.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 0), _init.GetTotalSupplyImpl(_currencies[4]));
+            Assert.Contains(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[4], Zero(4)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
+
+            delta = delta.MintAsset(_addr[0], Value(0, 10));
+            Assert.Throws<TotalSupplyNotTrackableException>(() =>
+                _init.GetTotalSupply(_currencies[0]));
+            Assert.Null(_init.GetTotalSupplyImpl(_currencies[0]));
+            Assert.DoesNotContain(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[0], Value(0, 15)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
+
+            delta = delta.MintAsset(_addr[0], Value(4, 10));
+            Assert.Equal(Value(4, 10), delta.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 10), delta.GetTotalSupplyImpl(_currencies[4]));
+            Assert.Contains(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[4], Value(4, 10)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
+
+            delta = delta.BurnAsset(_addr[0], Value(4, 5));
+            Assert.Equal(Value(4, 5), delta.GetTotalSupply(_currencies[4]));
+            Assert.Equal(Value(4, 5), delta.GetTotalSupplyImpl(_currencies[4]));
+            Assert.Contains(
+                new KeyValuePair<Currency, FungibleAssetValue>(
+                    _currencies[4], Value(4, 5)),
+                delta.GetUpdatedTotalSupplies());
+            Assert.Contains(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
+        }
+
+        [Fact]
+        public override void MintAsset()
+        {
+            base.MintAsset();
+
+            var delta = _init;
+            Assert.Throws<SupplyOverflowException>(() => delta.MintAsset(_addr[0], Value(4, 200)));
         }
     }
 }
