@@ -18,7 +18,7 @@ namespace Libplanet.Blockchain
     /// <returns>The total supply value of <paramref name="currency"/> in
     /// <see cref="FungibleAssetValue"/>.</returns>
     /// <seealso cref="FungibleAssetStateCompleters{T}"/>
-    public delegate FungibleAssetValue? TotalSupplyStateCompleter<T>(
+    public delegate FungibleAssetValue TotalSupplyStateCompleter<T>(
         BlockChain<T> blockChain,
         BlockHash blockHash,
         Currency currency

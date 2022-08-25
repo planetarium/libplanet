@@ -30,11 +30,18 @@ namespace Libplanet.Blockchain
         ) =>
             currency * 0;
 
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
-        ) =>
-            null;
+        )
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return currency * 0;
+        }
     }
 }

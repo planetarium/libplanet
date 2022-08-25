@@ -82,9 +82,9 @@ public class CurrencyTypeTest
         Assert.Null(resultDict["maximumSupply"]);
         Assert.True((bool)resultDict["totalSupplyTrackable"]);
 
-#pragma warning disable CS0612
-        currency = Currency.LegacyUntracked("LEGACY", 2, minters: null);
-#pragma warning restore CS0612
+#pragma warning disable CS0618
+        currency = Currency.Legacy("LEGACY", 2, minters: null);
+#pragma warning restore CS0618
         result = await ExecuteQueryAsync<CurrencyType>(
             @"{
                 maximumSupply { quantity }
