@@ -14,9 +14,9 @@ namespace Libplanet.Tests.Blocks
             var actual = TestUtils.GetRandomBytes(32).ToImmutableArray();
             var expected = TestUtils.GetRandomBytes(32).ToImmutableArray();
             var exc = new InvalidBlockPreEvaluationHashException(
+                "TESTING",
                 actual,
-                expected,
-                "TESTING"
+                expected
             );
 
             var formatter = new BinaryFormatter();

@@ -349,7 +349,7 @@ namespace Libplanet.Action
                             "rehearsal mode.\n" +
                             "See also this exception's InnerException property.";
                         exc = new UnexpectedlyTerminatedActionException(
-                            null, null, null, null, action, message, e);
+                            message, null, null, null, null, action, e);
                     }
                     else
                     {
@@ -376,12 +376,12 @@ namespace Libplanet.Action
                         logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
+                            innerMessage,
                             preEvaluationHash,
                             blockIndex,
                             txid,
                             stateRootHash,
                             action,
-                            innerMessage,
                             e);
                     }
                 }

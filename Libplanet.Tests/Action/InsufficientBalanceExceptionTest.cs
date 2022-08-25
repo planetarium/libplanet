@@ -24,9 +24,9 @@ namespace Libplanet.Tests.Action
 
             var currency = Currency.Uncapped("PLT", 0, minter);
             var exc = new InsufficientBalanceException(
+                "for testing",
                 account,
-                FungibleAssetValue.FromRawValue(currency, 99),
-                "for testing"
+                FungibleAssetValue.FromRawValue(currency, 99)
             );
 
             var formatter = new BinaryFormatter();

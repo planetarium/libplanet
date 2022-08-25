@@ -424,8 +424,8 @@ namespace Libplanet.Net.Protocols
             catch (CommunicationFailException)
             {
                 throw new PingTimeoutException(
-                    peer,
-                    $"Failed to send Ping to {peer}.");
+                    $"Failed to send Ping to {peer}.",
+                    peer);
             }
         }
 

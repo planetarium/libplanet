@@ -11,13 +11,13 @@ namespace Libplanet.KeyStore
         /// <summary>
         /// Instantiates a new exception object with proper metadata.
         /// </summary>
+        /// <param name="message">A descriptive error message for programmers.
+        /// Goes to <see cref="System.Exception.Message"/>.</param>
         /// <param name="keyId">The key ID tried to look for.
         /// It is automatically included to the <see cref="System.Exception.Message"/>
         /// string.
         /// </param>
-        /// <param name="message">A descriptive error message for programmers.
-        /// Goes to <see cref="System.Exception.Message"/>.</param>
-        public NoKeyException(Guid keyId, string message)
+        public NoKeyException(string message, Guid keyId)
             : base($"{message}: {keyId}")
         {
             KeyId = keyId;

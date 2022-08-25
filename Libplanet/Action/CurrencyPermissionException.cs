@@ -15,17 +15,17 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="CurrencyPermissionException"/> object.
         /// </summary>
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="transactionSigner"> The address of the account who tried to mint or burn
         /// assets of a <paramref name="currency"/>.  Corresponds to
         /// the <see cref="TransactionSigner"/> property.</param>
         /// <param name="currency"> The <see cref="Assets.Currency"/> to be tried to be minted
         /// or burned by the <paramref name="transactionSigner"/>.  Corresponds to
         /// the <see cref="Currency"/> property.</param>
-        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         public CurrencyPermissionException(
+            string? message,
             Address transactionSigner,
-            Currency currency,
-            string? message
+            Currency currency
         )
             : base(message)
         {

@@ -16,12 +16,12 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="SupplyOverflowException"/> object.
         /// </summary>
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="amount">The attempted amount to be minted.
         /// Corresponds to the <see cref="Amount"/> property.</param>
-        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         public SupplyOverflowException(
-            FungibleAssetValue amount,
-            string? message
+            string? message,
+            FungibleAssetValue amount
         )
             : base(message)
         {

@@ -1065,7 +1065,7 @@ namespace Libplanet.Net.Tests
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -1124,7 +1124,7 @@ namespace Libplanet.Net.Tests
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
