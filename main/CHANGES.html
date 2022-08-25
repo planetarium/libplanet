@@ -103,16 +103,16 @@ maximum supply limit.</li>
 <li>Added <code>Currency.Uncapped(string, byte, Address)</code> static method which
 defines an instance of <code>Currency</code> without an enforced maximum supply
 limit.</li>
-<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.LegacyUntracked( string, byte, IImutableSet&lt;Address&gt;?)</code> static method which defines a
-legacy <code>Currency</code> instance which is compatible with <code>Currency</code>
-instances defined before total supply tracking support was introduced.</li>
-<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.LegacyUntracked( string, byte, Address)</code> static method which defines a legacy <code>Currency</code>
+<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.Legacy(string, byte, IImutableSet&lt;Address&gt;?)</code> static method which defines a legacy
+<code>Currency</code> instance which is compatible with <code>Currency</code> instances
+defined before total supply tracking support was introduced.</li>
+<li><em>OBSOLETE, ONLY FOR LEGACY SUPPORT</em>: Added <code>Currency.Legacy(string, byte, Address)</code> static method which defines a legacy <code>Currency</code>
 instance which is compatible with <code>Currency</code> instances defined before
 total supply tracking support was introduced.</li>
 <li><em>NOTE:</em> if you already have some <code>Currency</code> instances defined in prior
 to the addition of total supply tracking on a live chain, you cannot
 modify the already-defined <code>Currency</code> instances as a capped or uncapped
-<code>Currency</code> but have to define them with <code>Currency.LegacyUntracked()</code> as
+<code>Currency</code> but have to define them with <code>Currency.Legacy()</code> as
 the new Currency kinds are internally backwards-incompatible with the
 legacy <code>Currency</code>.</li>
 </ul>
@@ -133,17 +133,6 @@ property type of <code>Peer</code> that weren't handled by <a href="https://gith
 <code>BoundPeer</code>.   [<a href="https://github.com/planetarium/libplanet/pull/2233">#2233</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
-<ul>
-<li>The <code>Block&lt;T&gt;.CurrentProtocolVersion</code> is bumped from 3 to 4.  [<a href="https://github.com/planetarium/libplanet/pull/2200">#2200</a>]
-<ul>
-<li><code>IAccountStateDelta.GetTotalSupply</code> returns the current total supply
-of a <code>Currency</code> if the total supply of<code>Currency</code> is trackable from
-version 4, and throws <code>NotSupportedException</code> below version 4.</li>
-<li><code>IAccountStateDelta.MintAsset</code> and <code>IAccountStateDelta.BurnAsset</code>
-tracks the total supply if trackable from version 4.</li>
-</ul>
-</li>
-</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>

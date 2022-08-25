@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "QhJ5if31zVWjq03N/lqctzkSwkSxhysA3VppXENNnUY="
+          "hash": "JaewiW5OZoHvaPibWSmgYRomELrZkLYw8M7HMK7zuSE="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IAccountStateView.html",
-          "hash": "9OPuRKg4SsVooDCHycXnQ7JAgDrKqqC4j76x8zZnkYc="
+          "hash": "g37mCGcVqq7qEbHoZnUBXklfymfJBM9H1M4NP9w0LH8="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.TotalSupplyGetter.html",
-          "hash": "uYI2owol9nlobuomZfXtdngYU2jN/yF351vPgt35/t0="
+          "hash": "f6Qmm4m1CUfiF7QyZnVfvMzc+hRAGt5tkvxppgXmb1w="
         }
       },
       "is_incremental": false,
@@ -465,7 +465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Assets.Currency.html",
-          "hash": "eHriPp/qRNlBzaRf+WEtY2Tjet0E+vk0n77PlJ25mW4="
+          "hash": "82eNRHV6E0QQvZDjaOf1PiJ/nFSLVR+/+K2W2ATwSd0="
         }
       },
       "is_incremental": false,
@@ -513,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "BW9V74UtfPIO8LTI7NrfD+BbMB2XxFUoAcsMBVsvggI="
+          "hash": "/Tz7uR3sejizDVGsOaQcu1blEA1i0q/R11F1tjEJnQQ="
         }
       },
       "is_incremental": false,
@@ -561,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.IBlockChainStates-1.html",
-          "hash": "DwTvcJJDjVkfh4DaIEzCnEYWxLWMm0FjNV/gzU54UAo="
+          "hash": "bB+YSeVgdqqVlvq2auPNaDixr5Oj/3og+vMpJW3vR8k="
         }
       },
       "is_incremental": false,
@@ -1029,7 +1029,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.TotalSupplyStateCompleter-1.html",
-          "hash": "B1sUa0gB92xOimS9VcaAg43YmI9TsZLa8qPuKdgDIfI="
+          "hash": "SR8abjL6dskNcfmLQ6qFeOnnpJyXtBJT0BB3bVJeT7o="
         }
       },
       "is_incremental": false,

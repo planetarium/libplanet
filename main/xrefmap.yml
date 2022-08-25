@@ -1769,28 +1769,28 @@ references:
   commentId: F:Libplanet.Assets.Currency.Hash
   fullName: Libplanet.Assets.Currency.Hash
   nameWithType: Currency.Hash
-- uid: Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,Libplanet.Address)
-  name: LegacyUntracked(String, Byte, Address)
-  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_System_String_System_Byte_Libplanet_Address_
-  commentId: M:Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,Libplanet.Address)
-  fullName: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, Libplanet.Address)
-  nameWithType: Currency.LegacyUntracked(String, Byte, Address)
-- uid: Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
-  name: LegacyUntracked(String, Byte, Nullable<IImmutableSet<Address>>)
-  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
-  commentId: M:Libplanet.Assets.Currency.LegacyUntracked(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
-  name.vb: LegacyUntracked(String, Byte, Nullable(Of IImmutableSet(Of Address)))
-  fullName: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>)
-  fullName.vb: Libplanet.Assets.Currency.LegacyUntracked(System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
-  nameWithType: Currency.LegacyUntracked(String, Byte, Nullable<IImmutableSet<Address>>)
-  nameWithType.vb: Currency.LegacyUntracked(String, Byte, Nullable(Of IImmutableSet(Of Address)))
-- uid: Libplanet.Assets.Currency.LegacyUntracked*
-  name: LegacyUntracked
-  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_LegacyUntracked_
-  commentId: Overload:Libplanet.Assets.Currency.LegacyUntracked
+- uid: Libplanet.Assets.Currency.Legacy(System.String,System.Byte,Libplanet.Address)
+  name: Legacy(String, Byte, Address)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Legacy_System_String_System_Byte_Libplanet_Address_
+  commentId: M:Libplanet.Assets.Currency.Legacy(System.String,System.Byte,Libplanet.Address)
+  fullName: Libplanet.Assets.Currency.Legacy(System.String, System.Byte, Libplanet.Address)
+  nameWithType: Currency.Legacy(String, Byte, Address)
+- uid: Libplanet.Assets.Currency.Legacy(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name: Legacy(String, Byte, Nullable<IImmutableSet<Address>>)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Legacy_System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___
+  commentId: M:Libplanet.Assets.Currency.Legacy(System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}})
+  name.vb: Legacy(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+  fullName: Libplanet.Assets.Currency.Legacy(System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>)
+  fullName.vb: Libplanet.Assets.Currency.Legacy(System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)))
+  nameWithType: Currency.Legacy(String, Byte, Nullable<IImmutableSet<Address>>)
+  nameWithType.vb: Currency.Legacy(String, Byte, Nullable(Of IImmutableSet(Of Address)))
+- uid: Libplanet.Assets.Currency.Legacy*
+  name: Legacy
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_Legacy_
+  commentId: Overload:Libplanet.Assets.Currency.Legacy
   isSpec: "True"
-  fullName: Libplanet.Assets.Currency.LegacyUntracked
-  nameWithType: Currency.LegacyUntracked
+  fullName: Libplanet.Assets.Currency.Legacy
+  nameWithType: Currency.Legacy
 - uid: Libplanet.Assets.Currency.MaximumSupply
   name: MaximumSupply
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_MaximumSupply
