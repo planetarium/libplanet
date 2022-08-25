@@ -189,6 +189,11 @@ namespace Libplanet.Crypto
             }
         }
 
+        public (bool, byte[]) VrfVerify(byte[] message, byte[] proof)
+        {
+            return CryptoConfig.CryptoBackend.VrfVerify(proof, message, this);
+        }
+
         /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
         /// </summary>
