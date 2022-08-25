@@ -251,11 +251,89 @@ namespace Libplanet.Crypto
             return Unsafe.As<byte[], ImmutableArray<byte>>(ref sig);
         }
 
+        /// <summary>
+        /// Creates a proof and pseudorandom byte from the given <paramref name="message"/>.
+        /// <para>
+        /// A created proof can be verified by the corresponding
+        /// <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>
+        /// A created proof can regenerate unique pseudorandom byte.
+        /// </para>
+        /// <para>
+        /// Proofs can be created by only the <see cref="PrivateKey"/>
+        /// which corresponds a <see cref="PublicKey"/> to verify these proofs.
+        /// </para>
+        /// <para>
+        /// To sum up, a proof is used to guarantee:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>that the <paramref name="message"/> was created
+        /// by someone possessing the corresponding <see cref="PrivateKey"/>,
+        /// </description></item>
+        /// <item><description>that the possessor cannot deny having sent the
+        /// <paramref name="message"/>,</description></item>
+        /// <item><description>that the <paramref name="message"/> was not
+        /// forged in the middle of transit, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was created
+        /// properly by someone possessing the corresponding
+        /// <see cref="PrivateKey"/>, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was not
+        /// forged in the middle of transit.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="message">A message <see cref="byte"/>s to sign.</param>
+        /// <returns>A proof that proves the authenticity of the <paramref name="message"/>.
+        /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
+        /// </returns>
+        /// <returns>A pseudorandom byte array generated from the proof.
+        /// It can be regenerated using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
+        /// </returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.VrfVerify"/>
         public (byte[], byte[]) VrfEvaluate(byte[] message)
         {
             return CryptoConfig.CryptoBackend.VrfEvaluate(message, this);
         }
 
+        /// <summary>
+        /// Creates a proof and pseudorandom byte from the given <paramref name="message"/>.
+        /// <para>
+        /// A created proof can be verified by the corresponding
+        /// <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>
+        /// A created proof can regenerate unique pseudorandom byte.
+        /// </para>
+        /// <para>
+        /// Proofs can be created by only the <see cref="PrivateKey"/>
+        /// which corresponds a <see cref="PublicKey"/> to verify these proofs.
+        /// </para>
+        /// <para>
+        /// To sum up, a proof is used to guarantee:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>that the <paramref name="message"/> was created
+        /// by someone possessing the corresponding <see cref="PrivateKey"/>,
+        /// </description></item>
+        /// <item><description>that the possessor cannot deny having sent the
+        /// <paramref name="message"/>,</description></item>
+        /// <item><description>that the <paramref name="message"/> was not
+        /// forged in the middle of transit, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was created
+        /// properly by someone possessing the corresponding
+        /// <see cref="PrivateKey"/>, and</description></item>
+        /// <item><description>that the generated pseudorandom byte was not
+        /// forged in the middle of transit.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="message">A message <see cref="byte"/>s to sign.</param>
+        /// <returns>A proof that proves the authenticity of the <paramref name="message"/>.
+        /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
+        /// </returns>
+        /// <returns>A pseudorandom byte array generated from the proof.
+        /// It can be regenerated using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
+        /// </returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.VrfVerify"/>
         public (ImmutableArray<byte>, ImmutableArray<byte>) VrfEvaluate(
             ImmutableArray<byte> message)
         {

@@ -189,6 +189,28 @@ namespace Libplanet.Crypto
             }
         }
 
+        /// <summary>
+        /// <para>
+        /// Verifies whether a <paramref name="proof"/> proves authenticity of
+        /// <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </para>
+        /// <para>
+        /// Generates a pseudorandom bytes from a <paramref name="proof"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="message">A original plaintext message that the <paramref name="proof"/>
+        /// tries to prove its authenticity.  I.e., an argument data passed to
+        /// <see cref="PrivateKey.VrfEvaluate(byte[])"/> or <see
+        /// cref="PrivateKey.VrfEvaluate(ImmutableArray{byte})" /> methods.</param>
+        /// <param name="proof">A proof which tries to authenticity of
+        /// <paramref name="message"/>.
+        /// I.e., a data that <see cref="PrivateKey.VrfEvaluate(byte[])"/> or
+        /// <see cref="PrivateKey.VrfEvaluate(ImmutableArray{byte})"/> methods returned.</param>
+        /// <returns><c>true</c> if the <paramref name="proof"/> proves authenticity of
+        /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// Otherwise <c>false</c>.</returns>
+        /// <returns> A pseudorandom bytes created from <paramref name="proof"/>.
+        /// </returns>
         public (bool, byte[]) VrfVerify(byte[] message, byte[] proof)
         {
             return CryptoConfig.CryptoBackend.VrfVerify(proof, message, this);

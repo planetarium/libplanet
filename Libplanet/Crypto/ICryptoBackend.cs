@@ -43,8 +43,38 @@ namespace Libplanet.Crypto
             byte[] signature,
             PublicKey publicKey);
 
+        /// <summary>
+        /// Creates a piBytes from <paramref name="alphaBytes"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// </summary>
+        /// <param name="alphaBytes">A message bytearray to generate piBytes and betaBytes.
+        /// </param>
+        /// <param name="privateKey"><see cref="PrivateKey"/> to prove
+        /// <paramref name="alphaBytes"/>.
+        /// </param>
+        /// <returns> A piBytes created from <paramref name="alphaBytes"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// piBytes is called as "proof".
+        /// </returns>
+        /// <returns> A betaBytes created from piBytes.
+        /// betaBytes is used as "pseudorandom bytes".
+        /// </returns>
         (byte[], byte[]) VrfEvaluate(byte[] alphaBytes, PrivateKey privateKey);
 
+        /// <summary>
+        /// Verifies whether a <paramref name="piBytes"/> was created from
+        /// a <paramref name="alphaBytes"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </summary>
+        /// <param name="piBytes">A proof that was created from the
+        /// <paramref name="alphaBytes"/>.</param>
+        /// <param name="alphaBytes">A message bytearray.</param>
+        /// <param name="publicKey"><see cref="PublicKey"/> used for verification.</param>
+        /// <returns><c>true</c> if the <paramref name="piBytes"/> was created
+        /// from the <paramref name="alphaBytes"/> with the corresponding
+        /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
+        /// <returns> A betaBytes created from <paramref name="piBytes"/>.
+        /// betaBytes is used as "pseudorandom bytes".
+        /// </returns>
         (bool, byte[]) VrfVerify(byte[] piBytes, byte[] alphaBytes, PublicKey publicKey);
     }
 }
