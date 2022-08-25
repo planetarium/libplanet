@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => new BoundPeer(
+        public BoundPeer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234));
 

@@ -109,12 +109,16 @@ namespace Libplanet.Net
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
-            Transport = InitializeTransport(
+            Transport = NetMQTransport.Create(
+                _privateKey,
+                _appProtocolVersion,
+                TrustedAppProtocolVersionSigners,
                 workers,
                 host,
                 listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered);
+                iceServers ?? new List<IceServer>(),
+                differentAppProtocolVersionEncountered,
+                Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
 
@@ -190,7 +194,7 @@ namespace Libplanet.Net
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => Transport?.AsPeer;
+        public BoundPeer AsPeer => Transport?.AsPeer;
 
         /// <summary>
         /// The last time when any message was arrived.

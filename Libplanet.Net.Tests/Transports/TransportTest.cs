@@ -58,10 +58,6 @@ namespace Libplanet.Net.Tests.Transports
                 Assert.True(transport.Running);
                 await transport.StopAsync(TimeSpan.Zero);
                 Assert.False(transport.Running);
-                if (transport is NetMQTransport)
-                {
-                    NetMQConfig.Cleanup(false);
-                }
 
                 await InitializeAsync(transport);
                 Assert.True(transport.Running);
@@ -69,6 +65,10 @@ namespace Libplanet.Net.Tests.Transports
             finally
             {
                 transport.Dispose();
+                if (transport is NetMQTransport)
+                {
+                    NetMQConfig.Cleanup(false);
+                }
             }
         }
 
@@ -134,8 +134,8 @@ namespace Libplanet.Net.Tests.Transports
             try
             {
                 var peer = transport.AsPeer;
-                Assert.IsType<Peer>(peer);
-                Assert.IsNotType<BoundPeer>(peer);
+                Assert.IsNotType<Peer>(peer);
+                Assert.IsType<BoundPeer>(peer);
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
 
                 await InitializeAsync(transport);
@@ -147,7 +147,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(boundTransport);
                 peer = boundTransport.AsPeer;
                 Assert.IsType<BoundPeer>(peer);
-                var boundPeer = (BoundPeer)peer;
+                var boundPeer = peer;
                 Assert.Equal(boundPrivateKey.ToAddress(), boundPeer.Address);
                 Assert.Equal(listenPort, boundPeer.EndPoint.Port);
                 Assert.Equal(host, boundPeer.EndPoint.Host);
@@ -185,7 +185,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 Message reply = await transportA.SendMessageAsync(
-                    (BoundPeer)transportB.AsPeer,
+                    transportB.AsPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     CancellationToken.None);
@@ -214,7 +214,7 @@ namespace Libplanet.Net.Tests.Transports
                 cts.CancelAfter(TimeSpan.FromSeconds(1));
                 await Assert.ThrowsAsync<TaskCanceledException>(
                     async () => await transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         null,
                         cts.Token));
@@ -258,7 +258,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 var replies = (await transportA.SendMessageAsync(
-                    (BoundPeer)transportB.AsPeer,
+                    transportB.AsPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(3),
                     2,
@@ -289,7 +289,7 @@ namespace Libplanet.Net.Tests.Transports
 
                 var e = await Assert.ThrowsAsync<CommunicationFailException>(
                     async () => await transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         TimeSpan.FromSeconds(3),
                         CancellationToken.None));
@@ -348,7 +348,7 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportB);
 
                 Task t = transportA.SendMessageAsync(
-                        (BoundPeer)transportB.AsPeer,
+                        transportB.AsPeer,
                         new PingMsg(),
                         null,
                         CancellationToken.None);
@@ -408,9 +408,9 @@ namespace Libplanet.Net.Tests.Transports
                 await InitializeAsync(transportD);
 
                 var table = new RoutingTable(address, bucketSize: 1);
-                table.AddPeer(transportB.AsPeer as BoundPeer);
-                table.AddPeer(transportC.AsPeer as BoundPeer);
-                table.AddPeer(transportD.AsPeer as BoundPeer);
+                table.AddPeer(transportB.AsPeer);
+                table.AddPeer(transportC.AsPeer);
+                table.AddPeer(transportD.AsPeer);
 
                 transportA = CreateTransport();
                 await InitializeAsync(transportA);
