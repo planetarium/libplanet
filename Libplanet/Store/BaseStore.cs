@@ -54,15 +54,11 @@ namespace Libplanet.Store
             BlockHash branchpoint
         );
 
-        public abstract IEnumerable<TxId> IterateTransactionIds();
-
         public abstract Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
 
         public abstract void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
-
-        public abstract bool DeleteTransaction(TxId txid);
 
         /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
@@ -164,11 +160,6 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
-
-        public virtual long CountTransactions()
-        {
-            return IterateTransactionIds().LongCount();
-        }
 
         public virtual long CountBlocks()
         {

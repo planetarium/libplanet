@@ -82,10 +82,6 @@ namespace Libplanet.Tests.Store
         ) =>
             Store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
-        public virtual IEnumerable<TxId> IterateTransactionIds() =>
-            Store.IterateTransactionIds();
-
         /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
         public virtual Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
@@ -97,10 +93,6 @@ namespace Libplanet.Tests.Store
             where T : IAction, new()
         =>
             Store.PutTransaction(tx);
-
-        /// <inheritdoc cref="IStore.DeleteTransaction(TxId)"/>
-        public virtual bool DeleteTransaction(TxId txid) =>
-            Store.DeleteTransaction(txid);
 
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public virtual IEnumerable<BlockHash> IterateBlockHashes() =>
@@ -190,10 +182,6 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.ContainsTransaction(TxId)"/>
         public virtual bool ContainsTransaction(TxId txId) =>
             Store.ContainsTransaction(txId);
-
-        /// <inheritdoc cref="IStore.CountTransactions()"/>
-        public virtual long CountTransactions() =>
-            Store.CountTransactions();
 
         /// <inheritdoc cref="IStore.CountBlocks()"/>
         public virtual long CountBlocks() =>

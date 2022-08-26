@@ -581,23 +581,12 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void StoreTx()
         {
-            Assert.Equal(0, Fx.Store.CountTransactions());
-            Assert.Empty(Fx.Store.IterateTransactionIds());
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
-            Assert.False(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction1);
-            Assert.Equal(1, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction1.Id,
-                },
-                Fx.Store.IterateTransactionIds()
-            );
             Assert.Equal(
                 Fx.Transaction1,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
@@ -607,15 +596,6 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction2);
-            Assert.Equal(2, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction1.Id,
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateTransactionIds().ToHashSet()
-            );
             Assert.Equal(
                 Fx.Transaction1,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
@@ -626,21 +606,10 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
-            Assert.True(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
-            Assert.Equal(1, Fx.Store.CountTransactions());
-            Assert.Equal(
-                new HashSet<TxId>
-                {
-                    Fx.Transaction2.Id,
-                },
-                Fx.Store.IterateTransactionIds()
-            );
-            Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
             Assert.Equal(
                 Fx.Transaction2,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id)
             );
-            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
         }
 
@@ -898,19 +867,6 @@ namespace Libplanet.Tests.Store
                 }
 
                 throw;
-            }
-
-            Assert.Equal(1 + (taskCount * txCount), Fx.Store.CountTransactions());
-            foreach (TxId txid in Fx.Store.IterateTransactionIds())
-            {
-                var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
-                tx.Validate();
-                Assert.Single(tx.CustomActions);
-                AtomicityTestAction action = tx.CustomActions[0];
-                Assert.Equal(
-                    md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
-                    action.Md5Digest.ToArray()
-                );
             }
         }
 

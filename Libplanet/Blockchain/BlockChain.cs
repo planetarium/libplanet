@@ -595,6 +595,66 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
+        /// Gets the total supply of a <paramref name="currency"/> in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, derive
+        /// from the sum of all balances.
+        /// </summary>
+        /// <param name="currency">The currency type to query.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state.</param>
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states of the block, this delegate is called and its return values are used
+        /// instead.
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Recalculate"/> makes the incomplete
+        /// states recalculated and filled on the fly.</para>
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Reject"/> makes the incomplete states
+        /// (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
+        /// </param>
+        /// <returns>The total supply value of <paramref name="currency"/> at
+        /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
+        public FungibleAssetValue GetTotalSupply(
+            Currency currency,
+            BlockHash? offset = null,
+            TotalSupplyStateCompleter<T> stateCompleter = null
+        ) =>
+            GetTotalSupply(
+                currency,
+                offset ?? Tip.Hash,
+                stateCompleter ?? TotalSupplyStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetTotalSupply"/>
+        public FungibleAssetValue GetTotalSupply(
+            Currency currency,
+            BlockHash offset,
+            TotalSupplyStateCompleter<T> stateCompleter
+        )
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            if (Count < 1)
+            {
+                return currency * 0;
+            }
+
+            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
+            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
+            {
+                string rawKey = ToTotalSupplyKey(currency);
+                IReadOnlyList<IValue> values =
+                    StateStore.GetStates(stateRootHash, new[] { rawKey });
+                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
+            }
+
+            return stateCompleter(this, offset, currency);
+        }
+
+        /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
         /// <see cref="Transaction{T}"/> within a <see cref="Block{T}"/>.
         /// </summary>
@@ -797,7 +857,7 @@ namespace Libplanet.Blockchain
                 // Update states
                 DateTimeOffset setStatesStarted = DateTimeOffset.Now;
                 var totalDelta =
-                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                    evaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
                 const string deltaMsg =
                     "Summarized the states delta with {KeyCount} key changes " +
                     "made by block #{BlockIndex} {BlockHash}.";
@@ -1301,7 +1361,8 @@ namespace Libplanet.Blockchain
         {
             if (!StateStore.ContainsStateRoot(block.StateRootHash))
             {
-                var totalDelta = actionEvaluations.GetTotalDelta(ToStateKey, ToFungibleAssetKey);
+                var totalDelta = actionEvaluations.GetTotalDelta(
+                    ToStateKey, ToFungibleAssetKey, ToTotalSupplyKey);
                 HashDigest<SHA256>? prevStateRootHash = Store.GetStateRootHash(block.PreviousHash);
                 StateStore.Commit(prevStateRootHash, totalDelta);
             }

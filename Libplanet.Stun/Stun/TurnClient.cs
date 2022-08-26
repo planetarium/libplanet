@@ -17,6 +17,7 @@ namespace Libplanet.Stun
     public class TurnClient : IStunContext, IDisposable
     {
         public const int TurnDefaultPort = 3478;
+        private const int ConnectableProbeLength = 2;
         private const int AllocateRetry = 5;
         private const int ProxyCount = 16;
 
@@ -37,7 +38,7 @@ namespace Libplanet.Stun
         private CancellationTokenSource _turnTaskCts;
         private List<Task> _turnTasks;
 
-        public TurnClient(
+        internal TurnClient(
             string host,
             string username,
             string password,
@@ -72,6 +73,49 @@ namespace Libplanet.Stun
         public DnsEndPoint EndPoint { get; private set; }
 
         public bool BehindNAT { get; private set; }
+
+        /// <summary>
+        /// Creates a <see cref="TurnClient"/> that is connectable to one of
+        /// the <see cref="IceServer"/>s given.
+        /// </summary>
+        /// <remarks>
+        /// This is a blocking operation with a non-negligable amount of execution time as
+        /// each <see cref="IceServer"/> in <paramref name="iceServers"/> is checked over
+        /// the network to see if it can be connected to.
+        /// </remarks>
+        /// <param name="iceServers">The list of <see cref="IIceServer"/>s to check.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> that returns <see cref="TurnClient"/>
+        /// pointing to a connectable <see cref="IIceServer"/>.</returns>
+        /// <exception cref="IceServerException">Thrown when no <see cref="TurnClient"/> can
+        /// be created that can connect to any <see cref="IIceServer"/> among
+        /// <paramref name="iceServers"/>.</exception>
+        public static async Task<TurnClient> Create(
+            IEnumerable<IIceServer> iceServers,
+            CancellationToken cancellationToken = default)
+        {
+            foreach (IIceServer server in iceServers)
+            {
+                Uri url = server.Url;
+                int port = url.IsDefaultPort
+                    ? TurnClient.TurnDefaultPort
+                    : url.Port;
+                TurnClient turnClient = new TurnClient(
+                    url.Host,
+                    server.Username,
+                    server.Credential,
+                    port);
+
+                if (await turnClient.IsConnectable(cancellationToken: cancellationToken))
+                {
+                    Log.Debug("TURN client created: {Host}:{Port}", url.Host, url.Port);
+                    return turnClient;
+                }
+            }
+
+            throw new IceServerException("Could not find a suitable ICE server.");
+        }
 
         public async Task InitializeTurnAsync(CancellationToken cancellationToken)
         {
@@ -281,9 +325,17 @@ namespace Libplanet.Stun
             return !_control.Client.LocalEndPoint.Equals(mapped);
         }
 
-        public async Task<bool> IsConnectable(
+        public void Dispose()
+        {
+            _logger.Debug($"Disposing {nameof(TurnClient)}...");
+            ClearSession();
+            _logger.Debug($"{nameof(TurnClient)} is disposed.");
+        }
+
+        private async Task<bool> IsConnectable(
             CancellationToken cancellationToken = default)
         {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             try
             {
                 using var client = new TcpClient();
@@ -293,10 +345,10 @@ namespace Libplanet.Stun
                 NetworkStream stream = client.GetStream();
 
                 var request = new BindingRequest();
-                var asBytes = request.Encode(this);
-                await stream.WriteAsync(asBytes, 0, asBytes.Length, cancellationToken);
-                await StunMessage.ParseAsync(stream, cancellationToken);
-
+                byte[] asBytes = request.Encode(this);
+                cts.CancelAfter(TimeSpan.FromSeconds(ConnectableProbeLength));
+                await stream.WriteAsync(asBytes, 0, asBytes.Length, cts.Token);
+                await StunMessage.ParseAsync(stream, cts.Token);
                 return true;
             }
             catch (Exception)
@@ -305,14 +357,17 @@ namespace Libplanet.Stun
             }
         }
 
-        public void Dispose()
+        private List<Task> BindMultipleProxies(
+            int listenPort,
+            int count,
+            CancellationToken cancellationToken = default)
         {
-            _logger.Debug($"Disposing {nameof(TurnClient)}...");
-            ClearSession();
-            _logger.Debug($"{nameof(TurnClient)} is disposed.");
+            return Enumerable.Range(1, count)
+                .Select(x => BindProxies(listenPort, cancellationToken))
+                .ToList();
         }
 
-        public async Task BindProxies(
+        private async Task BindProxies(
             int listenPort,
             CancellationToken cancellationToken = default)
         {
@@ -341,16 +396,6 @@ namespace Libplanet.Stun
                 );
 #pragma warning restore CS4014
             }
-        }
-
-        private List<Task> BindMultipleProxies(
-            int listenPort,
-            int count,
-            CancellationToken cancellationToken = default)
-        {
-            return Enumerable.Range(1, count)
-                .Select(x => BindProxies(listenPort, cancellationToken))
-                .ToList();
         }
 
         private async Task RefreshAllocate(CancellationToken cancellationToken)

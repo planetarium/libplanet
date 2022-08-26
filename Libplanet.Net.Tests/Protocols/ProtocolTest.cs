@@ -530,7 +530,7 @@ namespace Libplanet.Net.Tests.Protocols
                 foreach (var t in transports)
                 {
                     transport.Table.AddPeer(
-                        (BoundPeer)t.AsPeer,
+                        t.AsPeer,
                         DateTimeOffset.UtcNow - TimeSpan.FromMinutes(2));
                 }
 

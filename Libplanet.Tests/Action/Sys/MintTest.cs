@@ -12,10 +12,10 @@ namespace Libplanet.Tests.Action.Sys
     public class MintTest
     {
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency FOO = new Currency("FOO", 2, minter: null);
+        private static readonly Currency FOO = Currency.Capped("FOO", 2, (1000000, 0), null);
 
         // ReSharper disable once InconsistentNaming
-        private static readonly Currency BAR = new Currency("BAR", 0, minter: null);
+        private static readonly Currency BAR = Currency.Uncapped("BAR", 0, null);
 
         [Fact]
         public void Constructor()
@@ -64,10 +64,11 @@ namespace Libplanet.Tests.Action.Sys
         {
             var random = new Random();
             Address signer = random.NextAddress();
-            Currency bazCurrency = new Currency("BAZ", 0, minter: random.NextAddress());
+            Currency bazCurrency = Currency.Uncapped("BAZ", 0, random.NextAddress());
             var prevStates = new AccountStateDeltaImpl(
                 accountStateGetter: addr => new IValue[addr.Count],
                 accountBalanceGetter: (addr, c) => c * 0,
+                totalSupplyGetter: c => c * 0,
                 signer: signer
             );
             BlockHash genesisHash = random.NextBlockHash();
@@ -91,6 +92,9 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal(BAR * 0, nextStates.GetBalance(signer, BAR));
             Assert.Equal(FOO * 123456, nextStates.GetBalance(recipient, FOO));
             Assert.Equal(BAR * 0, nextStates.GetBalance(recipient, BAR));
+
+            var mintSupplyOverflowFoo = new Mint(recipient, FOO.MaximumSupply.Value * 2);
+            Assert.Throws<SupplyOverflowException>(() => mintSupplyOverflowFoo.Execute(context));
 
             var mintBar = new Mint(recipient, BAR * 10);
             NonNativeTokenException exc = Assert.Throws<NonNativeTokenException>(

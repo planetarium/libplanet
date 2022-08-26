@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 ConsensusContext.HandleMessage(
                     new ConsensusVote(expectedVotes[i])
                     {
-                        Remote = new Peer(TestUtils.Validators[i]),
+                        Remote = TestUtils.Peers[i],
                     });
             }
 
@@ -101,7 +101,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 ConsensusContext.HandleMessage(
                     new ConsensusCommit(expectedVotes[i])
                     {
-                        Remote = new Peer(TestUtils.Validators[i]),
+                        Remote = TestUtils.Peers[i],
                     });
             }
 
@@ -171,7 +171,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Equal(2, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
 
-            foreach (var privateKey in TestUtils.PrivateKeys)
+            foreach ((var privateKey, var peer) in TestUtils.PrivateKeys.Zip(TestUtils.Peers))
             {
                 if (privateKey == TestUtils.Peer2Priv)
                 {
@@ -190,14 +190,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             VoteFlag.Absent,
                             null).Sign(privateKey))
                     {
-                        Remote = new Peer(privateKey.PublicKey),
+                        Remote = peer,
                     });
             }
 
             await heightTwoStepChangedToPreCommit.WaitAsync();
             Assert.Equal(Step.PreCommit, ConsensusContext.Contexts[2].Step);
 
-            foreach (var privateKey in TestUtils.PrivateKeys)
+            foreach ((var privateKey, var peer) in TestUtils.PrivateKeys.Zip(TestUtils.Peers))
             {
                 if (privateKey == TestUtils.Peer2Priv)
                 {
@@ -216,7 +216,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             VoteFlag.Commit,
                             null).Sign(privateKey))
                     {
-                        Remote = new Peer(privateKey.PublicKey),
+                        Remote = peer,
                     });
             }
 

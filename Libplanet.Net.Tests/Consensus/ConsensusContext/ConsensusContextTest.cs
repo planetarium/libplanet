@@ -80,7 +80,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[0]),
+                    Remote = TestUtils.Peers[0],
                 });
 
             ConsensusContext.HandleMessage(
@@ -88,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[0]),
+                    Remote = TestUtils.Peers[0],
                 });
 
             // Waiting for commit.

@@ -97,8 +97,6 @@ namespace Libplanet.Store
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
 
-        IEnumerable<TxId> IterateTransactionIds();
-
         Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
 
@@ -111,8 +109,6 @@ namespace Libplanet.Store
         /// to <see cref="Transaction{T}"/>'s type parameter.</typeparam>
         void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
-
-        bool DeleteTransaction(TxId txid);
 
         /// <summary>
         /// Lists all block hashes in the store, regardless of their belonging chains.
@@ -320,8 +316,6 @@ namespace Libplanet.Store
         /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
         /// </returns>
         bool ContainsTransaction(TxId txId);
-
-        long CountTransactions();
 
         long CountBlocks();
 

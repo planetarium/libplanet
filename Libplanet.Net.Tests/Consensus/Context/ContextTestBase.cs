@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 Task.Run(() =>
                 {
                     ConsensusMessageSent?.Invoke(this, message);
-                    message.Remote = new Peer(TestUtils.PrivateKeys[(int)nodeId].PublicKey);
+                    message.Remote = TestUtils.Peers[(int)nodeId];
                     Context!.ProduceMessage(message);
                 });
 

@@ -26,7 +26,7 @@ namespace Libplanet.Net
         public TimeSpan RefreshPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
-        /// The lifespan of <see cref="Peer"/> in routing table.
+        /// The lifespan of <see cref="BoundPeer"/> in routing table.
         /// <seealso cref="IProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);

@@ -67,6 +67,163 @@ To be released.
 ### CLI tools
 
 
+Version 0.41.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Removed `NetMQTransport()` constructor.  Use
+    `NetMQTransport.Create()` instead.  [[#2215]]
+ -  Unused `TcpMessageCodec` class removed.  [[#2216]]
+ -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
+    [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient()` constructor.
+    Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
+
+### Backward-incompatible API changes
+
+ -  Removed unused transaction related methods from `IStore` and its
+    implementations [[#1538], [#2201]]
+    - `IterateTransactionIds()`
+    - `DeleteTransaction()`
+    - `CountTransactions()`
+ -  Removed `Currency(string, byte, IImutableSet<Address>?)` constructor.
+    [[#2200]]
+ -  Removed `Currency(string, byte, Address?)` constructor.
+    [[#2200]]
+ -  Added static methods of `Currency` that defines different kinds of
+    `Currency`.  [[#2200]]
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        IImutableSet<Address>?)` static method which defines an instance of
+        `Currency` with a hard limit on the maximum minted supply.
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        Address)` static method which defines an instance of `Currency` with a
+        hard limit on the maximum minted supply.
+     -  Added `Currency.Uncapped(string, byte, IImutableSet<Address>?)` static
+        method which defines an instance of `Currency` without an enforced
+        maximum supply limit.
+     -  Added `Currency.Uncapped(string, byte, Address)` static method which
+        defines an instance of `Currency` without an enforced maximum supply
+        limit.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, IImutableSet<Address>?)` static method which defines a legacy
+        `Currency` instance which is compatible with `Currency` instances
+        defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, Address)` static method which defines a legacy `Currency`
+        instance which is compatible with `Currency` instances defined before
+        total supply tracking support was introduced.
+     -  *NOTE:* if you already have some `Currency` instances defined in prior
+        to the addition of total supply tracking on a live chain, you cannot
+        modify the already-defined `Currency` instances as a capped or uncapped
+        `Currency` but have to define them with `Currency.Legacy()` as
+        the new Currency kinds are internally backwards-incompatible with the
+        legacy `Currency`.
+ -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
+    [[#915], [#2200]]
+ -  Added `IAccountStateView.GetTotalSupply(Currency)` method.
+    [[#915], [#2200]]
+ -  Added `IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash,
+    TotalSupplyStateCompleter<T>` method which gets the total supply of
+    a `Currency` in `FungibleAssetValue` from the state, and if not found,
+    returns null.  [[#915], [#2200]]
+ -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
+    `Peer` to `BoundPeer`.  [[#2215]]
+ -  (Libplanet.Net) All public return type, parameter type, and property type
+    of `Peer` changed to `BoundPeer`.   [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.   [[#2233]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `Currency.MaximumSupply` property.  [[#915], [#2200]]
+ -  Added `Currency.TotalSupplyTrackable` field.  [[#915], [#2200]]
+ -  Added `SupplyOverflowException` class.  [[#915], [#2200]]
+ -  Added `TotalSupplyGetter` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleter<T>` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
+ -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
+    [[#915], [#2200]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
+ -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
+ -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
+    to `Currency` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
+    it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
+
+### Behavioral changes
+
+ -  Bencodex related methods in `Currency` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  For capped currencies, `Currency.Serialize()` method stores the `major`
+        and `minor` values of the maximum supply as `Integer` values under the
+        keys `maximumSupplyMajor` and `maximumSupplyMinor`. For uncapped and
+        legacy untracked currencies, the entries are omitted.
+     -  `Currency(IValue)` constructor now looks for the maximum supply and
+        total supply trackability in the given dictionary and restores them if
+        found.
+ -  `Currency`'s implementation of `ISerializable` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  `Currency`'s implementation of `ISerializable.GetObjectData` now stores
+         the maximum supply if the `Currency` is capped.
+     -  `Currency(SerializationInfo, StreamingContext)` constructor now looks
+        for the maximum supply and total supply trackability and restores it if
+        found.
+ -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` and
+    `IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)` methods now
+    track the total supply if the total supply of the `Currency` is trackable.
+    [[#915], [#2200]]
+     -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` method now
+        throws `SupplyOverflowException` if the sum of current total supply and
+        the value to be minted exceeds the maximum supply of the `Currency`
+        instance.
+ -  (Libplanet.Net) `NetMQTransport`'s general behavior has changed.  [[#2215]]
+     -  `NetMQTransport` is now able to send requests and receive
+        replies as soon as it is created through `NetMQTransport.Create()`
+        factory method.
+     -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
+        to recieve requests and send replies.
+     -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
+        to stop recieving requests and sending replies.
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#915]: https://github.com/planetarium/libplanet/issues/915
+[#1538]: https://github.com/planetarium/libplanet/issues/1538
+[#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2201]: https://github.com/planetarium/libplanet/pull/2201
+[#2215]: https://github.com/planetarium/libplanet/pull/2215
+[#2216]: https://github.com/planetarium/libplanet/pull/2216
+[#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2227]: https://github.com/planetarium/libplanet/pull/2227
+[#2228]: https://github.com/planetarium/libplanet/pull/2228
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
+
+
 Version 0.40.0
 --------------
 
@@ -1981,7 +2138,7 @@ Released on October 28, 2021.  Mainly backported critical bug fixes from
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
 
-[#1562]: https://github.com/planetarium/libplanet/pull/1561
+[#1562]: https://github.com/planetarium/libplanet/pull/1562
 
 
 Version 0.18.2
@@ -2975,7 +3132,7 @@ Released on July 23, 2021.
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
-[#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1228]: https://github.com/planetarium/libplanet/pull/1228
 [#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235

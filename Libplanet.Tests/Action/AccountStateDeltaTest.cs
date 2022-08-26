@@ -26,6 +26,7 @@ namespace Libplanet.Tests.Action
         protected readonly Currency[] _currencies;
         protected readonly IImmutableDictionary<Address, IValue> _states;
         protected readonly IImmutableDictionary<(Address, Currency), BigInteger> _assets;
+        protected readonly IImmutableDictionary<Currency, (BigInteger, BigInteger)> _totalSupplies;
         protected readonly IAccountStateDelta _init;
 
         protected AccountStateDeltaTest(ITestOutputHelper output)
@@ -41,9 +42,13 @@ namespace Libplanet.Tests.Action
 
             _currencies = new[]
             {
-                new Currency("FOO", 0, minter: _addr[0]),
-                new Currency("BAR", 0, minters: _addr.Take(2).ToImmutableHashSet()),
-                new Currency("BAZ", 0, minter: null),
+#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+                Currency.Legacy("FOO", 0, _addr[0]),
+                Currency.Legacy("BAR", 0, _addr.Take(2).ToImmutableHashSet()),
+                Currency.Legacy("BAZ", 0, null),
+#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+                Currency.Uncapped("QUX", 0, minter: _addr[0]),
+                Currency.Capped("QUUX", 0, (100, 0), minter: _addr[0]),
             };
 
             _states = new Dictionary<Address, IValue>
@@ -56,26 +61,33 @@ namespace Libplanet.Tests.Action
             {
                 [(_addr[0], _currencies[0])] = 5,
                 [(_addr[0], _currencies[1])] = -10,
+                [(_addr[0], _currencies[3])] = 5,
                 [(_addr[1], _currencies[1])] = 15,
                 [(_addr[1], _currencies[2])] = 20,
             }.ToImmutableDictionary();
 
-            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  State", "Address");
+            _totalSupplies = new Dictionary<Currency, (BigInteger, BigInteger)>
+            {
+                [_currencies[3]] = (5, 0),
+            }.ToImmutableDictionary();
+
+            output.WriteLine("Fixtures  {0,-42}  FOO  BAR  BAZ  QUX  State", "Address");
             int i = 0;
             foreach (Address a in _addr)
             {
                 output.WriteLine(
-                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5}",
+                    "_addr[{0}]  {1}  {2,3}  {3,3}  {4,3}  {5,3} {6}",
                     i++,
                     a,
                     GetBalance(a, _currencies[0]),
                     GetBalance(a, _currencies[1]),
                     GetBalance(a, _currencies[2]),
+                    GetBalance(a, _currencies[3]),
                     GetStates(new[] { a })[0]
                 );
             }
 
-            _init = CreateInstance(GetStates, GetBalance, _addr[0]);
+            _init = CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[0]);
         }
 
         public abstract int ProtocolVersion { get; }
@@ -83,6 +95,7 @@ namespace Libplanet.Tests.Action
         public abstract IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         );
 
@@ -119,9 +132,11 @@ namespace Libplanet.Tests.Action
             Assert.Equal(new[] { _addr[0] }.ToImmutableHashSet(), a.StateUpdatedAddresses);
             Assert.Equal(a.StateUpdatedAddresses, a.UpdatedAddresses);
             Assert.Empty(a.UpdatedFungibleAssets);
+            Assert.Empty(a.TotalSupplyUpdatedCurrencies);
             Assert.Empty(_init.UpdatedAddresses);
             Assert.Empty(_init.StateUpdatedAddresses);
             Assert.Empty(_init.UpdatedFungibleAssets);
+            Assert.Empty(_init.TotalSupplyUpdatedCurrencies);
 
             IAccountStateDelta b = a.SetState(_addr[0], (Text)"z");
             Assert.Equal("z", (Text)b.GetState(_addr[0]));
@@ -169,6 +184,7 @@ namespace Libplanet.Tests.Action
             Assert.Empty(_init.UpdatedAddresses);
             Assert.Empty(_init.StateUpdatedAddresses);
             Assert.Empty(_init.UpdatedFungibleAssets);
+            Assert.Empty(_init.TotalSupplyUpdatedCurrencies);
         }
 
         [Fact]
@@ -264,7 +280,8 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.MintAsset(_addr[2], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[2], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(GetStates, GetBalance, _addr[1]);
+            IAccountStateDelta delta1 =
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to mint
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.MintAsset(_addr[1], Value(0, 10))
@@ -305,7 +322,8 @@ namespace Libplanet.Tests.Action
             delta0 = delta0.BurnAsset(_addr[1], Value(2, 10));
             Assert.Equal(Value(2, 10), delta0.GetBalance(_addr[1], _currencies[2]));
 
-            IAccountStateDelta delta1 = CreateInstance(GetStates, GetBalance, _addr[1]);
+            IAccountStateDelta delta1 =
+                CreateInstance(GetStates, GetBalance, GetTotalSupply, _addr[1]);
             // currencies[0] (FOO) disallows _addr[1] to burn
             Assert.Throws<CurrencyPermissionException>(() =>
                 delta1.BurnAsset(_addr[0], Value(0, 5))
@@ -335,5 +353,17 @@ namespace Libplanet.Tests.Action
                 _assets.TryGetValue((address, currency), out BigInteger balance) ? balance : 0,
                 0
             );
+
+        protected FungibleAssetValue GetTotalSupply(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return _totalSupplies.TryGetValue(currency, out var totalSupply)
+                ? new FungibleAssetValue(currency, totalSupply.Item1, totalSupply.Item2)
+                : currency * 0;
+        }
     }
 }
