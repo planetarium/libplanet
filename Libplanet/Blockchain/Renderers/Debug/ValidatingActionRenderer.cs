@@ -499,7 +499,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
 
         private InvalidRenderException<T> Error(IReadOnlyList<RenderRecord<T>> records, string msg)
         {
-            var exception = new InvalidRenderException<T>(records, msg);
+            var exception = new InvalidRenderException<T>(msg, records);
             _onError?.Invoke(exception);
             return exception;
         }

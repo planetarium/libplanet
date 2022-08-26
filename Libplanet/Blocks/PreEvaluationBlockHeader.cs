@@ -155,8 +155,8 @@ namespace Libplanet.Blocks
             else if (metadata.ProtocolVersion >= 2 && metadata.PublicKey is null)
             {
                 throw new InvalidBlockPublicKeyException(
-                    metadata.PublicKey,
-                    "Block's public key cannot be null unless its protocol version is less than 2."
+                    "Block's public key cannot be null unless its protocol version is less than 2.",
+                    metadata.PublicKey
                 );
             }
             else if (metadata.ProtocolVersion < 2 && metadata.PublicKey is { })
@@ -164,14 +164,14 @@ namespace Libplanet.Blocks
                 string msg =
                     "As blocks became to have public keys since the protocol version 2, blocks " +
                     $"with a protocol version {metadata.ProtocolVersion} cannot have public keys.";
-                throw new InvalidBlockPublicKeyException(metadata.PublicKey, msg);
+                throw new InvalidBlockPublicKeyException(msg, metadata.PublicKey);
             }
             else if (metadata.PublicKey is { } pubKey && !metadata.Miner.Equals(pubKey.ToAddress()))
             {
                 string msg =
                     $"The miner address {metadata.Miner} is not consistent with its public key " +
                     $"{pubKey}.";
-                throw new InvalidBlockPublicKeyException(pubKey, msg);
+                throw new InvalidBlockPublicKeyException(msg, pubKey);
             }
             else if (!ByteUtil.Satisfies(proof.PreEvaluationHash, metadata.Difficulty))
             {
@@ -190,9 +190,9 @@ namespace Libplanet.Blocks
             else if (metadata.Index == 0L && metadata.TotalDifficulty > BigInteger.Zero)
             {
                 throw new InvalidBlockTotalDifficultyException(
+                    $"Genesis block's total difficulty must be zero: {metadata.TotalDifficulty}.",
                     metadata.Difficulty,
-                    metadata.TotalDifficulty,
-                    $"Genesis block's total difficulty must be zero: {metadata.TotalDifficulty}."
+                    metadata.TotalDifficulty
                 );
             }
             else if (metadata.Index > 0L && metadata.Difficulty < 1L)
@@ -418,9 +418,9 @@ namespace Libplanet.Blocks
                     ByteUtil.Hex(expectedPreEvaluationHash) +
                     $", but its pre-evaluation hash is {ByteUtil.Hex(preEvaluationHash)}.";
                 throw new InvalidBlockPreEvaluationHashException(
+                    message,
                     preEvaluationHash,
-                    expectedPreEvaluationHash,
-                    message
+                    expectedPreEvaluationHash
                 );
             }
 

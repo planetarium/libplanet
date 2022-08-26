@@ -2092,7 +2092,7 @@ namespace Libplanet.Tests.Blockchain
             )
             {
                 _hook(blockChain);
-                return new TxPolicyViolationException(transaction.Id, "Test Message");
+                return new TxPolicyViolationException("Test Message", transaction.Id);
             }
         }
 

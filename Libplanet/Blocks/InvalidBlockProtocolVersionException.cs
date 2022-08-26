@@ -14,10 +14,10 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Initializes a new instance of <see cref="InvalidBlockProtocolVersionException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="actualProtocolVersion">The actual block protocol version which is invalid.
         /// </param>
-        /// <param name="message">The message that describes the error.</param>
-        public InvalidBlockProtocolVersionException(int actualProtocolVersion, string message)
+        public InvalidBlockProtocolVersionException(string message, int actualProtocolVersion)
             : base(message)
         {
             ActualProtocolVersion = actualProtocolVersion;
