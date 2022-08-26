@@ -199,7 +199,7 @@ namespace Libplanet.Action
                     var message =
                         $"Action class to wrap should be annotated with " +
                         $"{typeof(ActionTypeAttribute)}.";
-                    throw new MissingActionTypeException(type, message);
+                    throw new MissingActionTypeException(message, type);
                 }
 
                 _innerAction = value;
@@ -287,9 +287,9 @@ namespace Libplanet.Action
                             if (existing != t)
                             {
                                 throw new DuplicateActionTypeIdentifierException(
+                                    "Multiple action types are associated with the same type ID.",
                                     tid,
-                                    ImmutableHashSet.Create(existing, t),
-                                    "Multiple action types are associated with the same type ID."
+                                    ImmutableHashSet.Create(existing, t)
                                 );
                             }
 

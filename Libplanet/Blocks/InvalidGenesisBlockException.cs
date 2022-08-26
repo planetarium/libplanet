@@ -17,14 +17,14 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of the
         /// <see cref="InvalidGenesisBlockException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="networkExpected">The genesis block that the network expects.</param>
         /// <param name="stored">The genesis block that a local <see cref="IStore"/> contains.
         /// </param>
-        /// <param name="message">The message that describes the error.</param>
         public InvalidGenesisBlockException(
+            string message,
             BlockHash networkExpected,
-            BlockHash stored,
-            string message
+            BlockHash stored
         )
             : base(message)
         {

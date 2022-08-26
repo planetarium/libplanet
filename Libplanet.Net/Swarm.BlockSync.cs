@@ -110,9 +110,9 @@ namespace Libplanet.Net
                             "protocol-wise, the blockchain which does not share " +
                             "any mutual block is not acceptable.";
                         var e = new InvalidGenesisBlockException(
+                            msg,
                             hash,
-                            BlockChain.Genesis.Hash,
-                            msg);
+                            BlockChain.Genesis.Hash);
                         throw new AggregateException(msg, e);
                     }
 
@@ -173,9 +173,9 @@ namespace Libplanet.Net
                         throw new AggregateException(
                             msg,
                             new InvalidGenesisBlockException(
+                                msg,
                                 block.Hash,
-                                BlockChain.Genesis.Hash,
-                                msg
+                                BlockChain.Genesis.Hash
                             )
                         );
                     }
@@ -360,9 +360,9 @@ namespace Libplanet.Net
                             "protocol-wise, the blockchain which does not share " +
                             "any mutual block is not acceptable.";
                         var e = new InvalidGenesisBlockException(
+                            msg,
                             hash,
-                            workspace.Genesis.Hash,
-                            msg);
+                            workspace.Genesis.Hash);
                         throw new AggregateException(msg, e);
                     }
 
@@ -425,9 +425,9 @@ namespace Libplanet.Net
                         throw new AggregateException(
                             msg,
                             new InvalidGenesisBlockException(
+                                msg,
                                 block.Hash,
-                                workspace.Genesis.Hash,
-                                msg
+                                workspace.Genesis.Hash
                             )
                         );
                     }

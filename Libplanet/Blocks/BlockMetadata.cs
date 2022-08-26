@@ -106,8 +106,8 @@ namespace Libplanet.Blocks
                 if (value < 0)
                 {
                     throw new InvalidBlockProtocolVersionException(
-                        value,
-                        $"A block's protocol version cannot be less than zero: {value}."
+                        $"A block's protocol version cannot be less than zero: {value}.",
+                        value
                     );
                 }
                 else if (value > CurrentProtocolVersion)
@@ -115,7 +115,7 @@ namespace Libplanet.Blocks
                     string msg =
                         "A block's protocol version cannot be greater than " +
                         $"{CurrentProtocolVersion}: {value}.";
-                    throw new InvalidBlockProtocolVersionException(value, msg);
+                    throw new InvalidBlockProtocolVersionException(msg, value);
                 }
 
                 _protocolVersion = value;
@@ -150,8 +150,9 @@ namespace Libplanet.Blocks
                 if (PublicKey is { } pubKey && !pubKey.ToAddress().Equals(value))
                 {
                     throw new InvalidBlockPublicKeyException(
-                        pubKey,
-                        $"The miner address {value} is not consistent with its public key {pubKey}."
+                        $"The miner address {value} is not consistent" +
+                        $"with its public key {pubKey}.",
+                        pubKey
                     );
                 }
 
@@ -212,9 +213,9 @@ namespace Libplanet.Blocks
                 if (value < BigInteger.Zero)
                 {
                     throw new InvalidBlockTotalDifficultyException(
+                        $"{nameof(TotalDifficulty)} cannot be negative: ${value}.",
                         Difficulty,
-                        value,
-                        $"{nameof(TotalDifficulty)} cannot be negative: ${value}."
+                        value
                     );
                 }
                 else if (value < Difficulty)
@@ -222,7 +223,7 @@ namespace Libplanet.Blocks
                     string msg =
                         $"{nameof(TotalDifficulty)} ({value}) cannot be less than " +
                         $"{nameof(Difficulty)} ({Difficulty}).";
-                    throw new InvalidBlockTotalDifficultyException(Difficulty, value, msg);
+                    throw new InvalidBlockTotalDifficultyException(msg, Difficulty, value);
                 }
 
                 _totalDifficulty = value;

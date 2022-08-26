@@ -55,7 +55,7 @@ namespace Libplanet.Action
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
                           $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(sender, senderBalance, msg);
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
             return UpdateFungibleAssets(

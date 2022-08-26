@@ -105,9 +105,9 @@ namespace Libplanet.Blocks
                     : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
                         $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(
+                    msg,
                     preEvaluationBlockHeader.PublicKey,
-                    proof.Signature,
-                    msg
+                    proof.Signature
                 );
             }
 

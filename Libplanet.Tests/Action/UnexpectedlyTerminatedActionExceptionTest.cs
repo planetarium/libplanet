@@ -29,12 +29,12 @@ namespace Libplanet.Tests.Action
             };
 
             var exc = new UnexpectedlyTerminatedActionException(
+                "for testing",
                 preEvaluationHash,
                 blockIndex,
                 txId,
                 previousStateRootHash,
                 action,
-                "for testing",
                 innerExc
             );
 

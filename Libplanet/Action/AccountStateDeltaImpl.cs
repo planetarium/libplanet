@@ -165,9 +165,9 @@ namespace Libplanet.Action
             if (!currency.AllowsToMint(Signer))
             {
                 throw new CurrencyPermissionException(
+                    $"The account {Signer} has no permission to mint the currency {currency}.",
                     Signer,
-                    currency,
-                    $"The account {Signer} has no permission to mint the currency {currency}."
+                    currency
                 );
             }
 
@@ -181,7 +181,7 @@ namespace Libplanet.Action
                     var msg = $"The amount {value} attempted to be minted added to the current"
                               + $" total supply of {currentTotalSupply} exceeds the"
                               + $" maximum allowed supply of {currency.MaximumSupply}.";
-                    throw new SupplyOverflowException(value, msg);
+                    throw new SupplyOverflowException(msg, value);
                 }
 
                 return UpdateFungibleAssets(
@@ -219,7 +219,7 @@ namespace Libplanet.Action
             {
                 var msg = $"The account {sender}'s balance of {currency} is insufficient to " +
                           $"transfer: {senderBalance} < {value}.";
-                throw new InsufficientBalanceException(sender, senderBalance, msg);
+                throw new InsufficientBalanceException(msg, sender, senderBalance);
             }
 
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets =
@@ -256,7 +256,7 @@ namespace Libplanet.Action
             {
                 msg = $"The account {Signer} has no permission to burn assets of " +
                       $"the currency {currency}.";
-                throw new CurrencyPermissionException(Signer, currency, msg);
+                throw new CurrencyPermissionException(msg, Signer, currency);
             }
 
             FungibleAssetValue balance = GetBalance(owner, currency);
@@ -265,7 +265,7 @@ namespace Libplanet.Action
             {
                 msg = $"The account {owner}'s balance of {currency} is insufficient to burn: " +
                       $"{balance} < {value}.";
-                throw new InsufficientBalanceException(owner, balance, msg);
+                throw new InsufficientBalanceException(msg, owner, balance);
             }
 
             if (currency.TotalSupplyTrackable)

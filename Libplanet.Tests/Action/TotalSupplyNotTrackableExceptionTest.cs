@@ -19,8 +19,8 @@ namespace Libplanet.Tests.Action
 
             var currency = Currency.Uncapped("PLT", 0, minter);
             var exc = new TotalSupplyNotTrackableException(
-                currency,
-                "for testing"
+                "for testing",
+                currency
             );
 
             var formatter = new BinaryFormatter();
