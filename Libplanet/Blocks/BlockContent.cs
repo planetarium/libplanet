@@ -224,11 +224,7 @@ namespace Libplanet.Blocks
         public PreEvaluationBlock<T> Mine(CancellationToken cancellationToken = default) =>
             new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
 
-        public PreEvaluationBlock<T> Propose(
-            ImmutableArray<byte> preEvaluationHash) =>
-            new PreEvaluationBlock<T>(
-                this,
-                (default, preEvaluationHash));
+        public PreEvaluationBlock<T> Propose() => new PreEvaluationBlock<T>(this, default(Nonce));
 
         /// <summary>
         /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.
