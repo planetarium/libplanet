@@ -131,6 +131,23 @@ of <code>Peer</code> changed to <code>BoundPeer</code>.   [<a href="https://gith
 <li>(Libplanet.Net) Additional public return type, parameter type, and
 property type of <code>Peer</code> that weren't handled by <a href="https://github.com/planetarium/libplanet/pull/2228">#2228</a> changed to
 <code>BoundPeer</code>.   [<a href="https://github.com/planetarium/libplanet/pull/2233">#2233</a>]</li>
+<li>Reworked constructors of exception classes. Affected classes are:
+<ul>
+<li>(Libplanet.Net) <code>PingTimeoutException</code></li>
+<li><code>CurrencyPermissionException</code>,
+<code>DuplicateActionTypeIdentifierException</code>, <code>InsufficientBalanceException</code>,
+<code>InvalidBlockPreEvaluationHashException</code>,
+<code>InvalidBlockProtocolVersionException</code>, <code>InvalidBlockPublicKeyException</code>,
+<code>InvalidBlockSignatureException</code>, <code>InvalidBlockStateRootHashException</code>,
+<code>InvalidBlockTotalDifficultyException</code>, <code>InvalidGenesisBlockException</code>,
+<code>InvalidTxException</code>, <code>InvalidTxGenesisHashException</code>,
+<code>InvalidTxIdException</code>, <code>InvalidTxNonceException</code>,
+<code>InvalidTxSignatureException</code>, <code>MissingActionTypeException</code>,
+<code>NoKeyException</code>, <code>SupplyOverflowException</code>,
+<code>TotalSupplyNotTrackableException</code>, <code>TxPolicyViolationException</code>,
+<code>UnexpectedlyTerminatedActionException</code>  [<a href="https://github.com/planetarium/libplanet/issues/2239">#2239</a>, <a href="https://github.com/planetarium/libplanet/pull/2241">#2241</a>]</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

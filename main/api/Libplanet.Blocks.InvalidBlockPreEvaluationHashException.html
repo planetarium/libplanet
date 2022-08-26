@@ -97,20 +97,20 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_ImmutableArray_System_Byte__ImmutableArray_System_Byte__System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockPreEvaluationHashException.%23ctor(ImmutableArray%7BSystem.Byte%7D%2CImmutableArray%7BSystem.Byte%7D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_System_String_ImmutableArray_System_Byte__ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.InvalidBlockPreEvaluationHashException.%23ctor(System.String%2CImmutableArray%7BSystem.Byte%7D%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/InvalidBlockPreEvaluationHashException.cs/#L27">View Source</a>
   </span>
   <a id="Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_" data-uid="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_ImmutableArray_System_Byte__ImmutableArray_System_Byte__System_String_" data-uid="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(ImmutableArray{System.Byte},ImmutableArray{System.Byte},System.String)">InvalidBlockPreEvaluationHashException(ImmutableArray&lt;Byte&gt;, ImmutableArray&lt;Byte&gt;, String)</h4>
+  <h4 id="Libplanet_Blocks_InvalidBlockPreEvaluationHashException__ctor_System_String_ImmutableArray_System_Byte__ImmutableArray_System_Byte__" data-uid="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.#ctor(System.String,ImmutableArray{System.Byte},ImmutableArray{System.Byte})">InvalidBlockPreEvaluationHashException(String, ImmutableArray&lt;Byte&gt;, ImmutableArray&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the
 <a class="xref" href="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InvalidBlockPreEvaluationHashException(ImmutableArray&lt;byte&gt; actualPreEvaluationHash, ImmutableArray&lt;byte&gt; expectedPreEvaluationHash, string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidBlockPreEvaluationHashException(string message, ImmutableArray&lt;byte&gt; actualPreEvaluationHash, ImmutableArray&lt;byte&gt; expectedPreEvaluationHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -123,6 +123,12 @@
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message that describes the error.</p>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td><span class="parametername">actualPreEvaluationHash</span></td>
         <td><p>The hash recorded as
@@ -134,12 +140,6 @@
         <td><span class="parametername">expectedPreEvaluationHash</span></td>
         <td><p>The hash calculated from the block except
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_StateRootHash">StateRootHash</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>The message that describes the error.</p>
 </td>
       </tr>
     </tbody>
