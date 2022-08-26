@@ -15,10 +15,10 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a new <see cref="InvalidBlockPublicKeyException"/> instance.
         /// </summary>
+        /// <param name="message">A message that describes the error.</param>
         /// <param name="invalidPublicKey">The invalid public key tried to be used
         /// in the block.</param>
-        /// <param name="message">A message that describes the error.</param>
-        public InvalidBlockPublicKeyException(PublicKey? invalidPublicKey, string message)
+        public InvalidBlockPublicKeyException(string message, PublicKey? invalidPublicKey)
             : base(
                 message +
                 (invalidPublicKey is { } pubKey ? $"\nInvalid public key: {pubKey}" : string.Empty)

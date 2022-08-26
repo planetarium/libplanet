@@ -43,16 +43,16 @@ namespace Libplanet.Tx
                         string msg = nonce <= lastNonce
                             ? $"The signer {s}'s nonce {nonce} was already consumed before."
                             : $"The signer {s}'s nonce {lastNonce} has to be added first.";
-                        throw new InvalidTxNonceException(tx.Id, lastNonce + 1, tx.Nonce, msg);
+                        throw new InvalidTxNonceException(msg, tx.Id, lastNonce + 1, tx.Nonce);
                     }
 
                     if (genesisHash is { } g && !tx.GenesisHash.Equals(g))
                     {
                         throw new InvalidTxGenesisHashException(
+                            $"Transactions in the block #{blockIndex} are inconsistent.",
                             tx.Id,
                             g,
-                            tx.GenesisHash,
-                            $"Transactions in the block #{blockIndex} are inconsistent."
+                            tx.GenesisHash
                         );
                     }
 

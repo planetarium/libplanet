@@ -195,9 +195,9 @@ namespace Libplanet.Blockchain
                     "restarted the chain with a new genesis block so that it is incompatible " +
                     "with your existing chain in the local store.";
                 throw new InvalidGenesisBlockException(
+                    message: msg,
                     networkExpected: genesisBlock.Hash,
-                    stored: Genesis.Hash,
-                    message: msg
+                    stored: Genesis.Hash
                 );
             }
         }
@@ -721,10 +721,10 @@ namespace Libplanet.Blockchain
                 var msg = "GenesisHash of the transaction is not compatible " +
                           "with the BlockChain<T>.Genesis.Hash.";
                 throw new InvalidTxGenesisHashException(
+                    msg,
                     transaction.Id,
                     Genesis.Hash,
-                    transaction.GenesisHash,
-                    msg);
+                    transaction.GenesisHash);
             }
 
             return StagePolicy.Stage(this, transaction);
@@ -876,9 +876,9 @@ namespace Libplanet.Blockchain
                     var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
                         $"is {block.StateRootHash}, but the execution result is {rootHash}.";
                     throw new InvalidBlockStateRootHashException(
+                        message,
                         block.StateRootHash,
-                        rootHash,
-                        message);
+                        rootHash);
                 }
 
                 TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
@@ -1117,8 +1117,8 @@ namespace Libplanet.Blockchain
                     if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
-                            tx1.Id,
                             "According to BlockPolicy, this transaction is not valid.",
+                            tx1.Id,
                             tpve);
                     }
 
@@ -1131,10 +1131,10 @@ namespace Libplanet.Blockchain
                     {
                         _logger.Debug("Append failed. The tx `{TxId}` is invalid.", tx1.Id);
                         throw new InvalidTxNonceException(
+                            "Transaction nonce is invalid.",
                             tx1.Id,
                             expectedNonce,
-                            tx1.Nonce,
-                            "Transaction nonce is invalid."
+                            tx1.Nonce
                         );
                     }
 
@@ -1423,8 +1423,8 @@ namespace Libplanet.Blockchain
                     $"#{block.Index} {block.Hash} is not supported by this node." +
                     $"The highest supported protocol version is {currentProtocolVersion}.";
                 return new InvalidBlockProtocolVersionException(
-                    actualProtocolVersion,
-                    message
+                    message,
+                    actualProtocolVersion
                 );
             }
             else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
@@ -1432,7 +1432,7 @@ namespace Libplanet.Blockchain
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
                     $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
-                return new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
+                return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
             BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);

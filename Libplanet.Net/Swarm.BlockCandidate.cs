@@ -147,9 +147,9 @@ namespace Libplanet.Net
                      "protocol-wise, the blockchain which does not share " +
                      "any mutual block is not acceptable.";
                  throw new InvalidGenesisBlockException(
+                     msg,
                      branchpoint.Hash,
-                     workspace.Genesis.Hash,
-                     msg);
+                     workspace.Genesis.Hash);
              }
              else
              {

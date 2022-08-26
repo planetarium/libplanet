@@ -157,8 +157,8 @@ namespace Libplanet.Blocks
             else if (metadata.ProtocolVersion >= 2 && metadata.PublicKey is null)
             {
                 throw new InvalidBlockPublicKeyException(
-                    metadata.PublicKey,
-                    "Block's public key cannot be null unless its protocol version is less than 2."
+                    "Block's public key cannot be null unless its protocol version is less than 2.",
+                    metadata.PublicKey
                 );
             }
             else if (metadata.ProtocolVersion < 2 && metadata.PublicKey is { })
@@ -166,14 +166,14 @@ namespace Libplanet.Blocks
                 string msg =
                     "As blocks became to have public keys since the protocol version 2, blocks " +
                     $"with a protocol version {metadata.ProtocolVersion} cannot have public keys.";
-                throw new InvalidBlockPublicKeyException(metadata.PublicKey, msg);
+                throw new InvalidBlockPublicKeyException(msg, metadata.PublicKey);
             }
             else if (metadata.PublicKey is { } pubKey && !metadata.Miner.Equals(pubKey.ToAddress()))
             {
                 string msg =
                     $"The miner address {metadata.Miner} is not consistent with its public key " +
                     $"{pubKey}.";
-                throw new InvalidBlockPublicKeyException(pubKey, msg);
+                throw new InvalidBlockPublicKeyException(msg, pubKey);
             }
             else if (metadata.LastCommit is { } commit)
             {

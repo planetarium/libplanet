@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain
                     const string msg =
                         "A chain cannot be reorged into a heterogeneous chain with a " +
                         "different genesis.";
-                    throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
+                    throw new InvalidGenesisBlockException(msg, Genesis.Hash, other.Genesis.Hash);
                 }
 
                 _logger.Debug(

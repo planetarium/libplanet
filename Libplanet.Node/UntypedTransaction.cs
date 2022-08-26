@@ -46,8 +46,8 @@ namespace Libplanet.Node
             if (!_metadata.PublicKey.Verify(encoded, Signature))
             {
                 throw new InvalidTxSignatureException(
-                    Id,
-                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}."
+                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.",
+                    Id
                 );
             }
         }

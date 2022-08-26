@@ -70,7 +70,7 @@ To be released.
 Version 0.41.0
 --------------
 
-To be released.
+Released on August 26, 2022.
 
 ### Deprecated APIs
 
@@ -87,7 +87,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed unused transaction related methods from `IStore` and its
-    implementations [[#1538], [#2201]]
+    implementations.  [[#1538], [#2201]]
     - `IterateTransactionIds()`
     - `DeleteTransaction()`
     - `CountTransactions()`
@@ -134,14 +134,24 @@ To be released.
  -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
     `Peer` to `BoundPeer`.  [[#2215]]
  -  (Libplanet.Net) All public return type, parameter type, and property type
-    of `Peer` changed to `BoundPeer`.   [[#2228]]
+    of `Peer` changed to `BoundPeer`.  [[#2228]]
  -  (Libplanet.Net) Additional public return type, parameter type, and
     property type of `Peer` that weren't handled by [#2228] changed to
-    `BoundPeer`.   [[#2233]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+    `BoundPeer`.  [[#2233]]
+ -  Reworked constructors of exception classes. Affected classes are:
+     - (Libplanet.Net) `PingTimeoutException`
+     - `CurrencyPermissionException`,
+     `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
+     `InvalidBlockPreEvaluationHashException`,
+     `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
+     `InvalidBlockSignatureException`, `InvalidBlockStateRootHashException`,
+     `InvalidBlockTotalDifficultyException`, `InvalidGenesisBlockException`,
+     `InvalidTxException`, `InvalidTxGenesisHashException`,
+     `InvalidTxIdException`, `InvalidTxNonceException`,
+     `InvalidTxSignatureException`, `MissingActionTypeException`,
+     `NoKeyException`, `SupplyOverflowException`,
+     `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
+     `UnexpectedlyTerminatedActionException`.  [[#2239], [#2241]]
 
 ### Added APIs
 
@@ -204,15 +214,10 @@ To be released.
      -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
         to stop recieving requests and sending replies.
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
 [#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2239]: https://github.com/planetarium/libplanet/issues/2239
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
 [#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
@@ -222,6 +227,7 @@ To be released.
 [#2228]: https://github.com/planetarium/libplanet/pull/2228
 [#2232]: https://github.com/planetarium/libplanet/pull/2232
 [#2233]: https://github.com/planetarium/libplanet/pull/2233
+[#2241]: https://github.com/planetarium/libplanet/pull/2241
 
 
 Version 0.40.0

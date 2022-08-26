@@ -24,6 +24,7 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="UnexpectedlyTerminatedActionException"/> object.
         /// </summary>
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of the
         /// <see cref="Block{T}"/> that <paramref name="action"/> belongs to.
         /// This can be <c>null</c> on rehearsal mode.</param>
@@ -39,16 +40,15 @@ namespace Libplanet.Action
         /// <param name="previousStateRootHash">The <see cref="ITrie.Hash"/> of states until
         /// previous action execution.  This can be null on rehearsal mode or if the chain which
         /// executed the action, was not using <see cref="TrieStateStore"/>.</param>
-        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="innerException">The actual exception that the <see cref="Action"/> threw.
         /// </param>
         public UnexpectedlyTerminatedActionException(
+            string message,
             ImmutableArray<byte>? preEvaluationHash,
             long? blockIndex,
             TxId? txid,
             HashDigest<SHA256>? previousStateRootHash,
             IAction action,
-            string message,
             Exception innerException
         )
             : base(message, innerException)

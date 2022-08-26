@@ -14,12 +14,11 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="MissingActionTypeException"/> object.
         /// </summary>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.</param>
         /// <param name="actionType">The action type that lacks
         /// <see cref="ActionTypeAttribute"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.
-        /// </param>
-        public MissingActionTypeException(Type actionType, string message)
+        public MissingActionTypeException(string message, Type actionType)
             : base($"{actionType}: {message}")
         {
             ActionType = actionType;

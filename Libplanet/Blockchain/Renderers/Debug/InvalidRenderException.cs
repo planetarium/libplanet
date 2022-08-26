@@ -16,11 +16,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
         /// <summary>
         /// Creates a new <see cref="ValidatingActionRenderer{T}"/> instance.
         /// </summary>
-        /// <param name="records">Recorded render events.</param>
         /// <param name="message">The exception message string.</param>
+        /// <param name="records">Recorded render events.</param>
         public InvalidRenderException(
-            IReadOnlyList<RenderRecord<T>> records,
-            string message
+            string message,
+            IReadOnlyList<RenderRecord<T>> records
         )
             : base(message)
         {
