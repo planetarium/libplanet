@@ -74,7 +74,7 @@ To be released.
     `BoundPeer`.   [[#2233]]
  -  Reworked constructors of exception classes. Affected classes are:
      - (Libplanet.Net) `PingTimeoutException`
-     - (Libplanet) `CurrencyPermissionException`,
+     - `CurrencyPermissionException`,
      `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
      `InvalidBlockPreEvaluationHashException`,
      `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
@@ -85,7 +85,7 @@ To be released.
      `InvalidTxSignatureException`, `MissingActionTypeException`,
      `NoKeyException`, `SupplyOverflowException`,
      `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
-     `UnexpectedlyTerminatedActionException` [[ #2239], [#2239]]
+     `UnexpectedlyTerminatedActionException`  [[#2239], [#2241]]
 
 ### Backward-incompatible network protocol changes
 
