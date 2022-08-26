@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.41.0
 --------------
 
-To be released.
+Released on August 26, 2022.
 
 ### Deprecated APIs
 
@@ -21,7 +21,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed unused transaction related methods from `IStore` and its
-    implementations [[#1538], [#2201]]
+    implementations.  [[#1538], [#2201]]
     - `IterateTransactionIds()`
     - `DeleteTransaction()`
     - `CountTransactions()`
@@ -68,10 +68,10 @@ To be released.
  -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
     `Peer` to `BoundPeer`.  [[#2215]]
  -  (Libplanet.Net) All public return type, parameter type, and property type
-    of `Peer` changed to `BoundPeer`.   [[#2228]]
+    of `Peer` changed to `BoundPeer`.  [[#2228]]
  -  (Libplanet.Net) Additional public return type, parameter type, and
     property type of `Peer` that weren't handled by [#2228] changed to
-    `BoundPeer`.   [[#2233]]
+    `BoundPeer`.  [[#2233]]
  -  Reworked constructors of exception classes. Affected classes are:
      - (Libplanet.Net) `PingTimeoutException`
      - `CurrencyPermissionException`,
@@ -85,11 +85,7 @@ To be released.
      `InvalidTxSignatureException`, `MissingActionTypeException`,
      `NoKeyException`, `SupplyOverflowException`,
      `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
-     `UnexpectedlyTerminatedActionException`  [[#2239], [#2241]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
+     `UnexpectedlyTerminatedActionException`.  [[#2239], [#2241]]
 
 ### Added APIs
 
@@ -151,12 +147,6 @@ To be released.
         to recieve requests and send replies.
      -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
         to stop recieving requests and sending replies.
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
