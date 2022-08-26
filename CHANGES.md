@@ -1,6 +1,12 @@
 Libplanet changelog
 ===================
 
+Version 0.41.1
+--------------
+
+To be released.
+
+
 Version 0.41.0
 --------------
 
