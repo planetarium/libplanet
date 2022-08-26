@@ -1735,7 +1735,15 @@ namespace Libplanet.Tests.Blockchain
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
                 (address, currency) => new FungibleAssetValue(currency);
-            TotalSupplyGetter nullTotalSupplyGetter = currency => null;
+            TotalSupplyGetter nullTotalSupplyGetter = currency =>
+            {
+                if (!currency.TotalSupplyTrackable)
+                {
+                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                }
+
+                return currency * 0;
+            };
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 b.ProtocolVersion,
                 nullAccountStateGetter,
@@ -1774,9 +1782,17 @@ namespace Libplanet.Tests.Blockchain
                         b.ProtocolVersion,
                         addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                         (address, currency) => balances.GetValueOrDefault((address, currency)),
-                        currency => totalSupplies.TryGetValue(currency, out var totalSupply)
-                            ? totalSupply
-                            : (FungibleAssetValue?)null,
+                        currency =>
+                        {
+                            if (!currency.TotalSupplyTrackable)
+                            {
+                                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                            }
+
+                            return totalSupplies.TryGetValue(currency, out var totalSupply)
+                                ? totalSupply
+                                : currency * 0;
+                        },
                         b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();

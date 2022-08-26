@@ -139,7 +139,7 @@ namespace Libplanet.Net.Messages
             DifferentAppProtocolVersionEncountered? differentAppProtocolVersionEncountered,
             Message message)
         {
-            if (message.Remote is { } peer)
+            if (message.Remote is BoundPeer peer)
             {
                 if (message.Version.Equals(appProtocolVersion))
                 {

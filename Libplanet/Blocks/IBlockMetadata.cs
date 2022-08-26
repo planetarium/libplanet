@@ -57,7 +57,7 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
-        /// this should be <c>null</c>.
+        /// this must be <see langword="null"/>.
         /// </summary>
         BlockHash? PreviousHash { get; }
 

@@ -11,7 +11,7 @@ namespace Libplanet.Net
 {
     /// <summary>
     /// A class which table data structure that stores <see cref="Block{T}"/>s
-    /// received from <see cref="Peer"/>.
+    /// received from <see cref="BoundPeer"/>.
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>

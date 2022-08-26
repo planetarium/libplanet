@@ -47,5 +47,14 @@ namespace Libplanet.Action
 
             info.AddValue(nameof(Currency), Currency);
         }
+
+        internal static TotalSupplyNotTrackableException WithDefaultMessage(Currency currency)
+        {
+            var msg =
+                $"The total supply value of the currency {currency} is not trackable because it"
+                + " is a legacy untracked currency which might have been established before"
+                + " the introduction of total supply tracking support.";
+            return new TotalSupplyNotTrackableException(currency, msg);
+        }
     }
 }

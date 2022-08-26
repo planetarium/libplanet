@@ -9,12 +9,12 @@ namespace Libplanet.Tests.Assets
 {
     public class FungibleAssetValueTest
     {
-#pragma warning disable CS0612
         private static readonly Currency FOO = Currency.Uncapped("FOO", 2, null);
         private static readonly Currency BAR = Currency.Uncapped("BAR", 0, null);
         private static readonly Currency BARMAX = Currency.Capped("BAR", 0, (100000, 0), null);
-        private static readonly Currency BARNOTRACK = Currency.LegacyUntracked("BAR", 0, null);
-#pragma warning restore CS0612
+#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+        private static readonly Currency BARNOTRACK = Currency.Legacy("BAR", 0, null);
+#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
 
         [Fact]
         public void Constructor()

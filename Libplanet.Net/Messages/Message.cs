@@ -138,7 +138,7 @@ namespace Libplanet.Net.Messages
             Type = 1,
 
             /// <summary>
-            /// Frame containing the sender <see cref="Peer"/> of the <see cref="Message"/>.
+            /// Frame containing the sender <see cref="BoundPeer"/> of the <see cref="Message"/>.
             /// </summary>
             Peer = 2,
 
@@ -172,10 +172,10 @@ namespace Libplanet.Net.Messages
         public AppProtocolVersion Version { get; set; }
 
         /// <summary>
-        /// The sender <see cref="Peer"/> of the message.
+        /// The sender <see cref="BoundPeer"/> of the message.
         /// </summary>
         [LogAsScalar]
-        public Peer? Remote { get; set; }
+        public BoundPeer? Remote { get; set; }
 
         /// <summary>
         /// The timestamp of the message is created.

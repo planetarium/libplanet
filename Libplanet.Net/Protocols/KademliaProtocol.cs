@@ -29,9 +29,9 @@ namespace Libplanet.Net.Protocols
         /// Creates a <see cref="KademliaProtocol"/> instance.
         /// </summary>
         /// <param name="table">
-        /// The <see cref="RoutingTable"/> where <see cref="Peer"/>s are stored.</param>
+        /// The <see cref="RoutingTable"/> where <see cref="BoundPeer"/>s are stored.</param>
         /// <param name="transport"><see cref="ITransport"/> to process messages.</param>
-        /// <param name="address">The <see cref="Address"/> of the <see cref="Peer"/>
+        /// <param name="address">The <see cref="Address"/> of the <see cref="BoundPeer"/>
         /// to be the reference point.</param>
         /// <param name="findConcurrency">The number of concurrency in peer discovery.</param>
         /// <param name="requestTimeout">
@@ -121,22 +121,19 @@ namespace Libplanet.Net.Protocols
 
         /// <inheritdoc />
         public async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             try
             {
                 var tasks = new List<Task>();
-                foreach (Peer peer in peers)
+                foreach (BoundPeer peer in peers)
                 {
-                    if (peer is BoundPeer boundPeer)
-                    {
-                        tasks.Add(PingAsync(
-                            boundPeer,
-                            timeout: timeout,
-                            cancellationToken: cancellationToken));
-                    }
+                    tasks.Add(PingAsync(
+                        peer,
+                        timeout: timeout,
+                        cancellationToken: cancellationToken));
                 }
 
                 _logger.Verbose("Trying to ping {PeerCount} peers.", tasks.Count);
@@ -413,7 +410,7 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException(
                         $"Expected pong, but received {reply.Type}.", reply);
                 }
-                else if (!(pong.Remote is Peer remote))
+                else if (!(pong.Remote is BoundPeer remote))
                 {
                     throw new InvalidMessageException($"Received pong's remote is null.", pong);
                 }
@@ -503,14 +500,14 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Send <see cref="FindNeighborsMsg"/> messages to <paramref name="viaPeer"/>
-        /// to find <see cref="Peer"/>s near <paramref name="target"/>.
+        /// to find <see cref="BoundPeer"/>s near <paramref name="target"/>.
         /// </summary>
-        /// <param name="history">The <see cref="Peer"/> that searched.</param>
-        /// <param name="dialHistory">The <see cref="Peer"/> that ping was sent.</param>
+        /// <param name="history">The <see cref="BoundPeer"/> that searched.</param>
+        /// <param name="dialHistory">The <see cref="BoundPeer"/> that ping was sent.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
-        /// <param name="viaPeer">The target <see cref="Peer"/>
+        /// <param name="viaPeer">The target <see cref="BoundPeer"/>
         /// to send <see cref="FindNeighborsMsg"/> message.
-        /// If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
+        /// If null, selects 3 <see cref="BoundPeer"/>s from <see cref="RoutingTable"/> of
         /// self.</param>
         /// <param name="depth">Target depth of recursive operation.</param>
         /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
@@ -618,7 +615,7 @@ namespace Libplanet.Net.Protocols
         // Send pong back to remote
         private async Task ReceivePingAsync(PingMsg ping)
         {
-            if (!(ping.Remote is Peer remote))
+            if (!(ping.Remote is BoundPeer remote))
             {
                 throw new InvalidMessageException("Received ping's remote is null.", ping);
             }
@@ -636,12 +633,12 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighborsMsg"/>
-        /// request.
+        /// Process <see cref="BoundPeer"/>s that is replied by sending
+        /// <see cref="FindNeighborsMsg"/> request.
         /// </summary>
-        /// <param name="history"><see cref="Peer"/>s that already searched.</param>
-        /// <param name="dialHistory"><see cref="Peer"/>s that ping sent.</param>
-        /// <param name="found"><see cref="Peer"/>s that found.</param>
+        /// <param name="history"><see cref="BoundPeer"/>s that already searched.</param>
+        /// <param name="dialHistory"><see cref="BoundPeer"/>s that ping sent.</param>
+        /// <param name="found"><see cref="BoundPeer"/>s that found.</param>
         /// <param name="target">The target <see cref="Address"/> to search.</param>
         /// <param name="depth">Target depth of recursive operation. If -1 is given,
         /// it runs until the closest peer is found.</param>

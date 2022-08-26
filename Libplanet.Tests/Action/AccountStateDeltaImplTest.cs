@@ -95,12 +95,11 @@ namespace Libplanet.Tests.Action
                     _currencies[3],
                     _totalSupplies[_currencies[3]].Item1,
                     _totalSupplies[_currencies[3]].Item2),
-                _init.GetTotalSupplyImpl(_currencies[3])
+                _init.GetTotalSupply(_currencies[3])
             );
 
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 _init.GetTotalSupply(_currencies[0]));
-            Assert.Null(_init.GetTotalSupplyImpl(_currencies[0]));
             Assert.DoesNotContain(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[0], Value(0, 5)),
@@ -108,26 +107,15 @@ namespace Libplanet.Tests.Action
             Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
 
             Assert.Equal(Value(4, 0), _init.GetTotalSupply(_currencies[4]));
-            Assert.Equal(Value(4, 0), _init.GetTotalSupplyImpl(_currencies[4]));
-            Assert.Contains(
-                new KeyValuePair<Currency, FungibleAssetValue>(
-                    _currencies[4], Zero(4)),
-                delta.GetUpdatedTotalSupplies());
-            Assert.Contains(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
+            Assert.DoesNotContain(_currencies[4], delta.TotalSupplyUpdatedCurrencies);
 
             delta = delta.MintAsset(_addr[0], Value(0, 10));
             Assert.Throws<TotalSupplyNotTrackableException>(() =>
                 _init.GetTotalSupply(_currencies[0]));
-            Assert.Null(_init.GetTotalSupplyImpl(_currencies[0]));
-            Assert.DoesNotContain(
-                new KeyValuePair<Currency, FungibleAssetValue>(
-                    _currencies[0], Value(0, 15)),
-                delta.GetUpdatedTotalSupplies());
             Assert.DoesNotContain(_currencies[0], delta.TotalSupplyUpdatedCurrencies);
 
             delta = delta.MintAsset(_addr[0], Value(4, 10));
             Assert.Equal(Value(4, 10), delta.GetTotalSupply(_currencies[4]));
-            Assert.Equal(Value(4, 10), delta.GetTotalSupplyImpl(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[4], Value(4, 10)),
@@ -136,7 +124,6 @@ namespace Libplanet.Tests.Action
 
             delta = delta.BurnAsset(_addr[0], Value(4, 5));
             Assert.Equal(Value(4, 5), delta.GetTotalSupply(_currencies[4]));
-            Assert.Equal(Value(4, 5), delta.GetTotalSupplyImpl(_currencies[4]));
             Assert.Contains(
                 new KeyValuePair<Currency, FungibleAssetValue>(
                     _currencies[4], Value(4, 5)),

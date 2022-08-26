@@ -258,6 +258,23 @@ namespace Libplanet.Tests.Action
                         : null);
             }
 
+            var totalSupplyGetterFromDict = new Func<
+                IReadOnlyDictionary<Currency, FungibleAssetValue>,
+                TotalSupplyGetter
+            >(
+                totalSupplies =>
+                    currency =>
+                    {
+                        if (!currency.TotalSupplyTrackable)
+                        {
+                            throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                        }
+
+                        return totalSupplies.TryGetValue(currency, out FungibleAssetValue v)
+                            ? v
+                            : currency * 0;
+                    });
+
             Address[] addresses =
             {
                 _txFx.Address1,
@@ -448,10 +465,7 @@ namespace Libplanet.Tests.Action
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
                     : new FungibleAssetValue(currency);
-            TotalSupplyGetter totalSupplyGetter = currency =>
-                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
-                    ? v
-                    : (FungibleAssetValue?)null;
+            TotalSupplyGetter totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,
@@ -503,10 +517,7 @@ namespace Libplanet.Tests.Action
                 (address, currency), out FungibleAssetValue value)
                     ? value
                     : new FungibleAssetValue(currency);
-            totalSupplyGetter = currency =>
-                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
-                    ? v
-                    : (FungibleAssetValue?)null;
+            totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,

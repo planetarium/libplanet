@@ -19,7 +19,7 @@ namespace Libplanet.Net.Tests.Messages
         public void BlockHeaderMsg()
         {
             var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),
@@ -45,7 +45,7 @@ namespace Libplanet.Net.Tests.Messages
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
-            var peer = new Peer(privateKey.PublicKey);
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var timestamp = DateTimeOffset.UtcNow;
             var badPrivateKey = new PrivateKey();
             var codec = new NetMQMessageCodec();
@@ -58,7 +58,7 @@ namespace Libplanet.Net.Tests.Messages
         {
             // Victim
             var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey, new IPAddress(1024L));
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var timestamp = DateTimeOffset.UtcNow;
             var apv = new AppProtocolVersion(
                 1,
@@ -70,7 +70,7 @@ namespace Libplanet.Net.Tests.Messages
             var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
 
             // Attacker
-            var fakePeer = new Peer(privateKey.PublicKey, new IPAddress(2048L));
+            var fakePeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 0));
             var fakeMessage = codec.Encode(ping, privateKey, apv, fakePeer, timestamp).ToArray();
 
             var frames = new NetMQMessage();
