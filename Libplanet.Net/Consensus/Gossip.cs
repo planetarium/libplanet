@@ -94,9 +94,9 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// <see cref="Peer"/> representation of transport used in <see cref="Gossip"/>.
+        /// <see cref="BoundPeer"/> representation of transport used in <see cref="Gossip"/>.
         /// </summary>
-        public Peer AsPeer => _transport.AsPeer;
+        public BoundPeer AsPeer => _transport.AsPeer;
 
         /// <summary>
         /// Start the <see cref="Gossip"/> instance.

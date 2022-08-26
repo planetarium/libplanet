@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
@@ -47,7 +48,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 Task.Run(() =>
                 {
                     ConsensusMessageSent?.Invoke(this, message);
-                    message.Remote = new Peer(privateKey.PublicKey);
+                    message.Remote = new BoundPeer(
+                        privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234));
                     ConsensusContext!.HandleMessage(message);
                 });
 

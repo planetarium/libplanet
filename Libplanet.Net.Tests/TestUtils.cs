@@ -43,25 +43,17 @@ namespace Libplanet.Net.Tests
                 ByteUtil.ParseHex(
                     "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"));
 
-        public static readonly Peer Peer0 = new Peer(
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550")).PublicKey);
+        public static readonly BoundPeer Peer0 = new BoundPeer(
+            Peer0Priv.PublicKey, new DnsEndPoint("1.0.0.0", 1000));
 
-        public static readonly Peer Peer1 = new Peer(
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef")).PublicKey);
+        public static readonly BoundPeer Peer1 = new BoundPeer(
+            Peer1Priv.PublicKey, new DnsEndPoint("1.0.0.1", 1001));
 
-        public static readonly Peer Peer2 = new Peer(
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93")).PublicKey);
+        public static readonly BoundPeer Peer2 = new BoundPeer(
+            Peer2Priv.PublicKey, new DnsEndPoint("1.0.0.2", 1002));
 
-        public static readonly Peer Peer3 = new Peer(
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a")).PublicKey);
+        public static readonly BoundPeer Peer3 = new BoundPeer(
+            Peer3Priv.PublicKey, new DnsEndPoint("1.0.0.3", 1003));
 
         public static readonly BlockHash BlockHash0 =
             BlockHash.FromString(
@@ -73,6 +65,14 @@ namespace Libplanet.Net.Tests
             Peer1Priv,
             Peer2Priv,
             Peer3Priv,
+        };
+
+        public static readonly List<BoundPeer> Peers = new List<BoundPeer>()
+        {
+            Peer0,
+            Peer1,
+            Peer2,
+            Peer3,
         };
 
         public static readonly List<PublicKey> Validators = new List<PublicKey>()
@@ -178,7 +178,7 @@ namespace Libplanet.Net.Tests
                 block is null ? Array.Empty<byte>() : codec.Encode(block.MarshalBlock()),
                 validRound)
             {
-                Remote = new Peer(privateKey.PublicKey),
+                Remote = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234)),
             };
         }
 

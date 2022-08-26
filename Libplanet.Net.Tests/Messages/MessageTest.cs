@@ -103,7 +103,7 @@ namespace Libplanet.Net.Tests.Messages
         public void GetId()
         {
             var privateKey = new PrivateKey();
-            var peer = new Peer(privateKey.PublicKey);
+            var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234));
             var apv = new AppProtocolVersion(
                 1,
                 new Bencodex.Types.Integer(0),

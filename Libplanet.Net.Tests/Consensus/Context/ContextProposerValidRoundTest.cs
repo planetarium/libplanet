@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: block.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[0]),
+                    Remote = TestUtils.Peers[0],
                 });
 
             Context.ProduceMessage(new
@@ -64,7 +64,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: block.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -75,7 +75,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: block.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             await voteSent.WaitAsync();
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: invalidBlock.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[0]),
+                    Remote = TestUtils.Peers[0],
                 });
 
             Context.ProduceMessage(new
@@ -129,7 +129,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: invalidBlock.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -140,7 +140,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     hash: invalidBlock.Hash,
                     flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             await voteSent.WaitAsync();

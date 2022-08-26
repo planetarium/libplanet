@@ -211,7 +211,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         block.Hash,
                         VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidHeightMessageException);
@@ -228,7 +228,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         block.Hash,
                         VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidHeightMessageException);
@@ -255,7 +255,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[0], 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[0]),
+                    Remote = TestUtils.Peers[0],
                 });
 
             Context.ProduceMessage(
@@ -263,7 +263,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             await stepChangedToPreCommit.WaitAsync();

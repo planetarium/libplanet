@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 1, hash: block.Hash, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             // Wait for round 1 prevote step.
@@ -89,7 +89,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.ProduceMessage(
@@ -97,7 +97,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: block.Hash, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             await Task.WhenAll(commitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
@@ -155,7 +155,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: null, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.ProduceMessage(
@@ -163,7 +163,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -171,7 +171,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             await Task.WhenAll(commitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
@@ -207,7 +207,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 1, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             await stepChangedToRoundOnePreVote.WaitAsync();
@@ -271,14 +271,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             // Two additional votes should be enough to trigger precommit timeout timer.
@@ -287,14 +287,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
             Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.Start();
@@ -328,7 +328,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.ProduceMessage(
@@ -336,7 +336,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -344,7 +344,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Absent))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             // Wait for timeout.
@@ -371,7 +371,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[1]),
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.ProduceMessage(
@@ -379,7 +379,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[2]),
+                    Remote = TestUtils.Peers[2],
                 });
 
             Context.ProduceMessage(
@@ -387,7 +387,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.Commit))
                 {
-                    Remote = new Peer(TestUtils.Validators[3]),
+                    Remote = TestUtils.Peers[3],
                 });
 
             // Wait for timeout.
