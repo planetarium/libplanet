@@ -1023,6 +1023,7 @@ namespace Libplanet.Net.Tests
             }
         }
 
+        // NOTE: Possibly not a valid test scenario.
         [Fact(Timeout = Timeout)]
         public async Task CreateNewChainWhenBranchPointNotExist()
         {
@@ -1041,30 +1042,25 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock1 = MineNextBlock(
+            Block<DumbAction> aBlock1 = ProposeNextBlock(
                 genesis,
                 keyA,
-                difficulty: 10,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock2 = MineNextBlock(
+            Block<DumbAction> aBlock2 = ProposeNextBlock(
                 aBlock1,
                 keyA,
-                difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock3 = MineNextBlock(
+            Block<DumbAction> aBlock3 = ProposeNextBlock(
                 aBlock2,
                 keyA,
-                difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> bBlock1 = MineNextBlock(
+            Block<DumbAction> bBlock1 = ProposeNextBlock(
                 genesis,
                 keyB,
-                difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> bBlock2 = MineNextBlock(
+            Block<DumbAction> bBlock2 = ProposeNextBlock(
                 bBlock1,
                 keyB,
-                difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
 
             policyA.BlockedMiners.Add(keyB.ToAddress());
@@ -1101,6 +1097,7 @@ namespace Libplanet.Net.Tests
                 minerChainB.Append(bBlock1);
 
                 // Broadcast SwarmB's second block.
+                minerChainB.Append(bBlock1);
                 minerChainB.Append(bBlock2);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
@@ -1114,6 +1111,7 @@ namespace Libplanet.Net.Tests
                 minerChainA.Append(aBlock2);
 
                 // Broadcast SwarmA's third block.
+                minerChainA.Append(aBlock2);
                 minerChainA.Append(aBlock3);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
@@ -1370,10 +1368,9 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = MineNext(
+                Block<DumbAction> block = ProposeNext(
                     chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: 1024
+                    miner: ChainPrivateKey.PublicKey
                 ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }
@@ -1413,10 +1410,9 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = MineNext(
+                Block<DumbAction> block = ProposeNext(
                     chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: 1024
+                    miner: ChainPrivateKey.PublicKey
                 ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }
@@ -1457,10 +1453,9 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 6; i++)
             {
-                Block<DumbAction> block = MineNext(
+                Block<DumbAction> block = ProposeNext(
                     chain.Tip,
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: 1024
+                    miner: ChainPrivateKey.PublicKey
                 ).Evaluate(ChainPrivateKey, chain);
                 chain.Append(block);
             }

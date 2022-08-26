@@ -293,9 +293,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task CompleteWithBlockFetcherGivingWrongBlocks()
         {
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner),
-                demand = MineNextBlock(genesis, GenesisMiner),
-                wrong = MineNextBlock(genesis, GenesisMiner);
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> demand = ProposeNextBlock(genesis, GenesisMiner);
+            Block<DumbAction> wrong = ProposeNextBlock(genesis, GenesisMiner);
             _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
             _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
             _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
@@ -399,14 +399,12 @@ namespace Libplanet.Net.Tests
         {
             if (count >= 1)
             {
-                Block<T> block =
-                    MineGenesisBlock<T>(GenesisMiner);
+                Block<T> block = MineGenesisBlock<T>(GenesisMiner);
                 yield return block;
 
                 for (int i = 1; i < count; i++)
                 {
-                    block =
-                        MineNextBlock(block, GenesisMiner);
+                    block = ProposeNextBlock(block, GenesisMiner);
                     yield return block;
                 }
             }

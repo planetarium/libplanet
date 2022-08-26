@@ -12,7 +12,6 @@ using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Serilog;
 using Serilog.Events;
-using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -154,7 +153,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0U, unintendedCalls);
         }
 
-        [Fact]
+        [Fact(Skip = "No fork in PBFT.")]
         public override void BlocksBeingAppendedInParallel()
         {
             // FIXME: Eliminate duplication between this and DelayedRendererTest
@@ -435,7 +434,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
         // FIXME: This should be properly addressed.
         // https://github.com/planetarium/libplanet/issues/2166
-        [RetryFact]
+        [Fact(Skip = "No fork in PBFT.")]
         public async Task ClearRenderBufferWhenItsInterval()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));

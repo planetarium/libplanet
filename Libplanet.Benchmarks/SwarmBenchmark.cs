@@ -44,10 +44,10 @@ namespace Libplanet.Benchmarks
                 TestUtils.MineGenesisBlock<DumbAction>(_miner),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[0], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[1], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[2], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[3], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[0], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[1], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[2], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[3], _miner));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]

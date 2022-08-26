@@ -27,10 +27,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
 
         private static DumbBlock _blockA =
-            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private static DumbBlock _blockB =
-            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private ILogger _logger;
 

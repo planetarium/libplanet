@@ -28,31 +28,20 @@ namespace Libplanet.Tests.Blockchain.Renderers
             chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
-                _branchpoint = chainA[i] = chainB[i] = TestUtils.MineNextBlock(
+                _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
                     TestUtils.GenesisMiner
                 );
             }
 
-            int extraDifficulty = 1;
             for (int i = chainA.Length / 2; i < chainA.Length; i++)
             {
-                chainA[i] = TestUtils.MineNextBlock(
+                chainA[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    TestUtils.GenesisMiner,
-                    difficulty: 2
-                );
-                chainB[i] = TestUtils.MineNextBlock(
+                    TestUtils.GenesisMiner);
+                chainB[i] = TestUtils.ProposeNextBlock(
                     chainB[i - 1],
-                    TestUtils.GenesisMiner,
-                    difficulty: 2 + extraDifficulty
-                );
-
-                // The block right next the branchpoint in the chainB has 1 more difficulty than
-                // the block with the same index in the chainA, and then rest blocks have the
-                // same difficulty 2.  That means, every block after the branchpoint in the chainB
-                // has exactly 1 more difficulty than a block with the same index in the chainA.
-                extraDifficulty = 0;
+                    TestUtils.GenesisMiner);
             }
 
             _chainA = chainA;
@@ -156,7 +145,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0U, reorgs);
         }
 
-        [Fact]
+        [Fact(Skip = "No fork in PBFT.")]
         public virtual void BlocksBeingAppendedInParallel()
         {
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();

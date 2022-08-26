@@ -56,15 +56,15 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
-            _block1 = TestUtils.MineNextBlock(
+            _block1 = TestUtils.ProposeNextBlock(
                 _genesisBlock, TestUtils.GenesisMiner, new[] { _transaction1 });
-            _block2 = TestUtils.MineNextBlock(
+            _block2 = TestUtils.ProposeNextBlock(
                 _block1, TestUtils.GenesisMiner, new[] { _transaction2 });
-            _block3 = TestUtils.MineNextBlock(
+            _block3 = TestUtils.ProposeNextBlock(
                 _block2, TestUtils.GenesisMiner, new[] { _transaction3 });
-            _block4 = TestUtils.MineNextBlock(
+            _block4 = TestUtils.ProposeNextBlock(
                 _block3, TestUtils.GenesisMiner, new[] { _transaction3 });
-            _block5 = TestUtils.MineNextBlock(
+            _block5 = TestUtils.ProposeNextBlock(
                 _block4, TestUtils.GenesisMiner);
 
             var guid = Guid.NewGuid();

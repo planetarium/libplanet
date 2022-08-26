@@ -39,7 +39,7 @@ namespace Libplanet.Benchmarks
                 {
                     blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
-                block = TestUtils.MineNextBlock(
+                block = TestUtils.ProposeNextBlock(
                     block, TestUtils.GenesisMiner, blockTxs);
                 blocks.Add(block);
                 txs.AddRange(blockTxs);

@@ -333,12 +333,10 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block1 = MineNextBlock(
+            Block<DumbAction> block1 = ProposeNextBlock(
                 genesis,
                 GenesisMiner,
-                block1Txs,
-                new byte[] { }
-            );
+                block1Txs);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block1.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -453,12 +451,10 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block2Txs), i, tx.Id);
             }
 
-            Block<DumbAction> block2 = MineNextBlock(
+            Block<DumbAction> block2 = ProposeNextBlock(
                 block1,
                 GenesisMiner,
-                block2Txs,
-                new byte[] { }
-            );
+                block2Txs);
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)

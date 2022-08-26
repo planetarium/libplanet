@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = MineNextBlock(
+            Block<DumbAction> block1 = ProposeNextBlock(
                 MineGenesisBlock<DumbAction>(GenesisMiner),
                 GenesisMiner,
                 new[] { Fx.Transaction1 });
@@ -959,8 +959,7 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 =
-                MineNextBlock(Fx.Block2, Fx.Miner);
+            Block<DumbAction> anotherBlock3 = ProposeNextBlock(Fx.Block2, Fx.Miner);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1064,11 +1063,9 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx = FxConstructor())
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
-                // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
-                Block<DumbAction> block = MineNextBlock(
+                Block<DumbAction> block = ProposeNextBlock(
                     genesisBlock,
-                    miner: fx.Miner,
-                    protocolVersion: 0);
+                    miner: fx.Miner);
 
                 fx.Store.PutBlock(block);
                 Block<DumbAction> storedBlock =
