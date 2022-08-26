@@ -35,12 +35,6 @@ namespace Libplanet.Tests.Store
             return _store.CountIndex(chainId);
         }
 
-        public long CountTransactions()
-        {
-            Log(nameof(CountTransactions));
-            return _store.CountTransactions();
-        }
-
         public bool DeleteBlock(BlockHash blockHash)
         {
             Log(nameof(DeleteBlock), blockHash);
@@ -113,12 +107,6 @@ namespace Libplanet.Tests.Store
             _store.DeleteChainId(chainId);
         }
 
-        public bool DeleteTransaction(TxId txid)
-        {
-            Log(nameof(DeleteTransaction), txid);
-            return _store.DeleteTransaction(txid);
-        }
-
         public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
@@ -161,12 +149,6 @@ namespace Libplanet.Tests.Store
         {
              Log(nameof(IterateIndexes), chainId, offset, limit);
              return _store.IterateIndexes(chainId, offset, limit);
-        }
-
-        public IEnumerable<TxId> IterateTransactionIds()
-        {
-            Log(nameof(IterateTransactionIds));
-            return _store.IterateTransactionIds();
         }
 
         public IEnumerable<Guid> ListChainIds()
