@@ -339,6 +339,25 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
+        public static PreEvaluationBlock<T> ProposeGenesis<T>(
+            PublicKey miner = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            DateTimeOffset? timestamp = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion
+        )
+            where T : IAction, new()
+        {
+            var content = new BlockContent<T>
+            {
+                Miner = (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                PublicKey = protocolVersion < 2 ? null : miner ?? GenesisMiner.PublicKey,
+                Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                Transactions = transactions ?? Array.Empty<Transaction<T>>(),
+                ProtocolVersion = protocolVersion,
+            };
+            return content.Propose();
+        }
+
         public static Block<T> MineGenesisBlock<T>(
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> transactions = null,
@@ -357,6 +376,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return protocolVersion < 2
                 ? new Block<T>(preEval, stateRootHash, null)
                 : preEval.Sign(miner, stateRootHash);
+        }
+
+        public static Block<T> ProposeGenesisBlock<T>(
+            PrivateKey miner,
+            IReadOnlyList<Transaction<T>> transactions = null,
+            DateTimeOffset? timestamp = null,
+            int protocolVersion = Block<T>.CurrentProtocolVersion,
+            HashDigest<SHA256> stateRootHash = default
+        )
+            where T : IAction, new()
+        {
+            PreEvaluationBlock<T> preEval = ProposeGenesis(
+                miner?.PublicKey,
+                transactions,
+                timestamp,
+                protocolVersion
+            );
+            return preEval.Sign(miner, stateRootHash);
         }
 
         public static PreEvaluationBlock<T> MineNext<T>(
