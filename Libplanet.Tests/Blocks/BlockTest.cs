@@ -87,7 +87,7 @@ namespace Libplanet.Tests.Blocks
                 Array.Empty<byte>()
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                MineNext(
+                ProposeNext(
                     MineGenesisBlock<DumbAction>(_fx.Miner),
                     new List<Transaction<DumbAction>> { invalidTx }
                 )

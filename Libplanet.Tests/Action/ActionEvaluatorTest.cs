@@ -868,11 +868,10 @@ namespace Libplanet.Tests.Action
                 privateKey: ChainPrivateKey);
             (_, Transaction<DumbAction>[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
-            var block = MineNext(
+            var block = ProposeNext(
                 genesis,
                 txs,
-                miner: GenesisMiner.PublicKey,
-                difficulty: chain.Policy.GetNextBlockDifficulty(chain)
+                miner: GenesisMiner.PublicKey
             ).Evaluate(GenesisMiner, chain);
             var stateCompleterSet = StateCompleterSet<DumbAction>.Recalculate;
 

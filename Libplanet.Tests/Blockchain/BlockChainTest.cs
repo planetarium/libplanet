@@ -327,11 +327,10 @@ namespace Libplanet.Tests.Blockchain
                 );
                 var actions = new[] { new DumbAction(miner, "foo") };
                 var tx = chain.MakeTransaction(key, actions);
-                var block = MineNext(
+                var block = ProposeNext(
                     chain.Genesis,
                     new[] { tx },
-                    miner: key.PublicKey,
-                    difficulty: policy.GetNextBlockDifficulty(_blockChain)
+                    miner: key.PublicKey
                 ).Evaluate(key, chain);
                 chain.Append(block);
                 var forked = chain.Fork(chain.Genesis.Hash);
@@ -567,9 +566,8 @@ namespace Libplanet.Tests.Blockchain
                 await _blockChain.MineBlock(key);
             }
 
-            Block<DumbAction> newBlock = MineNext(
+            Block<DumbAction> newBlock = ProposeNext(
                 genesis,
-                difficulty: 1024,
                 miner: key.PublicKey
             ).Evaluate(key, _blockChain);
 
@@ -679,21 +677,17 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey),
             };
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(b1);
 
-            Block<DumbAction> b2 = MineNext(
+            Block<DumbAction> b2 = ProposeNext(
                 b1,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
@@ -707,11 +701,9 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 1,
                     privateKey: privateKey),
             };
-            b2 = MineNext(
+            b2 = ProposeNext(
                 b1,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
@@ -742,11 +734,9 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
                 txsA,
-                null,
-                _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
@@ -761,11 +751,9 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 1,
                     privateKey: privateKey),
             };
-            Block<DumbAction> b2 = MineNext(
+            Block<DumbAction> b2 = ProposeNext(
                 b1,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
@@ -817,11 +805,10 @@ namespace Libplanet.Tests.Blockchain
             var miner = new PrivateKey();
             var minerAddress = miner.ToAddress();
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 genesis,
                 txs1,
                 miner: miner.PublicKey,
-                difficulty: _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
             _blockChain.Append(block1);
@@ -881,11 +868,9 @@ namespace Libplanet.Tests.Blockchain
 
             foreach (Transaction<DumbAction>[] txs in txsA)
             {
-                Block<DumbAction> b = MineNext(
+                Block<DumbAction> b = ProposeNext(
                     _blockChain.Tip,
                     txs,
-                    null,
-                    _policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10),
                     miner: miner.PublicKey
                 ).Evaluate(miner, _blockChain);
@@ -913,11 +898,9 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: privateKey),
             };
 
-            Block<DumbAction> forkTip = MineNext(
+            Block<DumbAction> forkTip = ProposeNext(
                 fork.Tip,
                 txsB,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: miner.PublicKey
             ).Evaluate(miner, fork);
@@ -1173,7 +1156,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Transaction<DumbAction>.Create(0, privateKey, chain.Genesis.Hash, actions),
                 };
-                b = MineNext(
+                b = ProposeNext(
                     b,
                     txs,
                     miner: _fx.Miner.PublicKey
@@ -1212,7 +1195,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> b = chain.Genesis;
             for (int i = 0; i < 20; ++i)
             {
-                b = MineNext(
+                b = ProposeNext(
                     b,
                     blockInterval: TimeSpan.FromSeconds(10),
                     miner: _fx.Miner.PublicKey
@@ -1428,11 +1411,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
 
-            Block<DumbAction> b1 = MineNext(
+            Block<DumbAction> b1 = ProposeNext(
                 genesis,
                 txsA,
-                null,
-                _policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10),
                 miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
@@ -1528,14 +1509,13 @@ namespace Libplanet.Tests.Blockchain
 
             var genesis = _blockChain.Genesis;
 
-            Block<DumbAction> MineNext(
+            Block<DumbAction> ProposeNext(
                 Block<DumbAction> block,
                 IReadOnlyList<Transaction<DumbAction>> txs
             ) =>
-                TestUtils.MineNext(
+                TestUtils.ProposeNext(
                     block,
                     txs,
-                    difficulty: 1024,
                     blockInterval: TimeSpan.FromSeconds(10),
                     miner: _fx.Miner.PublicKey
                 ).Evaluate(_fx.Miner, _blockChain);
@@ -1545,14 +1525,14 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
-            Block<DumbAction> b1 = MineNext(genesis, txsA);
+            Block<DumbAction> b1 = ProposeNext(genesis, txsA);
             _blockChain.Append(b1);
 
             Transaction<DumbAction>[] txsB =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
             };
-            Block<DumbAction> b2 = MineNext(b1, txsB);
+            Block<DumbAction> b2 = ProposeNext(b1, txsB);
             _blockChain.Append(b2);
 
             // Invalid if nonce is too low
@@ -1560,7 +1540,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
-            Block<DumbAction> b3a = MineNext(b2, txsC);
+            Block<DumbAction> b3a = ProposeNext(b2, txsC);
             Assert.Throws<InvalidTxNonceException>(() => _blockChain.Append(b3a));
 
             // Invalid if nonce is too high
@@ -1568,7 +1548,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 4),
             };
-            Block<DumbAction> b3b = MineNext(b2, txsD);
+            Block<DumbAction> b3b = ProposeNext(b2, txsD);
             Assert.Throws<InvalidTxNonceException>(() => _blockChain.Append(b3b));
         }
 
@@ -1772,7 +1752,7 @@ namespace Libplanet.Tests.Blockchain
                         chain.Genesis.Hash,
                         new[] { new DumbAction(addresses[j], index.ToString()) }
                     );
-                    b = MineNext(
+                    b = ProposeNext(
                         b,
                         new[] { tx },
                         blockInterval: TimeSpan.FromSeconds(10),

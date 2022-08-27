@@ -103,11 +103,10 @@ namespace Libplanet.Tests.Blockchain
                 MakeFixturesForAppendTests();
             var genesis = _blockChain.Genesis;
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 genesis,
                 txs,
-                miner: _fx.Miner.PublicKey,
-                difficulty: _policy.GetNextBlockDifficulty(_blockChain)
+                miner: _fx.Miner.PublicKey
             ).Evaluate(_fx.Miner, _blockChain);
 
             _blockChain.Append(

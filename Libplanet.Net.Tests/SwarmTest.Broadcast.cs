@@ -671,19 +671,15 @@ namespace Libplanet.Net.Tests
                     privateKey: privateKey),
             };
 
-            Block<DumbAction> block1 = MineNext(
+            Block<DumbAction> block1 = ProposeNext(
                 blockChain.Genesis,
                 new[] { transactions[0] },
-                null,
-                policy.GetNextBlockDifficulty(blockChain),
                 miner: GenesisMiner.PublicKey
             ).Evaluate(GenesisMiner, blockChain);
             blockChain.Append(block1, true, true, false);
-            Block<DumbAction> block2 = MineNext(
+            Block<DumbAction> block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
-                null,
-                policy.GetNextBlockDifficulty(blockChain),
                 miner: GenesisMiner.PublicKey
             ).Evaluate(GenesisMiner, blockChain);
             blockChain.Append(block2, true, true, false);

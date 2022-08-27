@@ -118,10 +118,9 @@ namespace Libplanet.Net.Tests
             var blocks = new List<Block<DumbAction>>();
             foreach (int i in Enumerable.Range(0, 11))
             {
-                Block<DumbAction> block = MineNext(
+                Block<DumbAction> block = ProposeNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    miner: ChainPrivateKey.PublicKey,
-                    difficulty: 1024
+                    miner: ChainPrivateKey.PublicKey
                 ).Evaluate(ChainPrivateKey, minerChain);
                 blocks.Add(block);
                 if (i != 10)
@@ -349,11 +348,10 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow
                 );
 
-                Block<ThrowException> block = MineNext(
+                Block<ThrowException> block = ProposeNext(
                     minerChain.Tip,
                     new[] { tx },
                     miner: ChainPrivateKey.PublicKey,
-                    difficulty: policy.GetNextBlockDifficulty(minerChain),
                     blockInterval: TimeSpan.FromSeconds(1)
                 ).Evaluate(ChainPrivateKey, minerChain);
                 minerSwarm.BlockChain.Append(block, false, true, false);
