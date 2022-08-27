@@ -68,8 +68,8 @@ namespace Libplanet.Tests.Blocks
                     signer,
                     null,
                     new[] { new RandomAction(signer.ToAddress()) })).ToImmutableArray();
-            var blockA = MineGenesis(timestamp: timestamp, transactions: txs);
-            var blockB = MineGenesis(timestamp: timestamp, transactions: txs);
+            var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
+            var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }
@@ -88,7 +88,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
                 ProposeNext(
-                    MineGenesisBlock<DumbAction>(_fx.Miner),
+                    ProposeGenesisBlock<DumbAction>(_fx.Miner),
                     new List<Transaction<DumbAction>> { invalidTx }
                 )
             );

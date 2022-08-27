@@ -41,7 +41,7 @@ namespace Libplanet.Benchmarks
             _miner = TestUtils.ChainPrivateKey;
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesisBlock<DumbAction>(_miner),
+                TestUtils.ProposeGenesisBlock<DumbAction>(_miner),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
             _blocks.Add(TestUtils.ProposeNextBlock(_blocks[0], _miner));

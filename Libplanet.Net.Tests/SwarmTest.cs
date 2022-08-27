@@ -1039,7 +1039,7 @@ namespace Libplanet.Net.Tests
             var policy = new NullBlockPolicy<DumbAction>();
             var policyA = new NullBlockPolicy<DumbAction>();
             var policyB = new NullBlockPolicy<DumbAction>();
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock1 = ProposeNextBlock(

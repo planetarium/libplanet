@@ -25,7 +25,8 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var chainA = new Block<DumbAction>[10];
             var chainB = new Block<DumbAction>[chainA.Length];
-            chainA[0] = chainB[0] = TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            chainA[0] = chainB[0] =
+                TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             for (int i = 1; i < chainA.Length / 2; i++)
             {
                 _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(

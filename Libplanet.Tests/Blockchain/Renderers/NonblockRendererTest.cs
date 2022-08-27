@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class NonblockRendererTest
     {
         private static Block<DumbAction> _genesis =
-            TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
 
         private static Block<DumbAction> _blockA =
             TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);

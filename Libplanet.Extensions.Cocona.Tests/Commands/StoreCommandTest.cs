@@ -50,7 +50,8 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            _genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(TestUtils.GenesisMiner);
+            _genesisBlock =
+                TestUtils.ProposeGenesisBlock<Utils.DummyAction>(TestUtils.GenesisMiner);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();

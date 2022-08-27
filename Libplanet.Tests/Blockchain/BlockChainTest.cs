@@ -625,7 +625,7 @@ namespace Libplanet.Tests.Blockchain
             using (IStore store = new MemoryStore())
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
-                var genesis = MineGenesis(
+                var genesis = ProposeGenesis(
                     GenesisMiner.PublicKey,
                     transactions: new[] { _fx.MakeTransaction(new[] { action }) }
                 ).Evaluate(
@@ -1039,7 +1039,7 @@ namespace Libplanet.Tests.Blockchain
         {
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
-                Block<DumbAction> genesis2 = MineGenesis<DumbAction>(
+                Block<DumbAction> genesis2 = ProposeGenesis<DumbAction>(
                     timestamp: DateTimeOffset.UtcNow,
                     miner: GenesisMiner.PublicKey
                 ).Evaluate(
@@ -1094,7 +1094,7 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = MineGenesis(
+            Block<DumbAction> genesisWithTx = ProposeGenesis(
                 GenesisMiner.PublicKey,
                 new[]
                 {
@@ -1680,7 +1680,7 @@ namespace Libplanet.Tests.Blockchain
             IBlockPolicy<DumbAction> blockPolicy = new NullBlockPolicy<DumbAction>();
             store = new StoreTracker(store);
             Guid chainId = Guid.NewGuid();
-            Block<DumbAction> genesisBlock = MineGenesis<DumbAction>(
+            Block<DumbAction> genesisBlock = ProposeGenesis<DumbAction>(
                 GenesisMiner.PublicKey
             ).Evaluate(
                 privateKey: GenesisMiner,
@@ -1991,7 +1991,7 @@ namespace Libplanet.Tests.Blockchain
                 });
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            Block<DumbAction> genesisWithTx = MineGenesis(
+            Block<DumbAction> genesisWithTx = ProposeGenesis(
                 GenesisMiner.PublicKey,
                 new[]
                 {

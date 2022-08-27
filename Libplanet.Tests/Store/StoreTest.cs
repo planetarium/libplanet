@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = ProposeNextBlock(
-                MineGenesisBlock<DumbAction>(GenesisMiner),
+                ProposeGenesisBlock<DumbAction>(GenesisMiner),
                 GenesisMiner,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -1021,7 +1021,7 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
+                    ProposeGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
                         .Evaluate(
                             privateKey: GenesisMiner,
                             blockAction: policy.BlockAction,

@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Action
                     customActions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            PreEvaluationBlock<RandomAction> noStateRootBlock = MineGenesis(
+            PreEvaluationBlock<RandomAction> noStateRootBlock = ProposeGenesis(
                 miner: GenesisMiner.PublicKey,
                 timestamp: timestamp,
                 transactions: txs
@@ -283,7 +283,7 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -476,8 +476,8 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
-                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
                 (
                     1,
                     0,

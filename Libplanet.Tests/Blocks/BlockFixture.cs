@@ -13,13 +13,12 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockFixture
     {
-        public const int ProtocolVersion =
-            Block<PolymorphicAction<BaseAction>>.CurrentProtocolVersion;
+        public const int ProtocolVersion = BlockMetadata.CurrentProtocolVersion;
 
         public BlockFixture()
         {
             Miner = TestUtils.GenesisMiner;
-            Genesis = TestUtils.MineGenesisBlock<PolymorphicAction<BaseAction>>(
+            Genesis = TestUtils.ProposeGenesisBlock<PolymorphicAction<BaseAction>>(
                 protocolVersion: ProtocolVersion,
                 miner: Miner,
                 stateRootHash: HashDigest<SHA256>.FromString(
