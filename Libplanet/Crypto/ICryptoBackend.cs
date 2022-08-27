@@ -57,7 +57,7 @@ namespace Libplanet.Crypto
         /// piBytes is called as "proof".
         /// </returns>
         /// <returns> A betaBytes created from piBytes.
-        /// betaBytes is used as "pseudorandom bytes".
+        /// betaBytes is used as 64-bytes "pseudorandom bytes".
         /// </returns>
         (byte[], byte[]) VrfEvaluate(byte[] alphaBytes, PrivateKey privateKey);
 
@@ -73,7 +73,7 @@ namespace Libplanet.Crypto
         /// from the <paramref name="alphaBytes"/> with the corresponding
         /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
         /// <returns> A betaBytes created from <paramref name="piBytes"/>.
-        /// betaBytes is used as "pseudorandom bytes".
+        /// betaBytes is used as 64-bytes "pseudorandom bytes".
         /// </returns>
         (bool, byte[]) VrfVerify(byte[] piBytes, byte[] alphaBytes, PublicKey publicKey);
     }

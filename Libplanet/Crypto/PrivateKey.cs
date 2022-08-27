@@ -286,7 +286,7 @@ namespace Libplanet.Crypto
         /// <returns>A proof that proves the authenticity of the <paramref name="message"/>.
         /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
         /// </returns>
-        /// <returns>A pseudorandom byte array generated from the proof.
+        /// <returns>A pseudorandom 64-byte array generated from the proof.
         /// It can be regenerated using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
         /// </returns>
         /// <seealso cref="Libplanet.Crypto.PublicKey.VrfVerify"/>
@@ -330,7 +330,7 @@ namespace Libplanet.Crypto
         /// <returns>A proof that proves the authenticity of the <paramref name="message"/>.
         /// It can be verified using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
         /// </returns>
-        /// <returns>A pseudorandom byte array generated from the proof.
+        /// <returns>A pseudorandom 64-byte array generated from the proof.
         /// It can be regenerated using <see cref="Libplanet.Crypto.PublicKey.VrfVerify"/> method.
         /// </returns>
         /// <seealso cref="Libplanet.Crypto.PublicKey.VrfVerify"/>
