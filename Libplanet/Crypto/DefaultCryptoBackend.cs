@@ -69,7 +69,87 @@ namespace Libplanet.Crypto
             }
         }
 
-        public ECPoint HashToCurveTai(byte[] alphaBytes, ECPublicKeyParameters pubKeyParam)
+        /// <summary>
+        /// Creates a piBytes from <paramref name="alphaBytes"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// </summary>
+        /// <param name="alphaBytes">A message bytearray to generate piBytes and betaBytes.
+        /// </param>
+        /// <param name="privateKey"><see cref="PrivateKey"/> to prove
+        /// <paramref name="alphaBytes"/>.
+        /// </param>
+        /// <returns> A piBytes created from <paramref name="alphaBytes"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// piBytes is called as "proof".
+        /// </returns>
+        /// <returns> A betaBytes created from piBytes.
+        /// betaBytes is used as "pseudorandom bytes".
+        /// </returns>
+        public (byte[], byte[]) VrfEvaluate(byte[] alphaBytes, PrivateKey privateKey)
+        {
+            ECDomainParameters eCParam = privateKey.KeyParam.Parameters;
+            byte[] piBytes = VrfProve(alphaBytes, privateKey);
+            byte[] betaBytes = VrfProofToHash(piBytes, eCParam);
+
+            return (piBytes, betaBytes);
+        }
+
+        /// <summary>
+        /// Verifies whether a <paramref name="piBytes"/> was created from
+        /// a <paramref name="alphaBytes"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </summary>
+        /// <param name="piBytes">A proof that was created from the
+        /// <paramref name="alphaBytes"/>.</param>
+        /// <param name="alphaBytes">A message bytearray.</param>
+        /// <param name="publicKey"><see cref="PublicKey"/> used for verification.</param>
+        /// <returns><c>true</c> if the <paramref name="piBytes"/> was created
+        /// from the <paramref name="alphaBytes"/> with the corresponding
+        /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
+        /// <returns> A betaBytes created from <paramref name="piBytes"/>.
+        /// betaBytes is used as "pseudorandom bytes".
+        /// </returns>
+        public (bool, byte[]) VrfVerify(byte[] piBytes, byte[] alphaBytes, PublicKey publicKey)
+        {
+            ECPublicKeyParameters pubKeyParam = publicKey.KeyParam;
+            ECDomainParameters eCParam = pubKeyParam.Parameters;
+            ECPoint dPointH;
+            BigInteger c;
+            BigInteger s;
+
+            try
+            {
+                (dPointH, c, s) = VrfDecodeProof(piBytes, eCParam);
+            }
+            catch (Exception)
+            {
+                return (false, new byte[] { 0 });
+            }
+
+            // sG + cdG = (s+cd)G = kG
+            ECPoint sPointG = eCParam.G.Multiply(s);
+            ECPoint cdPointG = publicKey.KeyParam.Q.Multiply(c);
+            ECPoint scdPointG = sPointG.Subtract(cdPointG);
+
+            // sH + cdH = (s+cd)H = kH
+            ECPoint pointH = HashToCurveTai(alphaBytes, pubKeyParam);
+            ECPoint sPointH = pointH.Multiply(s);
+            ECPoint cdPointH = dPointH.Multiply(c);
+            ECPoint scdPointH = sPointH.Subtract(cdPointH);
+
+            ECPoint[] points = new ECPoint[] { pointH, dPointH, scdPointG, scdPointH };
+
+            // check if checksum of payload is same
+            if (!c.Equals(HashPoints(points, eCParam)))
+            {
+                return (false, new byte[] { 0 });
+            }
+
+            byte[] betaBytes = VrfProofToHash(piBytes, eCParam);
+
+            return (true, betaBytes);
+        }
+
+        private ECPoint HashToCurveTai(byte[] alphaBytes, ECPublicKeyParameters pubKeyParam)
         {
             ECDomainParameters eCParam = pubKeyParam.Parameters;
             int ctr = 0;
@@ -83,7 +163,7 @@ namespace Libplanet.Crypto
                 byte[] payload
                     = SuiteBytes
                     .Concat(new byte[] { 1 })
-                    .Concat(pubKeyParam.Q.GetEncoded())
+                    .Concat(pubKeyParam.Q.GetEncoded(true))
                     .Concat(alphaBytes)
                     .Concat(ctrBytes)
                     .Concat(new byte[] { 0 }).ToArray();
@@ -102,12 +182,12 @@ namespace Libplanet.Crypto
             throw new ArgumentException();
         }
 
-        public BigInteger HashPoints(ECPoint[] points, ECDomainParameters eCParam)
+        private BigInteger HashPoints(ECPoint[] points, ECDomainParameters eCParam)
         {
             byte[] payload = new byte[] { 2 };
             foreach (ECPoint point in points)
             {
-                payload = payload.Concat(point.GetEncoded(false)).ToArray();
+                payload = payload.Concat(point.GetEncoded(true)).ToArray();
             }
 
             payload = payload.Concat(new byte[] { 0 }).ToArray();
@@ -119,7 +199,7 @@ namespace Libplanet.Crypto
             return c;
         }
 
-        public byte[] VrfProve(byte[] alphaBytes, PrivateKey privateKey)
+        private byte[] VrfProve(byte[] alphaBytes, PrivateKey privateKey)
         {
             ECPrivateKeyParameters privKeyParam = privateKey.KeyParam;
             ECPublicKeyParameters pubKeyParam = privateKey.PublicKey.KeyParam;
@@ -170,7 +250,7 @@ namespace Libplanet.Crypto
             return piBytes;
         }
 
-        public (ECPoint, BigInteger, BigInteger) VrfDecodeProof(
+        private (ECPoint, BigInteger, BigInteger) VrfDecodeProof(
             byte[] piBytes, ECDomainParameters eCParam)
         {
             int gammaBytesLen = ((eCParam.Curve.FieldSize + 7) >> 3) + 1;
@@ -199,73 +279,27 @@ namespace Libplanet.Crypto
             return (gamma, c, s);
         }
 
-        public byte[] VrfProofToHash(byte[] piBytes, ECDomainParameters eCParam)
+        private byte[] VrfProofToHash(byte[] piBytes, ECDomainParameters eCParam)
         {
             (ECPoint gamma, _, _) = VrfDecodeProof(piBytes, eCParam);
 
             ECPoint gammaMul = eCParam.H.Equals(BigInteger.One) ? gamma : gamma.Multiply(eCParam.H);
 
+            // On draft-irtf-cfrg-vrf-03, it's mentioned to use EC point encoding with compression,
+            // but as our logic targets 64-bytes system, adoped uncompressed form to get
+            // payload bytes larger than 64bytes.
+            // If we use compressed form, source domain would be smaller than target hash domain,
+            // so space of generated betaBytes would get sparse.
             byte[] payload
                 = SuiteBytes
                 .Concat(new byte[] { 3 })
-                .Concat(gammaMul.GetEncoded(true))
+                .Concat(gammaMul.GetEncoded(false))
                 .Concat(new byte[] { 0 }).ToArray();
 
             HashDigest<SHA512> betaHash = HashDigest<SHA512>.DeriveFrom(payload);
-            byte[] betaBytes = betaHash.ToByteArray()
-                .Take((eCParam.Curve.FieldSize + 7) >> 4).ToArray();
+            byte[] betaBytes = betaHash.ToByteArray();
 
             return betaBytes;
-        }
-
-        public (byte[], byte[]) VrfEvaluate(byte[] alphaBytes, PrivateKey privateKey)
-        {
-            ECDomainParameters eCParam = privateKey.KeyParam.Parameters;
-            byte[] piBytes = VrfProve(alphaBytes, privateKey);
-            byte[] betaBytes = VrfProofToHash(piBytes, eCParam);
-
-            return (piBytes, betaBytes);
-        }
-
-        public (bool, byte[]) VrfVerify(byte[] piBytes, byte[] alphaBytes, PublicKey publicKey)
-        {
-            ECPublicKeyParameters pubKeyParam = publicKey.KeyParam;
-            ECDomainParameters eCParam = pubKeyParam.Parameters;
-            ECPoint dPointH;
-            BigInteger c;
-            BigInteger s;
-
-            try
-            {
-                (dPointH, c, s) = VrfDecodeProof(piBytes, eCParam);
-            }
-            catch (Exception)
-            {
-                return (false, new byte[] { 0 });
-            }
-
-            // sG + cdG = (s+cd)G = kG
-            ECPoint sPointG = eCParam.G.Multiply(s);
-            ECPoint cdPointG = publicKey.KeyParam.Q.Multiply(c);
-            ECPoint scdPointG = sPointG.Subtract(cdPointG);
-
-            // sH + cdH = (s+cd)H = kH
-            ECPoint pointH = HashToCurveTai(alphaBytes, pubKeyParam);
-            ECPoint sPointH = pointH.Multiply(s);
-            ECPoint cdPointH = dPointH.Multiply(c);
-            ECPoint scdPointH = sPointH.Subtract(cdPointH);
-
-            ECPoint[] points = new ECPoint[] { pointH, dPointH, scdPointG, scdPointH };
-
-            // check if checksum of payload is same
-            if (!c.Equals(HashPoints(points, eCParam)))
-            {
-                return (false, new byte[] { 0 });
-            }
-
-            byte[] betaBytes = VrfProofToHash(piBytes, eCParam);
-
-            return (true, betaBytes);
         }
     }
 }

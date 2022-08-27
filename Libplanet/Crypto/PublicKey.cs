@@ -209,7 +209,7 @@ namespace Libplanet.Crypto
         /// <returns><c>true</c> if the <paramref name="proof"/> proves authenticity of
         /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
         /// Otherwise <c>false</c>.</returns>
-        /// <returns> A pseudorandom bytes created from <paramref name="proof"/>.
+        /// <returns> A pseudorandom 64-bytes created from <paramref name="proof"/>.
         /// </returns>
         public (bool, byte[]) VrfVerify(byte[] message, byte[] proof)
         {
