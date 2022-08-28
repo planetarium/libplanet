@@ -39,7 +39,7 @@ namespace Libplanet.Net.Tests
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await minerChain.MineBlock(miner);
+                minerChain.Append(minerChain.ProposeBlock(miner));
             }
 
             Swarm<DumbAction> seed = CreateSwarm(
@@ -147,7 +147,8 @@ namespace Libplanet.Net.Tests
                 await StartAsync(seedSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
-                Block<DumbAction> block = await seedChain.MineBlock(seedMiner);
+                Block<DumbAction> block = seedChain.ProposeBlock(seedMiner);
+                seedChain.Append(block);
                 seedSwarm.BroadcastBlock(block);
                 Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
             }
@@ -185,7 +186,8 @@ namespace Libplanet.Net.Tests
                     {
                         try
                         {
-                            var block = await chain.MineBlock(miner);
+                            var block = chain.ProposeBlock(miner);
+                            chain.Append(block);
 
                             Log.Debug(
                                 "Block mined. [Node: {0}, Block: {1}]",
@@ -256,7 +258,7 @@ namespace Libplanet.Net.Tests
             );
 
             chainA.StageTransaction(tx);
-            await chainA.MineBlock(minerA);
+            chainA.Append(chainA.ProposeBlock(minerA));
 
             try
             {
@@ -313,11 +315,11 @@ namespace Libplanet.Net.Tests
                 Assert.Contains(swarmC.AsPeer, swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarmC.Peers);
 
-                Task miningTask = Task.Run(async () =>
+                Task miningTask = Task.Run(() =>
                 {
                     for (var i = 0; i < 10; i++)
                     {
-                        await chainC.MineBlock(minerC);
+                        chainC.Append(chainC.ProposeBlock(minerC));
                     }
                 });
 
@@ -509,7 +511,7 @@ namespace Libplanet.Net.Tests
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
 
-                await chainB.MineBlock(keyB);
+                chainB.Append(chainB.ProposeBlock(keyB));
 
                 var tx3 = chainA.MakeTransaction(
                     privateKey: privateKey,
@@ -575,12 +577,12 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await chainA.MineBlock(keyA);
+                chainA.Append(chainA.ProposeBlock(keyA));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                await chainB.MineBlock(keyB);
+                chainB.Append(chainB.ProposeBlock(keyB));
             }
 
             try
@@ -729,14 +731,14 @@ namespace Libplanet.Net.Tests
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
 
-                await chainA.MineBlock(keyA);
+                chainA.Append(chainA.ProposeBlock(keyA));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
 
                 Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
-                await chainA.MineBlock(keyB);
+                chainA.Append(chainA.ProposeBlock(keyB));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
@@ -757,17 +759,18 @@ namespace Libplanet.Net.Tests
             var keyB = new PrivateKey();
 
             Swarm<DumbAction> swarmA = CreateSwarm(keyA);
-            Swarm<DumbAction> swarmB = CreateSwarm(keyB);
+            Swarm<DumbAction> swarmB = CreateSwarm(keyB, genesis: swarmA.BlockChain.Genesis);
 
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
-            Block<DumbAction> genesis = await chainA.MineBlock(keyA);
-            chainB.Append(genesis);
+            Block<DumbAction> block = chainA.ProposeBlock(keyA);
+            chainA.Append(block);
+            chainB.Append(block);
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                await chainA.MineBlock(keyA);
+                chainA.Append(chainA.ProposeBlock(keyA));
             }
 
             try
@@ -816,19 +819,19 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                await chainA.MineBlock(keyA);
+                chainA.Append(chainA.ProposeBlock(keyA));
             }
 
             Block<DumbAction> chainATip = chainA.Tip;
 
             foreach (int i in Enumerable.Range(0, 5))
             {
-                await chainB.MineBlock(keyB);
+                chainB.Append(chainB.ProposeBlock(keyB));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                await chainC.MineBlock(keyB);
+                chainC.Append(chainC.ProposeBlock(keyB));
             }
 
             try

@@ -39,7 +39,7 @@ namespace Libplanet.Benchmarks
             var key = new PrivateKey();
             for (var i = 0; i < 500; i++)
             {
-                _blockChain.MineBlock(key).Wait();
+                _blockChain.ProposeBlock(key);
             }
         }
 

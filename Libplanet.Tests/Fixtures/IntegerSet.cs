@@ -4,8 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -146,12 +144,9 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(int signerIndex, params Arithmetic[] actions) =>
             Sign(PrivateKeys[signerIndex], actions);
 
-        public Task<Block<Arithmetic>> Mine(CancellationToken cancellationToken = default) =>
-            Chain.MineBlock(
-                Miner,
-                DateTimeOffset.UtcNow,
-                cancellationToken: cancellationToken
-            );
+        public Block<Arithmetic> Propose() => Chain.ProposeBlock(Miner);
+
+        public void Append(Block<Arithmetic> block) => Chain.Append(block);
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
         {

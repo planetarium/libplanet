@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -392,7 +391,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task AppendWhenActionEvaluationFailed()
+        public void AppendWhenActionEvaluationFailed()
         {
             var policy = new NullBlockPolicy<ThrowException>();
             var store = new MemoryStore();
@@ -407,7 +406,7 @@ namespace Libplanet.Tests.Blockchain
             blockChain.MakeTransaction(privateKey, new[] { action });
 
             renderer.ResetRecords();
-            await blockChain.MineBlock(new PrivateKey());
+            blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
 
             Assert.Equal(2, blockChain.Count);
             Assert.Empty(renderer.ActionSuccessRecords);
@@ -587,7 +586,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task AppendWithdrawTxsWithExpiredNoncesFromStage()
+        public void AppendWithdrawTxsWithExpiredNoncesFromStage()
         {
             void AssertTxIdSetEqual(
                 IEnumerable<TxId> setOne,
@@ -606,11 +605,7 @@ namespace Libplanet.Tests.Blockchain
                 txA1 = Transaction<DumbAction>.Create(1, signerA, genesis, emptyActions);
             _blockChain.StageTransaction(txA0);
             _blockChain.StageTransaction(txA1);
-            Block<DumbAction> block = await _blockChain.MineBlock(
-                signerA,
-                DateTimeOffset.UtcNow,
-                append: false
-            );
+            Block<DumbAction> block = _blockChain.ProposeBlock(signerA);
 
             Transaction<DumbAction>
                 txA2 = Transaction<DumbAction>.Create(2, signerA, genesis, emptyActions),

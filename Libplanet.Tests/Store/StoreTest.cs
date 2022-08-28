@@ -1009,7 +1009,7 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public async Task Copy()
+        public void Copy()
         {
             using (StoreFixture fx = FxConstructor())
             using (StoreFixture fx2 = FxConstructor())
@@ -1031,9 +1031,9 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
+                blocks.Append(blocks.ProposeBlock(key));
+                blocks.Append(blocks.ProposeBlock(key));
+                blocks.Append(blocks.ProposeBlock(key));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);

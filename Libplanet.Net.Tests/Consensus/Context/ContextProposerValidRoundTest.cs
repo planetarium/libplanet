@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
@@ -19,10 +20,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void EnterValidRoundPreVoteBlock()
+        public async Task EnterValidRoundPreVoteBlock()
         {
-            Block<DumbAction> block =
-                await BlockChain.MineBlock(TestUtils.PrivateKeys[1], append: false);
+            Block<DumbAction> block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var voteSent = new AsyncAutoResetEvent();
             ConsensusMessageSent += (observer, message) =>
             {

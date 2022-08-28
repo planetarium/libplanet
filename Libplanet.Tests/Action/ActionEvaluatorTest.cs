@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -109,7 +108,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public async void Evaluate()
+        public void Evaluate()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -131,7 +130,7 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            await chain.MineBlock(miner);
+            chain.Append(chain.ProposeBlock(miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
@@ -147,7 +146,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public async void EvaluateWithException()
+        public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -167,7 +166,7 @@ namespace Libplanet.Tests.Action
                 customActions: new[] { action });
 
             chain.StageTransaction(tx);
-            await chain.MineBlock(new PrivateKey());
+            chain.Append(chain.ProposeBlock(new PrivateKey()));
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<ThrowException>.Recalculate);
@@ -739,7 +738,7 @@ namespace Libplanet.Tests.Action
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
-        public async Task EvaluateActions(bool rehearsal)
+        public void EvaluateActions(bool rehearsal)
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
@@ -750,7 +749,8 @@ namespace Libplanet.Tests.Action
                 Arithmetic.Mul(2),
                 Arithmetic.Add(3));
 
-            Block<Arithmetic> blockA = await fx.Mine();
+            Block<Arithmetic> blockA = fx.Propose();
+            fx.Append(blockA);
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
                 txA.GenesisHash,
                 blockA.PreEvaluationHash,
@@ -802,7 +802,8 @@ namespace Libplanet.Tests.Action
                 new Arithmetic(),
                 Arithmetic.Add(-1));
 
-            Block<Arithmetic> blockB = await fx.Mine();
+            Block<Arithmetic> blockB = fx.Propose();
+            fx.Append(blockB);
             ActionEvaluation[] evalsB = ActionEvaluator<DumbAction>.EvaluateActions(
                 txB.GenesisHash,
                 blockB.PreEvaluationHash,
@@ -1082,7 +1083,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        private async Task CheckGenesisHashInAction()
+        private void CheckGenesisHashInAction()
         {
             var chain = MakeBlockChain<EvaluateTestAction>(
                     policy: new BlockPolicy<EvaluateTestAction>(),
@@ -1097,7 +1098,7 @@ namespace Libplanet.Tests.Action
                 customActions: new[] { action });
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            await chain.MineBlock(miner);
+            chain.Append(chain.ProposeBlock(miner));
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<EvaluateTestAction>.Recalculate);

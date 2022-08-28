@@ -124,8 +124,9 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            // FIXME: Some stub difficulty.
+            long difficulty = 5_000L;
             long index = Count;
-            long difficulty = Policy.GetNextBlockDifficulty(this);
             BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
             int sessionId = new System.Random().Next();
@@ -311,7 +312,7 @@ namespace Libplanet.Blockchain
             BlockCommit? lastCommit = null)
         {
             long index = Count;
-            long difficulty = 500000;
+            long difficulty = 1L;
             BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
             int sessionId = new System.Random().Next();
