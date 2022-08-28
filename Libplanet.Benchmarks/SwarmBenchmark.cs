@@ -59,7 +59,7 @@ namespace Libplanet.Benchmarks
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
-            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock();
             var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {

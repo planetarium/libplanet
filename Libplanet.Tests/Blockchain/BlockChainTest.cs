@@ -209,7 +209,7 @@ namespace Libplanet.Tests.Blockchain
         public async void ProcessActions()
         {
             Block<PolymorphicAction<BaseAction>> genesisBlock =
-                BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
+                BlockChain<PolymorphicAction<BaseAction>>.ProposeGenesisBlock();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
@@ -1219,7 +1219,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void GetStateReturnsValidStateAfterFork()
         {
-            Block<DumbAction> genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
+            Block<DumbAction> genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock(
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
             );
             var privateKey = new PrivateKey();
@@ -1368,7 +1368,7 @@ namespace Libplanet.Tests.Blockchain
             using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
             using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
             {
-                var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+                var genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock();
                 var emptyChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -1903,7 +1903,7 @@ namespace Libplanet.Tests.Blockchain
                     new VolatileStagePolicy<DumbAction>(),
                     storeFixture.Store,
                     storeFixture.StateStore,
-                    BlockChain<DumbAction>.MakeGenesisBlock(actions));
+                    BlockChain<DumbAction>.ProposeGenesisBlock(actions));
 
             Assert.Equal(addresses, blockChain.Genesis.Transactions.First().UpdatedAddresses);
 
@@ -1922,8 +1922,8 @@ namespace Libplanet.Tests.Blockchain
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock();
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock();
+            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock();
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

@@ -1153,8 +1153,8 @@ namespace Libplanet.Net.Tests
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
+            var genesisBlockA = BlockChain<DumbAction>.ProposeGenesisBlock(actionsA, privateKeyA);
+            var genesisBlockB = BlockChain<DumbAction>.ProposeGenesisBlock(actionsB, privateKeyB);
 
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
