@@ -55,22 +55,10 @@ To be released.
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+[#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2173]: https://github.com/planetarium/libplanet/pull/2173
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
 [#2183]: https://github.com/planetarium/libplanet/pull/2183
-=======
-[#1972]: https://github.com/planetarium/libplanet/issues/1972
-[#2179]: https://github.com/planetarium/libplanet/pull/2179
->>>>>>> f53411653 (Add genesis hash property to IActionContext)
-=======
-[#1972]: https://github.com/planetarium/libplanet/issues/1972
-=======
->>>>>>> 331030a8d (Apply reviews)
-[#2179]: https://github.com/planetarium/libplanet/pull/2179
->>>>>>> f0d0f666a (Add test code and add info to changes.md)
 
 
 Version 0.39.0
