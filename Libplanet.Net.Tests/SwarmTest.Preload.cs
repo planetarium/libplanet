@@ -812,7 +812,7 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFromTheMostDifficultChain()
+        public async Task PreloadFromTheHighestTipIndexChain()
         {
             var minerKey1 = new PrivateKey();
             Swarm<DumbAction> minerSwarm1 = CreateSwarm(minerKey1);
@@ -835,7 +835,6 @@ namespace Libplanet.Net.Tests
             minerChain2.Append(block);
 
             Assert.True(minerChain1.Count > minerChain2.Count);
-            Assert.True(minerChain1.Tip.TotalDifficulty < minerChain2.Tip.TotalDifficulty);
 
             try
             {
@@ -853,8 +852,8 @@ namespace Libplanet.Net.Tests
                 await StopAsync(receiverSwarm);
             }
 
-            Assert.Equal(minerChain2.Count, receiverChain.Count);
-            Assert.Equal(minerChain2.Tip, receiverChain.Tip);
+            Assert.Equal(minerChain1.Count, receiverChain.Count);
+            Assert.Equal(minerChain1.Tip, receiverChain.Tip);
         }
 
         [Fact(Timeout = Timeout)]

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -957,7 +956,6 @@ namespace Libplanet.Net
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
             int peersCount = peersWithExcerpts.Count;
             var exceptions = new List<Exception>();
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
                 long peerIndex = excerpt.Index;
@@ -1169,8 +1167,7 @@ namespace Libplanet.Net
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
         /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
-        /// the <see cref="IBlockPolicy{T}.CanonicalChainComparer"/> given by
-        /// <see cref="BlockChain{T}.Policy"/> in descending order.</returns>
+        /// <see cref="IBlockExcerpt.Index"/> in descending order.</returns>
         private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
@@ -1178,14 +1175,13 @@ namespace Libplanet.Net
         {
             Block<T> tip = BlockChain.Tip;
             BlockHash genesisHash = BlockChain.Genesis.Hash;
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
             return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
                 .Where(
                     pair => pair.Item2 is { } chainStatus &&
                         genesisHash.Equals(chainStatus.GenesisHash) &&
-                        canonComparer.Compare(chainStatus, tip) > 0)
+                        chainStatus.TipIndex > tip.Index)
                 .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
-                .OrderByDescending(pair => pair.Item2, canonComparer)
+                .OrderByDescending(pair => pair.Item2.Index)
                 .ToList();
         }
 
@@ -1361,8 +1357,7 @@ namespace Libplanet.Net
         /// <paramref name="target"/> is needed, otherwise, <c>false</c>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)
         {
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-            return canonComparer.Compare(target, BlockChain.Tip) > 0;
+            return target.Index > BlockChain.Tip.Index;
         }
 
         private async Task RefreshTableAsync(

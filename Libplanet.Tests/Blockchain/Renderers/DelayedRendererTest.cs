@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -18,7 +17,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainA;
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainB;
         protected static readonly Block<DumbAction> _branchpoint;
-        protected IComparer<IBlockExcerpt> _canonicalChainComparer;
         protected IStore _store;
         protected ILogger _logger;
 
@@ -79,8 +77,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 _chainB
             );
 
-            _canonicalChainComparer = new TotalDifficultyComparer();
-
             _store = new MemoryStore();
             foreach (Block<DumbAction> b in _chainA.Concat(_chainB))
             {
@@ -96,7 +92,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedRenderer<DumbAction>(
                     new AnonymousRenderer<DumbAction>(),
-                    _canonicalChainComparer,
                     _store,
                     confirmations: invalidConfirmations
                 )
@@ -120,7 +115,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var renderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );
@@ -178,7 +172,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );

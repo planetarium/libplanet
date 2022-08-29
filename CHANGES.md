@@ -8,6 +8,8 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Removed `TotalDifficultyComparer` class.  [[#PBFT]]
+
 ### Backward-incompatible API changes
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]

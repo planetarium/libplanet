@@ -37,7 +37,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             ArgumentOutOfRangeException e = Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new DelayedActionRenderer<DumbAction>(
                     new AnonymousActionRenderer<DumbAction>(),
-                    _canonicalChainComparer,
                     _store,
                     confirmations: invalidConfirmations
                 )
@@ -80,7 +79,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var renderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );
@@ -182,7 +180,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );
@@ -421,7 +418,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var renderer = new DelayedActionRenderer<DumbAction>(
                 new AnonymousActionRenderer<DumbAction>(),
-                _canonicalChainComparer,
                 _store,
                 confirmations: 3
             );
@@ -466,7 +462,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
                 2,
                 4
@@ -539,7 +534,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
                 confirmations: 2
             );
@@ -551,7 +545,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
                 validator,
-                _canonicalChainComparer,
                 fx.Store,
                 confirmations: 2
             );
@@ -658,7 +651,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             };
             var delayedRenderer = new DelayedActionRenderer<DumbAction>(
                 innerRenderer,
-                _canonicalChainComparer,
                 fx.Store,
                 confirmations: 2
             );
@@ -670,7 +662,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var validator = new ValidatingActionRenderer<DumbAction>();
             var delayedValidatingActionRenderer = new DelayedActionRenderer<DumbAction>(
                 validator,
-                _canonicalChainComparer,
                 fx.Store,
                 confirmations: 2
             );

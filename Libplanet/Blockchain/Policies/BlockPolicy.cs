@@ -61,8 +61,6 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
         /// where block's hash algorithm type, bytes count, and transactions count are validated.
         /// </param>
-        /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
-        /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="getMaxBlockBytes">The function determining the maximum size of
         /// a <see cref="Block{T}"/> in number of <c>byte</c>s given
         /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxBlockBytes"/>.
@@ -91,7 +89,6 @@ namespace Libplanet.Blockchain.Policies
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
-            IComparer<IBlockExcerpt>? canonicalChainComparer = null,
             Func<long, long>? getMaxBlockBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
@@ -105,7 +102,6 @@ namespace Libplanet.Blockchain.Policies
                 ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
             MinimumDifficulty = minimumDifficulty
                 ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
-            CanonicalChainComparer = canonicalChainComparer ?? new TotalDifficultyComparer();
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
             _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
@@ -207,9 +203,6 @@ namespace Libplanet.Blockchain.Policies
         /// full detail.
         /// </summary>
         public long MinimumDifficulty { get; }
-
-        /// <inheritdoc/>
-        public IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(

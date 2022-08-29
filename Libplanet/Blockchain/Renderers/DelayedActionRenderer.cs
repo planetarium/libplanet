@@ -65,8 +65,6 @@ namespace Libplanet.Blockchain.Renderers
         /// </summary>
         /// <param name="renderer">The renderer to decorate which has the <em>actual</em>
         /// implementations and receives delayed events.</param>
-        /// <param name="canonicalChainComparer">The same canonical chain comparer to
-        /// <see cref="BlockChain{T}.Policy"/>.</param>
         /// <param name="store">The same store to what <see cref="BlockChain{T}"/> uses.</param>
         /// <param name="confirmations">The required number of confirmations to recognize a block.
         /// See also the <see cref="DelayedRenderer{T}.Confirmations"/> property.</param>
@@ -76,11 +74,10 @@ namespace Libplanet.Blockchain.Renderers
         /// If zero, which is a default value, is passed the buffer is not cleared.</param>
         public DelayedActionRenderer(
             IActionRenderer<T> renderer,
-            IComparer<IBlockExcerpt> canonicalChainComparer,
             IStore store,
             int confirmations,
             long reorgResistantHeight = 0)
-            : base(renderer, canonicalChainComparer, store, confirmations)
+            : base(renderer, store, confirmations)
         {
             ActionRenderer = renderer;
             _bufferedActionRenders = new ConcurrentDictionary<BlockHash, List<ActionEvaluation>>();
