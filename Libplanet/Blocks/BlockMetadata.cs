@@ -40,7 +40,7 @@ namespace Libplanet.Blocks
         private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
         private Address _miner;
         private PublicKey? _publicKey;
-        private long _difficulty;
+        private long _difficulty = 5000L; // Stub difficulty.
         private HashDigest<SHA256>? _txHash;
 
         static BlockMetadata()
