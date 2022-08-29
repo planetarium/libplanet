@@ -402,9 +402,6 @@ If omitted (default) explorer only the local blockchain store.")]
             /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
             public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 
-            public IComparer<IBlockExcerpt> CanonicalChainComparer =>
-                _impl.CanonicalChainComparer;
-
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
 

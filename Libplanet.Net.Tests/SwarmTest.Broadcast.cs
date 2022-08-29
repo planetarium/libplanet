@@ -861,62 +861,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PullBlocksByDifficulty()
-        {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var chain1 = MakeBlockChain(
-                policy,
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()));
-            var chain2 = MakeBlockChain(
-                policy,
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()));
-
-            var key1 = new PrivateKey();
-            var key2 = new PrivateKey();
-
-            var miner1 = CreateSwarm(chain1, key1);
-            var miner2 = CreateSwarm(chain2, key2);
-
-            await chain1.MineBlock(key1);
-            await chain1.MineBlock(key2);
-            long nextDifficulty =
-                (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-            Block<DumbAction> block = MineNext(
-                chain2.Tip,
-                miner: ChainPrivateKey.PublicKey,
-                difficulty: nextDifficulty,
-                blockInterval: TimeSpan.FromMilliseconds(1)
-            ).Evaluate(ChainPrivateKey, chain2);
-            chain2.Append(block);
-
-            Assert.True(chain1.Tip.Index > chain2.Tip.Index);
-            Assert.True(chain1.Tip.TotalDifficulty < chain2.Tip.TotalDifficulty);
-
-            try
-            {
-                await StartAsync(miner1);
-                await StartAsync(miner2);
-
-                await BootstrapAsync(miner2, miner1.AsPeer);
-
-                await miner1.PullBlocksAsync(TimeSpan.FromSeconds(5), int.MaxValue, default);
-                await miner1.BlockAppended.WaitAsync();
-
-                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
-                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
-            }
-            finally
-            {
-                await StopAsync(miner1);
-                await StopAsync(miner2);
-                miner1.Dispose();
-                miner2.Dispose();
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task CanFillWithInvalidTransaction()
         {
             var privateKey = new PrivateKey();

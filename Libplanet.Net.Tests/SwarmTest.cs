@@ -758,63 +758,6 @@ namespace Libplanet.Net.Tests
             Assert.Equal(2, renderCount);
         }
 
-        [Fact(Timeout = Timeout)]
-        public async Task ForkByDifficulty()
-        {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var chain1 = MakeBlockChain(
-                policy,
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()));
-            var chain2 = MakeBlockChain(
-                policy,
-                new MemoryStore(),
-                new TrieStateStore(new MemoryKeyValueStore()));
-
-            var key1 = new PrivateKey();
-            var key2 = new PrivateKey();
-
-            var miner1 = CreateSwarm(chain1);
-            var miner2 = CreateSwarm(chain2);
-
-            await chain1.MineBlock(key1);
-            await chain1.MineBlock(key2);
-            long nextDifficulty =
-                (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
-            Block<DumbAction> block = MineNext(
-                chain2.Tip,
-                miner: ChainPrivateKey.PublicKey,
-                difficulty: nextDifficulty,
-                blockInterval: TimeSpan.FromMilliseconds(1)
-            ).Evaluate(ChainPrivateKey, chain2);
-            chain2.Append(block);
-
-            Assert.True(chain1.Tip.Index > chain2.Tip.Index);
-            Assert.True(chain1.Tip.TotalDifficulty < chain2.Tip.TotalDifficulty);
-
-            try
-            {
-                await StartAsync(miner1);
-                await StartAsync(miner2);
-
-                await BootstrapAsync(miner2, miner1.AsPeer);
-
-                miner2.BroadcastBlock(block);
-                await miner1.BlockReceived.WaitAsync();
-                await miner1.BlockAppended.WaitAsync();
-
-                Assert.Equal(miner2.BlockChain.Count, miner1.BlockChain.Count);
-                Assert.Equal(miner2.BlockChain.Tip, miner1.BlockChain.Tip);
-            }
-            finally
-            {
-                await StopAsync(miner1);
-                await StopAsync(miner2);
-                miner1.Dispose();
-                miner2.Dispose();
-            }
-        }
-
         [Fact(Skip = "This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
@@ -1146,7 +1089,6 @@ namespace Libplanet.Net.Tests
 
                 // Broadcast SwarmA's first block.
                 minerChainA.Append(aBlock1);
-                minerChainB.Append(bBlock1);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainA.Tip),
@@ -1156,10 +1098,10 @@ namespace Libplanet.Net.Tests
                         $"{nameof(receiverChain)}'s tip being same to " +
                         $"{nameof(minerChainA)}'s tip 1st"
                 );
+                minerChainB.Append(bBlock1);
 
                 // Broadcast SwarmB's second block.
                 minerChainB.Append(bBlock2);
-                minerChainA.Append(aBlock2);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
                     () => receiverChain.Tip.Equals(minerChainB.Tip),
@@ -1169,6 +1111,7 @@ namespace Libplanet.Net.Tests
                         $"{nameof(receiverChain)}'s tip being same to " +
                         $"{nameof(minerChainB)}'s tip 2nd"
                 );
+                minerChainA.Append(aBlock2);
 
                 // Broadcast SwarmA's third block.
                 minerChainA.Append(aBlock3);

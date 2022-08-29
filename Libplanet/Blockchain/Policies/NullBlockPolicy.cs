@@ -24,9 +24,6 @@ namespace Libplanet.Blockchain.Policies
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
-        public IComparer<IBlockExcerpt> CanonicalChainComparer =>
-            new TotalDifficultyComparer();
-
         public IAction BlockAction => null;
 
         /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>

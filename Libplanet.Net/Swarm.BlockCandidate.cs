@@ -81,15 +81,10 @@ namespace Libplanet.Net
                 return false;
             }
 
-            var canonComparer = BlockChain.Policy.CanonicalChainComparer;
-
             if (synced is { } syncedB
                 && !syncedB.Id.Equals(BlockChain?.Id)
-                && (canonComparer.Compare(
-                        BlockChain.PerceiveBlock(BlockChain.Tip),
-                        BlockChain.PerceiveBlock(syncedB.Tip)) < 0
-                )
-            )
+                && (BlockChain.PerceiveBlock(BlockChain.Tip).Index <
+                    BlockChain.PerceiveBlock(syncedB.Tip).Index))
             {
                 _logger.Debug(
                     "Swapping chain {ChainIdA} with chain {ChainIdB}...",
@@ -283,16 +278,13 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
         {
             var sessionRandom = new Random();
-            IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
 
             int sessionId = sessionRandom.Next();
 
             BoundPeer peer = demand.Peer;
 
-            if (canonComparer.Compare(
-                BlockChain.PerceiveBlock(demand),
-                BlockChain.PerceiveBlock(BlockChain.Tip)
-            ) <= 0)
+            if (BlockChain.PerceiveBlock(demand).Index <=
+                BlockChain.PerceiveBlock(BlockChain.Tip).Index)
             {
                 return false;
             }

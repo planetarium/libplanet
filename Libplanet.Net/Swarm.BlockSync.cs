@@ -183,9 +183,8 @@ namespace Libplanet.Net
                     block.ValidateTimestamp();
                     blocks.Add(block);
                     if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                        BlockChain.PerceiveBlock(block).Index >
+                            BlockChain.PerceiveBlock(tempTip).Index)
                     {
                         tempTip = block;
                     }
@@ -440,9 +439,8 @@ namespace Libplanet.Net
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||
-                        BlockChain.Policy.CanonicalChainComparer.Compare(
-                            BlockChain.PerceiveBlock(block),
-                            BlockChain.PerceiveBlock(tempTip)) > 0)
+                        BlockChain.PerceiveBlock(block).Index >
+                            BlockChain.PerceiveBlock(tempTip).Index)
                     {
                         tempTip = block;
                     }
@@ -494,9 +492,8 @@ namespace Libplanet.Net
                             break;
                         }
                     }
-                    else if (BlockChain.Policy.CanonicalChainComparer.Compare(
-                                 BlockChain.PerceiveBlock(tipCandidate),
-                                 BlockChain.PerceiveBlock(tempTip)) <= 0)
+                    else if (BlockChain.PerceiveBlock(tipCandidate).Index <=
+                        BlockChain.PerceiveBlock(tempTip).Index)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -589,8 +586,6 @@ namespace Libplanet.Net
                     _logger.Information($"{nameof(CompleteBlocksAsync)}() is canceled.");
                 }
 
-                IComparer<IBlockExcerpt> canonComparer = BlockChain.Policy.CanonicalChainComparer;
-
                 if (!complete
                     || workspace.Tip == BlockChain.Tip
                     || cancellationToken.IsCancellationRequested)
@@ -607,9 +602,8 @@ namespace Libplanet.Net
                         BlockChain.Tip.Hash
                     );
                 }
-                else if (canonComparer.Compare(
-                        BlockChain.PerceiveBlock(workspace.Tip),
-                        BlockChain.PerceiveBlock(BlockChain.Tip)) < 0)
+                else if (BlockChain.PerceiveBlock(workspace.Tip).Index <
+                    BlockChain.PerceiveBlock(BlockChain.Tip).Index)
                 {
                     _logger.Debug(
                         $"{nameof(CompleteBlocksAsync)}() is aborted since existing chain " +

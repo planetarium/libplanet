@@ -75,7 +75,6 @@ namespace Libplanet.Net
             Func<IBlockExcerpt, bool> predicate,
             BlockDemand demand)
         {
-            IComparer<IBlockExcerpt> canonComparer = blockChain.Policy.CanonicalChainComparer;
             BlockDemand? oldDemand = _blockDemands.ContainsKey(demand.Peer)
                 ? _blockDemands[demand.Peer]
                 : (BlockDemand?)null;
@@ -89,7 +88,7 @@ namespace Libplanet.Net
             {
                 if (oldDemand is { } old)
                 {
-                    needed = IsDemandStale(old) || canonComparer.Compare(old, demand) < 0;
+                    needed = IsDemandStale(old) || old.Index < demand.Index;
                 }
                 else
                 {
@@ -106,14 +105,12 @@ namespace Libplanet.Net
                 "Peer: {Peer}\n" +
                 "Demand: {Demand}\n" +
                 "Tip: {Tip}\n" +
-                "Old Demand: {OldDemand}\n" +
-                "CanonicalChainComparer: {Comparer}",
+                "Old Demand: {OldDemand}",
                 needed,
                 demand.Peer,
                 demand.ToExcerptString(),
                 blockChain.Tip.ToExcerptString(),
-                oldDemand?.ToExcerptString(),
-                canonComparer);
+                oldDemand?.ToExcerptString());
             return needed;
         }
 

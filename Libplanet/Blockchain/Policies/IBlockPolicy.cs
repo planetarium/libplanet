@@ -25,14 +25,6 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         /// <summary>
-        /// A comparer to determine which branch is the canonical chain (i.e., best chain).
-        /// The most greater one according to this comparer is considered to be the canon.
-        /// </summary>
-        /// <seealso cref="IBlockExcerpt"/>
-        /// <seealso cref="TotalDifficultyComparer"/>
-        IComparer<IBlockExcerpt> CanonicalChainComparer { get; }
-
-        /// <summary>
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }
