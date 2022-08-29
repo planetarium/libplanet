@@ -49,9 +49,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy<DumbAction>(
                 blockAction: null,
-                blockInterval: tenSec,
-                difficultyStability: 128,
-                minimumDifficulty: 1024L);
+                blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(

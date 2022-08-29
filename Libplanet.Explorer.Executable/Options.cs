@@ -20,7 +20,6 @@ namespace Libplanet.Explorer.Executable
             string host,
             int port,
             int blockIntervalMilliseconds,
-            long minimumDifficulty,
             int difficultyBoundDivisor,
             int workers,
             string appProtocolVersionToken,
@@ -43,7 +42,6 @@ namespace Libplanet.Explorer.Executable
             Host = host;
             Port = port;
             BlockIntervalMilliseconds = blockIntervalMilliseconds;
-            MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
             Workers = workers;
             AppProtocolVersionToken = appProtocolVersionToken;
@@ -69,8 +67,6 @@ namespace Libplanet.Explorer.Executable
         public int Port { get; set; }
 
         public int BlockIntervalMilliseconds { get; set; }
-
-        public long MinimumDifficulty { get; set; }
 
         public int DifficultyBoundDivisor { get; set; }
 

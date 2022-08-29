@@ -274,7 +274,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Assert.Equal(expected.Index, actual.Index);
             Assert.Equal(expected.Timestamp, actual.Timestamp);
             AssertBytesEqual(expected.Miner, actual.Miner);
-            Assert.Equal(expected.Difficulty, actual.Difficulty);
             AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
             AssertBytesEqual(expected.TxHash, actual.TxHash);
         }

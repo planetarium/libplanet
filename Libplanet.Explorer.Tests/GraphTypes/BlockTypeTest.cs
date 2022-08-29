@@ -41,7 +41,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     index
                     hash
                     nonce
-                    difficulty
                     miner
                     publicKey
                     timestamp
@@ -63,7 +62,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 resultData["hash"]);
-            Assert.Equal(block.Difficulty, resultData["difficulty"]);
             Assert.Equal(
                 block.Miner.ToString(),
                 resultData["miner"]);

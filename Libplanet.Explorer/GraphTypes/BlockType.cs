@@ -22,10 +22,6 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The height of the block.",
                 resolve: x => x.Source.Index
             );
-            Field<NonNullGraphType<LongGraphType>>(
-                name: "Difficulty",
-                description: "The mining difficulty that the block's nonce has to satisfy.",
-                resolve: x => x.Source.Difficulty);
             Field<NonNullGraphType<ByteStringType>>(
                 name: "Nonce",
                 description: "The proof-of-work nonce which satisfies the required difficulty.",

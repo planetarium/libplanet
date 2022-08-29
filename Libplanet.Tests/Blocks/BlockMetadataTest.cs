@@ -82,13 +82,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Difficulty()
-        {
-            BlockMetadata a = BlockMetadata1.Copy();
-            Assert.Equal(BlockMetadata1.Difficulty, a.Difficulty);
-        }
-
-        [Fact]
         public void MakeCandidateData()
         {
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty

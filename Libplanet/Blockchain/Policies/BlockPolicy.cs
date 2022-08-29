@@ -19,6 +19,8 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
+        public static readonly TimeSpan DefaultTargetBlockInterval = TimeSpan.FromSeconds(5);
+
         private readonly Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>
             _validateNextBlockTx;
 
@@ -29,7 +31,6 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
-        private readonly Func<BlockChain<T>, long> _getNextBlockDifficulty;
 
         /// <summary>
         /// <para>
@@ -45,15 +46,8 @@ namespace Libplanet.Blockchain.Policies
         /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultTargetBlockInterval"/>
-        /// by default.
+        /// Set to <see cref="DefaultTargetBlockInterval"/> by default.
         /// </param>
-        /// <param name="difficultyStability">Goes to <see cref="DifficultyStability"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultDifficultyStability"/>
-        /// by default.</param>
-        /// <param name="minimumDifficulty">Goes to <see cref="MinimumDifficulty"/>.
-        /// Set to <see cref="DifficultyAdjustment{T}.DefaultMinimumDifficulty"/>
-        /// by default.</param>
         /// <param name="validateNextBlockTx">The predicate that determines if
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
         /// <c>null</c> by default.</param>
@@ -83,8 +77,6 @@ namespace Libplanet.Blockchain.Policies
         public BlockPolicy(
             IAction? blockAction = null,
             TimeSpan? blockInterval = null,
-            long? difficultyStability = null,
-            long? minimumDifficulty = null,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
@@ -96,20 +88,13 @@ namespace Libplanet.Blockchain.Policies
             IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
-            BlockInterval = blockInterval
-                ?? DifficultyAdjustment<T>.DefaultTargetBlockInterval;
-            DifficultyStability = difficultyStability
-                ?? DifficultyAdjustment<T>.DefaultDifficultyStability;
-            MinimumDifficulty = minimumDifficulty
-                ?? DifficultyAdjustment<T>.DefaultMinimumDifficulty;
+            BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
             _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
-            _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
-                BlockInterval, DifficultyStability, MinimumDifficulty);
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -185,24 +170,8 @@ namespace Libplanet.Blockchain.Policies
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block{T}"/>s.
-        /// See the corresponding parameter description for
-        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
         /// </summary>
         public TimeSpan BlockInterval { get; }
-
-        /// <summary>
-        /// Stability of a series of difficulties for a <see cref="BlockChain{T}"/>.
-        /// See the corresponding parameter description for
-        /// <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for full detail.
-        /// </summary>
-        public long DifficultyStability { get; }
-
-        /// <summary>
-        /// Minimum difficulty for a <see cref="Block{T}"/>.  See the corresponding
-        /// parameter description for <see cref="DifficultyAdjustment{T}.BaseAlgorithm"/> for
-        /// full detail.
-        /// </summary>
-        public long MinimumDifficulty { get; }
 
         /// <inheritdoc/>
         public virtual TxPolicyViolationException? ValidateNextBlockTx(
