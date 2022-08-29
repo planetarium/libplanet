@@ -17,7 +17,6 @@ namespace Libplanet.Tests.Blockchain.Renderers
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainA;
         protected static readonly IReadOnlyList<Block<DumbAction>> _chainB;
         protected static readonly Block<DumbAction> _branchpoint;
-        protected IComparer<IBlockExcerpt> _canonicalChainComparer;
         protected IStore _store;
         protected ILogger _logger;
 
