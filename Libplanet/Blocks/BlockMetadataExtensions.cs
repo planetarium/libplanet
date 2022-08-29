@@ -28,9 +28,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <seealso cref="BlockMetadata(IBlockMetadata)"/>
         public static BlockMetadata Copy(this IBlockMetadata metadata) =>
             new BlockMetadata(metadata);

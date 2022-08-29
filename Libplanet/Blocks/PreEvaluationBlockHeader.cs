@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -34,9 +33,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
         /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
@@ -67,9 +63,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
         /// </exception>
@@ -103,9 +96,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
@@ -285,9 +275,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => Metadata.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => Metadata.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => Metadata.PreviousHash;

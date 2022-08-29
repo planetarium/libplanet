@@ -1,6 +1,3 @@
-#nullable disable
-using System.Numerics;
-
 namespace Libplanet.Net
 {
     /// <summary>
@@ -8,11 +5,10 @@ namespace Libplanet.Net
     /// </summary>
     public readonly struct PeerChainState
     {
-        public PeerChainState(BoundPeer peer, long tipIndex, BigInteger totalDifficulty)
+        public PeerChainState(BoundPeer peer, long tipIndex)
         {
             Peer = peer;
             TipIndex = tipIndex;
-            TotalDifficulty = totalDifficulty;
         }
 
         /// <summary>
@@ -25,15 +21,10 @@ namespace Libplanet.Net
         /// </summary>
         public long TipIndex { get; }
 
-        /// <summary>
-        /// The total difficulty of the blockchain of the <see cref="BoundPeer"/>.
-        /// </summary>
-        public BigInteger TotalDifficulty { get; }
-
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Peer}, {TipIndex}, {TotalDifficulty}";
+            return $"{Peer}, {TipIndex}";
         }
     }
 }

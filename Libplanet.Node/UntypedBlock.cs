@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -97,9 +96,6 @@ namespace Libplanet.Node
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => _header.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _header.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _header.PreviousHash;

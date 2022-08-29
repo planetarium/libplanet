@@ -26,11 +26,6 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "Difficulty",
                 description: "The mining difficulty that the block's nonce has to satisfy.",
                 resolve: x => x.Source.Difficulty);
-            Field<NonNullGraphType<BigIntGraphType>>(
-                name: "TotalDifficulty",
-                description: "The total mining difficulty since the genesis including " +
-                    "the block's difficulty.",
-                resolve: x => x.Source.TotalDifficulty);
             Field<NonNullGraphType<ByteStringType>>(
                 name: "Nonce",
                 description: "The proof-of-work nonce which satisfies the required difficulty.",

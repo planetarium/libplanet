@@ -32,9 +32,7 @@ namespace Libplanet.Net
                         tip.ProtocolVersion,
                         BlockChain.Genesis.Hash,
                         tip.Index,
-                        tip.Hash,
-                        tip.TotalDifficulty
-                    )
+                        tip.Hash)
                     {
                         Identity = getChainStatus.Identity,
                     };

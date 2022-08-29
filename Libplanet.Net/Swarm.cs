@@ -522,8 +522,7 @@ namespace Libplanet.Net
                 .Select(pp =>
                     new PeerChainState(
                         pp.Item1,
-                        pp.Item2?.TipIndex ?? -1,
-                        pp.Item2?.TotalDifficulty ?? -1));
+                        pp.Item2?.TipIndex ?? -1));
         }
 
         /// <summary>

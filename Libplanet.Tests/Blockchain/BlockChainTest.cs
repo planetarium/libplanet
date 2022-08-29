@@ -92,7 +92,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 1,
                 Difficulty = 1024L,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
@@ -114,7 +113,6 @@ namespace Libplanet.Tests.Blockchain
                 Index = 604665,
                 Hash = BlockHash.FromString(
                     "4f612467ed79cb854d1901f131ccfc8a40bba89651e1a9e1dcea1287dd70d8ee"),
-                TotalDifficulty = 21584091240753,
             };
 
             DateTimeOffset timeA = DateTimeOffset.FromUnixTimeSeconds(1609426800);
@@ -132,7 +130,6 @@ namespace Libplanet.Tests.Blockchain
                 Index = 604664,
                 Hash = BlockHash.FromString(
                     "9a87556f3198d8bd48300d2a6a5957d661c760a7fb72ef4a4b8c01c155b77e99"),
-                TotalDifficulty = 21584061959429,
             };
 
             DateTimeOffset timeBMin = DateTimeOffset.FromUnixTimeMilliseconds(

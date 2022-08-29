@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
 
@@ -137,9 +136,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => _preEvaluationBlockHeader.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _preEvaluationBlockHeader.TotalDifficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _preEvaluationBlockHeader.PreviousHash;

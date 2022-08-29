@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Libplanet.Blocks
 {
     /// <summary>
@@ -33,11 +31,5 @@ namespace Libplanet.Blocks
         /// <seealso cref="IBlockHeader.StateRootHash"/>
         /// <seealso cref="Block{T}.Hash"/>
         public BlockHash Hash { get; }
-
-        /// <summary>
-        /// The sum of a block and its all ancestors' difficulties.
-        /// </summary>
-        /// <seealso cref="Block{T}.TotalDifficulty"/>
-        public BigInteger TotalDifficulty { get; }
     }
 }

@@ -35,7 +35,6 @@ namespace Libplanet.Tests.Blocks
             Assert.InRange(m.Timestamp, before, after);
             AssertBytesEqual(default(Address), m.Miner);
             Assert.Equal(0, m.Difficulty);
-            Assert.Equal(0, m.TotalDifficulty);
             AssertBytesEqual(null, m.PreviousHash);
             AssertBytesEqual(null, m.TxHash);
             Assert.Empty(m.Transactions);
