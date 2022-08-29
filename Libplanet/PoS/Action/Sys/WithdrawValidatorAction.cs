@@ -24,19 +24,6 @@ namespace Libplanet.Action.Sys
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
 
-            // if (ctx.Rehearsal)
-            // Rehearsal mode is not implemented
-            Validator validator;
-            IValue? serializedValidator = states.GetState(ctx.Signer);
-            if (serializedValidator == null)
-            {
-                validator = new Validator(ctx.Signer);
-            }
-            else
-            {
-                validator = new Validator((List)serializedValidator);
-            }
-
             // states = validator.Withdraw(states, Amount)
             return states;
         }

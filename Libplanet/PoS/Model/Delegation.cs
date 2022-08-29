@@ -4,16 +4,16 @@ using Bencodex.Types;
 namespace Libplanet.PoS
 {
     [Serializable]
-    public class DelegationInfo
+    public class Delegation
     {
-        public DelegationInfo(Address delegatorAddress, Address validatorAddress)
+        public Delegation(Address delegatorAddress, Address validatorAddress)
         {
             Address = DeriveAddress(delegatorAddress, validatorAddress);
             DelegatorAddress = delegatorAddress;
             ValidatorAddress = validatorAddress;
         }
 
-        public DelegationInfo(IValue serialized)
+        public Delegation(IValue serialized)
         {
             List serializedList = (List)serialized;
             Address = serializedList[0].ToAddress();
@@ -21,7 +21,7 @@ namespace Libplanet.PoS
             ValidatorAddress = serializedList[2].ToAddress();
         }
 
-        public DelegationInfo(DelegationInfo delegationInfo)
+        public Delegation(Delegation delegationInfo)
         {
             Address = delegationInfo.Address;
             DelegatorAddress = delegationInfo.DelegatorAddress;

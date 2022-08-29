@@ -26,20 +26,6 @@ namespace Libplanet.Action.Sys
         {
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
-            Address delegationAddress = Delegation.DeriveAddress(ctx.Signer, ValidatorAddress);
-
-            // if (ctx.Rehearsal)
-            // Rehearsal mode is not implemented
-            Delegation delegation;
-            IValue? serializedDelegation = states.GetState(delegationAddress);
-            if (serializedDelegation == null)
-            {
-                delegation = new Delegation(ctx.Signer, ValidatorAddress);
-            }
-            else
-            {
-                delegation = new Delegation((List)serializedDelegation);
-            }
 
             // states = delegation.Withdraw(states, Amount)
             return states;

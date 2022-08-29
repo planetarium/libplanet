@@ -5,9 +5,9 @@ using Bencodex.Types;
 namespace Libplanet.PoS
 {
     [Serializable]
-    public class RedelegationInfo
+    public class Redelegation
     {
-        public RedelegationInfo(
+        public Redelegation(
             Address delegatorAddress, Address srcValidatorAddress, Address dstValidatorAddress)
         {
             Address = DeriveAddress(delegatorAddress, srcValidatorAddress, dstValidatorAddress);
@@ -18,7 +18,7 @@ namespace Libplanet.PoS
             RedelegationEntryAddresses = new SortedList<long, Address>();
         }
 
-        public RedelegationInfo(IValue serialized)
+        public Redelegation(IValue serialized)
         {
             List serializedList = (List)serialized;
             Address = serializedList[0].ToAddress();
@@ -36,7 +36,7 @@ namespace Libplanet.PoS
             }
         }
 
-        public RedelegationInfo(RedelegationInfo redelegationInfo)
+        public Redelegation(Redelegation redelegationInfo)
         {
             Address = redelegationInfo.Address;
             DelegatorAddress = redelegationInfo.DelegatorAddress;
@@ -46,6 +46,11 @@ namespace Libplanet.PoS
             RedelegationEntryAddresses = redelegationInfo.RedelegationEntryAddresses;
         }
 
+        // TODO: Better structure
+        // This hard coding will cause some problems when it's modified
+        // May be it would be better to be serialized
+        public static int MaximumRedelegationEntries { get => 10; }
+
         public Address Address { get; }
 
         public Address DelegatorAddress { get; }
@@ -54,19 +59,15 @@ namespace Libplanet.PoS
 
         public Address DstValidatorAddress { get; }
 
-        public Address DelegationAddress
-        {
-            get => Delegation.DeriveAddress(DelegatorAddress, SrcValidatorAddress);
-        }
+        public Address SrcDelegationAddress
+            => Delegation.DeriveAddress(DelegatorAddress, SrcValidatorAddress);
+
+        public Address DstDelegationAddress
+            => Delegation.DeriveAddress(DelegatorAddress, DstValidatorAddress);
 
         public long RedelegationEntryIndex { get; set; }
 
         public SortedList<long, Address> RedelegationEntryAddresses { get; set; }
-
-        // TODO: Better structure
-        // This hard coding will cause some problems when it's modified
-        // May be it would be better to be serialized
-        public int MaximumRedelegationEntries { get => 10; }
 
         public static Address DeriveAddress(
             Address delegatorAddress, Address srcValidatorAddress, Address dstValidatorAddress)

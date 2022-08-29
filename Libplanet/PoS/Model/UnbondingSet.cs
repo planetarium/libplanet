@@ -4,19 +4,19 @@ using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    public class UnbondingSetInfo
+    public class UnbondingSet
     {
-        public UnbondingSetInfo()
+        public UnbondingSet()
         {
-            UnbondingValidatorAddressSet = new SortedSet<Address>(new AddressComparer());
+            ValidatorAddressSet = new SortedSet<Address>(new AddressComparer());
             UndelegationAddressSet = new SortedSet<Address>(new AddressComparer());
             RedelegationAddressSet = new SortedSet<Address>(new AddressComparer());
         }
 
-        public UnbondingSetInfo(IValue serialized)
+        public UnbondingSet(IValue serialized)
         {
             List serializedList = (List)serialized;
-            UnbondingValidatorAddressSet
+            ValidatorAddressSet
                 = new SortedSet<Address>(
                     ((List)serializedList[0]).Select(x => x.ToAddress()), new AddressComparer());
             UndelegationAddressSet
@@ -27,16 +27,16 @@ namespace Libplanet.PoS
                     ((List)serializedList[2]).Select(x => x.ToAddress()), new AddressComparer());
         }
 
-        public UnbondingSetInfo(UnbondingSetInfo unbondingSetInfo)
+        public UnbondingSet(UnbondingSet unbondingSet)
         {
-            UnbondingValidatorAddressSet = unbondingSetInfo.UnbondingValidatorAddressSet;
-            UndelegationAddressSet = unbondingSetInfo.UndelegationAddressSet;
-            RedelegationAddressSet = unbondingSetInfo.RedelegationAddressSet;
+            ValidatorAddressSet = unbondingSet.ValidatorAddressSet;
+            UndelegationAddressSet = unbondingSet.UndelegationAddressSet;
+            RedelegationAddressSet = unbondingSet.RedelegationAddressSet;
         }
 
         public static long Period => 50400 * 4;
 
-        public SortedSet<Address> UnbondingValidatorAddressSet { get; set; }
+        public SortedSet<Address> ValidatorAddressSet { get; set; }
 
         public SortedSet<Address> UndelegationAddressSet { get; set; }
 
@@ -47,7 +47,7 @@ namespace Libplanet.PoS
         public IValue Serialize()
         {
             return List.Empty
-                .Add(new List(UnbondingValidatorAddressSet.Select(
+                .Add(new List(ValidatorAddressSet.Select(
                 address => address.Serialize())))
                 .Add(new List(UndelegationAddressSet.Select(
                 address => address.Serialize())))

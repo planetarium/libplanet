@@ -6,11 +6,11 @@ using Libplanet.Assets;
 namespace Libplanet.PoS
 {
     [Serializable]
-    public class ValidatorInfo
+    public class Validator
     {
         private FungibleAssetValue _delegatorShares;
 
-        public ValidatorInfo(Address operatorAddress)
+        public Validator(Address operatorAddress)
         {
             Address = DeriveAddress(operatorAddress);
             OperatorAddress = operatorAddress;
@@ -20,7 +20,7 @@ namespace Libplanet.PoS
             DelegatorShares = Asset.Share * 0;
         }
 
-        public ValidatorInfo(IValue serialized)
+        public Validator(IValue serialized)
         {
             List serializedList = (List)serialized;
             Address = serializedList[0].ToAddress();
@@ -31,15 +31,32 @@ namespace Libplanet.PoS
             DelegatorShares = serializedList[5].ToFungibleAssetValue();
         }
 
-        public ValidatorInfo(ValidatorInfo validatorInfo)
+        public Validator(Validator validator)
         {
-            Address = validatorInfo.Address;
-            OperatorAddress = validatorInfo.OperatorAddress;
-            Jailed = validatorInfo.Jailed;
-            Status = validatorInfo.Status;
-            UnbondingCompletionBlockHeight = validatorInfo.UnbondingCompletionBlockHeight;
-            DelegatorShares = validatorInfo.DelegatorShares;
+            Address = validator.Address;
+            OperatorAddress = validator.OperatorAddress;
+            Jailed = validator.Jailed;
+            Status = validator.Status;
+            UnbondingCompletionBlockHeight = validator.UnbondingCompletionBlockHeight;
+            DelegatorShares = validator.DelegatorShares;
         }
+
+        // TODO: Better structure
+        // This hard coding will cause some problems when it's modified
+        // May be it would be better to be serialized
+        public static FungibleAssetValue MinSelfDelegation => Asset.ConsensusToken * 1;
+
+        public static BigInteger CommissionRateNumerator => 1;
+
+        public static BigInteger CommissionRateDenominator => 10;
+
+        public static BigInteger CommissionMaxRateNumerator => 2;
+
+        public static BigInteger CommissionMaxRateDenominator => 10;
+
+        public static BigInteger CommissionMaxChangeRateNumerator => 1;
+
+        public static BigInteger CommissionMaxRateChangeDenominator => 100;
 
         public Address Address { get; set; }
 
@@ -65,27 +82,15 @@ namespace Libplanet.PoS
             }
         }
 
-        // TODO: Better structure
-        // This hard coding will cause some problems when it's modified
-        // May be it would be better to be serialized
-        public BigInteger CommissionRateNumerator => 1;
-
-        public BigInteger CommissionRateDenominator => 10;
-
-        public BigInteger CommissionMaxRateNumerator => 2;
-
-        public BigInteger CommissionMaxRateDenominator => 10;
-
-        public BigInteger CommissionMaxChangeRateNumerator => 1;
-
-        public BigInteger CommissionMaxRateChangeDenominator => 100;
-
-        public FungibleAssetValue MinSelfDelegation => Asset.ConsensusToken * 1;
-
         public static Address DeriveAddress(Address operatorAddress)
         {
             return operatorAddress.Derive("ValidatorAddress");
         }
+
+        public bool IsMatured(long blockHeight)
+            => UnbondingCompletionBlockHeight > 0
+            && Status != BondingStatus.Bonded
+            && blockHeight >= UnbondingCompletionBlockHeight;
 
         public IValue Serialize()
         {

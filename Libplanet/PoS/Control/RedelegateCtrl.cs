@@ -6,26 +6,55 @@ using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    internal class Redelegation : RedelegationInfo
+    internal static class RedelegateCtrl
     {
-        internal Redelegation(
-            Address delegatorAddress, Address srcValidatorAddress, Address dstValidatorAddress)
-            : base(delegatorAddress, srcValidatorAddress, dstValidatorAddress)
-        {
-        }
-
-        internal Redelegation(IValue serialized)
-            : base(serialized)
-        {
-        }
-
-        internal Redelegation(RedelegationInfo redelegationInfo)
-            : base(redelegationInfo)
-        {
-        }
-
-        internal IAccountStateDelta Redelegate(
+        internal static Redelegation GetRedelegationByAddr(
             IAccountStateDelta states,
+            Address redelegationAddress)
+        {
+            IValue? serializedRedelegation = states.GetState(redelegationAddress);
+            if (serializedRedelegation == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Redelegation redelegation = new Redelegation(serializedRedelegation);
+            return redelegation;
+        }
+
+        internal static (IAccountStateDelta, Redelegation) GetRedelegation(
+            IAccountStateDelta states,
+            Address delegatorAddress,
+            Address srcValidatorAddress,
+            Address dstValidatorAddress,
+            bool create = true)
+        {
+            Address redelegationAddress = Redelegation.DeriveAddress(
+                delegatorAddress, srcValidatorAddress, dstValidatorAddress);
+            IValue? serializedRedelegation = states.GetState(redelegationAddress);
+
+            Redelegation redelegation;
+            if (create && serializedRedelegation == null)
+            {
+                redelegation = new Redelegation(
+                    delegatorAddress,
+                    srcValidatorAddress,
+                    dstValidatorAddress);
+                states = states.SetState(redelegation.Address, redelegation.Serialize());
+            }
+            else
+            {
+                redelegation = GetRedelegationByAddr(states, redelegationAddress);
+            }
+
+            return (states, redelegation);
+        }
+
+        internal static IAccountStateDelta Execute(
+            IAccountStateDelta states,
+            Address delegatorAddress,
+            Address srcValidatorAddress,
+            Address dstValidatorAddress,
             FungibleAssetValue redelegatingShare,
             long blockHeight)
         {
@@ -41,37 +70,35 @@ namespace Libplanet.PoS
                 throw new ArgumentException();
             }
 
-            if (RedelegationEntryAddresses.Count >= MaximumRedelegationEntries)
+            Redelegation redelegation;
+            (states, redelegation) = GetRedelegation(
+                states,
+                delegatorAddress,
+                srcValidatorAddress,
+                dstValidatorAddress);
+
+            if (redelegation.RedelegationEntryAddresses.Count
+                >= Redelegation.MaximumRedelegationEntries)
             {
                 throw new InvalidOperationException();
             }
 
+            (states, _) = DelegateCtrl.GetDelegation(states, delegatorAddress, dstValidatorAddress);
             FungibleAssetValue unbondingConsensusToken;
             FungibleAssetValue issuedShare;
-
-            (states, unbondingConsensusToken) = Undelegation.Unbond(
+            (states, unbondingConsensusToken) = Bond.Cancel(
                 states,
                 redelegatingShare,
-                SrcValidatorAddress,
-                DelegationAddress);
-
-            (states, issuedShare) = Delegation.Bond(
+                srcValidatorAddress,
+                redelegation.SrcDelegationAddress);
+            (states, issuedShare) = Bond.Execute(
                 states,
                 unbondingConsensusToken,
-                DstValidatorAddress,
-                DelegationAddress);
+                dstValidatorAddress,
+                redelegation.DstDelegationAddress);
 
-            // Governance token pool transfer
-            IValue serializedSrcValidator
-                = states.GetState(SrcValidatorAddress)
-                ?? throw new InvalidOperationException();
-            Validator srcValidator = new Validator(serializedSrcValidator);
-
-            IValue serializedDstValidator
-                = states.GetState(DstValidatorAddress)
-                ?? throw new InvalidOperationException();
-            Validator dstValidator = new Validator(serializedDstValidator);
-
+            Validator srcValidator = ValidatorCtrl.GetValidatorByAddr(states, srcValidatorAddress);
+            Validator dstValidator = ValidatorCtrl.GetValidatorByAddr(states, dstValidatorAddress);
             states = (srcValidator.Status, dstValidator.Status) switch
             {
                 (BondingStatus.Bonded, BondingStatus.Unbonding) => states.TransferAsset(
@@ -94,38 +121,37 @@ namespace Libplanet.PoS
             };
 
             RedelegationEntry redelegationEntry = new RedelegationEntry(
-                Address,
+                redelegation.Address,
                 redelegatingShare,
                 unbondingConsensusToken,
                 issuedShare,
-                RedelegationEntryIndex,
+                redelegation.RedelegationEntryIndex,
                 blockHeight);
-            RedelegationEntryAddresses.Add(
+            redelegation.RedelegationEntryAddresses.Add(
                 redelegationEntry.Index, redelegationEntry.Address);
-            RedelegationEntryIndex += 1;
+            redelegation.RedelegationEntryIndex += 1;
 
-            // TODO: Global state indexing is also needed
             states = states.SetState(redelegationEntry.Address, redelegationEntry.Serialize());
+            states = states.SetState(redelegation.Address, redelegation.Serialize());
 
-            IValue? serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet);
-            UnbondingSet unbondingSet = (serializedUnbondingSet == null)
-                ? new UnbondingSet()
-                : new UnbondingSet(serializedUnbondingSet);
-            states = unbondingSet.AddRedelegationAddressSet(states, Address);
+            states = UnbondingSetCtrl.AddRedelegationAddressSet(states, redelegation.Address);
 
-            states = states.SetState(Address, Serialize());
             return states;
         }
 
         // This have to be called for each block,
         // to update staking status and generate block with updated validators.
         // Would it be better to declare this on out of this class?
-        internal IAccountStateDelta CompleteRedelegation(
-            IAccountStateDelta states, long blockHeight)
+        internal static IAccountStateDelta Complete(
+            IAccountStateDelta states,
+            Address redelegationAddress,
+            long blockHeight)
         {
+            Redelegation redelegation = GetRedelegationByAddr(states, redelegationAddress);
+
             List<long> completedIndices = new List<long>();
             foreach (KeyValuePair<long, Address> redelegationEntryAddressKV
-                in RedelegationEntryAddresses)
+                in redelegation.RedelegationEntryAddresses)
             {
                 IValue? serializedRedelegationEntry
                     = states.GetState(redelegationEntryAddressKV.Value);
@@ -145,18 +171,16 @@ namespace Libplanet.PoS
 
             foreach (long index in completedIndices)
             {
-                RedelegationEntryAddresses.Remove(index);
+                redelegation.RedelegationEntryAddresses.Remove(index);
             }
 
-            if (RedelegationEntryAddresses.Count == 0)
+            states = states.SetState(redelegation.Address, redelegation.Serialize());
+
+            if (redelegation.RedelegationEntryAddresses.Count == 0)
             {
-                IValue serializedUnbondingSet = states.GetState(ReservedAddress.UnbondingSet)
-                ?? throw new InvalidOperationException();
-                UnbondingSet unbondingSet = new UnbondingSet(serializedUnbondingSet);
-                states = unbondingSet.DelRedelegationAddressSet(states, Address);
+                states = UnbondingSetCtrl.RemoveRedelegationAddressSet(
+                    states, redelegation.Address);
             }
-
-            states = states.SetState(Address, Serialize());
 
             return states;
         }

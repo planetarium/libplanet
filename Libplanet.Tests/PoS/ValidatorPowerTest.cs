@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Libplanet.Tests.PoS
 {
-    public class ConsensusPowerKeyTest : PoSTest
+    public class ValidatorPowerTest : PoSTest
     {
-        private readonly ConsensusPowerKey _consensusPowerKey;
+        private readonly ValidatorPower _consensusPowerKey;
 
-        public ConsensusPowerKeyTest()
+        public ValidatorPowerTest()
         {
-            _consensusPowerKey = new ConsensusPowerKey(CreateAddress(), Asset.ConsensusToken * 10);
+            _consensusPowerKey = new ValidatorPower(CreateAddress(), Asset.ConsensusToken * 10);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void MarshallingTest()
         {
-            ConsensusPowerKey newConsensusPowerKey = new ConsensusPowerKey(
+            ValidatorPower newConsensusPowerKey = new ValidatorPower(
                 _consensusPowerKey.Serialize());
             Assert.Equal(
                 _consensusPowerKey.ValidatorAddress, newConsensusPowerKey.ValidatorAddress);

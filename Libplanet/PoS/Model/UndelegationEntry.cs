@@ -19,7 +19,7 @@ namespace Libplanet.PoS
             UndelegationAddress = undelegationAddress;
             UnbondingConsensusToken = unbondingConsensusToken;
             Index = index;
-            CompletionBlockHeight = blockHeight + UnbondingSetInfo.Period;
+            CompletionBlockHeight = blockHeight + UnbondingSet.Period;
         }
 
         public UndelegationEntry(IValue serialized)

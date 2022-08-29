@@ -26,22 +26,11 @@ namespace Libplanet.Action.Sys
         {
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
-            Address delegationAddress = Delegation.DeriveAddress(ctx.Signer, ValidatorAddress);
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            Undelegation undelegation;
-            IValue? serializedDelegation = states.GetState(delegationAddress);
-            if (serializedDelegation == null)
-            {
-                undelegation = new Undelegation(ctx.Signer, ValidatorAddress);
-            }
-            else
-            {
-                undelegation = new Undelegation((List)serializedDelegation);
-            }
-
-            states = undelegation.Undelegate(states, Share, ctx.BlockIndex);
+            states = UndelegateCtrl.Execute(
+                states, ctx.Signer, ValidatorAddress, Share, ctx.BlockIndex);
 
             return states;
         }

@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Action;
 using Libplanet.PoS;
 using Xunit;
 
 namespace Libplanet.Tests.PoS
 {
-    public class ValidatorsTest : PoSTest
+    public class ValidatorPowerSetCtrlTest : PoSTest
     {
         private IAccountStateDelta _states;
 
-        public ValidatorsTest()
+        public ValidatorPowerSetCtrlTest()
             : base()
         {
             _states = InitializeStates();
@@ -22,12 +23,9 @@ namespace Libplanet.Tests.PoS
                 Address operatorAddress = CreateAddress();
                 _states = _states.MintAsset(operatorAddress, Asset.GovernanceToken * 1000);
                 OperatorAddresses.Add(operatorAddress);
-                Validator validator = new Validator(operatorAddress);
-                _states = validator.Apply(_states, Asset.GovernanceToken * 1);
-                ValidatorAddresses.Add(validator.Address);
+                _states = ValidatorCtrl.Create(_states, operatorAddress, Asset.GovernanceToken * 1);
+                ValidatorAddresses.Add(Validator.DeriveAddress(operatorAddress));
             }
-
-            Validators = new Validators();
         }
 
         private List<Address> OperatorAddresses { get; set; }
@@ -36,30 +34,40 @@ namespace Libplanet.Tests.PoS
 
         private Address DelegatorAddress { get; set; }
 
-        private Validators Validators { get; set; }
-
         [Fact]
         public void ValidatorSetTest()
         {
             for (int i = 0; i < 200; i++)
             {
-                Delegation delegation = new Delegation(DelegatorAddress, ValidatorAddresses[i]);
-                _states = delegation.Delegate(_states, Asset.GovernanceToken * (i + 1));
+                _states = DelegateCtrl.Execute(
+                    _states,
+                    DelegatorAddress,
+                    ValidatorAddresses[i],
+                    Asset.GovernanceToken * (i + 1));
             }
 
-            Delegation delegationA = new Delegation(DelegatorAddress, ValidatorAddresses[3]);
-            _states = delegationA.Delegate(_states, Asset.GovernanceToken * 200);
+            Address validatorAddressA = ValidatorAddresses[3];
+            Address validatorAddressB = ValidatorAddresses[5];
+            Address delegationAddressB = Delegation.DeriveAddress(
+                DelegatorAddress, validatorAddressB);
 
-            Delegation delegationB = new Delegation(DelegatorAddress, ValidatorAddresses[5]);
-            _states = delegationB.Delegate(_states, Asset.GovernanceToken * 300);
+            _states = DelegateCtrl.Execute(
+                _states, DelegatorAddress, validatorAddressA, Asset.GovernanceToken * 200);
 
-            _states = Validators.Update(_states, 1);
+            _states = DelegateCtrl.Execute(
+                _states, DelegatorAddress, validatorAddressB, Asset.GovernanceToken * 300);
 
-            Assert.Equal(ValidatorAddresses[5], Validators.ValidatorAddressSet[0]);
-            Assert.Equal(ValidatorAddresses[3], Validators.ValidatorAddressSet[1]);
+            _states = ValidatorPowerSetCtrl.Update(_states, 1);
+
+            ValidatorPowerSet validatorPowerSet;
+            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.GetValidatorPowerSet(_states);
+            Assert.Equal(
+                validatorAddressB, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
+            Assert.Equal(
+                validatorAddressA, validatorPowerSet.BondedSet.ToList()[1].ValidatorAddress);
             Assert.Equal(
                 Asset.Share * (5 + 1 + 300),
-                _states.GetBalance(delegationB.Address, Asset.Share));
+                _states.GetBalance(delegationAddressB, Asset.Share));
             Assert.Equal(
                 Asset.ConsensusToken * (1 + 5 + 1 + 300),
                 _states.GetBalance(ValidatorAddresses[5], Asset.ConsensusToken));
@@ -76,16 +84,19 @@ namespace Libplanet.Tests.PoS
                 * (100000 - (1 + 200) * 100 - 200 - 300),
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
-            Undelegation undelegation = new Undelegation(DelegatorAddress, ValidatorAddresses[5]);
-            _states = undelegation.Undelegate(
-                _states, _states.GetBalance(delegationB.Address, Asset.Share), 2);
+            _states = UndelegateCtrl.Execute(
+                _states,
+                DelegatorAddress,
+                validatorAddressB,
+                _states.GetBalance(delegationAddressB, Asset.Share),
+                2);
 
             Assert.Equal(
                 Asset.Share * 0,
-                _states.GetBalance(delegationB.Address, Asset.Share));
+                _states.GetBalance(delegationAddressB, Asset.Share));
             Assert.Equal(
                 Asset.ConsensusToken * 1,
-                _states.GetBalance(ValidatorAddresses[5], Asset.ConsensusToken));
+                _states.GetBalance(validatorAddressB, Asset.ConsensusToken));
             Assert.Equal(
                 Asset.GovernanceToken
                 * (100 + (101 + 200) * 50 - 101 - 102 + 204 + 306 - 306),
@@ -99,9 +110,10 @@ namespace Libplanet.Tests.PoS
                 * (100000 - (1 + 200) * 100 - 200 - 300),
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
-            _states = Validators.Update(_states, 1);
-
-            Assert.Equal(ValidatorAddresses[3], Validators.ValidatorAddressSet[0]);
+            _states = ValidatorPowerSetCtrl.Update(_states, 1);
+            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.GetValidatorPowerSet(_states);
+            Assert.Equal(
+                validatorAddressA, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
             Assert.Equal(
                 Asset.GovernanceToken
                 * (100 + (101 + 200) * 50 - 101 - 102 + 204 + 306 - 306 + 102),
@@ -115,7 +127,7 @@ namespace Libplanet.Tests.PoS
                 * (100000 - (1 + 200) * 100 - 200 - 300),
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
-            _states = Validators.Update(_states, 50400 * 5);
+            _states = ValidatorPowerSetCtrl.Update(_states, 50400 * 5);
 
             Assert.Equal(
                 Asset.GovernanceToken

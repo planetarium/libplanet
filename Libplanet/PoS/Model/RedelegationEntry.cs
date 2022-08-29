@@ -25,7 +25,7 @@ namespace Libplanet.PoS
             UnbondingConsensusToken = unbondingConsensusToken;
             IssuedShare = issuedShare;
             Index = index;
-            CompletionBlockHeight = blockHeight + UnbondingSetInfo.Period;
+            CompletionBlockHeight = blockHeight + UnbondingSet.Period;
         }
 
         public RedelegationEntry(IValue serialized)
