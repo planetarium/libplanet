@@ -42,11 +42,6 @@ namespace Libplanet.Blocks
         PublicKey? PublicKey { get; }
 
         /// <summary>
-        /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
-        /// </summary>
-        long Difficulty { get; }
-
-        /// <summary>
         /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
         /// this must be <see langword="null"/>.
         /// </summary>

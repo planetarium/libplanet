@@ -80,9 +80,6 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _metadata.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _metadata.Difficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _metadata.PreviousHash;
 

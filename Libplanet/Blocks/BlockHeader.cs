@@ -134,9 +134,6 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => _preEvaluationBlockHeader.PublicKey;
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _preEvaluationBlockHeader.Difficulty;
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => _preEvaluationBlockHeader.PreviousHash;
 

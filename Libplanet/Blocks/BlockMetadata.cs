@@ -163,8 +163,6 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        /// <remarks>This cannot not be negative.</remarks>
         public long Difficulty
         {
             get
@@ -212,7 +210,6 @@ namespace Libplanet.Blocks
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
                 .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("difficulty", Difficulty)
                 .Add("nonce", nonce.ByteArray);
 
             if (ProtocolVersion != 0)

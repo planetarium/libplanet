@@ -474,17 +474,22 @@ namespace Libplanet.Tests.Action
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
                 (
                     1,
                     0,
-                    new[] { "A,D", "B", "C", "E", null },
+                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
                     _txFx.Address2
                 ),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
+                Assert.Equal(
+                    expect.UpdatedStates,
+                    addresses
+                        .Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
                 Assert.Equal(block2Txs[expect.TxIdx].CustomActions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
@@ -492,11 +497,6 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
                 Assert.Null(eval.Exception);
-                Assert.Equal(
-                    expect.UpdatedStates,
-                    addresses
-                        .Select(eval.OutputStates.GetState)
-                        .Select(x => x is Text t ? t.Value : null));
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
                     eval.OutputStates.GetState(

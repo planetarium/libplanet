@@ -205,12 +205,11 @@ namespace Libplanet.Blockchain
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
-                "with difficulty {Difficulty} and previous hash {PreviousHash}.",
+                "with previous hash {PreviousHash}.",
                 sessionId,
                 processId,
                 block.Index,
                 block.Hash,
-                block.Difficulty,
                 block.PreviousHash);
 
             if (append)
@@ -368,12 +367,11 @@ namespace Libplanet.Blockchain
 
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Mined block #{Index} {Hash} " +
-                "with difficulty {Difficulty} and previous hash {PreviousHash}.",
+                "with previous hash {PreviousHash}.",
                 sessionId,
                 processId,
                 block.Index,
                 block.Hash,
-                block.Difficulty,
                 block.PreviousHash);
 
             return block;

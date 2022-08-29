@@ -23,20 +23,17 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
-    /// <see cref="Nonce"/> which satisfies its <see cref="PreEvaluationBlockHeader.Difficulty"/>.
-    /// </remarks>
     public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader, IPreEvaluationBlock<T>
         where T : IAction, new()
     {
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
         /// <paramref name="content"/> data and a valid proof-of-work <paramref name="nonce"/>
-        /// which satisfies the required <see cref="PreEvaluationBlockHeader.Difficulty"/>.
+        /// which satisfies the required <see cref="BlockMetadata.Difficulty"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</param>
+        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -57,7 +54,7 @@ namespace Libplanet.Blocks
         /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.
+        /// <see cref="BlockMetadata.Difficulty"/>.
         /// </exception>
         /// <remarks><see cref="PreEvaluationBlockHeader.PreEvaluationHash"/> is automatically
         /// derived from the given arguments.</remarks>
@@ -72,12 +69,12 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
         /// <paramref name="content"/> data, a valid proof-of-work <paramref name="nonce"/>
-        /// which satisfies the required <see cref="PreEvaluationBlockHeader.Difficulty"/>,
+        /// which satisfies the required <see cref="BlockMetadata.Difficulty"/>,
         /// and a <paramref name="preEvaluationHash"/> digest derived from them.
         /// </summary>
         /// <param name="content">Block's content data.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</param>
+        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
         /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -102,7 +99,7 @@ namespace Libplanet.Blocks
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="PreEvaluationBlockHeader.Difficulty"/>.</exception>
+        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         public PreEvaluationBlock(
             IBlockContent<T> content,
             Nonce nonce,
@@ -119,7 +116,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="content">Block's content data.</param>
         /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
-        /// as to satisfy the required <see cref="PreEvaluationBlockHeader.Difficulty"/>,
+        /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
         /// and the hash digest which is probably considered as to be derived from
         /// the block <paramref name="content"/> and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's

@@ -51,9 +51,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="header"/> has an invalid
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given
-        /// <paramref name="header"/>'s <see cref="IPreEvaluationBlockHeader.Nonce"/> does not
-        /// satisfy the required <see cref="PreEvaluationBlockHeader.Difficulty"/>.</exception>
         public Block(IBlockHeader header, IEnumerable<Transaction<T>> transactions)
             : this(
                 new PreEvaluationBlock<T>(
@@ -105,9 +102,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _preEvaluationBlock.Index;
-
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => _preEvaluationBlock.Difficulty;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
         public Nonce Nonce => _preEvaluationBlock.Nonce;

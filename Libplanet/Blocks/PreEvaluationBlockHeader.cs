@@ -14,7 +14,8 @@ namespace Libplanet.Blocks
     /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root hash.
     /// </summary>
     /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
-    /// <see cref="Nonce"/> which satisfies its <see cref="Difficulty"/>.</remarks>
+    /// <see cref="Nonce"/> which satisfies its <see cref="BlockMetadata.Difficulty"/>.
+    /// </remarks>
     public class PreEvaluationBlockHeader : IPreEvaluationBlockHeader
     {
         protected static readonly Codec Codec = new Codec();
@@ -36,7 +37,7 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockNonceException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
         /// <seealso cref="IPreEvaluationBlockHeader.Nonce"/> does not satisfy the required
-        /// <see cref="IBlockMetadata.Difficulty"/>.
+        /// <see cref="BlockMetadata.Difficulty"/>.
         /// </exception>
         public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
             : this(header, header.Nonce, header.PreEvaluationHash)
@@ -45,12 +46,11 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/> and a valid proof-of-work <paramref name="nonce"/> which
-        /// satisfies the required <see cref="Difficulty"/>.
+        /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="Difficulty"/>.</param>
+        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -58,8 +58,8 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
-        /// </exception>
+        /// <paramref name="nonce"/> does not satisfy the required
+        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
         /// arguments.</remarks>
         public PreEvaluationBlockHeader(
@@ -73,12 +73,12 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
         /// <paramref name="metadata"/>, a valid proof-of-work <paramref name="nonce"/> which
-        /// satisfies the required <see cref="Difficulty"/>, and
+        /// satisfies the required <see cref="BlockMetadata.Difficulty"/>, and
         /// a <paramref name="preEvaluationHash"/> digest derived from them.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
         /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="Difficulty"/>.</param>
+        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
         /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -90,8 +90,8 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
-        /// </exception>
+        /// <paramref name="nonce"/> does not satisfy the required
+        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         public PreEvaluationBlockHeader(
             IBlockMetadata metadata,
             Nonce nonce,
@@ -108,9 +108,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
         /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
-        /// as to satisfy the required <see cref="Difficulty"/>, and the hash digest which is
-        /// probably considered as to be derived from the block <paramref name="metadata"/> and the
-        /// nonce.</param>
+        /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>, and the hash digest
+        /// which is probably considered as to be derived from the block <paramref name="metadata"/>
+        /// and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
         /// <remarks>This does not verify if a <paramref name="proof"/>'s hash is derived from
@@ -263,9 +263,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
         public PublicKey? PublicKey => Metadata.PublicKey;
-
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        public long Difficulty => Metadata.Difficulty;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash => Metadata.PreviousHash;
