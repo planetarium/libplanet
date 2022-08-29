@@ -2052,12 +2052,6 @@ namespace Libplanet.Tests.Blockchain
                 _hook = hook;
             }
 
-            public override long GetNextBlockDifficulty(BlockChain<T> blocks)
-            {
-                _hook(blocks);
-                return base.GetNextBlockDifficulty(blocks);
-            }
-
             public override TxPolicyViolationException ValidateNextBlockTx(
                 BlockChain<T> blockChain,
                 Transaction<T> transaction

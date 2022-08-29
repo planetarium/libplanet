@@ -33,9 +33,6 @@ namespace Libplanet.Blockchain.Policies
 
         public int GetMaxTransactionsPerBlock(long index) => int.MaxValue;
 
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
-            blockChain.Count == 0 ? 0 : _difficulty;
-
         public virtual TxPolicyViolationException ValidateNextBlockTx(
             BlockChain<T> blockChain, Transaction<T> transaction) => null;
 
