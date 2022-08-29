@@ -16,6 +16,8 @@ To be released.
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
+ -  Renamed `BlockChain<T>.MakeGenesisBlock()` to
+    `BlockChain<T>.MineGenesisBlock()`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -28,6 +30,7 @@ To be released.
  -  Added `Vote` readonly struct.  [[#PBFT]]
  -  Added `BlockContent.Propose()` method.  [[#PBFT]]
  -  Added `BlockCommit` class.  [[#PBFT]]
+ -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
