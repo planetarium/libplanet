@@ -14,7 +14,10 @@ To be released.
  -  Removed `IBlockPolicy.TotalDifficulty` interface property and its
     implementations.  [[#PBFT]]
  -  Removed all total difficulty related parameters.  [[#PBFT]]
+ -  Removed `IBlockPolicy.Difficulty` interface property and its
+    implementations.  [[#PBFT]]
  -  Removed `InvalidBlockTotalDifficultyException` class.  [[#PBFT]]
+ -  Removed `InvalidBlockDifficultyException` class.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 
