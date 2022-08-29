@@ -365,12 +365,7 @@ namespace Libplanet.Blockchain
             var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
             PreEvaluationBlock<T> preEval;
 
-            if (!(prevHash is { } ph))
-            {
-                throw new InvalidBlockPreviousHashException("Need PreviousHash.");
-            }
-
-            preEval = blockContent.Propose(ph.ByteArray);
+            preEval = blockContent.Propose();
 
             (Block<T> block, IReadOnlyList<ActionEvaluation> actionEvaluations) =
                 preEval.EvaluateActions(proposer, this);
