@@ -124,8 +124,6 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            // FIXME: Some stub difficulty.
-            long difficulty = 5_000L;
             long index = Count;
             BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
 
@@ -133,17 +131,15 @@ namespace Libplanet.Blockchain
             int processId = Process.GetCurrentProcess().Id;
             _logger.Debug(
                 "{SessionId}/{ProcessId}: Starting to mine block #{Index} with " +
-                "difficulty {Difficulty} and previous hash {PreviousHash}...",
+                "previous hash {PreviousHash}...",
                 sessionId,
                 processId,
                 index,
-                difficulty,
                 prevHash);
 
             var metadata = new BlockMetadata
             {
                 Index = index,
-                Difficulty = difficulty,
                 PublicKey = miner.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
@@ -329,7 +325,6 @@ namespace Libplanet.Blockchain
             var metadata = new BlockMetadata
             {
                 Index = index,
-                Difficulty = difficulty,
                 PublicKey = proposer.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,

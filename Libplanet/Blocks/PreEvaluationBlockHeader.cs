@@ -30,9 +30,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
         /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
@@ -60,9 +57,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
         /// <paramref name="nonce"/> does not satisfy the required <see cref="Difficulty"/>.
         /// </exception>
@@ -93,9 +87,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work

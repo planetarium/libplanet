@@ -82,7 +82,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             new BlockContent<DumbAction>
             {
                 Index = BlockChain.Tip.Index + 1,
-                Difficulty = BlockChain.Tip.Difficulty,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),

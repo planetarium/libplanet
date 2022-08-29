@@ -39,7 +39,6 @@ namespace Libplanet.Tests.Fixtures
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                 PublicKey = GenesisKey.PublicKey,
-                Difficulty = 0,
                 PreviousHash = null,
                 TxHash = null,
             };
@@ -58,7 +57,6 @@ namespace Libplanet.Tests.Fixtures
                 Index = 1,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
                 PublicKey = Block1Key.PublicKey,
-                Difficulty = 123,
                 PreviousHash = GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -117,7 +115,6 @@ namespace Libplanet.Tests.Fixtures
                 Index = 0,
                 Timestamp = new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                 Miner = GenesisKey.ToAddress(),
-                Difficulty = 0,
                 PreviousHash = null,
                 TxHash = null,
             };

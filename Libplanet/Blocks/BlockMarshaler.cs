@@ -191,7 +191,6 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture
                 ),
-                Difficulty = marshaled.GetValue<Integer>(DifficultyKey),
                 PreviousHash = marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,

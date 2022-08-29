@@ -18,7 +18,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -34,7 +33,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -46,7 +44,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>
             {
                 Index = 2,
-                Difficulty = 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 Miner = _fx.Miner.ToAddress(),
                 PreviousHash = block1.Hash,
@@ -62,7 +59,6 @@ namespace Libplanet.Tests.Blockchain
                 Block<DumbAction> block3 = new BlockContent<DumbAction>
                 {
                     Index = 2,
-                    Difficulty = 1024,
                     PublicKey = _fx.Miner.PublicKey,
                     PreviousHash = block1.Hash,
                     Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -81,7 +77,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>
             {
                 Index = 2,
-                Difficulty = 1,
                 PublicKey = _fx.Miner.PublicKey,
                 // Wrong PreviousHash for test; it should be _validNext.Hash:
                 PreviousHash = _validNext.PreviousHash,
@@ -100,7 +95,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>
             {
                 Index = 2,
-                Difficulty = 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
@@ -141,7 +135,6 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1024L,
                 PublicKey = TestUtils.GenesisMiner.PublicKey,
                 PreviousHash = genesisBlock.Hash,
                 Timestamp = genesisBlock.Timestamp.AddSeconds(1),

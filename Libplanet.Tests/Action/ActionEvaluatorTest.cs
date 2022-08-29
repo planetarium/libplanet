@@ -210,7 +210,6 @@ namespace Libplanet.Tests.Action
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>
             {
                 Index = 1,
-                Difficulty = 1,
                 PublicKey = new PrivateKey().PublicKey,
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
@@ -568,7 +567,6 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1,
                 PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
@@ -714,7 +712,6 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<ThrowException>
             {
                 Index = 123,
-                Difficulty = 1,
                 PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),

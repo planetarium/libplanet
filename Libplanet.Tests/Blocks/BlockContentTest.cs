@@ -230,8 +230,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                Block1.Difficulty = long.MaxValue;
-
                 Exception exception = null;
                 Task task = Task.Run(() =>
                 {

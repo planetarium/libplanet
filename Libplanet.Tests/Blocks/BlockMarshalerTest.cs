@@ -148,7 +148,7 @@ namespace Libplanet.Tests
                     .Add(IndexKey, 1L)
                     .Add(PreviousHashKey, _content.BlockPv1.PreviousHash?.ByteArray ?? default)
                     .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
-                    .Add(DifficultyKey, 123L)
+                    .Add(DifficultyKey, 5000L)
                     .Add(MinerKey, _content.BlockPv1.Miner.ByteArray)
                     .Add(TxHashKey, _content.BlockPv1.TxHash?.ByteArray ?? default),
                 BlockMarshaler.MarshalBlockMetadata(_content.BlockPv1)

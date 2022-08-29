@@ -36,9 +36,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by

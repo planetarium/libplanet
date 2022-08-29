@@ -61,7 +61,6 @@ namespace Libplanet.Node.Tests
                 Index = 0L,
                 Timestamp = new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
                 PublicKey = _minerKey.PublicKey,
-                Difficulty = 0L,
                 PreviousHash = null,
                 Transactions = _txs,
             };

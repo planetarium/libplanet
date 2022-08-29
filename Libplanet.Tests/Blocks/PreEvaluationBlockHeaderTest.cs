@@ -126,7 +126,6 @@ namespace Libplanet.Tests.Blocks
                 Index = 2,
                 Timestamp = DateTimeOffset.UtcNow,
                 PublicKey = validatorA.PublicKey,
-                Difficulty = 123,
                 PreviousHash = _contents.GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -151,7 +150,6 @@ namespace Libplanet.Tests.Blocks
                 Index = 2,
                 Timestamp = DateTimeOffset.UtcNow,
                 PublicKey = validatorA.PublicKey,
-                Difficulty = 123,
                 PreviousHash = _contents.GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -186,7 +184,6 @@ namespace Libplanet.Tests.Blocks
                 Index = 2,
                 Timestamp = DateTimeOffset.UtcNow,
                 PublicKey = validatorA.PublicKey,
-                Difficulty = 123,
                 PreviousHash = _contents.GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -221,7 +218,6 @@ namespace Libplanet.Tests.Blocks
                 Index = 2,
                 Timestamp = DateTimeOffset.UtcNow,
                 PublicKey = validatorA.PublicKey,
-                Difficulty = 123,
                 PreviousHash = _contents.GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -263,7 +259,6 @@ namespace Libplanet.Tests.Blocks
                 Index = 2,
                 Timestamp = DateTimeOffset.UtcNow,
                 PublicKey = validatorA.PublicKey,
-                Difficulty = 123,
                 PreviousHash = _contents.GenesisHash,
                 TxHash = HashDigest<SHA256>.FromString(
                     "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
@@ -318,7 +313,7 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 123L)
+                .Add("difficulty", 1L)
                 .Add("nonce", _validBlock1Proof.Nonce.ByteArray)
                 .Add(
                     "public_key",
@@ -368,7 +363,7 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedBlockPv1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 123L)
+                .Add("difficulty", 5000L)
                 .Add("nonce", blockPv1.Nonce.ByteArray)
                 .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
                 .Add(
@@ -449,8 +444,8 @@ namespace Libplanet.Tests.Blocks
 
             // Same as block1.MakeSignature(_contents.Block1Key, arbitraryHash)
             ImmutableArray<byte> validSig = ByteUtil.ParseHex(
-                "3045022100c8ed88c75418659e7305ac5bfc5b45e74eda8ea62e516d5f5a7ad58dc1d78" +
-                "c69022027014f6e964a94641425a41d105c4c4f5069f412bf5152e49011894f8b7a49d0"
+                "3045022100f8f26e0ffa61c6036695b6a0153f4670bc2f2f26b9b36469b198ecfa2fed2" +
+                "e48022035479fce88364d4f5bf60d302487def3b44cf172f3811324160a30d716933b6c"
             ).ToImmutableArray();
 
             Assert.True(block1.VerifySignature(validSig, arbitraryHash));
@@ -512,19 +507,19 @@ namespace Libplanet.Tests.Blocks
                 nonce: _validBlock1Proof.Nonce
             );
             AssertBytesEqual(
-                fromHex("aac023d8f1129dc4fafa0378fe5b1734242ef46d2d0efd8ddfd05002e9728ea1"),
+                fromHex("c87ad300b518b2e31cc62598f4af8a5806550d6cfd4efa0abf0f0db6f332e571"),
                 block1.DeriveBlockHash(default, null)
             );
             AssertBytesEqual(
-                fromHex("211e810f41390e26700c1ed84594dc49d589c18b53aea937cc10c06fddeb1365"),
+                fromHex("ab719bdf73b6114ff23bbc8e925979a976ff0c21e382905a853b85c26f6d61a3"),
                 block1.DeriveBlockHash(default, block1.MakeSignature(_contents.Block1Key, default))
             );
             AssertBytesEqual(
-                fromHex("f078f5f50c5aaf9318435f4e42bd5f3879d018ef6e9db3341a9a6223433cb690"),
+                fromHex("70addcc0a425eb4fd428f9bcc69c9e2821db3b3c39db1a56fc5f9bf32a79fa99"),
                 block1.DeriveBlockHash(arbitraryHash, null)
             );
             AssertBytesEqual(
-                fromHex("246032718616794b85566a0d5dbef71352f93056c8a7d15135ccd64723732710"),
+                fromHex("ca540f15cae2650cb54d9c19bd7f0c2c270122b2e8478e1128214c40e08cbe20"),
                 block1.DeriveBlockHash(
                     arbitraryHash,
                     block1.MakeSignature(_contents.Block1Key, arbitraryHash)

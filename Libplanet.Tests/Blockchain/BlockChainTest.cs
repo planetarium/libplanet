@@ -91,7 +91,6 @@ namespace Libplanet.Tests.Blockchain
             _validNext = new BlockContent<DumbAction>
             {
                 Index = 1,
-                Difficulty = 1024L,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),

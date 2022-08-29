@@ -43,8 +43,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -88,8 +86,6 @@ namespace Libplanet.Blocks
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
