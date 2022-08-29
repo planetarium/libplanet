@@ -5,9 +5,9 @@ using Bencodex.Types;
 namespace Libplanet.PoS
 {
     [Serializable]
-    public class UndelegationInfo
+    public class Undelegation
     {
-        public UndelegationInfo(Address delegatorAddress, Address validatorAddress)
+        public Undelegation(Address delegatorAddress, Address validatorAddress)
         {
             Address = DeriveAddress(delegatorAddress, validatorAddress);
             DelegatorAddress = delegatorAddress;
@@ -16,7 +16,7 @@ namespace Libplanet.PoS
             UndelegationEntryAddresses = new SortedList<long, Address>();
         }
 
-        public UndelegationInfo(IValue serialized)
+        public Undelegation(IValue serialized)
         {
             List serializedList = (List)serialized;
             Address = serializedList[0].ToAddress();
@@ -33,7 +33,7 @@ namespace Libplanet.PoS
             }
         }
 
-        public UndelegationInfo(UndelegationInfo undelegationInfo)
+        public Undelegation(Undelegation undelegationInfo)
         {
             Address = undelegationInfo.Address;
             DelegatorAddress = undelegationInfo.DelegatorAddress;
@@ -41,6 +41,11 @@ namespace Libplanet.PoS
             UndelegationEntryIndex = undelegationInfo.UndelegationEntryIndex;
             UndelegationEntryAddresses = undelegationInfo.UndelegationEntryAddresses;
         }
+
+        // TODO: Better structure
+        // This hard coding will cause some problems when it's modified
+        // May be it would be better to be serialized
+        public static int MaximumUndelegationEntries { get => 10; }
 
         public Address Address { get; }
 
@@ -50,17 +55,12 @@ namespace Libplanet.PoS
 
         public Address DelegationAddress
         {
-            get => DelegationInfo.DeriveAddress(DelegatorAddress, ValidatorAddress);
+            get => Delegation.DeriveAddress(DelegatorAddress, ValidatorAddress);
         }
 
         public long UndelegationEntryIndex { get; set; }
 
         public SortedList<long, Address> UndelegationEntryAddresses { get; set; }
-
-        // TODO: Better structure
-        // This hard coding will cause some problems when it's modified
-        // May be it would be better to be serialized
-        public int MaximumUndelegationEntries { get => 10; }
 
         public static Address DeriveAddress(
             Address delegatorAddress, Address validatorAddress)

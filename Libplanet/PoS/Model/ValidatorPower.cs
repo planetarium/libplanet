@@ -4,17 +4,17 @@ using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    public class ConsensusPowerKey
+    public class ValidatorPower
     {
         private FungibleAssetValue _consensusToken;
 
-        public ConsensusPowerKey(Address validatorAddress, FungibleAssetValue consensusToken)
+        public ValidatorPower(Address validatorAddress, FungibleAssetValue consensusToken)
         {
             ValidatorAddress = validatorAddress;
             ConsensusToken = consensusToken;
         }
 
-        public ConsensusPowerKey(IValue serialized)
+        public ValidatorPower(IValue serialized)
         {
             List serializedList = (List)serialized;
             ValidatorAddress = serializedList[0].ToAddress();

@@ -23,22 +23,9 @@ namespace Libplanet.Action.Sys
         {
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
-            Address validatorAddress = Validator.DeriveAddress(ctx.Signer);
 
-            // if (ctx.Rehearsal)
-            // Rehearsal mode is not implemented
-            Validator validator;
-            IValue? serializedValidator = states.GetState(validatorAddress);
-            if (serializedValidator == null)
-            {
-                validator = new Validator(ctx.Signer);
-            }
-            else
-            {
-                validator = new Validator((List)serializedValidator);
-            }
-
-            states = validator.Apply(states, GovernanceToken);
+            states = ValidatorCtrl.Create(
+                states, ctx.Signer, GovernanceToken);
 
             return states;
         }

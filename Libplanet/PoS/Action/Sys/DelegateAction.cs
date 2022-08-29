@@ -26,15 +26,10 @@ namespace Libplanet.Action.Sys
         {
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
-            Address delegationAddress = Delegation.DeriveAddress(ctx.Signer, ValidatorAddress);
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            IValue? serializedDelegation = states.GetState(delegationAddress);
-            Delegation delegation = (serializedDelegation == null)
-                ? new Delegation(ctx.Signer, ValidatorAddress)
-                : new Delegation((List)serializedDelegation);
-            states = delegation.Delegate(states, GovernanceToken);
+            states = DelegateCtrl.Execute(states, ctx.Signer, ValidatorAddress, GovernanceToken);
 
             return states;
         }

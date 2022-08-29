@@ -4,9 +4,9 @@ using System.Numerics;
 
 namespace Libplanet.PoS
 {
-    internal class ConsensusPowerKeyComparer : IComparer<ConsensusPowerKey>
+    internal class ValidatorPowerComparer : IComparer<ValidatorPower>
     {
-        public int Compare(ConsensusPowerKey? x, ConsensusPowerKey? y)
+        public int Compare(ValidatorPower? x, ValidatorPower? y)
         {
             if (x == null || y == null)
             {

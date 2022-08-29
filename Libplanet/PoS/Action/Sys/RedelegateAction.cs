@@ -29,24 +29,14 @@ namespace Libplanet.Action.Sys
         {
             IActionContext ctx = context;
             var states = ctx.PreviousStates;
-            Address srcDelegationAddress = Delegation.DeriveAddress(
-                ctx.Signer, SrcValidatorAddress);
 
-            // if (ctx.Rehearsal)
-            // Rehearsal mode is not implemented
-            Redelegation redelegation;
-            IValue? serializedSrcDelegation = states.GetState(srcDelegationAddress);
-            if (serializedSrcDelegation == null)
-            {
-                redelegation = new Redelegation(
-                    ctx.Signer, SrcValidatorAddress, DstValidatorAddress);
-            }
-            else
-            {
-                redelegation = new Redelegation((List)serializedSrcDelegation);
-            }
-
-            states = redelegation.Redelegate(states, Share, ctx.BlockIndex);
+            states = RedelegateCtrl.Execute(
+                states,
+                ctx.Signer,
+                SrcValidatorAddress,
+                DstValidatorAddress,
+                Share,
+                ctx.BlockIndex);
 
             return states;
         }
