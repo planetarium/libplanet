@@ -7,18 +7,15 @@ namespace Libplanet.PoS
 {
     internal static class ValidatorCtrl
     {
-        internal static Validator GetValidatorByAddr(
+        internal static Validator? GetValidatorByAddr(
             IAccountStateDelta states,
             Address validatorAddress)
         {
-            IValue? serializedValidator = states.GetState(validatorAddress);
-            if (serializedValidator == null)
+            if (states.GetState(validatorAddress) is { } value)
             {
-                throw new InvalidOperationException();
+                return new Validator(value);
             }
-
-            Validator validator = new Validator(serializedValidator);
-            return validator;
+            return null;
         }
 
         internal static (IAccountStateDelta, Validator) GetValidator(
