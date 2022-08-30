@@ -21,7 +21,6 @@ namespace Libplanet.Consensus
         private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
         private const string FlagKey = "vote_flag";
-        private const string NodeIdKey = "node_id";
         private const string SignatureKey = "signature";
 
         /// <summary>
