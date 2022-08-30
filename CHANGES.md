@@ -20,6 +20,8 @@ To be released.
     its implementations.  [[#PBFT]]
  -  Removed `InvalidBlockTotalDifficultyException` class.  [[#PBFT]]
  -  Removed `InvalidBlockDifficultyException` class.  [[#PBFT]]
+ -  Removed `BlockChain<T>.MakeGenesisBlock()` and `BlockChain<T>.MineBlock()`
+    methods.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 
@@ -27,8 +29,6 @@ To be released.
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
- -  Renamed `BlockChain<T>.MakeGenesisBlock()` to
-    `BlockChain<T>.MineGenesisBlock()`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 

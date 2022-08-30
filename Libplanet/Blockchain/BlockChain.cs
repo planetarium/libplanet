@@ -344,54 +344,6 @@ namespace Libplanet.Blockchain
             }
         }
 
-        /// <summary>
-        /// Mine the genesis block of the blockchain.
-        /// </summary>
-        /// <param name="actions">List of actions will be included in the genesis block.
-        /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
-        /// as default.</param>
-        /// <param name="privateKey">A private key to sign the transaction and the genesis block.
-        /// If it's null, it will use new private key as default.</param>
-        /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
-        /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
-        /// <param name="blockAction">A block action to execute and be rendered for every block.
-        /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
-        /// </param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
-        /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
-        /// <returns>The genesis block mined with parameters.</returns>
-        public static Block<T> MineGenesisBlock(
-            IEnumerable<T> actions = null,
-            PrivateKey privateKey = null,
-            DateTimeOffset? timestamp = null,
-            IAction blockAction = null,
-            Predicate<Currency> nativeTokenPredicate = null)
-        {
-            privateKey ??= new PrivateKey();
-            actions ??= ImmutableArray<T>.Empty;
-            Transaction<T>[] transactions =
-            {
-                Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
-            };
-
-            BlockContent<T> content = new BlockContent<T>
-            {
-                PublicKey = privateKey.PublicKey,
-                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
-                Transactions = transactions,
-            };
-
-            PreEvaluationBlock<T> preEval = content.Mine();
-            return preEval.Evaluate(
-                privateKey,
-                blockAction,
-                nativeTokenPredicate,
-                new TrieStateStore(new DefaultKeyValueStore(null))
-            );
-        }
-
         public static Block<T> ProposeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
