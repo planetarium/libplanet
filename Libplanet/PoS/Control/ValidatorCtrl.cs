@@ -27,17 +27,15 @@ namespace Libplanet.PoS
             bool create = true)
         {
             Address validatorAddress = Validator.DeriveAddress(operatorAddress);
-            IValue? serializedValidator = states.GetState(validatorAddress);
-
             Validator validator;
-            if (create && serializedValidator == null)
+            if (states.GetState(validatorAddress) is { } value)
+            {
+                validator = new Validator(value);
+            }
+            else if(create)
             {
                 validator = new Validator(operatorAddress);
                 states = states.SetState(validator.Address, validator.Serialize());
-            }
-            else
-            {
-                validator = GetValidatorByAddr(states, validatorAddress);
             }
 
             return (states, validator);
