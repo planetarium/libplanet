@@ -191,7 +191,6 @@ namespace Libplanet.Blocks
             }
 
             Metadata = metadata;
-            Nonce = default(Nonce);
             PreEvaluationHash = preEvaluationHash;
         }
 
@@ -208,9 +207,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => Metadata.Timestamp;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => Metadata.Miner;
@@ -251,7 +247,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte>? signature = null
         )
         {
-            Dictionary dict = Metadata.MakeCandidateData(Nonce)
+            Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {

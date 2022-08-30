@@ -85,9 +85,6 @@ namespace Libplanet.Node
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _header.Timestamp;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _header.Nonce;
-
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _header.Miner;
 

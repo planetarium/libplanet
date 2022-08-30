@@ -101,9 +101,6 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _preEvaluationBlock.Index;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlock.Nonce;
-
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _preEvaluationBlock.Miner;
 
