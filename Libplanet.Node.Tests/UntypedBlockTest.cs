@@ -67,8 +67,7 @@ namespace Libplanet.Node.Tests
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
             ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
-            var proof = (nonce, preEvalHash);
-            _preEval = new PreEvaluationBlock<NullAction>(_content, proof);
+            _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(
                 privateKey: _minerKey,
                 blockAction: null,

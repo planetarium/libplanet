@@ -206,7 +206,7 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public PreEvaluationBlock<T> Mine(CancellationToken cancellationToken = default) =>
-            new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
+            new PreEvaluationBlock<T>(this, MineNonce(cancellationToken).PreEvaluationHash);
 
         public PreEvaluationBlock<T> Propose()
         {

@@ -167,8 +167,8 @@ namespace Libplanet.Store
         public BlockHeader GetHeader()
         {
             var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
-                : new PreEvaluationBlockHeader(_metadata, _nonce);
+                ? new PreEvaluationBlockHeader(_metadata, preEvalHash)
+                : new PreEvaluationBlockHeader(_metadata);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
