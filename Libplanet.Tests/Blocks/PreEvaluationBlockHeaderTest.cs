@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Blocks;
@@ -19,64 +18,12 @@ namespace Libplanet.Tests.Blocks
         protected readonly BlockContentFixture _contents;
         protected readonly Codec _codec;
         protected readonly HashAlgorithmType _hashAlgorithmType;
-        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validGenesisProof;
-        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) _validBlock1Proof;
-        protected readonly (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash)
-            _invalidBlock1Proof;
 
         public PreEvaluationBlockHeaderTest()
         {
             _contents = new BlockContentFixture();
             _codec = new Codec();
             _hashAlgorithmType = BlockMetadata.HashAlgorithmType;
-
-            var validGenesisNonce = default(Nonce);
-            byte[] validGenesisBytes =
-                _codec.Encode(_contents.GenesisMetadata.MakeCandidateData(validGenesisNonce));
-            ImmutableArray<byte> validGenesisPreEvalHash =
-                _hashAlgorithmType.Digest(validGenesisBytes).ToImmutableArray();
-            _validGenesisProof = (validGenesisNonce, validGenesisPreEvalHash);
-
-            // Checks if the hard-coded proof of the fixture is up-to-date.  If it's outdated,
-            // throws an exception that prints a regenerated up-to-date one:
-            const int lastCheckedProtocolVersion = 4;
-            if (_contents.BlockMetadata1.ProtocolVersion > lastCheckedProtocolVersion)
-            {
-                (Nonce Nonce, ImmutableArray<byte> Digest) regen =
-                    Hashcash.Answer(
-                        n => new[] { _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(n)) },
-                        _hashAlgorithmType,
-                        _contents.BlockMetadata1.Difficulty,
-                        0
-                    );
-                string nonceLit = string.Join(
-                    ", ",
-                    regen.Nonce.ByteArray.Select(b => b < 0x10 ? $"0x0{b:x}" : $"0x{b:x}")
-                );
-                throw new Exception(
-                    $"As the CurrentProtocolVersion was bumped from {lastCheckedProtocolVersion} " +
-                    $"to {BlockMetadata.CurrentProtocolVersion}, hard-coded nonce proofs in " +
-                    $"the fixture is now outdated.  Check {nameof(PreEvaluationBlockHeaderTest)} " +
-                    "constructor and update the hard-coded nonce to the following up-to-date one:" +
-                    $"\n\n    new {nameof(Nonce)}(new byte[] {{ {nonceLit} }})\n\n"
-                );
-            }
-
-            var validBlock1Nonce = new Nonce(
-                new byte[] { 0x1a, 0x0c, 0x46, 0x6f, 0x5d, 0x75, 0xe4, 0xd8, 0xad, 0x67 }
-            );
-            byte[] validBlock1Bytes =
-                _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(validBlock1Nonce));
-            ImmutableArray<byte> validBlock1PreEvalHash =
-                _hashAlgorithmType.Digest(validBlock1Bytes).ToImmutableArray();
-            _validBlock1Proof = (validBlock1Nonce, validBlock1PreEvalHash);
-
-            var invalidBlock1Nonce = default(Nonce);
-            byte[] invalidBlock1Bytes =
-                _codec.Encode(_contents.BlockMetadata1.MakeCandidateData(invalidBlock1Nonce));
-            ImmutableArray<byte> invalidBlock1PreEvalHash =
-                _hashAlgorithmType.Digest(invalidBlock1Bytes).ToImmutableArray();
-            _invalidBlock1Proof = (invalidBlock1Nonce, invalidBlock1PreEvalHash);
         }
 
         [Fact]
@@ -284,10 +231,7 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add("protocol_version", 4)
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            var genesis = new PreEvaluationBlockHeader(
-                _contents.GenesisMetadata,
-                preEvaluationHash: _validGenesisProof.PreEvaluationHash
-            );
+            var genesis = new PreEvaluationBlockHeader(_contents.GenesisMetadata);
             AssertBencodexEqual(expectedGenesis, genesis.MakeCandidateData(default));
             HashDigest<SHA256> stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
@@ -444,10 +388,7 @@ namespace Libplanet.Tests.Blocks
                 "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
             );
 
-            var genesis = new PreEvaluationBlockHeader(
-                _contents.GenesisMetadata,
-                preEvaluationHash: _validGenesisProof.PreEvaluationHash
-            );
+            var genesis = new PreEvaluationBlockHeader(_contents.GenesisMetadata);
             AssertBytesEqual(
                 fromHex("414d29402ca791f0540e34de7c27ed3728af440d262c3934b39fb3e9fd4644ee"),
                 genesis.DeriveBlockHash(default, null)
