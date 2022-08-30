@@ -15,7 +15,7 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
-
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2236]]
 ### Behavioral changes
 
 ### Bug fixes
@@ -24,6 +24,7 @@ To be released.
 
 ### CLI tools
 
+[#2236]: https://github.com/planetarium/libplanet/pull/2236
 
 Version 0.41.0
 --------------
