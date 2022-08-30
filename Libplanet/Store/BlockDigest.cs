@@ -54,7 +54,7 @@ namespace Libplanet.Store
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
             _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
-            _nonce = BlockMarshaler.UnmarshalNonce(headerDict);
+            _nonce = default(Nonce);
             _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
@@ -182,7 +182,6 @@ namespace Libplanet.Store
         {
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
-                _nonce,
                 _preEvaluationHash ?? ImmutableArray<byte>.Empty
             );
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(

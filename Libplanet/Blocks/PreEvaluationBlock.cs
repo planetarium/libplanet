@@ -115,7 +115,7 @@ namespace Libplanet.Blocks
             BlockContent<T> content,
             in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
         )
-            : base(content, proof)
+            : base(content, proof.PreEvaluationHash)
         {
         }
 

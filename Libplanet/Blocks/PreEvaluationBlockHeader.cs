@@ -89,20 +89,19 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Unsafely creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, and a <paramref name="proof"/> which is probably
-        /// considered as to be valid.
+        /// <paramref name="metadata"/>, and a <paramref name="preEvaluationHash"/>
+        /// which is probably considered as to be valid.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
-        /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>, and the hash digest
-        /// which is probably considered as to be derived from the block <paramref name="metadata"/>
-        /// and the nonce.</param>
+        /// <param name="preEvaluationHash">A valid proof-of-work bytearray which is probably
+        /// considered as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
+        /// and the hash digest which is probably considered as to be derived from the block
+        /// <paramref name="metadata"/> and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
-        )
+            ImmutableArray<byte> preEvaluationHash)
         {
             if (metadata.Index == 0L && metadata.PreviousHash is { } ph)
             {
@@ -201,8 +200,8 @@ namespace Libplanet.Blocks
             }
 
             Metadata = metadata;
-            Nonce = proof.Nonce;
-            PreEvaluationHash = proof.PreEvaluationHash;
+            Nonce = default(Nonce);
+            PreEvaluationHash = preEvaluationHash;
         }
 
         protected PreEvaluationBlockHeader(
@@ -211,7 +210,7 @@ namespace Libplanet.Blocks
         )
             : this(
                 metadata,
-                (nonce, metadata.DerivePreEvaluationHash(nonce))
+                metadata.DerivePreEvaluationHash(nonce)
             )
         {
         }
@@ -384,17 +383,17 @@ namespace Libplanet.Blocks
         /// <param name="metadata">The block metadata.</param>
         /// <param name="nonce">The proof-of-work nonce.</param>
         /// <param name="preEvaluationHash">The pre-evaluation hash digest to verify.</param>
-        /// <returns>A pair of the <paramref name="nonce"/> and <paramref name="preEvaluationHash"/>
+        /// <returns>A <paramref name="preEvaluationHash"/>
         /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
-        private static (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) CheckPreEvaluationHash(
+        private static ImmutableArray<byte> CheckPreEvaluationHash(
             BlockMetadata metadata,
             in Nonce nonce,
             in ImmutableArray<byte> preEvaluationHash
         )
         {
-            return (nonce, preEvaluationHash);
+            return preEvaluationHash;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
         private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'; Legacy, unused.
         private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
+        private static readonly byte[] NonceKey = { 0x6e }; // 'n'; Legacy, unused.
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
@@ -76,12 +76,10 @@ namespace Libplanet.Blocks
 
         public static Dictionary MarshalPreEvaluationBlockHeader(
             Dictionary marshaledMetadata,
-            Nonce nonce,
             ImmutableArray<byte> preEvaluationHash
         )
         {
-            Dictionary dict = marshaledMetadata
-                .Add(NonceKey, nonce.ByteArray);
+            Dictionary dict = marshaledMetadata;
 
             if (!preEvaluationHash.IsDefaultOrEmpty)
             {
@@ -95,7 +93,6 @@ namespace Libplanet.Blocks
         {
             return MarshalPreEvaluationBlockHeader(
                 MarshalBlockMetadata(header),
-                header.Nonce,
                 header.PreEvaluationHash
             );
         }
@@ -215,9 +212,6 @@ namespace Libplanet.Blocks
             return metadata;
         }
 
-        public static Nonce UnmarshalNonce(Dictionary marshaled) =>
-            new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);
-
         public static ImmutableArray<byte> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
             marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray;
 
@@ -226,7 +220,6 @@ namespace Libplanet.Blocks
         {
             return new PreEvaluationBlockHeader(
                     metadata: UnmarshalBlockMetadata(marshaled),
-                    nonce: UnmarshalNonce(marshaled),
                     preEvaluationHash: UnmarshalPreEvaluationHash(marshaled));
         }
 
