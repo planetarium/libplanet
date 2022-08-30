@@ -19,42 +19,40 @@ namespace Libplanet.Store
     /// </summary>
     public abstract class BaseStore : IStore
     {
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract IEnumerable<Guid> ListChainIds();
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract Guid? GetCanonicalChainId();
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract void SetCanonicalChainId(Guid chainId);
 
-        /// <inheritdoc />
-        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+        /// <inheritdoc/>
+        public Block<T> GetCanonicalGenesisBlock<T>()
             where T : IAction, new() =>
             GetCanonicalChainId() is { } canonicalChainId
             && IndexBlockHash(canonicalChainId, 0) is { } genesisHash
-                ? GetBlock<T>(hashAlgorithmGetter, genesisHash)
+                ? GetBlock<T>(genesisHash)
                 : null;
 
         public abstract long CountIndex(Guid chainId);
 
-        /// <inheritdoc cref="IStore.IterateIndexes(Guid, int, int?)"/>
+        /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateIndexes(Guid chainId, int offset, int? limit);
 
-        /// <inheritdoc cref="IStore.IndexBlockHash(Guid, long)"/>
+        /// <inheritdoc/>
         public abstract BlockHash? IndexBlockHash(Guid chainId, long index);
 
-        /// <inheritdoc cref="IStore.AppendIndex(Guid, BlockHash)"/>
+        /// <inheritdoc/>
         public abstract long AppendIndex(Guid chainId, BlockHash hash);
 
-        /// <inheritdoc cref="IStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
+        /// <inheritdoc/>
         public abstract void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
             BlockHash branchpoint
         );
-
-        public abstract IEnumerable<TxId> IterateTransactionIds();
 
         public abstract Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
@@ -62,18 +60,16 @@ namespace Libplanet.Store
         public abstract void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
 
-        public abstract bool DeleteTransaction(TxId txid);
-
-        /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
+        /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}"/>
-        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        /// <inheritdoc/>
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                BlockHeader header = blockDigest.GetHeader(hashAlgorithmGetter);
+                BlockHeader header = blockDigest.GetHeader();
                 (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
                     .Select(txid => (txid, GetTransaction<T>(txid)))
@@ -95,35 +91,35 @@ namespace Libplanet.Store
             return null;
         }
 
-        /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
+        /// <inheritdoc/>
         public long? GetBlockIndex(BlockHash blockHash)
         {
             return GetBlockDigest(blockHash)?.Index;
         }
 
-        /// <inheritdoc cref="IStore.GetBlockDigest(BlockHash)"/>
+        /// <inheritdoc/>
         public abstract BlockDigest? GetBlockDigest(BlockHash blockHash);
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
-        /// <inheritdoc cref="IStore.DeleteBlock(BlockHash)"/>
+        /// <inheritdoc/>
         public abstract bool DeleteBlock(BlockHash blockHash);
 
-        /// <inheritdoc cref="IStore.ContainsBlock(BlockHash)"/>
+        /// <inheritdoc/>
         public abstract bool ContainsBlock(BlockHash blockHash);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxSuccess)"/>
+        /// <inheritdoc/>
         public abstract void PutTxExecution(TxSuccess txSuccess);
 
-        /// <inheritdoc cref="IStore.PutTxExecution(Libplanet.Tx.TxFailure)"/>
+        /// <inheritdoc/>
         public abstract void PutTxExecution(TxFailure txFailure);
 
-        /// <inheritdoc cref="IStore.GetTxExecution(BlockHash, TxId)"/>
+        /// <inheritdoc/>
         public abstract TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
 
-        /// <inheritdoc cref="IStore.PutTxIdBlockHashIndex(TxId, BlockHash)"/>
+        /// <inheritdoc/>
         public abstract void PutTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
         public BlockHash? GetFirstTxIdBlockHashIndex(TxId txId)
@@ -141,19 +137,19 @@ namespace Libplanet.Store
             return blockHash;
         }
 
-        /// <inheritdoc cref="IStore.IterateTxIdBlockHashIndex(TxId)"/>
+        /// <inheritdoc/>
         public abstract IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId);
 
-        /// <inheritdoc cref="IStore.DeleteTxIdBlockHashIndex(TxId, BlockHash)"/>
+        /// <inheritdoc/>
         public abstract void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash);
 
-        /// <inheritdoc cref="IStore.SetBlockPerceivedTime(BlockHash, DateTimeOffset)"/>
+        /// <inheritdoc/>
         public abstract void SetBlockPerceivedTime(
             BlockHash blockHash,
             DateTimeOffset perceivedTime
         );
 
-        /// <inheritdoc cref="IStore.GetBlockPerceivedTime(BlockHash)"/>
+        /// <inheritdoc/>
         public abstract DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
 
         /// <inheritdoc/>
@@ -165,17 +161,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
 
-        public virtual long CountTransactions()
-        {
-            return IterateTransactionIds().LongCount();
-        }
-
         public virtual long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract bool ContainsTransaction(TxId txId);
 
         /// <inheritdoc/>

@@ -64,6 +64,12 @@ namespace Libplanet.Action
         }
 
         /// <summary>
+        /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
+        /// </summary>
+        [Pure]
+        IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
+
+        /// <summary>
         /// Gets a new instance that the account state of the given
         /// <paramref name="address"/> is set to the given
         /// <paramref name="state"/>.
@@ -95,6 +101,10 @@ namespace Libplanet.Action
         /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
         /// (or a miner in case of block actions) is not a member of the <see
         /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="SupplyOverflowException">Thrown when the sum of the
+        /// <paramref name="value"/> to be minted and the current total supply amount of the
+        /// <see cref="FungibleAssetValue.Currency"/> exceeds the
+        /// <see cref="Currency.MaximumSupply"/>.</exception>
         [Pure]
         IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value);
 

@@ -46,8 +46,8 @@ namespace Libplanet.Node
             if (!_metadata.PublicKey.Verify(encoded, Signature))
             {
                 throw new InvalidTxSignatureException(
-                    Id,
-                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}."
+                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.",
+                    Id
                 );
             }
         }
@@ -69,7 +69,7 @@ namespace Libplanet.Node
         public UntypedTransaction(Bencodex.Types.Dictionary dictionary)
             : this(
                 new TxMetadata(dictionary),
-                dictionary.GetValue<List>(TxMetadata.ActionsKey),
+                dictionary.GetValue<List>(TxMetadata.CustomActionsKey),
                 dictionary.GetValue<Binary>(TxMetadata.SignatureKey).ByteArray)
         {
         }

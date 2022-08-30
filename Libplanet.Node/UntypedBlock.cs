@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
@@ -64,20 +63,13 @@ namespace Libplanet.Node
         /// Decodes a Bencodex <paramref name="dictionary"/> into an <see cref="UntypedBlock"/>
         /// instance.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">A function to determine the hash algorithm used
-        /// for the block to decode.  See also <see cref="IBlockPolicy{T}.GetHashAlgorithm(long)"/>
-        /// method.</param>
         /// <param name="dictionary">A Bencodex dictionary made using <see cref="ToBencodex()"/>
         /// method or <see cref="BlockMarshaler.MarshalBlock{T}(Block{T})"/> method.</param>
         /// <seealso cref="ToBencodex()"/>
         /// <seealso cref="BlockMarshaler.MarshalBlock{T}(Block{T})"/>
-        public UntypedBlock(
-            HashAlgorithmGetter hashAlgorithmGetter,
-            Bencodex.Types.Dictionary dictionary
-        )
+        public UntypedBlock(Bencodex.Types.Dictionary dictionary)
             : this(
                 BlockMarshaler.UnmarshalBlockHeader(
-                    hashAlgorithmGetter,
                     dictionary.GetValue<Dictionary>(BlockMarshaler.HeaderKey)),
                 dictionary.GetValue<List>(BlockMarshaler.TransactionsKey)
                     .Select(b => new UntypedTransaction((Dictionary)Codec.Decode((Binary)b)))
@@ -87,9 +79,6 @@ namespace Libplanet.Node
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _header.HashAlgorithm;
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
         public long Index => _header.Index;
@@ -142,11 +131,11 @@ namespace Libplanet.Node
         /// <returns>A Bencodex dictionary which encodes this block.  This is equivalent to
         /// <see cref="BlockMarshaler.MarshalBlock{T}(Block{T})"/> method's return value.
         /// This can be decoded back to <see cref="UntypedBlock"/> using
-        /// <see cref="UntypedBlock(HashAlgorithmGetter, Dictionary)"/> constructor or
-        /// <see cref="BlockMarshaler.UnmarshalBlock{T}(HashAlgorithmGetter, Dictionary)"/>
+        /// <see cref="UntypedBlock(Dictionary)"/> constructor or
+        /// <see cref="BlockMarshaler.UnmarshalBlock{T}"/>
         /// method.</returns>
-        /// <seealso cref="UntypedBlock(HashAlgorithmGetter, Dictionary)"/>
-        /// <seealso cref="BlockMarshaler.UnmarshalBlock{T}(HashAlgorithmGetter, Dictionary)"/>
+        /// <seealso cref="UntypedBlock(Dictionary)"/>
+        /// <seealso cref="BlockMarshaler.UnmarshalBlock{T}"/>
         public Bencodex.Types.Dictionary ToBencodex()
         {
             Bencodex.Types.Dictionary headerDict = _header.MarshalBlockHeader();

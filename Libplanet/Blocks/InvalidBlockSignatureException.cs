@@ -17,13 +17,13 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a new <see cref="InvalidBlockPublicKeyException"/> instance.
         /// </summary>
+        /// <param name="message">A message that describes the error.</param>
         /// <param name="publicKey">The public key used for signing the block.</param>
         /// <param name="invalidSignature">The block signature which is invalid.</param>
-        /// <param name="message">A message that describes the error.</param>
         public InvalidBlockSignatureException(
+            string message,
             PublicKey? publicKey,
-            ImmutableArray<byte>? invalidSignature,
-            string message
+            ImmutableArray<byte>? invalidSignature
         )
             : base(
                 message +

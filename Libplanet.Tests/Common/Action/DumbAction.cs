@@ -17,7 +17,8 @@ namespace Libplanet.Tests.Common.Action
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
-        public static readonly Currency DumbCurrency = new Currency("DUMB", 0, minters: null);
+        public static readonly Currency DumbCurrency =
+            Currency.Uncapped("DUMB", 0,  null);
 
         public DumbAction()
         {

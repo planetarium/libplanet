@@ -65,7 +65,6 @@ namespace Libplanet.Blocks
             : this(
                 new PreEvaluationBlock<T>(
                     new BlockContent<T>(header, transactions),
-                    header.HashAlgorithm,
                     header.Nonce,
                     header.PreEvaluationHash
                 ),
@@ -98,9 +97,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _preEvaluationBlock.ProtocolVersion;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.HashAlgorithm"/>
-        public HashAlgorithmType HashAlgorithm => _preEvaluationBlock.HashAlgorithm;
 
         /// <inheritdoc cref="IBlockExcerpt.Hash"/>
         public BlockHash Hash => Header.Hash;
@@ -175,8 +171,7 @@ namespace Libplanet.Blocks
                 return false;
             }
 
-            return ReferenceEquals(this, other) ||
-                (Hash.Equals(other.Hash) && HashAlgorithm.Equals(other.HashAlgorithm));
+            return ReferenceEquals(this, other) || Hash.Equals(other.Hash);
         }
 
         /// <inheritdoc cref="object.Equals(object?)"/>
@@ -185,7 +180,7 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="object.GetHashCode()"/>
         public override int GetHashCode() =>
-            unchecked((17 * 31 + Hash.GetHashCode()) * 31 + HashAlgorithm.GetHashCode());
+            unchecked((17 * 31 + Hash.GetHashCode()) * 31);
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() =>

@@ -25,5 +25,12 @@ namespace Libplanet.Tests.Action
                 ImmutableDictionary<(Address, Currency), FungibleAssetValue>.Empty,
                 (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedBalances())
             );
+
+        public static IImmutableDictionary<Currency, FungibleAssetValue>
+        GetDirtyTotalSupplies(this IEnumerable<ActionEvaluation> evaluations) =>
+            evaluations.Aggregate(
+                ImmutableDictionary<Currency, FungibleAssetValue>.Empty,
+                (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedTotalSupplies())
+            );
     }
 }

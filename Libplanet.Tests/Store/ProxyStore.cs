@@ -50,9 +50,9 @@ namespace Libplanet.Tests.Store
         public virtual void SetCanonicalChainId(Guid chainId) =>
             Store.SetCanonicalChainId(chainId);
 
-        public virtual Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+        public virtual Block<T> GetCanonicalGenesisBlock<T>()
             where T : IAction, new() =>
-            Store.GetCanonicalGenesisBlock<T>(hashAlgorithmGetter);
+            Store.GetCanonicalGenesisBlock<T>();
 
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
         public virtual long CountIndex(Guid chainId) =>
@@ -82,10 +82,6 @@ namespace Libplanet.Tests.Store
         ) =>
             Store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
-        public virtual IEnumerable<TxId> IterateTransactionIds() =>
-            Store.IterateTransactionIds();
-
         /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
         public virtual Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
@@ -98,22 +94,17 @@ namespace Libplanet.Tests.Store
         =>
             Store.PutTransaction(tx);
 
-        /// <inheritdoc cref="IStore.DeleteTransaction(TxId)"/>
-        public virtual bool DeleteTransaction(TxId txid) =>
-            Store.DeleteTransaction(txid);
-
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public virtual IEnumerable<BlockHash> IterateBlockHashes() =>
             Store.IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(HashAlgorithmGetter, BlockHash)"/>
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
         public virtual Block<T> GetBlock<T>(
-            HashAlgorithmGetter hashAlgorithmGetter,
             BlockHash blockHash
         )
             where T : IAction, new()
         =>
-            Store.GetBlock<T>(hashAlgorithmGetter, blockHash);
+            Store.GetBlock<T>(blockHash);
 
         /// <inheritdoc cref="IStore.GetBlockIndex(BlockHash)"/>
         public virtual long? GetBlockIndex(BlockHash blockHash) =>
@@ -191,10 +182,6 @@ namespace Libplanet.Tests.Store
         /// <inheritdoc cref="IStore.ContainsTransaction(TxId)"/>
         public virtual bool ContainsTransaction(TxId txId) =>
             Store.ContainsTransaction(txId);
-
-        /// <inheritdoc cref="IStore.CountTransactions()"/>
-        public virtual long CountTransactions() =>
-            Store.CountTransactions();
 
         /// <inheritdoc cref="IStore.CountBlocks()"/>
         public virtual long CountBlocks() =>

@@ -10,7 +10,7 @@ jobs:
       matrix:
         os:
         - macos-latest
-        - ubuntu-18.04
+        - ubuntu-latest
         - windows-latest
     runs-on: ${{ matrix.os }}
     steps:

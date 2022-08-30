@@ -62,20 +62,15 @@ namespace Libplanet.Net.Tests
             var turnUri = FactOnlyTurnAvailableAttribute.GetTurnUri();
             var userInfo = turnUri.UserInfo.Split(':');
             await Assert.ThrowsAsync<ArgumentException>(
-                async () =>
-                {
-                    await IceServer.CreateTurnClient(
-                       new[] { new IceServer("stun://stun.l.google.com:19302") }
-                    );
-                }
-            );
+                async () => await TurnClient.Create(
+                    new[] { new IceServer("stun://stun.l.google.com:19302") }));
             var servers = new List<IceServer>()
             {
                 new IceServer("turn://turn.does-not-exists.org"),
             };
 
             await Assert.ThrowsAsync<IceServerException>(
-                async () => { await IceServer.CreateTurnClient(servers); });
+                async () => await TurnClient.Create(servers));
 
             servers.Add(new IceServer(turnUri));
             for (int i = 3; i > 0; i--)
@@ -83,7 +78,7 @@ namespace Libplanet.Net.Tests
                 TurnClient turnClient;
                 try
                 {
-                    turnClient = await IceServer.CreateTurnClient(servers);
+                    turnClient = await TurnClient.Create(servers);
                 }
                 catch (IceServerException)
                 {

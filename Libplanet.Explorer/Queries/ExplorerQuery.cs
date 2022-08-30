@@ -23,9 +23,14 @@ namespace Libplanet.Explorer.Queries
             ChainContext = chainContext;
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
+            Field<StateQuery<T>>("stateQuery", resolve: context => new { });
             Field<NonNullGraphType<NodeStateType<T>>>(
                 "nodeState",
                 resolve: context => chainContext
+            );
+            Field<NonNullGraphType<BlockPolicyType<T>>>(
+                "blockPolicy",
+                resolve: context => chainContext.BlockChain.Policy
             );
 
             Name = "ExplorerQuery";
@@ -176,18 +181,11 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static Block<T> GetBlockByHash(BlockHash hash) =>
-            Store.GetBlock<T>(Chain.Policy.GetHashAlgorithm, hash);
+        internal static Block<T> GetBlockByHash(BlockHash hash) => Store.GetBlock<T>(hash);
 
-        internal static Block<T> GetBlockByIndex(long index)
-        {
-            return Chain[index];
-        }
+        internal static Block<T> GetBlockByIndex(long index) => Chain[index];
 
-        internal static Transaction<T> GetTransaction(TxId id)
-        {
-            return Chain.GetTransaction(id);
-        }
+        internal static Transaction<T> GetTransaction(TxId id) => Chain.GetTransaction(id);
 
         private static Block<T> GetNextBlock(Block<T> block, bool desc)
         {

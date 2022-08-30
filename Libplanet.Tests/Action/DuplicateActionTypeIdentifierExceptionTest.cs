@@ -12,9 +12,9 @@ namespace Libplanet.Tests.Action
         public DuplicateActionTypeIdentifierExceptionTest()
         {
             _exception = new DuplicateActionTypeIdentifierException(
+                "An error message.",
                 "type_id",
-                ImmutableHashSet.Create(typeof(DumbAction), typeof(NullAction)),
-                "An error message."
+                ImmutableHashSet.Create(typeof(DumbAction), typeof(NullAction))
             );
         }
 

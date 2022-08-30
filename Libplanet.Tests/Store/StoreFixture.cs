@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -14,7 +15,10 @@ namespace Libplanet.Tests.Store
 {
     public abstract class StoreFixture : IDisposable
     {
-        protected StoreFixture(IAction blockAction = null)
+        protected StoreFixture(
+            IAction blockAction = null,
+            IImmutableSet<Currency> nativeTokens = null
+        )
         {
             Path = null;
 
@@ -98,15 +102,21 @@ namespace Libplanet.Tests.Store
                     : (HashDigest<SHA256>?)null;
             Miner = TestUtils.GenesisMiner;
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(
-                GetHashAlgorithm,
                 Miner.PublicKey
-            ).Evaluate(Miner, blockAction, stateStore);
+            ).Evaluate(
+                privateKey: Miner,
+                blockAction: blockAction,
+                nativeTokenPredicate: nativeTokens is null
+                    ? _ => true
+                    : (Predicate<Currency>)nativeTokens.Contains,
+                stateStore: stateStore
+            );
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
-            Block1 = TestUtils.MineNextBlock(GenesisBlock, GetHashAlgorithm, miner: Miner);
+            Block1 = TestUtils.MineNextBlock(GenesisBlock, miner: Miner);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
-            Block2 = TestUtils.MineNextBlock(Block1, GetHashAlgorithm, miner: Miner);
+            Block2 = TestUtils.MineNextBlock(Block1, miner: Miner);
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
-            Block3 = TestUtils.MineNextBlock(Block2, GetHashAlgorithm, miner: Miner);
+            Block3 = TestUtils.MineNextBlock(Block2, miner: Miner);
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -188,7 +198,5 @@ namespace Libplanet.Tests.Store
                 timestamp
             );
         }
-
-        public HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

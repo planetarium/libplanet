@@ -110,9 +110,9 @@ namespace Libplanet.Net
                             "protocol-wise, the blockchain which does not share " +
                             "any mutual block is not acceptable.";
                         var e = new InvalidGenesisBlockException(
+                            msg,
                             hash,
-                            BlockChain.Genesis.Hash,
-                            msg);
+                            BlockChain.Genesis.Hash);
                         throw new AggregateException(msg, e);
                     }
 
@@ -173,9 +173,9 @@ namespace Libplanet.Net
                         throw new AggregateException(
                             msg,
                             new InvalidGenesisBlockException(
+                                msg,
                                 block.Hash,
-                                BlockChain.Genesis.Hash,
-                                msg
+                                BlockChain.Genesis.Hash
                             )
                         );
                     }
@@ -196,7 +196,6 @@ namespace Libplanet.Net
                 if (previousHash != null)
                 {
                     branchpoint = BlockChain.Store.GetBlock<T>(
-                        BlockChain.Policy.GetHashAlgorithm,
                         (BlockHash)previousHash);
                 }
                 else
@@ -361,9 +360,9 @@ namespace Libplanet.Net
                             "protocol-wise, the blockchain which does not share " +
                             "any mutual block is not acceptable.";
                         var e = new InvalidGenesisBlockException(
+                            msg,
                             hash,
-                            workspace.Genesis.Hash,
-                            msg);
+                            workspace.Genesis.Hash);
                         throw new AggregateException(msg, e);
                     }
 
@@ -426,9 +425,9 @@ namespace Libplanet.Net
                         throw new AggregateException(
                             msg,
                             new InvalidGenesisBlockException(
+                                msg,
                                 block.Hash,
-                                workspace.Genesis.Hash,
-                                msg
+                                workspace.Genesis.Hash
                             )
                         );
                     }
@@ -438,8 +437,6 @@ namespace Libplanet.Net
                         block.Index,
                         block.Hash
                     );
-                    HashAlgorithmType hashAlgorithm =
-                        workspace.Policy.GetHashAlgorithm(block.Index);
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
                     if (tempTip is null ||
@@ -490,10 +487,7 @@ namespace Libplanet.Net
                         Block<T> b = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(
-                                BlockChain.Policy.GetHashAlgorithm,
-                                p
-                            );
+                            blockToAdd = workspace.Store.GetBlock<T>(p);
                         }
                         else
                         {
@@ -694,7 +688,7 @@ namespace Libplanet.Net
                     transactions = block.Transactions.ToImmutableArray();
                 txsCount += transactions.Count();
                 actionsCount +=
-                    transactions.Sum(tx => tx.Actions.Count);
+                    transactions.Sum(tx => tx.CustomActions is { } ca ? ca.Count : 1L);
 
                 _logger.Debug(
                     "Executed actions in block #{Index} {Hash}.",

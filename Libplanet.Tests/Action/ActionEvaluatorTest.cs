@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -68,24 +67,23 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: signer,
                     genesisHash: null,
-                    actions: new[] { new RandomAction(txAddress), }),
+                    customActions: new[] { new RandomAction(txAddress), }),
             };
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            HashAlgorithmGetter hashAlgorithmGetter = _ => HashAlgorithmType.Of<SHA256>();
             PreEvaluationBlock<RandomAction> noStateRootBlock = MineGenesis(
-                hashAlgorithmGetter: hashAlgorithmGetter,
                 miner: GenesisMiner.PublicKey,
                 timestamp: timestamp,
                 transactions: txs
             );
             Block<RandomAction> stateRootBlock =
-                noStateRootBlock.Evaluate(GenesisMiner, null, stateStore);
+                noStateRootBlock.Evaluate(GenesisMiner, null, _ => true, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null,
-                    genesisHash: null);
+                    genesisHash: null,
+                    nativeTokenPredicate: _ => true);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
@@ -129,7 +127,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
+                customActions: new[] { action });
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
@@ -166,7 +164,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
+                customActions: new[] { action });
 
             chain.StageTransaction(tx);
             await chain.MineBlock(new PrivateKey());
@@ -209,7 +207,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
-                actions: new[] { action });
+                customActions: new[] { action });
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>
             {
                 Index = 1,
@@ -219,16 +217,13 @@ namespace Libplanet.Tests.Action
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
-            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner);
+            }.Mine();
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                genesis.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                genesis.Miner);
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
@@ -263,6 +258,23 @@ namespace Libplanet.Tests.Action
                         : null);
             }
 
+            var totalSupplyGetterFromDict = new Func<
+                IReadOnlyDictionary<Currency, FungibleAssetValue>,
+                TotalSupplyGetter
+            >(
+                totalSupplies =>
+                    currency =>
+                    {
+                        if (!currency.TotalSupplyTrackable)
+                        {
+                            throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                        }
+
+                        return totalSupplies.TryGetValue(currency, out FungibleAssetValue v)
+                            ? v
+                            : currency * 0;
+                    });
+
             Address[] addresses =
             {
                 _txFx.Address1,
@@ -271,26 +283,20 @@ namespace Libplanet.Tests.Action
                 _txFx.Address4,
                 _txFx.Address5,
             };
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
-            HashAlgorithmGetter hashAlgoGetter = _ => hashAlgorithm;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                hashAlgoGetter,
-                TestUtils.GenesisMiner
-            );
+            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
-                genesisHash: null);
-            IAccountStateDelta previousStates = genesis.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    genesis.Miner);
+                genesisHash: null,
+                nativeTokenPredicate: _ => true
+            );
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                genesis.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                genesis.Miner);
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
                     block: genesis,
@@ -302,7 +308,7 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: _txFx.PrivateKey1,
                     genesisHash: genesis.Hash,
-                    actions: new[]
+                    customActions: new[]
                     {
                         MakeAction(addresses[0], 'A', addresses[1]),
                         MakeAction(addresses[1], 'B', addresses[2]),
@@ -312,13 +318,13 @@ namespace Libplanet.Tests.Action
                     nonce: 0,
                     privateKey: _txFx.PrivateKey2,
                     genesisHash: genesis.Hash,
-                    actions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
+                    customActions: new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)),
                 Transaction<DumbAction>.Create(
                     nonce: 0,
                     privateKey: _txFx.PrivateKey3,
                     genesisHash: genesis.Hash,
-                    actions: new DumbAction[0],
+                    customActions: new DumbAction[0],
                     timestamp: DateTimeOffset.MinValue.AddSeconds(7)),
             };
             foreach ((var tx, var i) in block1Txs.Zip(
@@ -329,24 +335,22 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block1 = MineNextBlock(
                 genesis,
-                hashAlgoGetter,
                 GenesisMiner,
                 block1Txs,
                 new byte[] { }
             );
-            previousStates = block1.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block1.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block1.Miner);
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
                 (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),
@@ -357,7 +361,7 @@ namespace Libplanet.Tests.Action
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 Assert.Equal(block1Txs[expect.TxIdx].Id, eval.InputContext.TxId);
-                Assert.Equal(block1Txs[expect.TxIdx].Actions[expect.ActionIdx], eval.Action);
+                Assert.Equal(block1Txs[expect.TxIdx].CustomActions[expect.ActionIdx], eval.Action);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
@@ -373,20 +377,19 @@ namespace Libplanet.Tests.Action
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            previousStates = block1.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner)
-                : new AccountStateDeltaImplV0(
-                    ActionEvaluator<DumbAction>.NullAccountStateGetter,
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block1.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block1.ProtocolVersion,
+                ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block1.Miner);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances1 =
                 evals1.GetDirtyBalances();
+            IImmutableDictionary<Currency, FungibleAssetValue> totalSupplies1 =
+                evals1.GetDirtyTotalSupplies();
             Assert.Equal(
                 new Dictionary<Address, IValue>
                 {
@@ -452,7 +455,6 @@ namespace Libplanet.Tests.Action
 
             Block<DumbAction> block2 = MineNextBlock(
                 block1,
-                hashAlgoGetter,
                 GenesisMiner,
                 block2Txs,
                 new byte[] { }
@@ -463,35 +465,30 @@ namespace Libplanet.Tests.Action
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
                     : new FungibleAssetValue(currency);
-            previousStates = block2.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner);
+            TotalSupplyGetter totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block2.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block2.Miner);
             evals = actionEvaluator.EvaluateTxs(
                 block2,
                 previousStates).ToImmutableArray();
 
+            // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
+            // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
                 (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
                 (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (
-                    2,
-                    0,
-                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
-                    _txFx.Address3
-                ),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
                 Assert.Equal(block2Txs[expect.TxIdx].Id, eval.InputContext.TxId);
-                Assert.Equal(block2Txs[expect.TxIdx].Actions[expect.Item2], eval.Action);
+                Assert.Equal(block2Txs[expect.TxIdx].CustomActions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Signer, eval.InputContext.Signer);
                 Assert.Equal(GenesisMiner.ToAddress(), eval.InputContext.Miner);
                 Assert.Equal(block2.Index, eval.InputContext.BlockIndex);
@@ -515,15 +512,13 @@ namespace Libplanet.Tests.Action
                 (address, currency), out FungibleAssetValue value)
                     ? value
                     : new FungibleAssetValue(currency);
-            previousStates = block2.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    block2.Miner);
+            totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block2.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
             IImmutableDictionary<(Address, Currency), FungibleAssetValue> balances2 =
@@ -579,12 +574,13 @@ namespace Libplanet.Tests.Action
                 PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
-                genesisHash: tx.GenesisHash);
+                genesisHash: tx.GenesisHash,
+                nativeTokenPredicate: _ => true);
 
             foreach (bool rehearsal in new[] { false, true })
             {
@@ -596,6 +592,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -675,6 +672,7 @@ namespace Libplanet.Tests.Action
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
                     rehearsal: rehearsal);
                 Assert.Equal(
@@ -712,7 +710,9 @@ namespace Libplanet.Tests.Action
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
-                genesisHash: tx.GenesisHash);
+                genesisHash: tx.GenesisHash,
+                nativeTokenPredicate: _ => true
+            );
             var block = new BlockContent<ThrowException>
             {
                 Index = 123,
@@ -721,13 +721,14 @@ namespace Libplanet.Tests.Action
                 PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                    ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                     tx.Signer),
                 rehearsal: false);
 
@@ -758,10 +759,12 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.Actions.ToImmutableArray<IAction>(),
+                actions: txA.CustomActions.ToImmutableArray<IAction>(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
-                blockAction: false).ToArray();
+                blockAction: false,
+                nativeTokenPredicate: _ => true
+            ).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             for (int i = 0; i < evalsA.Length; i++)
@@ -771,9 +774,9 @@ namespace Libplanet.Tests.Action
                 IAccountStateDelta prevStates = context.PreviousStates;
                 IAccountStateDelta outputStates = eval.OutputStates;
                 _logger.Debug("evalsA[{0}] = {1}", i, eval);
-                _logger.Debug("txA.Actions[{0}] = {1}", i, txA.Actions[i]);
+                _logger.Debug("txA.CustomActions[{0}] = {1}", i, txA.CustomActions[i]);
 
-                Assert.Equal(txA.Actions[i], eval.Action);
+                Assert.Equal(txA.CustomActions[i], eval.Action);
                 Assert.Equal(txA.Id, context.TxId);
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
@@ -808,10 +811,12 @@ namespace Libplanet.Tests.Action
                 miner: blockB.Miner,
                 signer: txB.Signer,
                 signature: txB.Signature,
-                actions: txB.Actions.ToImmutableArray<IAction>(),
+                actions: txB.CustomActions.ToImmutableArray<IAction>(),
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
-                blockAction: false).ToArray();
+                blockAction: false,
+                nativeTokenPredicate: _ => true
+            ).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
 
@@ -823,9 +828,9 @@ namespace Libplanet.Tests.Action
                 IAccountStateDelta outputStates = eval.OutputStates;
 
                 _logger.Debug("evalsB[{0}] = {@1}", i, eval);
-                _logger.Debug("txB.Actions[{0}] = {@1}", i, txB.Actions[i]);
+                _logger.Debug("txB.CustomActions[{0}] = {@1}", i, txB.CustomActions[i]);
 
-                Assert.Equal(txB.Actions[i], eval.Action);
+                Assert.Equal(txB.CustomActions[i], eval.Action);
                 Assert.Equal(txB.Id, context.TxId);
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
@@ -864,7 +869,6 @@ namespace Libplanet.Tests.Action
             var genesis = chain.Genesis;
             var block = MineNext(
                 genesis,
-                _policy.GetHashAlgorithm,
                 txs,
                 miner: GenesisMiner.PublicKey,
                 difficulty: chain.Policy.GetNextBlockDifficulty(chain)
@@ -875,15 +879,14 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter;
             AccountBalanceGetter accountBalanceGetter =
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter;
-            IAccountStateDelta previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    genesis.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter,
-                    accountBalanceGetter,
-                    genesis.Miner);
+            TotalSupplyGetter totalSupplyGetter =
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter;
+            IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                genesis.Miner);
             var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
                 previousStates,
@@ -905,11 +908,14 @@ namespace Libplanet.Tests.Action
                     currency,
                     block.PreviousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
-            previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    accountStateGetter, accountBalanceGetter, block.Miner)
-                : new AccountStateDeltaImplV0(
-                    accountStateGetter, accountBalanceGetter, block.Miner);
+            totalSupplyGetter = currency => chain.GetTotalSupply(
+                currency, block.PreviousHash, stateCompleterSet.TotalSupplyStateCompleter);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                block.Miner);
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
                 previousStates,
@@ -927,15 +933,12 @@ namespace Libplanet.Tests.Action
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
-            previousStates = block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(
-                    addresses => chain.GetStates(addresses, block.PreviousHash),
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner)
-                : new AccountStateDeltaImplV0(
-                    addresses => chain.GetStates(addresses, block.PreviousHash),
-                    ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
-                    block.Miner);
+            previousStates = AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                addresses => chain.GetStates(addresses, block.PreviousHash),
+                ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
                 previousStates).ToList();
@@ -986,7 +989,8 @@ namespace Libplanet.Tests.Action
                         nonce: signerNoncePair.nonce,
                         privateKey: signerNoncePair.signer,
                         genesisHash: null,
-                        actions: new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
+                        customActions:
+                            new[] { new RandomAction(signerNoncePair.signer.ToAddress()) },
                         timestamp: epoch)).ToImmutableArray();
             // Rearrange transactions so that transactions are not grouped by signers
             // while keeping the hard coded mixed order nonces above.
@@ -1090,7 +1094,7 @@ namespace Libplanet.Tests.Action
                 nonce: 0,
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
-                actions: new[] { action });
+                customActions: new[] { action });
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
             await chain.MineBlock(miner);

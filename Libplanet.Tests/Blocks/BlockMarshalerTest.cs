@@ -170,15 +170,15 @@ namespace Libplanet.Tests
         {
             Assert.Equal(
                 _fx.Genesis,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_fx.GetHashAlgorithm, _marshaledGenesis)
+                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledGenesis)
             );
             Assert.Equal(
                 _fx.Next,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_fx.GetHashAlgorithm, _marshaledNext)
+                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledNext)
             );
             Assert.Equal(
                 _fx.HasTx,
-                BlockMarshaler.UnmarshalBlock<FxAction>(_fx.GetHashAlgorithm, _marshaledHasTx)
+                BlockMarshaler.UnmarshalBlock<FxAction>(_marshaledHasTx)
             );
         }
     }

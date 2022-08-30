@@ -84,7 +84,7 @@ namespace Libplanet.Net
             _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
-                new ConcurrentDictionary<Peer, DateTimeOffset>();
+                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -104,12 +104,16 @@ namespace Libplanet.Net
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
-            Transport = InitializeTransport(
+            Transport = NetMQTransport.Create(
+                _privateKey,
+                _appProtocolVersion,
+                TrustedAppProtocolVersionSigners,
                 workers,
                 host,
                 listenPort,
-                iceServers,
-                differentAppProtocolVersionEncountered);
+                iceServers ?? new List<IceServer>(),
+                differentAppProtocolVersionEncountered,
+                Options.MessageTimestampBuffer).ConfigureAwait(false).GetAwaiter().GetResult();
             Transport.ProcessMessageHandler.Register(ProcessMessageHandlerAsync);
             PeerDiscovery = new KademliaProtocol(RoutingTable, Transport, Address);
         }
@@ -127,7 +131,7 @@ namespace Libplanet.Net
             _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
-                new ConcurrentDictionary<Peer, DateTimeOffset>();
+                new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
@@ -168,7 +172,7 @@ namespace Libplanet.Net
 
         public Address Address => _privateKey.ToAddress();
 
-        public Peer AsPeer => Transport?.AsPeer;
+        public BoundPeer AsPeer => Transport?.AsPeer;
 
         /// <summary>
         /// The last time when any message was arrived.
@@ -177,7 +181,7 @@ namespace Libplanet.Net
         public DateTimeOffset? LastMessageTimestamp =>
             Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
 
-        public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps { get; private set; }
+        public IDictionary<BoundPeer, DateTimeOffset> LastSeenTimestamps { get; private set; }
 
         public IReadOnlyList<BoundPeer> Peers => RoutingTable.Peers;
 
@@ -417,14 +421,14 @@ namespace Libplanet.Net
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="dialTimeout">Timeout for connecting to peers.</param>
         /// <param name="searchDepth">Maximum recursion depth when finding neighbors of
-        /// current <see cref="Peer"/> from seed peers.</param>
+        /// current <see cref="BoundPeer"/> from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
         /// not <see cref="Running"/>.</exception>
         public async Task BootstrapAsync(
-            IEnumerable<Peer> seedPeers,
+            IEnumerable<BoundPeer> seedPeers,
             TimeSpan? dialTimeout,
             int searchDepth,
             CancellationToken cancellationToken = default)
@@ -434,7 +438,6 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(seedPeers));
             }
 
-            IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
             IReadOnlyList<BoundPeer> peersBeforeBootstrap = RoutingTable.Peers;
 
             if (Options.StaticPeers.Any())
@@ -443,7 +446,7 @@ namespace Libplanet.Net
             }
 
             await PeerDiscovery.BootstrapAsync(
-                peers,
+                seedPeers,
                 dialTimeout,
                 searchDepth,
                 cancellationToken);
@@ -506,7 +509,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// Preemptively downloads blocks from registered <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
@@ -539,7 +542,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// Preemptively downloads blocks from registered <see cref="BoundPeer"/>s.
         /// </summary>
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
@@ -689,7 +692,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Validates all <see cref="Peer"/>s in the routing table by sending a simple message.
+        /// Validates all <see cref="BoundPeer"/>s in the routing table by sending a simple message.
         /// </summary>
         /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
         /// wait infinitely until the requested operation is finished.</param>
@@ -718,7 +721,7 @@ namespace Libplanet.Net
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         public async Task AddPeersAsync(
-            IEnumerable<Peer> peers,
+            IEnumerable<BoundPeer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default)
         {
@@ -860,7 +863,6 @@ namespace Libplanet.Net
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
-                            BlockChain.Policy.GetHashAlgorithm,
                             (Bencodex.Types.Dictionary)Codec.Decode(payload)
                         );
 
@@ -1071,10 +1073,7 @@ namespace Libplanet.Net
                             },
                             hash =>
                             {
-                                Block<T> block = blockChain.Store.GetBlock<T>(
-                                    blockChain.Policy.GetHashAlgorithm,
-                                    hash
-                                );
+                                Block<T> block = blockChain.Store.GetBlock<T>(hash);
                                 return block is { } b
                                     ? b.Index
                                     : branchingIndex + 1 + downloaded.IndexOf(hash);
@@ -1116,25 +1115,6 @@ namespace Libplanet.Net
                 exceptions);
         }
 
-        private ITransport InitializeTransport(
-            int workers,
-            string host,
-            int? listenPort,
-            IEnumerable<IceServer> iceServers,
-            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered)
-        {
-            return new NetMQTransport(
-                _privateKey,
-                _appProtocolVersion,
-                TrustedAppProtocolVersionSigners,
-                workers,
-                host,
-                listenPort,
-                iceServers ?? new IceServer[0],
-                differentAppProtocolVersionEncountered,
-                Options.MessageTimestampBuffer);
-        }
-
         private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
@@ -1165,7 +1145,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
         /// is equivalent to setting this value to <c>null</c>.</param>
-        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
@@ -1198,7 +1178,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
         /// is equivalent to setting this value to <c>null</c>.</param>
-        /// <param name="maxPeersToDial">Maximum number of <see cref="Peer"/>s to dial.</param>
+        /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with an <see cref="Array"/> of tuples
