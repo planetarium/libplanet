@@ -394,38 +394,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return preEval.Sign(miner, stateRootHash);
         }
 
-        public static PreEvaluationBlock<T> MineNext<T>(
-            Block<T> previousBlock,
-            IReadOnlyList<Transaction<T>> txs = null,
-            byte[] nonce = null,
-            long difficulty = 1,
-            PublicKey miner = null,
-            TimeSpan? blockInterval = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
-            BlockCommit? lastCommit = null
-        )
-            where T : IAction, new()
-        {
-            var content = new BlockContent<T>
-            {
-                Index = previousBlock.Index + 1,
-                Miner = miner?.ToAddress() ?? previousBlock.Miner,
-                PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
-                PreviousHash = previousBlock.Hash,
-                Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
-                Transactions = txs ?? Array.Empty<Transaction<T>>(),
-                ProtocolVersion = protocolVersion,
-                LastCommit = lastCommit,
-            };
-
-            var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
-                : content.Mine();
-
-            preEval.ValidateTimestamp();
-            return preEval;
-        }
-
         public static PreEvaluationBlock<T> ProposeNext<T>(
             Block<T> previousBlock,
             IReadOnlyList<Transaction<T>> txs = null,
@@ -451,34 +419,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var preEval = content.Propose();
             preEval.ValidateTimestamp();
             return preEval;
-        }
-
-        public static Block<T> MineNextBlock<T>(
-            Block<T> previousBlock,
-            PrivateKey miner,
-            IReadOnlyList<Transaction<T>> txs = null,
-            byte[] nonce = null,
-            long difficulty = 1,
-            TimeSpan? blockInterval = null,
-            int protocolVersion = Block<T>.CurrentProtocolVersion,
-            HashDigest<SHA256> stateRootHash = default,
-            BlockCommit? lastCommit = null
-        )
-            where T : IAction, new()
-        {
-            PreEvaluationBlock<T> preEval = MineNext(
-                previousBlock,
-                txs,
-                nonce,
-                difficulty,
-                miner?.PublicKey,
-                blockInterval,
-                protocolVersion,
-                lastCommit
-            );
-            return protocolVersion < 2
-                ? new Block<T>(preEval, stateRootHash, null)
-                : preEval.Sign(miner, stateRootHash);
         }
 
         public static Block<T> ProposeNextBlock<T>(

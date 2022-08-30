@@ -52,10 +52,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
         /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
         /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.
-        /// </exception>
         /// <remarks><see cref="PreEvaluationBlockHeader.PreEvaluationHash"/> is automatically
         /// derived from the given arguments.</remarks>
         public PreEvaluationBlock(
@@ -97,9 +93,6 @@ namespace Libplanet.Blocks
         /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         public PreEvaluationBlock(
             IBlockContent<T> content,
             Nonce nonce,

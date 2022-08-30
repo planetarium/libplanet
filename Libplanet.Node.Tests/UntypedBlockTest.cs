@@ -85,7 +85,6 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);
-            Assert.Equal(_block.Nonce, untyped.Nonce);
             Assert.Equal(_block.Miner, untyped.Miner);
             Assert.Equal(_block.PublicKey, untyped.PublicKey);
             Assert.Equal(_block.PreviousHash, untyped.PreviousHash);

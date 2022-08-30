@@ -40,7 +40,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 @"{
                     index
                     hash
-                    nonce
                     miner
                     publicKey
                     timestamp
@@ -65,9 +64,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 block.Miner.ToString(),
                 resultData["miner"]);
-            Assert.Equal(
-                ByteUtil.Hex(block.Nonce.ToByteArray()),
-                resultData["nonce"]);
             Assert.Equal(
                 new DateTimeOffsetGraphType().Serialize(block.Timestamp),
                 resultData["timestamp"]);
