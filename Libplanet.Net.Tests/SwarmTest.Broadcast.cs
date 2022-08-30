@@ -128,7 +128,7 @@ namespace Libplanet.Net.Tests
                 PublicKey = receiverKey.PublicKey,
                 Timestamp = DateTimeOffset.MinValue,
             }
-                .Mine()
+                .Propose()
                 .Evaluate(
                     privateKey: receiverKey,
                     blockAction: policy.BlockAction,

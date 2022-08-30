@@ -111,7 +111,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithTxBatchSize()
+        public void ProposeBlockWithTxBatchSize()
         {
             List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
                 .Select(_ => new PrivateKey()).ToList();
@@ -123,37 +123,37 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
-            Block<DumbAction> block =
-                await _blockChain.MineBlock(privateKeys[0], maxTransactions: 1);
+            Block<DumbAction> block = _blockChain.ProposeBlock(
+                privateKeys[0], maxTransactions: 1);
+            _blockChain.Append(block);
             Assert.Single(block.Transactions);
             Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
 
-            Block<DumbAction> block2 = await _blockChain.MineBlock(
+            Block<DumbAction> block2 = _blockChain.ProposeBlock(
                 privateKeys[1], DateTimeOffset.UtcNow, maxTransactions: 2);
+            _blockChain.Append(block2);
             Assert.Equal(2, block2.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
-            Block<DumbAction> block3 = await _blockChain.MineBlock(
-                privateKeys[2], append: false, maxTransactions: 4);
+            Block<DumbAction> block3 = _blockChain.ProposeBlock(
+                privateKeys[2], maxTransactions: 4);
             Assert.Equal(3, block3.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
-
             _blockChain.Append(block3);
             Assert.Equal(0, _blockChain.GetStagedTransactionIds().Count);
         }
 
         [Fact]
-        public async Task MineBlockWithInsufficientTxs()
+        public void ProposeBlockWithInsufficientTxs()
         {
             // Tests if MineBlock() method will throw an exception if less than the minimum
             // transactions are present
-            await Assert.ThrowsAsync<OperationCanceledException>(
-                async () => await _blockChainMinTx.MineBlock(new PrivateKey())
-            );
+            Assert.Throws<OperationCanceledException>(
+                () => _blockChainMinTx.ProposeBlock(new PrivateKey()));
         }
 
         [Fact]
-        public async Task MineBlockWithPendingTxs()
+        public void ProposeBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
             var keyA = new PrivateKey();
@@ -224,7 +224,8 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
             }
 
-            Block<DumbAction> block = await _blockChain.MineBlock(keyA);
+            Block<DumbAction> block = _blockChain.ProposeBlock(keyA);
+            _blockChain.Append(block);
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Contains(txs[0], block.Transactions);
@@ -264,7 +265,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithPolicyViolationTx()
+        public void ProposeBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
@@ -292,7 +293,8 @@ namespace Libplanet.Tests.Blockchain
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
                 var miner = new PrivateKey();
-                var block = await blockChain.MineBlock(miner);
+                var block = blockChain.ProposeBlock(miner);
+                blockChain.Append(block);
 
                 var txs = block.Transactions.ToHashSet();
 

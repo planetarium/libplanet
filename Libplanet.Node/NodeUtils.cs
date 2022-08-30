@@ -68,7 +68,7 @@ namespace Libplanet.Node
                 {
                     PublicKey = privateKey.PublicKey,
                 })
-                .Mine()
+                .Propose()
                 .Evaluate(
                     privateKey: privateKey,
                     blockAction: blockPolicy.BlockAction,

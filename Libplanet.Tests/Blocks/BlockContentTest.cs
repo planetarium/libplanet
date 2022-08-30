@@ -2,9 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
-using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
@@ -209,53 +206,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockTxHashException>(
                 () => BlockPv0.TxHash = default(HashDigest<SHA256>)
             );
-        }
-
-        [Fact]
-        public void Mine()
-        {
-            var codec = new Codec();
-
-            HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
-            BlockMetadata metadata = new BlockMetadata
-            {
-                Index = 1,
-                Timestamp = DateTimeOffset.UtcNow,
-                PublicKey = Block1Key.PublicKey,
-                PreviousHash = GenesisHash,
-                ProtocolVersion = 3,
-            };
-            BlockContent<Arithmetic> content = new BlockContent<Arithmetic>(metadata);
-            Assert.True(content.Difficulty > 0);
-
-            PreEvaluationBlock<Arithmetic> preEvalBlock = content.Mine();
-            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, content.Difficulty));
-        }
-
-        [Fact]
-        public void CancelMine()
-        {
-            using (CancellationTokenSource source = new CancellationTokenSource())
-            {
-                Exception exception = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        Block1.Mine(source.Token);
-                    }
-                    catch (OperationCanceledException ce)
-                    {
-                        exception = ce;
-                    }
-                });
-
-                source.Cancel();
-                bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
-                Assert.True(taskEnded);
-                Assert.NotNull(exception);
-                Assert.IsAssignableFrom<OperationCanceledException>(exception);
-            }
         }
 
         [Fact]

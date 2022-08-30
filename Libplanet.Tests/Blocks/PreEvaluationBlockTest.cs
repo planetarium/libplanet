@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine();
+                _contents.Genesis.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -62,7 +62,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
                 AssertPreEvaluationBlocksEqual(preEval1, block1);
@@ -88,7 +88,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine();
+                _contents.Genesis.Propose();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
-                PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
+                PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);
                 _output.WriteLine("#1 StateRootHash: {0}", b1StateRootHash);

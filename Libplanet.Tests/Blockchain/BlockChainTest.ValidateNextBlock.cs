@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Blockchain
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
                 ProtocolVersion = _blockChain.Tip.ProtocolVersion,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
             Block<DumbAction> block2 = new BlockContent<DumbAction>
@@ -50,7 +50,7 @@ namespace Libplanet.Tests.Blockchain
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
                 ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Miner, _blockChain);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
 
@@ -64,7 +64,7 @@ namespace Libplanet.Tests.Blockchain
                     Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                     Transactions = _emptyTransaction,
                     ProtocolVersion = BlockMetadata.CurrentProtocolVersion + 1,
-                }.Mine().Evaluate(_fx.Miner, _blockChain);
+                }.Propose().Evaluate(_fx.Miner, _blockChain);
                 _blockChain.Append(block3);
             });
         }
@@ -82,7 +82,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = _validNext.PreviousHash,
                 Timestamp = _validNext.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(invalidPreviousHashBlock));
         }
@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
                 Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            }.Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(invalidPreviousTimestamp));
         }
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blockchain
                 PreviousHash = genesisBlock.Hash,
                 Timestamp = genesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
-            }.Mine().Evaluate(TestUtils.GenesisMiner, chain1);
+            }.Propose().Evaluate(TestUtils.GenesisMiner, chain1);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
