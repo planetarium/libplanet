@@ -331,10 +331,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 Transactions = transactions ?? Array.Empty<Transaction<T>>(),
                 ProtocolVersion = protocolVersion,
             };
-            return new PreEvaluationBlock<T>(
-                content,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+            return new PreEvaluationBlock<T>(content);
         }
 
         public static PreEvaluationBlock<T> ProposeGenesis<T>(
@@ -475,10 +472,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     Transactions = new[] { tx },
                     ProtocolVersion = protocolVersion,
                 };
-                var preEval = new PreEvaluationBlock<T>(
-                    content,
-                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-                );
+                var preEval = new PreEvaluationBlock<T>(content);
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
                          preEval,

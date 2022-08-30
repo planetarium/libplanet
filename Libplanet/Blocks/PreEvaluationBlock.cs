@@ -28,12 +28,9 @@ namespace Libplanet.Blocks
     {
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data and a valid proof-of-work <paramref name="nonce"/>
-        /// which satisfies the required <see cref="BlockMetadata.Difficulty"/>.
+        /// <paramref name="content"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -54,11 +51,8 @@ namespace Libplanet.Blocks
         /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
         /// <remarks><see cref="PreEvaluationBlockHeader.PreEvaluationHash"/> is automatically
         /// derived from the given arguments.</remarks>
-        public PreEvaluationBlock(
-            IBlockContent<T> content,
-            Nonce nonce
-        )
-            : base(new BlockContent<T>(content), nonce)
+        public PreEvaluationBlock(IBlockContent<T> content)
+            : base(new BlockContent<T>(content), default(Nonce))
         {
         }
 
