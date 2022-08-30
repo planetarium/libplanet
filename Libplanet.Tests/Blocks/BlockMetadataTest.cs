@@ -221,18 +221,14 @@ namespace Libplanet.Tests.Blocks
             );
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData(1)]
-        [InlineData(2)]
-        public void MineNonce(int? workers)
+        [Fact]
+        public void MineNonce()
         {
             var codec = new Codec();
 
             HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
-            (Nonce nonce, ImmutableArray<byte> preEvalHash) = workers is int w
-                ? GenesisMetadata.MineNonce(workers: w)
-                : GenesisMetadata.MineNonce();
+            (Nonce nonce, ImmutableArray<byte> preEvalHash) =
+                GenesisMetadata.MineNonce();
             Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
             ImmutableArray<byte> actual = ImmutableArray.Create(
                 sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
@@ -240,11 +236,8 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(actual, preEvalHash);
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData(1)]
-        [InlineData(2)]
-        public void CancelMineNonce(int? workers)
+        [Fact]
+        public void CancelMineNonce()
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
@@ -253,14 +246,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     try
                     {
-                        if (workers is int w)
-                        {
-                            BlockMetadata1.MineNonce(w, source.Token);
-                        }
-                        else
-                        {
-                            BlockMetadata1.MineNonce(source.Token);
-                        }
+                        BlockMetadata1.MineNonce(source.Token);
                     }
                     catch (OperationCanceledException ce)
                     {
