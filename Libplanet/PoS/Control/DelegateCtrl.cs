@@ -29,17 +29,15 @@ namespace Libplanet.PoS
         {
             Address delegationAddress = Delegation.DeriveAddress(
                 delegatorAddress, validatorAddress);
-            IValue? serializedDelegation = states.GetState(delegationAddress);
-
             Delegation delegation;
-            if (create && serializedDelegation == null)
+            if (states.GetState(delegationAddress) is { } value)
+            {
+                delegation = new Delegation(value);
+            }
+            else if(create)
             {
                 delegation = new Delegation(delegatorAddress, validatorAddress);
                 states = states.SetState(delegation.Address, delegation.Serialize());
-            }
-            else
-            {
-                delegation = GetDelegationByAddr(states, delegationAddress);
             }
 
             return (states, delegation);
