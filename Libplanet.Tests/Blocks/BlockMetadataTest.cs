@@ -33,7 +33,6 @@ namespace Libplanet.Tests.Blocks
             Assert.InRange(m.Timestamp, before, after);
             AssertBytesEqual(default(Address), m.Miner);
             Assert.Equal(0, m.Difficulty);
-            Assert.Equal(0, m.TotalDifficulty);
             AssertBytesEqual(null, m.PreviousHash);
             AssertBytesEqual(null, m.TxHash);
         }
@@ -89,36 +88,10 @@ namespace Libplanet.Tests.Blocks
             BlockMetadata a = BlockMetadata1.Copy();
             a.Difficulty = BlockMetadata1.Difficulty + 10L;
             Assert.Equal(BlockMetadata1.Difficulty + 10L, a.Difficulty);
-            Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
 
             BlockMetadata b = BlockMetadata1.Copy();
             Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
             Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-        }
-
-        [Fact]
-        public void TotalDifficulty()
-        {
-            BlockMetadata a = BlockMetadata1.Copy();
-            a.TotalDifficulty = BlockMetadata1.TotalDifficulty + 10;
-            Assert.Equal(BlockMetadata1.TotalDifficulty + 10, a.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, a.Difficulty);
-
-            BlockMetadata b = Block1.Copy();
-            InvalidBlockTotalDifficultyException e =
-                Assert.Throws<InvalidBlockTotalDifficultyException>(() => b.TotalDifficulty = -1);
-            Assert.Equal(BlockMetadata1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(-1, e.TotalDifficulty);
-
-            e = Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => b.TotalDifficulty = b.Difficulty - 1L
-            );
-            Assert.Equal(BlockMetadata1.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
         }
 
         [Fact]
@@ -128,7 +101,6 @@ namespace Libplanet.Tests.Blocks
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
                 .Add("difficulty", 0L)
-                .Add("total_difficulty", 0)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "public_key",
@@ -145,7 +117,6 @@ namespace Libplanet.Tests.Blocks
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
                 .Add("difficulty", 123L)
-                .Add("total_difficulty", 123L)
                 .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
                 .Add(
                     "public_key",
@@ -256,7 +227,7 @@ namespace Libplanet.Tests.Blocks
 
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("2015154d7ba8eef79bf15f4e4f5c13399d437ead9cfb561495a641052b0a235d"),
+                FromHex("c6c4dfd339e5264079c77ca916d5832d7162c523427ac8c56c51a3087059a8d7"),
                 hash
             );
 
@@ -264,7 +235,7 @@ namespace Libplanet.Tests.Blocks
                 new Nonce(FromHex("e7c1adf92c65d35aaae5"))
             );
             AssertBytesEqual(
-                FromHex("b59ae82fd3140d6dc7b6e4f868a357fe4cc7c21e7d2ac4de2d8428e903916198"),
+                FromHex("a14cf2e55373570a70b5a63e7a883095e853d295c3d58580fddb88468fe2d799"),
                 hash
             );
         }

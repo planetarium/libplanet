@@ -24,7 +24,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             {
                 Index = 1,
                 Difficulty = 1,
-                TotalDifficulty = 1,
                 PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
@@ -44,7 +43,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     hash
                     nonce
                     difficulty
-                    totalDifficulty
                     miner
                     publicKey
                     timestamp
@@ -67,9 +65,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 resultData["hash"]);
             Assert.Equal(block.Difficulty, resultData["difficulty"]);
-            Assert.Equal(
-                block.TotalDifficulty,
-                resultData["totalDifficulty"]);
             Assert.Equal(
                 block.Miner.ToString(),
                 resultData["miner"]);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -40,9 +39,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="header"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="header"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -115,9 +111,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         public long Difficulty => _preEvaluationBlock.Difficulty;
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        public BigInteger TotalDifficulty => _preEvaluationBlock.TotalDifficulty;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
         public Nonce Nonce => _preEvaluationBlock.Nonce;

@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
 
@@ -46,14 +45,6 @@ namespace Libplanet.Blocks
         /// The mining difficulty that the block's <see cref="Nonce"/> has to satisfy.
         /// </summary>
         long Difficulty { get; }
-
-        /// <summary>
-        /// The total mining difficulty since the genesis including the block's
-        /// <see cref="Difficulty"/>.
-        /// </summary>
-        /// <remarks>This must be greater than or equal to <see cref="Difficulty"/> at least, and
-        /// must not be negative.</remarks>
-        BigInteger TotalDifficulty { get; }
 
         /// <summary>
         /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)

@@ -11,6 +11,10 @@ To be released.
  -  Removed `TotalDifficultyComparer` class.  [[#PBFT]]
  -  Removed `IBlockPolicy<T>.GetNextBlockDifficulty()` interface method
     and all its implementations.  [[#PBFT]]
+ -  Removed `IBlockPolicy.TotalDifficulty` interface property and its
+    implementations.  [[#PBFT]]
+ -  Removed all total difficulty related parameters.  [[#PBFT]]
+ -  Removed `InvalidBlockTotalDifficultyException` class.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 

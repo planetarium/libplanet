@@ -90,7 +90,6 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_block.Miner, untyped.Miner);
             Assert.Equal(_block.PublicKey, untyped.PublicKey);
             Assert.Equal(_block.Difficulty, untyped.Difficulty);
-            Assert.Equal(_block.TotalDifficulty, untyped.TotalDifficulty);
             Assert.Equal(_block.PreviousHash, untyped.PreviousHash);
             Assert.Equal(_block.TxHash, untyped.TxHash);
             Assert.Equal(_block.Signature, untyped.Signature);

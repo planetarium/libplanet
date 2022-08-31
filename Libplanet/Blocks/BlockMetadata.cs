@@ -4,13 +4,11 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
-using Bencodex.Types;
 using Libplanet.Crypto;
 using Nito.AsyncEx.Synchronous;
 
@@ -43,7 +41,6 @@ namespace Libplanet.Blocks
         private Address _miner;
         private PublicKey? _publicKey;
         private long _difficulty;
-        private BigInteger _totalDifficulty;
         private HashDigest<SHA256>? _txHash;
 
         static BlockMetadata()
@@ -67,9 +64,6 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockDifficultyException">Thrown when
         /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
         /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
         {
             LastCommit = metadata.LastCommit;
@@ -79,7 +73,6 @@ namespace Libplanet.Blocks
             Miner = metadata.Miner;
             PublicKey = metadata.PublicKey;
             Difficulty = metadata.Difficulty;
-            TotalDifficulty = metadata.TotalDifficulty;
             PreviousHash = metadata.PreviousHash;
             _txHash = metadata.TxHash;
         }
@@ -178,12 +171,7 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
         /// negative.</exception>
-        /// <remarks>This cannot not be negative.
-        /// <para>When <see cref="Difficulty"/> is updated, <see cref="TotalDifficulty"/> is also
-        /// updated together.  For example, when <see cref="Difficulty"/> = 10 and
-        /// <see cref="TotalDifficulty"/> = 50, if <see cref="Difficulty"/> is updated to
-        /// 20 (= 10 + 10) <see cref="TotalDifficulty"/> is also updated to 60 (= 50 + 10).</para>
-        /// </remarks>
+        /// <remarks>This cannot not be negative.</remarks>
         public long Difficulty
         {
             get => _difficulty;
@@ -198,35 +186,6 @@ namespace Libplanet.Blocks
 
                 long delta = value - _difficulty;
                 _difficulty = value;
-                _totalDifficulty += delta;
-            }
-        }
-
-        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when the value to set
-        /// is less than <see cref="Difficulty"/>.</exception>
-        public BigInteger TotalDifficulty
-        {
-            get => _totalDifficulty;
-            set
-            {
-                if (value < BigInteger.Zero)
-                {
-                    throw new InvalidBlockTotalDifficultyException(
-                        $"{nameof(TotalDifficulty)} cannot be negative: ${value}.",
-                        Difficulty,
-                        value
-                    );
-                }
-                else if (value < Difficulty)
-                {
-                    string msg =
-                        $"{nameof(TotalDifficulty)} ({value}) cannot be less than " +
-                        $"{nameof(Difficulty)} ({Difficulty}).";
-                    throw new InvalidBlockTotalDifficultyException(msg, Difficulty, value);
-                }
-
-                _totalDifficulty = value;
             }
         }
 
@@ -286,17 +245,6 @@ namespace Libplanet.Blocks
             dict = PublicKey is { } pubKey && ProtocolVersion > 1
                 ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
                 : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
-
-            // For blocks with ProtocolVersion < 2, they had lacked TotalDifficulty values in their
-            // serialization form.  As it was merely an unintended mistake, TotalDifficulty values
-            // have been added from ProtocolVersion >= 2:
-            if (ProtocolVersion >= 2)
-            {
-                dict = dict.Add(
-                    "total_difficulty",
-                    (IValue)(Bencodex.Types.Integer)TotalDifficulty
-                );
-            }
 
             return dict;
         }

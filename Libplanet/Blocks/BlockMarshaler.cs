@@ -27,7 +27,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
         private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
-        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
+        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
         private static readonly byte[] NonceKey = { 0x6e }; // 'n'
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
@@ -46,8 +46,7 @@ namespace Libplanet.Blocks
             Dictionary dict = Dictionary.Empty
                 .Add(IndexKey, metadata.Index)
                 .Add(TimestampKey, timestamp)
-                .Add(DifficultyKey, metadata.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)new Integer(metadata.TotalDifficulty));
+                .Add(DifficultyKey, metadata.Difficulty);
 
             if (metadata.ProtocolVersion != 0)
             {
@@ -193,7 +192,6 @@ namespace Libplanet.Blocks
                     CultureInfo.InvariantCulture
                 ),
                 Difficulty = marshaled.GetValue<Integer>(DifficultyKey),
-                TotalDifficulty = marshaled.GetValue<Integer>(TotalDifficultyKey),
                 PreviousHash = marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,

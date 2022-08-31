@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 
 namespace Libplanet.Blocks
 {
@@ -25,7 +24,6 @@ namespace Libplanet.Blocks
             ProtocolVersion = blockExcerpt.ProtocolVersion;
             Index = blockExcerpt.Index;
             Hash = blockExcerpt.Hash;
-            TotalDifficulty = blockExcerpt.TotalDifficulty;
             PerceivedTime = perceivedTime;
         }
 
@@ -47,9 +45,6 @@ namespace Libplanet.Blocks
         /// <inheritdoc/>
         public readonly BlockHash Hash { get; }
 
-        /// <inheritdoc/>
-        public readonly BigInteger TotalDifficulty { get; }
-
         /// <summary>
         /// The time in UTC when the local node perceived
         /// the corresponding <see cref="IBlockExcerpt"/>.
@@ -63,7 +58,6 @@ namespace Libplanet.Blocks
                 $" {nameof(ProtocolVersion)} = {ProtocolVersion}," +
                 $" {nameof(Index)} = {Index}," +
                 $" {nameof(Hash)} = {Hash}," +
-                $" {nameof(TotalDifficulty)} = {TotalDifficulty}," +
                 $" {nameof(PerceivedTime)} = {PerceivedTime}" +
                 " }";
         }

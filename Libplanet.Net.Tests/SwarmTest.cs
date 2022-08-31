@@ -1325,7 +1325,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState(swarm2.AsPeer, 0, 0),
+                    new PeerChainState(swarm2.AsPeer, 0),
                     peerChainState.First()
                 );
 
@@ -1333,7 +1333,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState(swarm2.AsPeer, 1, 1),
+                    new PeerChainState(swarm2.AsPeer, 1),
                     peerChainState.First()
                 );
 
@@ -1343,8 +1343,8 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new[]
                     {
-                        new PeerChainState(swarm2.AsPeer, 1, 1),
-                        new PeerChainState(swarm3.AsPeer, 0, 0),
+                        new PeerChainState(swarm2.AsPeer, 1),
+                        new PeerChainState(swarm3.AsPeer, 0),
                     }.ToHashSet(),
                     peerChainState.ToHashSet()
                 );

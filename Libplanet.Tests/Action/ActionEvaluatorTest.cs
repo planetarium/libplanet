@@ -211,7 +211,6 @@ namespace Libplanet.Tests.Action
             {
                 Index = 1,
                 Difficulty = 1,
-                TotalDifficulty = genesis.TotalDifficulty + 1,
                 PublicKey = new PrivateKey().PublicKey,
                 PreviousHash = genesis.Hash,
                 Timestamp = DateTimeOffset.UtcNow,
@@ -476,13 +475,13 @@ namespace Libplanet.Tests.Action
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
                 (
                     1,
                     0,
-                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
+                    new[] { "A,D", "B", "C", "E", null },
                     _txFx.Address2
                 ),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -570,7 +569,6 @@ namespace Libplanet.Tests.Action
             {
                 Index = 1,
                 Difficulty = 1,
-                TotalDifficulty = 1,
                 PublicKey = keys[0].PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),
@@ -717,7 +715,6 @@ namespace Libplanet.Tests.Action
             {
                 Index = 123,
                 Difficulty = 1,
-                TotalDifficulty = 1,
                 PublicKey = GenesisMiner.PublicKey,
                 PreviousHash = default(BlockHash),
                 Transactions = ImmutableArray.Create(tx),

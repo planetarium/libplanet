@@ -295,34 +295,26 @@ namespace Libplanet.Blockchain.Renderers
                         );
                         Tip = confirmedBlock;
                     }
-                    else if (t.TotalDifficulty < confirmedBlock.TotalDifficulty)
+                    else if (t.Index < confirmedBlock.Index)
                     {
                         Logger.Verbose(
-                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its total " +
-                            "difficulty is more than the previous tip #{PreviousTipIndex} " +
-                            "{PreviousTipHash} ({NewDifficulty} > {PreviousDifficulty}).",
+                            "Promoting #{NewTipIndex} {NewTipHash} as a new tip since its index " +
+                            "is more than the previous tip #{PreviousTipIndex} {PreviousTipHash}",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,
-                            t.Hash,
-                            confirmedBlock.TotalDifficulty,
-                            t.TotalDifficulty
-                        );
+                            t.Hash);
                         Tip = confirmedBlock;
                     }
                     else
                     {
                         Logger.Verbose(
                             "Although #{BlockIndex} {BlockHash} has been confirmed enough," +
-                            "its difficulty is less than the current tip #{TipIndex} {TipHash} " +
-                            "({Difficulty} < {TipDifficulty}).",
+                            "its index is less than the current tip #{TipIndex} {TipHash}",
                             confirmedBlock.Index,
                             confirmedBlock.Hash,
                             t.Index,
-                            t.Hash,
-                            confirmedBlock.TotalDifficulty,
-                            t.TotalDifficulty
-                        );
+                            t.Hash);
                     }
                 }
             }

@@ -19,7 +19,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 1,
                 Difficulty = 1024,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -36,7 +35,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 1,
                 Difficulty = 1024,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -49,7 +47,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 2,
                 Difficulty = 1024,
-                TotalDifficulty = block1.TotalDifficulty + 1024,
                 PublicKey = _fx.Miner.PublicKey,
                 Miner = _fx.Miner.ToAddress(),
                 PreviousHash = block1.Hash,
@@ -66,7 +63,6 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Index = 2,
                     Difficulty = 1024,
-                    TotalDifficulty = block1.TotalDifficulty + 1024,
                     PublicKey = _fx.Miner.PublicKey,
                     PreviousHash = block1.Hash,
                     Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
@@ -86,7 +82,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 2,
                 Difficulty = 1,
-                TotalDifficulty = _validNext.TotalDifficulty + 1,
                 PublicKey = _fx.Miner.PublicKey,
                 // Wrong PreviousHash for test; it should be _validNext.Hash:
                 PreviousHash = _validNext.PreviousHash,
@@ -106,7 +101,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 2,
                 Difficulty = 1,
-                TotalDifficulty = _validNext.TotalDifficulty + 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
@@ -148,7 +142,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 Index = 1,
                 Difficulty = 1024L,
-                TotalDifficulty = genesisBlock.TotalDifficulty + 1024,
                 PublicKey = TestUtils.GenesisMiner.PublicKey,
                 PreviousHash = genesisBlock.Hash,
                 Timestamp = genesisBlock.Timestamp.AddSeconds(1),

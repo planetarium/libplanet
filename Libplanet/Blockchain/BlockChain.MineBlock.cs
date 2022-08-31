@@ -144,7 +144,6 @@ namespace Libplanet.Blockchain
             {
                 Index = index,
                 Difficulty = difficulty,
-                TotalDifficulty = Tip.TotalDifficulty + difficulty,
                 PublicKey = miner.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
@@ -331,7 +330,6 @@ namespace Libplanet.Blockchain
             {
                 Index = index,
                 Difficulty = difficulty,
-                TotalDifficulty = Tip.TotalDifficulty + difficulty,
                 PublicKey = proposer.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
