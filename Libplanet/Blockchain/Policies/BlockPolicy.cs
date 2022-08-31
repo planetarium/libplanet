@@ -220,10 +220,6 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public virtual long GetNextBlockDifficulty(BlockChain<T> blockChain) =>
-            _getNextBlockDifficulty(blockChain);
-
-        /// <inheritdoc/>
         [Pure]
         public long GetMaxBlockBytes(long index) => _getMaxBlockBytes(index);
 

@@ -85,17 +85,6 @@ namespace Libplanet.Blockchain.Policies
             BlockChain<T> blockChain, Block<T> nextBlock);
 
         /// <summary>
-        /// Determines a right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined
-        /// right after the given <paramref name="blockChain"/>.
-        /// </summary>
-        /// <param name="blockChain">Consecutive <see cref="Block{T}"/>s to be
-        /// followed by a new <see cref="Block{T}"/> to be mined.</param>
-        /// <returns>A right <see cref="Block{T}.Difficulty"/>
-        /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(BlockChain<T> blockChain);
-
-        /// <summary>
         /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>

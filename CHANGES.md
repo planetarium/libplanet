@@ -9,6 +9,8 @@ To be released.
 ### Deprecated APIs
 
  -  Removed `TotalDifficultyComparer` class.  [[#PBFT]]
+ -  Removed `IBlockPolicy<T>.GetNextBlockDifficulty()` interface method
+    and all its implementations.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 

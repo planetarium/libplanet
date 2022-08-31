@@ -82,12 +82,11 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext);
 
-            long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
             Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>
             {
                 Index = 2,
-                Difficulty = difficulty,
-                TotalDifficulty = _validNext.TotalDifficulty + difficulty,
+                Difficulty = 1,
+                TotalDifficulty = _validNext.TotalDifficulty + 1,
                 PublicKey = _fx.Miner.PublicKey,
                 // Wrong PreviousHash for test; it should be _validNext.Hash:
                 PreviousHash = _validNext.PreviousHash,
@@ -103,12 +102,11 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext);
 
-            long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
             Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>
             {
                 Index = 2,
-                Difficulty = difficulty,
-                TotalDifficulty = _validNext.TotalDifficulty + difficulty,
+                Difficulty = 1,
+                TotalDifficulty = _validNext.TotalDifficulty + 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
