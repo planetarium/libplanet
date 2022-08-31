@@ -63,6 +63,7 @@ To be released.
  -  Added `Crypto.IPublicKey` inherited `Crypto.BlsPublicKey` class.
     [[#PBFT]]
  -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
+ -  Added static `PublicKeyGetter` class.  [[#PBFT]]
  -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
  -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
@@ -102,7 +103,13 @@ To be released.
  -  `AddressExtensions.ToAddress(PublicKey)` is changed to
     `AddressExtensions.ToAddress(IPublicKey)`.  [[#PBFT]]
  -  `AddressExtensions.ToAddress(PrivateKey)` is changed to
-    `AddressExtensions.ToAddress(IPrivateKey)`  [[#PBFT]]
+    `AddressExtensions.ToAddress(IPrivateKey)`.  [[#PBFT]]
+ -  (Libplanet.Net) Property `BoundPeer.PublicKey` type is now `IPublicKey`. the
+    following constructors `BoundPeer(PublicKey, IPAddress?)` and
+    `BoundPeer(PublicKey)` are also affected by this changes.  [[#PBFT]]
+ -  (Libplanet.Net) Parameter type `PublicKey` in `BoundPeer(PublicKey,
+    DnsEndPoint)` and `BoundPeer(PublicKey, DnsEndPoint, IPAddress?)` is
+    now `IPublicKey`.  [[#PBFT]]
 
 ### Bug fixes
 
