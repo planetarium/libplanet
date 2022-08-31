@@ -222,7 +222,6 @@ If omitted (default) explorer only the local blockchain store.")]
                     Console.Error.WriteLine("Creating Swarm.");
 
                     var privateKey = new PrivateKey();
-                    var consensusPrivateKey = new PrivateKey();
 
                     // FIXME: The appProtocolVersion should be fixed properly.
                     var swarmOptions = new SwarmOptions
