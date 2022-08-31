@@ -5,6 +5,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
@@ -171,7 +172,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Equal(2, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
 
-            foreach ((var privateKey, var peer) in TestUtils.PrivateKeys.Zip(TestUtils.Peers))
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                in TestUtils.PrivateKeys.Zip(TestUtils.Peers, (first, second) => (first, second)))
             {
                 if (privateKey == TestUtils.Peer2Priv)
                 {
