@@ -158,7 +158,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
-                    header.PreEvaluationHash
+                    header.PreEvaluationHash.ByteArray
                 );
 
                 expectedUnrenderedActions.AddRange(
@@ -183,7 +183,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                 transactions = ActionEvaluator<T>.OrderTxsForEvaluation(
                     header.ProtocolVersion,
                     transactions,
-                    header.PreEvaluationHash
+                    header.PreEvaluationHash.ByteArray
                 );
                 IEnumerable<IAction> actions = transactions.SelectMany(t =>
                     t.SystemAction is { } sa ? new[] { sa } : t.CustomActions!.Cast<IAction>()

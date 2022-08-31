@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -66,7 +67,7 @@ namespace Libplanet.Node.Tests
             };
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
-            ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
+            HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);
             _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(
                 privateKey: _minerKey,

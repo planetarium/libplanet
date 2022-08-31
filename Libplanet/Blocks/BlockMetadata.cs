@@ -243,8 +243,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="nonce">The proof-of-work nonce.</param>
         /// <returns>A pre-evaluation block hash.</returns>
-        public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
-            HashAlgorithmType.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
+        public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
+            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -256,7 +256,7 @@ namespace Libplanet.Blocks
         /// block <see cref="Difficulty"/>.</returns>
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
+        public (Nonce Nonce, HashDigest<SHA256> PreEvaluationHash) MineNonce(
             CancellationToken cancellationToken = default)
         {
             Hashcash.Stamp stamp = GetStampFunction();

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading;
 
 namespace Libplanet
@@ -57,7 +57,7 @@ namespace Libplanet
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         /// <seealso cref="Stamp"/>
-        public static (Nonce Nonce, ImmutableArray<byte> Digest) Answer(
+        public static (Nonce Nonce, HashDigest<SHA256> Digest) Answer(
             Stamp stamp,
             HashAlgorithmType hashAlgorithmType,
             long difficulty,
@@ -76,7 +76,7 @@ namespace Libplanet
                 byte[] digest = hashAlgorithmType.Digest(chunks);
                 if (ByteUtil.Satisfies(digest, difficulty))
                 {
-                    return (nonce, ImmutableArray.Create(digest));
+                    return (nonce, new HashDigest<SHA256>(digest));
                 }
             }
 

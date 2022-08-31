@@ -76,14 +76,15 @@ namespace Libplanet.Blocks
 
         public static Dictionary MarshalPreEvaluationBlockHeader(
             Dictionary marshaledMetadata,
-            ImmutableArray<byte> preEvaluationHash
+            HashDigest<SHA256> preEvaluationHash
         )
         {
             Dictionary dict = marshaledMetadata;
+            ImmutableArray<byte> preEvaluationHashBytes = preEvaluationHash.ByteArray;
 
-            if (!preEvaluationHash.IsDefaultOrEmpty)
+            if (!preEvaluationHashBytes.IsDefaultOrEmpty)
             {
-                dict = dict.Add(PreEvaluationHashKey, preEvaluationHash);
+                dict = dict.Add(PreEvaluationHashKey, preEvaluationHashBytes);
             }
 
             return dict;
@@ -212,8 +213,8 @@ namespace Libplanet.Blocks
             return metadata;
         }
 
-        public static ImmutableArray<byte> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
-            marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray;
+        public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
+            new HashDigest<SHA256>(marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray);
 
         public static PreEvaluationBlockHeader UnmarshalPreEvaluationBlockHeader(
             Dictionary marshaled)

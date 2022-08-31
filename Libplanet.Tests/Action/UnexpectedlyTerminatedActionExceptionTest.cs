@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
@@ -16,8 +15,8 @@ namespace Libplanet.Tests.Action
         public void Serializable()
         {
             var innerExc = new Exception("inner");
-            ImmutableArray<byte> preEvaluationHash =
-                TestUtils.GetRandomBytes(32).ToImmutableArray();
+            HashDigest<SHA256> preEvaluationHash =
+                new HashDigest<SHA256>(TestUtils.GetRandomBytes(32));
             long blockIndex = 100;
             var txId = new TxId(TestUtils.GetRandomBytes(TxId.Size));
             var previousStateRootHash = new HashDigest<SHA256>(

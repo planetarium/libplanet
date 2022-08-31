@@ -104,7 +104,7 @@ namespace Libplanet.Node
         public ImmutableArray<byte>? Signature => _header.Signature;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash => _header.PreEvaluationHash;
+        public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>
         public HashDigest<SHA256> StateRootHash => _header.StateRootHash;

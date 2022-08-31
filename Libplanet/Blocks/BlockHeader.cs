@@ -146,7 +146,7 @@ namespace Libplanet.Blocks
         public BlockHash Hash { get; }
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash =>
+        public HashDigest<SHA256> PreEvaluationHash =>
             _preEvaluationBlockHeader.PreEvaluationHash;
 
         /// <inheritdoc cref="IBlockHeader.StateRootHash"/>

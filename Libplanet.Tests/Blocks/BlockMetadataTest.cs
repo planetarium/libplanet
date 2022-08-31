@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
@@ -206,19 +207,16 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<byte> FromHex(string hex) =>
                 ParseHex(hex).ToImmutableArray();
 
-            ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(default);
+            HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
                 FromHex("089b110e22d007fe66ad5078864ee0b5fdba4de487712b1c4175fd78ae8eecb9"),
-                hash
-            );
+                hash.ByteArray);
 
             hash = BlockMetadata1.DerivePreEvaluationHash(
-                new Nonce(FromHex("e7c1adf92c65d35aaae5"))
-            );
+                new Nonce(FromHex("e7c1adf92c65d35aaae5")));
             AssertBytesEqual(
                 FromHex("9ae70453c854c69c03e9841e117d269b97615dcf4f580fb99577d981d3f61ebf"),
-                hash
-            );
+                hash.ByteArray);
         }
 
         [Fact]
@@ -227,13 +225,13 @@ namespace Libplanet.Tests.Blocks
             var codec = new Codec();
 
             HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
-            (Nonce nonce, ImmutableArray<byte> preEvalHash) =
+            (Nonce nonce, HashDigest<SHA256> preEvalHash) =
                 GenesisMetadata.MineNonce();
-            Assert.True(Satisfies(preEvalHash, GenesisMetadata.Difficulty));
+            Assert.True(Satisfies(preEvalHash.ByteArray, GenesisMetadata.Difficulty));
             ImmutableArray<byte> actual = ImmutableArray.Create(
                 sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
             );
-            AssertBytesEqual(actual, preEvalHash);
+            AssertBytesEqual(actual, preEvalHash.ByteArray);
         }
 
         [Fact]

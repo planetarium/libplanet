@@ -70,7 +70,7 @@ namespace Libplanet.Blocks
         /// hash is invalid.</exception>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            in ImmutableArray<byte> preEvaluationHash
+            in HashDigest<SHA256> preEvaluationHash
         )
             : base(content, preEvaluationHash)
         {

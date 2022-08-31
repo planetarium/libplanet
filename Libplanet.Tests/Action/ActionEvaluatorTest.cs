@@ -992,12 +992,13 @@ namespace Libplanet.Tests.Action
             txs = txs
                 .Where((tx, i) => i % numTxsPerSigner == 0)
                 .Concat(txs.Where((tx, i) => i % numTxsPerSigner != 0)).ToImmutableArray();
+
+            // FIXME: Invalid length for PreEvaluationHash.
             byte[] preEvaluationHashBytes =
             {
                 0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
                 0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
             };
-            ImmutableArray<byte> preEvaluationHash = preEvaluationHashBytes.ToImmutableArray();
 
             // Sanity check.
             Assert.True(originalAddresses.SequenceEqual(
@@ -1006,7 +1007,7 @@ namespace Libplanet.Tests.Action
             var orderedTxs = ActionEvaluator<RandomAction>.OrderTxsForEvaluation(
                 protocolVersion: protocolVersion,
                 txs: txs,
-                preEvaluationHash: preEvaluationHash
+                preEvaluationHashBytes: preEvaluationHashBytes.ToImmutableArray()
             ).ToImmutableArray();
 
             // Check signers are grouped together.
