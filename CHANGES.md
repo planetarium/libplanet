@@ -114,6 +114,12 @@ To be released.
     in `InvalidCredentialException` is now `IPublicKey`.  [[#PBFT]]
  -  (Libplanet.Net) Parameter type `PublicKey publicKey` in
     `InvalidMessageSignatureException` is now `IPublicKey`.  [[#PBFT]]
+ -  (Libplanet.Net) Parameter type `PrivateKey privateKey` in
+    `IMessageCodec<T>.Encode(Message, PrivateKey, AppProtocolVersion, Peer,
+    DateTimeOffset)` is now `IPrivatekey`.  [[#PBFT]]
+ -  (Libplanet.Net) Parameter type `PrivateKey privateKey` in
+    `NetMQMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer,
+    DateTimeOffset)` is now `IPrivateKey`.  [[#PBFT]]
 
 ### Bug fixes
 
