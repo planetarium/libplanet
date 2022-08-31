@@ -1,5 +1,6 @@
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
@@ -19,8 +20,14 @@ namespace Libplanet.PoS
 
         internal static (IAccountStateDelta, Validator) FetchValidator(
             IAccountStateDelta states,
-            Address operatorAddress)
+            Address operatorAddress,
+            PublicKey operatorPublicKey)
         {
+            if (!operatorAddress.Equals(operatorPublicKey.ToAddress()))
+            {
+                throw new PublicKeyAddressMatchingException(operatorAddress, operatorPublicKey);
+            }
+
             Address validatorAddress = Validator.DeriveAddress(operatorAddress);
             Validator validator;
             if (states.GetState(validatorAddress) is { } value)
@@ -29,7 +36,7 @@ namespace Libplanet.PoS
             }
             else
             {
-                validator = new Validator(operatorAddress);
+                validator = new Validator(operatorAddress, operatorPublicKey);
                 states = states.SetState(validator.Address, validator.Serialize());
             }
 
@@ -39,6 +46,7 @@ namespace Libplanet.PoS
         internal static IAccountStateDelta Create(
             IAccountStateDelta states,
             Address operatorAddress,
+            PublicKey operatorPublicKey,
             FungibleAssetValue governanceToken)
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
@@ -60,7 +68,7 @@ namespace Libplanet.PoS
             }
 
             Validator validator;
-            (states, validator) = FetchValidator(states, operatorAddress);
+            (states, validator) = FetchValidator(states, operatorAddress, operatorPublicKey);
 
             states = DelegateCtrl.Execute(
                 states,

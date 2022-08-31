@@ -1,5 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
@@ -7,9 +8,13 @@ namespace Libplanet.PoS
     {
         private FungibleAssetValue _consensusToken;
 
-        public ValidatorPower(Address validatorAddress, FungibleAssetValue consensusToken)
+        public ValidatorPower(
+            Address validatorAddress,
+            PublicKey operatorPublicKey,
+            FungibleAssetValue consensusToken)
         {
             ValidatorAddress = validatorAddress;
+            OperatorPublicKey = operatorPublicKey;
             ConsensusToken = consensusToken;
         }
 
@@ -17,10 +22,13 @@ namespace Libplanet.PoS
         {
             List serializedList = (List)serialized;
             ValidatorAddress = serializedList[0].ToAddress();
-            ConsensusToken = serializedList[1].ToFungibleAssetValue();
+            OperatorPublicKey = serializedList[1].ToPublicKey();
+            ConsensusToken = serializedList[2].ToFungibleAssetValue();
         }
 
         public Address ValidatorAddress { get; set; }
+
+        public PublicKey OperatorPublicKey { get; set; }
 
         public FungibleAssetValue ConsensusToken
         {
@@ -38,6 +46,7 @@ namespace Libplanet.PoS
 
         public IValue Serialize() => List.Empty
             .Add(ValidatorAddress.Serialize())
+            .Add(OperatorPublicKey.Serialize())
             .Add(ConsensusToken.Serialize());
     }
 }

@@ -1,3 +1,5 @@
+using System.Numerics;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -15,10 +17,12 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void CompareDifferentTokenTest()
         {
+            PublicKey publicKeyA = new PrivateKey().PublicKey;
+            PublicKey publicKeyB = new PrivateKey().PublicKey;
             ValidatorPower validatorPowerA = new ValidatorPower(
-                CreateAddress(), Asset.ConsensusToken * 10);
+                publicKeyA.ToAddress(), publicKeyA, Asset.ConsensusToken * 10);
             ValidatorPower validatorPowerB = new ValidatorPower(
-                CreateAddress(), Asset.ConsensusToken * 11);
+                publicKeyB.ToAddress(), publicKeyB, Asset.ConsensusToken * 11);
             Assert.True(_validatorPowerComparer.Compare(
                 validatorPowerA, validatorPowerB) > 0);
         }
@@ -26,12 +30,16 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void CompareSameTokenTest()
         {
+            PublicKey publicKeyA = new PrivateKey().PublicKey;
+            PublicKey publicKeyB = new PrivateKey().PublicKey;
             ValidatorPower validatorPowerA = new ValidatorPower(
-                new Address("1000000000000000000000000000000000000001"), Asset.ConsensusToken * 10);
+                publicKeyA.ToAddress(), publicKeyA, Asset.ConsensusToken * 10);
             ValidatorPower validatorPowerB = new ValidatorPower(
-                new Address("1000000000000000000000000000000000000002"), Asset.ConsensusToken * 10);
+                publicKeyB.ToAddress(), publicKeyB, Asset.ConsensusToken * 10);
+            int sign = -(new BigInteger(publicKeyA.ToAddress().ToByteArray())
+                - new BigInteger(publicKeyB.ToAddress().ToByteArray())).Sign;
             Assert.True(_validatorPowerComparer.Compare(
-                validatorPowerA, validatorPowerB) > 0);
+                validatorPowerA, validatorPowerB) == sign);
         }
     }
 }

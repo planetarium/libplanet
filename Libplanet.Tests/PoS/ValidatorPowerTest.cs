@@ -1,3 +1,4 @@
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -9,7 +10,10 @@ namespace Libplanet.Tests.PoS
 
         public ValidatorPowerTest()
         {
-            _consensusPowerKey = new ValidatorPower(CreateAddress(), Asset.ConsensusToken * 10);
+            _consensusPowerKey = new ValidatorPower(
+                CreateAddress(),
+                new PrivateKey().PublicKey,
+                Asset.ConsensusToken * 10);
         }
 
         [Fact]

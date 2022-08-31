@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -20,10 +21,15 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(DelegatorAddress, Asset.GovernanceToken * 100000);
             for (int i = 0; i < 200; i++)
             {
-                Address operatorAddress = CreateAddress();
+                PublicKey operatorPublicKey = new PrivateKey().PublicKey;
+                Address operatorAddress = operatorPublicKey.ToAddress();
                 _states = _states.MintAsset(operatorAddress, Asset.GovernanceToken * 1000);
                 OperatorAddresses.Add(operatorAddress);
-                _states = ValidatorCtrl.Create(_states, operatorAddress, Asset.GovernanceToken * 1);
+                _states = ValidatorCtrl.Create(
+                    _states,
+                    operatorAddress,
+                    operatorPublicKey,
+                    Asset.GovernanceToken * 1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(operatorAddress));
             }
         }

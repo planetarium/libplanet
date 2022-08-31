@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -6,6 +7,7 @@ namespace Libplanet.Tests.PoS
 {
     public class DelegateCtrlTest : PoSTest
     {
+        private readonly PublicKey _operatorPublicKey;
         private readonly Address _operatorAddress;
         private readonly Address _delegatorAddress;
         private readonly Address _validatorAddress;
@@ -13,7 +15,8 @@ namespace Libplanet.Tests.PoS
 
         public DelegateCtrlTest()
         {
-            _operatorAddress = CreateAddress();
+            _operatorPublicKey = new PrivateKey().PublicKey;
+            _operatorAddress = _operatorPublicKey.ToAddress();
             _delegatorAddress = CreateAddress();
             _validatorAddress = Validator.DeriveAddress(_operatorAddress);
             _states = InitializeStates();
@@ -107,7 +110,10 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(
                 _delegatorAddress, Asset.GovernanceToken * delegatorMintAmount);
             _states = ValidatorCtrl.Create(
-                _states, _operatorAddress, Asset.GovernanceToken * selfDelegateAmount);
+                _states,
+                _operatorAddress,
+                _operatorPublicKey,
+                Asset.GovernanceToken * selfDelegateAmount);
         }
     }
 }

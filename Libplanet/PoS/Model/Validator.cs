@@ -1,6 +1,7 @@
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
@@ -8,10 +9,11 @@ namespace Libplanet.PoS
     {
         private FungibleAssetValue _delegatorShares;
 
-        public Validator(Address operatorAddress)
+        public Validator(Address operatorAddress, PublicKey operatorPublicKey)
         {
             Address = DeriveAddress(operatorAddress);
             OperatorAddress = operatorAddress;
+            OperatorPublicKey = operatorPublicKey;
             Jailed = false;
             Status = BondingStatus.Unbonded;
             UnbondingCompletionBlockHeight = -1;
@@ -23,16 +25,18 @@ namespace Libplanet.PoS
             List serializedList = (List)serialized;
             Address = serializedList[0].ToAddress();
             OperatorAddress = serializedList[1].ToAddress();
-            Jailed = serializedList[2].ToBoolean();
-            Status = serializedList[3].ToEnum<BondingStatus>();
-            UnbondingCompletionBlockHeight = serializedList[4].ToLong();
-            DelegatorShares = serializedList[5].ToFungibleAssetValue();
+            OperatorPublicKey = serializedList[2].ToPublicKey();
+            Jailed = serializedList[3].ToBoolean();
+            Status = serializedList[4].ToEnum<BondingStatus>();
+            UnbondingCompletionBlockHeight = serializedList[5].ToLong();
+            DelegatorShares = serializedList[6].ToFungibleAssetValue();
         }
 
         public Validator(Validator validator)
         {
             Address = validator.Address;
             OperatorAddress = validator.OperatorAddress;
+            OperatorPublicKey = validator.OperatorPublicKey;
             Jailed = validator.Jailed;
             Status = validator.Status;
             UnbondingCompletionBlockHeight = validator.UnbondingCompletionBlockHeight;
@@ -59,6 +63,8 @@ namespace Libplanet.PoS
         public Address Address { get; set; }
 
         public Address OperatorAddress { get; set; }
+
+        public PublicKey OperatorPublicKey { get; set; }
 
         public bool Jailed { get; set; }
 
@@ -95,6 +101,7 @@ namespace Libplanet.PoS
             return List.Empty
                 .Add(Address.Serialize())
                 .Add(OperatorAddress.Serialize())
+                .Add(OperatorPublicKey.Serialize())
                 .Add(Jailed.Serialize())
                 .Add(Status.Serialize())
                 .Add(UnbondingCompletionBlockHeight.Serialize())

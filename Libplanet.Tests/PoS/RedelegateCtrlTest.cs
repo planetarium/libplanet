@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -6,6 +7,8 @@ namespace Libplanet.Tests.PoS
 {
     public class RedelegateCtrlTest : PoSTest
     {
+        private readonly PublicKey _srcOperatorPublicKey;
+        private readonly PublicKey _dstOperatorPublicKey;
         private readonly Address _srcOperatorAddress;
         private readonly Address _dstOperatorAddress;
         private readonly Address _delegatorAddress;
@@ -16,8 +19,10 @@ namespace Libplanet.Tests.PoS
 
         public RedelegateCtrlTest()
         {
-            _srcOperatorAddress = CreateAddress();
-            _dstOperatorAddress = CreateAddress();
+            _srcOperatorPublicKey = new PrivateKey().PublicKey;
+            _dstOperatorPublicKey = new PrivateKey().PublicKey;
+            _srcOperatorAddress = _srcOperatorPublicKey.ToAddress();
+            _dstOperatorAddress = _dstOperatorPublicKey.ToAddress();
             _delegatorAddress = CreateAddress();
             _srcValidatorAddress = Validator.DeriveAddress(_srcOperatorAddress);
             _dstValidatorAddress = Validator.DeriveAddress(_dstOperatorAddress);
@@ -239,9 +244,15 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(
                 _delegatorAddress, Asset.GovernanceToken * delegatorMintAmount);
             _states = ValidatorCtrl.Create(
-                _states, _srcOperatorAddress, Asset.GovernanceToken * selfDelegateAmount);
+                _states,
+                _srcOperatorAddress,
+                _srcOperatorPublicKey,
+                Asset.GovernanceToken * selfDelegateAmount);
             _states = ValidatorCtrl.Create(
-                _states, _dstOperatorAddress, Asset.GovernanceToken * selfDelegateAmount);
+                _states,
+                _dstOperatorAddress,
+                _dstOperatorPublicKey,
+                Asset.GovernanceToken * selfDelegateAmount);
             _states = DelegateCtrl.Execute(
                 _states,
                 _delegatorAddress,

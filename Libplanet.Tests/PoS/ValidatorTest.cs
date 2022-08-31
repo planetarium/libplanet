@@ -1,3 +1,4 @@
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace Libplanet.Tests.PoS
 
         public ValidatorTest()
         {
-            _validator = new Validator(CreateAddress());
+            _validator = new Validator(CreateAddress(), new PrivateKey().PublicKey);
         }
 
         [Fact]

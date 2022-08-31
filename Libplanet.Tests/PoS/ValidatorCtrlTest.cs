@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -6,6 +7,7 @@ namespace Libplanet.Tests.PoS
 {
     public class ValidatorCtrlTest : PoSTest
     {
+        private readonly PublicKey _operatorPublicKey;
         private readonly Address _operatorAddress;
         private readonly Address _validatorAddress;
         private IAccountStateDelta _states;
@@ -13,7 +15,8 @@ namespace Libplanet.Tests.PoS
         public ValidatorCtrlTest()
             : base()
         {
-            _operatorAddress = CreateAddress();
+            _operatorPublicKey = new PrivateKey().PublicKey;
+            _operatorAddress = _operatorPublicKey.ToAddress();
             _validatorAddress = Validator.DeriveAddress(_operatorAddress);
             _states = InitializeStates();
         }
@@ -25,7 +28,7 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress, Asset.ConsensusToken * 50);
             Assert.Throws<InvalidCurrencyException>(
                 () => _states = ValidatorCtrl.Create(
-                    _states, _operatorAddress, Asset.ConsensusToken * 30));
+                    _states, _operatorAddress, _operatorPublicKey, Asset.ConsensusToken * 30));
         }
 
         [Theory]
@@ -37,7 +40,10 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress, Asset.GovernanceToken * mintAmount);
             Assert.Throws<InsufficientFungibleAssetValueException>(
                 () => _states = ValidatorCtrl.Create(
-                    _states, _operatorAddress, Asset.GovernanceToken * selfDelegateAmount));
+                    _states,
+                    _operatorAddress,
+                    _operatorPublicKey,
+                    Asset.GovernanceToken * selfDelegateAmount));
         }
 
         [Theory]
@@ -48,7 +54,10 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(
                 _operatorAddress, Asset.GovernanceToken * mintAmount);
             _states = ValidatorCtrl.Create(
-                _states, _operatorAddress, Asset.GovernanceToken * selfDelegateAmount);
+                _states,
+                _operatorAddress,
+                _operatorPublicKey,
+                Asset.GovernanceToken * selfDelegateAmount);
             Assert.Equal(
                 Asset.ConsensusToken * selfDelegateAmount,
                 _states.GetBalance(_validatorAddress, Asset.ConsensusToken));
