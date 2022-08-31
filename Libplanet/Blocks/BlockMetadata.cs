@@ -40,7 +40,6 @@ namespace Libplanet.Blocks
         private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
         private Address _miner;
         private PublicKey? _publicKey;
-        private long _difficulty;
         private HashDigest<SHA256>? _txHash;
 
         static BlockMetadata()
@@ -61,9 +60,6 @@ namespace Libplanet.Blocks
         /// protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
         public BlockMetadata(IBlockMetadata metadata)
         {
             LastCommit = metadata.LastCommit;
@@ -72,7 +68,6 @@ namespace Libplanet.Blocks
             Timestamp = metadata.Timestamp;
             Miner = metadata.Miner;
             PublicKey = metadata.PublicKey;
-            Difficulty = metadata.Difficulty;
             PreviousHash = metadata.PreviousHash;
             _txHash = metadata.TxHash;
         }
@@ -168,24 +163,22 @@ namespace Libplanet.Blocks
             }
         }
 
-        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        /// negative.</exception>
-        /// <remarks>This cannot not be negative.</remarks>
         public long Difficulty
         {
-            get => _difficulty;
-            set
+            get
             {
-                if (value < 0L)
+                if (Index == 0)
                 {
-                    throw new InvalidBlockDifficultyException(
-                        $"{nameof(Difficulty)} cannot be negative: {value}"
-                    );
+                    return 0L;
                 }
-
-                long delta = value - _difficulty;
-                _difficulty = value;
+                else if (ProtocolVersion < 4)
+                {
+                    return 5000L;
+                }
+                else
+                {
+                    return 1L;
+                }
             }
         }
 
@@ -217,7 +210,6 @@ namespace Libplanet.Blocks
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("index", Index)
                 .Add("timestamp", Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add("difficulty", Difficulty)
                 .Add("nonce", nonce.ByteArray);
 
             if (ProtocolVersion != 0)

@@ -32,7 +32,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(0, m.Index);
             Assert.InRange(m.Timestamp, before, after);
             AssertBytesEqual(default(Address), m.Miner);
-            Assert.Equal(0, m.Difficulty);
             AssertBytesEqual(null, m.PreviousHash);
             AssertBytesEqual(null, m.TxHash);
         }
@@ -83,24 +82,11 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Difficulty()
-        {
-            BlockMetadata a = BlockMetadata1.Copy();
-            a.Difficulty = BlockMetadata1.Difficulty + 10L;
-            Assert.Equal(BlockMetadata1.Difficulty + 10L, a.Difficulty);
-
-            BlockMetadata b = BlockMetadata1.Copy();
-            Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
-            Assert.Equal(BlockMetadata1.Difficulty, b.Difficulty);
-        }
-
-        [Fact]
         public void MakeCandidateData()
         {
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "public_key",
@@ -116,7 +102,6 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 123L)
                 .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
                 .Add(
                     "public_key",
@@ -139,7 +124,6 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedPv0 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"));
             AssertBencodexEqual(expectedPv0, BlockMetadataPv0.MakeCandidateData(default));
@@ -151,7 +135,6 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expectedPv1 = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 123L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
                 .Add(
@@ -176,7 +159,6 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("difficulty", 123L)
                 .Add("nonce", new byte[] { 0xff, 0xef, 0x01, 0xcc })
                 .Add(
                     "reward_beneficiary",
@@ -207,7 +189,6 @@ namespace Libplanet.Tests.Blocks
             Bencodex.Types.Dictionary expected = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("difficulty", 0L)
                 .Add("nonce", ImmutableArray<byte>.Empty)
                 .Add(
                     "reward_beneficiary",
@@ -227,7 +208,7 @@ namespace Libplanet.Tests.Blocks
 
             ImmutableArray<byte> hash = GenesisMetadata.DerivePreEvaluationHash(default);
             AssertBytesEqual(
-                FromHex("c6c4dfd339e5264079c77ca916d5832d7162c523427ac8c56c51a3087059a8d7"),
+                FromHex("089b110e22d007fe66ad5078864ee0b5fdba4de487712b1c4175fd78ae8eecb9"),
                 hash
             );
 
@@ -235,7 +216,7 @@ namespace Libplanet.Tests.Blocks
                 new Nonce(FromHex("e7c1adf92c65d35aaae5"))
             );
             AssertBytesEqual(
-                FromHex("a14cf2e55373570a70b5a63e7a883095e853d295c3d58580fddb88468fe2d799"),
+                FromHex("9ae70453c854c69c03e9841e117d269b97615dcf4f580fb99577d981d3f61ebf"),
                 hash
             );
         }
@@ -267,8 +248,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                BlockMetadata1.Difficulty = long.MaxValue;
-
                 Exception exception = null;
                 Task task = Task.Run(() =>
                 {

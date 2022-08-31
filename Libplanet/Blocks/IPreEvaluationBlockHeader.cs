@@ -10,7 +10,7 @@ namespace Libplanet.Blocks
     {
         /// <summary>
         /// The proof-of-work nonce which satisfies the required
-        /// <see cref="IBlockMetadata.Difficulty"/>.
+        /// <see cref="BlockMetadata.Difficulty"/>.
         /// </summary>
         Nonce Nonce { get; }
 

@@ -199,7 +199,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightTwoStepChangedToPreCommit.WaitAsync();
             Assert.Equal(Step.PreCommit, ConsensusContext.Contexts[2].Step);
 
-            foreach ((var privateKey, var peer) in TestUtils.PrivateKeys.Zip(TestUtils.Peers))
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                in TestUtils.PrivateKeys.Zip(TestUtils.Peers, (first, second) => (first, second)))
             {
                 if (privateKey == TestUtils.Peer2Priv)
                 {

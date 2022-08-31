@@ -61,7 +61,6 @@ namespace Libplanet.Node.Tests
                 Index = 0L,
                 Timestamp = new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
                 PublicKey = _minerKey.PublicKey,
-                Difficulty = 0L,
                 PreviousHash = null,
                 Transactions = _txs,
             };
@@ -89,7 +88,6 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_block.Nonce, untyped.Nonce);
             Assert.Equal(_block.Miner, untyped.Miner);
             Assert.Equal(_block.PublicKey, untyped.PublicKey);
-            Assert.Equal(_block.Difficulty, untyped.Difficulty);
             Assert.Equal(_block.PreviousHash, untyped.PreviousHash);
             Assert.Equal(_block.TxHash, untyped.TxHash);
             Assert.Equal(_block.Signature, untyped.Signature);

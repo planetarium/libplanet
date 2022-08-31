@@ -274,7 +274,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             Assert.Equal(expected.Index, actual.Index);
             Assert.Equal(expected.Timestamp, actual.Timestamp);
             AssertBytesEqual(expected.Miner, actual.Miner);
-            Assert.Equal(expected.Difficulty, actual.Difficulty);
             AssertBytesEqual(expected.PreviousHash, actual.PreviousHash);
             AssertBytesEqual(expected.TxHash, actual.TxHash);
         }
@@ -410,7 +409,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var content = new BlockContent<T>
             {
                 Index = previousBlock.Index + 1,
-                Difficulty = difficulty,
                 Miner = miner?.ToAddress() ?? previousBlock.Miner,
                 PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
                 PreviousHash = previousBlock.Hash,
@@ -441,7 +439,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var content = new BlockContent<T>
             {
                 Index = previousBlock.Index + 1,
-                Difficulty = 1, // 0 difficulty is not allowed.
                 Miner = miner?.ToAddress() ?? previousBlock.Miner,
                 PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
                 PreviousHash = previousBlock.Hash,

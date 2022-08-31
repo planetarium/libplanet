@@ -76,11 +76,6 @@ in DefaultStore is used.")]
 consecutive blocks.")]
             int blockIntervalMilliseconds = 5000,
             [Option(
-                "minimum-difficulty",
-                new[] { 'm' },
-                Description = "Allowed minimum difficulty for mining blocks.")]
-            long minimumDifficulty = 1024L,
-            [Option(
                 "difficulty-bound-divisor",
                 new[] { 'D' },
                 Description = "A bound divisor to determine precision of block difficulties.")]
@@ -149,7 +144,6 @@ If omitted (default) explorer only the local blockchain store.")]
                 host,
                 port,
                 blockIntervalMilliseconds,
-                minimumDifficulty,
                 difficultyBoundDivisor,
                 workers,
                 appProtocolVersionToken,
@@ -354,8 +348,6 @@ If omitted (default) explorer only the local blockchain store.")]
             return new BlockPolicy<T>(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
-                difficultyStability: options.DifficultyBoundDivisor,
-                minimumDifficulty: options.MinimumDifficulty,
                 getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }

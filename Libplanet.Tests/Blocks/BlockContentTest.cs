@@ -34,7 +34,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(0, m.Index);
             Assert.InRange(m.Timestamp, before, after);
             AssertBytesEqual(default(Address), m.Miner);
-            Assert.Equal(0, m.Difficulty);
             AssertBytesEqual(null, m.PreviousHash);
             AssertBytesEqual(null, m.TxHash);
             Assert.Empty(m.Transactions);
@@ -231,8 +230,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                Block1.Difficulty = long.MaxValue;
-
                 Exception exception = null;
                 Task task = Task.Run(() =>
                 {

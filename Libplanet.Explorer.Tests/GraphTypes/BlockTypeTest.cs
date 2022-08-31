@@ -23,7 +23,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             var preEval = new BlockContent<NullAction>
             {
                 Index = 1,
-                Difficulty = 1,
                 PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
@@ -42,7 +41,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     index
                     hash
                     nonce
-                    difficulty
                     miner
                     publicKey
                     timestamp
@@ -64,7 +62,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 ByteUtil.Hex(block.Hash.ToByteArray()),
                 resultData["hash"]);
-            Assert.Equal(block.Difficulty, resultData["difficulty"]);
             Assert.Equal(
                 block.Miner.ToString(),
                 resultData["miner"]);

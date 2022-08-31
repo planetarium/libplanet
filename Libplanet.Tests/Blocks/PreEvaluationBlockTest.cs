@@ -29,10 +29,7 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                minimumDifficulty: 2,
-                difficultyStability: 1
-            );
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
@@ -64,7 +61,6 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
@@ -88,10 +84,7 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                minimumDifficulty: 2,
-                difficultyStability: 1
-            );
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
@@ -124,7 +117,6 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
