@@ -128,6 +128,15 @@ compatibility issues on certain platforms, and is slightly slower.
       <section><p>This extension class provides some convenient methods
 to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.SupplyOverflowException.html">SupplyOverflowException</a></h4>
+      <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
+supply exceed the maximum amount.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.TotalSupplyNotTrackableException.html">TotalSupplyNotTrackableException</a></h4>
+      <section><p>The exception thrown when <a class="xref" href="Libplanet.Action.IAccountStateView.html#Libplanet_Action_IAccountStateView_GetTotalSupply_Libplanet_Assets_Currency_">GetTotalSupply(Currency)</a> was called on a
+legacy untracked currency with <a class="xref" href="Libplanet.Assets.Currency.html#Libplanet_Assets_Currency_TotalSupplyTrackable">TotalSupplyTrackable</a> set to
+<code>false</code>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
       <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
@@ -220,6 +229,11 @@ compatible (i.e., disallowed to be casted to each other).</p>
 <p>Gets states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code>.</p>
 <p>If some states associated with the specified account <code data-dev-comment-type="paramref" class="paramref">addresses</code> have
 never been set these absent states are represented as <span class="xref">null</span>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.TotalSupplyGetter.html">TotalSupplyGetter</a></h4>
+      <section><p>An delegate to provide a view of total supply of a currency.</p>
+<p>Gets the total supply of the given <code data-dev-comment-type="paramref" class="paramref">currency</code>.
+</p>
 </section>
 </article>
           </div>

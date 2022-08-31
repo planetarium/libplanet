@@ -73,8 +73,8 @@
   
   <h1 id="Libplanet_Net_Transports_ITransport" data-uid="Libplanet.Net.Transports.ITransport" class="text-break">Interface ITransport
   </h1>
-  <div class="markdown level0 summary"><p>An interface to handle peer-to-peer networking, including <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> exchanging
-and <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> managing.</p>
+  <div class="markdown level0 summary"><p>An interface to handle peer-to-peer networking, including <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> exchange
+and <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> managing.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Transports.html">Libplanet.Net.Transports</a></h6>
@@ -83,23 +83,27 @@ and <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> managing.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface ITransport : IDisposable</code></pre>
   </div>
+  <h5 id="Libplanet_Net_Transports_ITransport_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>An instance of a transport implementing <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> should always be able to
+send requests and recieve replies.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L36">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_AsPeer_" data-uid="Libplanet.Net.Transports.ITransport.AsPeer*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_AsPeer" data-uid="Libplanet.Net.Transports.ITransport.AsPeer">AsPeer</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Net.Peer.html">Peer</a> representation of <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
+  <div class="markdown level1 summary"><p>The <em>current</em> <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> representation of <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Peer AsPeer { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">BoundPeer AsPeer { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -111,21 +115,26 @@ and <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> managing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td><a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Net_Transports_ITransport_AsPeer_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This creates a new instance of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> on the fly and can be different
+at different points of time depending on implementation, as <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>
+may account for changing endpoint.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_LastMessageTimestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.LastMessageTimestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_LastMessageTimestamp.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.LastMessageTimestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_LastMessageTimestamp_" data-uid="Libplanet.Net.Transports.ITransport.LastMessageTimestamp*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_LastMessageTimestamp" data-uid="Libplanet.Net.Transports.ITransport.LastMessageTimestamp">LastMessageTimestamp</h4>
-  <div class="markdown level1 summary"><p>The <see cref="!:DateTimeOffset"></see> of the last message was received.</p>
+  <div class="markdown level1 summary"><p>The <see cref="!:DateTimeOffset"></see> of the last message received.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -149,10 +158,10 @@ and <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> managing.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_ProcessMessageHandler.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.ProcessMessageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_ProcessMessageHandler.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.ProcessMessageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_ProcessMessageHandler_" data-uid="Libplanet.Net.Transports.ITransport.ProcessMessageHandler*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_ProcessMessageHandler" data-uid="Libplanet.Net.Transports.ITransport.ProcessMessageHandler">ProcessMessageHandler</h4>
@@ -181,14 +190,21 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_Running_" data-uid="Libplanet.Net.Transports.ITransport.Running*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_Running" data-uid="Libplanet.Net.Transports.ITransport.Running">Running</h4>
-  <div class="markdown level1 summary"><p>Whether this <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance is running.</p>
+  <div class="markdown level1 summary"><p>
+Whether this <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> instance is running.
+</p>
+<p>
+When the value is <code>true</code>, the <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> can recieve outside
+requests.  When the value is <code>false</code>, the <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a> stops recieving
+outside requests.
+</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -206,7 +222,7 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>Gets the value indicates whether the instance is running.</p>
+        <td><p>The value indicating whether the instance is running.</p>
 </td>
       </tr>
     </tbody>
@@ -215,10 +231,10 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable%7BLibplanet.Net.BoundPeer%7D%2CLibplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable%7BLibplanet.Net.BoundPeer%7D%2CLibplanet.Net.Messages.Message)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L133">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_BroadcastMessage_" data-uid="Libplanet.Net.Transports.ITransport.BroadcastMessage*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_BroadcastMessage_IEnumerable_Libplanet_Net_BoundPeer__Libplanet_Net_Messages_Message_" data-uid="Libplanet.Net.Transports.ITransport.BroadcastMessage(IEnumerable{Libplanet.Net.BoundPeer},Libplanet.Net.Messages.Message)">BroadcastMessage(IEnumerable&lt;BoundPeer&gt;, Message)</h4>
@@ -256,10 +272,10 @@ a reply is received. To handle reply, please use <a class="xref" href="Libplanet
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L150">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L161">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_ReplyMessageAsync_" data-uid="Libplanet.Net.Transports.ITransport.ReplyMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_ReplyMessageAsync_Libplanet_Net_Messages_Message_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.ReplyMessageAsync(Libplanet.Net.Messages.Message,CancellationToken)">ReplyMessageAsync(Message, CancellationToken)</h4>
@@ -318,10 +334,10 @@ corresponding to <code data-dev-comment-type="paramref" class="paramref">message
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_SendMessageAsync_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},CancellationToken)">SendMessageAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, CancellationToken)</h4>
@@ -406,10 +422,10 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer%2CLibplanet.Net.Messages.Message%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CSystem.Boolean%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L128">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_SendMessageAsync_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_SendMessageAsync_Libplanet_Net_BoundPeer_Libplanet_Net_Messages_Message_System_Nullable_TimeSpan__System_Int32_System_Boolean_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.SendMessageAsync(Libplanet.Net.BoundPeer,Libplanet.Net.Messages.Message,System.Nullable{TimeSpan},System.Int32,System.Boolean,CancellationToken)">SendMessageAsync(BoundPeer, Message, Nullable&lt;TimeSpan&gt;, Int32, Boolean, CancellationToken)</h4>
@@ -507,14 +523,14 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_StartAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.StartAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_StartAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.StartAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_StartAsync_" data-uid="Libplanet.Net.Transports.ITransport.StartAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_StartAsync_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.StartAsync(CancellationToken)">StartAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Initiates and runs transport layer.</p>
+  <div class="markdown level1 summary"><p>Starts running a transport layer as to put it in a <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_Running">Running</a> state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -534,8 +550,8 @@ a <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>A cancellation token used to propagate notification that this
-operation should be canceled.</p>
+        <td><p>The cancellation token to propagate a notification
+that this operation should be canceled.</p>
 </td>
       </tr>
     </tbody>
@@ -551,21 +567,21 @@ operation should be canceled.</p>
     <tbody>
       <tr>
         <td><span class="xref">Task</span></td>
-        <td><p>An awaitable task without value.</p>
+        <td><p>An awaitable <see cref="!:Task"></see> without a value.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_StopAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.StopAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_StopAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.StopAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L78">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_StopAsync_" data-uid="Libplanet.Net.Transports.ITransport.StopAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_StopAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Net.Transports.ITransport.StopAsync(TimeSpan,CancellationToken)">StopAsync(TimeSpan, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Stops running transport layer.</p>
+  <div class="markdown level1 summary"><p>Stops running a transport layer as to put it in a not <a class="xref" href="Libplanet.Net.Transports.ITransport.html#Libplanet_Net_Transports_ITransport_Running">Running</a> state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -585,15 +601,14 @@ operation should be canceled.</p>
       <tr>
         <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">waitFor</span></td>
-        <td><p>The <see cref="!:TimeSpan"></see> of delay
-before actual stopping.</p>
+        <td><p>The <see cref="!:TimeSpan"></see> to delay before actual stopping.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>A cancellation token used to propagate notification that this
-operation should be canceled.</p>
+        <td><p>The cancellation token to propagate a notification
+that this operation should be canceled.</p>
 </td>
       </tr>
     </tbody>
@@ -609,17 +624,17 @@ operation should be canceled.</p>
     <tbody>
       <tr>
         <td><span class="xref">Task</span></td>
-        <td><p>An awaitable task without value.</p>
+        <td><p>An awaitable <see cref="!:Task"></see> without a value.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L74">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Net_Transports_ITransport_WaitForRunningAsync_" data-uid="Libplanet.Net.Transports.ITransport.WaitForRunningAsync*"></a>
   <h4 id="Libplanet_Net_Transports_ITransport_WaitForRunningAsync" data-uid="Libplanet.Net.Transports.ITransport.WaitForRunningAsync">WaitForRunningAsync()</h4>
@@ -655,10 +670,10 @@ property becomes <code>true</code>.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_Transports_ITransport.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_Transports_ITransport.md&amp;value=---%0Auid%3A%20Libplanet.Net.Transports.ITransport%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/Transports/ITransport.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/Transports/ITransport.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

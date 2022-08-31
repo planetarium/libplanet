@@ -80,20 +80,24 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">IceServer</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a></div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
   <h5 id="Libplanet_Net_IceServer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IceServer : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class IceServer : object, IIceServer</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L12">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L9">View Source</a>
   </span>
   <a id="Libplanet_Net_IceServer__ctor_" data-uid="Libplanet.Net.IceServer.#ctor*"></a>
   <h4 id="Libplanet_Net_IceServer__ctor_System_String_" data-uid="Libplanet.Net.IceServer.#ctor(System.String)">IceServer(String)</h4>
@@ -122,14 +126,15 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_Uri_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_Uri_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L17">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L20">View Source</a>
   </span>
   <a id="Libplanet_Net_IceServer__ctor_" data-uid="Libplanet.Net.IceServer.#ctor*"></a>
   <h4 id="Libplanet_Net_IceServer__ctor_Uri_" data-uid="Libplanet.Net.IceServer.#ctor(Uri)">IceServer(Uri)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance by parsing given <code data-dev-comment-type="paramref" class="paramref">url</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -148,7 +153,8 @@
       <tr>
         <td><span class="xref">Uri</span></td>
         <td><span class="parametername">url</span></td>
-        <td></td>
+        <td><p>The <see cref="!:Uri"></see> to parse.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -156,10 +162,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer_Credential.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Credential%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer_Credential.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Credential%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L52">View Source</a>
   </span>
   <a id="Libplanet_Net_IceServer_Credential_" data-uid="Libplanet.Net.IceServer.Credential*"></a>
   <h4 id="Libplanet_Net_IceServer_Credential" data-uid="Libplanet.Net.IceServer.Credential">Credential</h4>
@@ -186,10 +192,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer_Url.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Url%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer_Url.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Url%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Net_IceServer_Url_" data-uid="Libplanet.Net.IceServer.Url*"></a>
   <h4 id="Libplanet_Net_IceServer_Url" data-uid="Libplanet.Net.IceServer.Url">Url</h4>
@@ -216,10 +222,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer_Username.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Username%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer_Username.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Username%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Net_IceServer_Username_" data-uid="Libplanet.Net.IceServer.Username*"></a>
   <h4 id="Libplanet_Net_IceServer_Username" data-uid="Libplanet.Net.IceServer.Username">Username</h4>
@@ -244,6 +250,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a>
+  </div>
 </article>
           </div>
           
@@ -252,10 +262,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/apiSpec/new?filename=Libplanet_Net_IceServer.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/apiSpec/new?filename=Libplanet_Net_IceServer.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/5046f73f2fbed9e4ef037ec0546c181ebdf287a1/Libplanet.Net/IceServer.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/2fb6918b7dc433a7d4720a9549f9c0b40363abc4/Libplanet.Net/IceServer.cs/#L7" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
