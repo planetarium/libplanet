@@ -110,6 +110,10 @@ To be released.
  -  (Libplanet.Net) Parameter type `PublicKey` in `BoundPeer(PublicKey,
     DnsEndPoint)` and `BoundPeer(PublicKey, DnsEndPoint, IPAddress?)` is
     now `IPublicKey`.  [[#PBFT]]
+ -  (Libplanet.Net) Parameters type `PublicKey expected` and `PublicKey actual`
+    in `InvalidCredentialException` is now `IPublicKey`.  [[#PBFT]]
+ -  (Libplanet.Net) Parameter type `PublicKey publicKey` in
+    `InvalidMessageSignatureException` is now `IPublicKey`.  [[#PBFT]]
 
 ### Bug fixes
 

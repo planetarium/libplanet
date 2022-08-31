@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -15,8 +16,8 @@ namespace Libplanet.Net.Transports
     {
         internal InvalidCredentialException(
             string message,
-            PublicKey expected,
-            PublicKey actual)
+            IPublicKey expected,
+            IPublicKey actual)
             : base(message)
         {
             Expected = expected;
@@ -32,16 +33,16 @@ namespace Libplanet.Net.Transports
             Actual = new PublicKey(info.GetValue<byte[]>(nameof(Actual)));
         }
 
-        public PublicKey Expected { get; private set; }
+        public IPublicKey Expected { get; private set; }
 
-        public PublicKey Actual { get; private set; }
+        public IPublicKey Actual { get; private set; }
 
         public override void GetObjectData(
             SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue(nameof(Expected), Expected.Format(true));
-            info.AddValue(nameof(Actual), Actual.Format(true));
+            info.AddValue(nameof(Expected), Expected.KeyBytes.ToArray());
+            info.AddValue(nameof(Actual), Actual.KeyBytes.ToArray());
         }
     }
 }
