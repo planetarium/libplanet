@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Libplanet.Net;
@@ -141,7 +142,7 @@ namespace Libplanet.Node
                 BoundPeer value,
                 JsonSerializerOptions options)
             {
-                string pubKeyString = ByteUtil.Hex(value.PublicKey.Format(true));
+                string pubKeyString = ByteUtil.Hex(value.PublicKey.CompressedKeyBytes.ToArray());
                 string hostString = value.EndPoint.Host;
                 string portString = value.EndPoint.Port.ToString(CultureInfo.InvariantCulture);
                 writer.WriteStringValue($"{pubKeyString},{hostString},{portString}");
