@@ -97,6 +97,12 @@ To be released.
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
+ -  `Address(PublicKey)` constructor is changed to
+    `Address(IPublicKey)`.  [[#PBFT]]
+ -  `AddressExtensions.ToAddress(PublicKey)` is changed to
+    `AddressExtensions.ToAddress(IPublicKey)`.  [[#PBFT]]
+ -  `AddressExtensions.ToAddress(PrivateKey)` is changed to
+    `AddressExtensions.ToAddress(IPrivateKey)`  [[#PBFT]]
 
 ### Bug fixes
 
