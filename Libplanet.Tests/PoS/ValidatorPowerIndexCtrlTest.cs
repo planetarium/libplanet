@@ -45,7 +45,7 @@ namespace Libplanet.Tests.PoS
             _states = ValidatorPowerIndexCtrl.Update(_states, ValidatorAddresses);
             ValidatorPowerIndex validatorPowerIndex;
             (_states, validatorPowerIndex)
-                = ValidatorPowerIndexCtrl.GetValidatorPowerIndex(_states);
+                = ValidatorPowerIndexCtrl.FetchValidatorPowerIndex(_states);
             List<ValidatorPower> index = validatorPowerIndex.Index.ToList();
             Assert.Equal(5, index.Count);
             Assert.Equal(ValidatorAddresses[2], index[0].ValidatorAddress);
@@ -63,7 +63,7 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void SortingTestSameToken()
         {
-            (_states, _) = ValidatorPowerIndexCtrl.GetValidatorPowerIndex(_states);
+            (_states, _) = ValidatorPowerIndexCtrl.FetchValidatorPowerIndex(_states);
             _states = _states.MintAsset(ValidatorAddresses[0], Asset.ConsensusToken * 10);
             _states = _states.MintAsset(ValidatorAddresses[1], Asset.ConsensusToken * 10);
             _states = _states.MintAsset(ValidatorAddresses[2], Asset.ConsensusToken * 10);
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.PoS
             _states = ValidatorPowerIndexCtrl.Update(_states, ValidatorAddresses);
             ValidatorPowerIndex validatorPowerIndex;
             (_states, validatorPowerIndex)
-                = ValidatorPowerIndexCtrl.GetValidatorPowerIndex(_states);
+                = ValidatorPowerIndexCtrl.FetchValidatorPowerIndex(_states);
             List<ValidatorPower> index = validatorPowerIndex.Index.ToList();
             Assert.Equal(5, index.Count);
             for (int i = 0; i < index.Count - 1; i++)

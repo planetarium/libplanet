@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Action;
 using Libplanet.PoS;
 using Xunit;
@@ -32,7 +31,7 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(500, 500, 100, 100);
             _states = _states.MintAsset(_delegatorAddress, Asset.ConsensusToken * 50);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                     () => _states = RedelegateCtrl.Execute(
                         _states,
                         _delegatorAddress,
@@ -40,7 +39,7 @@ namespace Libplanet.Tests.PoS
                         _dstValidatorAddress,
                         Asset.ConsensusToken * 30,
                         1));
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                     () => _states = RedelegateCtrl.Execute(
                         _states,
                         _delegatorAddress,
@@ -54,14 +53,22 @@ namespace Libplanet.Tests.PoS
         public void InvalidValidatorTest()
         {
             Initialize(500, 500, 100, 100);
-            Assert.Throws<ArgumentException>(
-                    () => _states = RedelegateCtrl.Execute(
-                        _states,
-                        _delegatorAddress,
-                        _srcValidatorAddress,
-                        _dstValidatorAddress,
-                        Asset.GovernanceToken * 10,
-                        1));
+            Assert.Throws<NullValidatorException>(
+                () => _states = RedelegateCtrl.Execute(
+                    _states,
+                    _delegatorAddress,
+                    CreateAddress(),
+                    _dstValidatorAddress,
+                    Asset.Share * 10,
+                    1));
+            Assert.Throws<NullValidatorException>(
+                () => _states = RedelegateCtrl.Execute(
+                    _states,
+                    _delegatorAddress,
+                    _srcValidatorAddress,
+                    CreateAddress(),
+                    Asset.Share * 10,
+                    1));
         }
 
         [Fact]
@@ -79,7 +86,7 @@ namespace Libplanet.Tests.PoS
                     i);
             }
 
-            Assert.Throws<InvalidOperationException>(
+            Assert.Throws<MaximumRedelegationEntriesException>(
                     () => _states = RedelegateCtrl.Execute(
                         _states,
                         _delegatorAddress,
@@ -93,7 +100,7 @@ namespace Libplanet.Tests.PoS
         public void ExceedRedelegateTest()
         {
             Initialize(500, 500, 100, 100);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InsufficientFungibleAssetValueException>(
                     () => _states = RedelegateCtrl.Execute(
                         _states,
                         _delegatorAddress,
@@ -122,15 +129,15 @@ namespace Libplanet.Tests.PoS
                 Asset.Share * redelegateAmount,
                 1);
             Assert.Single(
-                RedelegateCtrl.GetRedelegationByAddr(_states, _redelegationAddress)
+                RedelegateCtrl.GetRedelegation(_states, _redelegationAddress)
                 .RedelegationEntryAddresses);
             _states = RedelegateCtrl.Complete(_states, _redelegationAddress, 1000);
             Assert.Single(
-                RedelegateCtrl.GetRedelegationByAddr(_states, _redelegationAddress)
+                RedelegateCtrl.GetRedelegation(_states, _redelegationAddress)
                 .RedelegationEntryAddresses);
             _states = RedelegateCtrl.Complete(_states, _redelegationAddress, 50400 * 5);
             Assert.Empty(
-                RedelegateCtrl.GetRedelegationByAddr(_states, _redelegationAddress)
+                RedelegateCtrl.GetRedelegation(_states, _redelegationAddress)
                 .RedelegationEntryAddresses);
         }
 
@@ -189,7 +196,7 @@ namespace Libplanet.Tests.PoS
                 Asset.GovernanceToken * (2 * selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             Assert.Equal(
-                ValidatorCtrl.GetValidatorByAddr(_states, _srcValidatorAddress).DelegatorShares,
+                ValidatorCtrl.GetValidator(_states, _srcValidatorAddress).DelegatorShares,
                 _states.GetBalance(
                     Delegation.DeriveAddress(
                         _srcOperatorAddress, _srcValidatorAddress), Asset.Share)
@@ -197,7 +204,7 @@ namespace Libplanet.Tests.PoS
                     Delegation.DeriveAddress(
                         _delegatorAddress, _srcValidatorAddress), Asset.Share));
             Assert.Equal(
-                ValidatorCtrl.GetValidatorByAddr(_states, _dstValidatorAddress).DelegatorShares,
+                ValidatorCtrl.GetValidator(_states, _dstValidatorAddress).DelegatorShares,
                 _states.GetBalance(
                     Delegation.DeriveAddress(
                         _dstOperatorAddress, _dstValidatorAddress), Asset.Share)
@@ -206,7 +213,7 @@ namespace Libplanet.Tests.PoS
                         _delegatorAddress, _dstValidatorAddress), Asset.Share));
             RedelegationEntry entry = new RedelegationEntry(
                 _states.GetState(
-                    RedelegateCtrl.GetRedelegationByAddr(_states, _redelegationAddress)
+                    RedelegateCtrl.GetRedelegation(_states, _redelegationAddress)
                     .RedelegationEntryAddresses[0]));
             Assert.Equal(
                 Asset.ConsensusToken * (selfDelegateAmount + delegateAmount)

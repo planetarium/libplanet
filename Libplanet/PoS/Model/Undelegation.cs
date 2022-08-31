@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class Undelegation
     {
         public Undelegation(Address delegatorAddress, Address validatorAddress)

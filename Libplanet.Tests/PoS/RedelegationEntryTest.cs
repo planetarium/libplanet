@@ -1,4 +1,3 @@
-using System;
 using Libplanet.PoS;
 using Xunit;
 
@@ -22,17 +21,17 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void InvalidUnbondingConsensusToken()
         {
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.RedelegatingShare = Asset.GovernanceToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.RedelegatingShare = Asset.ConsensusToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.UnbondingConsensusToken = Asset.GovernanceToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.UnbondingConsensusToken = Asset.Share * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.IssuedShare = Asset.GovernanceToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _redelegationEntry.IssuedShare = Asset.ConsensusToken * 1);
         }
 

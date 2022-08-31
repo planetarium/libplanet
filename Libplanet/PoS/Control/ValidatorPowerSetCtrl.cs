@@ -1,23 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bencodex.Types;
 using Libplanet.Action;
 
 namespace Libplanet.PoS
 {
     internal static class ValidatorPowerSetCtrl
     {
-        internal static (IAccountStateDelta, ValidatorPowerSet) GetValidatorPowerSet(
+        internal static (IAccountStateDelta, ValidatorPowerSet) FetchValidatorPowerSet(
             IAccountStateDelta states)
         {
-            IValue? serialized = states.GetState(ReservedAddress.ValidatorPowerSet);
-            ValidatorPowerSet validatorPowerSet
-                = (serialized == null)
-                ? new ValidatorPowerSet()
-                : new ValidatorPowerSet(serialized);
-            states = states.SetState(
-                validatorPowerSet.Address, validatorPowerSet.Serialize());
+            ValidatorPowerSet validatorPowerSet;
+            if (states.GetState(ReservedAddress.ValidatorPowerSet) is { } value)
+            {
+                validatorPowerSet = new ValidatorPowerSet(value);
+            }
+            else
+            {
+                validatorPowerSet = new ValidatorPowerSet();
+                states = states.SetState(
+                    validatorPowerSet.Address, validatorPowerSet.Serialize());
+            }
+
             return (states, validatorPowerSet);
         }
 
@@ -36,22 +40,27 @@ namespace Libplanet.PoS
         internal static IAccountStateDelta UpdateSets(IAccountStateDelta states)
         {
             ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = GetValidatorPowerSet(states);
+            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
             validatorPowerSet.PreviousBondedSet
                 = new SortedSet<ValidatorPower>(
                     validatorPowerSet.BondedSet, new ValidatorPowerComparer());
             validatorPowerSet.BondedSet.Clear();
             validatorPowerSet.UnbondedSet.Clear();
             ValidatorPowerIndex validatorPowerIndex;
-            (states, validatorPowerIndex) = ValidatorPowerIndexCtrl.GetValidatorPowerIndex(states);
+            (states, validatorPowerIndex)
+                = ValidatorPowerIndexCtrl.FetchValidatorPowerIndex(states);
 
             foreach (var item in validatorPowerIndex.Index.Select((value, index) => (value, index)))
             {
-                Validator validator = ValidatorCtrl.GetValidatorByAddr(
-                    states, item.value.ValidatorAddress);
+                if (!(ValidatorCtrl.GetValidator(
+                    states, item.value.ValidatorAddress) is { } validator))
+                {
+                    throw new NullValidatorException(item.value.ValidatorAddress);
+                }
+
                 if (validator.Jailed)
                 {
-                    throw new InvalidOperationException();
+                    throw new JailedValidatorException(validator.Address);
                 }
 
                 if (item.index >= ValidatorPowerSet.MaxBondedSetSize ||
@@ -75,11 +84,15 @@ namespace Libplanet.PoS
         internal static IAccountStateDelta UpdateBondedSetElements(IAccountStateDelta states)
         {
             ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = GetValidatorPowerSet(states);
+            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
             foreach (ValidatorPower validatorPower in validatorPowerSet.BondedSet)
             {
-                Validator validator = ValidatorCtrl.GetValidatorByAddr(
-                    states, validatorPower.ValidatorAddress);
+                if (!(ValidatorCtrl.GetValidator(
+                    states, validatorPower.ValidatorAddress) is { } validator))
+                {
+                    throw new NullValidatorException(validatorPower.ValidatorAddress);
+                }
+
                 states = ValidatorCtrl.Bond(states, validatorPower.ValidatorAddress);
             }
 
@@ -90,11 +103,15 @@ namespace Libplanet.PoS
             IAccountStateDelta states, long blockHeight)
         {
             ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = GetValidatorPowerSet(states);
+            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
             foreach (ValidatorPower validatorPower in validatorPowerSet.UnbondedSet)
             {
-                Validator validator = ValidatorCtrl.GetValidatorByAddr(
-                    states, validatorPower.ValidatorAddress);
+                if (!(ValidatorCtrl.GetValidator(
+                    states, validatorPower.ValidatorAddress) is { } validator))
+                {
+                    throw new NullValidatorException(validatorPower.ValidatorAddress);
+                }
+
                 states = ValidatorCtrl.Unbond(states, validatorPower.ValidatorAddress, blockHeight);
             }
 

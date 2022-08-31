@@ -1,9 +1,7 @@
-using System;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class Delegation
     {
         public Delegation(Address delegatorAddress, Address validatorAddress)

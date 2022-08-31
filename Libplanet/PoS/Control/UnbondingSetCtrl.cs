@@ -1,20 +1,23 @@
-using Bencodex.Types;
 using Libplanet.Action;
 
 namespace Libplanet.PoS
 {
     internal static class UnbondingSetCtrl
     {
-        internal static (IAccountStateDelta, UnbondingSet) GetUnbondingSet(
+        internal static (IAccountStateDelta, UnbondingSet) FetchUnbondingSet(
             IAccountStateDelta states)
         {
-            IValue? serialized = states.GetState(ReservedAddress.UnbondingSet);
-            UnbondingSet unbondingSet
-                = (serialized == null)
-                ? new UnbondingSet()
-                : new UnbondingSet(serialized);
-            states = states.SetState(
-                unbondingSet.Address, unbondingSet.Serialize());
+            UnbondingSet unbondingSet;
+            if (states.GetState(ReservedAddress.UnbondingSet) is { } value)
+            {
+                unbondingSet = new UnbondingSet(value);
+            }
+            else
+            {
+                unbondingSet = new UnbondingSet();
+                states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
+            }
+
             return (states, unbondingSet);
         }
 
@@ -22,7 +25,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, long blockHeight)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             foreach (Address address in unbondingSet.ValidatorAddressSet)
             {
                 states = ValidatorCtrl.Complete(states, address, blockHeight);
@@ -35,7 +38,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, long blockHeight)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             foreach (Address address in unbondingSet.UndelegationAddressSet)
             {
                 states = UndelegateCtrl.Complete(states, address, blockHeight);
@@ -48,7 +51,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, long blockHeight)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             foreach (Address address in unbondingSet.RedelegationAddressSet)
             {
                 states = RedelegateCtrl.Complete(states, address, blockHeight);
@@ -71,7 +74,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address validatorAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.ValidatorAddressSet.Add(validatorAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;
@@ -81,7 +84,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address undelegationAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.UndelegationAddressSet.Add(undelegationAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;
@@ -91,7 +94,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address redelegationAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.RedelegationAddressSet.Add(redelegationAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;
@@ -101,7 +104,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address validatorAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.ValidatorAddressSet.Remove(validatorAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;
@@ -111,7 +114,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address undelegationAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.UndelegationAddressSet.Remove(undelegationAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;
@@ -121,7 +124,7 @@ namespace Libplanet.PoS
             IAccountStateDelta states, Address redelegationAddress)
         {
             UnbondingSet unbondingSet;
-            (states, unbondingSet) = GetUnbondingSet(states);
+            (states, unbondingSet) = FetchUnbondingSet(states);
             unbondingSet.RedelegationAddressSet.Remove(redelegationAddress);
             states = states.SetState(unbondingSet.Address, unbondingSet.Serialize());
             return states;

@@ -1,5 +1,3 @@
-using System;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 
@@ -7,7 +5,7 @@ namespace Libplanet.PoS
 {
     internal static class ValidatorCtrl
     {
-        internal static Validator? GetValidatorByAddr(
+        internal static Validator? GetValidator(
             IAccountStateDelta states,
             Address validatorAddress)
         {
@@ -15,13 +13,13 @@ namespace Libplanet.PoS
             {
                 return new Validator(value);
             }
+
             return null;
         }
 
-        internal static (IAccountStateDelta, Validator) GetValidator(
+        internal static (IAccountStateDelta, Validator) FetchValidator(
             IAccountStateDelta states,
-            Address operatorAddress,
-            bool create = true)
+            Address operatorAddress)
         {
             Address validatorAddress = Validator.DeriveAddress(operatorAddress);
             Validator validator;
@@ -29,7 +27,7 @@ namespace Libplanet.PoS
             {
                 validator = new Validator(value);
             }
-            else if(create)
+            else
             {
                 validator = new Validator(operatorAddress);
                 states = states.SetState(validator.Address, validator.Serialize());
@@ -45,22 +43,25 @@ namespace Libplanet.PoS
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
             {
-                throw new ArgumentException();
+                throw new InvalidCurrencyException(Asset.GovernanceToken, governanceToken.Currency);
             }
 
-            if (Asset.ConsensusFromGovernance(governanceToken) < Validator.MinSelfDelegation)
+            FungibleAssetValue consensusToken = Asset.ConsensusFromGovernance(governanceToken);
+            if (consensusToken < Validator.MinSelfDelegation)
             {
-                throw new ArgumentException();
+                throw new InsufficientFungibleAssetValueException(
+                    Validator.MinSelfDelegation, consensusToken, "Insufficient self delegation");
             }
 
-            if (states.GetState(Validator.DeriveAddress(operatorAddress)) != null)
+            Address validatorAddress = Validator.DeriveAddress(operatorAddress);
+            if (states.GetState(validatorAddress) != null)
             {
-                throw new InvalidOperationException();
+                throw new DuplicatedValidatorException(validatorAddress);
             }
 
             Validator validator;
-            (states, validator) = GetValidator(states, operatorAddress);
-            states = states.SetState(validator.Address, validator.Serialize());
+            (states, validator) = FetchValidator(states, operatorAddress);
+
             states = DelegateCtrl.Execute(
                 states,
                 operatorAddress,
@@ -74,7 +75,10 @@ namespace Libplanet.PoS
         internal static FungibleAssetValue? ShareFromConsensusToken(
             IAccountStateDelta states, Address validatorAddress, FungibleAssetValue consensusToken)
         {
-            Validator validator = GetValidatorByAddr(states, validatorAddress);
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             FungibleAssetValue validatorConsensusToken
                 = states.GetBalance(validator.Address, Asset.ConsensusToken);
@@ -101,7 +105,10 @@ namespace Libplanet.PoS
         internal static FungibleAssetValue? ConsensusTokenFromShare(
             IAccountStateDelta states, Address validatorAddress, FungibleAssetValue share)
         {
-            Validator validator = GetValidatorByAddr(states, validatorAddress);
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             FungibleAssetValue validatorConsensusToken
                 = states.GetBalance(validator.Address, Asset.ConsensusToken);
@@ -130,7 +137,10 @@ namespace Libplanet.PoS
             IAccountStateDelta states,
             Address validatorAddress)
         {
-            Validator validator = GetValidatorByAddr(states, validatorAddress);
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             validator.UnbondingCompletionBlockHeight = -1;
             if (validator.Status != BondingStatus.Bonded)
@@ -152,7 +162,10 @@ namespace Libplanet.PoS
             Address validatorAddress,
             long blockHeight)
         {
-            Validator validator = GetValidatorByAddr(states, validatorAddress);
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             validator.UnbondingCompletionBlockHeight = blockHeight + UnbondingSet.Period;
             if (validator.Status == BondingStatus.Bonded)
@@ -177,7 +190,10 @@ namespace Libplanet.PoS
             Address validatorAddress,
             long blockHeight)
         {
-            Validator validator = GetValidatorByAddr(states, validatorAddress);
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             if (!validator.IsMatured(blockHeight) || (validator.Status != BondingStatus.Unbonding))
             {

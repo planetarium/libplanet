@@ -1,10 +1,8 @@
-using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class UndelegationEntry
     {
         private FungibleAssetValue _unbondingConsensusToken;
@@ -43,7 +41,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.ConsensusToken))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.ConsensusToken, value.Currency);
                 }
 
                 _unbondingConsensusToken = value;

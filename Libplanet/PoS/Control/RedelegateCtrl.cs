@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -8,43 +7,39 @@ namespace Libplanet.PoS
 {
     internal static class RedelegateCtrl
     {
-        internal static Redelegation GetRedelegationByAddr(
+        internal static Redelegation? GetRedelegation(
             IAccountStateDelta states,
             Address redelegationAddress)
         {
-            IValue? serializedRedelegation = states.GetState(redelegationAddress);
-            if (serializedRedelegation == null)
+            if (states.GetState(redelegationAddress) is { } value)
             {
-                throw new InvalidOperationException();
+                return new Redelegation(value);
             }
 
-            Redelegation redelegation = new Redelegation(serializedRedelegation);
-            return redelegation;
+            return null;
         }
 
-        internal static (IAccountStateDelta, Redelegation) GetRedelegation(
+        internal static (IAccountStateDelta, Redelegation) FetchRedelegation(
             IAccountStateDelta states,
             Address delegatorAddress,
             Address srcValidatorAddress,
-            Address dstValidatorAddress,
-            bool create = true)
+            Address dstValidatorAddress)
         {
             Address redelegationAddress = Redelegation.DeriveAddress(
                 delegatorAddress, srcValidatorAddress, dstValidatorAddress);
-            IValue? serializedRedelegation = states.GetState(redelegationAddress);
 
             Redelegation redelegation;
-            if (create && serializedRedelegation == null)
+            if (states.GetState(redelegationAddress) is { } value)
+            {
+                redelegation = new Redelegation(value);
+            }
+            else
             {
                 redelegation = new Redelegation(
                     delegatorAddress,
                     srcValidatorAddress,
                     dstValidatorAddress);
                 states = states.SetState(redelegation.Address, redelegation.Serialize());
-            }
-            else
-            {
-                redelegation = GetRedelegationByAddr(states, redelegationAddress);
             }
 
             return (states, redelegation);
@@ -67,11 +62,21 @@ namespace Libplanet.PoS
             // 5?. Delegation does not have sufficient token (fail or apply maximum)
             if (!redelegatingShare.Currency.Equals(Asset.Share))
             {
-                throw new ArgumentException();
+                throw new InvalidCurrencyException(Asset.Share, redelegatingShare.Currency);
+            }
+
+            if (ValidatorCtrl.GetValidator(states, srcValidatorAddress) is null)
+            {
+                throw new NullValidatorException(srcValidatorAddress);
+            }
+
+            if (ValidatorCtrl.GetValidator(states, dstValidatorAddress) is null)
+            {
+                throw new NullValidatorException(dstValidatorAddress);
             }
 
             Redelegation redelegation;
-            (states, redelegation) = GetRedelegation(
+            (states, redelegation) = FetchRedelegation(
                 states,
                 delegatorAddress,
                 srcValidatorAddress,
@@ -80,10 +85,13 @@ namespace Libplanet.PoS
             if (redelegation.RedelegationEntryAddresses.Count
                 >= Redelegation.MaximumRedelegationEntries)
             {
-                throw new InvalidOperationException();
+                throw new MaximumRedelegationEntriesException(
+                    redelegation.Address, redelegation.RedelegationEntryAddresses.Count);
             }
 
-            (states, _) = DelegateCtrl.GetDelegation(states, delegatorAddress, dstValidatorAddress);
+            // Add new destination delegation, if not exist
+            (states, _) = DelegateCtrl.FetchDelegation(
+                states, delegatorAddress, dstValidatorAddress);
             FungibleAssetValue unbondingConsensusToken;
             FungibleAssetValue issuedShare;
             (states, unbondingConsensusToken) = Bond.Cancel(
@@ -97,8 +105,16 @@ namespace Libplanet.PoS
                 dstValidatorAddress,
                 redelegation.DstDelegationAddress);
 
-            Validator srcValidator = ValidatorCtrl.GetValidatorByAddr(states, srcValidatorAddress);
-            Validator dstValidator = ValidatorCtrl.GetValidatorByAddr(states, dstValidatorAddress);
+            if (!(ValidatorCtrl.GetValidator(states, srcValidatorAddress) is { } srcValidator))
+            {
+                throw new NullValidatorException(srcValidatorAddress);
+            }
+
+            if (!(ValidatorCtrl.GetValidator(states, dstValidatorAddress) is { } dstValidator))
+            {
+                throw new NullValidatorException(dstValidatorAddress);
+            }
+
             states = (srcValidator.Status, dstValidator.Status) switch
             {
                 (BondingStatus.Bonded, BondingStatus.Unbonding) => states.TransferAsset(
@@ -147,7 +163,10 @@ namespace Libplanet.PoS
             Address redelegationAddress,
             long blockHeight)
         {
-            Redelegation redelegation = GetRedelegationByAddr(states, redelegationAddress);
+            if (!(GetRedelegation(states, redelegationAddress) is { } redelegation))
+            {
+                throw new NullRedelegationException(redelegationAddress);
+            }
 
             List<long> completedIndices = new List<long>();
             foreach (KeyValuePair<long, Address> redelegationEntryAddressKV

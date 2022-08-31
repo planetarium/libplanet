@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -8,39 +7,34 @@ namespace Libplanet.PoS
 {
     internal static class UndelegateCtrl
     {
-        internal static Undelegation GetUndelegationByAddr(
+        internal static Undelegation? GetUndelegation(
             IAccountStateDelta states,
             Address undelegationAddress)
         {
-            IValue? serializedUndelegation = states.GetState(undelegationAddress);
-            if (serializedUndelegation == null)
+            if (states.GetState(undelegationAddress) is { } value)
             {
-                throw new InvalidOperationException();
+                return new Undelegation(value);
             }
 
-            Undelegation undelegation = new Undelegation(serializedUndelegation);
-            return undelegation;
+            return null;
         }
 
-        internal static (IAccountStateDelta, Undelegation) GetUndelegation(
+        internal static (IAccountStateDelta, Undelegation) FetchUndelegation(
             IAccountStateDelta states,
             Address delegatorAddress,
-            Address validatorAddress,
-            bool create = true)
+            Address validatorAddress)
         {
             Address undelegationAddress = Undelegation.DeriveAddress(
                 delegatorAddress, validatorAddress);
-            IValue? serializedUndelegation = states.GetState(undelegationAddress);
-
             Undelegation undelegation;
-            if (create && serializedUndelegation == null)
+            if (states.GetState(undelegationAddress) is { } value)
             {
-                undelegation = new Undelegation(delegatorAddress, validatorAddress);
-                states = states.SetState(undelegation.Address, undelegation.Serialize());
+                undelegation = new Undelegation(value);
             }
             else
             {
-                undelegation = GetUndelegationByAddr(states, undelegationAddress);
+                undelegation = new Undelegation(delegatorAddress, validatorAddress);
+                states = states.SetState(undelegation.Address, undelegation.Serialize());
             }
 
             return (states, undelegation);
@@ -62,20 +56,24 @@ namespace Libplanet.PoS
             // Currency check
             if (!share.Currency.Equals(Asset.Share))
             {
-                throw new ArgumentException();
+                throw new InvalidCurrencyException(Asset.Share, share.Currency);
             }
 
             Undelegation undelegation;
-            (states, undelegation) = GetUndelegation(states, delegatorAddress, validatorAddress);
+            (states, undelegation) = FetchUndelegation(states, delegatorAddress, validatorAddress);
 
             if (undelegation.UndelegationEntryAddresses.Count
                 >= Undelegation.MaximumUndelegationEntries)
             {
-                throw new InvalidOperationException();
+                throw new MaximumUndelegationEntriesException(
+                    undelegation.Address, undelegation.UndelegationEntryAddresses.Count);
             }
 
             // Validator loading
-            Validator validator = ValidatorCtrl.GetValidatorByAddr(states, validatorAddress);
+            if (!(ValidatorCtrl.GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
             // Unbonding
             FungibleAssetValue unbondingConsensusToken;
@@ -123,14 +121,21 @@ namespace Libplanet.PoS
             // Currency check
             if (!cancelledConsensusToken.Currency.Equals(Asset.ConsensusToken))
             {
-                throw new ArgumentException();
+                throw new InvalidCurrencyException(
+                    Asset.ConsensusToken, cancelledConsensusToken.Currency);
             }
 
-            Undelegation undelegation = GetUndelegationByAddr(states, undelegationAddress);
+            if (!(GetUndelegation(states, undelegationAddress) is { } undelegation))
+            {
+                throw new NullUndelegationException(undelegationAddress);
+            }
 
             // Validator loading
-            Validator validator = ValidatorCtrl.GetValidatorByAddr(
-                states, undelegation.ValidatorAddress);
+            if (!(ValidatorCtrl.GetValidator(
+                states, undelegation.ValidatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(undelegation.ValidatorAddress);
+            }
 
             // Copy of cancelling amount
             FungibleAssetValue cancellingConsensusToken =
@@ -160,13 +165,19 @@ namespace Libplanet.PoS
                 // Double check for unbonded entry
                 if (blockHeight >= undelegationEntry.CompletionBlockHeight)
                 {
-                    throw new InvalidOperationException();
+                    throw new PostmatureUndelegationEntryException(
+                        blockHeight,
+                        undelegationEntry.CompletionBlockHeight,
+                        undelegationEntry.Address);
                 }
 
                 // Check if cancelledConsensusToken is less than total undelegation
                 if (cancellingConsensusToken.RawValue < 0)
                 {
-                    throw new ArgumentException();
+                    throw new InsufficientFungibleAssetValueException(
+                        cancelledConsensusToken,
+                        cancelledConsensusToken + cancellingConsensusToken,
+                        $"Undelegation {undelegationAddress} has insufficient consensusToken");
                 }
 
                 // Apply unbonding
@@ -223,7 +234,10 @@ namespace Libplanet.PoS
             Address undelegationAddress,
             long blockHeight)
         {
-            Undelegation undelegation = GetUndelegationByAddr(states, undelegationAddress);
+            if (!(GetUndelegation(states, undelegationAddress) is { } undelegation))
+            {
+                throw new NullUndelegationException(undelegationAddress);
+            }
 
             List<long> completedIndices = new List<long>();
 

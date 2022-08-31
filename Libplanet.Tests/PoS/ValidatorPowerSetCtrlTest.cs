@@ -60,7 +60,7 @@ namespace Libplanet.Tests.PoS
             _states = ValidatorPowerSetCtrl.Update(_states, 1);
 
             ValidatorPowerSet validatorPowerSet;
-            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.GetValidatorPowerSet(_states);
+            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.FetchValidatorPowerSet(_states);
             Assert.Equal(
                 validatorAddressB, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
             Assert.Equal(
@@ -111,7 +111,7 @@ namespace Libplanet.Tests.PoS
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
             _states = ValidatorPowerSetCtrl.Update(_states, 1);
-            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.GetValidatorPowerSet(_states);
+            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.FetchValidatorPowerSet(_states);
             Assert.Equal(
                 validatorAddressA, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
             Assert.Equal(

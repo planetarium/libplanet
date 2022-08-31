@@ -1,10 +1,8 @@
-using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class RedelegationEntry
     {
         private FungibleAssetValue _redelegatingShare;
@@ -51,7 +49,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.Share))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.Share, value.Currency);
                 }
 
                 _redelegatingShare = value;
@@ -65,7 +63,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.ConsensusToken))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.ConsensusToken, value.Currency);
                 }
 
                 _unbondingConsensusToken = value;
@@ -79,7 +77,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.Share))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.Share, value.Currency);
                 }
 
                 _issuedShare = value;

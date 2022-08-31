@@ -1,4 +1,3 @@
-using System;
 using Libplanet.PoS;
 using Xunit;
 
@@ -16,9 +15,9 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void InvalidShareTypeTest()
         {
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _validator.DelegatorShares = Asset.ConsensusToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _validator.DelegatorShares = Asset.GovernanceToken * 1);
         }
 
