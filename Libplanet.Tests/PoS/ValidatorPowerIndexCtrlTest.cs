@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.PoS;
 using Xunit;
 
@@ -13,22 +14,28 @@ namespace Libplanet.Tests.PoS
 
         public ValidatorPowerIndexCtrlTest()
         {
-            List<Address> operatorAddresses = new List<Address>()
+            List<PublicKey> operatorPublicKeys = new List<PublicKey>()
             {
-                CreateAddress(),
-                CreateAddress(),
-                CreateAddress(),
-                CreateAddress(),
-                CreateAddress(),
+                new PrivateKey().PublicKey,
+                new PrivateKey().PublicKey,
+                new PrivateKey().PublicKey,
+                new PrivateKey().PublicKey,
+                new PrivateKey().PublicKey,
             };
+
+            List<Address> operatorAddresses = operatorPublicKeys.Select(
+                pubKey => pubKey.ToAddress()).ToList();
 
             _states = InitializeStates();
             ValidatorAddresses = new List<Address>();
-            foreach (Address address in operatorAddresses)
+
+            var pairs = operatorAddresses.Zip(operatorPublicKeys, (addr, key) => (addr, key));
+            foreach (var (addr, key) in pairs)
             {
-                _states = _states.MintAsset(address, Asset.GovernanceToken * 100);
-                _states = ValidatorCtrl.Create(_states, address, Asset.GovernanceToken * 10);
-                ValidatorAddresses.Add(Validator.DeriveAddress(address));
+                _states = _states.MintAsset(addr, Asset.GovernanceToken * 100);
+                _states = ValidatorCtrl.Create(
+                    _states, addr, key, Asset.GovernanceToken * 10);
+                ValidatorAddresses.Add(Validator.DeriveAddress(addr));
             }
         }
 

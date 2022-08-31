@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
@@ -10,6 +11,9 @@ namespace Libplanet.PoS
     {
         public static IValue Serialize(this Address address) =>
             new Binary(address.ToByteArray());
+
+        public static IValue Serialize(this PublicKey publicKey) =>
+            new Binary(publicKey.Format(false));
 
         public static IValue Serialize(this bool boolean) =>
             new Bencodex.Types.Boolean(boolean);
@@ -38,6 +42,9 @@ namespace Libplanet.PoS
 
         public static Address ToAddress(this IValue serialized) =>
             new Address(((Binary)serialized).ToByteArray());
+
+        public static PublicKey ToPublicKey(this IValue serialized) =>
+            new PublicKey(((Binary)serialized).ToByteArray());
 
         public static bool ToBoolean(this IValue serialized) =>
             ((Bencodex.Types.Boolean)serialized).Value;

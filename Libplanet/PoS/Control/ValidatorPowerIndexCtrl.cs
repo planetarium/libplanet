@@ -45,7 +45,7 @@ namespace Libplanet.PoS
             FungibleAssetValue consensusToken = states.GetBalance(
                 validatorAddress, Asset.ConsensusToken);
             ValidatorPower consensusPowerKey
-                = new ValidatorPower(validatorAddress, consensusToken);
+                = new ValidatorPower(validatorAddress, validator.OperatorPublicKey, consensusToken);
             validatorPowerIndex.Index.Add(consensusPowerKey);
             states = states.SetState(validatorPowerIndex.Address, validatorPowerIndex.Serialize());
             return states;
