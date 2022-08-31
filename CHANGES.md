@@ -86,6 +86,18 @@ To be released.
 ### CLI tools
 
 
+Version 0.41.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
+
+[#2270]: https://github.com/planetarium/libplanet/pull/2270
+
+
 Version 0.41.0
 --------------
 
@@ -249,10 +261,22 @@ Released on August 26, 2022.
 [#2241]: https://github.com/planetarium/libplanet/pull/2241
 
 
+Version 0.40.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268]]
+
+[#2268]: https://github.com/planetarium/libplanet/pull/2268
+
+
 Version 0.40.0
 --------------
 
-Released on Auguest 12th, 2022.
+Released on August 12, 2022.
 
 ### Deprecated APIs
 
