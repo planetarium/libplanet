@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -21,7 +23,57 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void Create()
+        public void CreateWithSystemAction()
+        {
+            var privateKey = new PrivateKey(
+                new byte[]
+                {
+                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
+                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
+                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
+                    0x7b, 0x76,
+                }
+            );
+            var timestamp =
+                new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
+            var foo = Currency.Uncapped("FOO", 2, minters: null);
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                0,
+                privateKey,
+                null,
+                systemAction: new Transfer(privateKey.ToAddress(), foo * 10),
+                timestamp: timestamp
+            );
+
+            AssertBytesEqual(privateKey.ToAddress(), tx.Signer);
+            Assert.Empty(tx.UpdatedAddresses);
+            Assert.Equal(privateKey.PublicKey, tx.PublicKey);
+            Assert.Equal(timestamp, tx.Timestamp);
+            AssertBytesEqual(
+                new byte[]
+                {
+                    0x30, 0x45, 0x02, 0x21, 0x00, 0xbc, 0x40, 0x3e, 0xc8, 0x20,
+                    0x9b, 0xa9, 0x18, 0x39, 0x90, 0x25, 0xab, 0x32, 0x42, 0x58,
+                    0x8c, 0x88, 0x87, 0x6a, 0x26, 0x33, 0xa3, 0x4f, 0x85, 0xb5,
+                    0x68, 0x61, 0x39, 0xf7, 0x4e, 0xb9, 0x9a, 0x02, 0x20, 0x13,
+                    0x46, 0x30, 0x2f, 0x6c, 0x23, 0x03, 0x1b, 0x72, 0x78, 0xce,
+                    0xf2, 0x95, 0x44, 0xfe, 0x5a, 0xb5, 0xf8, 0x15, 0x02, 0x70,
+                    0x27, 0x05, 0xd0, 0x8b, 0x2e, 0x70, 0xa8, 0xda, 0x25, 0xd8,
+                    0xd5,
+                },
+                tx.Signature
+            );
+            AssertBytesEqual(
+                TxId.FromHex(
+                    "8e97ff316ea6ada0c94e7e938b9913f4" +
+                    "9ca728c3a0d41f612bf6417395981454"
+                ),
+                tx.Id
+            );
+        }
+
+        [Fact]
+        public void CreateWithCustomActions()
         {
             var privateKey = new PrivateKey(
                 new byte[]
