@@ -1947,7 +1947,7 @@ namespace Libplanet.Tests.Blockchain
                 ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
                     b1.ProtocolVersion,
                     b1.Transactions,
-                    b1.PreEvaluationHash
+                    b1.PreEvaluationHash.ByteArray
                 )
             );
 

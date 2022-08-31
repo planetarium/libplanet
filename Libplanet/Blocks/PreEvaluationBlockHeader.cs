@@ -72,7 +72,7 @@ namespace Libplanet.Blocks
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         public PreEvaluationBlockHeader(
             IBlockMetadata metadata,
-            ImmutableArray<byte> preEvaluationHash)
+            HashDigest<SHA256> preEvaluationHash)
                 : this(new BlockMetadata(metadata), preEvaluationHash)
         {
         }
@@ -91,7 +91,7 @@ namespace Libplanet.Blocks
         /// hash is invalid.</exception>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            ImmutableArray<byte> preEvaluationHash)
+            HashDigest<SHA256> preEvaluationHash)
         {
             // FIXME: CheckPreEvaluationHash(metadata, preEvaluationHash) should fit in somewhere.
             if (metadata.Index == 0L && metadata.PreviousHash is { } ph)
@@ -223,7 +223,7 @@ namespace Libplanet.Blocks
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public ImmutableArray<byte> PreEvaluationHash { get; }
+        public HashDigest<SHA256> PreEvaluationHash { get; }
 
         /// <summary>
         /// The internal block metadata.

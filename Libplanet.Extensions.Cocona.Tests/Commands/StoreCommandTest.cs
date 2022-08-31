@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Security.Cryptography;
 using Cocona;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -331,9 +330,6 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             Console.SetOut(_originalOut);
             Console.SetError(_originalError);
         }
-
-        private HashAlgorithmType GetHashAlgorithm(long blockIndex) =>
-            HashAlgorithmType.Of<SHA256>();
 
         private Transaction<Utils.DummyAction> DummyTransaction()
         {

@@ -22,6 +22,7 @@ To be released.
  -  Removed `InvalidBlockDifficultyException` class.  [[#PBFT]]
  -  Removed `BlockChain<T>.MakeGenesisBlock()` and `BlockChain<T>.MineBlock()`
     methods.  [[#PBFT]]
+ -  Removed `HashAlgorithmType` class.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 
@@ -29,6 +30,8 @@ To be released.
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
+ -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
+    `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 

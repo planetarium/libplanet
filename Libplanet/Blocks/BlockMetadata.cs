@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -39,11 +38,6 @@ namespace Libplanet.Blocks
         private PublicKey? _publicKey;
         private HashDigest<SHA256>? _txHash;
 
-        static BlockMetadata()
-        {
-            HashAlgorithmType = HashAlgorithmType.Of<SHA256>();
-        }
-
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
         /// <paramref name="metadata"/>.
@@ -76,8 +70,6 @@ namespace Libplanet.Blocks
         public BlockMetadata()
         {
         }
-
-        public static HashAlgorithmType HashAlgorithmType { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
@@ -243,8 +235,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="nonce">The proof-of-work nonce.</param>
         /// <returns>A pre-evaluation block hash.</returns>
-        public ImmutableArray<byte> DerivePreEvaluationHash(Nonce nonce) =>
-            HashAlgorithmType.Digest(Codec.Encode(MakeCandidateData(nonce))).ToImmutableArray();
+        public HashDigest<SHA256> DerivePreEvaluationHash(Nonce nonce) =>
+            HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
 
         /// <summary>
         /// Mines the PoW (proof-of-work) nonce satisfying the block
@@ -256,14 +248,14 @@ namespace Libplanet.Blocks
         /// block <see cref="Difficulty"/>.</returns>
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
+        public (Nonce Nonce, HashDigest<SHA256> PreEvaluationHash) MineNonce(
             CancellationToken cancellationToken = default)
         {
             Hashcash.Stamp stamp = GetStampFunction();
             var random = new Random();
             int seed = random.Next();
             return Hashcash.Answer(
-                stamp, HashAlgorithmType, Difficulty, seed, cancellationToken);
+                stamp, Difficulty, seed, cancellationToken);
         }
 
         private Hashcash.Stamp GetStampFunction()
@@ -287,14 +279,15 @@ namespace Libplanet.Blocks
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
             byte[] colon = { 0x3a }; // ':'
 
-            IEnumerable<byte[]> Stamp(Nonce nonce)
+            byte[] Stamp(Nonce nonce)
             {
                 int nLen = nonce.ByteArray.Length;
-                yield return stampPrefix;
-                yield return Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture));
-                yield return colon; // ':'
-                yield return nonce.ToByteArray();
-                yield return stampSuffix;
+                return stampPrefix
+                    .Concat(Encoding.ASCII.GetBytes(nLen.ToString(CultureInfo.InvariantCulture)))
+                    .Concat(colon)
+                    .Concat(nonce.ToByteArray())
+                    .Concat(stampSuffix)
+                    .ToArray();
             }
 
             return Stamp;

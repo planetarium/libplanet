@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
@@ -205,7 +206,7 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            int digestSize = BlockMetadata.HashAlgorithmType.DigestSize;
+            int digestSize = HashDigest<SHA256>.Size;
 
             // Makes an empty block payload to estimate the length of bytes without transactions.
             // FIXME: We'd better to estimate only transactions rather than the whole block.
@@ -216,7 +217,7 @@ namespace Libplanet.Blockchain
                 marshaledBlockHeader: MarshalBlockHeader(
                     marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
                         marshaledMetadata: MarshalBlockMetadata(metadata),
-                        preEvaluationHash: new byte[digestSize].ToImmutableArray()
+                        preEvaluationHash: new HashDigest<SHA256>(new byte[digestSize])
                     ),
                     stateRootHash: default,
                     signature: dumbSig,

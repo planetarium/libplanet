@@ -17,13 +17,11 @@ namespace Libplanet.Tests.Blocks
     {
         protected readonly BlockContentFixture _contents;
         protected readonly Codec _codec;
-        protected readonly HashAlgorithmType _hashAlgorithmType;
 
         public PreEvaluationBlockHeaderTest()
         {
             _contents = new BlockContentFixture();
             _codec = new Codec();
-            _hashAlgorithmType = BlockMetadata.HashAlgorithmType;
         }
 
         [Fact]

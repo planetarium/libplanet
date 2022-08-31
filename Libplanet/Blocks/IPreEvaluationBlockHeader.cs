@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using System.Security.Cryptography;
 
 namespace Libplanet.Blocks
 {
@@ -13,6 +13,6 @@ namespace Libplanet.Blocks
         /// action evaluation).  Used for validating <see cref="Nonce"/>.
         /// </summary>
         /// <seealso cref="Nonce"/>
-        ImmutableArray<byte> PreEvaluationHash { get; }
+        HashDigest<SHA256> PreEvaluationHash { get; }
     }
 }

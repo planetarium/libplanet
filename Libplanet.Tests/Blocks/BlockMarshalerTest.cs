@@ -66,7 +66,7 @@ namespace Libplanet.Tests
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
             var expectedGenesisHeader = _marshaledGenesisMetadata
-                .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Genesis.Signature ?? default)
                 .Add(HashKey, _fx.Genesis.Hash.ByteArray);
@@ -83,7 +83,7 @@ namespace Libplanet.Tests
                 .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true))
                 .Add(LastCommitKey, _fx.Next.LastCommit.Value.ByteArray);
             var expectedNextHeader = _marshaledNextMetadata
-                .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Next.Signature ?? default)
                 .Add(HashKey, _fx.Next.Hash.ByteArray);
@@ -101,7 +101,7 @@ namespace Libplanet.Tests
                 .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
                 .Add(LastCommitKey, _fx.HasTx.LastCommit.Value.ByteArray);
             var expectedHasTxHeader = _marshaledHasTxMetadata
-                .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)
+                .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.HasTx.Signature ?? default)
                 .Add(HashKey, _fx.HasTx.Hash.ByteArray);
