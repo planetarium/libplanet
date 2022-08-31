@@ -217,12 +217,19 @@ namespace Libplanet.Tests.Blocks
             var codec = new Codec();
 
             HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
-            PreEvaluationBlock<Arithmetic> preEvalBlock = Genesis.Mine();
-            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, Genesis.Difficulty));
-            AssertBytesEqual(
-                sha256.Digest(codec.Encode(Genesis.MakeCandidateData(preEvalBlock.Nonce))),
-                preEvalBlock.PreEvaluationHash.ToArray()
-            );
+            BlockMetadata metadata = new BlockMetadata
+            {
+                Index = 1,
+                Timestamp = DateTimeOffset.UtcNow,
+                PublicKey = Block1Key.PublicKey,
+                PreviousHash = GenesisHash,
+                ProtocolVersion = 3,
+            };
+            BlockContent<Arithmetic> content = new BlockContent<Arithmetic>(metadata);
+            Assert.True(content.Difficulty > 0);
+
+            PreEvaluationBlock<Arithmetic> preEvalBlock = content.Mine();
+            Assert.True(ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, content.Difficulty));
         }
 
         [Fact]

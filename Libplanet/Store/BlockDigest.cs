@@ -22,7 +22,6 @@ namespace Libplanet.Store
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
         private readonly BlockMetadata _metadata;
-        private readonly Nonce _nonce;
         private readonly ImmutableArray<byte>? _preEvaluationHash;
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Libplanet.Store
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
             _metadata = header.Copy();
-            _nonce = header.Nonce;
             _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
             Signature = header.Signature;
@@ -54,7 +52,6 @@ namespace Libplanet.Store
         {
             var headerDict = dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey);
             _metadata = BlockMarshaler.UnmarshalBlockMetadata(headerDict);
-            _nonce = BlockMarshaler.UnmarshalNonce(headerDict);
             _preEvaluationHash = BlockMarshaler.UnmarshalPreEvaluationHash(headerDict);
             StateRootHash = BlockMarshaler.UnmarshalBlockHeaderStateRootHash(headerDict);
             Signature = BlockMarshaler.UnmarshalBlockHeaderSignature(headerDict);
@@ -167,8 +164,8 @@ namespace Libplanet.Store
         public BlockHeader GetHeader()
         {
             var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
-                : new PreEvaluationBlockHeader(_metadata, _nonce);
+                ? new PreEvaluationBlockHeader(_metadata, preEvalHash)
+                : new PreEvaluationBlockHeader(_metadata);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
@@ -182,7 +179,6 @@ namespace Libplanet.Store
         {
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
-                _nonce,
                 _preEvaluationHash ?? ImmutableArray<byte>.Empty
             );
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(

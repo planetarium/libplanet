@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Crypto;
-using Nito.AsyncEx.Synchronous;
 
 namespace Libplanet.Blocks
 {
@@ -260,60 +257,13 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            CancellationToken cancellationToken = default
-        ) =>
-            MineNonce(
-                Environment.ProcessorCount > 1 ? Environment.ProcessorCount / 2 : 1,
-                cancellationToken
-            );
-
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying the block
-        /// <see cref="Difficulty"/>.
-        /// </summary>
-        /// <param name="workers">The number of workers to run in parallel.
-        /// Must be greater than zero.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
-        /// block <see cref="Difficulty"/>.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) MineNonce(
-            int workers,
-            CancellationToken cancellationToken = default
-        )
+            CancellationToken cancellationToken = default)
         {
-            if (workers < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(workers));
-            }
-
             Hashcash.Stamp stamp = GetStampFunction();
             var random = new Random();
-            if (workers < 2)
-            {
-                int seed = random.Next();
-                return Hashcash.Answer(
-                    stamp, HashAlgorithmType, Difficulty, seed, cancellationToken);
-            }
-
-            using var cts = new CancellationTokenSource();
-            using CancellationTokenSource lts =
-                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            int[] seeds = Enumerable.Range(0, workers).Select(_ => random.Next()).ToArray();
-            Task<(Nonce Nonce, ImmutableArray<byte> Digest)>[] tasks = seeds.Select(seed =>
-                Task.Run(
-                    () => Hashcash.Answer(stamp, HashAlgorithmType, Difficulty, seed, lts.Token),
-                    lts.Token
-                )
-            ).ToArray();
-            (Nonce n, ImmutableArray<byte> h) = Task.WhenAny(tasks)
-                .WaitAndUnwrapException()
-                .WaitAndUnwrapException();
-
-            cts.Cancel();
-            return (n, h);
+            int seed = random.Next();
+            return Hashcash.Answer(
+                stamp, HashAlgorithmType, Difficulty, seed, cancellationToken);
         }
 
         private Hashcash.Stamp GetStampFunction()

@@ -15,8 +15,6 @@ namespace Libplanet.Tx
         /// the <see cref="Signer"/> of this transaction.  This nonce is used for preventing
         /// replay attack.
         /// </summary>
-        /// <remarks>Don't confuse this with <see cref="Block{T}.Nonce"/> for proof-of-work.
-        /// </remarks>
         long Nonce { get; }
 
         /// <summary>

@@ -22,11 +22,6 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "The height of the block.",
                 resolve: x => x.Source.Index
             );
-            Field<NonNullGraphType<ByteStringType>>(
-                name: "Nonce",
-                description: "The proof-of-work nonce which satisfies the required difficulty.",
-                resolve: ctx => ctx.Source.Nonce.ToByteArray()
-            );
             Field<NonNullGraphType<AddressType>>(
                 name: "Miner",
                 description: "The address of the miner.",

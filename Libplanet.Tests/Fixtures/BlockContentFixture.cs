@@ -12,6 +12,7 @@ namespace Libplanet.Tests.Fixtures
         public readonly PrivateKey GenesisKey;
         public readonly BlockHash GenesisHash;
         public readonly BlockMetadata GenesisMetadata;
+        public readonly BlockMetadata GenesisMetadataV3;
         public readonly BlockContent<Arithmetic> Genesis;
 
         public readonly PrivateKey Block1Key;

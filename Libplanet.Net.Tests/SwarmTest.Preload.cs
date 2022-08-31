@@ -856,24 +856,25 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task PreloadIgnorePeerWithDifferentGenesisBlock()
         {
-            var minerKey = new PrivateKey();
+            var key1 = new PrivateKey();
+            var key2 = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            var genesisContent = new BlockContent<DumbAction>
+            var genesisContent1 = new BlockContent<DumbAction>
             {
-                PublicKey = minerKey.PublicKey,
-                Timestamp = DateTimeOffset.MinValue,
+                PublicKey = key1.PublicKey,
+                Timestamp = DateTimeOffset.UtcNow,
             };
-            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
-                genesisContent,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
-            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
-                genesisContent,
-                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
-            );
+            var genesisContent2 = new BlockContent<DumbAction>
+            {
+                PublicKey = key2.PublicKey,
+                Timestamp = DateTimeOffset.UtcNow,
+            };
+            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(genesisContent1);
+            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(genesisContent2);
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
-                PreEvaluationBlock<DumbAction> genesisBlock)
+                PreEvaluationBlock<DumbAction> genesisBlock,
+                PrivateKey privateKey)
             {
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 return MakeBlockChain(
@@ -881,16 +882,19 @@ namespace Libplanet.Net.Tests
                     new MemoryStore(),
                     stateStore,
                     genesisBlock: genesisBlock.Evaluate(
-                        privateKey: minerKey,
+                        privateKey: privateKey,
                         blockAction: policy.BlockAction,
                         nativeTokenPredicate: policy.NativeTokens.Contains,
                         stateStore: stateStore)
                 );
             }
 
-            BlockChain<DumbAction> receiverChain = MakeBlockChainWithGenesis(genesisBlock1);
-            BlockChain<DumbAction> validSeedChain = MakeBlockChainWithGenesis(genesisBlock1);
-            BlockChain<DumbAction> invalidSeedChain = MakeBlockChainWithGenesis(genesisBlock2);
+            BlockChain<DumbAction> receiverChain = MakeBlockChainWithGenesis(
+                genesisBlock1, key1);
+            BlockChain<DumbAction> validSeedChain = MakeBlockChainWithGenesis(
+                genesisBlock1, key1);
+            BlockChain<DumbAction> invalidSeedChain = MakeBlockChainWithGenesis(
+                genesisBlock2, key2);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
             Swarm<DumbAction> validSeedSwarm = CreateSwarm(validSeedChain);
             Swarm<DumbAction> invalidSeedSwarm = CreateSwarm(invalidSeedChain);
@@ -900,12 +904,12 @@ namespace Libplanet.Net.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                validSeedChain.Append(validSeedChain.ProposeBlock(minerKey));
+                validSeedChain.Append(validSeedChain.ProposeBlock(key1));
             }
 
             for (int i = 0; i < 20; i++)
             {
-                invalidSeedChain.Append(invalidSeedChain.ProposeBlock(minerKey));
+                invalidSeedChain.Append(invalidSeedChain.ProposeBlock(key1));
             }
 
             try

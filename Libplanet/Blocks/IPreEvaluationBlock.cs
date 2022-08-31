@@ -5,7 +5,7 @@ namespace Libplanet.Blocks
 {
     /// <summary>
     /// A common interface for blocks that have their proof-of-work
-    /// <see cref="IPreEvaluationBlockHeader.Nonce"/>s and
+    /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>s and
     /// <see cref="IBlockContent{T}.Transactions"/>, but are not evaluated yet (i.e., their state
     /// root hashes are not yet determined).
     /// </summary>

@@ -425,7 +425,6 @@ namespace Libplanet.Blockchain
                 marshaledBlockHeader: MarshalBlockHeader(
                     marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
                         marshaledMetadata: MarshalBlockMetadata(metadata),
-                        nonce: default,
                         preEvaluationHash: new byte[digestSize].ToImmutableArray()
                     ),
                     stateRootHash: default,

@@ -28,12 +28,9 @@ namespace Libplanet.Blocks
     {
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data and a valid proof-of-work <paramref name="nonce"/>
-        /// which satisfies the required <see cref="BlockMetadata.Difficulty"/>.
+        /// <paramref name="content"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
@@ -52,70 +49,20 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
         /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
         /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.
-        /// </exception>
         /// <remarks><see cref="PreEvaluationBlockHeader.PreEvaluationHash"/> is automatically
         /// derived from the given arguments.</remarks>
-        public PreEvaluationBlock(
-            IBlockContent<T> content,
-            Nonce nonce
-        )
-            : base(new BlockContent<T>(content), nonce)
-        {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data, a valid proof-of-work <paramref name="nonce"/>
-        /// which satisfies the required <see cref="BlockMetadata.Difficulty"/>,
-        /// and a <paramref name="preEvaluationHash"/> digest derived from them.
-        /// </summary>
-        /// <param name="content">Block's content data.</param>
-        /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</param>
-        /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
-        /// </param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
-        /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
-        /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
-        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
-        public PreEvaluationBlock(
-            IBlockContent<T> content,
-            Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
-        )
-            : base(new BlockContent<T>(content), nonce, preEvaluationHash)
+        public PreEvaluationBlock(IBlockContent<T> content)
+            : base(new BlockContent<T>(content))
         {
         }
 
         /// <summary>
         /// Unsafely creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data, and a <paramref name="proof"/> which is probably
-        /// considered as to be valid.
+        /// <paramref name="content"/> data, and a <paramref name="preEvaluationHash"/>
+        /// which is probably considered as to be valid.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
+        /// <param name="preEvaluationHash">A pre-evaluation hash nonce is probably considered
         /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
         /// and the hash digest which is probably considered as to be derived from
         /// the block <paramref name="content"/> and the nonce.</param>
@@ -126,9 +73,9 @@ namespace Libplanet.Blocks
         /// shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.</remarks>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
+            in ImmutableArray<byte> preEvaluationHash
         )
-            : base(content, proof)
+            : base(content, preEvaluationHash)
         {
         }
 

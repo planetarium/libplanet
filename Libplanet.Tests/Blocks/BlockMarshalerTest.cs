@@ -21,9 +21,9 @@ namespace Libplanet.Tests
         private static readonly byte[] ProtocolVersionKey = { 0x00 };
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
+        private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'; Legacy, unused.
         private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'; Legacy, unused.
-        private static readonly byte[] NonceKey = { 0x6e }; // 'n'
+        private static readonly byte[] NonceKey = { 0x6e }; // 'n'; Legacy, unused.
         private static readonly byte[] MinerKey = { 0x6d }; // 'm'
         private static readonly byte[] PublicKeyKey = { 0x50 }; // 'P'
         private static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
@@ -66,7 +66,6 @@ namespace Libplanet.Tests
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
             var expectedGenesisHeader = _marshaledGenesisMetadata
-                .Add(NonceKey, _fx.Genesis.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Genesis.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Genesis.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Genesis.Signature ?? default)
@@ -84,7 +83,6 @@ namespace Libplanet.Tests
                 .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true))
                 .Add(LastCommitKey, _fx.Next.LastCommit.Value.ByteArray);
             var expectedNextHeader = _marshaledNextMetadata
-                .Add(NonceKey, _fx.Next.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.Next.Signature ?? default)
@@ -103,7 +101,6 @@ namespace Libplanet.Tests
                 .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray)
                 .Add(LastCommitKey, _fx.HasTx.LastCommit.Value.ByteArray);
             var expectedHasTxHeader = _marshaledHasTxMetadata
-                .Add(NonceKey, _fx.HasTx.Nonce.ByteArray)
                 .Add(PreEvaluationHashKey, _fx.HasTx.PreEvaluationHash)
                 .Add(StateRootHashKey, _fx.HasTx.StateRootHash.ByteArray)
                 .Add(SignatureKey, _fx.HasTx.Signature ?? default)

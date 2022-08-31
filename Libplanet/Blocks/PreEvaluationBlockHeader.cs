@@ -13,9 +13,6 @@ namespace Libplanet.Blocks
     /// A block candidate without evaluating actions (in its transactions and a possible
     /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>) and state root hash.
     /// </summary>
-    /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
-    /// <see cref="Nonce"/> which satisfies its <see cref="BlockMetadata.Difficulty"/>.
-    /// </remarks>
     public class PreEvaluationBlockHeader : IPreEvaluationBlockHeader
     {
         protected static readonly Codec Codec = new Codec();
@@ -34,13 +31,8 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
         /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given
-        /// pre-evaluation <paramref name="header"/>'s
-        /// <seealso cref="IPreEvaluationBlockHeader.Nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.
-        /// </exception>
         public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
-            : this(header, header.Nonce, header.PreEvaluationHash)
+            : this(header, header.PreEvaluationHash)
         {
         }
 
@@ -49,36 +41,25 @@ namespace Libplanet.Blocks
         /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
         /// arguments.</remarks>
-        public PreEvaluationBlockHeader(
-            IBlockMetadata metadata,
-            Nonce nonce
-        )
-            : this(new BlockMetadata(metadata), nonce)
+        public PreEvaluationBlockHeader(IBlockMetadata metadata)
+            : this(new BlockMetadata(metadata))
         {
         }
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, a valid proof-of-work <paramref name="nonce"/> which
-        /// satisfies the required <see cref="BlockMetadata.Difficulty"/>, and
-        /// a <paramref name="preEvaluationHash"/> digest derived from them.
+        /// <paramref name="metadata"/>, a valid proof-of-work
+        /// a <paramref name="preEvaluationHash"/> digest.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="nonce">A valid proof-of-work nonce which satisfies the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</param>
         /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
         /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -89,39 +70,30 @@ namespace Libplanet.Blocks
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
-        /// <exception cref="InvalidBlockNonceException">Thrown when the given proof-of-work
-        /// <paramref name="nonce"/> does not satisfy the required
-        /// <see cref="BlockMetadata.Difficulty"/>.</exception>
         public PreEvaluationBlockHeader(
             IBlockMetadata metadata,
-            Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
-        )
-            : this(new BlockMetadata(metadata), nonce, preEvaluationHash)
+            ImmutableArray<byte> preEvaluationHash)
+                : this(new BlockMetadata(metadata), preEvaluationHash)
         {
         }
 
         /// <summary>
         /// Unsafely creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, and a <paramref name="proof"/> which is probably
-        /// considered as to be valid.
+        /// <paramref name="metadata"/>, and a <paramref name="preEvaluationHash"/>
+        /// which is probably considered as to be valid.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="proof">A pair of the valid proof-of-work nonce which is probably considered
-        /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>, and the hash digest
-        /// which is probably considered as to be derived from the block <paramref name="metadata"/>
-        /// and the nonce.</param>
+        /// <param name="preEvaluationHash">A valid proof-of-work bytearray which is probably
+        /// considered as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
+        /// and the hash digest which is probably considered as to be derived from the block
+        /// <paramref name="metadata"/> and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
-        /// <remarks>This does not verify if a <paramref name="proof"/>'s hash is derived from
-        /// the block <paramref name="metadata"/> and the proof nonce.  Therefore, this unsafe
-        /// constructor shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.
-        /// </remarks>
         internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
-        )
+            ImmutableArray<byte> preEvaluationHash)
         {
+            // FIXME: CheckPreEvaluationHash(metadata, preEvaluationHash) should fit in somewhere.
             if (metadata.Index == 0L && metadata.PreviousHash is { } ph)
             {
                 throw new InvalidBlockPreviousHashException(
@@ -219,30 +191,11 @@ namespace Libplanet.Blocks
             }
 
             Metadata = metadata;
-            Nonce = proof.Nonce;
-            PreEvaluationHash = proof.PreEvaluationHash;
+            PreEvaluationHash = preEvaluationHash;
         }
 
-        protected PreEvaluationBlockHeader(
-            BlockMetadata metadata,
-            Nonce nonce
-        )
-            : this(
-                metadata,
-                (nonce, metadata.DerivePreEvaluationHash(nonce))
-            )
-        {
-        }
-
-        protected PreEvaluationBlockHeader(
-            BlockMetadata metadata,
-            Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
-        )
-            : this(
-                metadata,
-                CheckPreEvaluationHash(metadata, nonce, preEvaluationHash)
-            )
+        protected PreEvaluationBlockHeader(BlockMetadata metadata)
+            : this(metadata, metadata.DerivePreEvaluationHash(default))
         {
         }
 
@@ -254,9 +207,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => Metadata.Timestamp;
-
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => Metadata.Miner;
@@ -297,7 +247,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte>? signature = null
         )
         {
-            Dictionary dict = Metadata.MakeCandidateData(Nonce)
+            Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
                 .Add("state_root_hash", stateRootHash.ByteArray);
             if (signature is { } sig)
             {
@@ -394,25 +344,21 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Verifies if the <paramref name="preEvaluationHash"/> is the proper hash digest
-        /// derived from the given block <paramref name="metadata"/> and <paramref name="nonce"/>.
+        /// derived from the given block <paramref name="metadata"/>.
         /// If it's incorrect throws an <see cref="InvalidBlockPreEvaluationHashException"/>.
-        /// Throws nothing and returns a pair of the <paramref name="nonce"/> and
-        /// <paramref name="preEvaluationHash"/> instead.
+        /// Throws nothing and returns <paramref name="preEvaluationHash"/> instead.
         /// </summary>
         /// <param name="metadata">The block metadata.</param>
-        /// <param name="nonce">The proof-of-work nonce.</param>
         /// <param name="preEvaluationHash">The pre-evaluation hash digest to verify.</param>
-        /// <returns>A pair of the <paramref name="nonce"/> and <paramref name="preEvaluationHash"/>
+        /// <returns>A <paramref name="preEvaluationHash"/>
         /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
-        private static (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) CheckPreEvaluationHash(
+        private static ImmutableArray<byte> CheckPreEvaluationHash(
             BlockMetadata metadata,
-            in Nonce nonce,
-            in ImmutableArray<byte> preEvaluationHash
-        )
+            in ImmutableArray<byte> preEvaluationHash)
         {
-            return (nonce, preEvaluationHash);
+            return preEvaluationHash;
         }
     }
 }

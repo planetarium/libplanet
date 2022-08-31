@@ -67,8 +67,7 @@ namespace Libplanet.Node.Tests
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
             ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
-            var proof = (nonce, preEvalHash);
-            _preEval = new PreEvaluationBlock<NullAction>(_content, proof);
+            _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(
                 privateKey: _minerKey,
                 blockAction: null,
@@ -85,7 +84,6 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_block.ProtocolVersion, untyped.ProtocolVersion);
             Assert.Equal(_block.Index, untyped.Index);
             Assert.Equal(_block.Timestamp, untyped.Timestamp);
-            Assert.Equal(_block.Nonce, untyped.Nonce);
             Assert.Equal(_block.Miner, untyped.Miner);
             Assert.Equal(_block.PublicKey, untyped.PublicKey);
             Assert.Equal(_block.PreviousHash, untyped.PreviousHash);

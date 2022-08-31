@@ -125,9 +125,6 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _preEvaluationBlockHeader.Timestamp;
 
-        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
-        public Nonce Nonce => _preEvaluationBlockHeader.Nonce;
-
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
         public Address Miner => _preEvaluationBlockHeader.Miner;
 
