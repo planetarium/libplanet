@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.40.1
 --------------
 
-To be released.
+Released on August 31, 2022.
 
  -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
     IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
@@ -16,7 +16,7 @@ To be released.
 Version 0.40.0
 --------------
 
-Released on Auguest 12th, 2022.
+Released on August 12, 2022.
 
 ### Deprecated APIs
 
