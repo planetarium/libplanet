@@ -86,6 +86,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 PreviousHash = BlockChain.Tip.Hash,
                 Timestamp = BlockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 Transactions = new List<Transaction<DumbAction>>(),
-            }.Mine().Evaluate(_fx.Miner, BlockChain);
+            }.Propose().Evaluate(_fx.Miner, BlockChain);
     }
 }

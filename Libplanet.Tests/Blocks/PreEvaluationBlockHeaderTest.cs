@@ -220,7 +220,6 @@ namespace Libplanet.Tests.Blocks
         public void MakeCandidateData()
         {
             var random = new Random();
-
             Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
@@ -267,43 +266,6 @@ namespace Libplanet.Tests.Blocks
             AssertBencodexEqual(
                 expectedBlock1.SetItem("state_root_hash", stateRootHash.ByteArray),
                 block1.MakeCandidateData(stateRootHash)
-            );
-
-            var blockPv0 = _contents.BlockPv0.Mine();
-            Bencodex.Types.Dictionary expectedBlockPv0 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 0L)
-                .Add("timestamp", "2021-09-06T04:46:39.123000Z")
-                .Add("nonce", default(Nonce).ByteArray)
-                .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"))
-                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv0, blockPv0.MakeCandidateData(default));
-            stateRootHash = random.NextHashDigest<SHA256>();
-            AssertBencodexEqual(
-                expectedBlockPv0.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv0.MakeCandidateData(stateRootHash)
-            );
-
-            var blockPv1 = _contents.BlockPv1.Mine();
-            Bencodex.Types.Dictionary expectedBlockPv1 = Bencodex.Types.Dictionary.Empty
-                .Add("index", 1L)
-                .Add("timestamp", "2021-09-06T08:01:09.045000Z")
-                .Add("nonce", default(Nonce).ByteArray)
-                .Add("reward_beneficiary", ParseHex("8a29de186B85560D708451101C4Bf02D63b25c50"))
-                .Add(
-                    "previous_hash",
-                    ParseHex("341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a")
-                )
-                .Add(
-                    "transaction_fingerprint",
-                    ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
-                )
-                .Add("protocol_version", 1)
-                .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv1, blockPv1.MakeCandidateData(default));
-            stateRootHash = random.NextHashDigest<SHA256>();
-            AssertBencodexEqual(
-                expectedBlockPv1.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv1.MakeCandidateData(stateRootHash)
             );
         }
 

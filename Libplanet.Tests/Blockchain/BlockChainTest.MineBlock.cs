@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -22,7 +21,7 @@ namespace Libplanet.Tests.Blockchain
     public partial class BlockChainTest
     {
         [Fact]
-        public async Task MineBlock()
+        public void ProposeBlock()
         {
             DumbAction[] fewActions =
                 Enumerable.Repeat(new DumbAction(default, "_"), 2).ToArray();
@@ -39,7 +38,8 @@ namespace Libplanet.Tests.Blockchain
             AssertBencodexEqual((Text)$"{GenesisMiner.ToAddress()}", _blockChain.GetState(default));
 
             var minerA = new PrivateKey();
-            Block<DumbAction> block = await _blockChain.MineBlock(minerA);
+            Block<DumbAction> block = _blockChain.ProposeBlock(minerA);
+            _blockChain.Append(block);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
             Assert.True(block.MarshalBlock().EncodingLength <= getMaxBlockBytes(block.Index));
@@ -49,7 +49,8 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var minerB = new PrivateKey();
-            Block<DumbAction> anotherBlock = await _blockChain.MineBlock(minerB);
+            Block<DumbAction> anotherBlock = _blockChain.ProposeBlock(minerB);
+            _blockChain.Append(anotherBlock);
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(
@@ -60,8 +61,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.GetState(default)
             );
 
-            Block<DumbAction> block3 =
-                await _blockChain.MineBlock(new PrivateKey(), append: false);
+            Block<DumbAction> block3 = _blockChain.ProposeBlock(new PrivateKey());
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(block3.MarshalBlock().EncodingLength <= getMaxBlockBytes(block3.Index));
@@ -70,8 +70,8 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.GetState(default)
             );
 
-            // Tests if MineBlock() method automatically fits the number of transactions according
-            // to the right size.
+            // Tests if ProposeBlock() method automatically fits the number of transactions
+            // according to the right size.
             DumbAction[] manyActions =
                 Enumerable.Repeat(new DumbAction(default, "_"), 200).ToArray();
             PrivateKey signer = null;
@@ -91,8 +91,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.StageTransaction(heavyTx);
             }
 
-            Block<DumbAction> block4 =
-                await _blockChain.MineBlock(new PrivateKey(), append: false);
+            Block<DumbAction> block4 = _blockChain.ProposeBlock(new PrivateKey());
             Assert.False(_blockChain.ContainsBlock(block4.Hash));
             _logger.Debug(
                 $"{nameof(block4)}: {0} bytes",
@@ -111,7 +110,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithTxBatchSize()
+        public void ProposeBlockWithTxBatchSize()
         {
             List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
                 .Select(_ => new PrivateKey()).ToList();
@@ -123,37 +122,37 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
             _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
 
-            Block<DumbAction> block =
-                await _blockChain.MineBlock(privateKeys[0], maxTransactions: 1);
+            Block<DumbAction> block = _blockChain.ProposeBlock(
+                privateKeys[0], maxTransactions: 1);
+            _blockChain.Append(block);
             Assert.Single(block.Transactions);
             Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
 
-            Block<DumbAction> block2 = await _blockChain.MineBlock(
+            Block<DumbAction> block2 = _blockChain.ProposeBlock(
                 privateKeys[1], DateTimeOffset.UtcNow, maxTransactions: 2);
+            _blockChain.Append(block2);
             Assert.Equal(2, block2.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
 
-            Block<DumbAction> block3 = await _blockChain.MineBlock(
-                privateKeys[2], append: false, maxTransactions: 4);
+            Block<DumbAction> block3 = _blockChain.ProposeBlock(
+                privateKeys[2], maxTransactions: 4);
             Assert.Equal(3, block3.Transactions.Count());
             Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
-
             _blockChain.Append(block3);
             Assert.Equal(0, _blockChain.GetStagedTransactionIds().Count);
         }
 
         [Fact]
-        public async Task MineBlockWithInsufficientTxs()
+        public void ProposeBlockWithInsufficientTxs()
         {
-            // Tests if MineBlock() method will throw an exception if less than the minimum
+            // Tests if ProposeBlock() method will throw an exception if less than the minimum
             // transactions are present
-            await Assert.ThrowsAsync<OperationCanceledException>(
-                async () => await _blockChainMinTx.MineBlock(new PrivateKey())
-            );
+            Assert.Throws<OperationCanceledException>(
+                () => _blockChainMinTx.ProposeBlock(new PrivateKey()));
         }
 
         [Fact]
-        public async Task MineBlockWithPendingTxs()
+        public void ProposeBlockWithPendingTxs()
         {
             var keys = new[] { new PrivateKey(), new PrivateKey(), new PrivateKey() };
             var keyA = new PrivateKey();
@@ -224,7 +223,8 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Null(_blockChain.GetTxExecution(_blockChain.Genesis.Hash, tx.Id));
             }
 
-            Block<DumbAction> block = await _blockChain.MineBlock(keyA);
+            Block<DumbAction> block = _blockChain.ProposeBlock(keyA);
+            _blockChain.Append(block);
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Contains(txs[0], block.Transactions);
@@ -264,7 +264,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithPolicyViolationTx()
+        public void ProposeBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
@@ -292,7 +292,8 @@ namespace Libplanet.Tests.Blockchain
                 var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
 
                 var miner = new PrivateKey();
-                var block = await blockChain.MineBlock(miner);
+                var block = blockChain.ProposeBlock(miner);
+                blockChain.Append(block);
 
                 var txs = block.Transactions.ToHashSet();
 
@@ -307,7 +308,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(3)]
         [InlineData(2)]
         [InlineData(1)]
-        public async Task MineBlockWithReverseNonces(int maxTxs)
+        public void ProposeBlockWithReverseNonces(int maxTxs)
         {
             var key = new PrivateKey();
             var txs = new[]
@@ -332,15 +333,14 @@ namespace Libplanet.Tests.Blockchain
                 ),
             };
             StageTransactions(txs);
-            Block<DumbAction> block = await _blockChain.MineBlock(
+            Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
-                maxTransactions: maxTxs
-            );
+                maxTransactions: maxTxs);
             Assert.Equal(maxTxs, block.Transactions.Count());
         }
 
         [Fact]
-        public async Task MineBlockWithLowerNonces()
+        public void ProposeBlockWithLowerNonces()
         {
             var key = new PrivateKey();
             StageTransactions(
@@ -354,9 +354,9 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            await _blockChain.MineBlock(new PrivateKey());
+            _blockChain.Append(_blockChain.ProposeBlock(new PrivateKey()));
 
-            // Trying to mine with lower nonce (0) than expected.
+            // Trying to propose with lower nonce (0) than expected.
             StageTransactions(
                 new[]
                 {
@@ -368,7 +368,8 @@ namespace Libplanet.Tests.Blockchain
                     ),
                 }
             );
-            Block<DumbAction> block = await _blockChain.MineBlock(new PrivateKey());
+            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(block);
 
             Assert.Empty(block.Transactions);
             Assert.Empty(_blockChain.ListStagedTransactions());
@@ -377,7 +378,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithBlockAction()
+        public void ProposeBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
             var address1 = privateKey1.ToAddress();
@@ -396,7 +397,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock);
 
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });
-            await blockChain.MineBlock(privateKey1);
+            blockChain.Append(blockChain.ProposeBlock(privateKey1));
 
             var state1 = blockChain.GetState(address1);
             var state2 = blockChain.GetState(address2);
@@ -407,7 +408,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"baz", state2);
 
             blockChain.MakeTransaction(privateKey1, new[] { new DumbAction(address1, "bar") });
-            await blockChain.MineBlock(privateKey1);
+            blockChain.Append(blockChain.ProposeBlock(privateKey1));
 
             state1 = blockChain.GetState(address1);
             state2 = blockChain.GetState(address2);
@@ -419,7 +420,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithMaxTransactions()
+        public void ProposeBlockWithMaxTransactions()
         {
             Assert.Equal(1, _blockChain.Count);
 
@@ -446,18 +447,17 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
             );
 
-            // These assume there will be enough time to mine as many transactions as
+            // These assume there will be enough time to propose as many transactions as
             // possible.
             Block<DumbAction> block;
-            block = await _blockChain.MineBlock(new PrivateKey(), append: false);
+            block = _blockChain.ProposeBlock(new PrivateKey());
             Assert.True(block.Transactions.Count > maxTransactions);
-            block = await _blockChain.MineBlock(
-                new PrivateKey(), append: false, maxTransactions: maxTransactions);
+            block = _blockChain.ProposeBlock(new PrivateKey(), maxTransactions: maxTransactions);
             Assert.Equal(block.Transactions.Count, maxTransactions);
         }
 
         [Fact]
-        public async Task MineBlockWithMaxTransactionsPerSigner()
+        public void ProposeBlockWithMaxTransactionsPerSigner()
         {
             Assert.Equal(1, _blockChain.Count);
 
@@ -485,11 +485,10 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
             );
 
-            // These assume there will be enough time to mine as many transactions as
+            // These assume there will be enough time to propose as many transactions as
             // possible.
-            Block<DumbAction> block = await _blockChain.MineBlock(
+            Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
-                append: false,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner);
             foreach (var group in block.Transactions.GroupBy(tx => tx.Signer))
@@ -499,7 +498,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task MineBlockWithTxPriority()
+        public void ProposeBlockWithTxPriority()
         {
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
@@ -534,12 +533,12 @@ namespace Libplanet.Tests.Blockchain
                     return rank1.CompareTo(rank2);
                 });
 
-            Block<DumbAction> block = await _blockChain.MineBlock(
+            Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 maxTransactions: 5,
                 maxTransactionsPerSigner: 3,
-                txPriority: txPriority
-            );
+                txPriority: txPriority);
+            _blockChain.Append(block);
             Assert.Equal(5, block.Transactions.Count);
             Assert.Equal(
                 txsA.Concat(txsB.Take(2)).Select(tx => tx.Id).ToHashSet(),
@@ -573,7 +572,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async Task IgnoreLowerNonceTxsAndMine()
+        public void IgnoreLowerNonceTxsAndPropose()
         {
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
@@ -582,7 +581,8 @@ namespace Libplanet.Tests.Blockchain
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txsA);
-            Block<DumbAction> b1 = await _blockChain.MineBlock(new PrivateKey());
+            Block<DumbAction> b1 = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(b1);
             Assert.Equal(
                 txsA,
                 ActionEvaluator<DumbAction>.OrderTxsForEvaluation(
@@ -598,14 +598,14 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             StageTransactions(txsB);
 
-            // Mine only txs having higher or equal with nonce than expected nonce.
-            Block<DumbAction> b2 = await _blockChain.MineBlock(new PrivateKey());
+            // Propose only txs having higher or equal with nonce than expected nonce.
+            Block<DumbAction> b2 = _blockChain.ProposeBlock(new PrivateKey());
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
         }
 
         [Fact]
-        public async Task IgnoreDuplicatedNonceTxs()
+        public void IgnoreDuplicatedNonceTxs()
         {
             var privateKey = new PrivateKey();
             var txs = Enumerable.Range(0, 3)
@@ -615,7 +615,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.Now))
                 .ToArray();
             StageTransactions(txs);
-            Block<DumbAction> b = await _blockChain.MineBlock(privateKey, append: false);
+            Block<DumbAction> b = _blockChain.ProposeBlock(privateKey);
             _blockChain.Append(b);
 
             Assert.Single(b.Transactions);
@@ -623,7 +623,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void GatherTransactionsToMine()
+        public void GatherTransactionsToPropose()
         {
             // TODO: We test more properties of GatherTransactionsToMine() method:
             //       - if transactions are cut off if they exceed GetMaxBlockBytes()
@@ -657,7 +657,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Test if minTransactions and minTransactionsPerSigner work:
             ImmutableList<Transaction<DumbAction>> gathered =
-                _blockChain.GatherTransactionsToMine(
+                _blockChain.GatherTransactionsToPropose(
                     new BlockMetadata(), 1024 * 1024, 5, 3);
             Assert.Equal(5, gathered.Count);
             var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
@@ -677,7 +677,7 @@ namespace Libplanet.Tests.Blockchain
                     int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
                     return rank1.CompareTo(rank2);
                 });
-            gathered = _blockChain.GatherTransactionsToMine(
+            gathered = _blockChain.GatherTransactionsToPropose(
                 new BlockMetadata(), 1024 * 1024, 8, 3, txPriority);
             Assert.Equal(
                 txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),

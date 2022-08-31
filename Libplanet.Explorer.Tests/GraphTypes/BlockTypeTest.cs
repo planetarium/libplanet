@@ -26,7 +26,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
-            }.Mine();
+            }.Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(

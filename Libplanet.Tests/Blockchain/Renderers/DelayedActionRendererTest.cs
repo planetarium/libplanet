@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -435,7 +434,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         // FIXME: This should be properly addressed.
         // https://github.com/planetarium/libplanet/issues/2166
         [Fact(Skip = "No fork in PBFT.")]
-        public async Task ClearRenderBufferWhenItsInterval()
+        public void ClearRenderBufferWhenItsInterval()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -482,10 +481,10 @@ namespace Libplanet.Tests.Blockchain.Renderers
             var repeatCount = 10;
             for (int i = 0; i < repeatCount; i++)
             {
-                await chain.MineBlock(key);
-                await fork1.MineBlock(key);
-                await fork2.MineBlock(key);
-                await fork3.MineBlock(key);
+                chain.Append(chain.ProposeBlock(key));
+                fork1.Append(fork1.ProposeBlock(key));
+                fork1.Append(fork2.ProposeBlock(key));
+                fork1.Append(fork3.ProposeBlock(key));
             }
 
             Assert.Equal(17, delayedRenderer.GetBufferedActionRendererCount());
@@ -499,7 +498,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             for (int i = 0; i < 5; i++)
             {
-                await chain.MineBlock(key);
+                chain.Append(chain.ProposeBlock(key));
             }
 
             Assert.Equal(2, delayedRenderer.GetBufferedActionRendererCount());
@@ -624,7 +623,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         }
 
         [Fact]
-        public async Task DelayedRendererAfterReorg()
+        public void DelayedRendererAfterReorg()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -691,7 +690,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
-            await chain.MineBlock(key);
+            chain.Append(chain.ProposeBlock(key));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);

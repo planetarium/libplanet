@@ -68,9 +68,6 @@ namespace Libplanet.Blocks
         /// the block <paramref name="content"/> and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
-        /// <remarks>This does not verify if if a proof's hash is derived from the block
-        /// <paramref name="content"/> and the proof nonce.  Therefore, this unsafe constructor
-        /// shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.</remarks>
         internal PreEvaluationBlock(
             BlockContent<T> content,
             in ImmutableArray<byte> preEvaluationHash

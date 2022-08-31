@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Fixtures
                 PublicKey = Miner.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
                 Transactions = Txs,
-            }.Mine().Evaluate(
+            }.Propose().Evaluate(
                 privateKey: Miner,
                 blockAction: policy.BlockAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
