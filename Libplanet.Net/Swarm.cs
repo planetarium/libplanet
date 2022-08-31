@@ -137,6 +137,7 @@ namespace Libplanet.Net
                 _consensusReactor = new ConsensusReactor<T>(
                     consensusTransport,
                     BlockChain,
+                    _privateKey,
                     consensusReactorOption.ConsensusPrivateKey,
                     consensusReactorOption.ConsensusPeers,
                     consensusReactorOption.TargetBlockInterval);
