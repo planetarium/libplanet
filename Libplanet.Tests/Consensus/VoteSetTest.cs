@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Consensus
              var fx = new MemoryStoreFixture();
              BlockHash targetBlockHash = fx.Hash1;
              var validators = Enumerable.Range(0, 4)
-                 .Select(x => new PrivateKey())
+                 .Select(x => new BlsPrivateKey())
                  .ToArray();
              var voteSet = new VoteSet(
                  1,
@@ -94,7 +94,7 @@ namespace Libplanet.Tests.Consensus
              var fx = new MemoryStoreFixture();
              BlockHash targetBlockHash = fx.Hash1;
              var validators = Enumerable.Range(0, 4)
-                 .Select(x => new PrivateKey())
+                 .Select(x => new BlsPrivateKey())
                  .ToArray();
              var voteSet = new VoteSet(
                  1,
