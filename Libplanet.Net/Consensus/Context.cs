@@ -87,12 +87,13 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
-        private readonly List<PublicKey> _validators;
+        private readonly List<BlsPublicKey> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
 
         private readonly PrivateKey _privateKey;
+        private readonly BlsPrivateKey _consensusPrivateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
         private readonly HashSet<int> _preCommitTimeoutFlags;
@@ -118,8 +119,10 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="height">A target <see cref="Context{T}.Height"/> of the consensus state.
         /// </param>
-        /// <param name="privateKey">A private key for signing a block and message.
+        /// <param name="privateKey">A private key for signing a block.
         /// <seealso cref="GetValue"/>
+        /// </param>
+        /// <param name="consensusPrivateKey">A private key for signing a message.
         /// <seealso cref="ProcessGenericUponRules"/>
         /// <seealso cref="Voting"/>
         /// </param>
@@ -129,12 +132,14 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators)
+            BlsPrivateKey consensusPrivateKey,
+            List<BlsPublicKey> validators)
             : this(
                 consensusContext,
                 blockChain,
                 height,
                 privateKey,
+                consensusPrivateKey,
                 validators,
                 Step.Default,
                 0)
@@ -146,12 +151,14 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            BlsPrivateKey consensusPrivateKey,
+            List<BlsPublicKey> validators,
             Step step,
             int round = 0,
             int cacheSize = 128)
         {
             _privateKey = privateKey;
+            _consensusPrivateKey = consensusPrivateKey;
             Height = height;
             Round = round;
             Step = step;
@@ -301,10 +308,10 @@ namespace Libplanet.Net.Consensus
         /// Gets the proposer of the given round.
         /// </summary>
         /// <param name="round">A round to get proposer.</param>
-        /// <returns>Returns designated proposer's <see cref="PublicKey"/> for the
+        /// <returns>Returns designated proposer's <see cref="BlsPublicKey"/> for the
         /// <paramref name="round"/>.
         /// </returns>
-        private PublicKey Proposer(int round)
+        private BlsPublicKey Proposer(int round)
         {
             // return designated proposer for the height round pair.
             return _validators[(int)((Height + round) % TotalValidators)];
@@ -358,9 +365,9 @@ namespace Libplanet.Net.Consensus
                 round,
                 hash,
                 DateTimeOffset.UtcNow,
-                _privateKey.PublicKey,
+                _consensusPrivateKey.PublicKey,
                 flag,
-                null).Sign(_privateKey);
+                null).Sign(_consensusPrivateKey);
         }
 
         /// <summary>
