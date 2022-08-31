@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Action;
 using Libplanet.PoS;
 using Xunit;
@@ -24,7 +23,7 @@ namespace Libplanet.Tests.PoS
         {
             _states = _states.MintAsset(
                 _operatorAddress, Asset.ConsensusToken * 50);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _states = ValidatorCtrl.Create(
                     _states, _operatorAddress, Asset.ConsensusToken * 30));
         }
@@ -36,7 +35,7 @@ namespace Libplanet.Tests.PoS
         {
             _states = _states.MintAsset(
                 _operatorAddress, Asset.GovernanceToken * mintAmount);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InsufficientFungibleAssetValueException>(
                 () => _states = ValidatorCtrl.Create(
                     _states, _operatorAddress, Asset.GovernanceToken * selfDelegateAmount));
         }
@@ -62,7 +61,7 @@ namespace Libplanet.Tests.PoS
                     Delegation.DeriveAddress(_operatorAddress, _validatorAddress), Asset.Share));
             Assert.Equal(
                 Asset.Share * selfDelegateAmount,
-                ValidatorCtrl.GetValidatorByAddr(_states, _validatorAddress).DelegatorShares);
+                ValidatorCtrl.GetValidator(_states, _validatorAddress).DelegatorShares);
         }
     }
 }

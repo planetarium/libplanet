@@ -1,4 +1,3 @@
-using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -30,7 +29,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.ConsensusToken))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.ConsensusToken, value.Currency);
                 }
 
                 _consensusToken = value;

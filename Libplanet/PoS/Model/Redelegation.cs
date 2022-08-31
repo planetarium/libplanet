@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class Redelegation
     {
         public Redelegation(

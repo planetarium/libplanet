@@ -1,5 +1,3 @@
-using System;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 
@@ -7,25 +5,22 @@ namespace Libplanet.PoS
 {
     internal static class DelegateCtrl
     {
-        internal static Delegation GetDelegationByAddr(
+        internal static Delegation? GetDelegation(
             IAccountStateDelta states,
             Address delegationAddress)
         {
-            IValue? serializedDelegation = states.GetState(delegationAddress);
-            if (serializedDelegation == null)
+            if (states.GetState(delegationAddress) is { } value)
             {
-                throw new InvalidOperationException();
+                return new Delegation(value);
             }
 
-            Delegation delegation = new Delegation(serializedDelegation);
-            return delegation;
+            return null;
         }
 
-        internal static (IAccountStateDelta, Delegation) GetDelegation(
+        internal static (IAccountStateDelta, Delegation) FetchDelegation(
             IAccountStateDelta states,
             Address delegatorAddress,
-            Address validatorAddress,
-            bool create = true)
+            Address validatorAddress)
         {
             Address delegationAddress = Delegation.DeriveAddress(
                 delegatorAddress, validatorAddress);
@@ -34,7 +29,7 @@ namespace Libplanet.PoS
             {
                 delegation = new Delegation(value);
             }
-            else if(create)
+            else
             {
                 delegation = new Delegation(delegatorAddress, validatorAddress);
                 states = states.SetState(delegation.Address, delegation.Serialize());
@@ -51,18 +46,26 @@ namespace Libplanet.PoS
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
             {
-                throw new ArgumentException();
+                throw new InvalidCurrencyException(Asset.GovernanceToken, governanceToken.Currency);
             }
 
-            if (governanceToken > states.GetBalance(delegatorAddress, Asset.GovernanceToken))
+            FungibleAssetValue delegatorGovernanceTokenBalance = states.GetBalance(
+                delegatorAddress, Asset.GovernanceToken);
+            if (governanceToken > delegatorGovernanceTokenBalance)
             {
-                throw new ArgumentException();
+                throw new InsufficientFungibleAssetValueException(
+                    governanceToken,
+                    delegatorGovernanceTokenBalance,
+                    $"Delegator {delegatorAddress} has insufficient governanceToken");
             }
 
-            Validator validator = ValidatorCtrl.GetValidatorByAddr(states, validatorAddress);
+            if (!(ValidatorCtrl.GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
 
-            Delegation delegation;
-            (states, delegation) = GetDelegation(states, delegatorAddress, validatorAddress);
+            Delegation? delegation;
+            (states, delegation) = FetchDelegation(states, delegatorAddress, validatorAddress);
 
             FungibleAssetValue consensusToken = Asset.ConsensusFromGovernance(governanceToken);
             Address poolAddress = validator.Status == BondingStatus.Bonded

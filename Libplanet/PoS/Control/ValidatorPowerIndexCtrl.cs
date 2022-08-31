@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 
@@ -8,16 +6,21 @@ namespace Libplanet.PoS
 {
     internal static class ValidatorPowerIndexCtrl
     {
-        internal static (IAccountStateDelta, ValidatorPowerIndex) GetValidatorPowerIndex(
+        internal static (IAccountStateDelta, ValidatorPowerIndex) FetchValidatorPowerIndex(
             IAccountStateDelta states)
         {
-            IValue? serialized = states.GetState(ReservedAddress.ValidatorPowerIndex);
-            ValidatorPowerIndex validatorPowerIndex
-                = (serialized == null)
-                ? new ValidatorPowerIndex()
-                : new ValidatorPowerIndex(serialized);
-            states = states.SetState(
-                validatorPowerIndex.Address, validatorPowerIndex.Serialize());
+            ValidatorPowerIndex validatorPowerIndex;
+            if (states.GetState(ReservedAddress.ValidatorPowerIndex) is { } value)
+            {
+                validatorPowerIndex = new ValidatorPowerIndex(value);
+            }
+            else
+            {
+                validatorPowerIndex = new ValidatorPowerIndex();
+                states = states.SetState(
+                    validatorPowerIndex.Address, validatorPowerIndex.Serialize());
+            }
+
             return (states, validatorPowerIndex);
         }
 
@@ -26,12 +29,14 @@ namespace Libplanet.PoS
             Address validatorAddress)
         {
             ValidatorPowerIndex validatorPowerIndex;
-            (states, validatorPowerIndex) = GetValidatorPowerIndex(states);
+            (states, validatorPowerIndex) = FetchValidatorPowerIndex(states);
             validatorPowerIndex.Index.RemoveWhere(
                 key => key.ValidatorAddress.Equals(validatorAddress));
-            IValue serializedValidator = states.GetState(validatorAddress)
-                ?? throw new InvalidOperationException();
-            Validator validator = new Validator(serializedValidator);
+            if (!(ValidatorCtrl.GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
+
             if (validator.Jailed)
             {
                 return states;

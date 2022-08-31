@@ -1,11 +1,9 @@
-using System;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    [Serializable]
     public class Validator
     {
         private FungibleAssetValue _delegatorShares;
@@ -75,7 +73,7 @@ namespace Libplanet.PoS
             {
                 if (!value.Currency.Equals(Asset.Share))
                 {
-                    throw new ArgumentException();
+                    throw new InvalidCurrencyException(Asset.Share, value.Currency);
                 }
 
                 _delegatorShares = value;

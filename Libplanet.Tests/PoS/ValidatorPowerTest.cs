@@ -1,4 +1,3 @@
-using System;
 using Libplanet.PoS;
 using Xunit;
 
@@ -16,9 +15,9 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void InvalidUnbondingConsensusToken()
         {
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _consensusPowerKey.ConsensusToken = Asset.GovernanceToken * 1);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _consensusPowerKey.ConsensusToken = Asset.Share * 1);
         }
 

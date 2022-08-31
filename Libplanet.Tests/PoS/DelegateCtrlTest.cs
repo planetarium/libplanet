@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Action;
 using Libplanet.PoS;
 using Xunit;
@@ -25,7 +24,7 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(500, 500, 100);
             _states = _states.MintAsset(_delegatorAddress, Asset.ConsensusToken * 50);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                     () => _states = DelegateCtrl.Execute(
                         _states, _delegatorAddress, _validatorAddress, Asset.ConsensusToken * 30));
         }
@@ -34,7 +33,7 @@ namespace Libplanet.Tests.PoS
         public void InvalidValidatorTest()
         {
             Initialize(500, 500, 100);
-            Assert.Throws<InvalidOperationException>(
+            Assert.Throws<NullValidatorException>(
                     () => _states = DelegateCtrl.Execute(
                         _states, _delegatorAddress, CreateAddress(), Asset.GovernanceToken * 10));
         }
@@ -44,7 +43,7 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(500, 500, 100);
             _states = _states.BurnAsset(_validatorAddress, Asset.ConsensusToken * 100);
-            Assert.Throws<InvalidOperationException>(
+            Assert.Throws<InvalidExchangeRateException>(
                 () => _states = DelegateCtrl.Execute(
                     _states, _delegatorAddress, _validatorAddress, Asset.GovernanceToken * 10));
         }
@@ -92,7 +91,7 @@ namespace Libplanet.Tests.PoS
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             Assert.Equal(
-                ValidatorCtrl.GetValidatorByAddr(_states, _validatorAddress).DelegatorShares,
+                ValidatorCtrl.GetValidator(_states, _validatorAddress).DelegatorShares,
                 _states.GetBalance(
                     Delegation.DeriveAddress(_operatorAddress, _validatorAddress), Asset.Share)
                 + _states.GetBalance(

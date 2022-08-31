@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Action;
 using Libplanet.PoS;
 using Xunit;
@@ -27,10 +26,10 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(500, 500, 100, 100);
             _states = _states.MintAsset(_delegatorAddress, Asset.ConsensusToken * 50);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _states = UndelegateCtrl.Execute(
                     _states, _delegatorAddress, _validatorAddress, Asset.ConsensusToken * 30, 1));
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InvalidCurrencyException>(
                 () => _states = UndelegateCtrl.Execute(
                     _states, _delegatorAddress, _validatorAddress, Asset.GovernanceToken * 30, 1));
         }
@@ -39,9 +38,9 @@ namespace Libplanet.Tests.PoS
         public void InvalidValidatorTest()
         {
             Initialize(500, 500, 100, 100);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<NullValidatorException>(
                 () => _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.GovernanceToken * 10, 1));
+                    _states, _delegatorAddress, CreateAddress(), Asset.Share * 10, 1));
         }
 
         [Fact]
@@ -54,7 +53,7 @@ namespace Libplanet.Tests.PoS
                     _states, _delegatorAddress, _validatorAddress, Asset.Share * 1, i);
             }
 
-            Assert.Throws<InvalidOperationException>(
+            Assert.Throws<MaximumUndelegationEntriesException>(
                 () => _states = UndelegateCtrl.Execute(
                     _states, _delegatorAddress, _validatorAddress, Asset.Share * 1, 1));
         }
@@ -63,7 +62,7 @@ namespace Libplanet.Tests.PoS
         public void ExceedUndelegateTest()
         {
             Initialize(500, 500, 100, 100);
-            Assert.Throws<ArgumentException>(
+            Assert.Throws<InsufficientFungibleAssetValueException>(
                 () => _states = UndelegateCtrl.Execute(
                     _states,
                     _delegatorAddress,
@@ -86,7 +85,7 @@ namespace Libplanet.Tests.PoS
             _states = UndelegateCtrl.Execute(
                 _states, _delegatorAddress, _validatorAddress, Asset.Share * undelegateAmount, 1);
             Assert.Single(
-                UndelegateCtrl.GetUndelegationByAddr(_states, _undelegationAddress)
+                UndelegateCtrl.GetUndelegation(_states, _undelegationAddress)
                 .UndelegationEntryAddresses);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
@@ -95,7 +94,7 @@ namespace Libplanet.Tests.PoS
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             _states = UndelegateCtrl.Complete(_states, _undelegationAddress, 1000);
-            Assert.Single(UndelegateCtrl.GetUndelegationByAddr(_states, _undelegationAddress)
+            Assert.Single(UndelegateCtrl.GetUndelegation(_states, _undelegationAddress)
                 .UndelegationEntryAddresses);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
@@ -104,7 +103,7 @@ namespace Libplanet.Tests.PoS
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             _states = UndelegateCtrl.Complete(_states, _undelegationAddress, 50400 * 5);
-            Assert.Empty(UndelegateCtrl.GetUndelegationByAddr(_states, _undelegationAddress)
+            Assert.Empty(UndelegateCtrl.GetUndelegation(_states, _undelegationAddress)
                 .UndelegationEntryAddresses);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount + undelegateAmount),
@@ -204,7 +203,7 @@ namespace Libplanet.Tests.PoS
                 Asset.GovernanceToken * (selfDelegateAmount + delegateAmount),
                 _states.GetBalance(ReservedAddress.UnbondedPool, Asset.GovernanceToken));
             Assert.Equal(
-                ValidatorCtrl.GetValidatorByAddr(_states, _validatorAddress).DelegatorShares,
+                ValidatorCtrl.GetValidator(_states, _validatorAddress).DelegatorShares,
                 _states.GetBalance(
                     Delegation.DeriveAddress(
                         _operatorAddress, _validatorAddress), Asset.Share)
