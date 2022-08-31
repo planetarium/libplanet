@@ -13,14 +13,13 @@ namespace Libplanet.Tests
         [ClassData(typeof(HashcashTestData))]
         public void AnswerSatisfiesDifficulty(byte[] challenge, long difficulty)
         {
-            IEnumerable<byte[]> Stamp(Nonce nonce) => new[] { challenge, nonce.ToByteArray() };
+            byte[] Stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
             (Nonce answer, HashDigest<SHA256> digest) =
-                Hashcash.Answer(Stamp, HashAlgorithmType.Of<SHA256>(), difficulty, 0);
+                Hashcash.Answer(Stamp, difficulty, 0);
             Assert.True(Satisfies(digest.ToByteArray(), difficulty));
             TestUtils.AssertBytesEqual(
                 digest.ToByteArray(),
-                SHA256.Create().ComputeHash(Stamp(answer).SelectMany(bs => bs).ToArray())
-            );
+                SHA256.Create().ComputeHash(Stamp(answer).ToArray()));
         }
 
         [Fact]

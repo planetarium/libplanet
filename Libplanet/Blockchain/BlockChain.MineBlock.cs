@@ -206,7 +206,7 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            int digestSize = BlockMetadata.HashAlgorithmType.DigestSize;
+            int digestSize = HashDigest<SHA256>.Size;
 
             // Makes an empty block payload to estimate the length of bytes without transactions.
             // FIXME: We'd better to estimate only transactions rather than the whole block.

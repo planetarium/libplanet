@@ -15,7 +15,6 @@ namespace Libplanet.Node.Tests
 {
     public class UntypedBlockTest
     {
-        private static readonly HashAlgorithmType _sha256 = BlockMetadata.HashAlgorithmType;
         private static readonly Codec Codec = new Codec();
         private readonly PrivateKey _signerKey;
         private readonly Transaction<NullAction>[] _txs;

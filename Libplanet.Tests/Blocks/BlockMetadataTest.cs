@@ -224,14 +224,12 @@ namespace Libplanet.Tests.Blocks
         {
             var codec = new Codec();
 
-            HashAlgorithmType sha256 = BlockMetadata.HashAlgorithmType;
             (Nonce nonce, HashDigest<SHA256> preEvalHash) =
                 GenesisMetadata.MineNonce();
             Assert.True(Satisfies(preEvalHash.ByteArray, GenesisMetadata.Difficulty));
-            ImmutableArray<byte> actual = ImmutableArray.Create(
-                sha256.Digest(codec.Encode(GenesisMetadata.MakeCandidateData(nonce)))
-            );
-            AssertBytesEqual(actual, preEvalHash.ByteArray);
+            HashDigest<SHA256> actual = HashDigest<SHA256>.DeriveFrom(
+                    codec.Encode(GenesisMetadata.MakeCandidateData(nonce)));
+            AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
         }
 
         [Fact]
