@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -31,7 +32,7 @@ namespace Libplanet.Consensus
         /// <param name="blockHash"><see cref="BlockHash"/> of the block in vote.</param>
         /// <param name="timestamp">The time at which the voting took place.</param>
         /// <param name="validator">
-        /// <see cref="PublicKey"/> of the validator made the vote.
+        /// <see cref="BlsPublicKey"/> of the validator made the vote.
         /// </param>
         /// <param name="flag">
         /// <see cref="VoteFlag"/> for the vote's status.</param>
@@ -41,7 +42,7 @@ namespace Libplanet.Consensus
             int round,
             BlockHash? blockHash,
             DateTimeOffset timestamp,
-            PublicKey validator,
+            BlsPublicKey validator,
             VoteFlag flag,
             ImmutableArray<byte>? signature)
         {
@@ -76,7 +77,7 @@ namespace Libplanet.Consensus
                     dict.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture);
-                Validator = new PublicKey(dict.GetValue<Binary>(ValidatorKey).ByteArray);
+                Validator = new BlsPublicKey(dict.GetValue<Binary>(ValidatorKey).ByteArray);
                 Flag = (VoteFlag)(long)dict.GetValue<Integer>(FlagKey);
                 Signature = dict.ContainsKey(SignatureKey)
                     ? dict.GetValue<Binary>(SignatureKey)
@@ -111,9 +112,9 @@ namespace Libplanet.Consensus
         public DateTimeOffset Timestamp { get; }
 
         /// <summary>
-        /// <see cref="PublicKey"/> of the validator made the vote.
+        /// <see cref="BlsPublicKey"/> of the validator made the vote.
         /// </summary>
-        public PublicKey Validator { get; }
+        public BlsPublicKey Validator { get; }
 
         /// <summary>
         /// <see cref="VoteFlag"/> for the vote's status.
@@ -139,7 +140,7 @@ namespace Libplanet.Consensus
                     .Add(
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                    .Add(ValidatorKey, Validator.Format(compress: true))
+                    .Add(ValidatorKey, Validator.KeyBytes.ToArray())
                     .Add(FlagKey, (long)Flag);
 
                 if (BlockHash is { } blockHash)
@@ -166,7 +167,7 @@ namespace Libplanet.Consensus
         /// <returns>A signed vote claim.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="signer"/> is
         /// <c>null</c>.</exception>
-        public Vote Sign(PrivateKey signer)
+        public Vote Sign(BlsPrivateKey signer)
         {
             Vote voteWithoutSign = RemoveSignature;
             byte[] sign = signer.Sign(voteWithoutSign.ByteArray);
@@ -188,7 +189,7 @@ namespace Libplanet.Consensus
         /// <see cref="Validator"/>'s and the <see cref="Signature"/> is certainly signed by
         /// the <see cref="Validator"/>.</returns>
         [Pure]
-        public bool Verify(PublicKey publicKey) =>
+        public bool Verify(BlsPublicKey publicKey) =>
             Validator.Equals(publicKey) &&
             publicKey.Verify(RemoveSignature.ByteArray.ToImmutableArray(), Signature!);
 
