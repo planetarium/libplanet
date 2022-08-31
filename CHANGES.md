@@ -6,6 +6,12 @@ Version 0.40.1
 
 To be released.
 
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268]]
+
+[#2268]: https://github.com/planetarium/libplanet/pull/2268
+
 
 Version 0.40.0
 --------------
