@@ -22,9 +22,9 @@ namespace Libplanet.Net.Consensus
         public int ConsensusWorkers { get; set; }
 
         /// <summary>
-        /// A <see cref="PrivateKey"/> for signing block and message.
+        /// A <see cref="BlsPrivateKey"/> for signing block and message.
         /// </summary>
-        public PrivateKey ConsensusPrivateKey { get; set; }
+        public BlsPrivateKey ConsensusPrivateKey { get; set; }
 
         /// <summary>
         /// A list of validators.
