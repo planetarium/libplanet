@@ -362,7 +362,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
         /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
         /// <returns>The genesis block mined with parameters.</returns>
-        public static Block<T> MakeGenesisBlock(
+        public static Block<T> MineGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
@@ -384,6 +384,36 @@ namespace Libplanet.Blockchain
             };
 
             PreEvaluationBlock<T> preEval = content.Mine();
+            return preEval.Evaluate(
+                privateKey,
+                blockAction,
+                nativeTokenPredicate,
+                new TrieStateStore(new DefaultKeyValueStore(null))
+            );
+        }
+
+        public static Block<T> ProposeGenesisBlock(
+            IEnumerable<T> actions = null,
+            PrivateKey privateKey = null,
+            DateTimeOffset? timestamp = null,
+            IAction blockAction = null,
+            Predicate<Currency> nativeTokenPredicate = null)
+        {
+            privateKey ??= new PrivateKey();
+            actions ??= ImmutableArray<T>.Empty;
+            Transaction<T>[] transactions =
+            {
+                Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
+            };
+
+            BlockContent<T> content = new BlockContent<T>
+            {
+                PublicKey = privateKey.PublicKey,
+                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
+                Transactions = transactions,
+            };
+
+            PreEvaluationBlock<T> preEval = content.Propose();
             return preEval.Evaluate(
                 privateKey,
                 blockAction,

@@ -90,9 +90,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ThrowInvalidProposer()
+        public async Task ThrowInvalidProposer()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
             Context.ExceptionOccurred += (sender, e) =>
@@ -133,9 +133,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ThrowInvalidValidatorVote()
+        public async Task ThrowInvalidValidatorVote()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[NodeId], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
             Context.ExceptionOccurred += (sender, e) =>
@@ -179,9 +179,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ThrowDifferentHeight()
+        public async Task ThrowDifferentHeight()
         {
-            var block = await BlockChain.MineBlock(TestUtils.PrivateKeys[2], append: false);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
 
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();

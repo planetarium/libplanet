@@ -16,13 +16,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class LoggedRendererTest : IDisposable
     {
         private static DumbBlock _genesis =
-            TestUtils.MineGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
+            TestUtils.ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
 
         private static DumbBlock _blockA =
-            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private static DumbBlock _blockB =
-            TestUtils.MineNextBlock(_genesis, TestUtils.GenesisMiner);
+            TestUtils.ProposeNextBlock(_genesis, TestUtils.GenesisMiner);
 
         private ILogger _logger;
 

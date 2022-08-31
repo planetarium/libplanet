@@ -26,7 +26,7 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisMiner);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
@@ -110,20 +110,15 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var dateTimeOffset = DateTimeOffset.MinValue + TimeSpan.FromHours(6.1234);
-            Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(GenesisMiner);
+            Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(GenesisMiner);
             var message = new BlockHeaderMsg(genesis.Hash, genesis.Header)
             {
                 Timestamp = dateTimeOffset,
                 Remote = peer,
             };
             Assert.Equal(
-                new MessageId(new byte[32]
-                {
-                    0xf2, 0xe6, 0x2d, 0xbd, 0x95, 0xd0, 0x0f, 0x5a,
-                    0x54, 0xf2, 0xf2, 0xe3, 0x76, 0xc1, 0x93, 0xb3,
-                    0x21, 0x05, 0x93, 0x75, 0x39, 0xe6, 0x84, 0xc5,
-                    0x55, 0x0a, 0x23, 0x75, 0xbc, 0x38, 0xdc, 0x11,
-                }),
+                new MessageId(ByteUtil.ParseHex(
+                    "f22018338c677240f73b75cbd9bf048d68a49e848ba99a1dcf7a761da6baa87f")),
                 message.Id);
         }
     }

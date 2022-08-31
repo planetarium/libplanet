@@ -24,7 +24,7 @@ namespace Libplanet.Net.Tests
 
         private readonly List<Func<Task>> _finalizers;
 
-        private static async Task<(Address, Block<DumbAction>[])>
+        private static (Address, Block<DumbAction>[])
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
             Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
@@ -49,8 +49,9 @@ namespace Libplanet.Net.Tests
                             );
                         }
 
-                        Block<DumbAction> block = await chain.MineBlock(miner);
+                        Block<DumbAction> block = chain.ProposeBlock(miner);
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
+                        chain.Append(block);
                     }
 
                     var blockList = new List<Block<DumbAction>>();

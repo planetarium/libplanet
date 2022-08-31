@@ -85,8 +85,8 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainId()
         {
-            Block<DumbAction> block1 = MineNextBlock(
-                MineGenesisBlock<DumbAction>(GenesisMiner),
+            Block<DumbAction> block1 = ProposeNextBlock(
+                ProposeGenesisBlock<DumbAction>(GenesisMiner),
                 GenesisMiner,
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
@@ -959,8 +959,7 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 =
-                MineNextBlock(Fx.Block2, Fx.Miner);
+            Block<DumbAction> anotherBlock3 = ProposeNextBlock(Fx.Block2, Fx.Miner);
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1010,7 +1009,7 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public async Task Copy()
+        public void Copy()
         {
             using (StoreFixture fx = FxConstructor())
             using (StoreFixture fx2 = FxConstructor())
@@ -1022,7 +1021,7 @@ namespace Libplanet.Tests.Store
                     new VolatileStagePolicy<DumbAction>(),
                     s1,
                     fx.StateStore,
-                    MineGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
+                    ProposeGenesis<DumbAction>(miner: GenesisMiner.PublicKey)
                         .Evaluate(
                             privateKey: GenesisMiner,
                             blockAction: policy.BlockAction,
@@ -1032,9 +1031,9 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
-                await blocks.MineBlock(key);
+                blocks.Append(blocks.ProposeBlock(key));
+                blocks.Append(blocks.ProposeBlock(key));
+                blocks.Append(blocks.ProposeBlock(key));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);
@@ -1064,11 +1063,9 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx = FxConstructor())
             {
                 Block<DumbAction> genesisBlock = fx.GenesisBlock;
-                // NOTE: it depends on that Block<T>.CurrentProtocolVersion is not 0.
-                Block<DumbAction> block = MineNextBlock(
+                Block<DumbAction> block = ProposeNextBlock(
                     genesisBlock,
-                    miner: fx.Miner,
-                    protocolVersion: 0);
+                    miner: fx.Miner);
 
                 fx.Store.PutBlock(block);
                 Block<DumbAction> storedBlock =

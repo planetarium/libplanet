@@ -41,13 +41,13 @@ namespace Libplanet.Benchmarks
             _miner = TestUtils.ChainPrivateKey;
             _blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineGenesisBlock<DumbAction>(_miner),
+                TestUtils.ProposeGenesisBlock<DumbAction>(_miner),
             };
             _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[0], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[1], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[2], _miner));
-            _blocks.Add(TestUtils.MineNextBlock(_blocks[3], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[0], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[1], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[2], _miner));
+            _blocks.Add(TestUtils.ProposeNextBlock(_blocks[3], _miner));
         }
 
         [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
@@ -59,7 +59,7 @@ namespace Libplanet.Benchmarks
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
-            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+            var genesisBlock = BlockChain<DumbAction>.ProposeGenesisBlock();
             var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {

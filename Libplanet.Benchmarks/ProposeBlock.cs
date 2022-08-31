@@ -1,21 +1,19 @@
-using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 
 namespace Libplanet.Benchmarks
 {
-    public class MineBlock
+    public class ProposeBlock
     {
         private BlockChain<DumbAction> _blockChain;
         private PrivateKey _privateKey;
 
-        public MineBlock()
+        public ProposeBlock()
         {
             var fx = new DefaultStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
@@ -29,24 +27,24 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockEmpty()
+        public Block<DumbAction> ProposeBlockEmpty()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            return _blockChain.ProposeBlock(_privateKey);
         }
 
-        [IterationSetup(Target = "MineBlockOneTransactionNoAction")]
+        [IterationSetup(Target = "ProposeBlockOneTransactionNoAction")]
         public void MakeOneTransactionNoAction()
         {
             _blockChain.MakeTransaction(_privateKey, new DumbAction[] { });
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockOneTransactionNoAction()
+        public Block<DumbAction> ProposeBlockOneTransactionNoAction()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            return _blockChain.ProposeBlock(_privateKey);
         }
 
-        [IterationSetup(Target = "MineBlockTenTransactionsNoAction")]
+        [IterationSetup(Target = "ProposeBlockTenTransactionsNoAction")]
         public void MakeTenTransactionsNoAction()
         {
             for (var i = 0; i < 10; i++)
@@ -56,12 +54,12 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockTenTransactionsNoAction()
+        public Block<DumbAction> ProposeBlockTenTransactionsNoAction()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            return _blockChain.ProposeBlock(_privateKey);
         }
 
-        [IterationSetup(Target = "MineBlockOneTransactionWithActions")]
+        [IterationSetup(Target = "ProposeBlockOneTransactionWithActions")]
         public void MakeOneTransactionWithActions()
         {
             var privateKey = new PrivateKey();
@@ -77,12 +75,12 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockOneTransactionWithActions()
+        public Block<DumbAction> ProposeBlockOneTransactionWithActions()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            return _blockChain.ProposeBlock(_privateKey);
         }
 
-        [IterationSetup(Target = "MineBlockTenTransactionsWithActions")]
+        [IterationSetup(Target = "ProposeBlockTenTransactionsWithActions")]
         public void MakeTenTransactionsWithActions()
         {
             for (var i = 0; i < 10; i++)
@@ -101,9 +99,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public async Task<Block<DumbAction>> MineBlockTenTransactionsWithActions()
+        public Block<DumbAction> ProposeBlockTenTransactionsWithActions()
         {
-            return await _blockChain.MineBlock(_privateKey);
+            return _blockChain.ProposeBlock(_privateKey);
         }
     }
 }

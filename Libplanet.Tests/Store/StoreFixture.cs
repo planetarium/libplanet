@@ -101,7 +101,7 @@ namespace Libplanet.Tests.Store
                     ? rh
                     : (HashDigest<SHA256>?)null;
             Miner = TestUtils.GenesisMiner;
-            GenesisBlock = TestUtils.MineGenesis<DumbAction>(
+            GenesisBlock = TestUtils.ProposeGenesis<DumbAction>(
                 Miner.PublicKey
             ).Evaluate(
                 privateKey: Miner,
@@ -112,11 +112,11 @@ namespace Libplanet.Tests.Store
                 stateStore: stateStore
             );
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
-            Block1 = TestUtils.MineNextBlock(GenesisBlock, miner: Miner);
+            Block1 = TestUtils.ProposeNextBlock(GenesisBlock, miner: Miner);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
-            Block2 = TestUtils.MineNextBlock(Block1, miner: Miner);
+            Block2 = TestUtils.ProposeNextBlock(Block1, miner: Miner);
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
-            Block3 = TestUtils.MineNextBlock(Block2, miner: Miner);
+            Block3 = TestUtils.ProposeNextBlock(Block2, miner: Miner);
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);

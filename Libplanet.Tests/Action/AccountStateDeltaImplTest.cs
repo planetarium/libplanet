@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Action
                 new[] { action }
             );
             chain.Append(
-                TestUtils.MineNext(
+                TestUtils.ProposeNext(
                     chain.Tip,
                     new[] { tx },
                     miner: _keys[1].PublicKey,
