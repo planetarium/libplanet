@@ -73,6 +73,12 @@
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0411">Version 0.41.1</h2>
+<p>Released on August 31, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> method had thrown
+<code>ArgumentNullException</code> with valid arguments.  [<a href="https://github.com/planetarium/libplanet/pull/2268">#2268</a>, <a href="https://github.com/planetarium/libplanet/pull/2270">#2270</a>]</li>
+</ul>
 <h2 id="version-0410">Version 0.41.0</h2>
 <p>Released on August 26, 2022.</p>
 <h3 id="deprecated-apis-1">Deprecated APIs</h3>
@@ -233,8 +239,14 @@ to stop recieving requests and sending replies.</li>
 </ul>
 </li>
 </ul>
+<h2 id="version-0401">Version 0.40.1</h2>
+<p>Released on August 31, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>Transaction&lt;T&gt;.Create(long, PrivateKey, BlockHash?, IAction, IImmutableSet&lt;Address&gt;?, DateTimeOffset?)</code> method had thrown
+<code>ArgumentNullException</code> with valid arguments.  [<a href="https://github.com/planetarium/libplanet/pull/2268">#2268</a>]</li>
+</ul>
 <h2 id="version-0400">Version 0.40.0</h2>
-<p>Released on Auguest 12th, 2022.</p>
+<p>Released on August 12, 2022.</p>
 <h3 id="deprecated-apis-2">Deprecated APIs</h3>
 <ul>
 <li><code>Transaction&lt;T&gt;(long, Address, PublicKey, BlockHash?, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, byte[])</code> constructor
