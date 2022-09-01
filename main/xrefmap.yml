@@ -2803,6 +2803,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
   nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
   nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name: MakeTransaction(PrivateKey, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name.vb: MakeTransaction(PrivateKey, IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, Libplanet.Action.IAction, IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
+  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IAction, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IAction, IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction*
   name: MakeTransaction
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_
