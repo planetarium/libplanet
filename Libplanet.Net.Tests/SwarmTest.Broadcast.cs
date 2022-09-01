@@ -502,12 +502,12 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new HashSet<TxId> { tx1.Id, tx2.Id },
                     chainB.GetStagedTransactionIds().ToHashSet());
+                swarmA.RoutingTable.RemovePeer(swarmB.AsPeer);
+                swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
 
                 chainA.UnstageTransaction(tx2);
                 Assert.Equal(1, chainA.GetNextTxNonce(privateKey.ToAddress()));
 
-                swarmA.RoutingTable.RemovePeer(swarmB.AsPeer);
-                swarmB.RoutingTable.RemovePeer(swarmA.AsPeer);
                 Assert.Empty(swarmA.Peers);
                 Assert.Empty(swarmB.Peers);
 
