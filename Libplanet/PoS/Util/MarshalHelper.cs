@@ -24,6 +24,9 @@ namespace Libplanet.PoS
         public static IValue Serialize(this long number) =>
             (Text)number.ToString(CultureInfo.InvariantCulture);
 
+        public static IValue Serialize(this double number) =>
+            (Text)number.ToString(CultureInfo.InvariantCulture);
+
         public static IValue Serialize(this BigInteger number) =>
             (Bencodex.Types.Integer)number;
 
@@ -53,7 +56,10 @@ namespace Libplanet.PoS
             int.Parse(((Text)serialized).Value, CultureInfo.InvariantCulture);
 
         public static long ToLong(this IValue serialized) =>
-            int.Parse(((Text)serialized).Value, CultureInfo.InvariantCulture);
+            long.Parse(((Text)serialized).Value, CultureInfo.InvariantCulture);
+
+        public static double ToDouble(this IValue serialized) =>
+            double.Parse(((Text)serialized).Value, CultureInfo.InvariantCulture);
 
         public static BigInteger ToBigInteger(this IValue serialized) =>
             ((Integer)serialized).Value;
