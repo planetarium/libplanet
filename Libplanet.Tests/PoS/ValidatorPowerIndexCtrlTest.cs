@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.PoS;
@@ -84,8 +84,8 @@ namespace Libplanet.Tests.PoS
             Assert.Equal(5, index.Count);
             for (int i = 0; i < index.Count - 1; i++)
             {
-                Assert.True(new BigInteger(index[i].ValidatorAddress.ToByteArray())
-                    > new BigInteger(index[i + 1].ValidatorAddress.ToByteArray()));
+                Assert.True(((IComparable<Address>)index[i].ValidatorAddress)
+                    .CompareTo(index[i + 1].ValidatorAddress) > 0);
             }
         }
     }

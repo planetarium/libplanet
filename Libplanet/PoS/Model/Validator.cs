@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
@@ -5,7 +6,7 @@ using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
-    public class Validator
+    public class Validator : IEquatable<Validator>
     {
         private FungibleAssetValue _delegatorShares;
 
@@ -86,6 +87,16 @@ namespace Libplanet.PoS
             }
         }
 
+        public static bool operator ==(Validator obj, Validator other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(Validator obj, Validator other)
+        {
+            return !(obj == other);
+        }
+
         public static Address DeriveAddress(Address operatorAddress)
         {
             return operatorAddress.Derive("ValidatorAddress");
@@ -106,6 +117,37 @@ namespace Libplanet.PoS
                 .Add(Status.Serialize())
                 .Add(UnbondingCompletionBlockHeight.Serialize())
                 .Add(DelegatorShares.Serialize());
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Validator);
+        }
+
+        public bool Equals(Validator? other)
+        {
+            return !(other is null) &&
+                   Address.Equals(other.Address) &&
+                   OperatorAddress.Equals(other.OperatorAddress) &&
+                   OperatorPublicKey.Equals(other.OperatorPublicKey) &&
+                   Jailed == other.Jailed &&
+                   Status == other.Status &&
+                   UnbondingCompletionBlockHeight == other.UnbondingCompletionBlockHeight &&
+                   DelegatorShares.Equals(other.DelegatorShares);
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in Address.ToByteArray())
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Libplanet.PoS
     {
         public UnbondingSet()
         {
-            ValidatorAddressSet = new SortedSet<Address>(new AddressComparer());
-            UndelegationAddressSet = new SortedSet<Address>(new AddressComparer());
-            RedelegationAddressSet = new SortedSet<Address>(new AddressComparer());
+            ValidatorAddressSet = new SortedSet<Address>();
+            UndelegationAddressSet = new SortedSet<Address>();
+            RedelegationAddressSet = new SortedSet<Address>();
         }
 
         public UnbondingSet(IValue serialized)
@@ -18,13 +18,13 @@ namespace Libplanet.PoS
             List serializedList = (List)serialized;
             ValidatorAddressSet
                 = new SortedSet<Address>(
-                    ((List)serializedList[0]).Select(x => x.ToAddress()), new AddressComparer());
+                    ((List)serializedList[0]).Select(x => x.ToAddress()));
             UndelegationAddressSet
                 = new SortedSet<Address>(
-                    ((List)serializedList[1]).Select(x => x.ToAddress()), new AddressComparer());
+                    ((List)serializedList[1]).Select(x => x.ToAddress()));
             RedelegationAddressSet
                 = new SortedSet<Address>(
-                    ((List)serializedList[2]).Select(x => x.ToAddress()), new AddressComparer());
+                    ((List)serializedList[2]).Select(x => x.ToAddress()));
         }
 
         public UnbondingSet(UnbondingSet unbondingSet)

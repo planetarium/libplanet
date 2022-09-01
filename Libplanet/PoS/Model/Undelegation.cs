@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    public class Undelegation
+    public class Undelegation : IEquatable<Undelegation>
     {
         public Undelegation(Address delegatorAddress, Address validatorAddress)
         {
@@ -60,6 +62,16 @@ namespace Libplanet.PoS
 
         public SortedList<long, Address> UndelegationEntryAddresses { get; set; }
 
+        public static bool operator ==(Undelegation obj, Undelegation other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(Undelegation obj, Undelegation other)
+        {
+            return !(obj == other);
+        }
+
         public static Address DeriveAddress(
             Address delegatorAddress, Address validatorAddress)
         {
@@ -88,6 +100,36 @@ namespace Libplanet.PoS
                 .Add(ValidatorAddress.Serialize())
                 .Add(UndelegationEntryIndex.Serialize())
                 .Add(serializedUndelegationEntryAddresses);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Undelegation);
+        }
+
+        public bool Equals(Undelegation? other)
+        {
+            return !(other is null) &&
+                   Address.Equals(other.Address) &&
+                   DelegatorAddress.Equals(other.DelegatorAddress) &&
+                   ValidatorAddress.Equals(other.ValidatorAddress) &&
+                   DelegationAddress.Equals(other.DelegationAddress) &&
+                   UndelegationEntryIndex == other.UndelegationEntryIndex &&
+                   UndelegationEntryAddresses.SequenceEqual(other.UndelegationEntryAddresses);
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in Address.ToByteArray())
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
     }
 }

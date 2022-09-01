@@ -1,8 +1,9 @@
+using System;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    public class Delegation
+    public class Delegation : IEquatable<Delegation>
     {
         public Delegation(Address delegatorAddress, Address validatorAddress)
         {
@@ -32,6 +33,16 @@ namespace Libplanet.PoS
 
         public Address ValidatorAddress { get; }
 
+        public static bool operator ==(Delegation obj, Delegation other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(Delegation obj, Delegation other)
+        {
+            return !(obj == other);
+        }
+
         public static Address DeriveAddress(Address delegatorAddress, Address validatorAddress)
         {
             return delegatorAddress
@@ -45,6 +56,33 @@ namespace Libplanet.PoS
                 .Add(Address.Serialize())
                 .Add(DelegatorAddress.Serialize())
                 .Add(ValidatorAddress.Serialize());
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Delegation);
+        }
+
+        public bool Equals(Delegation? other)
+        {
+            return !(other is null) &&
+                   Address.Equals(other.Address) &&
+                   DelegatorAddress.Equals(other.DelegatorAddress) &&
+                   ValidatorAddress.Equals(other.ValidatorAddress);
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in Address.ToByteArray())
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
     }
 }

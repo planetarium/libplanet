@@ -1,3 +1,4 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Crypto;
@@ -5,6 +6,7 @@ using Libplanet.Crypto;
 namespace Libplanet.PoS
 {
     public class ValidatorPower
+        : IEquatable<ValidatorPower>, IComparable<ValidatorPower>, IComparable
     {
         private FungibleAssetValue _consensusToken;
 
@@ -44,9 +46,72 @@ namespace Libplanet.PoS
             }
         }
 
+        public static bool operator ==(ValidatorPower obj, ValidatorPower other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(ValidatorPower obj, ValidatorPower other)
+        {
+            return !(obj == other);
+        }
+
         public IValue Serialize() => List.Empty
             .Add(ValidatorAddress.Serialize())
             .Add(OperatorPublicKey.Serialize())
             .Add(ConsensusToken.Serialize());
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as ValidatorPower);
+        }
+
+        public bool Equals(ValidatorPower? other)
+        {
+            return !(other is null) &&
+                   _consensusToken.Equals(other._consensusToken) &&
+                   ValidatorAddress.Equals(other.ValidatorAddress) &&
+                   OperatorPublicKey.Equals(other.OperatorPublicKey) &&
+                   ConsensusToken.Equals(other.ConsensusToken);
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in ValidatorAddress.ToByteArray())
+                {
+                    code = (code * 401) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
+        }
+
+        int IComparable<ValidatorPower>.CompareTo(ValidatorPower? other)
+        {
+            int result
+                = ConsensusToken.Equals(other?.ConsensusToken)
+                ? ((IComparable<Address>)ValidatorAddress).CompareTo(other.ValidatorAddress)
+                : ConsensusToken.CompareTo(other?.ConsensusToken);
+
+            return -result;
+        }
+
+        int IComparable.CompareTo(object? obj)
+        {
+            if (obj is ValidatorPower other)
+            {
+                return ((IComparable<ValidatorPower>)this).CompareTo(other);
+            }
+
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            throw new ArgumentException(nameof(obj));
+        }
     }
 }
