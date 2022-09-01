@@ -5,13 +5,13 @@ namespace Libplanet.PoS
     internal struct Asset
     {
         public static readonly Currency GovernanceToken =
-            new Currency("GovernanceToken", 18, minters: null);
+            Currency.Uncapped("GovernanceToken", 18, minters: null);
 
         public static readonly Currency ConsensusToken =
-            new Currency("ConsensusToken", 18, minters: null);
+            Currency.Uncapped("ConsensusToken", 18, minters: null);
 
         public static readonly Currency Share =
-            new Currency("Share", 18, minters: null);
+            Currency.Uncapped("Share", 18, minters: null);
 
         public static FungibleAssetValue ConsensusFromGovernance(FungibleAssetValue governanceToken)
         {
