@@ -106,6 +106,15 @@ namespace Libplanet.Action.Sys
                     g => (IImmutableSet<Currency>)g.Select(kv => kv.Key.Item2).ToImmutableHashSet()
                 );
 
+            public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies
+                => new Currency[]
+                {
+                    Currency.Uncapped("NullCurrency", 0, null),
+                }.ToImmutableHashSet();
+
+            public FungibleAssetValue GetTotalSupply(Currency currency)
+                => Currency.Uncapped("NullCurrency", 0, null) * 0;
+
             public IValue? GetState(Address address)
             {
                 IValue? result = _states.TryGetValue(address, out var state)
@@ -163,9 +172,9 @@ namespace Libplanet.Action.Sys
                 if (senderBalance < value)
                 {
                     throw new InsufficientBalanceException(
+                        $"There is no sufficient balance for {sender}: {senderBalance} < {value}",
                         sender,
-                        senderBalance,
-                        $"There is no sufficient balance for {sender}: {senderBalance} < {value}"
+                        senderBalance
                     );
                 }
 
@@ -189,9 +198,9 @@ namespace Libplanet.Action.Sys
                 if (balance < value)
                 {
                     throw new InsufficientBalanceException(
+                        $"There is no sufficient balance for {owner}: {balance} < {value}",
                         owner,
-                        value,
-                        $"There is no sufficient balance for {owner}: {balance} < {value}"
+                        value
                     );
                 }
 
