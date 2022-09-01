@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.PoS
 {
-    public class Redelegation
+    public class Redelegation : IEquatable<Redelegation>
     {
         public Redelegation(
             Address delegatorAddress, Address srcValidatorAddress, Address dstValidatorAddress)
@@ -67,6 +69,16 @@ namespace Libplanet.PoS
 
         public SortedList<long, Address> RedelegationEntryAddresses { get; set; }
 
+        public static bool operator ==(Redelegation obj, Redelegation other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(Redelegation obj, Redelegation other)
+        {
+            return !(obj == other);
+        }
+
         public static Address DeriveAddress(
             Address delegatorAddress, Address srcValidatorAddress, Address dstValidatorAddress)
         {
@@ -97,6 +109,38 @@ namespace Libplanet.PoS
                 .Add(DstValidatorAddress.Serialize())
                 .Add(RedelegationEntryIndex.Serialize())
                 .Add(serializedRedelegationEntryAddresses);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Redelegation);
+        }
+
+        public bool Equals(Redelegation? other)
+        {
+            return !(other is null) &&
+                   Address.Equals(other.Address) &&
+                   DelegatorAddress.Equals(other.DelegatorAddress) &&
+                   SrcValidatorAddress.Equals(other.SrcValidatorAddress) &&
+                   DstValidatorAddress.Equals(other.DstValidatorAddress) &&
+                   SrcDelegationAddress.Equals(other.SrcDelegationAddress) &&
+                   DstDelegationAddress.Equals(other.DstDelegationAddress) &&
+                   RedelegationEntryIndex == other.RedelegationEntryIndex &&
+                   RedelegationEntryAddresses.SequenceEqual(other.RedelegationEntryAddresses);
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in Address.ToByteArray())
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
     }
 }

@@ -40,27 +40,7 @@ namespace Libplanet.Tests.PoS
         {
             RedelegationEntry newRedelegationEntry
                 = new RedelegationEntry(_redelegationEntry.Serialize());
-            Assert.Equal(
-                _redelegationEntry.Address,
-                newRedelegationEntry.Address);
-            Assert.Equal(
-                _redelegationEntry.RedelegationAddress,
-                newRedelegationEntry.RedelegationAddress);
-            Assert.Equal(
-                _redelegationEntry.RedelegatingShare,
-                newRedelegationEntry.RedelegatingShare);
-            Assert.Equal(
-                _redelegationEntry.UnbondingConsensusToken,
-                newRedelegationEntry.UnbondingConsensusToken);
-            Assert.Equal(
-                _redelegationEntry.IssuedShare,
-                newRedelegationEntry.IssuedShare);
-            Assert.Equal(
-                _redelegationEntry.Index,
-                newRedelegationEntry.Index);
-            Assert.Equal(
-                _redelegationEntry.CompletionBlockHeight,
-                newRedelegationEntry.CompletionBlockHeight);
+            Assert.Equal(_redelegationEntry, newRedelegationEntry);
         }
     }
 }

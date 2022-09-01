@@ -8,14 +8,14 @@ namespace Libplanet.PoS
     {
         public ValidatorPowerIndex()
         {
-            Index = new SortedSet<ValidatorPower>(new ValidatorPowerComparer());
+            Index = new SortedSet<ValidatorPower>();
         }
 
         public ValidatorPowerIndex(IValue serialized)
         {
             IEnumerable<ValidatorPower> items
                 = ((List)serialized).Select(item => new ValidatorPower(item));
-            Index = new SortedSet<ValidatorPower>(items, new ValidatorPowerComparer());
+            Index = new SortedSet<ValidatorPower>(items);
         }
 
         public ValidatorPowerIndex(ValidatorPowerIndex consensusPowerIndexInfo)

@@ -15,11 +15,9 @@ namespace Libplanet.Tests.PoS
         [Fact]
         public void MarshallingTest()
         {
-            Delegation newDelegationInfo
+            Delegation newDelegation
                 = new Delegation(_delegation.Serialize());
-            Assert.Equal(_delegation.Address, newDelegationInfo.Address);
-            Assert.Equal(_delegation.DelegatorAddress, newDelegationInfo.DelegatorAddress);
-            Assert.Equal(_delegation.ValidatorAddress, newDelegationInfo.ValidatorAddress);
+            Assert.Equal(_delegation, newDelegation);
         }
     }
 }

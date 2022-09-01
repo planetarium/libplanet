@@ -1,9 +1,10 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    public class RedelegationEntry
+    public class RedelegationEntry : IEquatable<RedelegationEntry>
     {
         private FungibleAssetValue _redelegatingShare;
         private FungibleAssetValue _unbondingConsensusToken;
@@ -88,6 +89,16 @@ namespace Libplanet.PoS
 
         public long CompletionBlockHeight { get; set; }
 
+        public static bool operator ==(RedelegationEntry obj, RedelegationEntry other)
+        {
+            return obj.Equals(other);
+        }
+
+        public static bool operator !=(RedelegationEntry obj, RedelegationEntry other)
+        {
+            return !(obj == other);
+        }
+
         public static Address DeriveAddress(Address redelegationAddress, long index)
         {
             return redelegationAddress.Derive($"RedelegationEntry{index}");
@@ -105,6 +116,37 @@ namespace Libplanet.PoS
                 .Add(IssuedShare.Serialize())
                 .Add(Index.Serialize())
                 .Add(CompletionBlockHeight.Serialize());
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as RedelegationEntry);
+        }
+
+        public bool Equals(RedelegationEntry? other)
+        {
+            return !(other is null) &&
+                   Address.Equals(other.Address) &&
+                   RedelegationAddress.Equals(other.RedelegationAddress) &&
+                   RedelegatingShare.Equals(other.RedelegatingShare) &&
+                   UnbondingConsensusToken.Equals(other.UnbondingConsensusToken) &&
+                   IssuedShare.Equals(other.IssuedShare) &&
+                   Index == other.Index &&
+                   CompletionBlockHeight == other.CompletionBlockHeight;
+        }
+
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in Address.ToByteArray())
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
     }
 }
