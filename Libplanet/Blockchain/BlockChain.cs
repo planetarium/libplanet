@@ -783,22 +783,21 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
-        /// Cannot create new transaction if the genesis block does not exist.
+        /// Creates a new <see cref="Transaction{T}"/> with a system action and stage it.
+        /// It's available only if the genesis block exists.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
-        /// <param name="actions">A list of <see cref="IAction"/>s to include to a new transaction.
-        /// </param>
+        /// <param name="systemAction">A system action to include to a new transaction.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
-        /// <paramref name="actions"/>.</param>
+        /// the <paramref name="systemAction"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
-            IEnumerable<T> actions,
+            IAction systemAction,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
@@ -810,11 +809,46 @@ namespace Libplanet.Blockchain
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,
-                    actions,
+                    systemAction,
                     updatedAddresses,
                     timestamp);
                 StageTransaction(tx);
+                return tx;
+            }
+        }
 
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> with custom actions and stage it.
+        /// It's available only if the genesis block exists.
+        /// </summary>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
+        /// signs a new transaction.</param>
+        /// <param name="customActions">A list of custom actions to include to a new transaction.
+        /// </param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
+        /// <paramref name="customActions"/>.</param>
+        /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
+        /// signed.</param>
+        /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
+        /// <paramref name="privateKey"/>.</returns>
+        public Transaction<T> MakeTransaction(
+            PrivateKey privateKey,
+            IEnumerable<T> customActions,
+            IImmutableSet<Address> updatedAddresses = null,
+            DateTimeOffset? timestamp = null)
+        {
+            timestamp = timestamp ?? DateTimeOffset.UtcNow;
+            lock (_txLock)
+            {
+                // FIXME: Exception should be documented when the genesis block does not exist.
+                Transaction<T> tx = Transaction<T>.Create(
+                    GetNextTxNonce(privateKey.ToAddress()),
+                    privateKey,
+                    Genesis.Hash,
+                    customActions,
+                    updatedAddresses,
+                    timestamp);
+                StageTransaction(tx);
                 return tx;
             }
         }
