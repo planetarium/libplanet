@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[0]));
+                TestUtils.CreateConsensusPropose(block, TestUtils.ConsensusPrivateKeys[0]));
             await exceptionOccurred.WaitAsync();
 
             Assert.True(exceptionThrown is InvalidProposerProposeMessageException);
@@ -126,7 +126,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(default, TestUtils.PrivateKeys[NodeId]));
+                TestUtils.CreateConsensusPropose(default, TestUtils.ConsensusPrivateKeys[NodeId]));
             await exceptionOccurred.WaitAsync();
 
             Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
@@ -157,7 +157,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
                         VoteFlag.Absent,
-                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+                        null).Sign(TestUtils.ConsensusPrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
@@ -173,7 +173,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
                         VoteFlag.Absent,
-                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+                        null).Sign(TestUtils.ConsensusPrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }
@@ -195,7 +195,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], 2, 2));
+                TestUtils.CreateConsensusPropose(block, TestUtils.ConsensusPrivateKeys[2], 2, 2));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidHeightMessageException);
 
@@ -205,7 +205,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2],
+                        TestUtils.ConsensusPrivateKeys[2],
                         2,
                         0,
                         block.Hash,
@@ -222,7 +222,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2],
+                        TestUtils.ConsensusPrivateKeys[2],
                         2,
                         0,
                         block.Hash,
@@ -253,7 +253,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[0], 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.ConsensusPrivateKeys[0],
+                        1,
+                        hash: blockHash,
+                        flag: VoteFlag.Absent))
                 {
                     Remote = TestUtils.Peers[0],
                 });
@@ -261,7 +264,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.ConsensusPrivateKeys[2],
+                        1,
+                        hash: blockHash,
+                        flag: VoteFlag.Absent))
                 {
                     Remote = TestUtils.Peers[2],
                 });
@@ -269,7 +275,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
+                        TestUtils.ConsensusPrivateKeys[2],
+                        1,
+                        hash: blockHash,
+                        flag: VoteFlag.Commit))
                 {
                     Remote = TestUtils.Peers[2],
                 });

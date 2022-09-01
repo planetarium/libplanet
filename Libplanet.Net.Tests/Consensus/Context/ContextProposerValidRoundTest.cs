@@ -37,17 +37,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
+                block, TestUtils.ConsensusPrivateKeys[NodeId], round: 0, validRound: -1));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
+                block, TestUtils.ConsensusPrivateKeys[2], round: 1, validRound: 0));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+                block, TestUtils.ConsensusPrivateKeys[3], round: 2, validRound: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[0],
+                    TestUtils.ConsensusPrivateKeys[0],
                     1,
                     round: 1,
                     hash: block.Hash,
@@ -58,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[2],
+                    TestUtils.ConsensusPrivateKeys[2],
                     1,
                     round: 1,
                     hash: block.Hash,
@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[3],
+                    TestUtils.ConsensusPrivateKeys[3],
                     1,
                     round: 1,
                     hash: block.Hash,
@@ -102,17 +102,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
+                invalidBlock, TestUtils.ConsensusPrivateKeys[NodeId], round: 0, validRound: -1));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
+                invalidBlock, TestUtils.ConsensusPrivateKeys[2], round: 1, validRound: 0));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+                invalidBlock, TestUtils.ConsensusPrivateKeys[3], round: 2, validRound: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[0],
+                    TestUtils.ConsensusPrivateKeys[0],
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,
@@ -123,7 +123,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(new
                 ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[2],
+                    TestUtils.ConsensusPrivateKeys[2],
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,
@@ -134,7 +134,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.PrivateKeys[3],
+                    TestUtils.ConsensusPrivateKeys[3],
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,

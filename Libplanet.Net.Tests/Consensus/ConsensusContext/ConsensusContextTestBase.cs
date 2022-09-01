@@ -22,13 +22,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         protected readonly ConsensusContext<DumbAction> ConsensusContext;
         protected readonly TimeSpan NewHeightDelay = TimeSpan.FromSeconds(1);
 
-        private const int Port = 19283;
         private readonly ILogger _logger;
 
         public ConsensusContextTestBase(
             ITestOutputHelper output,
             PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null)
+            BlsPrivateKey? consensusPrivateKey = null,
+            List<BlsPublicKey>? validators = null)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -41,6 +41,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             _logger = Log.ForContext<ConsensusContextTestBase>();
             Fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
 
+            consensusPrivateKey ??= TestUtils.Peer1ConsensusPriv;
             privateKey ??= TestUtils.Peer1Priv;
             validators ??= TestUtils.Validators;
 
@@ -59,6 +60,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 BlockChain,
                 BlockChain.Tip.Index + 1,
                 privateKey,
+                consensusPrivateKey,
                 validators,
                 NewHeightDelay);
         }
