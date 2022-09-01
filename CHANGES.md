@@ -12,7 +12,7 @@ To be released.
 
  -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
     IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
-    `customActions`.  [[##2151], [#2273]]
+    `customActions`.  [[#2151], [#2273]]
 
 ### Backward-incompatible network protocol changes
 
