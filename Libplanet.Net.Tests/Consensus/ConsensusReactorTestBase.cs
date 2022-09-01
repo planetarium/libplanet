@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus
     public class ConsensusReactorTestBase : IDisposable, IAsyncLifetime
     {
         protected const int Count = 4;
-        protected const int PropagationDelay = 10_000;
+        protected const int PropagationDelay = 30_000;
 
         protected readonly ConsensusReactor<DumbAction>[] ConsensusReactors;
         protected readonly BlockChain<DumbAction>[] BlockChains;
