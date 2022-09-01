@@ -1,6 +1,66 @@
 Libplanet changelog
 ===================
 
+Version PoS
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  (Libplanet.Pos) Added `Validator` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `ValidatorPower` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `ValidatorPowerIndex` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `ValidatorPowerSet` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `BondedValidator` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `BondedValidatorSet` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `Delegation` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `Undelegation` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `Redelegation` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `UndelegationEntry` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `RedelegationEntry` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `UnbondingSet` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `BondingStatus` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `NullValidatorException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `NullDelegationException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `NullUndelegationException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `NullRedelegationException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `DuplicatedValidatorException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `PublicKeyAddressMatchingException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `JailedValidatorException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `InvalidCurrencyException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `InsufficientFungibleAssetValueException` class.
+    [[#PoS]]
+ -  (Libplanet.Pos) Added `InvalidExchangeRateException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `MaximumUndelegationEntriesException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `MaximumRedelegationEntriesException` class.  [[#PoS]]
+ -  (Libplanet.Pos) Added `PostmatureUndelegationEntryException` class.
+    [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `CreateValidatorAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `DelegateAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `UndelegateAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `RedelegateAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `CancelUndelegationAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `WithdrawValidatorAction` class.  [[#PoS]]
+ -  (Libplanet.Action.Sys) Added `WithdrawDelegatorAction` class.  [[#PoS]]
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+
 Version PBFT
 --------------
 
