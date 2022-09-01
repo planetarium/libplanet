@@ -44,7 +44,7 @@ namespace Libplanet.Net.Tests.Consensus
         public void GetGossipIds_Shift()
         {
             var cache = new MessageCache(2, 1);
-            var key = new PrivateKey().PublicKey;
+            var key = new BlsPrivateKey().PublicKey;
             var msg0 = new ConsensusPropose(key, 0, 0, TestUtils.BlockHash0, new byte[] { }, -1);
             var msg1 = new ConsensusPropose(key, 0, 1, TestUtils.BlockHash0, new byte[] { }, -1);
             var msg2 = new ConsensusPropose(key, 0, 2, TestUtils.BlockHash0, new byte[] { }, -1);
