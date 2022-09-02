@@ -9,6 +9,11 @@ namespace Libplanet.Action.Sys
         {
             Mint = 0,
             Transfer = 1,
+            PromoteValidator = 100,
+            Delegate = 101,
+            Redelegate = 102,
+            Undelegate = 103,
+            CancelUndelegation = 105,
         }
 
         public static IAction Deserialize(Bencodex.Types.Dictionary serialized)
@@ -47,6 +52,11 @@ namespace Libplanet.Action.Sys
             {
                 TypeId.Mint => new Mint(),
                 TypeId.Transfer => new Transfer(),
+                TypeId.PromoteValidator => new PromoteValidator(),
+                TypeId.Delegate => new Delegate(),
+                TypeId.Redelegate => new Redelegate(),
+                TypeId.Undelegate => new Undelegate(),
+                TypeId.CancelUndelegation => new CancelUndelegation(),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(typeId),
                     typeId,
@@ -59,6 +69,11 @@ namespace Libplanet.Action.Sys
             {
                 Mint _ => TypeId.Mint,
                 Transfer _ => TypeId.Transfer,
+                PromoteValidator _ => TypeId.PromoteValidator,
+                Delegate _ => TypeId.Delegate,
+                Redelegate _ => TypeId.Redelegate,
+                Undelegate _ => TypeId.Undelegate,
+                CancelUndelegation _ => TypeId.CancelUndelegation,
                 _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
             };
     }
