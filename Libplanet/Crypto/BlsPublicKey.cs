@@ -35,7 +35,7 @@ namespace Libplanet.Crypto
     {
         private const int KeyByteSize = BLS.PUBLICKEY_SERIALIZE_SIZE;
 
-        private readonly IReadOnlyList<byte> _publicKey;
+        private readonly ImmutableArray<byte> _publicKey;
 
         /// <summary>
         /// Creates a <see cref="BlsPublicKey"/> instance from the given
@@ -59,12 +59,11 @@ namespace Libplanet.Crypto
                 );
             }
 
-            _publicKey = publicKey;
-
+            _publicKey = publicKey.ToImmutableArray();
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativePublicKey(this);
         }
 
-        public IReadOnlyList<byte> KeyBytes => ToImmutableArray();
+        public ImmutableArray<byte> KeyBytes => ToImmutableArray();
 
         public static bool operator ==(BlsPublicKey left, BlsPublicKey right) =>
             left.Equals(right);

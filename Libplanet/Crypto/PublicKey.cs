@@ -52,7 +52,7 @@ namespace Libplanet.Crypto
             KeyParam = keyParam;
         }
 
-        public IReadOnlyList<byte> KeyBytes => Format(false);
+        public ImmutableArray<byte> KeyBytes => Format(false).ToImmutableArray();
 
         internal ECPublicKeyParameters KeyParam { get; }
 

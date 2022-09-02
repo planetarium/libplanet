@@ -30,7 +30,7 @@ namespace Libplanet.Crypto
     public class BlsPrivateKey : IEquatable<BlsPrivateKey>, IPrivateKey
     {
         private const int KeyByteSize = BLS.SECRETKEY_SERIALIZE_SIZE;
-        private readonly IReadOnlyList<byte> _privateKey;
+        private readonly ImmutableArray<byte> _privateKey;
         private BlsPublicKey? _publicKey;
         private BlsSignature? _proofOfPossession;
 
@@ -40,7 +40,8 @@ namespace Libplanet.Crypto
         /// </summary>
         public BlsPrivateKey()
         {
-            _privateKey = CryptoConfig.ConsensusCryptoBackend.GeneratePrivateKey();
+            _privateKey = CryptoConfig.ConsensusCryptoBackend.GeneratePrivateKey()
+                .ToImmutableArray();
             _proofOfPossession = CryptoConfig.ConsensusCryptoBackend.GetProofOfPossession(this);
         }
 
@@ -81,7 +82,7 @@ namespace Libplanet.Crypto
                     nameof(privateKey));
             }
 
-            _privateKey = privateKey;
+            _privateKey = privateKey.ToImmutableArray();
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativePrivateKey(this);
             _proofOfPossession = CryptoConfig.ConsensusCryptoBackend.GetProofOfPossession(this);
         }
@@ -113,7 +114,7 @@ namespace Libplanet.Crypto
 
         IPublicKey IPrivateKey.PublicKey => PublicKey;
 
-        IReadOnlyList<byte> IPrivateKey.KeyBytes => ByteArray;
+        ImmutableArray<byte> IPrivateKey.KeyBytes => ByteArray;
 
         /// <summary>
         /// Returns the corresponding Proof of Possession. Public key can be aggregated, some public

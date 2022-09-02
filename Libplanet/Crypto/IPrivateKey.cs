@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Libplanet.Crypto
 {
@@ -11,7 +11,7 @@ namespace Libplanet.Crypto
         /// <summary>
         /// The <see cref="byte"/> representation of private key.
         /// </summary>
-        IReadOnlyList<byte> KeyBytes { get; }
+        ImmutableArray<byte> KeyBytes { get; }
 
         /// <summary>
         /// The public key pair, <see cref="IPublicKey"/> of private key.

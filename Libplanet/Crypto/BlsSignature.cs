@@ -34,7 +34,7 @@ namespace Libplanet.Crypto
     public sealed class BlsSignature : IEquatable<BlsSignature>
     {
         private const int KeyByteSize = BLS.SIGNATURE_SERIALIZE_SIZE;
-        private readonly IReadOnlyList<byte> _signature;
+        private readonly ImmutableArray<byte> _signature;
 
         /// <summary>
         /// Instantiates a new <see cref="BlsSignature"/> by given <see cref="byte"/>
@@ -65,7 +65,7 @@ namespace Libplanet.Crypto
                 );
             }
 
-            _signature = signature;
+            _signature = signature.ToImmutableArray();
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativeSignature(ToByteArray());
         }
 

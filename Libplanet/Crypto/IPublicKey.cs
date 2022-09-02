@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Libplanet.Crypto
 {
@@ -11,7 +12,7 @@ namespace Libplanet.Crypto
         /// <summary>
         /// The <see cref="byte"/> representation of public key.
         /// </summary>
-        IReadOnlyList<byte> KeyBytes { get; }
+        ImmutableArray<byte> KeyBytes { get; }
 
         /// <summary>
         /// Verifies message with base public key method. See base verify method for detailed

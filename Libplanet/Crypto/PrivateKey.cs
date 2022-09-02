@@ -155,7 +155,7 @@ namespace Libplanet.Crypto
         [Pure]
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        public IReadOnlyList<byte> KeyBytes => ByteArray;
+        ImmutableArray<byte> IPrivateKey.KeyBytes => ByteArray;
 
         internal ECPrivateKeyParameters KeyParam { get; }
 
