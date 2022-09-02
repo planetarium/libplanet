@@ -375,7 +375,6 @@ Released on August 12, 2022.
  -  Behavior of `Block<T>.GetHashCode()` changed.  [[#2206], [#2207]]
 
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
-[#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2047]: https://github.com/planetarium/libplanet/issues/2047
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
