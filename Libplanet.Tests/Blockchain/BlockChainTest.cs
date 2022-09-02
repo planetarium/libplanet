@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -1565,7 +1566,36 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void MakeTransaction()
+        public void MakeTransactionWithSystemAction()
+        {
+            var foo = Currency.Uncapped("FOO", 2, minters: null);
+            var privateKey = new PrivateKey();
+            Address address = privateKey.ToAddress();
+            var action = new Transfer(address, foo * 10);
+
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+
+            List<Transaction<DumbAction>> txs = _stagePolicy
+                .Iterate(_blockChain)
+                .OrderBy(tx => tx.Nonce)
+                .ToList();
+
+            Assert.Equal(2, txs.Count);
+
+            var transaction = txs[0];
+            Assert.Equal(0, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+
+            transaction = txs[1];
+            Assert.Equal(1, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+        }
+
+        [Fact]
+        public void MakeTransactionWithCustomActions()
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
