@@ -35,7 +35,7 @@ namespace Libplanet.Action
     /// method does not manipulate the instance, but returns a new
     /// <see cref="IAccountStateDelta"/> instance with updated states.
     /// </remarks>
-    public interface IAccountStateDelta
+    public interface IAccountStateDelta : IAccountStateView
     {
         /// <summary>
         /// <seealso cref="Address"/>es of the accounts that have
@@ -64,28 +64,10 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Gets the account state of the given <paramref name="address"/>.
+        /// <seealso cref="Currency">Currencies</seealso> with their total supplies updated.
         /// </summary>
-        /// <param name="address">The <see cref="Address"/> referring
-        /// the account to get its state.</param>
-        /// <returns>The account state of the given <paramref name="address"/>.
-        /// If it has never been set to any state it returns <c>null</c>
-        /// instead.</returns>
         [Pure]
-        IValue? GetState(Address address);
-
-        /// <summary>
-        /// Gets multiple account states associated with the specified <paramref name="addresses"/>
-        /// at once.
-        /// </summary>
-        /// <param name="addresses">The <see cref="Address"/>es associated with states to get.
-        /// </param>
-        /// <returns>The states associated to the specified <paramref name="addresses"/>.
-        /// Associated values are ordered in the same way to the corresponding
-        /// <paramref name="addresses"/>.  Absent states are represented as <see langword="null"/>.
-        /// </returns>
-        [Pure]
-        IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses);
+        IImmutableSet<Currency> TotalSupplyUpdatedCurrencies { get; }
 
         /// <summary>
         /// Gets a new instance that the account state of the given
@@ -107,17 +89,6 @@ namespace Libplanet.Action
         IAccountStateDelta SetState(Address address, IValue state);
 
         /// <summary>
-        /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/>.
-        /// </summary>
-        /// <param name="address">The owner address to query.</param>
-        /// <param name="currency">The currency type to query.</param>
-        /// <returns>
-        /// The <paramref name="address"/>'s balance of the <paramref name="currency"/>.
-        /// </returns>
-        [Pure]
-        FungibleAssetValue GetBalance(Address address, Currency currency);
-
-        /// <summary>
         /// Mints the fungible asset <paramref name="value"/> (i.e., in-game monetary),
         /// and give it to the <paramref name="recipient"/>.
         /// </summary>
@@ -130,6 +101,10 @@ namespace Libplanet.Action
         /// <exception cref="CurrencyPermissionException">Thrown when a transaction signer
         /// (or a miner in case of block actions) is not a member of the <see
         /// cref="FungibleAssetValue.Currency"/>'s <see cref="Currency.Minters"/>.</exception>
+        /// <exception cref="SupplyOverflowException">Thrown when the sum of the
+        /// <paramref name="value"/> to be minted and the current total supply amount of the
+        /// <see cref="FungibleAssetValue.Currency"/> exceeds the
+        /// <see cref="Currency.MaximumSupply"/>.</exception>
         [Pure]
         IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value);
 

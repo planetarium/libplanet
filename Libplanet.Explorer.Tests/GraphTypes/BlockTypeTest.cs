@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
@@ -10,7 +8,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.GraphTypes;
-using Libplanet.Tx;
+using Libplanet.Store;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 
@@ -30,7 +28,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 PublicKey = privateKey.PublicKey,
                 PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 Timestamp = DateTimeOffset.UtcNow,
-            }.Mine(HashAlgorithmType.Of<SHA256>());
+            }.Mine();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(
@@ -38,6 +36,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 stateRootHash,
                 preEval.MakeSignature(privateKey, stateRootHash)
             );
+
+            // FIXME We need to test for `previousBlock` field too.
             var query =
                 @"{
                     index
@@ -52,8 +52,13 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     signature
                 }";
 
-            ExecutionResult result =
-                await ExecuteQueryAsync<BlockType<NullAction>>(query, source: block);
+            var store = new MemoryStore();
+            var blockType = new BlockType<NullAction>(store);
+            ExecutionResult result = await ExecuteQueryAsync(
+                query,
+                blockType,
+                source: block
+            );
             Dictionary<string, object> resultData =
                 (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);

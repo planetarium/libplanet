@@ -68,13 +68,14 @@ namespace Libplanet.Tests.Fixtures
                 "2d5c20079bc4b2e6eab9ecbb405da8ba6590c436edfb07b7d4466563d7dac096"
             );
             Tx0InBlock1 = new Transaction<Arithmetic>(
-                nonce: 0L,
-                signer: block1Tx0Key.ToAddress(),
-                publicKey: block1Tx0Key.PublicKey,
-                genesisHash: GenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty.Add(block1Tx0Key.ToAddress()),
-                timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
-                actions: new[]
+                metadata: new TxMetadata(block1Tx0Key.PublicKey)
+                {
+                    Nonce = 0L,
+                    GenesisHash = GenesisHash,
+                    UpdatedAddresses = ImmutableHashSet.Create(block1Tx0Key.ToAddress()),
+                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
+                },
+                customActions: new[]
                 {
                     Arithmetic.Add(10), Arithmetic.Add(50), Arithmetic.Sub(25),
                 },
@@ -88,13 +89,14 @@ namespace Libplanet.Tests.Fixtures
                 "105341c78dfb0dd313b961081630444c2586a1f01fb0c625368ffdc9136cfa30"
             );
             Tx1InBlock1 = new Transaction<Arithmetic>(
-                nonce: 1L,
-                signer: block1Tx1Key.ToAddress(),
-                publicKey: block1Tx1Key.PublicKey,
-                genesisHash: GenesisHash,
-                updatedAddresses: ImmutableHashSet<Address>.Empty.Add(block1Tx1Key.ToAddress()),
-                timestamp: new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
-                actions: new[] { Arithmetic.Add(30) },
+                metadata: new TxMetadata(block1Tx1Key.PublicKey)
+                {
+                    Nonce = 1L,
+                    GenesisHash = GenesisHash,
+                    UpdatedAddresses = ImmutableHashSet.Create(block1Tx1Key.ToAddress()),
+                    Timestamp = new DateTimeOffset(2021, 9, 6, 17, 0, 1, 1, kst),
+                },
+                customActions: new[] { Arithmetic.Add(30) },
                 signature: ByteUtil.ParseHex(
                     "3045022100abe3caabf2a46a297f2e4496f2c46d7e2f723e75fc42025d19f3ed7fce382" +
                     "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0"

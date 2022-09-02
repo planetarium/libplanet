@@ -71,11 +71,11 @@ namespace Libplanet.Store
         void IStore.SetCanonicalChainId(Guid chainId) =>
             _canonicalChainId = chainId;
 
-        Block<T> IStore.GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter) =>
+        Block<T> IStore.GetCanonicalGenesisBlock<T>() =>
             _canonicalChainId is { } canonicalChainId
             && _indices.TryGetValue(canonicalChainId, out ImmutableTrieList<BlockHash> indices)
             && indices.Count > 0
-                ? ((IStore)this).GetBlock<T>(hashAlgorithmGetter, indices[0])
+                ? ((IStore)this).GetBlock<T>(indices[0])
                 : null;
 
         long IStore.CountIndex(Guid chainId) =>
@@ -135,9 +135,6 @@ namespace Libplanet.Store
             }
         }
 
-        IEnumerable<TxId> IStore.IterateTransactionIds() =>
-            _txs.Keys;
-
         Transaction<T> IStore.GetTransaction<T>(TxId txid) =>
             _txs.TryGetValue(txid, out object untyped) && untyped is Transaction<T> tx
                 ? tx
@@ -146,20 +143,17 @@ namespace Libplanet.Store
         void IStore.PutTransaction<T>(Transaction<T> tx) =>
             _txs[tx.Id] = tx;
 
-        bool IStore.DeleteTransaction(TxId txid) =>
-            _txs.TryRemove(txid, out _);
-
         IEnumerable<BlockHash> IStore.IterateBlockHashes() =>
             _blocks.Keys;
 
-        Block<T> IStore.GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        Block<T> IStore.GetBlock<T>(BlockHash blockHash)
         {
             if (!_blocks.TryGetValue(blockHash, out BlockDigest digest))
             {
                 return null;
             }
 
-            BlockHeader header = digest.GetHeader(hashAlgorithmGetter);
+            BlockHeader header = digest.GetHeader();
             ImmutableArray<TxId> txids = digest.TxIds
                 .Select(b => new TxId(b.ToBuilder().ToArray()))
                 .ToImmutableArray();
@@ -257,9 +251,6 @@ namespace Libplanet.Store
 
         bool IStore.ContainsTransaction(TxId txId) =>
             _txs.ContainsKey(txId);
-
-        long IStore.CountTransactions() =>
-            _txs.Count;
 
         long IStore.CountBlocks() =>
             _blocks.Count;

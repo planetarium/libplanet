@@ -213,7 +213,7 @@ namespace Libplanet.Net.Protocols
         /// <summary>
         /// Marks <paramref name="peer"/> checked and refreshes last checked time of the peer.
         /// </summary>
-        /// <param name="peer">The <see cref="Peer"/> to check.</param>
+        /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
         /// <param name="start"><see cref="DateTimeOffset"/> at the beginning of the check.</param>
         /// <param name="end"><see cref="DateTimeOffset"/> at the end of the check.</param>
         /// <exception cref="ArgumentNullException">

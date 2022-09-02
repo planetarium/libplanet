@@ -7,9 +7,9 @@ namespace Libplanet.Blocks
     public class InvalidBlockTotalDifficultyException : InvalidBlockException
     {
         public InvalidBlockTotalDifficultyException(
+            string message,
             long difficulty,
-            BigInteger totalDifficulty,
-            string message)
+            BigInteger totalDifficulty)
         : base(message)
         {
             Difficulty = difficulty;

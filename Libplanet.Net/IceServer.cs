@@ -1,21 +1,29 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Libplanet.Stun;
-using Serilog;
 
 namespace Libplanet.Net
 {
-    public class IceServer
+    public class IceServer : IIceServer
     {
         public IceServer(string url)
             : this(new Uri(url))
         {
         }
 
+        /// <summary>
+        /// Creates an instance by parsing given <paramref name="url"/>.
+        /// </summary>
+        /// <param name="url">The <see cref="Uri"/> to parse.</param>
+        /// <exception cref="ArgumentException">Thrown when <see cref="Uri.Scheme"/> is
+        /// not <c>"turn"</c> for <paramref name="url"/>.</exception>
         public IceServer(Uri url)
         {
+            if (url.Scheme != "turn")
+            {
+                throw new ArgumentException($"{url} is not a valid TURN url.");
+            }
+
 #pragma warning disable S1121, S3358, SA1316
             Url = url;
             Func<string, string, bool, char, (string, string, bool)> parser =
@@ -42,35 +50,5 @@ namespace Libplanet.Net
         public string Username { get; }
 
         public string Credential { get; }
-
-        internal static async Task<TurnClient> CreateTurnClient(
-            IEnumerable<IceServer> iceServers)
-        {
-            foreach (IceServer server in iceServers)
-            {
-                Uri url = server.Url;
-                if (url.Scheme != "turn")
-                {
-                    throw new ArgumentException($"{url} is not a valid TURN url.");
-                }
-
-                int port = url.IsDefaultPort
-                    ? TurnClient.TurnDefaultPort
-                    : url.Port;
-                var turnClient = new TurnClient(
-                    url.Host,
-                    server.Username,
-                    server.Credential,
-                    port);
-
-                if (await turnClient.IsConnectable())
-                {
-                    Log.Debug("TURN client created: {Host}:{Port}", url.Host, url.Port);
-                    return turnClient;
-                }
-            }
-
-            throw new IceServerException("Could not find a suitable ICE server.");
-        }
     }
 }

@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Tx
     public class TxSuccessTest
     {
         private static readonly Currency[] Currencies = new[] { "FOO", "BAR", "BAZ", "QUX" }
-            .Select(ticker => new Currency(ticker, 0, minters: null))
+            .Select(ticker => Currency.Uncapped(ticker, 0, null))
             .ToArray();
 
         private readonly BlockHash _blockHash;

@@ -185,6 +185,9 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> StateUpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
+            public IImmutableSet<Currency> TotalSupplyUpdatedCurrencies =>
+                ImmutableHashSet<Currency>.Empty;
+
             public IImmutableDictionary<Address, IImmutableSet<Currency>>
             UpdatedFungibleAssets =>
                 ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
@@ -198,6 +201,16 @@ namespace Libplanet.Tests.Action
 
             public FungibleAssetValue GetBalance(Address address, Currency currency) =>
                 new FungibleAssetValue(currency);
+
+            public FungibleAssetValue GetTotalSupply(Currency currency)
+            {
+                if (!currency.TotalSupplyTrackable)
+                {
+                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                }
+
+                return currency * 0;
+            }
 
             public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
                 this;

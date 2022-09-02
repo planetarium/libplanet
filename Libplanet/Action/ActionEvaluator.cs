@@ -30,6 +30,7 @@ namespace Libplanet.Action
         private readonly IAction? _policyBlockAction;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
+        private readonly Predicate<Currency> _nativeTokenPredicate;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
@@ -43,17 +44,22 @@ namespace Libplanet.Action
         /// a provided <see cref="BlockHash"/>.</param>
         /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         public ActionEvaluator(
             IAction? policyBlockAction,
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
-            BlockHash? genesisHash)
+            BlockHash? genesisHash,
+            Predicate<Currency> nativeTokenPredicate)
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
+            _nativeTokenPredicate = nativeTokenPredicate;
         }
 
         /// <summary>
@@ -144,6 +150,17 @@ namespace Libplanet.Action
         ) =>
             currency * 0;
 
+        [Pure]
+        internal static FungibleAssetValue NullTotalSupplyGetter(Currency currency)
+        {
+            if (!currency.TotalSupplyTrackable)
+            {
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            return currency * 0;
+        }
+
         /// <summary>
         /// Retrieves the set of <see cref="Address"/>es that will be updated when
         /// a given <see cref="Transaction{T}"/> is evaluated.
@@ -162,7 +179,11 @@ namespace Libplanet.Action
             IAccountStateDelta previousStates = new AccountStateDeltaImpl(
                 NullAccountStateGetter,
                 NullAccountBalanceGetter,
+                NullTotalSupplyGetter,
                 tx.Signer);
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange<IAction>(tx.CustomActions!.Cast<IAction>());
             IEnumerable<ActionEvaluation> evaluations = EvaluateActions(
                 genesisHash: tx.GenesisHash,
                 preEvaluationHash: ImmutableArray<byte>.Empty,
@@ -172,9 +193,10 @@ namespace Libplanet.Action
                 miner: default,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: true,
-                previousBlockStatesTrie: null);
+                previousBlockStatesTrie: null,
+                nativeTokenPredicate: _ => true);
 
             if (evaluations.Any())
             {
@@ -207,6 +229,9 @@ namespace Libplanet.Action
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -246,6 +271,7 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
+            Predicate<Currency> nativeTokenPredicate,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
@@ -263,7 +289,8 @@ namespace Libplanet.Action
                     randomSeed: randomSeed,
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
-                    blockAction: blockAction);
+                    blockAction: blockAction,
+                    nativeTokenPredicate: nativeTokenPredicate);
             }
 
             byte[] hashedSignature;
@@ -322,7 +349,7 @@ namespace Libplanet.Action
                             "rehearsal mode.\n" +
                             "See also this exception's InnerException property.";
                         exc = new UnexpectedlyTerminatedActionException(
-                            null, null, null, null, action, message, e);
+                            message, null, null, null, null, action, e);
                     }
                     else
                     {
@@ -349,12 +376,12 @@ namespace Libplanet.Action
                         logger?.Error(
                             "{Message}\nInnerException: {ExcMessage}", innerMessage, e.Message);
                         exc = new UnexpectedlyTerminatedActionException(
+                            innerMessage,
                             preEvaluationHash,
                             blockIndex,
                             txid,
                             stateRootHash,
                             action,
-                            innerMessage,
                             e);
                     }
                 }
@@ -470,9 +497,13 @@ namespace Libplanet.Action
             );
             foreach (Transaction<T> tx in orderedTxs)
             {
-                delta = block.ProtocolVersion > 0
-                    ? new AccountStateDeltaImpl(delta.GetStates, delta.GetBalance, tx.Signer)
-                    : new AccountStateDeltaImplV0(delta.GetStates, delta.GetBalance, tx.Signer);
+                delta = AccountStateDeltaImpl.ChooseVersion(
+                    block.ProtocolVersion,
+                    delta.GetStates,
+                    delta.GetBalance,
+                    delta.GetTotalSupply,
+                    tx.Signer);
+
                 DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
                     block: block,
@@ -489,20 +520,33 @@ namespace Libplanet.Action
                 // FIXME: This is dependant on when the returned value is enumerated.
                 TimeSpan evalDuration = DateTimeOffset.Now - startTime;
                 const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-                _logger
+                ILogger logger = _logger
                     .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "TxEvaluationDuration")
-                    .Debug(
-                        "{ActionCount} actions {ActionTypes} in transaction {TxId} by {Signer} " +
+                    .ForContext("Subtag", "TxEvaluationDuration");
+                if (tx.SystemAction is { } sa)
+                {
+                    logger.Debug(
+                        "A system action {SystemActionType} in transaction {TxId} by {Signer} " +
                         "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
-                        tx.Actions.Count,
-                        tx.Actions.Select(action => action.ToString()!.Split('.')
+                        sa,
+                        tx.Id,
+                        tx.Signer,
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
+                        evalDuration.TotalMilliseconds);
+                }
+                else
+                {
+                    logger.Debug(
+                        "{ActionCount} custom actions {CustomActionTypes} in transaction {TxId} " +
+                        "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                        tx.CustomActions!.Count,
+                        tx.CustomActions.Select(action => action.ToString()!.Split('.')
                             .LastOrDefault()?.Replace(">", string.Empty)),
                         tx.Id,
                         tx.Signer,
-                        tx.Timestamp.ToString(
-                            TimestampFormat, CultureInfo.InvariantCulture),
+                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                         evalDuration.TotalMilliseconds);
+                }
             }
         }
 
@@ -536,7 +580,12 @@ namespace Libplanet.Action
             Transaction<T> tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
-            ITrie? previousBlockStatesTrie = null) => EvaluateActions(
+            ITrie? previousBlockStatesTrie = null)
+        {
+            ImmutableList<IAction> actions = tx.SystemAction is { } sa
+                ? ImmutableList.Create(sa)
+                : ImmutableList.CreateRange(tx.CustomActions!.Cast<IAction>());
+            return EvaluateActions(
                 genesisHash: _genesisHash,
                 preEvaluationHash: block.PreEvaluationHash,
                 blockIndex: block.Index,
@@ -545,9 +594,11 @@ namespace Libplanet.Action
                 miner: block.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
-                actions: tx.Actions.Cast<IAction>().ToImmutableList(),
+                actions: actions,
                 rehearsal: rehearsal,
-                previousBlockStatesTrie: previousBlockStatesTrie);
+                previousBlockStatesTrie: previousBlockStatesTrie,
+                nativeTokenPredicate: _nativeTokenPredicate);
+        }
 
         /// <summary>
         /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
@@ -631,7 +682,9 @@ namespace Libplanet.Action
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                blockAction: true).Single();
+                blockAction: true,
+                nativeTokenPredicate: _nativeTokenPredicate
+            ).Single();
         }
 
         [Pure]
@@ -705,21 +758,26 @@ namespace Libplanet.Action
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
-            (AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter) =
+            var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
                 InitializeAccountGettersPair(block, stateCompleterSet);
             Address miner = block.Miner;
 
-            return block.ProtocolVersion > 0
-                ? new AccountStateDeltaImpl(accountStateGetter, accountBalanceGetter, miner)
-                : new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, miner);
+            return AccountStateDeltaImpl.ChooseVersion(
+                block.ProtocolVersion,
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                miner);
         }
 
-        private (AccountStateGetter, AccountBalanceGetter) InitializeAccountGettersPair(
+        private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter)
+            InitializeAccountGettersPair(
             IPreEvaluationBlock<T> block,
             StateCompleterSet<T> stateCompleterSet)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
+            TotalSupplyGetter totalSupplyGetter;
 
             if (block.PreviousHash is { } previousHash)
             {
@@ -732,14 +790,19 @@ namespace Libplanet.Action
                     currency,
                     previousHash,
                     stateCompleterSet.FungibleAssetStateCompleter);
+                totalSupplyGetter = currency => _blockChainStates.GetTotalSupply(
+                    currency,
+                    previousHash,
+                    stateCompleterSet.TotalSupplyStateCompleter);
             }
             else
             {
                 accountStateGetter = NullAccountStateGetter;
                 accountBalanceGetter = NullAccountBalanceGetter;
+                totalSupplyGetter = NullTotalSupplyGetter;
             }
 
-            return (accountStateGetter, accountBalanceGetter);
+            return (accountStateGetter, accountBalanceGetter, totalSupplyGetter);
         }
     }
 }

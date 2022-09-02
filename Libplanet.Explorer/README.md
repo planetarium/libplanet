@@ -10,7 +10,7 @@ distributed games.  For the frontend, see also [libplanet-explorer-frontend].
 How to build and develop
 ------------------------
 
-You need to install [.NET Core] 3.1 or higher.  It works on Linux, macOS,
+You need to install [.NET Core] 6.0 or higher.  It works on Linux, macOS,
 and Windows.  After you install them, execute the following command to run
 a development server:
 

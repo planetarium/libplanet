@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -179,10 +178,10 @@ namespace Libplanet.Net.Tests
             {
                 await StartAsync(b);
 
-                await a.AddPeersAsync(new Peer[] { b.AsPeer }, null);
+                await a.AddPeersAsync(new BoundPeer[] { b.AsPeer }, null);
 
                 Assert.Contains(b.AsPeer, a.Peers);
-                Assert.Empty(b.Peers);
+                Assert.Contains(a.AsPeer, b.Peers);
             }
             finally
             {
@@ -202,7 +201,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(a);
                 await StartAsync(b);
 
-                await a.AddPeersAsync(new Peer[] { b.AsPeer }, null);
+                await a.AddPeersAsync(new BoundPeer[] { b.AsPeer }, null);
 
                 Assert.Contains(a.AsPeer, b.Peers);
                 Assert.Contains(b.AsPeer, a.Peers);
@@ -252,12 +251,12 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmD);
 
                 var bootstrappedAt = DateTimeOffset.UtcNow;
-                swarmC.RoutingTable.AddPeer((BoundPeer)swarmD.AsPeer);
+                swarmC.RoutingTable.AddPeer(swarmD.AsPeer);
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
                 Assert.Contains(swarmB.AsPeer, swarmC.Peers);
-                Assert.DoesNotContain(swarmC.AsPeer, swarmB.Peers);
+                Assert.Contains(swarmC.AsPeer, swarmB.Peers);
                 foreach (PeerState state in swarmB.RoutingTable.PeerStates)
                 {
                     Assert.InRange(state.LastUpdated, bootstrappedAt, DateTimeOffset.UtcNow);
@@ -288,61 +287,55 @@ namespace Libplanet.Net.Tests
         public async Task MaintainStaticPeers()
         {
             var keyA = new PrivateKey();
+
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, listenPort: 20000);
             Swarm<DumbAction> swarmB = CreateSwarm(listenPort: 20001);
-            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
+            await StartAsync(swarmA);
+            await StartAsync(swarmB);
 
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                Swarm<DumbAction> swarm = CreateSwarm(
-                    options: new SwarmOptions
+            Swarm<DumbAction> swarm = CreateSwarm(
+                options: new SwarmOptions
+                {
+                    StaticPeers = new[]
                     {
-                        StaticPeers = new[]
-                        {
-                            (BoundPeer)swarmA.AsPeer,
-                            (BoundPeer)swarmB.AsPeer,
-                            // Unreachable peer:
-                            new BoundPeer(
-                                new PrivateKey().PublicKey,
-                                new DnsEndPoint("127.0.0.1", 65535)
-                            ),
-                        }.ToImmutableHashSet(),
-                        StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
-                    });
+                        swarmA.AsPeer,
+                        swarmB.AsPeer,
+                        // Unreachable peer:
+                        new BoundPeer(
+                            new PrivateKey().PublicKey,
+                            new DnsEndPoint("127.0.0.1", 65535)
+                        ),
+                    }.ToImmutableHashSet(),
+                    StaticPeersMaintainPeriod = TimeSpan.FromMilliseconds(100),
+                });
 
-                await StartAsync(swarm);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+            await StartAsync(swarm);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmA.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
 
-                _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
-                await StopAsync(swarmA);
-                await Task.Delay(100);
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default);
-                // Invoke once more in case of swarmA and swarmB is in the same bucket,
-                // and swarmA is last updated.
-                await swarm.PeerDiscovery.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default);
-                Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
-                Assert.Contains(swarmB.AsPeer, swarm.Peers);
+            _logger.Debug("Address of swarmA: {Address}", swarmA.Address);
+            await StopAsync(swarmA);
+            swarmA.Dispose();
+            await Task.Delay(100);
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            // Invoke once more in case of swarmA and swarmB is in the same bucket,
+            // and swarmA is last updated.
+            await swarm.PeerDiscovery.RefreshTableAsync(
+                TimeSpan.Zero,
+                default);
+            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+            Assert.Contains(swarmB.AsPeer, swarm.Peers);
 
-                await StartAsync(swarmC);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
-                await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
+            Swarm<DumbAction> swarmC = CreateSwarm(keyA, listenPort: 20000);
+            await StartAsync(swarmC);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmB.AsPeer), 5_000);
+            await AssertThatEventually(() => swarm.Peers.Contains(swarmC.AsPeer), 5_000);
 
-                await StopAsync(swarm);
-            }
-            finally
-            {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-            }
+            await StopAsync(swarm);
+            await StopAsync(swarmB);
+            await StopAsync(swarmC);
         }
 
         [Fact(Timeout = Timeout)]
@@ -397,7 +390,7 @@ namespace Libplanet.Net.Tests
 
                 (long, BlockHash)[] inventories1 = (
                     await swarmB.GetBlockHashes(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         null
                     ).ToArrayAsync()
@@ -413,7 +406,7 @@ namespace Libplanet.Net.Tests
 
                 (long, BlockHash)[] inventories2 = (
                     await swarmB.GetBlockHashes(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         block1.Hash
                     ).ToArrayAsync()
@@ -424,7 +417,7 @@ namespace Libplanet.Net.Tests
 
                 Block<DumbAction>[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
                         inventories1.Select(pair => pair.Item2),
                         cancellationToken: default
                     ).ToArrayAsync();
@@ -459,7 +452,7 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                var peer = swarmA.AsPeer as BoundPeer;
+                var peer = swarmA.AsPeer;
 
                 await swarmB.AddPeersAsync(new[] { peer }, null);
 
@@ -473,7 +466,7 @@ namespace Libplanet.Net.Tests
 
                 var request = new GetBlocksMsg(hashes.Select(pair => pair.Item2), 2);
                 Message[] responses = (await transport.SendMessageAsync(
-                    (BoundPeer)swarmA.AsPeer,
+                    swarmA.AsPeer,
                     request,
                     null,
                     2,
@@ -525,7 +518,7 @@ namespace Libplanet.Net.Tests
 
                 List<Transaction<DumbAction>> txs =
                     await swarmA.GetTxsAsync(
-                        swarmB.AsPeer as BoundPeer,
+                        swarmB.AsPeer,
                         new[] { tx.Id },
                         cancellationToken: default
                     ).ToListAsync();
@@ -568,19 +561,13 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanResolveEndPoint()
+        public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
             using (Swarm<DumbAction> s = CreateSwarm(host: "1.2.3.4", listenPort: 5678))
             {
-                // Looks weired, but inevitable because Initialize() is internal.
-                if (s.Transport is NetMQTransport n)
-                {
-                    await n.Initialize();
-                }
-
                 Assert.Equal(expected, s.EndPoint);
-                Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
+                Assert.Equal(expected, s.AsPeer?.EndPoint);
             }
         }
 
@@ -607,7 +594,7 @@ namespace Libplanet.Net.Tests
         public async Task AsPeer()
         {
             Swarm<DumbAction> swarm = CreateSwarm();
-            Assert.IsNotType<BoundPeer>(swarm.AsPeer);
+            Assert.IsType<BoundPeer>(swarm.AsPeer);
 
             await StartAsync(swarm);
             Assert.IsType<BoundPeer>(swarm.AsPeer);
@@ -635,15 +622,15 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new HashSet<BoundPeer>
                     {
-                        swarmA.AsPeer as BoundPeer,
-                        swarmB.AsPeer as BoundPeer,
+                        swarmA.AsPeer,
+                        swarmB.AsPeer,
                     },
                     seed.Peers.ToHashSet());
                 Assert.Equal(
-                    new HashSet<BoundPeer> { seed.AsPeer as BoundPeer, swarmB.AsPeer as BoundPeer },
+                    new HashSet<BoundPeer> { seed.AsPeer, swarmB.AsPeer },
                     swarmA.Peers.ToHashSet());
                 Assert.Equal(
-                    new HashSet<BoundPeer> { seed.AsPeer as BoundPeer, swarmA.AsPeer as BoundPeer },
+                    new HashSet<BoundPeer> { seed.AsPeer, swarmA.AsPeer },
                     swarmB.Peers.ToHashSet());
             }
             finally
@@ -777,7 +764,6 @@ namespace Libplanet.Net.Tests
             // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
             Block<DumbAction> block3 = MineNext(
                 chain2.Tip,
-                policy2.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: (long)chain1.Tip.TotalDifficulty + 1,
                 blockInterval: TimeSpan.FromMilliseconds(1)
@@ -891,7 +877,6 @@ namespace Libplanet.Net.Tests
                 (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
             Block<DumbAction> block = MineNext(
                 chain2.Tip,
-                policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty,
                 blockInterval: TimeSpan.FromMilliseconds(1)
@@ -953,7 +938,7 @@ namespace Libplanet.Net.Tests
                         0,
                         new PrivateKey(),
                         miner1.BlockChain.Genesis.Hash,
-                        actions: new[] { new Sleep() }
+                        customActions: new[] { new Sleep() }
                     )
                 );
                 var b = await miner1.BlockChain.MineBlock(key1);
@@ -1080,7 +1065,7 @@ namespace Libplanet.Net.Tests
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -1139,7 +1124,7 @@ namespace Libplanet.Net.Tests
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -1205,36 +1190,30 @@ namespace Libplanet.Net.Tests
             var policyA = new NullBlockPolicy<DumbAction>();
             var policyB = new NullBlockPolicy<DumbAction>();
             Block<DumbAction> genesis = MineGenesisBlock<DumbAction>(
-                policy.GetHashAlgorithm,
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock1 = MineNextBlock(
                 genesis,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 10,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock2 = MineNextBlock(
                 aBlock1,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> aBlock3 = MineNextBlock(
                 aBlock2,
-                policyA.GetHashAlgorithm,
                 keyA,
                 difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> bBlock1 = MineNextBlock(
                 genesis,
-                policyB.GetHashAlgorithm,
                 keyB,
                 difficulty: 9,
                 stateRootHash: MerkleTrie.EmptyRootHash);
             Block<DumbAction> bBlock2 = MineNextBlock(
                 bBlock1,
-                policyB.GetHashAlgorithm,
                 keyB,
                 difficulty: 11,
                 stateRootHash: MerkleTrie.EmptyRootHash);
@@ -1327,9 +1306,8 @@ namespace Libplanet.Net.Tests
             var actionsA = new[] { new DumbAction(signerAddress, "1") };
             var actionsB = new[] { new DumbAction(signerAddress, "2") };
 
-            HashAlgorithmType alg = HashAlgorithmType.Of<SHA256>();
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(alg, actionsB, privateKeyB);
+            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
+            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
 
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
@@ -1409,9 +1387,9 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmC);
                 await StartAsync(swarmD);
 
-                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
-                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
-                await swarmC.AddPeersAsync(new Peer[] { swarmD.AsPeer }, null);
+                await swarmA.AddPeersAsync(new BoundPeer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new BoundPeer[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new BoundPeer[] { swarmD.AsPeer }, null);
 
                 BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmB.AsPeer.Address,
@@ -1451,8 +1429,8 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmB);
                 await StartAsync(swarmC);
 
-                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
-                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
+                await swarmA.AddPeersAsync(new BoundPeer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new BoundPeer[] { swarmC.AsPeer }, null);
 
                 await StopAsync(swarmB);
 
@@ -1499,9 +1477,9 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmC);
                 await StartAsync(swarmD);
 
-                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
-                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
-                await swarmC.AddPeersAsync(new Peer[] { swarmD.AsPeer }, null);
+                await swarmA.AddPeersAsync(new BoundPeer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new BoundPeer[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new BoundPeer[] { swarmD.AsPeer }, null);
 
                 BoundPeer foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmC.AsPeer.Address,
@@ -1511,7 +1489,7 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(swarmC.AsPeer.Address, foundPeer.Address);
                 swarmA.RoutingTable.Clear();
                 Assert.Empty(swarmA.Peers);
-                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+                await swarmA.AddPeersAsync(new BoundPeer[] { swarmB.AsPeer }, null);
 
                 foundPeer = await swarmA.FindSpecificPeerAsync(
                     swarmD.AsPeer.Address,
@@ -1545,7 +1523,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1589,7 +1566,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1634,7 +1610,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     chain.Tip,
-                    chain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, chain);
@@ -1707,7 +1682,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState((BoundPeer)swarm2.AsPeer, 0, 0),
+                    new PeerChainState(swarm2.AsPeer, 0, 0),
                     peerChainState.First()
                 );
 
@@ -1715,7 +1690,7 @@ namespace Libplanet.Net.Tests
                 peerChainState = await swarm1.GetPeerChainStateAsync(
                     TimeSpan.FromSeconds(1), default);
                 Assert.Equal(
-                    new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
+                    new PeerChainState(swarm2.AsPeer, 1, 1024),
                     peerChainState.First()
                 );
 
@@ -1725,8 +1700,8 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(
                     new[]
                     {
-                        new PeerChainState((BoundPeer)swarm2.AsPeer, 1, 1024),
-                        new PeerChainState((BoundPeer)swarm3.AsPeer, 0, 0),
+                        new PeerChainState(swarm2.AsPeer, 1, 1024),
+                        new PeerChainState(swarm3.AsPeer, 0, 0),
                     }.ToHashSet(),
                     peerChainState.ToHashSet()
                 );
@@ -1794,7 +1769,7 @@ namespace Libplanet.Net.Tests
 
         private Task BootstrapAsync<T>(
             Swarm<T> swarm,
-            Peer seed,
+            BoundPeer seed,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new() =>
@@ -1802,7 +1777,7 @@ namespace Libplanet.Net.Tests
 
         private async Task BootstrapAsync<T>(
             Swarm<T> swarm,
-            IEnumerable<Peer> seeds,
+            IEnumerable<BoundPeer> seeds,
             CancellationToken cancellationToken = default
         )
             where T : IAction, new()
@@ -1892,11 +1867,8 @@ namespace Libplanet.Net.Tests
 
             public bool BlockGettable { get; set; } = true;
 
-            public override Block<T> GetBlock<T>(
-                HashAlgorithmGetter hashAlgorithmGetter,
-                BlockHash blockHash
-            ) =>
-                BlockGettable ? base.GetBlock<T>(hashAlgorithmGetter, blockHash) : null;
+            public override Block<T> GetBlock<T>(BlockHash blockHash) =>
+                BlockGettable ? base.GetBlock<T>(blockHash) : null;
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Libplanet.Tests.Blocks
         {
             Miner = TestUtils.GenesisMiner;
             Genesis = TestUtils.MineGenesisBlock<PolymorphicAction<BaseAction>>(
-                hashAlgorithmGetter: GetHashAlgorithm,
                 protocolVersion: ProtocolVersion,
                 miner: Miner,
                 stateRootHash: HashDigest<SHA256>.FromString(
@@ -28,7 +27,6 @@ namespace Libplanet.Tests.Blocks
             Next = TestUtils.MineNextBlock(
                 Genesis,
                 miner: Miner,
-                hashAlgorithmGetter: GetHashAlgorithm,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 },
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
@@ -41,7 +39,6 @@ namespace Libplanet.Tests.Blocks
             HasTx = TestUtils.MineNextBlock(
                 Next,
                 miner: Miner,
-                hashAlgorithmGetter: GetHashAlgorithm,
                 txs: new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
                     TxFixture.TxWithActions,
@@ -62,7 +59,5 @@ namespace Libplanet.Tests.Blocks
         internal Block<PolymorphicAction<BaseAction>> Next { get; }
 
         internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
-
-        internal HashAlgorithmType GetHashAlgorithm(long index) => HashAlgorithmType.Of<SHA256>();
     }
 }

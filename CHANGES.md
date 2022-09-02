@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 0.40.0
+Version 0.42.0
 --------------
 
 To be released.
@@ -10,9 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Removed `ChainIdNotFoundException` class. [[#2047], [#2156]]
- -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
-    [[#2162], [#2171]]
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
 
 ### Backward-incompatible network protocol changes
 
@@ -20,22 +20,12 @@ To be released.
 
 ### Added APIs
 
- - Added `BlockLocator` class. [[#1762], [#2140]]
- - Added methods required for decoupling `Libplanet.Net` from
-   `Libplanet`. [[#1762], [#2140]]
-   - Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)` method.
-   - Added `BlockChain<T>.Fork(BlockHash, bool)` method.
-   - Added `BlockChain<T>.GetBlockLocator(int)` method.
- -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
- -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
  -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
 
 ### Behavioral changes
-
- -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
-    perceive time of newly perceived blocks. [[#2155], [#2159]]
- -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
-    empty chains. [[#2047], [#2156]]
 
 ### Bug fixes
 
@@ -43,18 +33,367 @@ To be released.
 
 ### CLI tools
 
+[#1910]: https://github.com/planetarium/libplanet/issues/1910
+[#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2273]: https://github.com/planetarium/libplanet/pull/2273
+
+
+Version 0.41.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
+
+[#2270]: https://github.com/planetarium/libplanet/pull/2270
+
+
+Version 0.41.0
+--------------
+
+Released on August 26, 2022.
+
+### Deprecated APIs
+
+ -  (Libplanet.Net) Removed `NetMQTransport()` constructor.  Use
+    `NetMQTransport.Create()` instead.  [[#2215]]
+ -  Unused `TcpMessageCodec` class removed.  [[#2216]]
+ -  (Libplanet.Stun) Removed `TurnClient.IsConnectable()` method.  [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient.BindProxies()` method.
+    [[#2219]]
+ -  (Libplanet.Stun) Removed `TurnClient()` constructor.
+    Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
+
+### Backward-incompatible API changes
+
+ -  Removed unused transaction related methods from `IStore` and its
+    implementations.  [[#1538], [#2201]]
+    - `IterateTransactionIds()`
+    - `DeleteTransaction()`
+    - `CountTransactions()`
+ -  Removed `Currency(string, byte, IImutableSet<Address>?)` constructor.
+    [[#2200]]
+ -  Removed `Currency(string, byte, Address?)` constructor.
+    [[#2200]]
+ -  Added static methods of `Currency` that defines different kinds of
+    `Currency`.  [[#2200]]
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        IImutableSet<Address>?)` static method which defines an instance of
+        `Currency` with a hard limit on the maximum minted supply.
+     -  Added `Currency.Capped(string, byte, (BigInteger, BigInteger),
+        Address)` static method which defines an instance of `Currency` with a
+        hard limit on the maximum minted supply.
+     -  Added `Currency.Uncapped(string, byte, IImutableSet<Address>?)` static
+        method which defines an instance of `Currency` without an enforced
+        maximum supply limit.
+     -  Added `Currency.Uncapped(string, byte, Address)` static method which
+        defines an instance of `Currency` without an enforced maximum supply
+        limit.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, IImutableSet<Address>?)` static method which defines a legacy
+        `Currency` instance which is compatible with `Currency` instances
+        defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, Address)` static method which defines a legacy `Currency`
+        instance which is compatible with `Currency` instances defined before
+        total supply tracking support was introduced.
+     -  *NOTE:* if you already have some `Currency` instances defined in prior
+        to the addition of total supply tracking on a live chain, you cannot
+        modify the already-defined `Currency` instances as a capped or uncapped
+        `Currency` but have to define them with `Currency.Legacy()` as
+        the new Currency kinds are internally backwards-incompatible with the
+        legacy `Currency`.
+ -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
+    [[#915], [#2200]]
+ -  Added `IAccountStateView.GetTotalSupply(Currency)` method.
+    [[#915], [#2200]]
+ -  Added `IBlockChainStates<T>.GetTotalSupply(Currency, BlockHash,
+    TotalSupplyStateCompleter<T>` method which gets the total supply of
+    a `Currency` in `FungibleAssetValue` from the state, and if not found,
+    returns null.  [[#915], [#2200]]
+ -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
+    `Peer` to `BoundPeer`.  [[#2215]]
+ -  (Libplanet.Net) All public return type, parameter type, and property type
+    of `Peer` changed to `BoundPeer`.  [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.  [[#2233]]
+ -  Reworked constructors of exception classes. Affected classes are:
+     - (Libplanet.Net) `PingTimeoutException`
+     - `CurrencyPermissionException`,
+     `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
+     `InvalidBlockPreEvaluationHashException`,
+     `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
+     `InvalidBlockSignatureException`, `InvalidBlockStateRootHashException`,
+     `InvalidBlockTotalDifficultyException`, `InvalidGenesisBlockException`,
+     `InvalidTxException`, `InvalidTxGenesisHashException`,
+     `InvalidTxIdException`, `InvalidTxNonceException`,
+     `InvalidTxSignatureException`, `MissingActionTypeException`,
+     `NoKeyException`, `SupplyOverflowException`,
+     `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
+     `UnexpectedlyTerminatedActionException`.  [[#2239], [#2241]]
+
+### Added APIs
+
+ -  Added `Currency.MaximumSupply` property.  [[#915], [#2200]]
+ -  Added `Currency.TotalSupplyTrackable` field.  [[#915], [#2200]]
+ -  Added `SupplyOverflowException` class.  [[#915], [#2200]]
+ -  Added `TotalSupplyGetter` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleter<T>` delegate.  [[#915], [#2200]]
+ -  Added `TotalSupplyStateCompleters<T>` static class.  [[#915], [#2200]]
+ -  Added `StateCompleterSet<T>.TotalSupplyStateCompleter` property.
+    [[#915], [#2200]]
+ -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
+ -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
+ -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
+    to `Currency` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
+    it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
+
+### Behavioral changes
+
+ -  Bencodex related methods in `Currency` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  For capped currencies, `Currency.Serialize()` method stores the `major`
+        and `minor` values of the maximum supply as `Integer` values under the
+        keys `maximumSupplyMajor` and `maximumSupplyMinor`. For uncapped and
+        legacy untracked currencies, the entries are omitted.
+     -  `Currency(IValue)` constructor now looks for the maximum supply and
+        total supply trackability in the given dictionary and restores them if
+        found.
+ -  `Currency`'s implementation of `ISerializable` now accounts for the maximum
+    supply and total supply tracking.  [[#915], [#2200]]
+     -  `Currency`'s implementation of `ISerializable.GetObjectData` now stores
+         the maximum supply if the `Currency` is capped.
+     -  `Currency(SerializationInfo, StreamingContext)` constructor now looks
+        for the maximum supply and total supply trackability and restores it if
+        found.
+ -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` and
+    `IAccountStateDelta.BurnAsset(Address, FungibleAssetValue)` methods now
+    track the total supply if the total supply of the `Currency` is trackable.
+    [[#915], [#2200]]
+     -  `IAccountStateDelta.MintAsset(Address, FungibleAssetValue)` method now
+        throws `SupplyOverflowException` if the sum of current total supply and
+        the value to be minted exceeds the maximum supply of the `Currency`
+        instance.
+ -  (Libplanet.Net) `NetMQTransport`'s general behavior has changed.  [[#2215]]
+     -  `NetMQTransport` is now able to send requests and receive
+        replies as soon as it is created through `NetMQTransport.Create()`
+        factory method.
+     -  `NetMQTransport.StartAsync()` enables a `NetMQTransport` instance
+        to recieve requests and send replies.
+     -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
+        to stop recieving requests and sending replies.
+
+[#915]: https://github.com/planetarium/libplanet/issues/915
+[#1538]: https://github.com/planetarium/libplanet/issues/1538
+[#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2239]: https://github.com/planetarium/libplanet/issues/2239
+[#2200]: https://github.com/planetarium/libplanet/pull/2200
+[#2201]: https://github.com/planetarium/libplanet/pull/2201
+[#2215]: https://github.com/planetarium/libplanet/pull/2215
+[#2216]: https://github.com/planetarium/libplanet/pull/2216
+[#2219]: https://github.com/planetarium/libplanet/pull/2219
+[#2227]: https://github.com/planetarium/libplanet/pull/2227
+[#2228]: https://github.com/planetarium/libplanet/pull/2228
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
+[#2241]: https://github.com/planetarium/libplanet/pull/2241
+
+
+Version 0.40.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268]]
+
+[#2268]: https://github.com/planetarium/libplanet/pull/2268
+
+
+Version 0.40.0
+--------------
+
+Released on August 12, 2022.
+
+### Deprecated APIs
+
+ -  `Transaction<T>(long, Address, PublicKey, BlockHash?,
+    IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])` constructor
+    is now deprecated.  Use `Transaction<T>(ITxMetadata, IEnumerable<T>,
+    byte[])` constructor or `Transaction<T>.Create()` static method instead.
+    [[#2175]]
+ -  `Transaction<T>.Actions` property is now deprecated.  Use
+    `Transaction<T>.SystemAction` property or `Transaction<T>.CustomActions`
+    property instead.  [[#2149], [#2151], [#2175]]
+ -  `IPreEvaluationBlockHeader.HashAlgorithm` property and its implementations
+    removed.  [[#2206], [#2207]]
+ -  `IBlockPolicy.GetHashAlgorithm(long)` method and its implementations
+    removed.  [[#2206], [#2207]]
+ -  `InvalidBlockHashAlgorithmTypeException` class removed.  [[#2206], [#2207]]
+ -  `HashAlgorithmGetter` delegate removed.  [[#2206], [#2207]]
+
+### Backward-incompatible API changes
+
+ -  The type of `Transaction<T>.Actions` property became
+    `IImmutableList<IAction>` (was `IImmutableList<T>` where `T : IAction,
+    new()`).  [[#2149], [#2151], [#2175]]
+ -  Renamed parameters named `actions` of many methods to `customActions`.
+    [[#2149], [#2151], [#2175]]
+     -  Renamed `Transaction<T>(ITxMetadata, IEnumerable<T>, byte[])`
+        constructor's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>(long, Address, PublicKey, BlockHash?,
+        IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, byte[])`
+        constructor's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+        IEnumerable<T>, IImmutableSet<Address>?, DateTimeOffset?)` static
+        method's parameter `actions` to `customActions`.
+     -  Renamed `Transaction<T>.CreateUnsigned(long, PrivateKey, BlockHash?,
+        IEnumerable<T>, IImmutableSet<Address>?, DateTimeOffset?)` static
+        method's parameter `actions` to `customActions`.
+     -  Renamed `TxMetadata.ToBencodex(IEnumerable<IValue>,
+        IImmutableArray<byte>?)` method's parameter `actions` to
+        `customActions`.
+ -  Added `IBlockPolicy<T>.NativeTokens` property.  [[#2149], [#2150], [#2175]]
+ -  Added option `IImmutableSet<Currency>? nativeTokens` to `BlockPolicy<T>()`
+    constructor as its last parameter.  [[#2149], [#2150], [#2175]]
+ -  Added `IActionContext.IsNativeToken(Currency)` method.
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    all `PreEvaluationBlock<T>.Evaluate()` method as its second parameter
+    (parameter `IStateStore stateStore` remains at the last).
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    all `PreEvaluationBlock<T>.DetermineStateRootHash()` overloads as their
+    second parameter (existing second and rest parameters were shifted).
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    `BlockChain<T>.MakeGenesisBlock()` method as its last parameter.
+    [[#2149], [#2150], [#2175]]
+ -  Added parameter `Predicate<Currency> nativeTokenPredicate` to
+    `ActionEvaluator<T>()` constructor as its last parameter.
+    [[#2149], [#2150], [#2175]]
+ -  Removed `ChainIdNotFoundException` class.  [[#2047], [#2156]]
+ -  Added `IStore.GetCanonicalGenesisBlock(HashAlgorithmGetter)` method.
+    [[#2162], [#2171]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockChain<T>.MakeGenesisBlock()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockContent<T>.Mine()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `PreEvaluationBlock<T>()` constructors.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `PreEvaluationBlockHeader<T>()` constructors.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockMetadata<T>.DerivePreEvaluationHash()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmType hashAlgorithm` removed from
+    `BlockMetadata<T>.MineNonce()` methods.  [[#2206], [#2207]]
+ -  Return type for `BlockMarshaler
+    .UnmarshalPreEvaluationBlockHeader(Dictionary)` changed from
+    `(BlockMetadata, Nonce, ImmutableArray<bytes>?)` to
+    `PreEvaluationBlockHeader`.  Removed overload method
+    `BlockMarshaler
+    .UnmarshalPreEvaluationBlockHeader(HashAlgorithm, Dictionary)`.
+    [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockMarshaler.UnmarshalBlockHeader()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `IStore<T>.GetCanonicalGenesisBlock<T>()` and
+    `IStore<T>.GetBlock<T>()` interface methods and their implementations.
+    [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockSet<T>()` constructor.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `BlockDigest.GetHeader()` method.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `DelayedRenderer<T>()` constructor.  [[#2206], [#2207]]
+ -  Parameter `HashAlgorithmGetter hashAlgorithmGetter` removed from
+    `DelayedActionRenderer<T>()` constructor.  [[#2206], [#2207]]
+ -  (Libplanet.Node) Parameter `HashAlgorithmGetter hashAlgorithm` removed
+    from `UntypedBlock()` constructor.  [[#2206], [#2207]]
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TransactionMutation<T>` class.  [[#2130]]
+ -  (Libplanet.Explorer) Added `unsignedTransaction`, `bindSignature` and
+    `transactionResult` GraphQL fields to `TransactionQuery<T>`.  [[#2130]]
+ -  Added `Transaction<T>.SystemAction` property.  [[#2149], [#2151], [#2175]]
+ -  Added `Transaction<T>.CustomActions` property.  [[#2149], [#2151], [#2175]]
+ -  Added overloads to take `systemAction` besides the existing constructors and
+    methods taking `customActions`.  [[#2149], [#2151], [#2175]]
+     -  Added `Transaction<T>(ITxMetadata, IAction, byte[])` overloaded
+        constructor.
+     -  Added `Transaction<T>.Create(long, PrivateKey, BlockHash?, IAction,
+        IImmutableSet<Address>?, DateTimeOffset?)` overloaded static method.
+     -  Added `Transaction<T>.CreateUnsigned(long, PrivateKey, BlockHash?,
+        IAction, IImmutableSet<Address>?, DateTimeOffset?)` overloaded static
+        method.
+     -  Added `TxMetadata.ToBencodex(IValue, ImmutableArray<byte>?)` overloaded
+        method.
+ -  Introduced new system built-in actions.  [[#2149], [#2150], [#2175]]
+     -  Added `Mint` class.
+     -  Added `Transfer` class.
+ -  Added `NonNativeTokenException` class.  [[#2149], [#2150], [#2175]]
+ -  Added `BlockLocator` class.  [[#1762], [#2140]]
+ -  Added methods required for decoupling *Libplanet.Net* from
+    *Libplanet*.  [[#1762], [#2140]]
+     -  Added `BlockChain<T>.FindNextHashes(BlockLocator, BlockHash?, int)`
+        method.
+     -  Added `BlockChain<T>.Fork(BlockHash, bool)` method.
+     -  Added `BlockChain<T>.GetBlockLocator(int)` method.
+ -  Added `IActionContext.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `ActionEvaluator<T>.GenesisHash` property.  [[#1972], [#2179]]
+ -  Added `IAccountStateView` interface.  [[#2183]]
+ -  `IAccountStateDelta` now inherits `IAccountStateView` interface.
+    [[#2183]]
+ -  Added `BlockMetadata.HashAlgorithmType` static property.  [[#2206], [#2207]]
+ -  Added `BlockMarshaler.UnmarshalNonce(Dictionary)` and
+    `BlockMarshaler.UnmarshalPreEvaluationHash(Dictionary)` methods.
+    [[#2206], [#2207]]
+
+### Behavioral changes
+
+ -  `BlockChain<T>.PerceiveBlock()` method now uses millisecond precision for
+    perceive time of newly perceived blocks.  [[#2155], [#2159]]
+ -  Nonexistent chain ids in `IStore` are now considered to be chain ids of
+    empty chains.  [[#2047], [#2156]]
+ -  `Libplanet.Explorer` now targets .NET 6.0.  [[#2173]]
+ -  Behavior of `Block<T>.GetHashCode()` changed.  [[#2206], [#2207]]
+
 [#1762]: https://github.com/planetarium/libplanet/issues/1762
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2047]: https://github.com/planetarium/libplanet/issues/2047
 [#2140]: https://github.com/planetarium/libplanet/pull/2140
+[#2149]: https://github.com/planetarium/libplanet/issues/2149
+[#2150]: https://github.com/planetarium/libplanet/issues/2150
+[#2151]: https://github.com/planetarium/libplanet/issues/2151
 [#2155]: https://github.com/planetarium/libplanet/issues/2155
 [#2156]: https://github.com/planetarium/libplanet/pull/2156
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
+[#2173]: https://github.com/planetarium/libplanet/pull/2173
+[#2175]: https://github.com/planetarium/libplanet/issues/2175
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
-[#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2183]: https://github.com/planetarium/libplanet/pull/2183
+[#2206]: https://github.com/planetarium/libplanet/issues/2206
+[#2207]: https://github.com/planetarium/libplanet/pull/2207
+
 
 Version 0.39.0
 --------------
@@ -88,7 +427,7 @@ Released on July 18th, 2022.
 ### Bug fixes
 
  -  Fixed a bug where `PrivateKey()` constructor had returned an invalid key
-    less than 32 bytes. [[#1696], [#2091]]
+    less than 32 bytes.  [[#1696], [#2091]]
  -  (Libplanet.Net) Invalid `Uri.UserInfo` with multiple colons is now
     rejected by `IceServer(Uri url)` constructor and exception is thrown.
     [[#2058], [#2116]]
@@ -110,6 +449,7 @@ Released on July 18th, 2022.
 [#2116]: https://github.com/planetarium/libplanet/pull/2116
 [#2118]: https://github.com/planetarium/libplanet/pull/2118
 [#2128]: https://github.com/planetarium/libplanet/issues/2128
+[#2130]: https://github.com/planetarium/libplanet/pull/2130
 [#2134]: https://github.com/planetarium/libplanet/pull/2134
 [#2136]: https://github.com/planetarium/libplanet/pull/2136
 [#2139]: https://github.com/planetarium/libplanet/pull/2139
@@ -183,7 +523,7 @@ Released on May 30th, 2022.
     TimeSpan?, long, IProgress<PreloadState>, bool, CancellationToken)`
     with default value for `tipDeltaThreshold` removed.  [[#2025]]
  -  (Libplanet.Net) Parameter name `Urls` changed to `Url` for `IceServer`
-    and no longer accepts multiple Urls for single instance. [[#2026]]
+    and no longer accepts multiple Urls for single instance.  [[#2026]]
 
 ### Added APIs
 
@@ -349,7 +689,8 @@ Released on May 20th, 2022.
     `StoreLoaderAttribute.LoadStore()` method.  [[#1359], [#1953], [#1955]]
  -  (Libplanet.RocksDBStore) `RocksDBStore` and `RocksDBKeyValueStore`-backed
     `TrieStateStore` now can be instantiated with URI scheme `rocksdb+file:`
-    using `StoreLoaderAttribute.LoadStore()` method. [[#1359], [#1953], [#1955]]
+    using `StoreLoaderAttribute.LoadStore()` method.
+    [[#1359], [#1953], [#1955]]
 
 ### CLI tools
 
@@ -388,7 +729,7 @@ Released on May 13th, 2022.
 
 ### CLI tools
 
- - Added `planet key sign` to sign a message.  [[#1920]]
+ -  Added `planet key sign` to sign a message.  [[#1920]]
 
 [#1830]: https://github.com/planetarium/libplanet/issues/1830
 [#1912]: https://github.com/planetarium/libplanet/pull/1912
@@ -579,7 +920,7 @@ Released on March 24, 2022.
 ### Backward-incompatible storage format changes
 
  -  (Libplanet.RocksDBStore) `RocksDBStore` became not to use [column families]
-    to manage chain ids. Instead, chain id is concatenated into key prefix.
+    to manage chain ids.  Instead, chain id is concatenated into key prefix.
     [[#1862]]
 
 ### CLI tools
@@ -759,9 +1100,9 @@ Released on February 18, 2022.
 
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
     it had thrown `IndexOutOfRangeException` for the input longer or shorter
-    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+    than `HashDigest<T>.Size` on .NET Standard 2.0.  [[#1706], [#1815]]
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
-    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+    it had returned the wrong digest on .NET Standard 2.0.  [[#1706], [#1815]]
 
 
 Version 0.27.6
@@ -888,7 +1229,7 @@ Released on January 26, 2022.
  -  `MerkleTrie.Get()` method now finds multiple states in parallel.  [[#1743]]
  -  (Libplanet.Net) `DealerSocket`s used for broadcasting messages in
     `NetMQTransport` became not to be disposed right after corresponding peer
-    is removed from the routing table. Instead, it will be removed after
+    is removed from the routing table.  Instead, it will be removed after
     a certain amount of time.  [[#1741], [#1744]]
  -  (Libplanet.Net) `NetMQTransport` no longer attempts to retry failed
     communications.  [[#1751], [#1752]]
@@ -938,9 +1279,9 @@ Released on February 18, 2022.
 
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
     it had thrown `IndexOutOfRangeException` for the input longer or shorter
-    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+    than `HashDigest<T>.Size` on .NET Standard 2.0.  [[#1706], [#1815]]
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
-    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+    it had returned the wrong digest on .NET Standard 2.0.  [[#1706], [#1815]]
 
 
 Version 0.26.5
@@ -1084,9 +1425,9 @@ Released on February 18, 2022.
 
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
     it had thrown `IndexOutOfRangeException` for the input longer or shorter
-    than `HashDigest<T>.Size` on .NET Standard 2.0. [[#1706], [#1815]]
+    than `HashDigest<T>.Size` on .NET Standard 2.0.  [[#1706], [#1815]]
  -  Fixed `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` method's bug where
-    it had returned the wrong digest on .NET Standard 2.0. [[#1706], [#1815]]
+    it had returned the wrong digest on .NET Standard 2.0.  [[#1706], [#1815]]
 
 [#1706]: https://github.com/planetarium/libplanet/issues/1706
 [#1815]: https://github.com/planetarium/libplanet/pull/1815
@@ -1194,11 +1535,12 @@ Released on January 5, 2022.
 
  -  Added `KeyBytes` readonly struct.  [[#1678]]
  -  Added `HashDigest<T>(in ImmutableArray<byte>)` constructor.  [[#1678]]
- -  Added `HashDigest<T>.DeriveFrom(byte[])` overloaded static method. [[#1680]]
+ -  Added `HashDigest<T>.DeriveFrom(byte[])` overloaded static method.
+    [[#1680]]
  -  Added `HashDigest<T>.DeriveFrom(ImmutableArray<byte>)` overloaded static
-    method. [[#1680]]
+    method.  [[#1680]]
  -  Added `HashDigest<T>.DeriveFrom(ReadOnlySpan<byte>)` overloaded static
-    method. [[#1680]]
+    method.  [[#1680]]
  -  Added `StateStoreExtensions.EncodeKey()` static method.  [[#1689]]
  -  Added `StateStoreExtensions.DecodeKey()` static method.  [[#1689]]
 
@@ -1206,7 +1548,7 @@ Released on January 5, 2022.
 
   -  Improved performance of `Swarm<T>`'s block propagation.  [[#1676]]
   -  (Libplanet.RocksDBStore) Improved performance of
-     `RocksDBStore<T>.IterateIndexes()` method. [[#1676]]
+     `RocksDBStore<T>.IterateIndexes()` method.  [[#1676]]
 
 [#1676]: https://github.com/planetarium/libplanet/pull/1676
 [#1678]: https://github.com/planetarium/libplanet/pull/1678
@@ -1396,7 +1738,7 @@ Version 0.22.1
 Released on December 5, 2021.
 
  -  Compacted log output for convenience.  [[#1633]]
- -  Removed `ITransport.MessageHistory` property due to memory leak. [[#1639]]
+ -  Removed `ITransport.MessageHistory` property due to memory leak.  [[#1639]]
 
 [#1633]: https://github.com/planetarium/libplanet/pull/1633
 [#1639]: https://github.com/planetarium/libplanet/pull/1639
@@ -1798,7 +2140,7 @@ Released on October 28, 2021.  Mainly backported critical bug fixes from
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
 
-[#1562]: https://github.com/planetarium/libplanet/pull/1561
+[#1562]: https://github.com/planetarium/libplanet/pull/1562
 
 
 Version 0.18.2
@@ -1843,7 +2185,7 @@ Released on October 13, 2021.
  -  Moved `BlockDigest` struct to `Libplanet.Store` namespace (from
     `Libplanet.Blocks` namespace).  [[#1492]]
  -  Removed `Block<T>.ToBlockDigest()` method.  Use `BlockDigest.FromBlock<T>()`
-    static method instead. [[#1492]]
+    static method instead.  [[#1492]]
  -  `ActionEvaluator<T>.Evaluate()` method's `block` parameter became to take
     `IPreEvaluationBlock<T>` (was `IBlock<T>`).  [[#1146], [#1164], [#1492]]
  -  `Block<T>` and `BlockHeader` now guarantees that their every instance has
@@ -1985,7 +2327,7 @@ Released on October 13, 2021.
     [[#1146], [#1164], [#1457], [#1492], [#1507]]
  -  Added `PreEvaluationBlock<T>` class.
     [[#1146], [#1164], [#1457], [#1492], [#1507]]
- -  Added `BlockDigest.FromBlock<T>()` static method. [[#1492]]
+ -  Added `BlockDigest.FromBlock<T>()` static method.  [[#1492]]
  -  Added `Block<T>(PreEvaluationBlock<T>, HashDigest<SHA256>)` overloaded
     constructor.  [[#1146], [#1164], [#1492]]
  -  Added `Block<T>.HashAlgorithm` property.  [[#1492]]
@@ -2066,7 +2408,7 @@ Released on October 13, 2021.
 
  -  Fixed `NullReferenceException` that `PublicKey.Verify()` method had thrown
     with a non-null empty `signature`.  [[#1507]]
- -  Fixed `TxExecution` not updating during preload. [[#1508], [#1509]]
+ -  Fixed `TxExecution` not updating during preload.  [[#1508], [#1509]]
 
 [#1128]: https://github.com/planetarium/libplanet/issues/1128
 [#1146]: https://github.com/planetarium/libplanet/issues/1146
@@ -2122,7 +2464,7 @@ Released on September 28, 2021.
  -  Added an optional `maxTransactionsPerSigner` parameter to
     `BlockChain<T>.MineBlock()` method.  [[#1449], [#1463]]
  -  Added an optional `txPriority` parameter to `BlockChain<T>.MineBlock()`
-    method. [[#1477]]
+    method.  [[#1477]]
  -  `BlockHeader`'s properties are now represented as richer types than before.
     [[#1470]]
      -  `BlockHeader.Timestamp` property's type became `DateTimeOffset`
@@ -2399,7 +2741,7 @@ Version 0.13.2
 Released on Aug 5, 2021.
 
  -  When a reorg happens, `Swarm<T>` now broadcasts a reorged chain tip first
-    before rendering. [[#1385], [#1415]]
+    before rendering.  [[#1385], [#1415]]
  -  Fixed a bug where `TurnClient` hadn't been recovered when TURN connection
     had been disconnected.  [[#1424]]
 
@@ -2722,7 +3064,7 @@ Released on July 23, 2021.
  -  `Swarm<T>` now maintains static peers provided via
     `SwarmOptions.StaticPeers` periodically.  [[#1230], [#1367]]
  -  `Block<T>.Header` is now cached instead of creating a new instance every
-    call. [[#1347]]
+    call.  [[#1347]]
  -  `BlockChain<T>.ExecuteActions()` became no longer throw
     `InvalidTxUpdatedAddressesException`.  [[#368], [#1389]]
 
@@ -2773,7 +3115,7 @@ Released on July 23, 2021.
  -  Added the option `--json` to `planet apv analyze` command to print result
     as JSON format.  [[#1240]]
  -  Added `planet apv query` subcommand to query app protocol version of
-    specific peer. [[#1240]]
+    specific peer.  [[#1240]]
  -  Added the option `--no-passphrase` to `planet key remove` command to remove
     key without asking passphrase.  [[#1213], [#1265]]
  -  Added `planet key derive` subcommand to derive the address or
@@ -2792,7 +3134,7 @@ Released on July 23, 2021.
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
-[#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1228]: https://github.com/planetarium/libplanet/pull/1228
 [#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235
@@ -2849,7 +3191,7 @@ Version 0.11.1
 Released on April 22, 2021.
 
  -  Fixed a bug where block synchronization had stopped due to internal
-    errors. [[#1259]]
+    errors.  [[#1259]]
 
 [#1259]: https://github.com/planetarium/libplanet/pull/1259
 
@@ -2880,7 +3222,7 @@ Released on March 30, 2021.
  -  Added `canonicalChainComparer` as the second parameter to
     `DelayedActionRenderer()` constructor.  [[#1155], [#1165], [#1184]]
  -  Added `reorgResistantHeight` parameter into `DelayedActionRenderer<T>()`
-    constructor. [[#1163]]
+    constructor.  [[#1163]]
  -  Added `IStore.SetBlockPerceivedTime()` method.  [[#1184]]
  -  Added `IStore.GetBlockPerceivedTime()` method.  [[#1184]]
  -  Removed `TransactionSet<T>` class.  [[#1165]]
@@ -2890,7 +3232,7 @@ Released on March 30, 2021.
  -  Removed `trustedStateValidators` parameter from `Swarm<T>.PreloadAsync()`
     method.  [[#1117]]
  -  Removed `Swarm<T>.TraceTable()` method.  [[#1120]]
- -  Added `IActionContext.BlockAction` property. [[#1143]]
+ -  Added `IActionContext.BlockAction` property.  [[#1143]]
  -  Added nullable `TimeSpan`-typed `messageLifespan` parameter into
     `NetMQTransport()` constructor.  [[#1171]]
  -  Added `IStore.ForkTxNonces()` method.  [[#1198]]
@@ -2997,7 +3339,7 @@ Released on March 30, 2021.
  -  Added `KademliaProtocol` class which implements `IProtocol`.
     [[#1120], [#1135]]
  -  Added `reorgResistantHeight` parameters into `DelayedActionRenderer<T>()`
-    constructor. [[#1163]]
+    constructor.  [[#1163]]
  -  Added `InvalidBlockPreEvaluationHashException` class.  [[#1148]]
  -  Added the parameter `validate` which is `true` by default,
     to `Transaction<T>.Deserialize()`.  [[#1149]]
@@ -3283,9 +3625,9 @@ Released on October 27, 2020.
     [[#932]]
  -  `DefaultCryptoBackend` became to `DefaultCryptoBackend<T>`.  [[#932]]
  -  Added `ImmutableArray<byte>`-typed `preEvaluationHash` parameter to
-    `BlockHeader` constructor. [[#931], [#935]]
+    `BlockHeader` constructor.  [[#931], [#935]]
  -  Added `HashDigest<SHA256>`-typed `preEvaluationHash` parameter to
-    `Block<T>()` constructor. [[#931], [#935]]
+    `Block<T>()` constructor.  [[#931], [#935]]
  -  Replaced `SerializationInfoExtensions.GetValueOrDefault<T>()` to
     `SerializationInfoExtensions.TryGetValue<T>()`.  [[#940]]
  -  Added `bool append = true` option to both `BlockChain<T>.MineBlock()`
@@ -3319,7 +3661,7 @@ Released on October 27, 2020.
  -  Replaced `BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)` constructor
     with `Peer(PublicKey, DnsEndPoint)` constructor.  [[#949]]
  -  Extracted `IStore`'s some methods dedicated to block states into
-    `IBlockStatesStore`. [[#950]]
+    `IBlockStatesStore`.  [[#950]]
      -  `ListStateKeys()` method.
      -  `ListAllStateReferences()` method.
      -  `LookupStateReference()` method.
@@ -3399,7 +3741,7 @@ Released on October 27, 2020.
  -  Added `Currency` struct.  [[#861], [#900], [#954]]
  -  Added `FungibleAssetValue` struct.  [[#861], [#944], [#954]]
  -  Added `AccountBalanceGetter` delegate.  [[#861], [#900], [#954]]
- -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
+ -  Added `TurnClient.BindProxies()` method.  [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
  -  Added `InvalidBlockBytesLengthException` class.  [[#201], [#1050]]
@@ -3475,7 +3817,7 @@ Released on October 27, 2020.
      -  Reduced internal delays.  [[#871], [#879]]
  -  `Transaction<T>.Create()`, `Transaction<T>.EvaluateActions()` and
     `Transaction<T>.EvaluateActionsGradually()` no longer throw
-    `UnexpectedlyTerminatedActionException` directly. Instead, it records
+    `UnexpectedlyTerminatedActionException` directly.  Instead, it records
     an exception to `ActionEvaluation`s.  [[#860], [#875]]
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  Added `IAccountStateDelta.UpdatedAddresses` property contains
@@ -3894,7 +4236,7 @@ Released on February 4, 2020.
         `IImmutableSet<string> keys` (was `IImmutableSet<Address> addresses`).
         [[#368], [#774]]
      -  `IStore.ListAddresses()` method was replaced by `IStore.ListStateKeys()`
-        method. [[#368], [#774]]
+        method.  [[#368], [#774]]
  -  Added `Swarm<T>.FindSpecificPeer()` method to find a specific peer given
     the address.  [[#570], [#580]]
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
@@ -4003,7 +4345,7 @@ Released on February 4, 2020.
  -  Increased `Swarm<T>`'s network timeout value, in order to be stable
     a high latency internet connection.  [[#709]]
  -  `Swarm<T>.BootstrapAsync()` became to report `PeerDiscoveryException`
-    instead of `SwarmException` directly. [[#604], [#726]]
+    instead of `SwarmException` directly.  [[#604], [#726]]
  -  `BlockChain<T>.Append()` became to unstage the staged `Transaction<T>`s
     that have lower nonce than the highest nonce of the same signer's
     transactions in the same chain, since these virtually never become valid.
@@ -4139,7 +4481,7 @@ Released on November 8, 2019.
  -  Renamed `IStore.IterateIndex()` method to `IterateIndexes()`.
     [[#462], [#560]]
  -  `Swarm<T>` class became to implement `IDisposable` again and should be
-    disposed to clean up its internal resources. [[#485]]
+    disposed to clean up its internal resources.  [[#485]]
  -  `IStore.IterateStateReferences()` method became to receive
     `highestIndex`, `lowestIndex`, and `limit` parameters.  [[#447], [#545]]
  -  Reworked `BlockChain<T>.GetStates()` into `GetState()` which takes only
@@ -4204,7 +4546,7 @@ Released on November 8, 2019.
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
  -  `Swarm<T>` became to validate only stale peers.  [[#568], [#593]]
  -  `Swarm<T>` became not to check cached peers immediately after
-    removing peers from its routing table. Instead, it checks cached peers
+    removing peers from its routing table.  Instead, it checks cached peers
     periodically.  [[#608]]
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
  -  `IceServer.CreateTurnClient()` became to throw `ArgumentException` when
@@ -4215,7 +4557,7 @@ Released on November 8, 2019.
     new peer is fetched.  [[#627]]
  -  `IAction` became guaranteed that the given
     `IActionContext.PreviousStates.GetState()` never throws
-    `IncompleteBlockStatesException`. Instead, now it may calculate the
+    `IncompleteBlockStatesException`.  Instead, now it may calculate the
     incomplete states from the beginning if necessary.  [[#645]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
@@ -4238,13 +4580,13 @@ Released on November 8, 2019.
     filled from other peers.  [[#579]]
  -  Fixed a bug where `Swarm<T>` renders actions in same block multiple times
     when reorg happens.  [[#579]]
- -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
+ -  `LiteDBStore` became to guarantee atomicity of storing blocks.  [[#584]]
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
  -  Fixed a bug where `Swarm<T>` hadn't removed stale peers.
     [[#568], [#593], [#602]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
-    connection through a TURN relay server. [[#453], [#599]]
+    connection through a TURN relay server.  [[#453], [#599]]
  -  Fixed a bug that `KeyNotFoundException` occurred when sending a message
     through the TurnClient.
  -  Fixed a bug where `BlockChain<T>.GetNextTxNonce` only returned the same
@@ -4368,13 +4710,13 @@ Released on October 1, 2019.
         `IStore.IterateStagedTransactionIds(bool)` method.
      -  `IStore.StageTransactionIds(IDictionary<TxId, bool>)` method became
         replaced by `StageTransactionIds(IImmutableSet<TxId>()`.
- -  Removed `Swarm<T>.AddPeersAsync()` method. To connect with seed peers, use
+ -  Removed `Swarm<T>.AddPeersAsync()` method.  To connect with seed peers, use
     `Swarm<T>.BootstrapAsync()` method instead.  [[#353]]
  -  `Peer` with endpoints should be typed as `BoundPeer` which is inherited from
     `Peer`.  [[#353]]
- -  Removed `IActionContext.NewGuid()` method. To get a randomly generated
+ -  Removed `IActionContext.NewGuid()` method.  To get a randomly generated
     [Guid][Guid], use `RandomExtension.GenerateRandomGuid()` which implements
-    [RFC 4122] instead. [[#508]]
+    [RFC 4122] instead.  [[#508]]
 
 ### Added interfaces
 
@@ -4384,7 +4726,7 @@ Released on October 1, 2019.
  -  Added `BlockChain<T>.TipChangedEventArgs` class.  [[#526]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
- -  Added `RandomExtension` static class. [[#508]]
+ -  Added `RandomExtension` static class.  [[#508]]
  -  `TxId` class became to implement `IComparable<TxId>` and
     `IComparable` interfaces.  [[#244], [#511]]
 
@@ -4604,7 +4946,7 @@ Released on August 22, 2019.
  -  `Swarm<T>.PreloadAsync()` became safe from data corruption even
     if a preloading process suddenly gets shutdown.  [[#417]]
  -  `FileStore` and `LiteDBStore` became to guarantee atomicity of storing
-    transactions. [[#413]]
+    transactions.  [[#413]]
  -  `IStore.PutTransaction<T>()` became to do nothing when it takes
     the `Transaction<T>` more than once.  [[#413]]
  -  `BlockChain<T>.Swap()` became to omit common block finding when `render` is
@@ -4631,7 +4973,7 @@ Released on August 22, 2019.
  -  Fixed a bug that `Swarm<T>` had hung forever after a remote peer had
     disconnected while receiving.  [[#416]]
  -  Fixed a bug that `Swarm<T>.PreloadAsync()` had been processed even if there
-    is no appropriate peer. [[#418]]
+    is no appropriate peer.  [[#418]]
  -  Fixed a bug that TURN-related tasks hadn't restarted automatically when an
     exception occurred.  [[#422]]
  -  Fixed a bug that TURN relay connection had disconnected when preloading
@@ -4707,7 +5049,7 @@ Released on July 8, 2019.
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.  [[#280]]
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
- -  Added `IStore.ListTxNonces()` method. [[#272], [#309], [#310]]
+ -  Added `IStore.ListTxNonces()` method.  [[#272], [#309], [#310]]
  -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
  -  `BlockChain<T>.StageTransactions` became to receive
     `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
@@ -4739,7 +5081,7 @@ Released on July 8, 2019.
     became to neither longer take `BlockChain<T>` nor a generic method.
     Because the `Swarm<T>` constructor takes it instead.  [[#324]]
  -  `Swarm<T>` does not implement `ICollection<Peer>` anymore.  [[#326]]
- -  Added `IStore.DeleteNamespace()` method. [[#329]]
+ -  Added `IStore.DeleteNamespace()` method.  [[#329]]
  -  Removed the `id` parameter from the `BlockChain<T>` constructor, and it
     became to automatically detect an appropriate `BlockChain<T>.Id`.
     [[#279], [#332]]
@@ -4772,7 +5114,7 @@ Released on July 8, 2019.
     has been changed to `0x0a`.  [[#276]]
  -  Improved performance of `Swarm<T>`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
- -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
+ -  Added IPv6 support to `Libplanet.Stun.StunAddress`.  [[#267], [#271]]
  -  `IStore.GetBlockStates()` became able to return `null` to represent
     an absence of states (i.e., incomplete states).  [[#272], [#285]]
  -  `Swarm<T>` became to broadcast staged `Transaction`s periodically
@@ -4783,7 +5125,7 @@ Released on July 8, 2019.
     unnecessary messages.  `Swam<T>` became to no more send such empty `GetTxs`.
     [[#297]]
  -  `BlockChain<T>.Swap()` became to delete an index, tx nonces, and state
-    references in the replaced chain. [[#329]]
+    references in the replaced chain.  [[#329]]
  -  Reduced the memory footprint of `BlockChain<T>.FindBranchPoint()` method
     under the circumstances that the height of
     the `BlockChain<T>` object is high.  [[#282], [#299]]
@@ -4791,16 +5133,16 @@ Released on July 8, 2019.
 ### Bug fixes
 
  -  Fixed a bug that `Swarm<T>` reported `TaskCanceledException` as an unknown
-    exception while stopping. [[#275]]
+    exception while stopping.  [[#275]]
  -  Fixed a bug that `Swarm<T>` didn't stop properly during
-    `Swarm<T>.PreloadAsync()`. [[#275]]
+    `Swarm<T>.PreloadAsync()`.  [[#275]]
  -  Fixed a bug where the oldest `TxNonce` of an address is not invalidated
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
     `System.IO.IOException` after forking.  [[#281]]
  -  Fixed a bug that `TurnClient` had not stopped properly.  [[#287]]
  -  Fixed a bug that `TurnClient` had been trying to use an already closed
-    connection. [[#303], [#308]]
+    connection.  [[#303], [#308]]
  -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
     `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
     index of a block that does not exist locally.  [[#208], [#317]]
@@ -4869,8 +5211,8 @@ Released on May 31, 2019.
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
     default behavior of `object` class.  [[#216]]
- -  Also, `Swarm` class now does not implement `IDisposable` too. Thus
-    `Swarm.Dispose()` was removed too. [[#218]]
+ -  Also, `Swarm` class now does not implement `IDisposable` too.  Thus
+    `Swarm.Dispose()` was removed too.  [[#218]]
  -  `Swarm` became to use a queue to maintain internal messages.  [[#218]]
      -  The broadcasting methods are no more `async`, so they are renamed
         as below.
@@ -4926,7 +5268,7 @@ Released on May 31, 2019.
  -  Added `NamespaceNotFoundException` class.  [[#232]]
  -  Added `Block<T>.Evaluate()` method.  [[#243]]
  -  Made `InvalidBlockTimestampException` class `public` so that it can be
-    caught. [[#133], [#251]]
+    caught.  [[#133], [#251]]
  -  Added `InvalidTxNonceException` class.  [[#246]]
 
 ### Behavioral changes
@@ -4948,7 +5290,7 @@ Released on May 31, 2019.
     therefore `Swarm.StopAsync()` should be explicitly called.  [[#236]]
  -  `Transaction<T>.EvaluateActionsGradually()` became to record
     `IAccountStateDelta.SetState()` calls even if its argument is the same
-    to the previous state. [[#241]]
+    to the previous state.  [[#241]]
  -  `Block<T>.Validate()` and `Block<T>.EvaluateActions()` are integrated into
     `Block<T>.Evaluate()`.  [[#243]]
  -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
@@ -4983,13 +5325,13 @@ Released on May 31, 2019.
  -  Removed unnecessary writer locks on `BlockChain<T>.StageTransactions()`.
     [[#217]]
  -  Improved concurrency of `BlockChain<T>.Append()` method by removing
-    unnecessary race conditions. [[#217]]
+    unnecessary race conditions.  [[#217]]
  -  Fixed a bug that `Swarm` could not properly communicate with `Peer` behind
-    NAT. [[#240]]
+    NAT.  [[#240]]
  -  Fixed a bug that `BlockChain<T>.FindNextHashes()` throws
     `ArgumentOutOfRangeException` when chain is empty.
  -  Fixed a bug that `TurnClient.AcceptRelayedStreamAsync()`didn't handle
-    concurrent connections correctly. [[#256]]
+    concurrent connections correctly.  [[#256]]
 
 [AsyncIO]: https://github.com/somdoron/AsyncIO
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
@@ -5192,7 +5534,7 @@ Released on April 5, 2019.
  -  `Swarm.AddPeersAsync()` was fixed so that unreachable `Peer`s are ignored.
     [[#128]]
  -  `Swarm` became able to relay their connection via TURN ([RFC 5766])
-    to NAT traversal. To enable this, its constructor (`Swarm()`) takes the
+    to NAT traversal.  To enable this, its constructor (`Swarm()`) takes the
     newly added `IceServer`s as configuration.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,
@@ -5222,7 +5564,8 @@ Released on April 5, 2019.
  -  Action classes that implement `IAction` but lack `ActionTypeAttribute`
     became reported by `PolymorphicAction<T>` throwing
     `MissingActionTypeException` at runtime.  [[#28], [#144], [#169]]
- -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
+ -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds.
+    [[#151]]
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
  -  Made `Swarm` possible to configure its network `appProtocolVersion` and,
     to ignore peers if their version is different.  [[#167]], [[#170]]

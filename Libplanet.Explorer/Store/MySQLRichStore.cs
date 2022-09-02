@@ -140,12 +140,6 @@ namespace Libplanet.Explorer.Store
             return _store.ContainsTransaction(txId);
         }
 
-        /// <inheritdoc cref="IStore.CountTransactions()"/>
-        public long CountTransactions()
-        {
-            return _store.CountTransactions();
-        }
-
         /// <inheritdoc cref="IStore.CountBlocks()"/>
         public long CountBlocks()
         {
@@ -200,12 +194,12 @@ namespace Libplanet.Explorer.Store
             _store.SetCanonicalChainId(chainId);
         }
 
-        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}(HashAlgorithmGetter)"/>
-        public Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+        /// <inheritdoc cref="IStore.GetCanonicalGenesisBlock{T}"/>
+        public Block<T> GetCanonicalGenesisBlock<T>()
             where T : IAction, new() =>
             _store.GetCanonicalChainId() is { } canonicalChainId
             && _store.IndexBlockHash(canonicalChainId, 0) is { } genesisHash
-                ? _store.GetBlock<T>(hashAlgorithmGetter, genesisHash)
+                ? _store.GetBlock<T>(genesisHash)
                 : null;
 
         /// <inheritdoc cref="IStore.CountIndex(Guid)"/>
@@ -238,12 +232,6 @@ namespace Libplanet.Explorer.Store
         ) =>
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchpoint);
 
-        /// <inheritdoc cref="IStore.IterateTransactionIds()"/>
-        public IEnumerable<TxId> IterateTransactionIds()
-        {
-            return _store.IterateTransactionIds();
-        }
-
         /// <inheritdoc cref="IStore.GetTransaction{T}(TxId)"/>
         public Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
@@ -251,21 +239,15 @@ namespace Libplanet.Explorer.Store
             return _store.GetTransaction<T>(txid);
         }
 
-        /// <inheritdoc cref="IStore.DeleteTransaction(TxId)"/>
-        public bool DeleteTransaction(TxId txid)
-        {
-            return _store.DeleteTransaction(txid);
-        }
-
         /// <inheritdoc cref="IStore.IterateBlockHashes()"/>
         public IEnumerable<BlockHash> IterateBlockHashes() =>
             _store.IterateBlockHashes();
 
-        /// <inheritdoc cref="IStore.GetBlock{T}(BlockHash)"/>
-        public Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        /// <inheritdoc cref="IStore.GetBlock{T}"/>
+        public Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new()
         {
-            return _store.GetBlock<T>(hashAlgorithmGetter, blockHash);
+            return _store.GetBlock<T>(blockHash);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)

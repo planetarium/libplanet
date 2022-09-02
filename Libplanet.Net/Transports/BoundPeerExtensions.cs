@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Net;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using NetMQ;
@@ -34,7 +35,7 @@ namespace Libplanet.Net.Transports
                 ping,
                 privateKey,
                 default,
-                new Peer(privateKey.PublicKey),
+                new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0)),
                 DateTimeOffset.UtcNow);
 
             TimeSpan timeoutNotNull = timeout ?? TimeSpan.FromSeconds(5);

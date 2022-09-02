@@ -17,14 +17,14 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of the
         /// <see cref="InvalidBlockStateRootHashException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="expectedStateRootHash">The hash recorded as
         /// <see cref="Block{T}.StateRootHash"/>>.</param>
         /// <param name="actualStateRootHash">The hash of state trie on the block executed.</param>
-        /// <param name="message">The message that describes the error.</param>
         public InvalidBlockStateRootHashException(
+            string message,
             HashDigest<SHA256> expectedStateRootHash,
-            HashDigest<SHA256> actualStateRootHash,
-            string message)
+            HashDigest<SHA256> actualStateRootHash)
             : base(message)
         {
             ActualStateRootHash = actualStateRootHash;

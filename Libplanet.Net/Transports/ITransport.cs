@@ -9,9 +9,13 @@ using Libplanet.Net.Messages;
 namespace Libplanet.Net.Transports
 {
     /// <summary>
-    /// An interface to handle peer-to-peer networking, including <see cref="Message"/> exchanging
-    /// and <see cref="Peer"/> managing.
+    /// An interface to handle peer-to-peer networking, including <see cref="Message"/> exchange
+    /// and <see cref="BoundPeer"/> managing.
     /// </summary>
+    /// <remarks>
+    /// An instance of a transport implementing <see cref="ITransport"/> should always be able to
+    /// send requests and recieve replies.
+    /// </remarks>
     public interface ITransport : IDisposable
     {
         /// <summary>
@@ -22,49 +26,56 @@ namespace Libplanet.Net.Transports
         AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <summary>
-        /// <see cref="Peer"/> representation of <see cref="ITransport"/>.
+        /// The <em>current</em> <see cref="BoundPeer"/> representation of <see cref="ITransport"/>.
         /// </summary>
-        [Pure]
-        Peer AsPeer { get; }
+        /// <remarks>
+        /// This creates a new instance of <see cref="BoundPeer"/> on the fly and can be different
+        /// at different points of time depending on implementation, as <see cref="ITransport"/>
+        /// may account for changing endpoint.
+        /// </remarks>
+        BoundPeer AsPeer { get; }
 
         /// <summary>
-        /// The <see cref="DateTimeOffset"/> of the last message was received.
+        /// The <see cref="DateTimeOffset"/> of the last message received.
         /// </summary>
         [Pure]
         DateTimeOffset? LastMessageTimestamp { get; }
 
         /// <summary>
+        /// <para>
         /// Whether this <see cref="ITransport"/> instance is running.
+        /// </para>
+        /// <para>
+        /// When the value is <c>true</c>, the <see cref="ITransport"/> can recieve outside
+        /// requests.  When the value is <c>false</c>, the <see cref="ITransport"/> stops recieving
+        /// outside requests.
+        /// </para>
         /// </summary>
-        /// <value>Gets the value indicates whether the instance is running.</value>
+        /// <value>The value indicating whether the instance is running.</value>
         [Pure]
         bool Running { get; }
 
         /// <summary>
-        /// Initiates and runs transport layer.
+        /// Starts running a transport layer as to put it in a <see cref="Running"/> state.
         /// </summary>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
+        /// <param name="cancellationToken">The cancellation token to propagate a notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> without a value.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the instance is already disposed.
+        /// </exception>
         Task StartAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Stops running transport layer.
+        /// Stops running a transport layer as to put it in a not <see cref="Running"/> state.
         /// </summary>
-        /// <param name="waitFor">The <see cref="TimeSpan"/> of delay
-        /// before actual stopping.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
-        Task StopAsync(
-            TimeSpan waitFor,
-            CancellationToken cancellationToken = default);
+        /// <param name="waitFor">The <see cref="TimeSpan"/> to delay before actual stopping.
+        /// </param>
+        /// <param name="cancellationToken">The cancellation token to propagate a notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable <see cref="Task"/> without a value.</returns>
+        /// <exception cref="ObjectDisposedException">Thrown when the instance is already disposed.
+        /// </exception>
+        Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Waits until this <see cref="ITransport"/> instance gets started to run.

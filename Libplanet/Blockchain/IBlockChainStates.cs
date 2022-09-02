@@ -62,5 +62,28 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             FungibleAssetStateCompleter<T> stateCompleter
         );
+
+        /// <summary>
+        /// Gets the total supply of a <paramref name="currency"/> in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>, and if not found, return 0.
+        /// </summary>
+        /// <param name="currency">The currency type to query.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state.</param>
+        /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states of the block, this delegate is called and its return values are used
+        /// instead.
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Recalculate"/> makes the incomplete
+        /// states recalculated and filled on the fly.</para>
+        /// <para><see cref="FungibleAssetStateCompleters{T}.Reject"/> makes the incomplete states
+        /// (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
+        /// </param>
+        /// <returns>The total supply value of <paramref name="currency"/> at
+        /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
+        FungibleAssetValue GetTotalSupply(
+            Currency currency,
+            BlockHash offset,
+            TotalSupplyStateCompleter<T> stateCompleter
+        );
     }
 }

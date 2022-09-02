@@ -20,9 +20,14 @@ namespace Libplanet.Tests.Action
         public override IAccountStateDelta CreateInstance(
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
+            TotalSupplyGetter totalSupplyGetter,
             Address signer
         ) =>
-            new AccountStateDeltaImplV0(accountStateGetter, accountBalanceGetter, signer);
+            new AccountStateDeltaImplV0(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                signer);
 
         [Fact]
         public override void TransferAsset()
@@ -57,7 +62,6 @@ namespace Libplanet.Tests.Action
             );
             PreEvaluationBlock<DumbAction> preEval = TestUtils.MineNext(
                 chain.Tip,
-                chain.Policy.GetHashAlgorithm,
                 new[] { tx },
                 miner: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion

@@ -27,11 +27,11 @@ namespace Libplanet.Tests
                 byte[] serialized = tx.Serialize(false);
                 byte[] validSignature = privateKey.Sign(serialized);
                 throw new InvalidTxSignatureException(
-                    tx.Id,
                     "The transaction's signature is invalid.  " +
                     "Suggest you to change it to the valid one instead.\n" +
                     $"Actual invalid signature:  {ByteUtil.Hex(tx.Signature)}\n" +
-                    $"Suggested valid signature: {ByteUtil.Hex(validSignature)}"
+                    $"Suggested valid signature: {ByteUtil.Hex(validSignature)}",
+                    tx.Id
                 );
             }
         }

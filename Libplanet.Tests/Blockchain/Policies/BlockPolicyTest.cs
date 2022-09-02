@@ -1,5 +1,4 @@
 using System;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -139,7 +138,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
@@ -168,7 +167,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress)
                     ? null
-                    : new TxPolicyViolationException(tx.Id, "invalid signer");
+                    : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
             //Invalid Transaction with inner-exception
@@ -179,9 +178,9 @@ namespace Libplanet.Tests.Blockchain.Policies
                 return tx.Signer.Equals(validAddress)
                     ? null
                     : new TxPolicyViolationException(
-                        tx.Id,
                         "invalid signer",
-                        new InvalidTxSignatureException(tx.Id, "Invalid Signature"));
+                        tx.Id,
+                        new InvalidTxSignatureException("Invalid Signature", tx.Id));
             }
 
             // Invalid Transaction without Inner-exception
@@ -251,25 +250,6 @@ namespace Libplanet.Tests.Blockchain.Policies
                 1048,
                 _policy.GetNextBlockDifficulty(chain)
             );
-        }
-
-        [Fact]
-        public void GetHashAlgorithm()
-        {
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(0));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(1));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(2));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(10));
-            Assert.Equal(HashAlgorithmType.Of<SHA256>(), _policy.GetHashAlgorithm(15));
-
-            var p = new BlockPolicy<DumbAction>(hashAlgorithmGetter: i =>
-                i % 2 == 0 ? HashAlgorithmType.Of<MD5>() : HashAlgorithmType.Of<SHA1>()
-            );
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(0));
-            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(1));
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(2));
-            Assert.Equal(HashAlgorithmType.Of<MD5>(), p.GetHashAlgorithm(10));
-            Assert.Equal(HashAlgorithmType.Of<SHA1>(), p.GetHashAlgorithm(15));
         }
     }
 }

@@ -68,11 +68,12 @@ namespace Libplanet.Node
                 {
                     PublicKey = privateKey.PublicKey,
                 })
-                .Mine(blockPolicy.GetHashAlgorithm(0L))
+                .Mine()
                 .Evaluate(
-                    privateKey,
-                    blockPolicy.BlockAction,
-                    new TrieStateStore(new MemoryKeyValueStore()));
+                    privateKey: privateKey,
+                    blockAction: blockPolicy.BlockAction,
+                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
+                    stateStore: new TrieStateStore(new MemoryKeyValueStore()));
         }
 
         /// <summary>
@@ -112,7 +113,6 @@ namespace Libplanet.Node
                 Codec codec = new Codec();
                 IValue serializedBlock = codec.Decode(stream);
                 return BlockMarshaler.UnmarshalBlock<T>(
-                    blockPolicy.GetHashAlgorithm,
                     (Bencodex.Types.Dictionary)serializedBlock);
             }
         }

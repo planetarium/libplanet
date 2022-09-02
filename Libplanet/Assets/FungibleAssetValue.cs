@@ -153,7 +153,7 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="currency">The currency to create a value.</param>
         /// <param name="rawValue">The raw quantity of the value to create.</param>
-        private FungibleAssetValue(Currency currency, BigInteger rawValue)
+        internal FungibleAssetValue(Currency currency, BigInteger rawValue)
         {
             Currency = currency;
             RawValue = rawValue;

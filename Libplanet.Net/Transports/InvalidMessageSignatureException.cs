@@ -15,7 +15,7 @@ namespace Libplanet.Net.Transports
     {
         internal InvalidMessageSignatureException(
             string message,
-            Peer peer,
+            BoundPeer peer,
             PublicKey publicKey,
             byte[] messageToVerify,
             byte[] signature)
@@ -32,13 +32,13 @@ namespace Libplanet.Net.Transports
             StreamingContext context)
             : base(info, context)
         {
-            Peer = info.GetValue<Peer>(nameof(Peer));
+            Peer = info.GetValue<BoundPeer>(nameof(Peer));
             PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
             MessageToVerify = info.GetValue<byte[]>(nameof(MessageToVerify));
             Signature = info.GetValue<byte[]>(nameof(Signature));
         }
 
-        public Peer Peer { get; private set; }
+        public BoundPeer Peer { get; private set; }
 
         public PublicKey PublicKey { get; private set; }
 

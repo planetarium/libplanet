@@ -45,12 +45,10 @@ namespace Libplanet.Store
         /// <summary>
         /// Returns the genesis block of the current canonical chain.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         /// <returns>The genesis block of the current canonical chain.</returns>
-        Block<T> GetCanonicalGenesisBlock<T>(HashAlgorithmGetter hashAlgorithmGetter)
+        Block<T> GetCanonicalGenesisBlock<T>()
             where T : IAction, new();
 
         long CountIndex(Guid chainId);
@@ -99,8 +97,6 @@ namespace Libplanet.Store
         /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
 
-        IEnumerable<TxId> IterateTransactionIds();
-
         Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
 
@@ -114,8 +110,6 @@ namespace Libplanet.Store
         void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
 
-        bool DeleteTransaction(TxId txid);
-
         /// <summary>
         /// Lists all block hashes in the store, regardless of their belonging chains.
         /// </summary>
@@ -126,8 +120,6 @@ namespace Libplanet.Store
         /// Gets the corresponding stored <see cref="Block{T}"/> to the given
         /// <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="hashAlgorithmGetter">The function to determine hash algorithm used for
-        /// proof-of-work mining.</param>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
         /// <returns>A found block, or <c>null</c> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
@@ -135,7 +127,7 @@ namespace Libplanet.Store
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         // FIXME: We need to get rid of <T> and let this method be agnostic about Block<T>,
         // which is too high-level abstraction for IStore.
-        Block<T> GetBlock<T>(HashAlgorithmGetter hashAlgorithmGetter, BlockHash blockHash)
+        Block<T> GetBlock<T>(BlockHash blockHash)
             where T : IAction, new();
 
         /// <summary>
@@ -324,8 +316,6 @@ namespace Libplanet.Store
         /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
         /// </returns>
         bool ContainsTransaction(TxId txId);
-
-        long CountTransactions();
 
         long CountBlocks();
 

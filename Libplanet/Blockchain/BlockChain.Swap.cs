@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain
                     const string msg =
                         "A chain cannot be reorged into a heterogeneous chain with a " +
                         "different genesis.";
-                    throw new InvalidGenesisBlockException(Genesis.Hash, other.Genesis.Hash, msg);
+                    throw new InvalidGenesisBlockException(msg, Genesis.Hash, other.Genesis.Hash);
                 }
 
                 _logger.Debug(
@@ -111,7 +111,7 @@ namespace Libplanet.Blockchain
                     Guid obsoleteId = Id;
                     Id = other.Id;
                     Store.SetCanonicalChainId(Id);
-                    _blocks = new BlockSet<T>(Policy.GetHashAlgorithm, Store);
+                    _blocks = new BlockSet<T>(Store);
                     foreach (Transaction<T> tx in txsToUnstage)
                     {
                         StagePolicy.Unstage(this, tx.Id);

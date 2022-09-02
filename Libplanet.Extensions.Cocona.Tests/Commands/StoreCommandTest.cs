@@ -50,23 +50,22 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
                 throw new SkipException("RocksDB is not available.");
             }
 
-            _genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(
-                GetHashAlgorithm, TestUtils.GenesisMiner);
+            _genesisBlock = TestUtils.MineGenesisBlock<Utils.DummyAction>(TestUtils.GenesisMiner);
             _transaction1 = DummyTransaction();
             _transaction2 = DummyTransaction();
             _transaction3 = DummyTransaction();
             _transaction4 = DummyTransaction();
 
             _block1 = TestUtils.MineNextBlock(
-                _genesisBlock, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction1 });
+                _genesisBlock, TestUtils.GenesisMiner, new[] { _transaction1 });
             _block2 = TestUtils.MineNextBlock(
-                _block1, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction2 });
+                _block1, TestUtils.GenesisMiner, new[] { _transaction2 });
             _block3 = TestUtils.MineNextBlock(
-                _block2, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction3 });
+                _block2, TestUtils.GenesisMiner, new[] { _transaction3 });
             _block4 = TestUtils.MineNextBlock(
-                _block3, GetHashAlgorithm, TestUtils.GenesisMiner, new[] { _transaction3 });
+                _block3, TestUtils.GenesisMiner, new[] { _transaction3 });
             _block5 = TestUtils.MineNextBlock(
-                _block4, GetHashAlgorithm, TestUtils.GenesisMiner);
+                _block4, TestUtils.GenesisMiner);
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)

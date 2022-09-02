@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -121,7 +120,6 @@ namespace Libplanet.Net.Tests
             {
                 Block<DumbAction> block = MineNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
-                    hashAlgorithmGetter: minerChain.Policy.GetHashAlgorithm,
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, minerChain);
@@ -189,7 +187,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = 1,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -202,7 +200,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
+                        SourcePeer = minerSwarm.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -353,7 +351,6 @@ namespace Libplanet.Net.Tests
 
                 Block<ThrowException> block = MineNext(
                     minerChain.Tip,
-                    minerChain.Policy.GetHashAlgorithm,
                     new[] { tx },
                     miner: ChainPrivateKey.PublicKey,
                     difficulty: policy.GetNextBlockDifficulty(minerChain),
@@ -442,7 +439,7 @@ namespace Libplanet.Net.Tests
                     {
                         EstimatedTotalBlockHashCount = 10,
                         ReceivedBlockHashCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -454,7 +451,7 @@ namespace Libplanet.Net.Tests
                         ReceivedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
+                        SourcePeer = nominerSwarm1.AsPeer,
                     };
                     expectedStates.Add(state);
                 }
@@ -668,7 +665,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
@@ -760,7 +757,7 @@ namespace Libplanet.Net.Tests
 
             (BoundPeer, IBlockExcerpt)[] peersWithBlockExcerpt =
             {
-                ((BoundPeer)minerSwarm.AsPeer, minerChain.Tip.Header),
+                (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
             long receivedCount = 0;
@@ -832,7 +829,6 @@ namespace Libplanet.Net.Tests
                                   minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
             Block<DumbAction> block = MineNext(
                 minerChain2.Tip,
-                minerChain2.Policy.GetHashAlgorithm,
                 miner: ChainPrivateKey.PublicKey,
                 difficulty: nextDifficulty
             ).Evaluate(ChainPrivateKey, minerChain2);
@@ -866,7 +862,6 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            HashAlgorithmType hashAlgorithm = HashAlgorithmType.Of<SHA256>();
             var genesisContent = new BlockContent<DumbAction>
             {
                 PublicKey = minerKey.PublicKey,
@@ -874,12 +869,10 @@ namespace Libplanet.Net.Tests
             };
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                hashAlgorithm,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
             );
             var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                hashAlgorithm,
                 new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
             );
 
@@ -891,7 +884,11 @@ namespace Libplanet.Net.Tests
                     policy,
                     new MemoryStore(),
                     stateStore,
-                    genesisBlock: genesisBlock.Evaluate(minerKey, policy.BlockAction, stateStore)
+                    genesisBlock: genesisBlock.Evaluate(
+                        privateKey: minerKey,
+                        blockAction: policy.BlockAction,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
+                        stateStore: stateStore)
                 );
             }
 
