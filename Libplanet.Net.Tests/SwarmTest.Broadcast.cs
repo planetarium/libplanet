@@ -487,10 +487,10 @@ namespace Libplanet.Net.Tests
             {
                 var tx1 = swarmA.BlockChain.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 var tx2 = swarmA.BlockChain.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 Assert.Equal(0, tx1.Nonce);
                 Assert.Equal(1, tx2.Nonce);
 
@@ -515,10 +515,10 @@ namespace Libplanet.Net.Tests
 
                 var tx3 = chainA.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 var tx4 = chainA.MakeTransaction(
                     privateKey: privateKey,
-                    actions: new DumbAction[] { });
+                    customActions: new DumbAction[] { });
                 Assert.Equal(1, tx3.Nonce);
                 Assert.Equal(2, tx4.Nonce);
 

@@ -86,6 +86,40 @@ To be released.
 ### CLI tools
 
 
+Version 0.42.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#2273]: https://github.com/planetarium/libplanet/pull/2273
+
+
 Version 0.41.1
 --------------
 
