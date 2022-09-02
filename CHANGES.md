@@ -66,8 +66,7 @@ Released on August 26, 2022.
     [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient()` constructor.
     Use `TurnClient.Create()` instead.  [[#2219]]
- -  (Libplanet.Net) Removed `Peer` 
- .  Use `BoundPeer` instead.  [[#2233]]
+ -  (Libplanet.Net) Removed `Peer` class.  Use `BoundPeer` instead.  [[#2233]]
 
 ### Backward-incompatible API changes
 
