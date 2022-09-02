@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "kpDXFZcftOM8Y4SLvtaF7hfYDNHXqnvU3qFeh/piaPo="
+          "hash": "WaXlPuoqVuLvRT6HyZtq0HfcLBOqsRWJOqjBX7ZgRyk="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.PolymorphicAction-1.html",
-          "hash": "1zGDBaXo5VVNK6Cx3XPxjEsrb6wXpqT6GjxeGbR1UNE="
+          "hash": "58QJceUTvlqUBOGsecw+xpcrk3itl2PepDb9GNOcJic="
         }
       },
       "is_incremental": false,
@@ -1149,7 +1149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockMetadata.html",
-          "hash": "vNw4yFtSTkv9CtbuCkvnOe3gArmeRse6DuyTe8Zwk9Q="
+          "hash": "kP2KClWC4+T1Pa4IYunPwCf2B4qc+JpBjEr6FecxJhk="
         }
       },
       "is_incremental": false,
