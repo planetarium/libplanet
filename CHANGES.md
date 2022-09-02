@@ -132,18 +132,6 @@ Released on August 31, 2022.
 [#2270]: https://github.com/planetarium/libplanet/pull/2270
 
 
-Version 0.41.1
---------------
-
-Released on August 31, 2022.
-
- -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
-    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
-    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
-
-[#2270]: https://github.com/planetarium/libplanet/pull/2270
-
-
 Version 0.41.0
 --------------
 
