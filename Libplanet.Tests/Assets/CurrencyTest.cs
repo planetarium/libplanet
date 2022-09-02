@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Numerics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -245,11 +244,11 @@ namespace Libplanet.Tests.Assets
                 Dictionary.Empty
                     .Add("ticker", "BAR")
                     .Add("decimals", 0)
-                    .Add("maximumSupplyMajor", (IValue)new Integer((BigInteger)100))
-                    .Add("maximumSupplyMinor", (IValue)new Integer((BigInteger)0))
+                    .Add("maximumSupplyMajor", 100)
+                    .Add("maximumSupplyMinor", 0)
                     .Add(
                         "minters",
-                        (IValue)List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
+                        List.Empty.Add(AddressB.ToByteArray()).Add(AddressA.ToByteArray()))
                     .Add("totalSupplyTrackable", true),
                 bar.Serialize()
             );

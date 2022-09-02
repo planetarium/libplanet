@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Fixtures
                 "op",
                 Operator is OperatorType op ? new Text(op.ToString()) : (IValue)Null.Value
             )
-            .Add("operand", (IValue)new Bencodex.Types.Integer(Operand));
+            .Add("operand", Operand);
 
         public static Arithmetic Add(BigInteger operand) =>
             new Arithmetic(OperatorType.Add, operand);

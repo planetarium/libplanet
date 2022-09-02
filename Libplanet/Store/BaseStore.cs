@@ -193,11 +193,11 @@ namespace Libplanet.Store
             );
             var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
             var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
-            return (Dictionary)Dictionary.Empty
+            return Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
-                .Add((IKey)(Text)"favDelta", new Dictionary(favDelta))
-                .Add((IKey)(Text)"updatedFAVs", new Dictionary(updatedFAVs));
+                .Add("favDelta", new Dictionary(favDelta))
+                .Add("updatedFAVs", new Dictionary(updatedFAVs));
         }
 
         protected static IValue SerializeTxExecution(TxFailure txFailure)
@@ -284,7 +284,7 @@ namespace Libplanet.Store
         ) =>
             new List(
                 favs.Select(
-                    kv => (IValue)List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
+                    kv => List.Empty.Add(kv.Key.Serialize()).Add(kv.Value.RawValue)
                 )
             );
 
