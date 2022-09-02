@@ -49,6 +49,7 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="privateKey">A <see cref="byte"/> array representation of private key.
         /// </param>
+        /// <exception cref="ArgumentException">Thrown if given value is zero.</exception>
         /// <exception cref="ArgumentNullException">Thrown if given value is
         /// <see cref="ImmutableArray{T}"/> and empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if given private key is not
@@ -71,6 +72,13 @@ namespace Libplanet.Crypto
                     nameof(privateKey),
                     $"The key must be {KeyByteSize} bytes."
                 );
+            }
+
+            if (privateKey.SequenceEqual(new byte[KeyByteSize]))
+            {
+                throw new ArgumentException(
+                    "The zero private key should not be used.",
+                    nameof(privateKey));
             }
 
             _privateKey = privateKey;

@@ -116,13 +116,8 @@ namespace Libplanet.Tests.Crypto
             var message = "test";
             var messageBytes = Encoding.UTF8.GetBytes(message);
 
-            var pk = new BlsPrivateKey(new byte[32]);
             var pubKey = new BlsPublicKey(InfinitePublicKey);
-
-            byte[] signature = pk.Sign(messageBytes);
-            Assert.Equal(signature, BlsSignatureTest.InfiniteSignature);
-
-            Assert.False(pubKey.Verify(messageBytes, signature));
+            Assert.False(pubKey.Verify(messageBytes, BlsSignatureTest.InfiniteSignature));
 
             var pk2 = new BlsPrivateKey(BlsPrivateKeyTest.PrivKey1);
 

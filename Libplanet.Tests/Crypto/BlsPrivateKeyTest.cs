@@ -62,6 +62,7 @@ namespace Libplanet.Tests.Crypto
                 () => new BlsPrivateKey(ImmutableArray<byte>.Empty));
             Assert.Throws<ArgumentNullException>(
                 () => new BlsPrivateKey(default(ImmutableArray<byte>)));
+            Assert.Throws<ArgumentException>(() => new BlsPrivateKey(new byte[32]));
         }
 
         [Fact]
