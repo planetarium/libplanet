@@ -1,10 +1,60 @@
 Libplanet changelog
 ===================
 
-Version 0.41.0
+Version 0.42.0
 --------------
 
 To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
+ -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
+    [[#2065], [#2198]]
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+[#2065]: https://github.com/planetarium/libplanet/issues/2065
+[#2198]: https://github.com/planetarium/libplanet/pull/2198
+[#2273]: https://github.com/planetarium/libplanet/pull/2273
+
+
+Version 0.41.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
+
+[#2270]: https://github.com/planetarium/libplanet/pull/2270
+
+
+Version 0.41.0
+--------------
+
+Released on August 26, 2022.
 
 ### Deprecated APIs
 
@@ -16,11 +66,13 @@ To be released.
     [[#2219]]
  -  (Libplanet.Stun) Removed `TurnClient()` constructor.
     Use `TurnClient.Create()` instead.  [[#2219]]
+ -  (Libplanet.Net) Removed `Peer` 
+ .  Use `BoundPeer` instead.  [[#2233]]
 
 ### Backward-incompatible API changes
 
  -  Removed unused transaction related methods from `IStore` and its
-    implementations [[#1538], [#2201]]
+    implementations.  [[#1538], [#2201]]
     - `IterateTransactionIds()`
     - `DeleteTransaction()`
     - `CountTransactions()`
@@ -42,18 +94,18 @@ To be released.
      -  Added `Currency.Uncapped(string, byte, Address)` static method which
         defines an instance of `Currency` without an enforced maximum supply
         limit.
-     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
-        string, byte, IImutableSet<Address>?)` static method which defines a
-        legacy `Currency` instance which is compatible with `Currency`
-        instances defined before total supply tracking support was introduced.
-     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.LegacyUntracked(
-        string, byte, Address)` static method which defines a legacy `Currency`
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, IImutableSet<Address>?)` static method which defines a legacy
+        `Currency` instance which is compatible with `Currency` instances
+        defined before total supply tracking support was introduced.
+     -  *OBSOLETE, ONLY FOR LEGACY SUPPORT*: Added `Currency.Legacy(string,
+        byte, Address)` static method which defines a legacy `Currency`
         instance which is compatible with `Currency` instances defined before
         total supply tracking support was introduced.
      -  *NOTE:* if you already have some `Currency` instances defined in prior
         to the addition of total supply tracking on a live chain, you cannot
         modify the already-defined `Currency` instances as a capped or uncapped
-        `Currency` but have to define them with `Currency.LegacyUntracked()` as
+        `Currency` but have to define them with `Currency.Legacy()` as
         the new Currency kinds are internally backwards-incompatible with the
         legacy `Currency`.
  -  Added `IAccountStateDelta.TotalSupplyUpdatedCurrencies` property.
@@ -66,17 +118,25 @@ To be released.
     returns null.  [[#915], [#2200]]
  -  (Libplanet.Net) `ITransport.AsPeer` and `Swarm<T>.AsPeer` type changed from
     `Peer` to `BoundPeer`.  [[#2215]]
-
-### Backward-incompatible network protocol changes
-
- -  The `Block<T>.CurrentProtocolVersion` is bumped from 3 to 4.  [[#2200]]
-     -  `IAccountStateDelta.GetTotalSupply` returns the current total supply
-        of a `Currency` if the total supply of`Currency` is trackable from
-        version 4, and throws `NotSupportedException` below version 4.
-     -  `IAccountStateDelta.MintAsset` and `IAccountStateDelta.BurnAsset`
-        tracks the total supply if trackable from version 4.
-
-### Backward-incompatible storage format changes
+ -  (Libplanet.Net) All public return type, parameter type, and property type
+    of `Peer` changed to `BoundPeer`.  [[#2228]]
+ -  (Libplanet.Net) Additional public return type, parameter type, and
+    property type of `Peer` that weren't handled by [#2228] changed to
+    `BoundPeer`.  [[#2233]]
+ -  Reworked constructors of exception classes. Affected classes are:
+     - (Libplanet.Net) `PingTimeoutException`
+     - `CurrencyPermissionException`,
+     `DuplicateActionTypeIdentifierException`, `InsufficientBalanceException`,
+     `InvalidBlockPreEvaluationHashException`,
+     `InvalidBlockProtocolVersionException`, `InvalidBlockPublicKeyException`,
+     `InvalidBlockSignatureException`, `InvalidBlockStateRootHashException`,
+     `InvalidBlockTotalDifficultyException`, `InvalidGenesisBlockException`,
+     `InvalidTxException`, `InvalidTxGenesisHashException`,
+     `InvalidTxIdException`, `InvalidTxNonceException`,
+     `InvalidTxSignatureException`, `MissingActionTypeException`,
+     `NoKeyException`, `SupplyOverflowException`,
+     `TotalSupplyNotTrackableException`, `TxPolicyViolationException`,
+     `UnexpectedlyTerminatedActionException`.  [[#2239], [#2241]]
 
 ### Added APIs
 
@@ -91,7 +151,18 @@ To be released.
  -  (Libplanet.Net) Added `BoundPeer.PeerString` property.  [[#2187], [#2232]]
  -  (Libplanet.Stun) Added `IIceServer` interface.  [[#2219]]
  -  (Libplanet.Stun) Added `TurnClient.Create()` static method.  [[#2219]]
- - (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.  [#2065]
+ -  (Libplanet.Explorer) Added `stateQuery` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `blockPolicy` field to the root node of GraphQL
+    endpoint.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `CurrencyType` class.  In GraphQL, it corresponds
+    to `Currency` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `FungibleAssetValueType` class.  In GraphQL,
+    it corresponds to `FungibleAssetValue` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `StateQuery<T>` class.  In GraphQL, it
+    corresponds to `StateQuery` type.  [[#2149], [#2227]]
+ -  (Libplanet.Explorer) Added `BlockPolicyType<T>` class.  In GraphQL, it
+    corresponds to `BlockPolicy` type.  [[#2149], [#2227]]
 
 ### Behavioral changes
 
@@ -128,27 +199,38 @@ To be released.
      -  `NetMQTransport.StopAsync()` only disables a `NetMQTransport` instance
         to stop recieving requests and sending replies.
 
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 [#915]: https://github.com/planetarium/libplanet/issues/915
 [#1538]: https://github.com/planetarium/libplanet/issues/1538
-[#2187]:https://github.com/planetarium/libplanet/issues/2187
+[#2187]: https://github.com/planetarium/libplanet/issues/2187
+[#2239]: https://github.com/planetarium/libplanet/issues/2239
 [#2200]: https://github.com/planetarium/libplanet/pull/2200
 [#2201]: https://github.com/planetarium/libplanet/pull/2201
 [#2215]: https://github.com/planetarium/libplanet/pull/2215
 [#2216]: https://github.com/planetarium/libplanet/pull/2216
 [#2219]: https://github.com/planetarium/libplanet/pull/2219
-[#2232]: https://github.com/planetarium/libplanet/pull/2231
+[#2227]: https://github.com/planetarium/libplanet/pull/2227
+[#2228]: https://github.com/planetarium/libplanet/pull/2228
+[#2232]: https://github.com/planetarium/libplanet/pull/2232
+[#2233]: https://github.com/planetarium/libplanet/pull/2233
+[#2241]: https://github.com/planetarium/libplanet/pull/2241
+
+
+Version 0.40.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268]]
+
+[#2268]: https://github.com/planetarium/libplanet/pull/2268
 
 
 Version 0.40.0
 --------------
 
-Released on Auguest 12th, 2022.
+Released on August 12, 2022.
 
 ### Deprecated APIs
 
@@ -2059,7 +2141,7 @@ Released on October 28, 2021.  Mainly backported critical bug fixes from
  -  Fixed a bug where `Swarm<T>` did not removed failed block demands from the
     `BlockDemandTable`.  [[#1549]]
 
-[#1562]: https://github.com/planetarium/libplanet/pull/1561
+[#1562]: https://github.com/planetarium/libplanet/pull/1562
 
 
 Version 0.18.2
@@ -3053,7 +3135,7 @@ Released on July 23, 2021.
 [#1197]: https://github.com/planetarium/libplanet/pull/1197
 [#1213]: https://github.com/planetarium/libplanet/issues/1213
 [#1219]: https://github.com/planetarium/libplanet/pull/1219
-[#1228]: https://github.com/planetarium/libplanet/pull/1218
+[#1228]: https://github.com/planetarium/libplanet/pull/1228
 [#1230]: https://github.com/planetarium/libplanet/issues/1230
 [#1234]: https://github.com/planetarium/libplanet/pull/1234
 [#1235]: https://github.com/planetarium/libplanet/pull/1235

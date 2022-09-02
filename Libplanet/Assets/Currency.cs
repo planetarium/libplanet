@@ -530,8 +530,8 @@ namespace Libplanet.Assets
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
         /// is an empty string.</exception>
-        [Obsolete]
-        public static Currency LegacyUntracked(
+        [Obsolete("Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.")]
+        public static Currency Legacy(
             string ticker,
             byte decimalPlaces,
             IImmutableSet<Address>? minters) =>
@@ -549,19 +549,19 @@ namespace Libplanet.Assets
         /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
         /// units (i.e., exponent)</a>.</param>
         /// <param name="minter">The address who can mint the currency.  To specify multiple
-        /// minters, use the <see cref="LegacyUntracked(string,byte,IImmutableSet{Address}?)"/>
+        /// minters, use the <see cref="Legacy(string,byte,IImmutableSet{Address}?)"/>
         /// See also <see cref="Minters"/> field which corresponds to this.</param>
         /// <returns>An instance of legacy <see cref="Currency"/> without total supply tracking.
         /// </returns>
-        /// <seealso cref="LegacyUntracked(string,byte,IImmutableSet{Address}?)"/>
+        /// <seealso cref="Legacy(string,byte,IImmutableSet{Address}?)"/>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
         /// is an empty string.</exception>
-        [Obsolete]
-        public static Currency LegacyUntracked(
+        [Obsolete("Obsolete! Use Currency.Capped() or Currency.Uncapped() for new currencies.")]
+        public static Currency Legacy(
             string ticker,
             byte decimalPlaces,
             Address minter) =>
-            LegacyUntracked(ticker, decimalPlaces, ImmutableHashSet.Create(minter));
+            Legacy(ticker, decimalPlaces, ImmutableHashSet.Create(minter));
 
         /// <summary>
         /// Returns <c>true</c> if and only if the given <paramref name="address"/> is allowed

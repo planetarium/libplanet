@@ -202,7 +202,15 @@ namespace Libplanet.Tests.Action
             public FungibleAssetValue GetBalance(Address address, Currency currency) =>
                 new FungibleAssetValue(currency);
 
-            public FungibleAssetValue GetTotalSupply(Currency currency) => currency * 0;
+            public FungibleAssetValue GetTotalSupply(Currency currency)
+            {
+                if (!currency.TotalSupplyTrackable)
+                {
+                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                }
+
+                return currency * 0;
+            }
 
             public IAccountStateDelta MintAsset(Address recipient, FungibleAssetValue value) =>
                 this;
@@ -215,11 +223,6 @@ namespace Libplanet.Tests.Action
             ) => this;
 
             public IAccountStateDelta BurnAsset(Address owner, FungibleAssetValue value) => this;
-
-            FungibleAssetValue? IAccountStateDelta.GetTotalSupplyImpl(Currency currency) =>
-                currency.TotalSupplyTrackable
-                    ? currency * 0
-                    : (FungibleAssetValue?)null;
         }
     }
 }

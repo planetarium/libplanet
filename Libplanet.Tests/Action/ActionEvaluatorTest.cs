@@ -258,6 +258,23 @@ namespace Libplanet.Tests.Action
                         : null);
             }
 
+            var totalSupplyGetterFromDict = new Func<
+                IReadOnlyDictionary<Currency, FungibleAssetValue>,
+                TotalSupplyGetter
+            >(
+                totalSupplies =>
+                    currency =>
+                    {
+                        if (!currency.TotalSupplyTrackable)
+                        {
+                            throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                        }
+
+                        return totalSupplies.TryGetValue(currency, out FungibleAssetValue v)
+                            ? v
+                            : currency * 0;
+                    });
+
             Address[] addresses =
             {
                 _txFx.Address1,
@@ -448,10 +465,7 @@ namespace Libplanet.Tests.Action
                 => balances1.TryGetValue((address, currency), out FungibleAssetValue v)
                     ? v
                     : new FungibleAssetValue(currency);
-            TotalSupplyGetter totalSupplyGetter = currency =>
-                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
-                    ? v
-                    : (FungibleAssetValue?)null;
+            TotalSupplyGetter totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,
@@ -466,9 +480,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
-                (0, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address1),
-                (1, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -498,10 +512,7 @@ namespace Libplanet.Tests.Action
                 (address, currency), out FungibleAssetValue value)
                     ? value
                     : new FungibleAssetValue(currency);
-            totalSupplyGetter = currency =>
-                totalSupplies1.TryGetValue(currency, out FungibleAssetValue v)
-                    ? v
-                    : (FungibleAssetValue?)null;
+            totalSupplyGetter = totalSupplyGetterFromDict(totalSupplies1);
             previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block2.ProtocolVersion,
                 accountStateGetter,

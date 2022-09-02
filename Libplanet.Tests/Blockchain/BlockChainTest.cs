@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -1573,7 +1574,36 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void MakeTransaction()
+        public void MakeTransactionWithSystemAction()
+        {
+            var foo = Currency.Uncapped("FOO", 2, minters: null);
+            var privateKey = new PrivateKey();
+            Address address = privateKey.ToAddress();
+            var action = new Transfer(address, foo * 10);
+
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+            _blockChain.MakeTransaction(privateKey, systemAction: action);
+
+            List<Transaction<DumbAction>> txs = _stagePolicy
+                .Iterate(_blockChain)
+                .OrderBy(tx => tx.Nonce)
+                .ToList();
+
+            Assert.Equal(2, txs.Count);
+
+            var transaction = txs[0];
+            Assert.Equal(0, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+
+            transaction = txs[1];
+            Assert.Equal(1, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(action, transaction.SystemAction);
+        }
+
+        [Fact]
+        public void MakeTransactionWithCustomActions()
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
@@ -1735,7 +1765,15 @@ namespace Libplanet.Tests.Blockchain
             AccountStateGetter nullAccountStateGetter = (address) => null;
             AccountBalanceGetter nullAccountBalanceGetter =
                 (address, currency) => new FungibleAssetValue(currency);
-            TotalSupplyGetter nullTotalSupplyGetter = currency => null;
+            TotalSupplyGetter nullTotalSupplyGetter = currency =>
+            {
+                if (!currency.TotalSupplyTrackable)
+                {
+                    throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                }
+
+                return currency * 0;
+            };
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 b.ProtocolVersion,
                 nullAccountStateGetter,
@@ -1774,9 +1812,17 @@ namespace Libplanet.Tests.Blockchain
                         b.ProtocolVersion,
                         addrs => addrs.Select(dirty.GetValueOrDefault).ToArray(),
                         (address, currency) => balances.GetValueOrDefault((address, currency)),
-                        currency => totalSupplies.TryGetValue(currency, out var totalSupply)
-                            ? totalSupply
-                            : (FungibleAssetValue?)null,
+                        currency =>
+                        {
+                            if (!currency.TotalSupplyTrackable)
+                            {
+                                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+                            }
+
+                            return totalSupplies.TryGetValue(currency, out var totalSupply)
+                                ? totalSupply
+                                : currency * 0;
+                        },
                         b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();
@@ -2076,7 +2122,7 @@ namespace Libplanet.Tests.Blockchain
             )
             {
                 _hook(blockChain);
-                return new TxPolicyViolationException(transaction.Id, "Test Message");
+                return new TxPolicyViolationException("Test Message", transaction.Id);
             }
         }
 

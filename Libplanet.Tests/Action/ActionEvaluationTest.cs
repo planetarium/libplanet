@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Action
                     new AccountStateDeltaImpl(
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
-                        c => null,
+                        c => c * 0,
                         address
                     ),
                     123,
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Action
                         .Select(a => a.Equals(address) ? (Text)"item" : (IValue)null)
                         .ToArray(),
                     (_, c) => new FungibleAssetValue(c),
-                    c => null,
+                    c => c * 0,
                     address
                 )
             );

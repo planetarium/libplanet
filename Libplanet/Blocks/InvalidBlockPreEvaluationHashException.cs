@@ -19,15 +19,15 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of the
         /// <see cref="InvalidBlockPreEvaluationHashException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="actualPreEvaluationHash">The hash recorded as
         /// <see cref="Block{T}.PreEvaluationHash"/>.</param>
         /// <param name="expectedPreEvaluationHash">The hash calculated from the block except
         /// <see cref="Block{T}.StateRootHash"/>.</param>
-        /// <param name="message">The message that describes the error.</param>
         public InvalidBlockPreEvaluationHashException(
+            string message,
             ImmutableArray<byte> actualPreEvaluationHash,
-            ImmutableArray<byte> expectedPreEvaluationHash,
-            string message)
+            ImmutableArray<byte> expectedPreEvaluationHash)
             : base(message)
         {
             ActualPreEvaluationHash = actualPreEvaluationHash;

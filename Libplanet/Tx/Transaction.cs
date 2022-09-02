@@ -354,7 +354,7 @@ namespace Libplanet.Tx
             byte[] sig = privateKey.Sign(payload);
             return new Transaction<T>(
                 unsignedTransaction._metadata,
-                unsignedTransaction.CustomActions!,
+                unsignedTransaction.SystemAction!,
                 sig
             );
         }
@@ -703,7 +703,7 @@ namespace Libplanet.Tx
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
                     "to verify.";
-                throw new InvalidTxSignatureException(Id, message);
+                throw new InvalidTxSignatureException(message, Id);
             }
         }
 

@@ -17,15 +17,15 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="InsufficientBalanceException"/> object.
         /// </summary>
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="address">The owner of the insufficient <paramref name="balance"/>.
         /// Corresponds to the <see cref="Address"/> property.</param>
         /// <param name="balance">The account's current balance.
         /// Corresponds to the <see cref="Balance"/> property.</param>
-        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         public InsufficientBalanceException(
+            string? message,
             Address address,
-            FungibleAssetValue balance,
-            string? message
+            FungibleAssetValue balance
         )
             : base(message)
         {

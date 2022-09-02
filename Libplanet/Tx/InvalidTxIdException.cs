@@ -15,13 +15,13 @@ namespace Libplanet.Tx
         /// <summary>
         /// Creates a new <see cref="InvalidTxIdException"/> object.
         /// </summary>
+        /// <param name="message">Specifies an <see cref="Exception.Message"/>.
+        /// </param>
         /// <param name="txid">The invalid <see cref="TxId"/>.
         /// It is automatically included to the <see cref="Exception.Message"/>
         /// string.</param>
-        /// <param name="message">Specifies an <see cref="Exception.Message"/>.
-        /// </param>
-        public InvalidTxIdException(TxId txid, string message)
-            : base(txid, message)
+        public InvalidTxIdException(string message, TxId txid)
+            : base(message, txid)
         {
         }
     }

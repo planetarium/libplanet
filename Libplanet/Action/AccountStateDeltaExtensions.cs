@@ -34,14 +34,10 @@ namespace Libplanet.Action
 
         internal static IImmutableDictionary<Currency, FungibleAssetValue>
             GetUpdatedTotalSupplies(this IAccountStateDelta delta) =>
-            delta.TotalSupplyUpdatedCurrencies
-                .Where(currency => currency.TotalSupplyTrackable)
-                .Select(currency => (currency, totalSupply: delta.GetTotalSupplyImpl(currency)))
-                .Where(t => t.totalSupply.HasValue)
-                .Select(t =>
+            delta.TotalSupplyUpdatedCurrencies.Select(currency =>
                     new KeyValuePair<Currency, FungibleAssetValue>(
-                        t.currency,
-                        t.totalSupply!.Value))
+                        currency,
+                        delta.GetTotalSupply(currency)))
                 .ToImmutableDictionary();
 
         internal static IImmutableDictionary<string, IValue?> GetUpdatedRawStates(

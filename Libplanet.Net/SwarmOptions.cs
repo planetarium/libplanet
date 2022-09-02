@@ -27,14 +27,14 @@ namespace Libplanet.Net
         public TimeSpan RefreshPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
-        /// The lifespan of <see cref="Peer"/> in routing table.
+        /// The lifespan of <see cref="BoundPeer"/> in routing table.
         /// <seealso cref="IProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
-        /// The list of <see cref="Peer"/>s to keep in routing table permanently.
-        /// The <see cref="Peer"/>s in the list will be maintained periodically within
+        /// The list of <see cref="BoundPeer"/>s to keep in routing table permanently.
+        /// The <see cref="BoundPeer"/>s in the list will be maintained periodically within
         /// <see cref="StaticPeersMaintainPeriod"/>.
         /// </summary>
         public IImmutableSet<BoundPeer> StaticPeers { get; set; } =

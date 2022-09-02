@@ -196,9 +196,9 @@ namespace Libplanet.Blockchain
                     "restarted the chain with a new genesis block so that it is incompatible " +
                     "with your existing chain in the local store.";
                 throw new InvalidGenesisBlockException(
+                    message: msg,
                     networkExpected: genesisBlock.Hash,
-                    stored: Genesis.Hash,
-                    message: msg
+                    stored: Genesis.Hash
                 );
             }
         }
@@ -613,7 +613,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <returns>The total supply value of <paramref name="currency"/> at
         /// <paramref name="offset"/> in <see cref="FungibleAssetValue"/>.</returns>
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash? offset = null,
             TotalSupplyStateCompleter<T> stateCompleter = null
@@ -625,15 +625,20 @@ namespace Libplanet.Blockchain
             );
 
         /// <inheritdoc cref="IBlockChainStates{T}.GetTotalSupply"/>
-        public FungibleAssetValue? GetTotalSupply(
+        public FungibleAssetValue GetTotalSupply(
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         )
         {
-            if (currency.TotalSupplyTrackable || Count < 1)
+            if (!currency.TotalSupplyTrackable)
             {
-                return null;
+                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
+            }
+
+            if (Count < 1)
+            {
+                return currency * 0;
             }
 
             HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
@@ -642,12 +647,9 @@ namespace Libplanet.Blockchain
                 string rawKey = ToTotalSupplyKey(currency);
                 IReadOnlyList<IValue> values =
                     StateStore.GetStates(stateRootHash, new[] { rawKey });
-                if (values.Count > 0 && values[0] is Bencodex.Types.Integer i)
-                {
-                    return FungibleAssetValue.FromRawValue(currency, i);
-                }
-
-                return null;
+                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
+                    ? FungibleAssetValue.FromRawValue(currency, i)
+                    : currency * 0;
             }
 
             return stateCompleter(this, offset, currency);
@@ -720,10 +722,10 @@ namespace Libplanet.Blockchain
                 var msg = "GenesisHash of the transaction is not compatible " +
                           "with the BlockChain<T>.Genesis.Hash.";
                 throw new InvalidTxGenesisHashException(
+                    msg,
                     transaction.Id,
                     Genesis.Hash,
-                    transaction.GenesisHash,
-                    msg);
+                    transaction.GenesisHash);
             }
 
             return StagePolicy.Stage(this, transaction);
@@ -781,22 +783,21 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
-        /// Cannot create new transaction if the genesis block does not exist.
+        /// Creates a new <see cref="Transaction{T}"/> with a system action and stage it.
+        /// It's available only if the genesis block exists.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
-        /// <param name="actions">A list of <see cref="IAction"/>s to include to a new transaction.
-        /// </param>
+        /// <param name="systemAction">A system action to include to a new transaction.</param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
-        /// <paramref name="actions"/>.</param>
+        /// the <paramref name="systemAction"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
         /// signed.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
         public Transaction<T> MakeTransaction(
             PrivateKey privateKey,
-            IEnumerable<T> actions,
+            IAction systemAction,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null)
         {
@@ -808,11 +809,46 @@ namespace Libplanet.Blockchain
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     Genesis.Hash,
-                    actions,
+                    systemAction,
                     updatedAddresses,
                     timestamp);
                 StageTransaction(tx);
+                return tx;
+            }
+        }
 
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> with custom actions and stage it.
+        /// It's available only if the genesis block exists.
+        /// </summary>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
+        /// signs a new transaction.</param>
+        /// <param name="customActions">A list of custom actions to include to a new transaction.
+        /// </param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
+        /// <paramref name="customActions"/>.</param>
+        /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
+        /// signed.</param>
+        /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
+        /// <paramref name="privateKey"/>.</returns>
+        public Transaction<T> MakeTransaction(
+            PrivateKey privateKey,
+            IEnumerable<T> customActions,
+            IImmutableSet<Address> updatedAddresses = null,
+            DateTimeOffset? timestamp = null)
+        {
+            timestamp = timestamp ?? DateTimeOffset.UtcNow;
+            lock (_txLock)
+            {
+                // FIXME: Exception should be documented when the genesis block does not exist.
+                Transaction<T> tx = Transaction<T>.Create(
+                    GetNextTxNonce(privateKey.ToAddress()),
+                    privateKey,
+                    Genesis.Hash,
+                    customActions,
+                    updatedAddresses,
+                    timestamp);
+                StageTransaction(tx);
                 return tx;
             }
         }
@@ -875,9 +911,9 @@ namespace Libplanet.Blockchain
                     var message = $"Block #{block.Index} {block.Hash}'s state root hash " +
                         $"is {block.StateRootHash}, but the execution result is {rootHash}.";
                     throw new InvalidBlockStateRootHashException(
+                        message,
                         block.StateRootHash,
-                        rootHash,
-                        message);
+                        rootHash);
                 }
 
                 TimeSpan setStatesDuration = DateTimeOffset.Now - setStatesStarted;
@@ -1116,8 +1152,8 @@ namespace Libplanet.Blockchain
                     if (Policy.ValidateNextBlockTx(this, tx1) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
-                            tx1.Id,
                             "According to BlockPolicy, this transaction is not valid.",
+                            tx1.Id,
                             tpve);
                     }
 
@@ -1130,10 +1166,10 @@ namespace Libplanet.Blockchain
                     {
                         _logger.Debug("Append failed. The tx `{TxId}` is invalid.", tx1.Id);
                         throw new InvalidTxNonceException(
+                            "Transaction nonce is invalid.",
                             tx1.Id,
                             expectedNonce,
-                            tx1.Nonce,
-                            "Transaction nonce is invalid."
+                            tx1.Nonce
                         );
                     }
 
@@ -1420,8 +1456,8 @@ namespace Libplanet.Blockchain
                     $"#{block.Index} {block.Hash} is not supported by this node." +
                     $"The highest supported protocol version is {currentProtocolVersion}.";
                 return new InvalidBlockProtocolVersionException(
-                    actualProtocolVersion,
-                    message
+                    message,
+                    actualProtocolVersion
                 );
             }
             else if (Count > 0 && actualProtocolVersion < Tip.ProtocolVersion)
@@ -1429,7 +1465,7 @@ namespace Libplanet.Blockchain
                 string message =
                     "The protocol version is disallowed to be downgraded from the topmost block " +
                     $"in the chain ({actualProtocolVersion} < {Tip.ProtocolVersion}).";
-                return new InvalidBlockProtocolVersionException(actualProtocolVersion, message);
+                return new InvalidBlockProtocolVersionException(message, actualProtocolVersion);
             }
 
             BlockPolicyViolationException bpve = Policy.ValidateNextBlock(this, block);
@@ -1468,9 +1504,9 @@ namespace Libplanet.Blockchain
                           $"{block.Hash} is {totalDifficulty}, but its difficulty is " +
                           $"{block.TotalDifficulty}.";
                 return new InvalidBlockTotalDifficultyException(
+                    msg,
                     block.Difficulty,
-                    block.TotalDifficulty,
-                    msg);
+                    block.TotalDifficulty);
             }
 
             if (!block.PreviousHash.Equals(prevHash))

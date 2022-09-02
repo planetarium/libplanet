@@ -1,13 +1,2 @@
-addReviewers: true
+addReviewers: false
 addAssignees: author
-
-reviewers:
-- colibrishin
-- dahlia
-- greymistcube
-- limebell
-- longfin
-- OnedgeLee
-- riemannulus
-
-numberOfReviewers: 0

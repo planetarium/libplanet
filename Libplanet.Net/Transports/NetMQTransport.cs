@@ -170,7 +170,9 @@ namespace Libplanet.Net.Transports
         public AsyncDelegate<Message> ProcessMessageHandler { get; }
 
         /// <inheritdoc/>
-        public BoundPeer AsPeer => new BoundPeer(_privateKey.PublicKey, EndPoint, PublicIPAddress);
+        public BoundPeer AsPeer => _turnClient is TurnClient turnClient
+            ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint, turnClient.PublicAddress)
+            : new BoundPeer(_privateKey.PublicKey, _hostEndPoint);
 
         /// <inheritdoc/>
         public DateTimeOffset? LastMessageTimestamp { get; private set; }
@@ -192,10 +194,6 @@ namespace Libplanet.Net.Transports
                 }
             }
         }
-
-        internal IPAddress PublicIPAddress => _turnClient?.PublicAddress;
-
-        internal DnsEndPoint EndPoint => _turnClient?.EndPoint ?? _hostEndPoint;
 
         /// <summary>
         /// Creates an initialized <see cref="NetMQTransport"/> instance.

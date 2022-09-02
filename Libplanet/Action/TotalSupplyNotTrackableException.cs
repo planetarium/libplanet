@@ -17,13 +17,13 @@ namespace Libplanet.Action
         /// <summary>
         /// Creates a new <see cref="TotalSupplyNotTrackableException"/> object.
         /// </summary>
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         /// <param name="currency">The currency queried for the total supply.
         /// Corresponds to the <see cref="TotalSupplyNotTrackableException.Currency"/> property.
         /// </param>
-        /// <param name="message">Specifies a <see cref="Exception.Message"/>.</param>
         public TotalSupplyNotTrackableException(
-            Currency currency,
-            string? message
+            string? message,
+            Currency currency
         )
             : base(message)
         {
@@ -46,6 +46,15 @@ namespace Libplanet.Action
             base.GetObjectData(info, context);
 
             info.AddValue(nameof(Currency), Currency);
+        }
+
+        internal static TotalSupplyNotTrackableException WithDefaultMessage(Currency currency)
+        {
+            var msg =
+                $"The total supply value of the currency {currency} is not trackable because it"
+                + " is a legacy untracked currency which might have been established before"
+                + " the introduction of total supply tracking support.";
+            return new TotalSupplyNotTrackableException(msg, currency);
         }
     }
 }
