@@ -16,6 +16,7 @@ To be released.
 
 ### Added APIs
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2236]]
+ 
 ### Behavioral changes
 
 ### Bug fixes
