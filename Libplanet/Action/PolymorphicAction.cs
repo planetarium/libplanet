@@ -227,6 +227,11 @@ namespace Libplanet.Action
             return new PolymorphicAction<T>(innerAction);
         }
 
+        public string GetInnerActionTypeName()
+        {
+            return $"{_innerAction}";
+        }
+
         public void LoadPlainValue(Dictionary plainValue)
         {
             var typeStr = plainValue["type_id"];
