@@ -1122,7 +1122,7 @@ namespace Libplanet.Tests.Action
                 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
             byte[] hashedSignature;
-            using SHA1 hasher = SHA1.Create())
+            using SHA1 hasher = SHA1.Create()
             hashedSignature = hasher.ComputeHash(signature);
 
             int seed =
