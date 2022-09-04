@@ -10,22 +10,49 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2236]]
- 
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### Dependencies
 
+ -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
+    [[#2283]]
+
 ### CLI tools
 
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
+[#2273]: https://github.com/planetarium/libplanet/pull/2273
+[#2283]: https://github.com/planetarium/libplanet/pull/2283
+[Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
+
+
+Version 0.41.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268], [#2270]]
+
+[#2270]: https://github.com/planetarium/libplanet/pull/2270
+
 
 Version 0.41.0
 --------------
@@ -190,10 +217,22 @@ Released on August 26, 2022.
 [#2241]: https://github.com/planetarium/libplanet/pull/2241
 
 
+Version 0.40.1
+--------------
+
+Released on August 31, 2022.
+
+ -  Fixed a bug where `Transaction<T>.Create(long, PrivateKey, BlockHash?,
+    IAction, IImmutableSet<Address>?, DateTimeOffset?)` method had thrown
+    `ArgumentNullException` with valid arguments.  [[#2268]]
+
+[#2268]: https://github.com/planetarium/libplanet/pull/2268
+
+
 Version 0.40.0
 --------------
 
-Released on Auguest 12th, 2022.
+Released on August 12, 2022.
 
 ### Deprecated APIs
 

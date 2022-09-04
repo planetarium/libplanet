@@ -64,7 +64,7 @@ namespace Libplanet.Tests
                     TimestampKey,
                     _fx.Genesis.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.Genesis.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)(Integer)_fx.Genesis.TotalDifficulty)
+                .Add(TotalDifficultyKey, _fx.Genesis.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.Genesis.PublicKey.Format(compress: true));
             var expectedGenesisHeader = _marshaledGenesisMetadata
                 .Add(NonceKey, _fx.Genesis.Nonce.ByteArray)
@@ -83,7 +83,7 @@ namespace Libplanet.Tests
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.Next.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)(Integer)_fx.Next.TotalDifficulty)
+                .Add(TotalDifficultyKey, _fx.Next.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
             var expectedNextHeader = _marshaledNextMetadata
                 .Add(NonceKey, _fx.Next.Nonce.ByteArray)
@@ -102,7 +102,7 @@ namespace Libplanet.Tests
                     TimestampKey,
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                 .Add(DifficultyKey, _fx.HasTx.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)(Integer)_fx.HasTx.TotalDifficulty)
+                .Add(TotalDifficultyKey, _fx.HasTx.TotalDifficulty)
                 .Add(PublicKeyKey, _fx.HasTx.PublicKey.Format(true))
                 .Add(TxHashKey, _fx.HasTx.TxHash.Value.ByteArray);
             var expectedHasTxHeader = _marshaledHasTxMetadata

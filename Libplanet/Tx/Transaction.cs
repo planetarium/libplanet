@@ -354,7 +354,7 @@ namespace Libplanet.Tx
             byte[] sig = privateKey.Sign(payload);
             return new Transaction<T>(
                 unsignedTransaction._metadata,
-                unsignedTransaction.CustomActions!,
+                unsignedTransaction.SystemAction!,
                 sig
             );
         }
