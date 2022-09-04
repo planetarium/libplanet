@@ -963,6 +963,23 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Execute
   nameWithType: PolymorphicAction<T>.Execute
   nameWithType.vb: PolymorphicAction(Of T).Execute
+- uid: Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName
+  name: GetInnerActionTypeName()
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_GetInnerActionTypeName
+  commentId: M:Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName
+  fullName: Libplanet.Action.PolymorphicAction<T>.GetInnerActionTypeName()
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).GetInnerActionTypeName()
+  nameWithType: PolymorphicAction<T>.GetInnerActionTypeName()
+  nameWithType.vb: PolymorphicAction(Of T).GetInnerActionTypeName()
+- uid: Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName*
+  name: GetInnerActionTypeName
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_GetInnerActionTypeName_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.GetInnerActionTypeName
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.GetInnerActionTypeName
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).GetInnerActionTypeName
+  nameWithType: PolymorphicAction<T>.GetInnerActionTypeName
+  nameWithType.vb: PolymorphicAction(Of T).GetInnerActionTypeName
 - uid: Libplanet.Action.PolymorphicAction`1.InnerAction
   name: InnerAction
   href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction
