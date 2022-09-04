@@ -23,7 +23,7 @@ To be released.
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
- -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2236]]
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2131], [#2236]]
 
 ### Behavioral changes
 
@@ -36,6 +36,7 @@ To be released.
 
 ### CLI tools
 
+[#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
@@ -390,7 +391,6 @@ Released on August 12, 2022.
 [#2159]: https://github.com/planetarium/libplanet/pull/2159
 [#2162]: https://github.com/planetarium/libplanet/issues/2162
 [#2171]: https://github.com/planetarium/libplanet/pull/2171
-[#1972]: https://github.com/planetarium/libplanet/issues/1972
 [#2173]: https://github.com/planetarium/libplanet/pull/2173
 [#2175]: https://github.com/planetarium/libplanet/issues/2175
 [#2179]: https://github.com/planetarium/libplanet/pull/2179
