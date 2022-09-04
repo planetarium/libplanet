@@ -24,6 +24,8 @@ To be released.
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
  -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
+ -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
+    [[#2065], [#2198]]
 
 ### Behavioral changes
 
@@ -37,9 +39,10 @@ To be released.
 ### CLI tools
 
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
-[#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2065]: https://github.com/planetarium/libplanet/issues/2065
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
+[#2189]: https://github.com/planetarium/libplanet/pull/2189
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 
 
