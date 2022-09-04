@@ -23,6 +23,7 @@ To be released.
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
+ -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
 
 ### Behavioral changes
 
@@ -35,6 +36,8 @@ To be released.
 
 ### CLI tools
 
+[#1910]: https://github.com/planetarium/libplanet/issues/1910
+[#2189]: https://github.com/planetarium/libplanet/pull/2189
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
