@@ -46,7 +46,7 @@ namespace Libplanet.Blocks
                 .Add(IndexKey, metadata.Index)
                 .Add(TimestampKey, timestamp)
                 .Add(DifficultyKey, metadata.Difficulty)
-                .Add(TotalDifficultyKey, (IValue)new Integer(metadata.TotalDifficulty));
+                .Add(TotalDifficultyKey, metadata.TotalDifficulty);
 
             if (metadata.ProtocolVersion != 0)
             {
@@ -136,7 +136,7 @@ namespace Libplanet.Blocks
                 .Add(HeaderKey, marshaledBlockHeader);
             if (marshaledTransactions.Any())
             {
-                dict = dict.Add(TransactionsKey, (IValue)marshaledTransactions);
+                dict = dict.Add(TransactionsKey, marshaledTransactions);
             }
 
             return dict;

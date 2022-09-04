@@ -289,10 +289,7 @@ namespace Libplanet.Blocks
             // have been added from ProtocolVersion >= 2:
             if (ProtocolVersion >= 2)
             {
-                dict = dict.Add(
-                    "total_difficulty",
-                    (IValue)(Bencodex.Types.Integer)TotalDifficulty
-                );
+                dict = dict.Add("total_difficulty", TotalDifficulty);
             }
 
             return dict;
