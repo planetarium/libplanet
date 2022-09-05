@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Numerics;
 using Bencodex.Types;
@@ -10,7 +11,7 @@ namespace Libplanet.PoS
     internal static class MarshalHelper
     {
         public static IValue Serialize(this Address address) =>
-            new Binary(address.ToByteArray());
+            new Binary(address.ByteArray);
 
         public static IValue Serialize(this PublicKey publicKey) =>
             new Binary(publicKey.Format(false));
@@ -44,10 +45,10 @@ namespace Libplanet.PoS
         }
 
         public static Address ToAddress(this IValue serialized) =>
-            new Address(((Binary)serialized).ToByteArray());
+            new Address((Binary)serialized);
 
         public static PublicKey ToPublicKey(this IValue serialized) =>
-            new PublicKey(((Binary)serialized).ToByteArray());
+            new PublicKey(((Binary)serialized).ToImmutableArray());
 
         public static bool ToBoolean(this IValue serialized) =>
             ((Bencodex.Types.Boolean)serialized).Value;
@@ -71,7 +72,7 @@ namespace Libplanet.PoS
         }
 
         public static Guid ToGuid(this IValue serialized) =>
-            new Guid(((Binary)serialized).ToByteArray());
+            new Guid((Binary)serialized);
 
         public static Currency ToCurrency(this IValue serialized)
             => new Currency(serialized);
