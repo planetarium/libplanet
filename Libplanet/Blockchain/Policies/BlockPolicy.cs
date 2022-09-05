@@ -63,7 +63,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="canonicalChainComparer">The custom rule to determine which is the canonical
         /// chain.  If omitted, <see cref="TotalDifficultyComparer"/> is used by default.</param>
         /// <param name="getMaxBlockBytes">The function determining the maximum size of
-        /// a <see cref="Block{T}"/> in number of <c>byte</c>s given
+        /// <see cref="Block{T}.Transactions"/> in number of <c>byte</c>s given
         /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxBlockBytes"/>.
         /// Set to a constant size of <c>100</c>KiB, i.e. <c>100 * 1024</c>, by default.</param>
         /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
@@ -129,7 +129,8 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
 
-                    long blockBytes = block.MarshalBlock().EncodingLength;
+                    long blockBytes = BlockMarshaler.MarshalTransactions<T>(block.Transactions)
+                        .EncodingLength;
                     if (blockBytes > maxBlockBytes)
                     {
                         return new InvalidBlockBytesLengthException(

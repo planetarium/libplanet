@@ -29,6 +29,10 @@ To be released.
 
 ### Behavioral changes
 
+ -  `IBlockPolicy.GetMaxBlockBytes()` is used as an upper limit for the
+    encoded size of `Block<T>.Transactions` instead of `Block<T>`.
+    [[#2290], [#2291]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -43,6 +47,8 @@ To be released.
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
 [#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2290]: https://github.com/planetarium/libplanet/issues/2290
+[#2291]: https://github.com/planetarium/libplanet/pull/2291
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 
 

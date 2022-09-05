@@ -125,7 +125,10 @@ namespace Libplanet.Blocks
         public static List MarshalTransactions<T>(this IReadOnlyList<Transaction<T>> txs)
             where T : IAction, new()
         =>
-            new List(txs.Select(tx => new Binary(tx.Serialize(true))).Cast<IValue>());
+            new List(txs.Select(tx => MarshalTransaction<T>(tx)).Cast<IValue>());
+
+        public static Binary MarshalTransaction<T>(this Transaction<T> tx)
+            where T : IAction, new() => new Binary(tx.Serialize(true));
 
         public static Dictionary MarshalBlock(
             Dictionary marshaledBlockHeader,
@@ -149,26 +152,6 @@ namespace Libplanet.Blocks
                 MarshalBlockHeader(block.Header),
                 MarshalTransactions(block.Transactions)
             );
-
-        public static Dictionary AppendTxToMarshaledBlock<T>(
-            Dictionary marshaledBlock,
-            Transaction<T> tx
-        )
-            where T : IAction, new()
-        {
-            List marshaledTxs;
-            try
-            {
-                marshaledTxs = (List)marshaledBlock[TransactionsKey];
-            }
-            catch (KeyNotFoundException)
-            {
-                marshaledTxs = List.Empty;
-            }
-
-            marshaledTxs = marshaledTxs.Add(tx.ToBencodex(true));
-            return marshaledBlock.SetItem(TransactionsKey, (IValue)marshaledTxs);
-        }
 
         public static long UnmarshalBlockMetadataIndex(Dictionary marshaledMetadata) =>
             marshaledMetadata.GetValue<Integer>(IndexKey);
