@@ -25,6 +25,7 @@ namespace Libplanet.PoS
             return (states, validatorPowerSet);
         }
 
+        // Have to be called on tip changed
         internal static IAccountStateDelta Update(
             IAccountStateDelta states,
             long blockHeight)
@@ -33,6 +34,7 @@ namespace Libplanet.PoS
             states = UpdateBondedSetElements(states);
             states = UpdateUnbondedSetElements(states, blockHeight);
             states = UnbondingSetCtrl.Complete(states, blockHeight);
+            (states, _) = BondedValidatorSetCtrl.FetchBondedValidatorSet(states);
 
             return states;
         }
@@ -42,8 +44,7 @@ namespace Libplanet.PoS
             ValidatorPowerSet validatorPowerSet;
             (states, validatorPowerSet) = FetchValidatorPowerSet(states);
             validatorPowerSet.PreviousBondedSet
-                = new SortedSet<ValidatorPower>(
-                    validatorPowerSet.BondedSet, new ValidatorPowerComparer());
+                = new SortedSet<ValidatorPower>(validatorPowerSet.BondedSet);
             validatorPowerSet.BondedSet.Clear();
             validatorPowerSet.UnbondedSet.Clear();
             ValidatorPowerIndex validatorPowerIndex;

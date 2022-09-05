@@ -30,9 +30,7 @@ namespace Libplanet.Tests.PoS
         {
             ValidatorPower newConsensusPowerKey = new ValidatorPower(
                 _consensusPowerKey.Serialize());
-            Assert.Equal(
-                _consensusPowerKey.ValidatorAddress, newConsensusPowerKey.ValidatorAddress);
-            Assert.Equal(_consensusPowerKey.ConsensusToken, newConsensusPowerKey.ConsensusToken);
+            Assert.Equal(_consensusPowerKey, newConsensusPowerKey);
         }
     }
 }

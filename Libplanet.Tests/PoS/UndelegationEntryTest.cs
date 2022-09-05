@@ -27,21 +27,7 @@ namespace Libplanet.Tests.PoS
         {
             UndelegationEntry newUndelegationEntry
                 = new UndelegationEntry(_undelegationEntry.Serialize());
-            Assert.Equal(
-                _undelegationEntry.Address,
-                newUndelegationEntry.Address);
-            Assert.Equal(
-                _undelegationEntry.UndelegationAddress,
-                newUndelegationEntry.UndelegationAddress);
-            Assert.Equal(
-                _undelegationEntry.UnbondingConsensusToken,
-                newUndelegationEntry.UnbondingConsensusToken);
-            Assert.Equal(
-                _undelegationEntry.Index,
-                newUndelegationEntry.Index);
-            Assert.Equal(
-                _undelegationEntry.CompletionBlockHeight,
-                newUndelegationEntry.CompletionBlockHeight);
+            Assert.Equal(_undelegationEntry, newUndelegationEntry);
         }
     }
 }

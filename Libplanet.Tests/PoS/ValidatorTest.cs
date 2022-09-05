@@ -26,11 +26,7 @@ namespace Libplanet.Tests.PoS
         public void MarshallingTest()
         {
             Validator newValidator = new Validator(_validator.Serialize());
-            Assert.Equal(_validator.Address, newValidator.Address);
-            Assert.Equal(_validator.OperatorAddress, newValidator.OperatorAddress);
-            Assert.Equal(_validator.Jailed, newValidator.Jailed);
-            Assert.Equal(_validator.Status, newValidator.Status);
-            Assert.Equal(_validator.DelegatorShares, newValidator.DelegatorShares);
+            Assert.Equal(_validator, newValidator);
         }
     }
 }

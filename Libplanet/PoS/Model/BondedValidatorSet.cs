@@ -12,7 +12,7 @@ namespace Libplanet.PoS
         {
             FungibleAssetValue totalConsensusToken
                 = bondedSet.Aggregate(
-                    Asset.ConsensusToken * 0, (total, next) => next.ConsensusToken);
+                    Asset.ConsensusToken * 0, (total, next) => total + next.ConsensusToken);
 
             foreach (var validatorPower in bondedSet)
             {
@@ -30,6 +30,8 @@ namespace Libplanet.PoS
                 Add(new BondedValidator(serializedBondedValidator));
             }
         }
+
+        public Address Address => ReservedAddress.BondedValidatorSet;
 
         public IValue Serialize()
             => new List(this.Select(x => x.Serialize()));

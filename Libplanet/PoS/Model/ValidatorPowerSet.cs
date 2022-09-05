@@ -8,9 +8,9 @@ namespace Libplanet.PoS
     {
         public ValidatorPowerSet()
         {
-            PreviousBondedSet = new SortedSet<ValidatorPower>(new ValidatorPowerComparer());
-            BondedSet = new SortedSet<ValidatorPower>(new ValidatorPowerComparer());
-            UnbondedSet = new SortedSet<ValidatorPower>(new ValidatorPowerComparer());
+            PreviousBondedSet = new SortedSet<ValidatorPower>();
+            BondedSet = new SortedSet<ValidatorPower>();
+            UnbondedSet = new SortedSet<ValidatorPower>();
         }
 
         public ValidatorPowerSet(IValue serialized)
@@ -23,12 +23,9 @@ namespace Libplanet.PoS
             IEnumerable<ValidatorPower> unbondedEnum
                 = ((List)serializedList[2]).Select(x => new ValidatorPower(x)).ToList();
 
-            PreviousBondedSet = new SortedSet<ValidatorPower>(
-                previousBondedEnum, new ValidatorPowerComparer());
-            BondedSet = new SortedSet<ValidatorPower>(
-                bondedEnum, new ValidatorPowerComparer());
-            UnbondedSet = new SortedSet<ValidatorPower>(
-                unbondedEnum, new ValidatorPowerComparer());
+            PreviousBondedSet = new SortedSet<ValidatorPower>(previousBondedEnum);
+            BondedSet = new SortedSet<ValidatorPower>(bondedEnum);
+            UnbondedSet = new SortedSet<ValidatorPower>(unbondedEnum);
         }
 
         public ValidatorPowerSet(ValidatorPowerSet validatorPowerSet)

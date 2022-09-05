@@ -12,6 +12,9 @@ namespace Libplanet.PoS
             = new Address("0000000000000000000000000000000000000003");
 
         internal static readonly Address ValidatorPowerSet
+            = new Address("0000000000000000000000000000000000000004");
+
+        internal static readonly Address BondedValidatorSet
             = new Address("0000000000000000000000000000000000000005");
 
         internal static readonly Address UnbondingSet
