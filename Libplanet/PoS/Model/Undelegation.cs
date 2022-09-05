@@ -120,16 +120,7 @@ namespace Libplanet.PoS
 
         public override int GetHashCode()
         {
-            int code = 0;
-            unchecked
-            {
-                foreach (byte b in Address.ToByteArray())
-                {
-                    code = (code * 397) ^ b.GetHashCode();
-                }
-            }
-
-            return code;
+            return ByteUtil.CalculateHashCode(Address.ToByteArray());
         }
     }
 }
