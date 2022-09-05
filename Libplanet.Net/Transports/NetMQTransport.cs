@@ -580,7 +580,6 @@ namespace Libplanet.Net.Transports
                         "Received message {Message} from {Peer}.",
                         message,
                         message.Remote);
-                _logger.Debug("Received peer is boundpeer? {0}", message.Remote is BoundPeer);
                 try
                 {
                     _messageValidator.ValidateTimestamp(message);
