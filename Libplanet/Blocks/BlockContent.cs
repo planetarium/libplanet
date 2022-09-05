@@ -215,7 +215,9 @@ namespace Libplanet.Blocks
 
         public PreEvaluationBlock<T> Propose()
         {
-            return new PreEvaluationBlock<T>(this);
+            return new PreEvaluationBlock<T>(
+                this,
+                DerivePreEvaluationHash(default));
         }
 
         /// <summary>

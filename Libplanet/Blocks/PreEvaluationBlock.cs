@@ -27,36 +27,6 @@ namespace Libplanet.Blocks
         where T : IAction, new()
     {
         /// <summary>
-        /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/>.
-        /// </summary>
-        /// <param name="content">Block's content data.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="content"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
-        /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
-        /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
-        /// <remarks><see cref="PreEvaluationBlockHeader.PreEvaluationHash"/> is automatically
-        /// derived from the given arguments.</remarks>
-        public PreEvaluationBlock(IBlockContent<T> content)
-            : base(new BlockContent<T>(content))
-        {
-        }
-
-        /// <summary>
         /// Unsafely creates a <see cref="PreEvaluationBlock{T}"/> instance with its
         /// <paramref name="content"/> data, and a <paramref name="preEvaluationHash"/>
         /// which is probably considered as to be valid.
