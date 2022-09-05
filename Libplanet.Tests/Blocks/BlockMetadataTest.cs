@@ -223,10 +223,11 @@ namespace Libplanet.Tests.Blocks
         public void MineNonce()
         {
             var codec = new Codec();
+            var difficulty = 5000L;
 
             (Nonce nonce, HashDigest<SHA256> preEvalHash) =
-                GenesisMetadata.MineNonce();
-            Assert.True(Satisfies(preEvalHash.ByteArray, GenesisMetadata.Difficulty));
+                GenesisMetadata.MineNonce(difficulty);
+            Assert.True(Satisfies(preEvalHash.ByteArray, difficulty));
             HashDigest<SHA256> actual = HashDigest<SHA256>.DeriveFrom(
                     codec.Encode(GenesisMetadata.MakeCandidateData(nonce)));
             AssertBytesEqual(actual.ByteArray, preEvalHash.ByteArray);
@@ -242,7 +243,7 @@ namespace Libplanet.Tests.Blocks
                 {
                     try
                     {
-                        BlockMetadata1.MineNonce(source.Token);
+                        BlockMetadata1.MineNonce(5_000_000, source.Token);
                     }
                     catch (OperationCanceledException ce)
                     {

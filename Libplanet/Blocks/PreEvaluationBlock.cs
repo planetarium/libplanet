@@ -63,9 +63,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="content">Block's content data.</param>
         /// <param name="preEvaluationHash">A pre-evaluation hash nonce is probably considered
-        /// as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
-        /// and the hash digest which is probably considered as to be derived from
-        /// the block <paramref name="content"/> and the nonce.</param>
+        /// to satisfy the required difficulty, and the hash digest which is probably considered
+        /// to be derived from the block <paramref name="content"/> and the nonce.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
         internal PreEvaluationBlock(
