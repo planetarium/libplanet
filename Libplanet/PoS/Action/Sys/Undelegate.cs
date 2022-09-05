@@ -5,13 +5,13 @@ using Libplanet.PoS;
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for dPoS that cancel <see cref="Delegate"/> specified
+    /// A system action for DPoS that cancels <see cref="Delegate"/> specified
     /// <see cref="ShareAmount"/> of shared tokens to a given <see cref="Validator"/>.
     /// </summary>
     public sealed class Undelegate : IAction
     {
         /// <summary>
-        /// Creates a new instance of <see cref="CancelUndelegation"/> action.
+        /// Creates a new instance of <see cref="Undelegate"/> action.
         /// </summary>
         /// <param name="validator">The <see cref="Address"/> of the validator
         /// to undelegate tokens.</param>
@@ -33,7 +33,7 @@ namespace Libplanet.Action.Sys
         public Address Validator { get; set; }
 
         /// <summary>
-        /// The amount of the asset to be undelegate.
+        /// The amount of the asset to be undelegated.
         /// </summary>
         public FungibleAssetValue ShareAmount { get; set; }
 

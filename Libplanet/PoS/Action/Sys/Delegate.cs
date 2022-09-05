@@ -5,7 +5,7 @@ using Libplanet.PoS;
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for dPoS that <see cref="Delegate"/> specified <see cref="Amount"/>
+    /// A system action for DPoS that <see cref="Delegate"/> specified <see cref="Amount"/>
     /// of tokens to a given <see cref="Validator"/>.
     /// </summary>
     public sealed class Delegate : IAction
@@ -28,7 +28,7 @@ namespace Libplanet.Action.Sys
         }
 
         /// <summary>
-        /// The <see cref="Address"/> of the validator to <see cref="Delegation"/>.
+        /// The <see cref="Address"/> of the validator to <see cref="Delegate"/>.
         /// </summary>
         public Address Validator { get; set; }
 
