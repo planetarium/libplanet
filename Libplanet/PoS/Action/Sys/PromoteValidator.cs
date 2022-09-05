@@ -6,7 +6,7 @@ using Libplanet.PoS;
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for dPoS that promote to validator.
+    /// A system action for DPoS that promotes non-validator node to a validator.
     /// </summary>
     public sealed class PromoteValidator : IAction
     {
@@ -31,12 +31,12 @@ namespace Libplanet.Action.Sys
         }
 
         /// <summary>
-        /// The <see cref="PublicKey"/> of the target of promote to validator.
+        /// The <see cref="PublicKey"/> of the target promoting to a validator.
         /// </summary>
         public PublicKey Validator { get; set; }
 
         /// <summary>
-        /// The amount of the asset to be initial delegate.
+        /// The amount of the asset to be initially delegated.
         /// </summary>
         public FungibleAssetValue Amount { get; set; }
 

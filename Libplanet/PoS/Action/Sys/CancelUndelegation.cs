@@ -5,7 +5,7 @@ using Libplanet.PoS;
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for dPoS that cancel <see cref="Undelegate"/> specified
+    /// A system action for DPoS that cancel <see cref="Undelegate"/> specified
     /// <see cref="Amount"/> of tokens to a given <see cref="Validator"/>.
     /// </summary>
     public sealed class CancelUndelegation : IAction
@@ -34,7 +34,7 @@ namespace Libplanet.Action.Sys
         public Address Validator { get; set; }
 
         /// <summary>
-        /// The amount of the asset to be delegate.
+        /// The amount of the asset to be delegated.
         /// </summary>
         public FungibleAssetValue Amount { get; set; }
 

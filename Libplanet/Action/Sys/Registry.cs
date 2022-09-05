@@ -13,7 +13,7 @@ namespace Libplanet.Action.Sys
             Delegate = 101,
             Redelegate = 102,
             Undelegate = 103,
-            CancelUndelegation = 105,
+            CancelUndelegation = 104,
         }
 
         public static IAction Deserialize(Bencodex.Types.Dictionary serialized)

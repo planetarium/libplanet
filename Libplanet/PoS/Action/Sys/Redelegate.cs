@@ -5,7 +5,7 @@ using Libplanet.PoS;
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for dPoS that <see cref="Redelegate"/> specified <see cref="ShareAmount"/>
+    /// A system action for DPoS that <see cref="Redelegate"/> specified <see cref="ShareAmount"/>
     /// of shared tokens to <see cref="DstValidator"/> from <see cref="SrcValidator"/>.
     /// </summary>
     public sealed class Redelegate : IAction
@@ -31,17 +31,17 @@ namespace Libplanet.Action.Sys
         }
 
         /// <summary>
-        /// The <see cref="Address"/> of the validator to that was previously delegated.
+        /// The <see cref="Address"/> of the validator that was previously delegated to.
         /// </summary>
         public Address SrcValidator { get; set; }
 
         /// <summary>
-        /// The <see cref="Address"/> of the validator to move voting power destination.
+        /// The <see cref="Address"/> of the validator as a destination of moved voting power.
         /// </summary>
         public Address DstValidator { get; set; }
 
         /// <summary>
-        /// The amount of the shared token to move delegate.
+        /// The amount of the shared token to move delegation.
         /// </summary>
         public FungibleAssetValue ShareAmount { get; set; }
 
