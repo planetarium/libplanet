@@ -23,6 +23,7 @@ To be released.
  -  Removed `BlockChain<T>.MakeGenesisBlock()` and `BlockChain<T>.MineBlock()`
     methods.  [[#PBFT]]
  -  Removed `HashAlgorithmType` class.  [[#PBFT]]
+ -  Removed `PreEvaluationBlock<T>(IBlockContent<T>)` constructor.  [[#PBFT]]
 
 ### Backward-incompatible API changes
 
