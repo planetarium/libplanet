@@ -16,6 +16,9 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet) Added `BlockChain<T>.GetBondedValidators(BlockHash?)` method.
+    [[#2296]]
+ -  (Libplanet) Added `BlockChain<T>.Proposer(long, int)` method.  [[#2296]]
  -  (Libplanet.Pos) Added `Validator` class.  [[#2234]]
  -  (Libplanet.Pos) Added `ValidatorPower` class.  [[#2234]]
  -  (Libplanet.Pos) Added `ValidatorPowerIndex` class.  [[#2234]]
@@ -63,6 +66,7 @@ To be released.
 ### CLI tools
 
 [#2234]: https://github.com/planetarium/libplanet/pull/2234
+[#2296]: https://github.com/planetarium/libplanet/pull/2296
 
 
 Version PBFT
