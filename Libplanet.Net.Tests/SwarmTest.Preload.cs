@@ -869,8 +869,8 @@ namespace Libplanet.Net.Tests
                 PublicKey = key2.PublicKey,
                 Timestamp = DateTimeOffset.UtcNow,
             };
-            var genesisBlock1 = new PreEvaluationBlock<DumbAction>(genesisContent1);
-            var genesisBlock2 = new PreEvaluationBlock<DumbAction>(genesisContent2);
+            var genesisBlock1 = genesisContent1.Propose();
+            var genesisBlock2 = genesisContent2.Propose();
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
                 PreEvaluationBlock<DumbAction> genesisBlock,

@@ -152,25 +152,6 @@ namespace Libplanet.Blocks
             }
         }
 
-        public long Difficulty
-        {
-            get
-            {
-                if (Index == 0)
-                {
-                    return 0L;
-                }
-                else if (ProtocolVersion < 4)
-                {
-                    return 5000L;
-                }
-                else
-                {
-                    return 1L;
-                }
-            }
-        }
-
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
         public BlockHash? PreviousHash { get; set; }
 
@@ -239,23 +220,25 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>.DeriveFrom(Codec.Encode(MakeCandidateData(nonce)));
 
         /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying the block
-        /// <see cref="Difficulty"/>.
+        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>.
         /// </summary>
+        /// <param name="difficulty">The difficulty to target when mining
+        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
         /// <param name="cancellationToken">An optional cancellation token used to propagate signal
         /// that this operation should be cancelled.</param>
         /// <returns>A pair of the mined nonce and the pre-evaluation hash that satisfy the
-        /// block <see cref="Difficulty"/>.</returns>
+        /// block <paramref name="difficulty"/>.</returns>
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public (Nonce Nonce, HashDigest<SHA256> PreEvaluationHash) MineNonce(
+            long difficulty,
             CancellationToken cancellationToken = default)
         {
             Hashcash.Stamp stamp = GetStampFunction();
             var random = new Random();
             int seed = random.Next();
             return Hashcash.Answer(
-                stamp, Difficulty, seed, cancellationToken);
+                stamp, difficulty, seed, cancellationToken);
         }
 
         private Hashcash.Stamp GetStampFunction()

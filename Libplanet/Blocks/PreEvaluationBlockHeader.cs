@@ -84,9 +84,9 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
         /// <param name="preEvaluationHash">A valid proof-of-work bytearray which is probably
-        /// considered as to satisfy the required <see cref="BlockMetadata.Difficulty"/>,
-        /// and the hash digest which is probably considered as to be derived from the block
-        /// <paramref name="metadata"/> and the nonce.</param>
+        /// considered to satisfy the required difficulty, and the hash digest which is probably
+        /// considered to be derived from the block <paramref name="metadata"/> and the nonce.
+        /// </param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
         /// hash is invalid.</exception>
         internal PreEvaluationBlockHeader(
