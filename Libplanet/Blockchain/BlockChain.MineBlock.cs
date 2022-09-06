@@ -30,8 +30,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
         /// </param>
@@ -49,7 +49,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
-            long? maxBlockBytes = null,
+            long? maxTransactionsBytes = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
@@ -59,8 +59,8 @@ namespace Libplanet.Blockchain
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
-                    maxBlockBytes: maxBlockBytes
-                        ?? Policy.GetMaxBlockBytes(Count),
+                    maxTransactionsBytes: maxTransactionsBytes
+                        ?? Policy.GetMaxTransactionsBytes(Count),
                     maxTransactions: maxTransactions
                         ?? Policy.GetMaxTransactionsPerBlock(Count),
                     maxTransactionsPerSigner: maxTransactionsPerSigner
@@ -75,8 +75,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
         /// </param>
@@ -94,7 +94,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,
-            long maxBlockBytes,
+            long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
@@ -132,7 +132,7 @@ namespace Libplanet.Blockchain
                 prevHash);
 
             var transactionsToMine = GatherTransactionsToMine(
-                maxBlockBytes: maxBlockBytes,
+                maxTransactionsBytes: maxTransactionsBytes,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
@@ -223,7 +223,7 @@ namespace Libplanet.Blockchain
         /// Gathers <see cref="Transaction{T}"/>s for mining a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.</param>
         /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
@@ -235,7 +235,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
-            long maxBlockBytes,
+            long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -307,7 +307,7 @@ namespace Libplanet.Blockchain
 
                     List txAddedEncoding = estimatedEncoding.Add(
                         BlockMarshaler.MarshalTransaction(tx));
-                    if (txAddedEncoding.EncodingLength > maxBlockBytes)
+                    if (txAddedEncoding.EncodingLength > maxTransactionsBytes)
                     {
                         _logger.Debug(
                             "Ignoring tx {Iter}/{Total} {TxId} due to the maximum size allowed " +
@@ -316,7 +316,7 @@ namespace Libplanet.Blockchain
                             stagedTransactions.Count,
                             tx.Id,
                             txAddedEncoding.EncodingLength,
-                            maxBlockBytes);
+                            maxTransactionsBytes);
                         continue;
                     }
                     else if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)

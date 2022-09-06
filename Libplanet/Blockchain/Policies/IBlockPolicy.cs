@@ -109,7 +109,7 @@ namespace Libplanet.Blockchain.Policies
         /// for which this constraint should apply.</param>
         /// <returns>The maximum length of <see cref="Block{T}.Transactions"/> in bytes
         /// to accept.</returns>
-        long GetMaxBlockBytes(long index);
+        long GetMaxTransactionsBytes(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for

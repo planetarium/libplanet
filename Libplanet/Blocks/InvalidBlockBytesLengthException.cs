@@ -6,7 +6,7 @@ namespace Libplanet.Blocks
 {
     /// <summary>
     /// An exception thrown when the encoded bytes of <see cref="Block{T}.Transactions"/> exceeds
-    /// <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.
+    /// <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.
     /// </summary>
     [Serializable]
     public sealed class InvalidBlockBytesLengthException : BlockPolicyViolationException
