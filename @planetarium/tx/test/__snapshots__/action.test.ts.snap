@@ -1,0 +1,38 @@
+// Vitest Snapshot v1
+
+exports[`encodeTransfer 1`] = `
+{
+  "amount": {
+    "currency": {
+      "decimalPlaces": 2,
+      "maximumSupply": null,
+      "minters": null,
+      "ticker": "FOO",
+      "totalSupplyTrackable": true,
+    },
+    "rawValue": 12500n,
+  },
+  "recipient": Uint8Array [
+    214,
+    214,
+    57,
+    218,
+    90,
+    88,
+    167,
+    138,
+    86,
+    76,
+    44,
+    211,
+    219,
+    85,
+    250,
+    124,
+    235,
+    226,
+    68,
+    169,
+  ],
+}
+`;
