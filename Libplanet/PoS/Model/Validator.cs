@@ -4,13 +4,15 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Crypto;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class Validator : IEquatable<Validator>
     {
         private FungibleAssetValue _delegatorShares;
 
-        public Validator(Address operatorAddress, PublicKey operatorPublicKey)
+        public Validator(
+            Address operatorAddress,
+            PublicKey operatorPublicKey)
         {
             Address = DeriveAddress(operatorAddress);
             OperatorAddress = operatorAddress;
@@ -23,25 +25,14 @@ namespace Libplanet.PoS
 
         public Validator(IValue serialized)
         {
-            List serializedList = (List)serialized;
-            Address = serializedList[0].ToAddress();
-            OperatorAddress = serializedList[1].ToAddress();
-            OperatorPublicKey = serializedList[2].ToPublicKey();
-            Jailed = serializedList[3].ToBoolean();
-            Status = serializedList[4].ToEnum<BondingStatus>();
-            UnbondingCompletionBlockHeight = serializedList[5].ToLong();
-            DelegatorShares = serializedList[6].ToFungibleAssetValue();
-        }
-
-        public Validator(Validator validator)
-        {
-            Address = validator.Address;
-            OperatorAddress = validator.OperatorAddress;
-            OperatorPublicKey = validator.OperatorPublicKey;
-            Jailed = validator.Jailed;
-            Status = validator.Status;
-            UnbondingCompletionBlockHeight = validator.UnbondingCompletionBlockHeight;
-            DelegatorShares = validator.DelegatorShares;
+            var dict = (Bencodex.Types.Dictionary)serialized;
+            Address = dict["addr"].ToAddress();
+            OperatorAddress = dict["op_addr"].ToAddress();
+            OperatorPublicKey = dict["op_pub"].ToPublicKey();
+            Jailed = dict["jailed"].ToBoolean();
+            Status = dict["status"].ToEnum<BondingStatus>();
+            UnbondingCompletionBlockHeight = dict["unbonding"].ToLong();
+            DelegatorShares = dict["shares"].ToFungibleAssetValue();
         }
 
         // TODO: Better structure
@@ -109,14 +100,14 @@ namespace Libplanet.PoS
 
         public IValue Serialize()
         {
-            return List.Empty
-                .Add(Address.Serialize())
-                .Add(OperatorAddress.Serialize())
-                .Add(OperatorPublicKey.Serialize())
-                .Add(Jailed.Serialize())
-                .Add(Status.Serialize())
-                .Add(UnbondingCompletionBlockHeight.Serialize())
-                .Add(DelegatorShares.Serialize());
+            return Dictionary.Empty
+                .Add("addr", Address.Serialize())
+                .Add("op_addr", OperatorAddress.Serialize())
+                .Add("op_pub", OperatorPublicKey.Serialize())
+                .Add("jailed", Jailed.Serialize())
+                .Add("status", Status.Serialize())
+                .Add("unbonding", UnbondingCompletionBlockHeight.Serialize())
+                .Add("shares", DelegatorShares.Serialize());
         }
 
         public override bool Equals(object? obj)

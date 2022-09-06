@@ -4,6 +4,8 @@ using System.Linq;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.PoS;
+using Libplanet.PoS.Control;
+using Libplanet.PoS.Model;
 using Xunit;
 
 namespace Libplanet.Tests.PoS
