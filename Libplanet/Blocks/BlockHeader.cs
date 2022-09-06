@@ -66,7 +66,13 @@ namespace Libplanet.Blocks
         {
             BlockHash expectedHash =
                 preEvaluationBlockHeader.DeriveBlockHash(stateRootHash, signature);
-            if (!hash.Equals(expectedHash))
+
+            if (preEvaluationBlockHeader.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                // Skip hash check for PoW blocks due to change of the block structure.
+                // If verification is required, use older version of LibPlanet(<0.43).
+            }
+            else if (!hash.Equals(expectedHash))
             {
                 throw new InvalidBlockHashException(
                     $"The block #{Index} {Hash} has an invalid hash; expected: {expectedHash}."
@@ -96,13 +102,20 @@ namespace Libplanet.Blocks
             ) proof
         )
         {
-            if (!preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
+            if (preEvaluationBlockHeader.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                // Skip verifying signature for PoW blocks due to change of the block structure.
+                // If verification is required, use older version of LibPlanet(<0.43).
+            }
+            else if (!preEvaluationBlockHeader.VerifySignature(
+                         proof.Signature,
+                         proof.StateRootHash))
             {
                 long idx = preEvaluationBlockHeader.Index;
                 string msg = preEvaluationBlockHeader.ProtocolVersion >= 2
                     ? $"The block #{idx} #{proof.Hash}'s signature is invalid."
                     : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
-                        $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
+                      $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(
                     msg,
                     preEvaluationBlockHeader.PublicKey,

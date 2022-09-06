@@ -28,6 +28,11 @@ namespace Libplanet.Blocks
         /// </summary>
         public const int CurrentProtocolVersion = 4;
 
+        /// <summary>
+        /// The latest PoW protocol version.
+        /// </summary>
+        public const int PoWProtocolVersion = 3;
+
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
 
