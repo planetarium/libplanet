@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class Undelegation : IEquatable<Undelegation>
     {
@@ -33,13 +33,13 @@ namespace Libplanet.PoS
             }
         }
 
-        public Undelegation(Undelegation undelegationInfo)
+        public Undelegation(Undelegation undelegation)
         {
-            Address = undelegationInfo.Address;
-            DelegatorAddress = undelegationInfo.DelegatorAddress;
-            ValidatorAddress = undelegationInfo.ValidatorAddress;
-            UndelegationEntryIndex = undelegationInfo.UndelegationEntryIndex;
-            UndelegationEntryAddresses = undelegationInfo.UndelegationEntryAddresses;
+            Address = undelegation.Address;
+            DelegatorAddress = undelegation.DelegatorAddress;
+            ValidatorAddress = undelegation.ValidatorAddress;
+            UndelegationEntryIndex = undelegation.UndelegationEntryIndex;
+            UndelegationEntryAddresses = undelegation.UndelegationEntryAddresses;
         }
 
         // TODO: Better structure

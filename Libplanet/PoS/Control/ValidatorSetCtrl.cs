@@ -1,28 +1,32 @@
-using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.PoS.Control
 {
-    internal static class ValidatorPowerSetCtrl
+    internal static class ValidatorSetCtrl
     {
-        internal static (IAccountStateDelta, ValidatorPowerSet) FetchValidatorPowerSet(
-            IAccountStateDelta states)
+        internal static (IAccountStateDelta, ValidatorSet) FetchValidatorSet(
+            IAccountStateDelta states, Address address)
         {
-            ValidatorPowerSet validatorPowerSet;
-            if (states.GetState(ReservedAddress.ValidatorPowerSet) is { } value)
+            ValidatorSet validatorSet;
+            if (states.GetState(address) is { } value)
             {
-                validatorPowerSet = new ValidatorPowerSet(value);
+                validatorSet = new ValidatorSet(value);
             }
             else
             {
-                validatorPowerSet = new ValidatorPowerSet();
+                validatorSet = new ValidatorSet();
                 states = states.SetState(
-                    validatorPowerSet.Address, validatorPowerSet.Serialize());
+                    address, validatorSet.Serialize());
             }
 
-            return (states, validatorPowerSet);
+            return (states, validatorSet);
         }
+
+        internal static (IAccountStateDelta, ValidatorSet) FetchBondedValidatorSet(
+            IAccountStateDelta states)
+            => FetchValidatorSet(states, ReservedAddress.BondedValidatorSet);
 
         // Have to be called on tip changed
         internal static IAccountStateDelta Update(
@@ -33,19 +37,17 @@ namespace Libplanet.PoS.Control
             states = UpdateBondedSetElements(states);
             states = UpdateUnbondedSetElements(states, blockHeight);
             states = UnbondingSetCtrl.Complete(states, blockHeight);
-            (states, _) = BondedValidatorSetCtrl.FetchBondedValidatorSet(states);
 
             return states;
         }
 
         internal static IAccountStateDelta UpdateSets(IAccountStateDelta states)
         {
-            ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
-            validatorPowerSet.PreviousBondedSet
-                = new SortedSet<ValidatorPower>(validatorPowerSet.BondedSet);
-            validatorPowerSet.BondedSet.Clear();
-            validatorPowerSet.UnbondedSet.Clear();
+            ValidatorSet previousBondedSet;
+            (states, previousBondedSet) = FetchValidatorSet(
+                states, ReservedAddress.BondedValidatorSet);
+            ValidatorSet bondedSet = new ValidatorSet();
+            ValidatorSet unbondedSet = new ValidatorSet();
             ValidatorPowerIndex validatorPowerIndex;
             (states, validatorPowerIndex)
                 = ValidatorPowerIndexCtrl.FetchValidatorPowerIndex(states);
@@ -63,29 +65,33 @@ namespace Libplanet.PoS.Control
                     throw new JailedValidatorException(validator.Address);
                 }
 
-                if (item.index >= ValidatorPowerSet.MaxBondedSetSize ||
+                if (item.index >= ValidatorSet.MaxBondedSetSize ||
                     states.GetBalance(item.value.ValidatorAddress, Asset.ConsensusToken)
                     <= Asset.ConsensusToken * 0)
                 {
-                    validatorPowerSet.UnbondedSet.Add(item.value);
+                    unbondedSet.Add(item.value);
                 }
                 else
                 {
-                    validatorPowerSet.BondedSet.Add(item.value);
+                    bondedSet.Add(item.value);
                 }
             }
 
             states = states.SetState(
-                ReservedAddress.ValidatorPowerSet, validatorPowerSet.Serialize());
+                ReservedAddress.PreviousBondedValidatorSet, previousBondedSet.Serialize());
+            states = states.SetState(
+                ReservedAddress.BondedValidatorSet, bondedSet.Serialize());
+            states = states.SetState(
+                ReservedAddress.UnbondedValidatorSet, unbondedSet.Serialize());
 
             return states;
         }
 
         internal static IAccountStateDelta UpdateBondedSetElements(IAccountStateDelta states)
         {
-            ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
-            foreach (ValidatorPower validatorPower in validatorPowerSet.BondedSet)
+            ValidatorSet bondedSet;
+            (states, bondedSet) = FetchBondedValidatorSet(states);
+            foreach (ValidatorPower validatorPower in bondedSet.Set)
             {
                 if (!(ValidatorCtrl.GetValidator(
                     states, validatorPower.ValidatorAddress) is { } validator))
@@ -102,9 +108,9 @@ namespace Libplanet.PoS.Control
         internal static IAccountStateDelta UpdateUnbondedSetElements(
             IAccountStateDelta states, long blockHeight)
         {
-            ValidatorPowerSet validatorPowerSet;
-            (states, validatorPowerSet) = FetchValidatorPowerSet(states);
-            foreach (ValidatorPower validatorPower in validatorPowerSet.UnbondedSet)
+            ValidatorSet unbondedSet;
+            (states, unbondedSet) = FetchValidatorSet(states, ReservedAddress.UnbondedValidatorSet);
+            foreach (ValidatorPower validatorPower in unbondedSet.Set)
             {
                 if (!(ValidatorCtrl.GetValidator(
                     states, validatorPower.ValidatorAddress) is { } validator))

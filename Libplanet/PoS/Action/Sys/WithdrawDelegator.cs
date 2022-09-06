@@ -2,50 +2,42 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.Action.Sys
 {
     /// <summary>
-    /// A system action for DPoS that <see cref="Delegate"/> specified <see cref="Amount"/>
-    /// of tokens to a given <see cref="Validator"/>.
+    /// A system action for DPoS that withdraws reward tokens from given <see cref="Validator"/>.
     /// </summary>
-    public sealed class Delegate : IAction
+    public sealed class WithdrawDelegator : IAction
     {
         /// <summary>
-        /// Creates a new instance of <see cref="Delegate"/> action.
+        /// Creates a new instance of <see cref="WithdrawDelegator"/> action.
         /// </summary>
         /// <param name="validator">The <see cref="Address"/> of the validator
-        /// to delegate tokens.</param>
-        /// <param name="amount">The amount of the asset to be delegated.</param>
-        public Delegate(Address validator, FungibleAssetValue amount)
+        /// from which to withdraw the tokens.</param>
+        public WithdrawDelegator(Address validator)
         {
             Validator = validator;
-            Amount = amount;
         }
 
-        internal Delegate()
+        internal WithdrawDelegator()
         {
             // Used only for deserialization.  See also class Libplanet.Action.Sys.Registry.
         }
 
         /// <summary>
-        /// The <see cref="Address"/> of the validator to <see cref="Delegate"/>.
+        /// The <see cref="Address"/> of the validator to withdraw.
         /// </summary>
         public Address Validator { get; set; }
 
-        public FungibleAssetValue Amount { get; set; }
-
         /// <inheritdoc cref="IAction.PlainValue"/>
-        public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add("validator", Validator.Serialize())
-            .Add("amount", Amount.Serialize());
+        public IValue PlainValue => Validator.Serialize();
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)
         {
-            var dict = (Bencodex.Types.Dictionary)plainValue;
-            Validator = dict["validator"].ToAddress();
-            Amount = dict["amount"].ToFungibleAssetValue();
+            Validator = plainValue.ToAddress();
         }
 
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
@@ -56,7 +48,11 @@ namespace Libplanet.Action.Sys
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            states = DelegateCtrl.Execute(states, ctx.Signer, Validator, Amount, ctx.BlockIndex);
+            states = DelegateCtrl.Distribute(
+                states, Delegation.DeriveAddress(ctx.Signer, Validator), ctx.BlockIndex);
+            FungibleAssetValue withdrawAmount = states.GetBalance(ctx.Signer, Asset.ConsensusToken);
+            states = states.MintAsset(ctx.Signer, Asset.GovernanceFromConsensus(withdrawAmount));
+            states = states.BurnAsset(ctx.Signer, withdrawAmount);
 
             return states;
         }

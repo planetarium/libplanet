@@ -1,16 +1,17 @@
 using Libplanet.Crypto;
 using Libplanet.PoS;
+using Libplanet.PoS.Model;
 using Xunit;
 
 namespace Libplanet.Tests.PoS
 {
     public class ValidatorPowerTest : PoSTest
     {
-        private readonly ValidatorPower _consensusPowerKey;
+        private readonly ValidatorPower _validatorPower;
 
         public ValidatorPowerTest()
         {
-            _consensusPowerKey = new ValidatorPower(
+            _validatorPower = new ValidatorPower(
                 CreateAddress(),
                 new PrivateKey().PublicKey,
                 Asset.ConsensusToken * 10);
@@ -20,17 +21,17 @@ namespace Libplanet.Tests.PoS
         public void InvalidUnbondingConsensusToken()
         {
             Assert.Throws<InvalidCurrencyException>(
-                () => _consensusPowerKey.ConsensusToken = Asset.GovernanceToken * 1);
+                () => _validatorPower.ConsensusToken = Asset.GovernanceToken * 1);
             Assert.Throws<InvalidCurrencyException>(
-                () => _consensusPowerKey.ConsensusToken = Asset.Share * 1);
+                () => _validatorPower.ConsensusToken = Asset.Share * 1);
         }
 
         [Fact]
         public void MarshallingTest()
         {
-            ValidatorPower newConsensusPowerKey = new ValidatorPower(
-                _consensusPowerKey.Serialize());
-            Assert.Equal(_consensusPowerKey, newConsensusPowerKey);
+            ValidatorPower newValidatorPower = new ValidatorPower(
+                _validatorPower.Serialize());
+            Assert.Equal(_validatorPower, newValidatorPower);
         }
     }
 }

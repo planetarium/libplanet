@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class UnbondingSet
     {

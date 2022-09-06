@@ -194,6 +194,7 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
+                lastCommit: null,
                 rehearsal: true,
                 previousBlockStatesTrie: null,
                 nativeTokenPredicate: _ => true);
@@ -232,6 +233,8 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="lastCommit"><see cref="BlockCommit"/> of last <see cref="Block{T}"/>.
+        /// </param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -272,6 +275,7 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             Predicate<Currency> nativeTokenPredicate,
+            BlockCommit? lastCommit = null,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
@@ -287,6 +291,7 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
+                    lastCommit: lastCommit,
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
@@ -595,6 +600,7 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
+                lastCommit: block.LastCommit,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 nativeTokenPredicate: _nativeTokenPredicate);
@@ -680,6 +686,7 @@ namespace Libplanet.Action
                 signer: block.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
+                lastCommit: block.LastCommit,
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,

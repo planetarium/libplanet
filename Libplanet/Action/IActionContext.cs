@@ -46,6 +46,12 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
+        /// <see cref="BlockCommit"/> of last <see cref="Block{T}"/>.
+        /// </summary>
+        [Pure]
+        BlockCommit? LastCommit { get; }
+
+        /// <summary>
         /// Whether an <see cref="IAction"/> is being executed during
         /// &#x201c;rehearsal mode&#x201d;, that there is nothing
         /// in <see cref="PreviousStates"/>.

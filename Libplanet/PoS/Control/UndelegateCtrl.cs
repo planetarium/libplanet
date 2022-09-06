@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.PoS.Control
 {
@@ -81,7 +82,8 @@ namespace Libplanet.PoS.Control
                 states,
                 share,
                 undelegation.ValidatorAddress,
-                undelegation.DelegationAddress);
+                undelegation.DelegationAddress,
+                blockHeight);
 
             // Governance token pool transfer
             if (validator.Status == BondingStatus.Bonded)
@@ -201,8 +203,8 @@ namespace Libplanet.PoS.Control
                 states,
                 cancelledConsensusToken,
                 undelegation.ValidatorAddress,
-                undelegation.DelegationAddress
-            );
+                undelegation.DelegationAddress,
+                blockHeight);
 
             if (validator.Status == BondingStatus.Bonded)
             {

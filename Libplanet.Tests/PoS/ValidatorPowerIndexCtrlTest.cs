@@ -36,7 +36,7 @@ namespace Libplanet.Tests.PoS
             {
                 _states = _states.MintAsset(addr, Asset.GovernanceToken * 100);
                 _states = ValidatorCtrl.Create(
-                    _states, addr, key, Asset.GovernanceToken * 10);
+                    _states, addr, key, Asset.GovernanceToken * 10, 1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(addr));
             }
         }

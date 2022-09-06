@@ -3,7 +3,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Crypto;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class ValidatorPower
         : IEquatable<ValidatorPower>, IComparable<ValidatorPower>, IComparable

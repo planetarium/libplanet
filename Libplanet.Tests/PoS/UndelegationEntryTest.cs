@@ -1,4 +1,5 @@
 using Libplanet.PoS;
+using Libplanet.PoS.Model;
 using Xunit;
 
 namespace Libplanet.Tests.PoS

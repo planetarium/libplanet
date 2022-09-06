@@ -10,25 +10,27 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `LastCommit` property to `IActionContext`.  [[#2297]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
- -  (Libplanet.Pos) Added `Validator` class.  [[#2234]]
- -  (Libplanet.Pos) Added `ValidatorPower` class.  [[#2234]]
- -  (Libplanet.Pos) Added `ValidatorPowerIndex` class.  [[#2234]]
- -  (Libplanet.Pos) Added `ValidatorPowerSet` class.  [[#2234]]
- -  (Libplanet.Pos) Added `BondedValidator` class.  [[#2234]]
- -  (Libplanet.Pos) Added `BondedValidatorSet` class.  [[#2234]]
- -  (Libplanet.Pos) Added `Delegation` class.  [[#2234]]
- -  (Libplanet.Pos) Added `Undelegation` class.  [[#2234]]
- -  (Libplanet.Pos) Added `Redelegation` class.  [[#2234]]
- -  (Libplanet.Pos) Added `UndelegationEntry` class.  [[#2234]]
- -  (Libplanet.Pos) Added `RedelegationEntry` class.  [[#2234]]
- -  (Libplanet.Pos) Added `UnbondingSet` class.  [[#2234]]
- -  (Libplanet.Pos) Added `BondingStatus` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `Validator` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `ValidatorPower` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `ValidatorPowerIndex` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `ValidatorSet` class.  [[#2297]]
+ -  (Libplanet.Pos.Model) Added `ValidatorDelegationSet` class.  [[#2297]]
+ -  (Libplanet.Pos.Model) Added `ValidatorRewards` class.  [[#2297]]
+ -  (Libplanet.Pos.Model) Added `Delegation` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `Undelegation` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `Redelegation` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `UndelegationEntry` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `RedelegationEntry` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `UnbondingSet` class.  [[#2234]]
+ -  (Libplanet.Pos.Model) Added `BondingStatus` class.  [[#2234]]
  -  (Libplanet.Pos) Added `NullValidatorException` class.  [[#2234]]
  -  (Libplanet.Pos) Added `NullDelegationException` class.  [[#2234]]
  -  (Libplanet.Pos) Added `NullUndelegationException` class.  [[#2234]]
@@ -46,13 +48,14 @@ To be released.
     [[#2234]]
  -  (Libplanet.Pos) Added `PostmatureUndelegationEntryException` class.
     [[#2234]]
- -  (Libplanet.Action.Sys) Added `CreateValidatorAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `DelegateAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `UndelegateAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `RedelegateAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `CancelUndelegationAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `WithdrawValidatorAction` class.  [[#2234]]
- -  (Libplanet.Action.Sys) Added `WithdrawDelegatorAction` class.  [[#2234]]
+ -  (Libplanet.Action.Sys) Added `PromoteValidator` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `Delegate` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `Undelegate` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `Redelegate` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `CancelUndelegation` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `WithdrawValidator` class.  [[#2287]]
+ -  (Libplanet.Action.Sys) Added `WithdrawDelegator` class.  [[#2287]]
+ -  (Libplanet.Action) Added `BlockAction` class.  [[#2297]]
  -  (Libplanet.Crypto) Added `PrivateKey.VrfEvaluate()` method. [[#2237]]
  -  (Libplanet.Crypto) Added `PublicKey.VrfVerify()` method. [[#2237]]
  -  (Libplanet.Crypto) Added `ICryptoBackend.VrfEvaluate()` method. [[#2237]]
