@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -64,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 BlockChain,
                 height,
                 TestUtils.PrivateKeys[(int)nodeId],
-                TestUtils.Validators,
+                TestUtils.Validators.ToImmutableList(),
                 step,
                 round);
         }

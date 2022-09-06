@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -87,7 +88,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
-        private readonly List<PublicKey> _validators;
+        private readonly ImmutableList<PublicKey> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
@@ -129,7 +130,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators)
+            IImmutableList<PublicKey> validators)
             : this(
                 consensusContext,
                 blockChain,
@@ -146,7 +147,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            IImmutableList<PublicKey> validators,
             Step step,
             int round = 0,
             int cacheSize = 128)
@@ -167,7 +168,7 @@ namespace Libplanet.Net.Consensus
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
-            _validators = validators;
+            _validators = validators.ToImmutableList();
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
             _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
@@ -307,7 +308,7 @@ namespace Libplanet.Net.Consensus
         private PublicKey Proposer(int round)
         {
             // return designated proposer for the height round pair.
-            return _validators[(int)((Height + round) % TotalValidators)];
+            return _blockChain.Proposer(Height, round).OperatorPublicKey;
         }
 
         /// <summary>
