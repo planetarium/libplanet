@@ -1,0 +1,42 @@
+{
+  "name": "@planetarium/tx",
+  "description": "Creating Libplanet transactions from JavaScript/TypeScript",
+  "main": "dist/pkg.cjs.js",
+  "module": "dist/pkg.esm.js",
+  "scripts": {
+    "build": "bunchee src/index.ts",
+    "dev": "bunchee --watch src/index.ts",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "types": "dist/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planetarium/libplanet.git",
+    "directory": "@planet/tx"
+  },
+  "keywords": [
+    "libplanet"
+  ],
+  "author": "Planetarium (https://planetarium.dev/)",
+  "license": "LGPL-2.1-or-later",
+  "bugs": {
+    "url": "https://github.com/planetarium/libplanet/labels/js"
+  },
+  "homepage": "https://github.com/planetarium/libplanet/tree/main/@planet/tx",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "@vitest/coverage-c8": "^0.22.1",
+    "@vitest/ui": "^0.22.1",
+    "bunchee": "^2.0.3",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "fast-check": "^3.1.2",
+    "prettier": "2.7.1",
+    "vitest": "^0.22.1"
+  },
+  "dependencies": {
+    "bencodex": "^0.1.1"
+  }
+}
