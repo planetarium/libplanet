@@ -22,7 +22,6 @@ namespace Libplanet.Net.Consensus
     {
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly List<PublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
@@ -33,34 +32,29 @@ namespace Libplanet.Net.Consensus
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
         /// </summary>
         /// <param name="broadcastMessage">A delegate method that will broadcasting given
-        /// <see cref="ConsensusMessage"/> to validators.
+        ///     <see cref="ConsensusMessage"/> to validators.
         /// </param>
         /// <param name="blockChain">A blockchain that will be committed, which
-        /// will be voted by consensus, and used for proposing a block.
+        ///     will be voted by consensus, and used for proposing a block.
         /// </param>
         /// <param name="height">The current height of consensus. this value should be same as the
-        /// index of <see cref="BlockChain{T}.Tip"/> + 1.
+        ///     index of <see cref="BlockChain{T}.Tip"/> + 1.
         /// </param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
-        /// <param name="validators">A list of validator's <see cref="PublicKey"/>,
-        /// also including self.
-        /// </param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
-        /// block. <seealso cref="OnBlockChainTipChanged"/>
+        ///     block. <seealso cref="OnBlockChainTipChanged"/>
         /// </param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
             TimeSpan newHeightDelay)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
-            _validators = validators;
             Height = height;
             _newHeightDelay = newHeightDelay;
 
@@ -168,7 +162,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _validators);
+                    _blockChain.GetBondedValidators().BondedValidatorsPublicKey);
             }
 
             _contexts[height].Start(lastCommit);
@@ -216,7 +210,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _validators);
+                    _blockChain.GetBondedValidators().BondedValidatorsPublicKey);
             }
 
             _contexts[height].ProduceMessage(consensusMessage);

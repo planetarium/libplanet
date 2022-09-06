@@ -221,7 +221,6 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                validators,
                 newHeightDelay: newHeightDelay);
 
             async Task DummyHandle(Message message)

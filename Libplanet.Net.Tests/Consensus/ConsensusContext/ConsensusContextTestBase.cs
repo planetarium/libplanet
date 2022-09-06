@@ -59,7 +59,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 BlockChain,
                 BlockChain.Tip.Index + 1,
                 privateKey,
-                validators,
                 NewHeightDelay);
         }
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,8 +38,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="privateKey">A <see cref="PrivateKey"/> for using in signing a block,
         /// message.
         /// </param>
-        /// <param name="validatorPeers">A list of validator's <see cref="PublicKey"/>, including
-        /// itself.
+        /// <param name="gossipSeed">A list of seed's <see cref="BoundPeer"/>
+        /// for <see cref="Gossip"/>.
         /// </param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
@@ -49,12 +48,12 @@ namespace Libplanet.Net.Consensus
             ITransport consensusTransport,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            ImmutableList<BoundPeer> validatorPeers,
+            ImmutableList<BoundPeer> gossipSeed,
             TimeSpan newHeightDelay)
         {
             _gossip = new Gossip(
                 consensusTransport,
-                validatorPeers.ToImmutableArray(),
+                gossipSeed.ToImmutableArray(),
                 ProcessMessage,
                 TimeSpan.FromMinutes(2));
             _blockChain = blockChain;
@@ -64,7 +63,6 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 blockChain.Tip.Index,
                 privateKey,
-                validatorPeers.Select(x => x.PublicKey).ToList(),
                 newHeightDelay);
 
             _logger = Log
