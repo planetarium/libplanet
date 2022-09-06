@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.PoS.Control
 {
@@ -98,12 +99,14 @@ namespace Libplanet.PoS.Control
                 states,
                 redelegatingShare,
                 srcValidatorAddress,
-                redelegation.SrcDelegationAddress);
+                redelegation.SrcDelegationAddress,
+                blockHeight);
             (states, issuedShare) = Bond.Execute(
                 states,
                 unbondingConsensusToken,
                 dstValidatorAddress,
-                redelegation.DstDelegationAddress);
+                redelegation.DstDelegationAddress,
+                blockHeight);
 
             if (!(ValidatorCtrl.GetValidator(states, srcValidatorAddress) is { } srcValidator))
             {

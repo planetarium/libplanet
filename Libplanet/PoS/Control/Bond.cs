@@ -10,7 +10,8 @@ namespace Libplanet.PoS.Control
             IAccountStateDelta states,
             FungibleAssetValue consensusToken,
             Address validatorAddress,
-            Address delegationAddress)
+            Address delegationAddress,
+            long blockHeight)
         {
             // TODO: Failure condition
             // 1. Validator does not exist
@@ -46,6 +47,15 @@ namespace Libplanet.PoS.Control
             states = states.SetState(validator.Address, validator.Serialize());
             states = ValidatorPowerIndexCtrl.Update(states, validator.Address);
 
+            ValidatorDelegationSet validatorDelegationSet;
+            (states, validatorDelegationSet) =
+                ValidatorDelegationSetCtrl.FetchValidatorDelegationSet(states, validator.Address);
+
+            foreach (Address addrs in validatorDelegationSet.Set)
+            {
+                states = DelegateCtrl.Distribute(states, addrs, blockHeight);
+            }
+
             return (states, issuedShare);
         }
 
@@ -53,7 +63,8 @@ namespace Libplanet.PoS.Control
             IAccountStateDelta states,
             FungibleAssetValue share,
             Address validatorAddress,
-            Address delegationAddress)
+            Address delegationAddress,
+            long blockHeight)
         {
             // Currency check
             if (!share.Currency.Equals(Asset.Share))
@@ -109,6 +120,15 @@ namespace Libplanet.PoS.Control
             states = states.SetState(validator.Address, validator.Serialize());
 
             states = ValidatorPowerIndexCtrl.Update(states, validator.Address);
+
+            ValidatorDelegationSet validatorDelegationSet;
+            (states, validatorDelegationSet) =
+                ValidatorDelegationSetCtrl.FetchValidatorDelegationSet(states, validator.Address);
+
+            foreach (Address addrs in validatorDelegationSet.Set)
+            {
+                states = DelegateCtrl.Distribute(states, addrs, blockHeight);
+            }
 
             return (states, unbondingConsensusToken);
         }

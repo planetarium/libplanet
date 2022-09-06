@@ -66,7 +66,7 @@ namespace Libplanet.Action.Sys
             var states = ctx.PreviousStates;
 
             states = ValidatorCtrl.Create(
-                states, ctx.Signer, Validator, Amount);
+                states, ctx.Signer, Validator, Amount, ctx.BlockIndex);
 
             return states;
         }

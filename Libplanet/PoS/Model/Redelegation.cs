@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class Redelegation : IEquatable<Redelegation>
     {
@@ -36,14 +36,14 @@ namespace Libplanet.PoS
             }
         }
 
-        public Redelegation(Redelegation redelegationInfo)
+        public Redelegation(Redelegation redelegation)
         {
-            Address = redelegationInfo.Address;
-            DelegatorAddress = redelegationInfo.DelegatorAddress;
-            SrcValidatorAddress = redelegationInfo.SrcValidatorAddress;
-            DstValidatorAddress = redelegationInfo.DstValidatorAddress;
-            RedelegationEntryIndex = redelegationInfo.RedelegationEntryIndex;
-            RedelegationEntryAddresses = redelegationInfo.RedelegationEntryAddresses;
+            Address = redelegation.Address;
+            DelegatorAddress = redelegation.DelegatorAddress;
+            SrcValidatorAddress = redelegation.SrcValidatorAddress;
+            DstValidatorAddress = redelegation.DstValidatorAddress;
+            RedelegationEntryIndex = redelegation.RedelegationEntryIndex;
+            RedelegationEntryAddresses = redelegation.RedelegationEntryAddresses;
         }
 
         // TODO: Better structure

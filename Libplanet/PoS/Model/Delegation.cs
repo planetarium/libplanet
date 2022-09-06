@@ -1,7 +1,7 @@
 using System;
 using Bencodex.Types;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class Delegation : IEquatable<Delegation>
     {
@@ -10,6 +10,7 @@ namespace Libplanet.PoS
             Address = DeriveAddress(delegatorAddress, validatorAddress);
             DelegatorAddress = delegatorAddress;
             ValidatorAddress = validatorAddress;
+            LatestDistributeHeight = 0;
         }
 
         public Delegation(IValue serialized)
@@ -18,13 +19,15 @@ namespace Libplanet.PoS
             Address = serializedList[0].ToAddress();
             DelegatorAddress = serializedList[1].ToAddress();
             ValidatorAddress = serializedList[2].ToAddress();
+            LatestDistributeHeight = serializedList[3].ToLong();
         }
 
-        public Delegation(Delegation delegationInfo)
+        public Delegation(Delegation delegation)
         {
-            Address = delegationInfo.Address;
-            DelegatorAddress = delegationInfo.DelegatorAddress;
-            ValidatorAddress = delegationInfo.ValidatorAddress;
+            Address = delegation.Address;
+            DelegatorAddress = delegation.DelegatorAddress;
+            ValidatorAddress = delegation.ValidatorAddress;
+            LatestDistributeHeight = delegation.LatestDistributeHeight;
         }
 
         public Address Address { get; }
@@ -32,6 +35,8 @@ namespace Libplanet.PoS
         public Address DelegatorAddress { get; }
 
         public Address ValidatorAddress { get; }
+
+        public long LatestDistributeHeight { get; set; }
 
         public static bool operator ==(Delegation obj, Delegation other)
         {
@@ -55,7 +60,8 @@ namespace Libplanet.PoS
             return List.Empty
                 .Add(Address.Serialize())
                 .Add(DelegatorAddress.Serialize())
-                .Add(ValidatorAddress.Serialize());
+                .Add(ValidatorAddress.Serialize())
+                .Add(LatestDistributeHeight.Serialize());
         }
 
         public override bool Equals(object? obj)
@@ -68,7 +74,8 @@ namespace Libplanet.PoS
             return !(other is null) &&
                    Address.Equals(other.Address) &&
                    DelegatorAddress.Equals(other.DelegatorAddress) &&
-                   ValidatorAddress.Equals(other.ValidatorAddress);
+                   ValidatorAddress.Equals(other.ValidatorAddress) &&
+                   LatestDistributeHeight.Equals(other.LatestDistributeHeight);
         }
 
         public override int GetHashCode()

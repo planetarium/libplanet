@@ -23,6 +23,7 @@ namespace Libplanet.Action
             long blockIndex,
             IAccountStateDelta previousStates,
             int randomSeed,
+            BlockCommit? lastCommit = null,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
@@ -33,6 +34,7 @@ namespace Libplanet.Action
             TxId = txid;
             Miner = miner;
             BlockIndex = blockIndex;
+            LastCommit = lastCommit;
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
@@ -51,6 +53,8 @@ namespace Libplanet.Action
         public Address Miner { get; }
 
         public long BlockIndex { get; }
+
+        public BlockCommit? LastCommit { get; }
 
         public bool Rehearsal { get; }
 
@@ -84,6 +88,7 @@ namespace Libplanet.Action
                 BlockIndex,
                 PreviousStates,
                 _randomSeed,
+                LastCommit,
                 Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,

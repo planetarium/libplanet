@@ -2,7 +2,7 @@ using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public class UndelegationEntry : IEquatable<UndelegationEntry>
     {

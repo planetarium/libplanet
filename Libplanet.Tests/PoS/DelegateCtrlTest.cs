@@ -31,7 +31,11 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(_delegatorAddress, Asset.ConsensusToken * 50);
             Assert.Throws<InvalidCurrencyException>(
                     () => _states = DelegateCtrl.Execute(
-                        _states, _delegatorAddress, _validatorAddress, Asset.ConsensusToken * 30));
+                        _states,
+                        _delegatorAddress,
+                        _validatorAddress,
+                        Asset.ConsensusToken * 30,
+                        1));
         }
 
         [Fact]
@@ -40,7 +44,11 @@ namespace Libplanet.Tests.PoS
             Initialize(500, 500, 100);
             Assert.Throws<NullValidatorException>(
                     () => _states = DelegateCtrl.Execute(
-                        _states, _delegatorAddress, CreateAddress(), Asset.GovernanceToken * 10));
+                        _states,
+                        _delegatorAddress,
+                        CreateAddress(),
+                        Asset.GovernanceToken * 10,
+                        1));
         }
 
         [Fact]
@@ -50,7 +58,11 @@ namespace Libplanet.Tests.PoS
             _states = _states.BurnAsset(_validatorAddress, Asset.ConsensusToken * 100);
             Assert.Throws<InvalidExchangeRateException>(
                 () => _states = DelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.GovernanceToken * 10));
+                    _states,
+                    _delegatorAddress,
+                    _validatorAddress,
+                    Asset.GovernanceToken * 10,
+                    1));
         }
 
         [Theory]
@@ -67,7 +79,8 @@ namespace Libplanet.Tests.PoS
                 _states,
                 _delegatorAddress,
                 _validatorAddress,
-                Asset.GovernanceToken * delegateAmount);
+                Asset.GovernanceToken * delegateAmount,
+                1);
             Assert.Equal(
                 Asset.GovernanceToken * 0,
                 _states.GetBalance(_validatorAddress, Asset.GovernanceToken));
@@ -115,7 +128,8 @@ namespace Libplanet.Tests.PoS
                 _states,
                 _operatorAddress,
                 _operatorPublicKey,
-                Asset.GovernanceToken * selfDelegateAmount);
+                Asset.GovernanceToken * selfDelegateAmount,
+                1);
         }
     }
 }

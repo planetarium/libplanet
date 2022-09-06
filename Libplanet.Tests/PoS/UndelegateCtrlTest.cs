@@ -235,12 +235,14 @@ namespace Libplanet.Tests.PoS
                 _states,
                 _operatorAddress,
                 _operatorPublicKey,
-                Asset.GovernanceToken * selfDelegateAmount);
+                Asset.GovernanceToken * selfDelegateAmount,
+                1);
             _states = DelegateCtrl.Execute(
                 _states,
                 _delegatorAddress,
                 _validatorAddress,
-                Asset.GovernanceToken * delegateAmount);
+                Asset.GovernanceToken * delegateAmount,
+                1);
         }
     }
 }

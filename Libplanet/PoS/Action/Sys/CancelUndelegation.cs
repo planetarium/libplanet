@@ -2,6 +2,7 @@ using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.Action.Sys
 {

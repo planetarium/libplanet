@@ -48,7 +48,8 @@ namespace Libplanet.PoS.Control
             IAccountStateDelta states,
             Address operatorAddress,
             PublicKey operatorPublicKey,
-            FungibleAssetValue governanceToken)
+            FungibleAssetValue governanceToken,
+            long blockHeight)
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
             {
@@ -75,7 +76,8 @@ namespace Libplanet.PoS.Control
                 states,
                 operatorAddress,
                 validator.Address,
-                governanceToken);
+                governanceToken,
+                blockHeight);
 
             // Does not save current instance, since it's done on delegation
             return states;
@@ -109,6 +111,29 @@ namespace Libplanet.PoS.Control
                 .DivRem(validatorConsensusToken.RawValue, out _);
 
             return share;
+        }
+
+        internal static FungibleAssetValue? TokenPortionByShare(
+            IAccountStateDelta states,
+            Address validatorAddress,
+            FungibleAssetValue token,
+            FungibleAssetValue share)
+        {
+            if (!(GetValidator(states, validatorAddress) is { } validator))
+            {
+                throw new NullValidatorException(validatorAddress);
+            }
+
+            if (validator.DelegatorShares.RawValue == 0)
+            {
+                return null;
+            }
+
+            var (tokenPortion, _)
+                = (token * share.RawValue)
+                .DivRem(validator.DelegatorShares.RawValue);
+
+            return tokenPortion;
         }
 
         internal static FungibleAssetValue? ConsensusTokenFromShare(

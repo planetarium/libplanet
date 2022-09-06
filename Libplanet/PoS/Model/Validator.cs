@@ -40,17 +40,13 @@ namespace Libplanet.PoS.Model
         // May be it would be better to be serialized
         public static FungibleAssetValue MinSelfDelegation => Asset.ConsensusToken * 1;
 
-        public static BigInteger CommissionRateNumerator => 1;
+        public static BigInteger CommissionNumer => 1;
 
-        public static BigInteger CommissionRateDenominator => 10;
+        public static BigInteger CommissionDenom => 10;
 
-        public static BigInteger CommissionMaxRateNumerator => 2;
+        public static double CommissionMaxRate => 0.2;
 
-        public static BigInteger CommissionMaxRateDenominator => 10;
-
-        public static BigInteger CommissionMaxChangeRateNumerator => 1;
-
-        public static BigInteger CommissionMaxRateChangeDenominator => 100;
+        public static double CommissionMaxChangeRate => 0.01;
 
         public Address Address { get; set; }
 

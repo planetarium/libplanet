@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.PoS.Model;
 
 namespace Libplanet.PoS.Control
 {
@@ -44,9 +45,9 @@ namespace Libplanet.PoS.Control
 
             FungibleAssetValue consensusToken = states.GetBalance(
                 validatorAddress, Asset.ConsensusToken);
-            ValidatorPower consensusPowerKey
+            ValidatorPower validatorPower
                 = new ValidatorPower(validatorAddress, validator.OperatorPublicKey, consensusToken);
-            validatorPowerIndex.Index.Add(consensusPowerKey);
+            validatorPowerIndex.Index.Add(validatorPower);
             states = states.SetState(validatorPowerIndex.Address, validatorPowerIndex.Serialize());
             return states;
         }

@@ -9,11 +9,11 @@ using Xunit;
 
 namespace Libplanet.Tests.PoS
 {
-    public class ValidatorPowerSetCtrlTest : PoSTest
+    public class ValidatorSetCtrlTest : PoSTest
     {
         private IAccountStateDelta _states;
 
-        public ValidatorPowerSetCtrlTest()
+        public ValidatorSetCtrlTest()
             : base()
         {
             _states = InitializeStates();
@@ -31,7 +31,8 @@ namespace Libplanet.Tests.PoS
                     _states,
                     operatorAddress,
                     operatorPublicKey,
-                    Asset.GovernanceToken * 1);
+                    Asset.GovernanceToken * 1,
+                    1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(operatorAddress));
             }
         }
@@ -51,7 +52,8 @@ namespace Libplanet.Tests.PoS
                     _states,
                     DelegatorAddress,
                     ValidatorAddresses[i],
-                    Asset.GovernanceToken * (i + 1));
+                    Asset.GovernanceToken * (i + 1),
+                    1);
             }
 
             Address validatorAddressA = ValidatorAddresses[3];
@@ -60,19 +62,19 @@ namespace Libplanet.Tests.PoS
                 DelegatorAddress, validatorAddressB);
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressA, Asset.GovernanceToken * 200);
+                _states, DelegatorAddress, validatorAddressA, Asset.GovernanceToken * 200, 1);
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressB, Asset.GovernanceToken * 300);
+                _states, DelegatorAddress, validatorAddressB, Asset.GovernanceToken * 300, 1);
 
-            _states = ValidatorPowerSetCtrl.Update(_states, 1);
+            _states = ValidatorSetCtrl.Update(_states, 1);
 
-            ValidatorPowerSet validatorPowerSet;
-            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.FetchValidatorPowerSet(_states);
+            ValidatorSet bondedSet;
+            (_states, bondedSet) = ValidatorSetCtrl.FetchBondedValidatorSet(_states);
             Assert.Equal(
-                validatorAddressB, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
+                validatorAddressB, bondedSet.Set.ToList()[0].ValidatorAddress);
             Assert.Equal(
-                validatorAddressA, validatorPowerSet.BondedSet.ToList()[1].ValidatorAddress);
+                validatorAddressA, bondedSet.Set.ToList()[1].ValidatorAddress);
             Assert.Equal(
                 Asset.Share * (5 + 1 + 300),
                 _states.GetBalance(delegationAddressB, Asset.Share));
@@ -118,10 +120,10 @@ namespace Libplanet.Tests.PoS
                 * (100000 - (1 + 200) * 100 - 200 - 300),
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
-            _states = ValidatorPowerSetCtrl.Update(_states, 1);
-            (_states, validatorPowerSet) = ValidatorPowerSetCtrl.FetchValidatorPowerSet(_states);
+            _states = ValidatorSetCtrl.Update(_states, 1);
+            (_states, bondedSet) = ValidatorSetCtrl.FetchBondedValidatorSet(_states);
             Assert.Equal(
-                validatorAddressA, validatorPowerSet.BondedSet.ToList()[0].ValidatorAddress);
+                validatorAddressA, bondedSet.Set.ToList()[0].ValidatorAddress);
             Assert.Equal(
                 Asset.GovernanceToken
                 * (100 + (101 + 200) * 50 - 101 - 102 + 204 + 306 - 306 + 102),
@@ -135,7 +137,7 @@ namespace Libplanet.Tests.PoS
                 * (100000 - (1 + 200) * 100 - 200 - 300),
                 _states.GetBalance(DelegatorAddress, Asset.GovernanceToken));
 
-            _states = ValidatorPowerSetCtrl.Update(_states, 50400 * 5);
+            _states = ValidatorSetCtrl.Update(_states, 50400 * 5);
 
             Assert.Equal(
                 Asset.GovernanceToken

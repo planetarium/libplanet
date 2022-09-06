@@ -1,4 +1,4 @@
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Model
 {
     public enum BondingStatus : byte
     {

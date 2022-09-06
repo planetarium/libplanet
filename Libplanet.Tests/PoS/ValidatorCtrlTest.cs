@@ -30,7 +30,7 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress, Asset.ConsensusToken * 50);
             Assert.Throws<InvalidCurrencyException>(
                 () => _states = ValidatorCtrl.Create(
-                    _states, _operatorAddress, _operatorPublicKey, Asset.ConsensusToken * 30));
+                    _states, _operatorAddress, _operatorPublicKey, Asset.ConsensusToken * 30, 1));
         }
 
         [Theory]
@@ -45,7 +45,8 @@ namespace Libplanet.Tests.PoS
                     _states,
                     _operatorAddress,
                     _operatorPublicKey,
-                    Asset.GovernanceToken * selfDelegateAmount));
+                    Asset.GovernanceToken * selfDelegateAmount,
+                    1));
         }
 
         [Theory]
@@ -59,7 +60,8 @@ namespace Libplanet.Tests.PoS
                 _states,
                 _operatorAddress,
                 _operatorPublicKey,
-                Asset.GovernanceToken * selfDelegateAmount);
+                Asset.GovernanceToken * selfDelegateAmount,
+                1);
             Assert.Equal(
                 Asset.ConsensusToken * selfDelegateAmount,
                 _states.GetBalance(_validatorAddress, Asset.ConsensusToken));
