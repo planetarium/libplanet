@@ -1,6 +1,6 @@
 using Libplanet.Action;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Control
 {
     internal static class UnbondingSetCtrl
     {

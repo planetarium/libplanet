@@ -1,8 +1,9 @@
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Crypto;
+using Libplanet.PoS.Model;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Control
 {
     internal static class ValidatorCtrl
     {
