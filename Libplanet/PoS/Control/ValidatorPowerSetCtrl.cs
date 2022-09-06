@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Control
 {
     internal static class ValidatorPowerSetCtrl
     {

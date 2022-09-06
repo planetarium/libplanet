@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Libplanet.Action;
-using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
+using Libplanet.PoS.Control;
+using Libplanet.PoS.Model;
 using Xunit;
 
 namespace Libplanet.Tests.PoS

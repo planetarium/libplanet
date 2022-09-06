@@ -1,4 +1,5 @@
 using Libplanet.Action;
+using Libplanet.PoS.Control;
 
 namespace Libplanet.PoS
 {

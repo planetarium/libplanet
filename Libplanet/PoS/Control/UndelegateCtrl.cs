@@ -3,7 +3,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 
-namespace Libplanet.PoS
+namespace Libplanet.PoS.Control
 {
     internal static class UndelegateCtrl
     {
