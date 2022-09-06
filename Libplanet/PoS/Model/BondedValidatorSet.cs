@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Assets;
+using Libplanet.Crypto;
 
 namespace Libplanet.PoS
 {
@@ -31,7 +33,11 @@ namespace Libplanet.PoS
             }
         }
 
-        public Address Address => ReservedAddress.BondedValidatorSet;
+        public IImmutableList<PublicKey> BondedValidatorsPublicKey =>
+            this.Select(x => x.OperatorPublicKey).ToImmutableList();
+
+        public bool Contains(PublicKey publicKey) =>
+            this.Select(x => x.OperatorPublicKey).Contains(publicKey);
 
         public IValue Serialize()
             => new List(this.Select(x => x.Serialize()));

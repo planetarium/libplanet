@@ -19,7 +19,7 @@ namespace Libplanet.PoS
                 (states, validatorPowerSet) = ValidatorPowerSetCtrl.FetchValidatorPowerSet(states);
                 bondedValidatorSet = new BondedValidatorSet(validatorPowerSet.BondedSet);
                 states = states.SetState(
-                    bondedValidatorSet.Address, bondedValidatorSet.Serialize());
+                    ReservedAddress.BondedValidatorSet, bondedValidatorSet.Serialize());
             }
 
             return (states, bondedValidatorSet);
