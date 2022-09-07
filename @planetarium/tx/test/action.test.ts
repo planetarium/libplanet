@@ -4,7 +4,8 @@ import {
   type Mint,
   type Transfer,
   encodeMint,
-  encodeTransfer
+  encodeTransfer,
+  encodeSystemAction
 } from "../src/action";
 import { Address } from "../src/address";
 import { Currency } from "../src/assets";
@@ -18,6 +19,30 @@ const FOO: Currency = {
   maximumSupply: null,
 };
 const addressA: Address = fromHex("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
+
+test("encodeSystemAction", () => {
+  const mint: Mint = {
+    type: "mint",
+    recipient: addressA,
+    amount: {
+      rawValue: 12500n,
+      currency: FOO,
+    }
+  };
+  expect(encodeSystemAction(mint)).toEqual(encodeMint(mint));
+  expect(encode(encodeSystemAction(mint))).toEqual(encode(encodeMint(mint)));
+  const transfer: Transfer = {
+    type: "transfer",
+    recipient: addressA,
+    amount: {
+      rawValue: 12500n,
+      currency: FOO,
+    }
+  };
+  expect(encodeSystemAction(transfer)).toEqual(encodeTransfer(transfer));
+  expect(encode(encodeSystemAction(transfer)))
+    .toEqual(encode(encodeTransfer(transfer)));
+});
 
 test("encodeMint", () => {
   const mint: Mint = {

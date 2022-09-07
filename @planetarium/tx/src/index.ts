@@ -10,7 +10,9 @@ export {
 } from "./assets";
 export {
   encodeMint,
+  encodeSystemAction,
   encodeTransfer,
   type Mint,
+  type SystemAction,
   type Transfer,
 } from "./action";
