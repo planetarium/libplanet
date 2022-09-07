@@ -103,12 +103,13 @@ namespace Libplanet.Blockchain.Policies
         long GetNextBlockDifficulty(BlockChain<T> blockChain);
 
         /// <summary>
-        /// Gets the maximum length of a <see cref="Block{T}"/> in bytes.
+        /// Gets the maximum length of <see cref="Block{T}.Transactions"/> in bytes.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// for which this constraint should apply.</param>
-        /// <returns>The maximum length of a <see cref="Block{T}"/> in bytes to accept.</returns>
-        long GetMaxBlockBytes(long index);
+        /// <returns>The maximum length of <see cref="Block{T}.Transactions"/> in bytes
+        /// to accept.</returns>
+        long GetMaxTransactionsBytes(long index);
 
         /// <summary>
         /// Gets the minimum number of <see cref="Transaction{T}"/>s allowed for
