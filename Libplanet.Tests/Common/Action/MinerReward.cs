@@ -21,9 +21,9 @@ namespace Libplanet.Tests.Common.Action
         public int Reward { get; private set; }
 
         public IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, Integer>
             {
-                [(Text)"reward"] = (Integer)Reward,
+                ["reward"] = Reward,
             });
 
         public void LoadPlainValue(IValue plainValue)

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -89,7 +88,7 @@ namespace Libplanet.Tests.Tx
             Bencodex.Types.Dictionary dict1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
                 .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
-                .Add(new byte[] { 0x75 }, Enumerable.Empty<IValue>())
+                .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false));
             var meta1 = new TxMetadata(dict1);
@@ -107,12 +106,12 @@ namespace Libplanet.Tests.Tx
                 .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
                 .Add(
                     new byte[] { 0x75 },
-                    (IValue)Bencodex.Types.List.Empty
+                    Bencodex.Types.List.Empty
                         .Add(_key1.ToAddress().ToByteArray())
                         .Add(_key2.ToAddress().ToByteArray()))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
-                .Add(new byte[] { 0x61 }, Enumerable.Empty<IValue>())
+                .Add(new byte[] { 0x61 }, new List())
                 .Add(
                     new byte[] { 0x67 },
                     ByteUtil.ParseHex(
@@ -145,10 +144,10 @@ namespace Libplanet.Tests.Tx
             Bencodex.Types.Dictionary expected1 = Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 123L)
                 .Add(new byte[] { 0x73 }, _key1.ToAddress().ByteArray)
-                .Add(new byte[] { 0x75 }, Enumerable.Empty<IValue>())
+                .Add(new byte[] { 0x75 }, new List())
                 .Add(new byte[] { 0x74 }, "2022-05-23T10:02:00.000000Z")
                 .Add(new byte[] { 0x70 }, _key1.PublicKey.ToImmutableArray(compress: false))
-                .Add(new byte[] { 0x61 }, Enumerable.Empty<IValue>());
+                .Add(new byte[] { 0x61 }, new List());
             AssertBencodexEqual(
                 expected1,
                 meta1.ToBencodex(Array.Empty<IValue>())
@@ -156,7 +155,7 @@ namespace Libplanet.Tests.Tx
 
             IValue[] actions = { new Integer(123), new Integer(456) };
             AssertBencodexEqual(
-                expected1.SetItem(new byte[] { 0x61 }, actions),
+                expected1.SetItem(new byte[] { 0x61 }, new List(actions)),
                 meta1.ToBencodex(actions)
             );
 
@@ -177,12 +176,12 @@ namespace Libplanet.Tests.Tx
                 .Add(new byte[] { 0x73 }, _key2.ToAddress().ByteArray)
                 .Add(
                     new byte[] { 0x75 },
-                    (IValue)Bencodex.Types.List.Empty
+                    Bencodex.Types.List.Empty
                         .Add(_key1.ToAddress().ToByteArray())
                         .Add(_key2.ToAddress().ToByteArray()))
                 .Add(new byte[] { 0x74 }, "2022-01-12T04:56:07.890000Z")
                 .Add(new byte[] { 0x70 }, _key2.PublicKey.ToImmutableArray(compress: false))
-                .Add(new byte[] { 0x61 }, Enumerable.Empty<IValue>())
+                .Add(new byte[] { 0x61 }, new List())
                 .Add(
                     new byte[] { 0x67 },
                     ByteUtil.ParseHex(
@@ -193,7 +192,7 @@ namespace Libplanet.Tests.Tx
             );
 
             AssertBencodexEqual(
-                expected2.SetItem(new byte[] { 0x61 }, actions),
+                expected2.SetItem(new byte[] { 0x61 }, new List(actions)),
                 meta2.ToBencodex(actions)
             );
         }
