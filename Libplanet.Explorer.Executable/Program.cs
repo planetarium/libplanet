@@ -116,14 +116,15 @@ consecutive blocks.")]
 in a block.")]
             int maxTransactionsPerBlock = 100,
             [Option(
-                "max-block-bytes",
-                Description = @"The number of maximum bytes size of blocks except
-for genesis block.")]
-            int maxBlockBytes = 100 * 1024,
+                "max-transactions-bytes",
+                Description = @"The number of maximum bytes size of all transactions in a block
+except for genesis block.")]
+            int maxTransactionsBytes = 100 * 1024,
             [Option(
-                "max-genesis-bytes",
-                Description = "The number of maximum bytes size of the genesis block.")]
-            int maxGenesisBytes = 1024 * 1024,
+                "max-genesis-transactions-bytes",
+                Description = @"The number of maximum bytes size of all transactions
+in the genesis block.")]
+            int maxGenesisTransactionsBytes = 1024 * 1024,
             [Option(
                 "seed",
                 new[] { 's' },
@@ -153,8 +154,8 @@ If omitted (default) explorer only the local blockchain store.")]
                 mysqlPassword,
                 mysqlDatabase,
                 maxTransactionsPerBlock,
-                maxBlockBytes,
-                maxGenesisBytes,
+                maxTransactionsBytes,
+                maxGenesisTransactionsBytes,
                 seedStrings,
                 iceServerUrl,
                 storePath,
@@ -348,7 +349,9 @@ If omitted (default) explorer only the local blockchain store.")]
             return new BlockPolicy<T>(
                 blockAction: null,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
-                getMaxBlockBytes: i => i > 0 ? options.MaxBlockBytes : options.MaxGenesisBytes,
+                getMaxTransactionsBytes: i => i > 0
+                    ? options.MaxTransactionsBytes
+                    : options.MaxGenesisTransactionsBytes,
                 getMaxTransactionsPerBlock: _ => options.MaxTransactionsPerBlock);
         }
 
@@ -400,8 +403,8 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerBlock(index);
 
-            public long GetMaxBlockBytes(long index) =>
-                _impl.GetMaxBlockBytes(index);
+            public long GetMaxTransactionsBytes(long index) =>
+                _impl.GetMaxTransactionsBytes(index);
 
             public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
             {

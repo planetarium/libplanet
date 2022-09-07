@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Common.Action
                     plainValue = plainValue
                         .Add("transfer_from", Transfer.Item1.ByteArray)
                         .Add("transfer_to", Transfer.Item2.ByteArray)
-                        .Add("transfer_amount", (IValue)new Bencodex.Types.Integer(Transfer.Item3));
+                        .Add("transfer_amount", Transfer.Item3);
                 }
 
                 return plainValue;

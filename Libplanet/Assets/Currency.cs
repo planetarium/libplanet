@@ -626,13 +626,13 @@ namespace Libplanet.Assets
 
             var serialized = Dictionary.Empty
                 .Add("ticker", Ticker)
-                .Add("decimals", DecimalPlaces)
+                .Add("decimals", (int)DecimalPlaces)
                 .Add("minters", minters);
 
             if (_maximumSupply is var (major, minor))
             {
-                serialized = serialized.Add("maximumSupplyMajor", (IValue)new Integer(major))
-                    .Add("maximumSupplyMinor", (IValue)new Integer(minor));
+                serialized = serialized.Add("maximumSupplyMajor", new Integer(major))
+                    .Add("maximumSupplyMinor", new Integer(minor));
             }
 
             if (TotalSupplyTrackable)

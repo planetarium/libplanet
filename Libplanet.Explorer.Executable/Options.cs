@@ -29,8 +29,8 @@ namespace Libplanet.Explorer.Executable
             string mysqlPassword,
             string mysqlDatabase,
             int maxTransactionsPerBlock,
-            int maxBlockBytes,
-            int maxGenesisBytes,
+            int maxTransactionsBytes,
+            int maxGenesisTransactionsBytes,
             IEnumerable<string> seedStrings,
             string iceServerUrl,
             string storePath,
@@ -51,8 +51,8 @@ namespace Libplanet.Explorer.Executable
             MySQLPassword = mysqlPassword;
             MySQLDatabase = mysqlDatabase;
             MaxTransactionsPerBlock = maxTransactionsPerBlock;
-            MaxBlockBytes = maxBlockBytes;
-            MaxGenesisBytes = maxGenesisBytes;
+            MaxTransactionsBytes = maxTransactionsBytes;
+            MaxGenesisTransactionsBytes = maxGenesisTransactionsBytes;
             SeedStrings = seedStrings;
             IceServerUrl = iceServerUrl;
             StorePath = storePath;
@@ -86,9 +86,9 @@ namespace Libplanet.Explorer.Executable
 
         public int MaxTransactionsPerBlock { get; set; }
 
-        public int MaxBlockBytes { get; set; }
+        public int MaxTransactionsBytes { get; set; }
 
-        public int MaxGenesisBytes { get; set; }
+        public int MaxGenesisTransactionsBytes { get; set; }
 
         public IEnumerable<string> SeedStrings
         {

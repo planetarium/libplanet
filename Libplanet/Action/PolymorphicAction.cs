@@ -207,17 +207,9 @@ namespace Libplanet.Action
         }
 
         public IValue PlainValue =>
-            new Dictionary(new Dictionary<IKey, IValue>
-            {
-                {
-                    (Text)"type_id",
-                    (Text)ActionTypeAttribute.ValueOf(InnerAction.GetType())
-                },
-                {
-                    (Text)"values",
-                    InnerAction.PlainValue
-                },
-            });
+            Dictionary.Empty
+            .Add("type_id", ActionTypeAttribute.ValueOf(InnerAction.GetType()))
+            .Add("values", InnerAction.PlainValue);
 
         /// <summary>
         /// For convenience, an inner action <typeparamref name="T"/> can be
@@ -233,6 +225,11 @@ namespace Libplanet.Action
         public static implicit operator PolymorphicAction<T>(T innerAction)
         {
             return new PolymorphicAction<T>(innerAction);
+        }
+
+        public string GetInnerActionTypeName()
+        {
+            return $"{_innerAction}";
         }
 
         public void LoadPlainValue(Dictionary plainValue)

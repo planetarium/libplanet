@@ -41,7 +41,7 @@ namespace Libplanet.Action.Sys
         public IValue PlainValue => Bencodex.Types.Dictionary.Empty
             .Add("recipient", Recipient.ByteArray)
             .Add("currency", Amount.Currency.Serialize())
-            .Add("amount", (IValue)new Bencodex.Types.Integer(Amount.RawValue));
+            .Add("amount", new Bencodex.Types.Integer(Amount.RawValue));
 
         /// <inheritdoc cref="IAction.LoadPlainValue(IValue)"/>
         public void LoadPlainValue(IValue plainValue)

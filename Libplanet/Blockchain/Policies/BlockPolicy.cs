@@ -27,7 +27,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>
             _validateNextBlock;
 
-        private readonly Func<long, long> _getMaxBlockBytes;
+        private readonly Func<long, long> _getMaxTransactionsBytes;
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
@@ -55,9 +55,9 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
         /// where block's hash algorithm type, bytes count, and transactions count are validated.
         /// </param>
-        /// <param name="getMaxBlockBytes">The function determining the maximum size of
-        /// a <see cref="Block{T}"/> in number of <c>byte</c>s given
-        /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxBlockBytes"/>.
+        /// <param name="getMaxTransactionsBytes">The function determining the maximum size of
+        /// <see cref="Block{T}.Transactions"/> in number of <c>byte</c>s given
+        /// its <see cref="Block{T}.Index"/>.  Goes to <see cref="GetMaxTransactionsBytes"/>.
         /// Set to a constant size of <c>100</c>KiB, i.e. <c>100 * 1024</c>, by default.</param>
         /// <param name="getMinTransactionsPerBlock">The function determining the minimum number of
         /// <see cref="Transaction{T}"/>s that must be included in a <see cref="Block{T}"/>.
@@ -81,7 +81,7 @@ namespace Libplanet.Blockchain.Policies
                 validateNextBlockTx = null,
             Func<BlockChain<T>, Block<T>, BlockPolicyViolationException?>?
                 validateNextBlock = null,
-            Func<long, long>? getMaxBlockBytes = null,
+            Func<long, long>? getMaxTransactionsBytes = null,
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
@@ -90,7 +90,7 @@ namespace Libplanet.Blockchain.Policies
             BlockAction = blockAction;
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
-            _getMaxBlockBytes = getMaxBlockBytes ?? (_ => 100L * 1024L);
+            _getMaxTransactionsBytes = getMaxTransactionsBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
@@ -105,18 +105,19 @@ namespace Libplanet.Blockchain.Policies
             {
                 _validateNextBlock = (blockchain, block) =>
                 {
-                    long maxBlockBytes = GetMaxBlockBytes(block.Index);
+                    long maxTransactionsBytes = GetMaxTransactionsBytes(block.Index);
                     int minTransactionsPerBlock = GetMinTransactionsPerBlock(block.Index);
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
 
-                    long blockBytes = block.MarshalBlock().EncodingLength;
-                    if (blockBytes > maxBlockBytes)
+                    long blockBytes = BlockMarshaler.MarshalTransactions<T>(block.Transactions)
+                        .EncodingLength;
+                    if (blockBytes > maxTransactionsBytes)
                     {
                         return new InvalidBlockBytesLengthException(
-                            $"The size of block #{block.Index} {block.Hash} is too large " +
-                            $"where the maximum number of bytes allowed is {maxBlockBytes}: " +
+                            $"The size of block #{block.Index} {block.Hash} is too large where " +
+                            $"the maximum number of bytes allowed is {maxTransactionsBytes}: " +
                             $"{blockBytes}.",
                             blockBytes
                         );
@@ -190,7 +191,7 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         [Pure]
-        public long GetMaxBlockBytes(long index) => _getMaxBlockBytes(index);
+        public long GetMaxTransactionsBytes(long index) => _getMaxTransactionsBytes(index);
 
         /// <inheritdoc/>
         [Pure]

@@ -1156,12 +1156,9 @@ namespace Libplanet.Tests.Store
 
             public ImmutableArray<byte> Md5Digest { get; set; }
 
-            public IValue PlainValue =>
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"bytes", new Binary(ArbitraryBytes) },
-                    { (Text)"md5", new Binary(Md5Digest) },
-                });
+            public IValue PlainValue => Bencodex.Types.Dictionary.Empty
+                .Add("bytes", ArbitraryBytes)
+                .Add("md5", Md5Digest);
 
             public void LoadPlainValue(IValue plainValue)
             {
