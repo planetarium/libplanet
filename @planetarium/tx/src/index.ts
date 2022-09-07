@@ -9,6 +9,8 @@ export {
   getSign,
 } from "./assets";
 export {
+  encodeMint,
   encodeTransfer,
+  type Mint,
   type Transfer,
 } from "./action";

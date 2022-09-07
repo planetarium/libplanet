@@ -257,5 +257,3 @@ exports[`getCurrencyHash 4`] = `"da42781871890f1e1b7d6f49c7f2733d3ba7b8bd"`;
 exports[`getCurrencyHash 5`] = `"d7fe111cae5b2503939c9bce864ca3b64d575e8d"`;
 
 exports[`getCurrencyHash 6`] = `"38bd85ea71c09ca7ed82b61fe91bc205101db191"`;
-
-exports[`getSign 1`] = `1`;
