@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: signingKey);
             _blockChainMinTx.StageTransaction(lightTx);
 
-            Func<long, long> getMaxBlockBytes = _blockChain.Policy.GetMaxBlockBytes;
+            Func<long, long> getMaxTransactionsBytes = _blockChain.Policy.GetMaxTransactionsBytes;
             Assert.Equal(1, _blockChain.Count);
             AssertBencodexEqual((Text)$"{GenesisMiner.ToAddress()}", _blockChain.GetState(default));
 
@@ -42,7 +42,8 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block);
             Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Equal(2, _blockChain.Count);
-            Assert.True(block.MarshalBlock().EncodingLength <= getMaxBlockBytes(block.Index));
+            Assert.True(
+                block.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block.Index));
             AssertBencodexEqual(
                 (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()}",
                 _blockChain.GetState(default)
@@ -54,8 +55,8 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
             Assert.Equal(3, _blockChain.Count);
             Assert.True(
-                anotherBlock.MarshalBlock().EncodingLength <= getMaxBlockBytes(anotherBlock.Index)
-            );
+                anotherBlock.MarshalBlock().EncodingLength <=
+                    getMaxTransactionsBytes(anotherBlock.Index));
             AssertBencodexEqual(
                 (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
@@ -64,7 +65,8 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block3 = _blockChain.ProposeBlock(new PrivateKey());
             Assert.False(_blockChain.ContainsBlock(block3.Hash));
             Assert.Equal(3, _blockChain.Count);
-            Assert.True(block3.MarshalBlock().EncodingLength <= getMaxBlockBytes(block3.Index));
+            Assert.True(
+                block3.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block3.Index));
             AssertBencodexEqual(
                 (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
@@ -98,10 +100,11 @@ namespace Libplanet.Tests.Blockchain
                 block4.MarshalBlock().EncodingLength
             );
             _logger.Debug(
-                $"{nameof(getMaxBlockBytes)}({nameof(block4)}.{nameof(block4.Index)}) = {0}",
-                getMaxBlockBytes(block4.Index)
+                $"{nameof(getMaxTransactionsBytes)}({nameof(block4)}.{nameof(block4.Index)}) = {0}",
+                getMaxTransactionsBytes(block4.Index)
             );
-            Assert.True(block4.MarshalBlock().EncodingLength <= getMaxBlockBytes(block4.Index));
+            Assert.True(
+                block4.MarshalBlock().EncodingLength <= getMaxTransactionsBytes(block4.Index));
             Assert.Equal(3, block4.Transactions.Count());
             AssertBencodexEqual(
                 (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
@@ -626,7 +629,7 @@ namespace Libplanet.Tests.Blockchain
         public void GatherTransactionsToPropose()
         {
             // TODO: We test more properties of GatherTransactionsToMine() method:
-            //       - if transactions are cut off if they exceed GetMaxBlockBytes()
+            //       - if transactions are cut off if they exceed GetMaxTransactionsBytes()
             //       - if transactions with already consumed nonces are excluded
             //       - if transactions with greater nonces than unconsumed nonces are excluded
             //       - if transactions are cut off if the process exceeds the timeout (4 sec)
@@ -657,8 +660,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Test if minTransactions and minTransactionsPerSigner work:
             ImmutableList<Transaction<DumbAction>> gathered =
-                _blockChain.GatherTransactionsToPropose(
-                    new BlockMetadata(), 1024 * 1024, 5, 3);
+                _blockChain.GatherTransactionsToPropose(1024 * 1024, 5, 3);
             Assert.Equal(5, gathered.Count);
             var expectedNonces = new Dictionary<Address, long> { [a] = 0, [b] = 0, [c] = 0 };
             foreach (Transaction<DumbAction> tx in gathered)
@@ -677,8 +679,7 @@ namespace Libplanet.Tests.Blockchain
                     int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
                     return rank1.CompareTo(rank2);
                 });
-            gathered = _blockChain.GatherTransactionsToPropose(
-                new BlockMetadata(), 1024 * 1024, 8, 3, txPriority);
+            gathered = _blockChain.GatherTransactionsToPropose(1024 * 1024, 8, 3, txPriority);
             Assert.Equal(
                 txsA.Concat(txsB.Take(3)).Concat(txsC).Select(tx => tx.Id).ToArray(),
                 gathered.Select(tx => tx.Id).ToArray()

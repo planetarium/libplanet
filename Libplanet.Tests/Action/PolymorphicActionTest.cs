@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -24,18 +23,13 @@ namespace Libplanet.Tests.Action
                 }
             );
             Assert.Equal(
-                new Dictionary(new Dictionary<IKey, IValue>
-                {
-                    [(Text)"type_id"] = (Text)"attack",
-                    [(Text)"values"] = new Dictionary(new Dictionary<IKey, IValue>
-                    {
-                        [(Text)"weapon"] = (Text)"frying pan",
-                        [(Text)"target"] = (Text)"mosquito",
-                        [(Text)"target_address"] = new Binary(addr.ByteArray),
-                    }),
-                }),
-                pa.PlainValue
-            );
+                Dictionary.Empty
+                    .Add("type_id", "attack")
+                    .Add("values", Dictionary.Empty
+                        .Add("weapon", "frying pan")
+                        .Add("target", "mosquito")
+                        .Add("target_address", addr.ByteArray)),
+                pa.PlainValue);
         }
 
         [Fact]
@@ -46,17 +40,12 @@ namespace Libplanet.Tests.Action
             var pa = new PolymorphicAction<BaseAction>();
 #pragma warning restore 612
             pa.LoadPlainValue(
-                new Dictionary(new Dictionary<IKey, IValue>
-                {
-                    [(Text)"type_id"] = (Text)"attack",
-                    [(Text)"values"] = new Dictionary(new Dictionary<IKey, IValue>
-                    {
-                        [(Text)"weapon"] = (Text)"frying pan",
-                        [(Text)"target"] = (Text)"mosquito",
-                        [(Text)"target_address"] = new Binary(addr.ByteArray),
-                    }),
-                })
-            );
+                Dictionary.Empty
+                    .Add("type_id", "attack")
+                    .Add("values", Dictionary.Empty
+                        .Add("weapon", "frying pan")
+                        .Add("target", "mosquito")
+                        .Add("target_address", addr.ByteArray)));
 
             Assert.IsType<Attack>(pa.InnerAction);
             Attack a = (Attack)pa.InnerAction;

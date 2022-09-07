@@ -90,7 +90,7 @@ namespace Libplanet.Net.Tests
 
         public static IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
-            getMaxBlockBytes: _ => 50 * 1024);
+            getMaxTransactionsBytes: _ => 50 * 1024);
 
         public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 

@@ -563,20 +563,16 @@ namespace Libplanet.Tests.Tx
                 targetAddress
             );
             Assert.Equal(
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"weapon", (Text)"wand" },
-                    { (Text)"target", (Text)"orc" },
-                    { (Text)"target_address", (Binary)new Address(publicKey).ToByteArray() },
-                }),
+                Bencodex.Types.Dictionary.Empty
+                    .Add("weapon", "wand")
+                    .Add("target", "orc")
+                    .Add("target_address", new Address(publicKey).ByteArray),
                 tx.CustomActions[0].InnerAction.PlainValue
             );
             Assert.IsType<Sleep>(tx.CustomActions[1].InnerAction);
             Assert.Equal(
-                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                {
-                    { (Text)"zone_id", (Integer)10 },
-                }),
+                Bencodex.Types.Dictionary.Empty
+                    .Add("zone_id", 10),
                 tx.CustomActions[1].InnerAction.PlainValue
             );
         }
