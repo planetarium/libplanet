@@ -69,6 +69,21 @@
 <ul>
 <li>Renamed <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code> method's <code>actions</code> parameter to
 <code>customActions</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/pull/2273">#2273</a>]</li>
+<li>Changed <code>IBlockPolicy.GetMaxBlockBytes()</code> to
+<code>IBlockPolicy.GetMaxTransactionBytes()</code>.  Behaviourally, this is now used
+as an upper limit for the encoded size of <code>Block&lt;T&gt;.Transactions</code>
+instead of <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2290">#2290</a>, <a href="https://github.com/planetarium/libplanet/pull/2291">#2291</a>]
+<ul>
+<li>(Libplanet.Explorer) Changed <code>Options.MaxBlockBytes</code> to
+<code>Options.MaxTransactionsBytes</code> and <code>Options.MaxGenesisBytes</code> to
+<code>Options.MaxGenesisTransactionsBytes</code>.</li>
+<li>(Libplanet.Explorer) Changed executable argument <code>max-block-bytes</code>
+to <code>max-transactions-bytes</code> and <code>max-genesis-bytes</code> to
+<code>max-genesis-transactions-bytes</code>.</li>
+<li>All public method parameter names <code>maxBlockBytes</code> changed to
+<code>maxTransactionsBytes</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

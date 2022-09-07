@@ -3324,23 +3324,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DifficultyStability
   nameWithType: BlockPolicy<T>.DifficultyStability
   nameWithType.vb: BlockPolicy(Of T).DifficultyStability
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  name: GetMaxBlockBytes(Int64)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_System_Int64_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxBlockBytes(System.Int64)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
-  nameWithType: BlockPolicy<T>.GetMaxBlockBytes(Int64)
-  nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes(Int64)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes*
-  name: GetMaxBlockBytes
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxBlockBytes_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  name: GetMaxTransactionsBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsBytes(System.Int64)
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsBytes(Int64)
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsBytes*
+  name: GetMaxTransactionsBytes
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsBytes
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxBlockBytes
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxBlockBytes
-  nameWithType: BlockPolicy<T>.GetMaxBlockBytes
-  nameWithType.vb: BlockPolicy(Of T).GetMaxBlockBytes
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetMaxTransactionsBytes
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetMaxTransactionsBytes
+  nameWithType: BlockPolicy<T>.GetMaxTransactionsBytes
+  nameWithType.vb: BlockPolicy(Of T).GetMaxTransactionsBytes
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
   name: GetMaxTransactionsPerBlock(Int64)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
@@ -3591,23 +3591,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).CanonicalChainComparer
   nameWithType: IBlockPolicy<T>.CanonicalChainComparer
   nameWithType.vb: IBlockPolicy(Of T).CanonicalChainComparer
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  name: GetMaxBlockBytes(Int64)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxBlockBytes_System_Int64_
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxBlockBytes(System.Int64)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
-  nameWithType: IBlockPolicy<T>.GetMaxBlockBytes(Int64)
-  nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes(Int64)
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes*
-  name: GetMaxBlockBytes
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxBlockBytes_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  name: GetMaxTransactionsBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsBytes(System.Int64)
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsBytes(Int64)
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes*
+  name: GetMaxTransactionsBytes
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsBytes
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxBlockBytes
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxBlockBytes
-  nameWithType: IBlockPolicy<T>.GetMaxBlockBytes
-  nameWithType.vb: IBlockPolicy(Of T).GetMaxBlockBytes
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetMaxTransactionsBytes
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetMaxTransactionsBytes
+  nameWithType: IBlockPolicy<T>.GetMaxTransactionsBytes
+  nameWithType.vb: IBlockPolicy(Of T).GetMaxTransactionsBytes
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
   name: GetMaxTransactionsPerBlock(Int64)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
@@ -3942,23 +3942,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).CanonicalChainComparer
   nameWithType: NullBlockPolicy<T>.CanonicalChainComparer
   nameWithType.vb: NullBlockPolicy(Of T).CanonicalChainComparer
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  name: GetMaxBlockBytes(Int64)
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxBlockBytes_System_Int64_
-  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes(System.Int64)
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxBlockBytes(System.Int64)
-  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxBlockBytes(System.Int64)
-  nameWithType: NullBlockPolicy<T>.GetMaxBlockBytes(Int64)
-  nameWithType.vb: NullBlockPolicy(Of T).GetMaxBlockBytes(Int64)
-- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes*
-  name: GetMaxBlockBytes
-  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxBlockBytes_
-  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxBlockBytes
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  name: GetMaxTransactionsBytes(Int64)
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsBytes_System_Int64_
+  commentId: M:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsBytes(System.Int64)
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsBytes(System.Int64)
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsBytes(System.Int64)
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsBytes(Int64)
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsBytes(Int64)
+- uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsBytes*
+  name: GetMaxTransactionsBytes
+  href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsBytes_
+  commentId: Overload:Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsBytes
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxBlockBytes
-  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxBlockBytes
-  nameWithType: NullBlockPolicy<T>.GetMaxBlockBytes
-  nameWithType.vb: NullBlockPolicy(Of T).GetMaxBlockBytes
+  fullName: Libplanet.Blockchain.Policies.NullBlockPolicy<T>.GetMaxTransactionsBytes
+  fullName.vb: Libplanet.Blockchain.Policies.NullBlockPolicy(Of T).GetMaxTransactionsBytes
+  nameWithType: NullBlockPolicy<T>.GetMaxTransactionsBytes
+  nameWithType.vb: NullBlockPolicy(Of T).GetMaxTransactionsBytes
 - uid: Libplanet.Blockchain.Policies.NullBlockPolicy`1.GetMaxTransactionsPerBlock(System.Int64)
   name: GetMaxTransactionsPerBlock(Int64)
   href: api/Libplanet.Blockchain.Policies.NullBlockPolicy-1.html#Libplanet_Blockchain_Policies_NullBlockPolicy_1_GetMaxTransactionsPerBlock_System_Int64_
@@ -8109,22 +8109,6 @@ references:
   commentId: T:Libplanet.Blocks.BlockMarshaler
   fullName: Libplanet.Blocks.BlockMarshaler
   nameWithType: BlockMarshaler
-- uid: Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock*
-  name: AppendTxToMarshaledBlock
-  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_AppendTxToMarshaledBlock_
-  commentId: Overload:Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock
-  nameWithType: BlockMarshaler.AppendTxToMarshaledBlock
-- uid: Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock``1(Dictionary,Libplanet.Tx.Transaction{``0})
-  name: AppendTxToMarshaledBlock<T>(Dictionary, Transaction<T>)
-  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_AppendTxToMarshaledBlock__1_Dictionary_Libplanet_Tx_Transaction___0__
-  commentId: M:Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock``1(Dictionary,Libplanet.Tx.Transaction{``0})
-  name.vb: AppendTxToMarshaledBlock(Of T)(Dictionary, Transaction(Of T))
-  fullName: Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock<T>(Dictionary, Libplanet.Tx.Transaction<T>)
-  fullName.vb: Libplanet.Blocks.BlockMarshaler.AppendTxToMarshaledBlock(Of T)(Dictionary, Libplanet.Tx.Transaction(Of T))
-  nameWithType: BlockMarshaler.AppendTxToMarshaledBlock<T>(Dictionary, Transaction<T>)
-  nameWithType.vb: BlockMarshaler.AppendTxToMarshaledBlock(Of T)(Dictionary, Transaction(Of T))
 - uid: Libplanet.Blocks.BlockMarshaler.MarshalBlock(Dictionary,List)
   name: MarshalBlock(Dictionary, List)
   href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalBlock_Dictionary_List_
@@ -8204,6 +8188,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMarshaler.MarshalPreEvaluationBlockHeader
   nameWithType: BlockMarshaler.MarshalPreEvaluationBlockHeader
+- uid: Libplanet.Blocks.BlockMarshaler.MarshalTransaction*
+  name: MarshalTransaction
+  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalTransaction_
+  commentId: Overload:Libplanet.Blocks.BlockMarshaler.MarshalTransaction
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockMarshaler.MarshalTransaction
+  nameWithType: BlockMarshaler.MarshalTransaction
+- uid: Libplanet.Blocks.BlockMarshaler.MarshalTransaction``1(Libplanet.Tx.Transaction{``0})
+  name: MarshalTransaction<T>(Transaction<T>)
+  href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalTransaction__1_Libplanet_Tx_Transaction___0__
+  commentId: M:Libplanet.Blocks.BlockMarshaler.MarshalTransaction``1(Libplanet.Tx.Transaction{``0})
+  name.vb: MarshalTransaction(Of T)(Transaction(Of T))
+  fullName: Libplanet.Blocks.BlockMarshaler.MarshalTransaction<T>(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blocks.BlockMarshaler.MarshalTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
+  nameWithType: BlockMarshaler.MarshalTransaction<T>(Transaction<T>)
+  nameWithType.vb: BlockMarshaler.MarshalTransaction(Of T)(Transaction(Of T))
 - uid: Libplanet.Blocks.BlockMarshaler.MarshalTransactions*
   name: MarshalTransactions
   href: api/Libplanet.Blocks.BlockMarshaler.html#Libplanet_Blocks_BlockMarshaler_MarshalTransactions_
