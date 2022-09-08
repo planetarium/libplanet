@@ -10,9 +10,9 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Copy()
         {
-            AssertBlockContentsEqual(Genesis, Genesis.Copy());
-            AssertBlockContentsEqual(Block1, Block1.Copy());
-            AssertBlockContentsEqual(BlockPv0, BlockPv0.Copy());
+            AssertBlockContentsEqual(GenesisContent, GenesisContent.Copy());
+            AssertBlockContentsEqual(Block1Content, Block1Content.Copy());
+            AssertBlockContentsEqual(GenesisContentPv0, GenesisContentPv0.Copy());
         }
     }
 }
