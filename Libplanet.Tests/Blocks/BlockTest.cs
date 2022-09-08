@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Blocks
             var contents = new BlockContentFixture();
             var random = new System.Random();
             var stateRootHash = random.NextHashDigest<SHA256>();
-            PreEvaluationBlock<Arithmetic> preEval = contents.Genesis.Propose();
+            PreEvaluationBlock<Arithmetic> preEval = contents.GenesisContent.Propose();
             ImmutableArray<byte> sig = preEval.MakeSignature(contents.GenesisKey, stateRootHash);
             var block = new Block<Arithmetic>(preEval, stateRootHash, sig);
             AssertPreEvaluationBlocksEqual(preEval, block);
