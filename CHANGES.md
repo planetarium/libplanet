@@ -53,6 +53,10 @@ To be released.
  -  (Libplanet.Action.Sys) Added `CancelUndelegationAction` class.  [[#2234]]
  -  (Libplanet.Action.Sys) Added `WithdrawValidatorAction` class.  [[#2234]]
  -  (Libplanet.Action.Sys) Added `WithdrawDelegatorAction` class.  [[#2234]]
+ -  (Libplanet.Crypto) Added `PrivateKey.VrfEvaluate()` method. [[#2237]]
+ -  (Libplanet.Crypto) Added `PublicKey.VrfVerify()` method. [[#2237]]
+ -  (Libplanet.Crypto) Added `ICryptoBackend.VrfEvaluate()` method. [[#2237]]
+ -  (Libplanet.Crypto) Added `ICryptoBackend.VrfVerify()` method. [[#2237]]
 
 ### Behavioral changes
 
@@ -111,10 +115,6 @@ To be released.
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
- -  Added `PrivateKey.VrfEvaluate()` method. [[#PBFT]]
- -  Added `PublicKey.VrfVerify()` method. [[#PBFT]]
- -  Added `ICryptoBackend.VrfEvaluate()` method. [[#PBFT]]
- -  Added `ICryptoBackend.VrfVerify()` method. [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
