@@ -24,6 +24,7 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
+using System.Security.Cryptography;
 
 namespace Libplanet.Tests.Action
 {
