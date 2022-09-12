@@ -5,8 +5,8 @@ using Libplanet.Blockchain.Policies;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// An exception thrown when a <see cref="Block{T}"/>'s encoded bytes exceeds
-    /// <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.
+    /// An exception thrown when the encoded bytes of <see cref="Block{T}.Transactions"/> exceeds
+    /// <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.
     /// </summary>
     [Serializable]
     public sealed class InvalidBlockBytesLengthException : BlockPolicyViolationException
@@ -15,8 +15,8 @@ namespace Libplanet.Blocks
         /// Initializes a new instance of <see cref="InvalidBlockBytesLengthException"/> class.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="bytesLength">The actual length of the <see cref="Block{T}"/>'s encoded
-        /// bytes.</param>
+        /// <param name="bytesLength">The actual encoded length of
+        /// <see cref="Block{T}.Transactions"/> as bytes.</param>
         public InvalidBlockBytesLengthException(string message, long bytesLength)
             : base(message)
         {
@@ -30,7 +30,7 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// The actual length of the <see cref="Block{T}"/>'s encoded bytes.
+        /// The actual encoded length of <see cref="Block{T}.Transactions"/> as bytes.
         /// </summary>
         public long BytesLength { get; private set; }
 

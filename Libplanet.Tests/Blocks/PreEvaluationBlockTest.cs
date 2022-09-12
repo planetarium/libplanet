@@ -25,14 +25,14 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void UnsafeConstructor()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
+            BlockContent<Arithmetic> content = _contents.GenesisContent.Copy();
             var preEvalBlock =
                 new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
@@ -42,31 +42,31 @@ namespace Libplanet.Tests.Blocks
                 () => new PreEvaluationBlock<Arithmetic>(content, _invalidBlock1Proof)
             );
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void SafeConstructorWithPreEvaluationHash()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
+            BlockContent<Arithmetic> content = _contents.GenesisContent.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 nonce: _validGenesisProof.Nonce,
@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 nonce: _validBlock1Proof.Nonce,
@@ -98,9 +98,9 @@ namespace Libplanet.Tests.Blocks
 
             // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
             content.Index++;
-            Assert.Equal(_contents.Block1.Index, preEvalBlock.Index);
+            Assert.Equal(_contents.Block1Content.Index, preEvalBlock.Index);
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     content,
@@ -120,7 +120,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public override void SafeConstructorWithoutPreEvaluationHash()
         {
-            BlockContent<Arithmetic> content = _contents.Genesis.Copy();
+            BlockContent<Arithmetic> content = _contents.GenesisContent.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 nonce: _validGenesisProof.Nonce
@@ -129,7 +129,7 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
                 nonce: _validBlock1Proof.Nonce
@@ -140,40 +140,40 @@ namespace Libplanet.Tests.Blocks
 
             // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
             content.Index++;
-            Assert.Equal(_contents.Block1.Index, preEvalBlock.Index);
+            Assert.Equal(_contents.Block1Content.Index, preEvalBlock.Index);
 
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
-                    _contents.Block1,
+                    _contents.Block1Content,
                     nonce: _invalidBlock1Proof.Nonce
                 )
             );
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             content.PreviousHash = null;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.PreviousHash = _contents.GenesisHash;
             Assert.Throws<InvalidBlockPreviousHashException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof.Nonce)
             );
 
-            content = _contents.Block1.Copy();
+            content = _contents.Block1Content.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.Difficulty = 1L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
             );
 
-            content = _contents.Genesis.Copy();
+            content = _contents.GenesisContent.Copy();
             content.TotalDifficulty = 1;
             Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
@@ -186,7 +186,7 @@ namespace Libplanet.Tests.Blocks
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
             // ProtocolVersion < 1 for backward compatibility:
-            BlockContent<Arithmetic> contentPv0 = _contents.Block1.Copy();
+            BlockContent<Arithmetic> contentPv0 = _contents.Block1Content.Copy();
             contentPv0.ProtocolVersion = 0;
             contentPv0.PublicKey = null;
             contentPv0.Timestamp += TimeSpan.FromSeconds(1);
@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             // However, such bug must be fixed after ProtocolVersion > 0:
-            BlockContent<Arithmetic> contentPv1 = _contents.Block1.Copy();
+            BlockContent<Arithmetic> contentPv1 = _contents.Block1Content.Copy();
             contentPv1.PublicKey = null;
             contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
@@ -218,7 +218,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Evaluate()
         {
-            Address address = _contents.Tx0InBlock1.Signer;
+            Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
@@ -229,7 +229,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine();
+                _contents.GenesisContent.Mine();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -255,10 +255,10 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1;
+                BlockContent<Arithmetic> content1 = _contents.Block1Content;
                 content1.PreviousHash = genesis.Hash;
                 content1.Difficulty = 2;
-                content1.Transactions = new[] { _contents.Tx0InBlock1 };
+                content1.Transactions = new[] { _contents.Block1Tx0 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
@@ -277,7 +277,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetermineStateRootHash()
         {
-            Address address = _contents.Tx0InBlock1.Signer;
+            Address address = _contents.Block1Tx0.Signer;
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
@@ -288,7 +288,7 @@ namespace Libplanet.Tests.Blocks
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
-                _contents.Genesis.Mine();
+                _contents.GenesisContent.Mine();
 
             using (var fx = new MemoryStoreFixture())
             {
@@ -315,10 +315,10 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1;
+                BlockContent<Arithmetic> content1 = _contents.Block1Content;
                 content1.PreviousHash = genesis.Hash;
                 content1.Difficulty = 2;
-                content1.Transactions = new[] { _contents.Tx0InBlock1 };
+                content1.Transactions = new[] { _contents.Block1Tx0 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);

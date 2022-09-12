@@ -57,7 +57,7 @@ namespace Libplanet.Blockchain.Policies
                 : null;
         }
 
-        public long GetMaxBlockBytes(long index) => 1024 * 1024;
+        public long GetMaxTransactionsBytes(long index) => 1024 * 1024;
 
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);

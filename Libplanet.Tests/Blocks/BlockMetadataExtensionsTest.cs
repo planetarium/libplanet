@@ -12,8 +12,8 @@ namespace Libplanet.Tests.Blocks
         public void Copy()
         {
             AssertBlockMetadataEqual(GenesisMetadata, GenesisMetadata.Copy());
-            AssertBlockMetadataEqual(BlockMetadata1, BlockMetadata1.Copy());
-            AssertBlockMetadataEqual(BlockMetadataPv0, BlockMetadataPv0.Copy());
+            AssertBlockMetadataEqual(Block1Metadata, Block1Metadata.Copy());
+            AssertBlockMetadataEqual(GenesisMetadataPv0, GenesisMetadataPv0.Copy());
         }
 
         [Fact]

@@ -13,6 +13,18 @@ To be released.
  -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
     IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
     `customActions`.  [[#2151], [#2273]]
+ -  Changed `IBlockPolicy.GetMaxBlockBytes()` to
+    `IBlockPolicy.GetMaxTransactionBytes()`.  Behaviourally, this is now used
+    as an upper limit for the encoded size of `Block<T>.Transactions`
+    instead of `Block<T>`.  [[#2290], [#2291]]
+     -  (Libplanet.Explorer) Changed `Options.MaxBlockBytes` to
+        `Options.MaxTransactionsBytes` and `Options.MaxGenesisBytes` to
+        `Options.MaxGenesisTransactionsBytes`.
+     -  (Libplanet.Explorer) Changed executable argument `max-block-bytes`
+        to `max-transactions-bytes` and `max-genesis-bytes` to
+        `max-genesis-transactions-bytes`.
+     -  All public method parameter names `maxBlockBytes` changed to
+        `maxTransactionsBytes`.
 
 ### Backward-incompatible network protocol changes
 
@@ -24,6 +36,9 @@ To be released.
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2131], [#2236]]
+ -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
+ -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
+    [[#2065], [#2198]]
 
 ### Behavioral changes
 
@@ -38,8 +53,13 @@ To be released.
 
 [#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
+[#1910]: https://github.com/planetarium/libplanet/issues/1910
+[#2065]: https://github.com/planetarium/libplanet/issues/2065
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
+[#2189]: https://github.com/planetarium/libplanet/pull/2189
+[#2290]: https://github.com/planetarium/libplanet/issues/2290
+[#2291]: https://github.com/planetarium/libplanet/pull/2291
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 
 

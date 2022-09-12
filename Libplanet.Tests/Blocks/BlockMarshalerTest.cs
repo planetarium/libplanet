@@ -140,20 +140,22 @@ namespace Libplanet.Tests
                     .Add(TimestampKey, "2021-09-06T04:46:39.123000Z")
                     .Add(DifficultyKey, 0L)
                     .Add(TotalDifficultyKey, 0)
-                    .Add(MinerKey, _content.BlockPv0.Miner.ByteArray),
-                BlockMarshaler.MarshalBlockMetadata(_content.BlockPv0)
+                    .Add(MinerKey, _content.GenesisContentPv0.Miner.ByteArray),
+                BlockMarshaler.MarshalBlockMetadata(_content.GenesisContentPv0)
             );
             AssertBencodexEqual(
                 Dictionary.Empty
                     .Add(ProtocolVersionKey, 1)
                     .Add(IndexKey, 1L)
-                    .Add(PreviousHashKey, _content.BlockPv1.PreviousHash?.ByteArray ?? default)
+                    .Add(
+                        PreviousHashKey,
+                        _content.Block1ContentPv1.PreviousHash?.ByteArray ?? default)
                     .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
                     .Add(DifficultyKey, 123L)
                     .Add(TotalDifficultyKey, 123)
-                    .Add(MinerKey, _content.BlockPv1.Miner.ByteArray)
-                    .Add(TxHashKey, _content.BlockPv1.TxHash?.ByteArray ?? default),
-                BlockMarshaler.MarshalBlockMetadata(_content.BlockPv1)
+                    .Add(MinerKey, _content.Block1ContentPv1.Miner.ByteArray)
+                    .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default),
+                BlockMarshaler.MarshalBlockMetadata(_content.Block1ContentPv1)
             );
         }
 
