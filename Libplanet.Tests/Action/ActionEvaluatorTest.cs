@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -24,7 +25,7 @@ using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
-using System.Security.Cryptography;
+
 
 namespace Libplanet.Tests.Action
 {
