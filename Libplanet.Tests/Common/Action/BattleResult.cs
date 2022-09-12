@@ -43,11 +43,10 @@ namespace Libplanet.Tests.Common.Action
         }
 
         public Bencodex.Types.Dictionary ToBencodex() =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
             {
-                [(Text)"used_weapons"] = new List(
-                    UsedWeapons.Select(x => (IValue)((Text)x))),
-                [(Text)"targets"] = new List(Targets.Select(x => (IValue)((Text)x))),
+                ["used_weapons"] = new List(UsedWeapons),
+                ["targets"] = new List(Targets),
             });
 
         public override bool Equals(object other)

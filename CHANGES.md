@@ -47,6 +47,8 @@ To be released.
 
  -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
     [[#2283]]
+ -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
+    [[#2298]]
 
 ### CLI tools
 
@@ -57,7 +59,9 @@ To be released.
 [#2189]: https://github.com/planetarium/libplanet/pull/2189
 [#2290]: https://github.com/planetarium/libplanet/issues/2290
 [#2291]: https://github.com/planetarium/libplanet/pull/2291
+[#2298]: https://github.com/planetarium/libplanet/pull/2298
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
+[Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
 
 
 Version 0.41.1
