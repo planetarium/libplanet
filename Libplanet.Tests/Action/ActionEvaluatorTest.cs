@@ -26,7 +26,6 @@ using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
-
 namespace Libplanet.Tests.Action
 {
     public class ActionEvaluatorTest
@@ -1124,7 +1123,7 @@ namespace Libplanet.Tests.Action
                 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
             byte[] hashedSignature;
-            using SHA1 hasher = SHA1.Create();
+            SHA1 hasher = SHA1.Create();
             hashedSignature = hasher.ComputeHash(signature);
 
             int seed =
@@ -1158,10 +1157,12 @@ namespace Libplanet.Tests.Action
                 miner: blockA.Miner,
                 signer: txA.Signer,
                 signature: txA.Signature,
-                actions: txA.Actions.ToImmutableArray<IAction>(),
+                actions: txA.CustomActions.ToImmutableArray<IAction>(),
                 rehearsal: true,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
-                blockAction: false).ToArray();
+                blockAction: false,
+                nativeTokenPredicate: _ => true
+            ).ToArray();
             byte[] hashedSignature;
             using (var hasher = SHA1.Create())
             {
