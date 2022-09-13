@@ -64,8 +64,6 @@ To be released.
     [[#PBFT]]
  -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
  -  Added static `PublicKeyGetter` class.  [[#PBFT]]
- -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
- -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -98,6 +96,8 @@ To be released.
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
+ -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
+ -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
  -  `Address(PublicKey)` constructor is changed to
     `Address(IPublicKey)`.  [[#PBFT]]
  -  `AddressExtensions.ToAddress(PublicKey)` is changed to
