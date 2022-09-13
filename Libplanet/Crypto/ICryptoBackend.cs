@@ -23,7 +23,7 @@ namespace Libplanet.Crypto
         /// <returns> Created a signature from <paramref name="messageHash"/> with the corresponding
         /// <paramref name="privateKey"/>.
         /// </returns>
-        byte[] Sign(HashDigest<T> messageHash, PrivateKey privateKey);
+        byte[] Sign(HashDigest<T> messageHash, IPrivateKey privateKey);
 
         /// <summary>
         /// Verifies whether a <paramref name="signature"/> was created from
@@ -38,9 +38,6 @@ namespace Libplanet.Crypto
         /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
         /// <exception cref="Exception">If any exception is thrown, the given
         /// <paramref name="signature"/> is considered as invalid.</exception>
-        bool Verify(
-            HashDigest<T> messageHash,
-            byte[] signature,
-            PublicKey publicKey);
+        bool Verify(HashDigest<T> messageHash, byte[] signature, IPublicKey publicKey);
     }
 }

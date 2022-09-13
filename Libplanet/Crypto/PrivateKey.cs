@@ -39,7 +39,7 @@ namespace Libplanet.Crypto
     /// <para>Every <see cref="PrivateKey"/> object is immutable.</para>
     /// </remarks>
     /// <seealso cref="Libplanet.Crypto.PublicKey"/>
-    public class PrivateKey : IEquatable<PrivateKey>
+    public class PrivateKey : IEquatable<PrivateKey>, IPrivateKey
     {
         private const int KeyByteSize = 32;
         private PublicKey? _publicKey;
@@ -133,6 +133,8 @@ namespace Libplanet.Crypto
             }
         }
 
+        IPublicKey IPrivateKey.PublicKey => PublicKey;
+
         /// <summary>
         /// An encoded <see cref="byte"/> array representation.
         /// </summary>
@@ -152,6 +154,8 @@ namespace Libplanet.Crypto
         /// <seealso cref="PrivateKey(IReadOnlyList{byte})"/>
         [Pure]
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        ImmutableArray<byte> IPrivateKey.KeyBytes => ByteArray;
 
         internal ECPrivateKeyParameters KeyParam { get; }
 

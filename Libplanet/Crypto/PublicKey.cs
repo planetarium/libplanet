@@ -26,7 +26,7 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
-    public class PublicKey : IEquatable<PublicKey>
+    public class PublicKey : IEquatable<PublicKey>, IPublicKey
     {
         /// <summary>
         /// Creates a <see cref="PublicKey"/> instance from the given
@@ -51,6 +51,8 @@ namespace Libplanet.Crypto
         {
             KeyParam = keyParam;
         }
+
+        public ImmutableArray<byte> KeyBytes => Format(false).ToImmutableArray();
 
         internal ECPublicKeyParameters KeyParam { get; }
 

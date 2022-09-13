@@ -29,10 +29,16 @@ To be released.
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
- -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
+ -  Parameter type `PrivateKey privateKey` in
+    `Crypto.ICryptoBackend.Sign(HashDigest<T>, PrivateKey)` is now
+    `IPrivateKey`.  [[#PBFT]]
+ -  Parameter type `PublicKey publicKey` in
+    `Crypto.ICryptoBackend.Verify(HashDigest<T>, byte[], PublicKey)` is
+    now `IPublicKey`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
+ -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
 
@@ -47,6 +53,18 @@ To be released.
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
+ -  Added `Crypto.ConsensusCryptoBackend` class.  [[#PBFT]]
+ -  Added static `BlsCryptoBackend<T> ConsensusCryptoBackend` property to
+    `Crypto.CryptoConfig`.  [[#PBFT]]
+ -  Added `Crypto.IPublicKey` interface.  [[#PBFT]]
+ -  Added `Crypto.IPrivateKey` interface.  [[#PBFT]]
+ -  Added `Crypto.IPrivateKey` inherited `Crypto.BlsPrivateKey` class.
+    [[#PBFT]]
+ -  Added `Crypto.IPublicKey` inherited `Crypto.BlsPublicKey` class.
+    [[#PBFT]]
+ -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
+ -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
+ -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -83,6 +101,13 @@ To be released.
 ### Bug fixes
 
 ### Dependencies
+ -  `Libplanet` is now depends on
+    [*Planetarium.Cryptography.BLS12_381* 0.1.10.1][BLS12_381 0.1.10.1].
+    [[#PBFT]]
+
+
+[BLS12_381 0.1.10.1]:
+https://www.nuget.org/packages/Planetarium.Cryptography.BLS12_381
 
 ### CLI tools
 
