@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.PoS.Model;
@@ -122,6 +123,16 @@ namespace Libplanet.PoS.Control
             }
 
             return states;
+        }
+
+        internal static (IAccountStateDelta, ValidatorPower) SampleProposer(
+            IAccountStateDelta states, IEnumerable<byte> seed)
+        {
+            ValidatorSet bondedValidatorSet;
+            (states, bondedValidatorSet) = FetchBondedValidatorSet(states);
+            ValidatorPower proposer = Sortition.Sample(bondedValidatorSet, seed.ToArray())[0];
+            states = states.SetState(ReservedAddress.Proposer, proposer.Serialize());
+            return (states, proposer);
         }
     }
 }

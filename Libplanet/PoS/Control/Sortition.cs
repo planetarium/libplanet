@@ -23,7 +23,7 @@ namespace Libplanet.PoS.Control
             return threshold;
         }
 
-        internal static ValidatorPower[] Execute(
+        internal static ValidatorPower[] Sample(
             ValidatorSet validatorSet,
             byte[] seedBytes,
             int sampleSize = 1)
@@ -38,15 +38,15 @@ namespace Libplanet.PoS.Control
             Array.Sort(thresholds);
             ValidatorPower[] samples = new ValidatorPower[sampleSize];
             BigInteger cumulative = BigInteger.Zero;
-            int undrawn = 0;
+            int sampled = 0;
 
             foreach (ValidatorPower validatorPower in validatorSet.Set)
             {
-                while (thresholds[undrawn] < cumulative + validatorPower.ConsensusToken.RawValue)
+                while (thresholds[sampled] < cumulative + validatorPower.ConsensusToken.RawValue)
                 {
-                    samples[undrawn] = validatorPower;
-                    undrawn += 1;
-                    if (undrawn == sampleSize)
+                    samples[sampled] = validatorPower;
+                    sampled += 1;
+                    if (sampled == sampleSize)
                     {
                         return samples;
                     }
@@ -55,7 +55,7 @@ namespace Libplanet.PoS.Control
                 cumulative += validatorPower.ConsensusToken.RawValue;
             }
 
-            throw new InsufficientDrawSortitionException(sampleSize, sampleSize - undrawn);
+            throw new InsufficientSampleException(sampleSize, sampleSize - sampled);
         }
     }
 }
