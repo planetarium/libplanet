@@ -106,7 +106,7 @@ namespace Libplanet.Node.Tests
             );
 
             var invalidActionsDict =
-                signedDict.SetItem(TxMetadata.CustomActionsKey, (IValue)new List());
+                signedDict.SetItem(TxMetadata.CustomActionsKey, new List());
             e = Assert.Throws<InvalidTxSignatureException>(
                 () => new UntypedTransaction(invalidActionsDict)
             );

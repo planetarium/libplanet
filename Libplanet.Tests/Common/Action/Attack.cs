@@ -9,11 +9,11 @@ namespace Libplanet.Tests.Common.Action
     public class Attack : BaseAction
     {
         public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
             {
-                [(Text)"weapon"] = (Text)Weapon,
-                [(Text)"target"] = (Text)Target,
-                [(Text)"target_address"] = new Binary(TargetAddress.ByteArray),
+                ["weapon"] = (Text)Weapon,
+                ["target"] = (Text)Target,
+                ["target_address"] = new Binary(TargetAddress.ByteArray),
             });
 
         public string Weapon { get; set; }
