@@ -105,6 +105,13 @@ to <code>max-transactions-bytes</code> and <code>max-genesis-bytes</code> to
 [<a href="https://github.com/planetarium/libplanet/pull/2298">#2298</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0412">Version 0.41.2</h2>
+<p>Released on September 13, 2022.</p>
+<ul>
+<li>Fixed a bug where <code>NetMQTransport</code> is not correctly disposed of due to
+<code>NetMQTransport._router</code> already being stopped in prior to
+<code>_router.Unbind()</code> call in <code>NetMQTransport.Dispose()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2311">#2311</a>]</li>
+</ul>
 <h2 id="version-0411">Version 0.41.1</h2>
 <p>Released on August 31, 2022.</p>
 <ul>
