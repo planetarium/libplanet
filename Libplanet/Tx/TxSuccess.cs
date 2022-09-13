@@ -134,11 +134,11 @@ namespace Libplanet.Tx
             Codec.Encode(
                 new Dictionary(
                     g.Select(kv =>
-                        new KeyValuePair<IKey, IValue>(
-                            (Binary)kv.Key.ByteArray,
+                        new KeyValuePair<Binary, List>(
+                            kv.Key.ByteArray,
                             new List(
                                 kv.Value.Select(fav =>
-                                    (IValue)List.Empty
+                                    List.Empty
                                         .Add(fav.Key.Serialize())
                                         .Add(fav.Value.RawValue)
                                 )
