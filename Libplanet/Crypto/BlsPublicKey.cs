@@ -63,7 +63,16 @@ namespace Libplanet.Crypto
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativePublicKey(this);
         }
 
+        /// <summary>
+        /// A <see cref="byte"/> representation of <see cref="BlsPublicKey"/>.
+        /// </summary>
         public ImmutableArray<byte> KeyBytes => ToImmutableArray();
+
+        /// <summary>
+        /// A compressed <see cref="byte"/> representation of <see cref="BlsPublicKey"/>. Currently,
+        /// it has no compressed format, so the return value will be same as <see cref="KeyBytes"/>.
+        /// </summary>
+        public ImmutableArray<byte> CompressedKeyBytes => ToImmutableArray();
 
         public static bool operator ==(BlsPublicKey left, BlsPublicKey right) =>
             left.Equals(right);
