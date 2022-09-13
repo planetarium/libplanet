@@ -80,8 +80,8 @@ namespace Libplanet.Blocks
 
                 if (Votes is { } votes)
                 {
-                    var bencodexVotes = votes.Select(x => (IValue)(Binary)x.ByteArray);
-                    dict = dict.Add(VotesKey, bencodexVotes);
+                    var bencodexVotes = votes.Select(x => x.ByteArray);
+                    dict = dict.Add(VotesKey, new List(bencodexVotes));
                 }
 
                 return codec.Encode(dict);
