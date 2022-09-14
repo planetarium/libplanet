@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.PoS.Model;
@@ -90,6 +91,7 @@ namespace Libplanet.PoS.Control
 
         internal static IAccountStateDelta Distribute(
            IAccountStateDelta states,
+           IEnumerable<Currency> nativeTokens,
            Address delegationAddress,
            long blockHeight)
         {
@@ -103,28 +105,32 @@ namespace Libplanet.PoS.Control
                 throw new NullValidatorException(delegation.ValidatorAddress);
             }
 
-            FungibleAssetValue delegationRewardSum = ValidatorRewardsCtrl.RewardSumBetween(
-                states,
-                delegation.ValidatorAddress,
-                delegation.LatestDistributeHeight,
-                blockHeight);
-
-            if (!(ValidatorCtrl.TokenPortionByShare(
-                states,
-                delegation.ValidatorAddress,
-                delegationRewardSum,
-                states.GetBalance(delegationAddress, Asset.Share)) is { } reward))
+            foreach (Currency nativeToken in nativeTokens)
             {
-                throw new InvalidExchangeRateException(validator.Address);
+                FungibleAssetValue delegationRewardSum = ValidatorRewardsCtrl.RewardSumBetween(
+                    states,
+                    delegation.ValidatorAddress,
+                    nativeToken,
+                    delegation.LatestDistributeHeight,
+                    blockHeight);
+
+                if (!(ValidatorCtrl.TokenPortionByShare(
+                    states,
+                    delegation.ValidatorAddress,
+                    delegationRewardSum,
+                    states.GetBalance(delegationAddress, Asset.Share)) is { } reward))
+                {
+                    throw new InvalidExchangeRateException(validator.Address);
+                }
+
+                Address validatorRewardAddress
+                    = ValidatorRewards.DeriveAddress(delegation.ValidatorAddress, nativeToken);
+
+                states = states.TransferAsset(
+                    validatorRewardAddress,
+                    AllocateReward.RewardAddress(delegation.DelegatorAddress),
+                    reward);
             }
-
-            Address validatorRewardAddress
-                = ValidatorRewards.DeriveAddress(delegation.ValidatorAddress);
-
-            states = states.TransferAsset(
-                validatorRewardAddress,
-                delegation.DelegatorAddress,
-                reward);
 
             delegation.LatestDistributeHeight = blockHeight;
 

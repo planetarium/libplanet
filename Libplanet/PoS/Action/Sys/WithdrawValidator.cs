@@ -1,6 +1,6 @@
 using Bencodex.Types;
 using Libplanet.Assets;
-using Libplanet.PoS;
+using Libplanet.PoS.Control;
 using Libplanet.PoS.Model;
 
 namespace Libplanet.Action.Sys
@@ -34,9 +34,13 @@ namespace Libplanet.Action.Sys
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            FungibleAssetValue withdrawAmount = states.GetBalance(ctx.Signer, Asset.ConsensusToken);
-            states = states.MintAsset(ctx.Signer, Asset.GovernanceFromConsensus(withdrawAmount));
-            states = states.BurnAsset(ctx.Signer, withdrawAmount);
+            foreach (Currency nativeToken in context.NativeToken)
+            {
+                states = states.TransferAsset(
+                    AllocateReward.RewardAddress(ctx.Signer),
+                    ctx.Signer,
+                    states.GetBalance(ctx.Signer, nativeToken));
+            }
 
             return states;
         }

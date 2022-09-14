@@ -22,9 +22,11 @@ namespace Libplanet.PoS.Control
 
         internal static (IAccountStateDelta, ValidatorRewards) FetchValidatorRewards(
             IAccountStateDelta states,
-            Address validatorAddress)
+            Address validatorAddress,
+            Currency currency)
         {
-            Address validatorRewardsAddress = ValidatorRewards.DeriveAddress(validatorAddress);
+            Address validatorRewardsAddress
+                = ValidatorRewards.DeriveAddress(validatorAddress, currency);
             ValidatorRewards validatorRewards;
             if (states.GetState(validatorRewardsAddress) is { } value)
             {
@@ -32,7 +34,7 @@ namespace Libplanet.PoS.Control
             }
             else
             {
-                validatorRewards = new ValidatorRewards(validatorAddress);
+                validatorRewards = new ValidatorRewards(validatorAddress, currency);
                 states = states.SetState(validatorRewards.Address, validatorRewards.Serialize());
             }
 
@@ -42,11 +44,12 @@ namespace Libplanet.PoS.Control
         internal static ImmutableSortedDictionary<long, FungibleAssetValue> RewardsBetween(
             IAccountStateDelta states,
             Address validatorAddress,
+            Currency currency,
             long minBlockHeight,
             long maxBlockHeight)
         {
             ValidatorRewards validatorRewards;
-            (_, validatorRewards) = FetchValidatorRewards(states, validatorAddress);
+            (_, validatorRewards) = FetchValidatorRewards(states, validatorAddress, currency);
             return validatorRewards.Rewards.Where(
                 kv => minBlockHeight <= kv.Key && kv.Key < maxBlockHeight)
                 .ToImmutableSortedDictionary();
@@ -55,21 +58,24 @@ namespace Libplanet.PoS.Control
         internal static FungibleAssetValue RewardSumBetween(
             IAccountStateDelta states,
             Address validatorAddress,
+            Currency currency,
             long minBlockHeight,
             long maxBlockHeight)
         {
-            return RewardsBetween(states, validatorAddress, minBlockHeight, maxBlockHeight)
-                .Aggregate(Asset.ConsensusToken * 0, (total, next) => total + next.Value);
+            return RewardsBetween(
+                states, validatorAddress, currency, minBlockHeight, maxBlockHeight)
+                .Aggregate(currency * 0, (total, next) => total + next.Value);
         }
 
         internal static IAccountStateDelta Add(
             IAccountStateDelta states,
             Address validatorAddress,
+            Currency currency,
             long blockHeight,
             FungibleAssetValue reward)
         {
             ValidatorRewards validatorRewards;
-            (states, validatorRewards) = FetchValidatorRewards(states, validatorAddress);
+            (states, validatorRewards) = FetchValidatorRewards(states, validatorAddress, currency);
             validatorRewards.Add(blockHeight, reward);
             states = states.SetState(validatorRewards.Address, validatorRewards.Serialize());
             return states;
