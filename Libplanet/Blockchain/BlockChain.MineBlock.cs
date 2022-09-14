@@ -42,6 +42,8 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
+        /// <param name="proof"><see cref="Proof"/> of the proposal.
+        /// </param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
@@ -52,7 +54,8 @@ namespace Libplanet.Blockchain
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
-            BlockCommit? lastCommit = null) =>
+            BlockCommit? lastCommit = null,
+            Proof? proof = null) =>
 #pragma warning disable SA1118
             ProposeBlock(
                 proposer: proposer,
@@ -64,7 +67,8 @@ namespace Libplanet.Blockchain
                 maxTransactionsPerSigner: maxTransactionsPerSigner
                                           ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                 txPriority: txPriority,
-                lastCommit: lastCommit);
+                lastCommit: lastCommit,
+                proof: proof);
 #pragma warning restore SA1118
 
         /// <summary>
@@ -85,6 +89,8 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
+        /// <param name="proof"><see cref="Proof"/> of the proposal.
+        /// </param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while proposing.</exception>
@@ -95,7 +101,8 @@ namespace Libplanet.Blockchain
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
-            BlockCommit? lastCommit = null)
+            BlockCommit? lastCommit = null,
+            Proof? proof = null)
         {
             long index = Count;
             long difficulty = 1L;
@@ -120,6 +127,7 @@ namespace Libplanet.Blockchain
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
                 LastCommit = lastCommit,
+                Proof = proof,
             };
 
             var transactionsToMine = GatherTransactionsToPropose(

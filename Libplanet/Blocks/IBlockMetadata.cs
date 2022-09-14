@@ -57,5 +57,10 @@ namespace Libplanet.Blocks
         /// The <see cref="BlockCommit"/> about previous block's vote information.
         /// </summary>
         BlockCommit? LastCommit { get; }
+
+        /// <summary>
+        /// The <see cref="Proof"/> of the proposer, proposed height and round.
+        /// </summary>
+        Proof? Proof { get; }
     }
 }

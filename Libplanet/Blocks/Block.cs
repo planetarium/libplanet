@@ -119,6 +119,9 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _preEvaluationBlock.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof => _preEvaluationBlock.Proof;
+
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => _preEvaluationBlock.Transactions;
 

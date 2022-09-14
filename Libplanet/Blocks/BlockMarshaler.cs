@@ -38,6 +38,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
+        private static readonly byte[] ProofKey = { 0x52 }; // 'R'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
         {
@@ -69,6 +70,11 @@ namespace Libplanet.Blocks
             if (metadata.LastCommit is { } commit)
             {
                 dict = dict.Add(LastCommitKey, commit.ByteArray);
+            }
+
+            if (metadata.Proof is { } proof)
+            {
+                dict = dict.Add(ProofKey, proof.ByteArray);
             }
 
             return dict;
@@ -198,6 +204,9 @@ namespace Libplanet.Blocks
                 LastCommit = marshaled.ContainsKey(LastCommitKey)
                 ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
                 : (BlockCommit?)null,
+                Proof = marshaled.ContainsKey(ProofKey)
+                ? new Proof(marshaled.GetValue<Binary>(ProofKey).ByteArray.ToArray())
+                : (Proof?)null,
             };
 
             if (marshaled.ContainsKey(PublicKeyKey))

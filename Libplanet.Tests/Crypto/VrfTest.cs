@@ -1,4 +1,5 @@
 using System;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Xunit;
 
@@ -15,10 +16,8 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            (byte[] proof, byte[] result1) = privateKey.VrfEvaluate(message);
-            (bool verified, byte[] result2) = publicKey.VrfVerify(message, proof);
-            Assert.True(verified);
-            Assert.Equal(result1, result2);
+            Proof proof = new Proof(privateKey, message);
+            Assert.True(proof.Verify(publicKey, message));
         }
 
         [Fact]
@@ -32,13 +31,11 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            (byte[] proof1, _) = privateKeyA.VrfEvaluate(message);
-            (bool verified1, _) = publicKeyB.VrfVerify(message, proof1);
-            Assert.False(verified1);
+            Proof proofA = new Proof(privateKeyA, message);
+            Assert.False(proofA.Verify(publicKeyB, message));
 
-            (byte[] proof2, _) = privateKeyB.VrfEvaluate(message);
-            (bool verified2, _) = publicKeyA.VrfVerify(message, proof2);
-            Assert.False(verified2);
+            Proof proofB = new Proof(privateKeyB, message);
+            Assert.False(proofB.Verify(publicKeyA, message));
         }
     }
 }

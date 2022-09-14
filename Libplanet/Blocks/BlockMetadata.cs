@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -167,6 +168,9 @@ namespace Libplanet.Blocks
         }
 
         public BlockCommit? LastCommit { get; set; }
+
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof { get; set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
