@@ -64,6 +64,7 @@ To be released.
     [[#PBFT]]
  -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
  -  Added static `PublicKeyGetter` class.  [[#PBFT]]
+ -  Added `BlockMetadata.PoWProtocolVersion` constant of value 3.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -120,6 +121,15 @@ To be released.
  -  (Libplanet.Net) Parameter type `PrivateKey privateKey` in
     `NetMQMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer,
     DateTimeOffset)` is now `IPrivateKey`.  [[#PBFT]]
+ -  `BlockSet` element getter became not to verify hash for blocks
+    with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
+    [[#PBFT]]
+ -  `Block()` constructor became not to verify hash for blocks
+    with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
+    [[#PBFT]]
+ -  `BlockHeader()` constructor became not to verify hash and signature for
+    blocks with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
+    [[#PBFT]]
 
 ### Bug fixes
 
