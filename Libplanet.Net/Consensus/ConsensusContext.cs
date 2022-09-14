@@ -22,12 +22,12 @@ namespace Libplanet.Net.Consensus
     {
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly List<PublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
+        private List<PublicKey> _validators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
@@ -128,13 +128,14 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The height of new consensus process. this should be increasing
         /// monotonically by 1.
         /// </param>
+        /// <param name="validators">Validators.</param>
         /// <exception cref="InvalidHeightIncreasingException">Thrown if given height is not same as
         /// the index of <see cref="BlockChain{T}.Tip"/> + 1.
         /// </exception>
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
-        public void NewHeight(long height)
+        public void NewHeight(long height, List<PublicKey> validators)
         {
             _newHeightCts?.Cancel();
 
@@ -158,6 +159,7 @@ namespace Libplanet.Net.Consensus
             }
 
             Height = height;
+            _validators = validators;
 
             _logger.Debug("Start consensus for height {Height}.", Height);
 
@@ -255,7 +257,9 @@ namespace Libplanet.Net.Consensus
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
                     if (!_newHeightCts.IsCancellationRequested)
                     {
-                        NewHeight(e.NewTip.Index + 1);
+                        NewHeight(
+                            e.NewTip.Index + 1,
+                            _blockChain.BondedValidatorPubKey());
                     }
                 },
                 _newHeightCts.Token);
