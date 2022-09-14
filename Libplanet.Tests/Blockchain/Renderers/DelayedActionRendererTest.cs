@@ -619,7 +619,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);
-            Assert.Equal(4, renderLogs.Count);
+            Assert.Equal(6, renderLogs.Count);
         }
 
         [Fact]
@@ -719,13 +719,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(chain[1], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]) }, blockLogs);
-            Assert.Equal(2, renderLogs.Count);
+            Assert.Equal(3, renderLogs.Count);
 
             chain.Append(chain.ProposeBlock(key));
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);
-            Assert.Equal(4, renderLogs.Count);
+            Assert.Equal(6, renderLogs.Count);
         }
 
         private IActionContext FakeContext(long blockIndex = 1) =>

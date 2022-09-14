@@ -409,7 +409,7 @@ namespace Libplanet.Tests.Blockchain
             blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
 
             Assert.Equal(2, blockChain.Count);
-            Assert.Empty(renderer.ActionSuccessRecords);
+            Assert.Single(renderer.ActionSuccessRecords);
             Assert.Single(renderer.ActionErrorRecords);
             RenderRecord<ThrowException>.ActionError errorRecord = renderer.ActionErrorRecords[0];
             Assert.Same(action, errorRecord.Action);

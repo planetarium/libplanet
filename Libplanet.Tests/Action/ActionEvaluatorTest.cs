@@ -75,10 +75,11 @@ namespace Libplanet.Tests.Action
                 transactions: txs
             );
             Block<RandomAction> stateRootBlock =
-                noStateRootBlock.Evaluate(GenesisMiner, null, _ => true, stateStore);
+                noStateRootBlock.Evaluate(GenesisMiner, null, null, _ => true, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
+                    policyUpdateValidatorAction: null,
                     blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null,
                     genesisHash: null,
@@ -137,8 +138,9 @@ namespace Libplanet.Tests.Action
                 StateCompleterSet<EvaluateTestAction>.Recalculate);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
-            Assert.Single(evaluations);
-            Assert.Null(evaluations.Single().Exception);
+            Assert.Equal(2, evaluations.Count);
+            Assert.Null(evaluations[0].Exception);
+            Assert.Null(evaluations[1].Exception);
             Assert.Equal(chain.GetState(action.SignerKey), (Text)address.ToHex());
             Assert.Equal(chain.GetState(action.MinerKey), (Text)miner.ToAddress().ToHex());
             var state = chain.GetState(action.BlockIndexKey);
@@ -172,12 +174,12 @@ namespace Libplanet.Tests.Action
                 StateCompleterSet<ThrowException>.Recalculate);
 
             Assert.False(evaluations[0].InputContext.BlockAction);
-            Assert.Single(evaluations);
-            Assert.NotNull(evaluations.Single().Exception);
+            Assert.Equal(2, evaluations.Count);
+            Assert.NotNull(evaluations[0].Exception);
             Assert.IsType<UnexpectedlyTerminatedActionException>(
-                evaluations.Single().Exception);
+                evaluations[0].Exception);
             Assert.IsType<ThrowException.SomeException>(
-                evaluations.Single().Exception.InnerException);
+                evaluations[0].Exception.InnerException);
         }
 
         [Fact]
@@ -283,6 +285,7 @@ namespace Libplanet.Tests.Action
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(TestUtils.GenesisMiner);
             ActionEvaluator<DumbAction> actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
+                policyUpdateValidatorAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: null,
@@ -473,13 +476,13 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
+                (1, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
                 (
-                    1,
+                    0,
                     0,
                     new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
-                    _txFx.Address2
+                    _txFx.Address1
                 ),
             };
             Assert.Equal(expectations.Length, evals.Length);
@@ -573,6 +576,7 @@ namespace Libplanet.Tests.Action
             }.Propose();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
+                policyUpdateValidatorAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
@@ -704,6 +708,7 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
+                policyUpdateValidatorAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,

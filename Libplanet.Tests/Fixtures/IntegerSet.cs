@@ -70,6 +70,7 @@ namespace Libplanet.Tests.Fixtures
             }.Propose().Evaluate(
                 privateKey: Miner,
                 blockAction: policy.BlockAction,
+                updateValidatorSetAction: policy.UpdateValidatorSetAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: StateStore
             );

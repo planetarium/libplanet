@@ -377,6 +377,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PrivateKey miner,
             IReadOnlyList<Transaction<T>> transactions = null,
             DateTimeOffset? timestamp = null,
+            IBlockPolicy<T> policy = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default
         )
@@ -388,7 +389,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 timestamp,
                 protocolVersion
             );
-            return preEval.Sign(miner, stateRootHash);
+            policy = policy ?? new NullBlockPolicy<T>();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            return preEval
+                .Evaluate(
+                    miner,
+                    policy.BlockAction,
+                    policy.UpdateValidatorSetAction,
+                    policy.NativeTokens.Contains,
+                    stateStore);
         }
 
         public static PreEvaluationBlock<T> ProposeNext<T>(
@@ -478,12 +487,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                          preEval,
                          preEval.DetermineStateRootHash(
                              blockAction: policy.BlockAction,
+                             updateValidatorSetAction: policy.UpdateValidatorSetAction,
                              nativeTokenPredicate: policy.NativeTokens.Contains,
                              stateStore: stateStore),
                          signature: null)
                     : preEval.Evaluate(
                          privateKey: GenesisMiner,
                          blockAction: policy.BlockAction,
+                         updateValidatorSetAction: policy.UpdateValidatorSetAction,
                          nativeTokenPredicate: policy.NativeTokens.Contains,
                          stateStore: stateStore);
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -40,6 +41,7 @@ namespace Libplanet.Tests.Blocks
                 Block<Arithmetic> genesis = preEvalGenesis.Evaluate(
                     privateKey: _contents.GenesisKey,
                     blockAction: blockAction,
+                    updateValidatorSetAction: new PoSAction(),
                     nativeTokenPredicate: _ => true,
                     stateStore: fx.StateStore
                 );
@@ -94,6 +96,7 @@ namespace Libplanet.Tests.Blocks
             {
                 HashDigest<SHA256> genesisStateRootHash = preEvalGenesis.DetermineStateRootHash(
                     blockAction: blockAction,
+                    updateValidatorSetAction: new PoSAction(),
                     nativeTokenPredicate: _ => true,
                     stateStore: fx.StateStore
                 );
