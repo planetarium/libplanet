@@ -29,17 +29,21 @@ namespace Libplanet.PoS.Model
 
         public static int MaxBondedSetSize => 100;
 
-        public static Address PreviousBondedAddress => ReservedAddress.BondedValidatorSet;
+        public static Address PreviousBondedAddress => ReservedAddress.PreviousBondedValidatorSet;
 
         public static Address BondedAddress => ReservedAddress.BondedValidatorSet;
 
-        public static Address UnbondedAddress => ReservedAddress.BondedValidatorSet;
+        public static Address UnbondedAddress => ReservedAddress.UnbondedValidatorSet;
+
+        public long Count => _set.Count;
 
         public ImmutableSortedSet<ValidatorPower> Set => _set.ToImmutableSortedSet();
 
         public FungibleAssetValue TotalConsensusToken
             => Set.Aggregate(
                 Asset.ConsensusToken * 0, (total, next) => total + next.ConsensusToken);
+
+        public ValidatorPower this[int index] => _set.ElementAt(index);
 
         public void Add(ValidatorPower validatorPower)
         {
