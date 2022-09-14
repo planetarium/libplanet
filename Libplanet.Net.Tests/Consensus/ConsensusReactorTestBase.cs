@@ -5,8 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action.Sys;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Transports;
@@ -14,6 +17,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using NetMQ;
 using Serilog;
 using Xunit;
@@ -63,6 +67,13 @@ namespace Libplanet.Net.Tests.Consensus
             for (var i = 0; i < Count; i++)
             {
                 _privateKey[i] = new PrivateKey();
+            }
+
+            Block<DumbAction> genesis = TestUtils.CreateDummyGenesisBlockForPoS(
+                GenesisValidatorTransaction(_privateKey.ToList()));
+
+            for (var i = 0; i < Count; i++)
+            {
                 ValidatorPeers.Add(
                     new BoundPeer(
                         _privateKey[i].PublicKey,
@@ -73,7 +84,7 @@ namespace Libplanet.Net.Tests.Consensus
                     new VolatileStagePolicy<DumbAction>(),
                     _stores[i],
                     new TrieStateStore(new MemoryKeyValueStore()),
-                    _fx.GenesisBlock);
+                    genesis);
             }
 
             for (var i = 0; i < Count; i++)
@@ -85,6 +96,32 @@ namespace Libplanet.Net.Tests.Consensus
                     validatorPeers: ValidatorPeers,
                     newHeightDelayMilliseconds: PropagationDelay * 2);
             }
+        }
+
+        public List<Transaction<DumbAction>> GenesisValidatorTransaction(
+            List<PrivateKey> privateKeys)
+        {
+            List<Transaction<DumbAction>> txs = new List<Transaction<DumbAction>>();
+            Currency governance = Currency.Uncapped("GovernanceToken", 18, minters: null);
+            foreach (var privateKey in privateKeys)
+            {
+                txs.Add(Transaction<DumbAction>.Create(
+                    0,
+                    privateKey,
+                    null,
+                    new Mint(
+                        privateKey.ToAddress(),
+                        new FungibleAssetValue(governance, 1000, 0))));
+                txs.Add(Transaction<DumbAction>.Create(
+                    1,
+                    privateKey,
+                    null,
+                    new PromoteValidator(
+                        privateKey.PublicKey,
+                        new FungibleAssetValue(governance, 300, 0))));
+            }
+
+            return txs;
         }
 
         public void Dispose()

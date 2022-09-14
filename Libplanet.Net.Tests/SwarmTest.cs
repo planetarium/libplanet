@@ -1052,26 +1052,6 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock1 = ProposeNextBlock(
-                genesis,
-                keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock2 = ProposeNextBlock(
-                aBlock1,
-                keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> aBlock3 = ProposeNextBlock(
-                aBlock2,
-                keyA,
-                stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> bBlock1 = ProposeNextBlock(
-                genesis,
-                keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash);
-            Block<DumbAction> bBlock2 = ProposeNextBlock(
-                bBlock1,
-                keyB,
-                stateRootHash: MerkleTrie.EmptyRootHash);
 
             policyA.BlockedMiners.Add(keyB.ToAddress());
             policyB.BlockedMiners.Add(keyA.ToAddress());
@@ -1081,7 +1061,11 @@ namespace Libplanet.Net.Tests
             var receiverSwarm = CreateSwarm(keyC, policy: policy, genesis: genesis);
 
             BlockChain<DumbAction> minerChainA = minerSwarmA.BlockChain;
+            Block<DumbAction> aBlock1 = minerChainA.ProposeBlock(keyA);
+
             BlockChain<DumbAction> minerChainB = minerSwarmB.BlockChain;
+            Block<DumbAction> bBlock1 = minerChainB.ProposeBlock(keyB);
+
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             try
@@ -1107,6 +1091,7 @@ namespace Libplanet.Net.Tests
                 minerChainB.Append(bBlock1);
 
                 // Broadcast SwarmB's second block.
+                Block<DumbAction> bBlock2 = minerChainB.ProposeBlock(keyB);
                 minerChainB.Append(bBlock2);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(
@@ -1117,9 +1102,11 @@ namespace Libplanet.Net.Tests
                         $"{nameof(receiverChain)}'s tip being same to " +
                         $"{nameof(minerChainB)}'s tip 2nd"
                 );
+                Block<DumbAction> aBlock2 = minerChainA.ProposeBlock(keyA);
                 minerChainA.Append(aBlock2);
 
                 // Broadcast SwarmA's third block.
+                Block<DumbAction> aBlock3 = minerChainA.ProposeBlock(keyA);
                 minerChainA.Append(aBlock3);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 await AssertThatEventually(

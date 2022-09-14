@@ -16,13 +16,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
     public class ConsensusContextTest : ConsensusContextTestBase
     {
         private static readonly PrivateKey PrivateKeyPeer1 = TestUtils.Peer1Priv;
-        private static readonly List<PublicKey> Validators = new List<PublicKey>()
-            { TestUtils.Peer0Priv.PublicKey, PrivateKeyPeer1.PublicKey, };
 
         private readonly ILogger _logger;
 
         public ConsensusContextTest(ITestOutputHelper output)
-            : base(output, PrivateKeyPeer1, Validators)
+            : base(output, PrivateKeyPeer1, new List<PublicKey>()
+                { TestUtils.Peer0Priv.PublicKey, PrivateKeyPeer1.PublicKey, } )
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -41,11 +40,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
 
             Assert.Throws<InvalidHeightIncreasingException>(
-                () => ConsensusContext.NewHeight(BlockChain.Tip.Index));
+                () => ConsensusContext.NewHeight(BlockChain.Tip.Index, Validators));
             Assert.Throws<InvalidHeightIncreasingException>(
-                () => ConsensusContext.NewHeight(BlockChain.Tip.Index + 2));
+                () => ConsensusContext.NewHeight(BlockChain.Tip.Index + 2, Validators));
 
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1, Validators);
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.EndCommit)
@@ -112,7 +111,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Equal(1, ConsensusContext.Height);
             BlockChain.Append(BlockChain.ProposeBlock(new PrivateKey()));
             Assert.Equal(1, ConsensusContext.Height);
-            await Task.Delay(NewHeightDelay + TimeSpan.FromSeconds(1));
+            await Task.Delay(NewHeightDelay + TimeSpan.FromSeconds(2));
             Assert.Equal(2, ConsensusContext.Height);
         }
 

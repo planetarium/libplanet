@@ -884,6 +884,7 @@ namespace Libplanet.Net.Tests
                     genesisBlock: genesisBlock.Evaluate(
                         privateKey: privateKey,
                         blockAction: policy.BlockAction,
+                        updateValidatorSetAction: policy.UpdateValidatorSetAction,
                         nativeTokenPredicate: policy.NativeTokens.Contains,
                         stateStore: stateStore)
                 );
