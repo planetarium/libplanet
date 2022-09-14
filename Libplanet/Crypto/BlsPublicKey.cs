@@ -43,6 +43,12 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="publicKey">A valid <see cref="byte"/> array that
         /// encodes an BLS public key.</param>
+        /// <exception cref="ArgumentNullException">Thrown if given public key array is empty.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the length of given public key
+        /// is not <see cref="KeyBytes"/>.</exception>
+        /// <exception cref="CryptographicException">Thrown if given public key is invalid.
+        /// </exception>
         public BlsPublicKey(IReadOnlyList<byte> publicKey)
         {
             if (publicKey is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !publicKey.Any())
@@ -63,7 +69,16 @@ namespace Libplanet.Crypto
             _ = CryptoConfig.ConsensusCryptoBackend.ValidateGetNativePublicKey(this);
         }
 
+        /// <summary>
+        /// A <see cref="byte"/> representation of <see cref="BlsPublicKey"/>.
+        /// </summary>
         public ImmutableArray<byte> KeyBytes => ToImmutableArray();
+
+        /// <summary>
+        /// A compressed <see cref="byte"/> representation of <see cref="BlsPublicKey"/>. Currently,
+        /// it has no compressed format, so the return value will be same as <see cref="KeyBytes"/>.
+        /// </summary>
+        public ImmutableArray<byte> CompressedKeyBytes => ToImmutableArray();
 
         public static bool operator ==(BlsPublicKey left, BlsPublicKey right) =>
             left.Equals(right);
@@ -88,6 +103,9 @@ namespace Libplanet.Crypto
         /// <param name="proofOfPossession">A proof of possession derived from
         /// <see cref="BlsPrivateKey"/> of this <see cref="BlsPublicKey"/>.</param>
         /// <returns>Returns the proof of possession of <see cref="BlsPublicKey"/>.</returns>
+        /// <exception cref="CryptographicException">Thrown if given
+        /// <paramref name="proofOfPossession"/> is invalid.
+        /// </exception>
         /// <remarks>The infinite public key (e.g., derived from zero private key) cannot be
         /// validated with Proof of possession of its infinite signature and considered invalid,
         /// the infinite public key also can be filtered with proof of possession.
@@ -135,6 +153,12 @@ namespace Libplanet.Crypto
         /// <returns><c>true</c> if the <paramref name="signature"/> proves authenticity of
         /// the <paramref name="message"/> with the corresponding <see cref="BlsPublicKey"/>.
         /// Otherwise <c>false</c>.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if given <paramref name="message"/> or
+        /// <paramref name="signature"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown if given <paramref name="message"/> or
+        /// <paramref name="signature"/> is empty.</exception>
+        /// <exception cref="CryptographicException">Thrown if given <paramref name="signature"/>
+        /// is invalid.</exception>
         [Pure]
         public bool Verify(IReadOnlyList<byte> message, IReadOnlyList<byte> signature)
         {

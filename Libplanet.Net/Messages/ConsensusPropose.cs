@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -15,7 +16,7 @@ namespace Libplanet.Net.Messages
         /// Initializes a new instance of the <see cref="ConsensusPropose"/> class.
         /// </summary>
         /// <param name="validator">
-        /// A <see cref="PublicKey"/> of the validator whe made this message.</param>
+        /// A <see cref="BlsPublicKey"/> of the validator whe made this message.</param>
         /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
@@ -24,7 +25,7 @@ namespace Libplanet.Net.Messages
         /// <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
         /// </param>
         public ConsensusPropose(
-            PublicKey validator,
+            BlsPublicKey validator,
             long height,
             int round,
             BlockHash blockHash,
@@ -65,7 +66,7 @@ namespace Libplanet.Net.Messages
             {
                 var frames = new List<byte[]>
                 {
-                    Validator.Format(true),
+                    Validator.KeyBytes.ToArray(),
                     BitConverter.GetBytes(Height),
                     BitConverter.GetBytes(Round),
                     BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },

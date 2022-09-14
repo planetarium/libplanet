@@ -17,6 +17,7 @@ namespace Libplanet.Tests.Blocks
 
         public BlockFixture()
         {
+            Validator = TestUtils.DummyValidator;
             Miner = TestUtils.GenesisMiner;
             Genesis = TestUtils.ProposeGenesisBlock<PolymorphicAction<BaseAction>>(
                 protocolVersion: ProtocolVersion,
@@ -29,8 +30,6 @@ namespace Libplanet.Tests.Blocks
                 Genesis,
                 miner: Miner,
                 protocolVersion: ProtocolVersion,
-                stateRootHash: HashDigest<SHA256>.FromString(
-                    "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa"),
                 lastCommit: new BlockCommit(
                     height: Genesis.Index,
                     round: 0,
@@ -42,9 +41,9 @@ namespace Libplanet.Tests.Blocks
                             0,
                             Genesis.Hash,
                             Genesis.Timestamp,
-                            Miner.PublicKey,
+                            Validator.PublicKey,
                             VoteFlag.Commit,
-                            null).Sign(Miner),
+                            null).Sign(Validator),
                     }.ToImmutableArray())
             );
             HasTx = TestUtils.ProposeNextBlock(
@@ -68,9 +67,9 @@ namespace Libplanet.Tests.Blocks
                             0,
                             Next.Hash,
                             Next.Timestamp,
-                            Miner.PublicKey,
+                            Validator.PublicKey,
                             VoteFlag.Commit,
-                            null).Sign(Miner),
+                            null).Sign(Validator),
                     }.ToImmutableArray())
             );
         }
@@ -84,5 +83,7 @@ namespace Libplanet.Tests.Blocks
         internal Block<PolymorphicAction<BaseAction>> Next { get; }
 
         internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
+
+        private BlsPrivateKey Validator { get; }
     }
 }

@@ -24,24 +24,36 @@ namespace Libplanet.Net.Tests
     public static class TestUtils
     {
         public static readonly PrivateKey Peer0Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
+            PrivateKey.FromString(
+                "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550");
+
+        public static readonly BlsPrivateKey Peer0ConsensusPriv =
+            BlsPrivateKey.FromString(
+                "0737a644f11acfda44aba8169125f731827c6fd8306f58ca791e397aea60576d");
 
         public static readonly PrivateKey Peer1Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
+            PrivateKey.FromString(
+                "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef");
+
+        public static readonly BlsPrivateKey Peer1ConsensusPriv =
+            BlsPrivateKey.FromString(
+                "22201e0a87100ad90618463780bbf5c78ac5981e5b300a70e44071ebf15b5e2d");
 
         public static readonly PrivateKey Peer2Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93"));
+            PrivateKey.FromString(
+                "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93");
+
+        public static readonly BlsPrivateKey Peer2ConsensusPriv =
+            BlsPrivateKey.FromString(
+                "3c23ed27989c855dd4d5581a3fdf7a413cdac429b0b0f31edbe0586b62fb4316");
 
         public static readonly PrivateKey Peer3Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"));
+            PrivateKey.FromString(
+                "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a");
+
+        public static readonly BlsPrivateKey Peer3ConsensusPriv =
+            BlsPrivateKey.FromString(
+                "4b8134267722faee98c34c8a440279a30a4e3dbdd8013c6251afa1d2066c9d4c");
 
         public static readonly BoundPeer Peer0 = new BoundPeer(
             Peer0Priv.PublicKey, new DnsEndPoint("1.0.0.0", 1000));
@@ -59,14 +71,6 @@ namespace Libplanet.Net.Tests
             BlockHash.FromString(
                 "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
 
-        public static readonly List<PrivateKey> PrivateKeys = new List<PrivateKey>()
-        {
-            Peer0Priv,
-            Peer1Priv,
-            Peer2Priv,
-            Peer3Priv,
-        };
-
         public static readonly List<BoundPeer> Peers = new List<BoundPeer>()
         {
             Peer0,
@@ -75,12 +79,28 @@ namespace Libplanet.Net.Tests
             Peer3,
         };
 
-        public static readonly List<PublicKey> Validators = new List<PublicKey>()
+        public static readonly List<PrivateKey> PrivateKeys = new List<PrivateKey>()
         {
-            Peer0.PublicKey,
-            Peer1.PublicKey,
-            Peer2.PublicKey,
-            Peer3.PublicKey,
+            Peer0Priv,
+            Peer1Priv,
+            Peer2Priv,
+            Peer3Priv,
+        };
+
+        public static readonly List<BlsPrivateKey> ConsensusPrivateKeys = new List<BlsPrivateKey>()
+        {
+            Peer0ConsensusPriv,
+            Peer1ConsensusPriv,
+            Peer2ConsensusPriv,
+            Peer3ConsensusPriv,
+        };
+
+        public static readonly List<BlsPublicKey> Validators = new List<BlsPublicKey>()
+        {
+            Peer0ConsensusPriv.PublicKey,
+            Peer1ConsensusPriv.PublicKey,
+            Peer2ConsensusPriv.PublicKey,
+            Peer3ConsensusPriv.PublicKey,
         };
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
@@ -95,7 +115,7 @@ namespace Libplanet.Net.Tests
         public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 
         public static Vote CreateVote(
-            PublicKey publicKey,
+            BlsPublicKey publicKey,
             VoteFlag flag = VoteFlag.Null,
             long height = 0,
             int round = 0) =>
@@ -109,7 +129,7 @@ namespace Libplanet.Net.Tests
                 ImmutableArray<byte>.Empty);
 
         public static Vote CreateVote(
-            PrivateKey privateKey,
+            BlsPrivateKey privateKey,
             long height = 0,
             int round = 0,
             BlockHash? hash = null,
@@ -152,7 +172,7 @@ namespace Libplanet.Net.Tests
         public static ITransport CreateNetMQTransport(
             PrivateKey? privateKey = null,
             string host = "localhost",
-            int port = 5000) => NetMQTransport.Create(
+            int port = 5000) => new NetMQTransport(
                 privateKey ?? new PrivateKey(),
                 TestUtils.AppProtocolVersion,
                 null,
@@ -160,11 +180,11 @@ namespace Libplanet.Net.Tests
                 host,
                 port,
                 Array.Empty<IceServer>(),
-                null).ConfigureAwait(false).GetAwaiter().GetResult();
+                null);
 
         public static ConsensusPropose CreateConsensusPropose(
             Block<DumbAction>? block,
-            PrivateKey privateKey,
+            BlsPrivateKey privateKey,
             long height = 1,
             int round = 0,
             int validRound = -1)
@@ -190,20 +210,22 @@ namespace Libplanet.Net.Tests
             string host = "localhost",
             int port = 18192,
             PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null,
+            BlsPrivateKey? consensusPrivateKey = null,
+            List<BlsPublicKey>? validators = null,
             DelegateWatchConsensusMessage? watchConsensusMessage = null)
         {
+            consensusPrivateKey ??= new BlsPrivateKey();
             privateKey ??= new PrivateKey();
             var validatorPeers = new List<BoundPeer>()
             {
-                new BoundPeer(privateKey.PublicKey, new DnsEndPoint(host, port)),
+                new BoundPeer(consensusPrivateKey.PublicKey, new DnsEndPoint(host, port)),
             };
-            validators ??= new List<PublicKey>()
+            validators ??= new List<BlsPublicKey>()
             {
-                privateKey.PublicKey,
+                consensusPrivateKey.PublicKey,
             };
 
-            var exceptList = validators.Except(new[] { privateKey.PublicKey }).ToList();
+            var exceptList = validators.Except(new[] { consensusPrivateKey.PublicKey }).ToList();
 
             foreach (var publicKey in exceptList)
             {
@@ -221,6 +243,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
+                consensusPrivateKey,
                 validators,
                 newHeightDelay: newHeightDelay);
 

@@ -52,7 +52,15 @@ namespace Libplanet.Crypto
             KeyParam = keyParam;
         }
 
+        /// <summary>
+        /// A <see cref="byte"/> representation of <see cref="PublicKey"/>.
+        /// </summary>
         public ImmutableArray<byte> KeyBytes => Format(false).ToImmutableArray();
+
+        /// <summary>
+        /// A compressed <see cref="byte"/> representation of <see cref="PublicKey"/>.
+        /// </summary>
+        public ImmutableArray<byte> CompressedKeyBytes => Format(true).ToImmutableArray();
 
         internal ECPublicKeyParameters KeyParam { get; }
 

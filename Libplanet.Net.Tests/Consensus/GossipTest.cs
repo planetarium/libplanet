@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus
                 await gossip2.WaitForRunningAsync();
                 gossip1.AddMessage(
                     new ConsensusPropose(
-                        new PrivateKey().PublicKey,
+                        new BlsPrivateKey().PublicKey,
                         0,
                         0,
                         TestUtils.BlockHash0,
@@ -137,7 +137,7 @@ namespace Libplanet.Net.Tests.Consensus
                 _ = gossip2.StartAsync(default);
                 await gossip1.WaitForRunningAsync();
                 await gossip2.WaitForRunningAsync();
-                PublicKey key = new PrivateKey().PublicKey;
+                BlsPublicKey key = new BlsPrivateKey().PublicKey;
                 gossip1.AddMessages(
                     new[]
                     {

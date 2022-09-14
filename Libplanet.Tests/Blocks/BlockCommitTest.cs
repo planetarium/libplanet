@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blocks
                                               0,
                                               fx.Hash1,
                                               DateTimeOffset.Now,
-                                              new PrivateKey().PublicKey,
+                                              new BlsPrivateKey().PublicKey,
                                               VoteFlag.Absent,
                                               ImmutableArray<byte>.Empty))
                                           .ToImmutableArray();

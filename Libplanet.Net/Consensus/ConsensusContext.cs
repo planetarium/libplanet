@@ -22,7 +22,8 @@ namespace Libplanet.Net.Consensus
     {
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly List<PublicKey> _validators;
+        private readonly BlsPrivateKey _consensusPrivateKey;
+        private readonly List<BlsPublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Dictionary<long, Context<T>> _contexts;
@@ -41,7 +42,9 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The current height of consensus. this value should be same as the
         /// index of <see cref="BlockChain{T}.Tip"/> + 1.
         /// </param>
-        /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
+        /// <param name="privateKey">A <see cref="PrivateKey"/> for signing a block.
+        /// </param>
+        /// <param name="consensusPrivateKey"> A <see cref="BlsPrivateKey"/> for signing a message.
         /// </param>
         /// <param name="validators">A list of validator's <see cref="PublicKey"/>,
         /// also including self.
@@ -54,12 +57,14 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            BlsPrivateKey consensusPrivateKey,
+            List<BlsPublicKey> validators,
             TimeSpan newHeightDelay)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
+            _consensusPrivateKey = consensusPrivateKey;
             _validators = validators;
             Height = height;
             _newHeightDelay = newHeightDelay;
@@ -168,6 +173,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
+                    _consensusPrivateKey,
                     _validators);
             }
 
@@ -216,6 +222,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
+                    _consensusPrivateKey,
                     _validators);
             }
 
