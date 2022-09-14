@@ -391,6 +391,8 @@ If omitted (default) explorer only the local blockchain store.")]
 
             public IAction BlockAction => _impl.BlockAction;
 
+            public IAction UpdateValidatorSetAction => _impl.UpdateValidatorSetAction;
+
             /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
             public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
 

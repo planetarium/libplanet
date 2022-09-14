@@ -164,6 +164,7 @@ namespace Libplanet.Blockchain
                 .ForContext("CanonicalChainId", Id);
             ActionEvaluator = new ActionEvaluator<T>(
                 Policy.BlockAction,
+                Policy.UpdateValidatorSetAction,
                 blockChainStates: this,
                 trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
                 genesisHash: genesisBlock.Hash,
@@ -369,6 +370,7 @@ namespace Libplanet.Blockchain
             return preEval.Evaluate(
                 privateKey,
                 blockAction,
+                new PoSAction(),
                 nativeTokenPredicate,
                 new TrieStateStore(new DefaultKeyValueStore(null))
             );
