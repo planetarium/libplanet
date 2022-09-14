@@ -1,3 +1,4 @@
+using System.Linq;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.PoS.Control;
@@ -34,7 +35,7 @@ namespace Libplanet.Action.Sys
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            foreach (Currency nativeToken in context.NativeToken)
+            foreach (Currency nativeToken in context.NativeTokens ?? Enumerable.Empty<Currency>())
             {
                 states = states.TransferAsset(
                     AllocateReward.RewardAddress(ctx.Signer),

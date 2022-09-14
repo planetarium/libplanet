@@ -645,7 +645,7 @@ namespace Libplanet.Tests.Blockchain
                     privateKey: GenesisMiner,
                     blockAction: _policy.BlockAction,
                     updateValidatorSetAction: _policy.UpdateValidatorSetAction,
-                    nativeTokenPredicate: _policy.NativeTokens.Contains,
+                    nativeTokens: _policy.NativeTokens,
                     stateStore: stateStore
                 );
                 store.PutBlock(genesis);
@@ -1061,7 +1061,7 @@ namespace Libplanet.Tests.Blockchain
                     GenesisMiner,
                     _policy.BlockAction,
                     _policy.UpdateValidatorSetAction,
-                    _policy.NativeTokens.Contains,
+                    _policy.NativeTokens,
                     fx2.StateStore
                 );
                 var chain2 = new BlockChain<DumbAction>(
@@ -1125,7 +1125,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: GenesisMiner,
                 blockAction: policy.BlockAction,
                 updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
+                nativeTokens: policy.NativeTokens,
                 stateStore: stateStore
             );
             var chain = new BlockChain<DumbAction>(
@@ -1736,7 +1736,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: GenesisMiner,
                 blockAction: blockPolicy.BlockAction,
                 updateValidatorSetAction: blockPolicy.UpdateValidatorSetAction,
-                nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
+                nativeTokens: blockPolicy.NativeTokens,
                 stateStore: stateStore
             );
             var chain = new BlockChain<DumbAction>(
@@ -2031,7 +2031,7 @@ namespace Libplanet.Tests.Blockchain
                 privateKey: GenesisMiner,
                 blockAction: policy.BlockAction,
                 updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
+                nativeTokens: policy.NativeTokens,
                 stateStore: stateStore
             );
 

@@ -54,7 +54,7 @@ namespace Libplanet.Action.Sys
                 Delegation.DeriveAddress(ctx.Signer, Validator),
                 ctx.BlockIndex);
 
-            foreach (Currency nativeToken in context.NativeToken)
+            foreach (Currency nativeToken in context.NativeTokens)
             {
                 states = states.TransferAsset(
                     AllocateReward.RewardAddress(ctx.Signer),

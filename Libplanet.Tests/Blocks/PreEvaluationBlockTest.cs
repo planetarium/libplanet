@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Blocks
                     privateKey: _contents.GenesisKey,
                     blockAction: blockAction,
                     updateValidatorSetAction: new PoSAction(),
-                    nativeTokenPredicate: _ => true,
+                    nativeTokens: null,
                     stateStore: fx.StateStore
                 );
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Blocks
                 HashDigest<SHA256> genesisStateRootHash = preEvalGenesis.DetermineStateRootHash(
                     blockAction: blockAction,
                     updateValidatorSetAction: new PoSAction(),
-                    nativeTokenPredicate: _ => true,
+                    nativeTokens: null,
                     stateStore: fx.StateStore
                 );
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);

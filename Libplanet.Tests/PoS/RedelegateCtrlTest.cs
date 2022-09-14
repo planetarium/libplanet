@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -17,6 +19,7 @@ namespace Libplanet.Tests.PoS
         private readonly Address _srcValidatorAddress;
         private readonly Address _dstValidatorAddress;
         private readonly Address _redelegationAddress;
+        private ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public RedelegateCtrlTest()
@@ -30,6 +33,8 @@ namespace Libplanet.Tests.PoS
             _dstValidatorAddress = Validator.DeriveAddress(_dstOperatorAddress);
             _redelegationAddress = Redelegation.DeriveAddress(
                 _delegatorAddress, _srcValidatorAddress, _dstValidatorAddress);
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
         }
 
@@ -45,6 +50,7 @@ namespace Libplanet.Tests.PoS
                         _srcValidatorAddress,
                         _dstValidatorAddress,
                         Asset.ConsensusToken * 30,
+                        _nativeTokens,
                         1));
             Assert.Throws<InvalidCurrencyException>(
                     () => _states = RedelegateCtrl.Execute(
@@ -53,6 +59,7 @@ namespace Libplanet.Tests.PoS
                         _srcValidatorAddress,
                         _dstValidatorAddress,
                         Asset.GovernanceToken * 30,
+                        _nativeTokens,
                         1));
         }
 
@@ -67,6 +74,7 @@ namespace Libplanet.Tests.PoS
                     CreateAddress(),
                     _dstValidatorAddress,
                     Asset.Share * 10,
+                    _nativeTokens,
                     1));
             Assert.Throws<NullValidatorException>(
                 () => _states = RedelegateCtrl.Execute(
@@ -75,6 +83,7 @@ namespace Libplanet.Tests.PoS
                     _srcValidatorAddress,
                     CreateAddress(),
                     Asset.Share * 10,
+                    _nativeTokens,
                     1));
         }
 
@@ -90,6 +99,7 @@ namespace Libplanet.Tests.PoS
                     _srcValidatorAddress,
                     _dstValidatorAddress,
                     Asset.Share * 1,
+                    _nativeTokens,
                     i);
             }
 
@@ -100,6 +110,7 @@ namespace Libplanet.Tests.PoS
                         _srcValidatorAddress,
                         _dstValidatorAddress,
                         Asset.Share * 1,
+                        _nativeTokens,
                         1));
         }
 
@@ -114,6 +125,7 @@ namespace Libplanet.Tests.PoS
                         _srcValidatorAddress,
                         _dstValidatorAddress,
                         Asset.Share * 101,
+                        _nativeTokens,
                         1));
         }
 
@@ -134,6 +146,7 @@ namespace Libplanet.Tests.PoS
                 _srcValidatorAddress,
                 _dstValidatorAddress,
                 Asset.Share * redelegateAmount,
+                _nativeTokens,
                 1);
             Assert.Single(
                 RedelegateCtrl.GetRedelegation(_states, _redelegationAddress)
@@ -165,6 +178,7 @@ namespace Libplanet.Tests.PoS
                 _srcValidatorAddress,
                 _dstValidatorAddress,
                 Asset.Share * redelegateAmount,
+                _nativeTokens,
                 1);
             Assert.Equal(
                 Asset.GovernanceToken * 0,
@@ -250,18 +264,21 @@ namespace Libplanet.Tests.PoS
                 _srcOperatorAddress,
                 _srcOperatorPublicKey,
                 Asset.GovernanceToken * selfDelegateAmount,
+                _nativeTokens,
                 1);
             _states = ValidatorCtrl.Create(
                 _states,
                 _dstOperatorAddress,
                 _dstOperatorPublicKey,
                 Asset.GovernanceToken * selfDelegateAmount,
+                _nativeTokens,
                 1);
             _states = DelegateCtrl.Execute(
                 _states,
                 _delegatorAddress,
                 _srcValidatorAddress,
                 Asset.GovernanceToken * delegateAmount,
+                _nativeTokens,
                 1);
         }
     }

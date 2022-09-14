@@ -5,6 +5,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
+using ImmutableHashSet = System.Collections.Immutable.ImmutableHashSet;
 using Random = System.Random;
 
 namespace Libplanet.Tests.Action.Sys
@@ -82,7 +83,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousBlockStatesTrie: null,
                 blockAction: false,
                 genesisHash: genesisHash,
-                nativeTokenPredicate: FOO.Equals
+                nativeTokens: ImmutableHashSet.Create(FOO)
             );
             Address recipient = random.NextAddress();
             var transferFoo = new Transfer(recipient, FOO * 125);

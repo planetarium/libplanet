@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.PoS.Model;
@@ -45,6 +45,7 @@ namespace Libplanet.PoS.Control
            Address delegatorAddress,
            Address validatorAddress,
            FungibleAssetValue governanceToken,
+           IImmutableSet<Currency> nativeTokens,
            long blockHeight)
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
@@ -82,6 +83,7 @@ namespace Libplanet.PoS.Control
                 consensusToken,
                 delegation.ValidatorAddress,
                 delegation.Address,
+                nativeTokens,
                 blockHeight);
 
             states = states.SetState(delegation.Address, delegation.Serialize());
@@ -91,7 +93,7 @@ namespace Libplanet.PoS.Control
 
         internal static IAccountStateDelta Distribute(
            IAccountStateDelta states,
-           IEnumerable<Currency> nativeTokens,
+           IImmutableSet<Currency> nativeTokens,
            Address delegationAddress,
            long blockHeight)
         {
@@ -123,13 +125,16 @@ namespace Libplanet.PoS.Control
                     throw new InvalidExchangeRateException(validator.Address);
                 }
 
-                Address validatorRewardAddress
-                    = ValidatorRewards.DeriveAddress(delegation.ValidatorAddress, nativeToken);
+                if (reward.Sign > 0)
+                {
+                    Address validatorRewardAddress
+                        = ValidatorRewards.DeriveAddress(delegation.ValidatorAddress, nativeToken);
 
-                states = states.TransferAsset(
-                    validatorRewardAddress,
-                    AllocateReward.RewardAddress(delegation.DelegatorAddress),
-                    reward);
+                    states = states.TransferAsset(
+                        validatorRewardAddress,
+                        AllocateReward.RewardAddress(delegation.DelegatorAddress),
+                        reward);
+                }
             }
 
             delegation.LatestDistributeHeight = blockHeight;

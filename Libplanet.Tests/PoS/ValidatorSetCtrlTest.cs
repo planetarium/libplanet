@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -11,11 +13,14 @@ namespace Libplanet.Tests.PoS
 {
     public class ValidatorSetCtrlTest : PoSTest
     {
+        private ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public ValidatorSetCtrlTest()
             : base()
         {
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
             OperatorAddresses = new List<Address>();
             ValidatorAddresses = new List<Address>();
@@ -32,6 +37,7 @@ namespace Libplanet.Tests.PoS
                     operatorAddress,
                     operatorPublicKey,
                     Asset.GovernanceToken * 1,
+                    _nativeTokens,
                     1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(operatorAddress));
             }
@@ -53,6 +59,7 @@ namespace Libplanet.Tests.PoS
                     DelegatorAddress,
                     ValidatorAddresses[i],
                     Asset.GovernanceToken * (i + 1),
+                    _nativeTokens,
                     1);
             }
 
@@ -62,10 +69,20 @@ namespace Libplanet.Tests.PoS
                 DelegatorAddress, validatorAddressB);
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressA, Asset.GovernanceToken * 200, 1);
+                _states,
+                DelegatorAddress,
+                validatorAddressA,
+                Asset.GovernanceToken * 200,
+                _nativeTokens,
+                1);
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressB, Asset.GovernanceToken * 300, 1);
+                _states,
+                DelegatorAddress,
+                validatorAddressB,
+                Asset.GovernanceToken * 300,
+                _nativeTokens,
+                1);
 
             _states = ValidatorSetCtrl.Update(_states, 1);
 
@@ -99,6 +116,7 @@ namespace Libplanet.Tests.PoS
                 DelegatorAddress,
                 validatorAddressB,
                 _states.GetBalance(delegationAddressB, Asset.Share),
+                _nativeTokens,
                 2);
 
             Assert.Equal(

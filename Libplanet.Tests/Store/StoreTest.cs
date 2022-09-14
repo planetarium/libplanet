@@ -1026,7 +1026,7 @@ namespace Libplanet.Tests.Store
                             privateKey: GenesisMiner,
                             blockAction: policy.BlockAction,
                             updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                            nativeTokenPredicate: policy.NativeTokens.Contains,
+                            nativeTokens: policy.NativeTokens,
                             stateStore: fx.StateStore)
                 );
 

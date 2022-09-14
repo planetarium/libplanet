@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Consensus;
@@ -12,11 +13,14 @@ namespace Libplanet.Tests.PoS
 {
     public class DistributeTest : PoSTest
     {
+        private readonly ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public DistributeTest()
             : base()
         {
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
             OperatorPrivateKeys = new List<PrivateKey>();
             OperatorPublicKeys = new List<PublicKey>();
@@ -39,6 +43,7 @@ namespace Libplanet.Tests.PoS
                     operatorAddress,
                     operatorPublicKey,
                     Asset.GovernanceToken * 1,
+                    _nativeTokens,
                     1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(operatorAddress));
             }
@@ -64,6 +69,7 @@ namespace Libplanet.Tests.PoS
                     DelegatorAddress,
                     ValidatorAddresses[i],
                     Asset.GovernanceToken * (i + 1),
+                    _nativeTokens,
                     1);
             }
 
@@ -71,10 +77,20 @@ namespace Libplanet.Tests.PoS
             Address validatorAddressB = ValidatorAddresses[5];
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressA, Asset.GovernanceToken * 200, 1);
+                _states,
+                DelegatorAddress,
+                validatorAddressA,
+                Asset.GovernanceToken * 200,
+                _nativeTokens,
+                1);
 
             _states = DelegateCtrl.Execute(
-                _states, DelegatorAddress, validatorAddressB, Asset.GovernanceToken * 300, 1);
+                _states,
+                DelegatorAddress,
+                validatorAddressB,
+                Asset.GovernanceToken * 300,
+                _nativeTokens,
+                1);
 
             _states = ValidatorSetCtrl.Update(_states, 1);
 
@@ -100,7 +116,9 @@ namespace Libplanet.Tests.PoS
                     null).Sign(OperatorPrivateKeys[5]),
             };
             FungibleAssetValue blockReward = Asset.ConsensusToken * 50;
-            _states = AllocateReward.Execute(_states, blockReward, votes, OperatorAddresses[3], 1);
+            _states = _states.MintAsset(ReservedAddress.RewardPool, blockReward);
+            _states = AllocateReward.Execute(
+                _states, _nativeTokens, votes, OperatorAddresses[3], 1);
 
             var (baseProposerReward, _)
                 = (blockReward * AllocateReward.BaseProposerRewardNumer)
@@ -144,33 +162,39 @@ namespace Libplanet.Tests.PoS
 
             Assert.Equal(
                 proposerReward + commissionA,
-                _states.GetBalance(OperatorAddresses[3], Asset.ConsensusToken));
+                _states.GetBalance(
+                    AllocateReward.RewardAddress(OperatorAddresses[3]), Asset.ConsensusToken));
 
             Assert.Equal(
                 commissionB,
-                _states.GetBalance(OperatorAddresses[5], Asset.ConsensusToken));
+                _states.GetBalance(
+                    AllocateReward.RewardAddress(OperatorAddresses[5]), Asset.ConsensusToken));
 
             Address delegationAddressA
                 = Delegation.DeriveAddress(DelegatorAddress, validatorAddressA);
 
             Assert.Equal(
                 Asset.ConsensusToken * 0,
-                _states.GetBalance(DelegatorAddress, Asset.ConsensusToken));
+                _states.GetBalance(
+                    AllocateReward.RewardAddress(DelegatorAddress), Asset.ConsensusToken));
 
             var (delegatorToken, _)
                 = (_states.GetBalance(
-                    ValidatorRewards.DeriveAddress(validatorAddressA), Asset.ConsensusToken)
+                    ValidatorRewards.DeriveAddress(validatorAddressA, Asset.ConsensusToken),
+                    Asset.ConsensusToken)
                 * _states.GetBalance(
-                    Delegation.DeriveAddress(DelegatorAddress, validatorAddressA), Asset.Share)
+                    Delegation.DeriveAddress(DelegatorAddress, validatorAddressA),
+                    Asset.Share)
                 .RawValue)
                 .DivRem(ValidatorCtrl.GetValidator(_states, validatorAddressA)
                 .DelegatorShares.RawValue);
 
-            _states = DelegateCtrl.Distribute(_states, delegationAddressA, 5);
+            _states = DelegateCtrl.Distribute(_states, _nativeTokens, delegationAddressA, 5);
 
             Assert.Equal(
                 delegatorToken,
-                _states.GetBalance(DelegatorAddress, Asset.ConsensusToken));
+                _states.GetBalance(
+                    AllocateReward.RewardAddress(DelegatorAddress), Asset.ConsensusToken));
         }
     }
 }

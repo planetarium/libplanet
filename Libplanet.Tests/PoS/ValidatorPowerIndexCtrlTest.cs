@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -12,6 +14,7 @@ namespace Libplanet.Tests.PoS
 {
     public class ValidatorPowerIndexCtrlTest : PoSTest
     {
+        private readonly ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public ValidatorPowerIndexCtrlTest()
@@ -28,6 +31,9 @@ namespace Libplanet.Tests.PoS
             List<Address> operatorAddresses = operatorPublicKeys.Select(
                 pubKey => pubKey.ToAddress()).ToList();
 
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
+
             _states = InitializeStates();
             ValidatorAddresses = new List<Address>();
 
@@ -36,7 +42,7 @@ namespace Libplanet.Tests.PoS
             {
                 _states = _states.MintAsset(addr, Asset.GovernanceToken * 100);
                 _states = ValidatorCtrl.Create(
-                    _states, addr, key, Asset.GovernanceToken * 10, 1);
+                    _states, addr, key, Asset.GovernanceToken * 10, _nativeTokens, 1);
                 ValidatorAddresses.Add(Validator.DeriveAddress(addr));
             }
         }

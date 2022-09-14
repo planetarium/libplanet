@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -12,6 +14,7 @@ namespace Libplanet.Tests.PoS
         private readonly PublicKey _operatorPublicKey;
         private readonly Address _operatorAddress;
         private readonly Address _validatorAddress;
+        private readonly ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public ValidatorCtrlTest()
@@ -20,6 +23,8 @@ namespace Libplanet.Tests.PoS
             _operatorPublicKey = new PrivateKey().PublicKey;
             _operatorAddress = _operatorPublicKey.ToAddress();
             _validatorAddress = Validator.DeriveAddress(_operatorAddress);
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
         }
 
@@ -30,7 +35,12 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress, Asset.ConsensusToken * 50);
             Assert.Throws<InvalidCurrencyException>(
                 () => _states = ValidatorCtrl.Create(
-                    _states, _operatorAddress, _operatorPublicKey, Asset.ConsensusToken * 30, 1));
+                    _states,
+                    _operatorAddress,
+                    _operatorPublicKey,
+                    Asset.ConsensusToken * 30,
+                    _nativeTokens,
+                    1));
         }
 
         [Theory]
@@ -46,6 +56,7 @@ namespace Libplanet.Tests.PoS
                     _operatorAddress,
                     _operatorPublicKey,
                     Asset.GovernanceToken * selfDelegateAmount,
+                    _nativeTokens,
                     1));
         }
 
@@ -61,6 +72,7 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress,
                 _operatorPublicKey,
                 Asset.GovernanceToken * selfDelegateAmount,
+                _nativeTokens,
                 1);
             Assert.Equal(
                 Asset.ConsensusToken * selfDelegateAmount,

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.PoS.Model;
@@ -11,6 +12,7 @@ namespace Libplanet.PoS.Control
             FungibleAssetValue consensusToken,
             Address validatorAddress,
             Address delegationAddress,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             // TODO: Failure condition
@@ -53,7 +55,7 @@ namespace Libplanet.PoS.Control
 
             foreach (Address addrs in validatorDelegationSet.Set)
             {
-                states = DelegateCtrl.Distribute(states, addrs, blockHeight);
+                states = DelegateCtrl.Distribute(states, nativeTokens, addrs, blockHeight);
             }
 
             return (states, issuedShare);
@@ -64,6 +66,7 @@ namespace Libplanet.PoS.Control
             FungibleAssetValue share,
             Address validatorAddress,
             Address delegationAddress,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             // Currency check
@@ -127,7 +130,7 @@ namespace Libplanet.PoS.Control
 
             foreach (Address addrs in validatorDelegationSet.Set)
             {
-                states = DelegateCtrl.Distribute(states, addrs, blockHeight);
+                states = DelegateCtrl.Distribute(states, nativeTokens, addrs, blockHeight);
             }
 
             return (states, unbondingConsensusToken);

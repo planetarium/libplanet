@@ -47,10 +47,16 @@ namespace Libplanet.PoS.Control
                 states = DistributeValidatorReward(
                     states, nativeToken, bondedValidatorSet, votes, blockIndex);
 
-                states = states.TransferAsset(
-                    ReservedAddress.RewardPool,
-                    ReservedAddress.CommunityPool,
-                    states.GetBalance(ReservedAddress.RewardPool, nativeToken));
+                FungibleAssetValue communityFund = states.GetBalance(
+                    ReservedAddress.RewardPool, nativeToken);
+
+                if (communityFund.Sign > 0)
+                {
+                    states = states.TransferAsset(
+                        ReservedAddress.RewardPool,
+                        ReservedAddress.CommunityPool,
+                        states.GetBalance(ReservedAddress.RewardPool, nativeToken));
+                }
             }
 
             return states;
@@ -63,6 +69,14 @@ namespace Libplanet.PoS.Control
             ValidatorSet bondedValidatorSet,
             IEnumerable<Vote> votes)
         {
+            FungibleAssetValue blockReward = states.GetBalance(
+                ReservedAddress.RewardPool, nativeToken);
+
+            if (blockReward.Sign <= 0)
+            {
+                return states;
+            }
+
             ImmutableDictionary<PublicKey, ValidatorPower> bondedValidatorDict
                 = bondedValidatorSet.Set.ToImmutableDictionary(
                     bondedValidator => bondedValidator.OperatorPublicKey);
@@ -74,9 +88,6 @@ namespace Libplanet.PoS.Control
 
             FungibleAssetValue votePowerDenom
                 = bondedValidatorSet.TotalConsensusToken;
-
-            FungibleAssetValue blockReward = states.GetBalance(
-                ReservedAddress.RewardPool, nativeToken);
 
             var (baseProposerReward, _)
                 = (blockReward * BaseProposerRewardNumer).DivRem(BaseProposerRewardDenom);
@@ -98,12 +109,17 @@ namespace Libplanet.PoS.Control
             IEnumerable<Vote> votes,
             long blockHeight)
         {
+            FungibleAssetValue validatorRewardSum = states.GetBalance(
+                ReservedAddress.RewardPool, nativeToken);
+
+            if (validatorRewardSum.Sign <= 0)
+            {
+                return states;
+            }
+
             ImmutableDictionary<PublicKey, ValidatorPower> bondedValidatorDict
                 = bondedValidatorSet.Set.ToImmutableDictionary(
                     bondedValidator => bondedValidator.OperatorPublicKey);
-
-            FungibleAssetValue validatorRewardSum = states.GetBalance(
-                ReservedAddress.RewardPool, nativeToken);
 
             foreach (Vote vote in votes)
             {

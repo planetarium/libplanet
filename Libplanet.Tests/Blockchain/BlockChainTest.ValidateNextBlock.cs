@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Blockchain
                 TestUtils.GenesisMiner,
                 policy.BlockAction,
                 policy.UpdateValidatorSetAction,
-                policy.NativeTokens.Contains,
+                policy.NativeTokens,
                 stateStore
             );
             store.PutBlock(genesisBlock);

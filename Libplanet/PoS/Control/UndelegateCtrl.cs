@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -46,6 +47,7 @@ namespace Libplanet.PoS.Control
             Address delegatorAddress,
             Address validatorAddress,
             FungibleAssetValue share,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             // TODO: Failure condition
@@ -83,6 +85,7 @@ namespace Libplanet.PoS.Control
                 share,
                 undelegation.ValidatorAddress,
                 undelegation.DelegationAddress,
+                nativeTokens,
                 blockHeight);
 
             // Governance token pool transfer
@@ -118,6 +121,7 @@ namespace Libplanet.PoS.Control
             IAccountStateDelta states,
             Address undelegationAddress,
             FungibleAssetValue cancelledConsensusToken,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             // Currency check
@@ -204,6 +208,7 @@ namespace Libplanet.PoS.Control
                 cancelledConsensusToken,
                 undelegation.ValidatorAddress,
                 undelegation.DelegationAddress,
+                nativeTokens,
                 blockHeight);
 
             if (validator.Status == BondingStatus.Bonded)

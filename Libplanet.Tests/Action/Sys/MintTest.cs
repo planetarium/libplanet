@@ -5,6 +5,7 @@ using Libplanet.Assets;
 using Libplanet.Blocks;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
+using ImmutableHashSet = System.Collections.Immutable.ImmutableHashSet;
 using Random = System.Random;
 
 namespace Libplanet.Tests.Action.Sys
@@ -83,7 +84,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousBlockStatesTrie: null,
                 blockAction: false,
                 genesisHash: genesisHash,
-                nativeTokenPredicate: c => c.Equals(FOO) || c.Equals(bazCurrency)
+                nativeTokens: ImmutableHashSet.Create(FOO, bazCurrency)
             );
             Address recipient = random.NextAddress();
             var mintFoo = new Mint(recipient, FOO * 123456);

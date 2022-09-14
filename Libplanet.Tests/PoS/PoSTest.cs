@@ -1,10 +1,6 @@
-using System.Collections.Immutable;
-using System.Numerics;
-using Bencodex.Types;
 using Libplanet.Action;
-using Libplanet.Action.Sys;
-using Libplanet.Assets;
 using Libplanet.Crypto;
+using Libplanet.Tests.Common.Action;
 
 namespace Libplanet.Tests.PoS
 {
@@ -12,11 +8,11 @@ namespace Libplanet.Tests.PoS
     {
         protected static IAccountStateDelta InitializeStates()
         {
-            IImmutableDictionary<Address, IValue> states
-                = ImmutableDictionary<Address, IValue>.Empty;
-            IImmutableDictionary<(Address, Currency), BigInteger> balances
-                = ImmutableDictionary<(Address, Currency), BigInteger>.Empty;
-            return new SystemAction.AccountStateDelta(states, balances);
+            return new AccountStateDeltaImpl(
+                        ActionEvaluator<DumbAction>.NullAccountStateGetter,
+                        ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
+                        ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                        CreateAddress());
         }
 
         protected static Address CreateAddress()
