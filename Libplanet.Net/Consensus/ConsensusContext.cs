@@ -34,6 +34,7 @@ namespace Libplanet.Net.Consensus
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
+        private List<PublicKey> _validators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
@@ -171,14 +172,14 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The height of new consensus process. this should be increasing
         /// monotonically by 1.
         /// </param>
-        /// <exception cref="InvalidHeightIncreasingException">Thrown if given
-        /// <paramref name="height"/> is not the same as the index of
-        /// <see cref="BlockChain{T}.Tip"/> + 1, or a context corresponding to
-        /// <paramref name="height"/> is already running.</exception>
+        /// <param name="validators">Validators.</param>
+        /// <exception cref="InvalidHeightIncreasingException">Thrown if given height is not same as
+        /// the index of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// </exception>
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
-        public void NewHeight(long height)
+        public void NewHeight(long height, List<PublicKey> validators)
         {
             lock (_newHeightLock)
             {
@@ -230,10 +231,8 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                RemoveOldContexts(height);
-                ClearOldBlockCommitCache(maxSize: BlockCommitClearThreshold);
-
-                Height = height;
+            Height = height;
+            _validators = validators;
 
                 _logger.Debug("Start consensus for height #{Height}.", Height);
 
@@ -353,25 +352,9 @@ namespace Libplanet.Net.Consensus
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
                     if (!_newHeightCts.IsCancellationRequested)
                     {
-                        try
-                        {
-                            NewHeight(e.NewTip.Index + 1);
-                        }
-                        catch (Exception exc)
-                        {
-                            _logger.Error(
-                                exc,
-                                "Unexpected exception occurred during {FName}()",
-                                nameof(NewHeight));
-                        }
-                    }
-                    else
-                    {
-                        _logger.Error(
-                            "Did not invoke {FName}() for height " +
-                            "#{Height} because cancellation is requested",
-                            nameof(NewHeight),
-                            e.NewTip.Index + 1);
+                        NewHeight(
+                            e.NewTip.Index + 1,
+                            _blockChain.BondedValidatorPubKey());
                     }
                 },
                 _newHeightCts.Token);
