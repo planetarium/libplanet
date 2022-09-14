@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -27,6 +26,12 @@ namespace Libplanet.Blockchain.Policies
         /// An <see cref="IAction"/> to execute and be rendered for every block, if any.
         /// </summary>
         IAction? BlockAction { get; }
+
+        /// <summary>
+        /// An <see cref="IAction"/> to execute and be rendered for every block ended.
+        /// Define the action to update the validator set.
+        /// </summary>
+        IAction UpdateValidatorSetAction { get; }
 
         /// <summary>
         /// A fixed set of <see cref="Currency"/> objects that are supported by the blockchain
@@ -124,14 +129,5 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
-
-        /// <summary>
-        /// Gets the <see cref="ValidatorSet"/> for given <paramref name="index"/>.
-        /// </summary>
-        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
-        /// for which this constraint should apply.</param>
-        /// <returns>The <see cref="ValidatorSet"/> for given <paramref name="index"/>.</returns>
-        [Pure]
-        ValidatorSet GetValidatorSet(long index);
     }
 }

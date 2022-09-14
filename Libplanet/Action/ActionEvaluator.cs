@@ -28,6 +28,7 @@ namespace Libplanet.Action
         private readonly BlockHash? _genesisHash;
         private readonly ILogger _logger;
         private readonly IAction? _policyBlockAction;
+        private readonly IAction? _policyUpdateValidatorAction;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
@@ -38,6 +39,9 @@ namespace Libplanet.Action
         /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
         /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
         /// <see cref="Block{T}"/> that gets evaluated.</param>
+        /// <param name="policyUpdateValidatorAction">The <see cref="IAction"/> provided by
+        /// <see cref="IBlockPolicy{T}.UpdateValidatorSetAction"/> to evaluate at th end for
+        /// each <see cref="Block{T}"/>.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
@@ -49,6 +53,7 @@ namespace Libplanet.Action
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         public ActionEvaluator(
             IAction? policyBlockAction,
+            IAction? policyUpdateValidatorAction,
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
@@ -56,6 +61,7 @@ namespace Libplanet.Action
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
+            _policyUpdateValidatorAction = policyUpdateValidatorAction;
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
@@ -124,16 +130,12 @@ namespace Libplanet.Action
                     previousStates: previousStates,
                     previousBlockStatesTrie: previousBlockStatesTrie).ToImmutableList();
 
-                if (_policyBlockAction is null)
-                {
-                    return evaluations;
-                }
-                else
+                if (!(_policyBlockAction is null))
                 {
                     previousStates = evaluations.Count > 0
                         ? evaluations.Last().OutputStates
                         : previousStates;
-                    return evaluations.Add(
+                    evaluations = evaluations.Add(
                         EvaluatePolicyBlockAction(
                             block: block,
                             previousStates: previousStates,
@@ -141,6 +143,22 @@ namespace Libplanet.Action
                         )
                     );
                 }
+
+                if (!(_policyUpdateValidatorAction is null))
+                {
+                    previousStates = evaluations.Count > 0
+                        ? evaluations.Last().OutputStates
+                        : previousStates;
+                    evaluations = evaluations.Add(
+                        EvaluateSystemUpdate(
+                            block: block,
+                            previousStates: previousStates,
+                            previousBlockStatesTrie: previousBlockStatesTrie
+                        )
+                    );
+                }
+
+                return evaluations;
             }
             finally
             {
@@ -656,6 +674,37 @@ namespace Libplanet.Action
             {
                 return previousStates;
             }
+        }
+
+        [Pure]
+        internal ActionEvaluation EvaluateSystemUpdate(
+            IPreEvaluationBlock<T> block,
+            IAccountStateDelta previousStates,
+            ITrie? previousBlockStatesTrie)
+        {
+            if (_policyUpdateValidatorAction is null)
+            {
+                var message =
+                    "To evaluate policy update validator action, " +
+                    "_policyUpdateValidatorAction must not be null.";
+                throw new InvalidOperationException(message);
+            }
+
+            return EvaluateActions(
+                genesisHash: _genesisHash,
+                preEvaluationHash: block.PreEvaluationHash,
+                blockIndex: block.Index,
+                txid: null,
+                previousStates: previousStates,
+                miner: block.Miner,
+                signer: block.Miner,
+                signature: Array.Empty<byte>(),
+                actions: new[] { _policyUpdateValidatorAction }.ToImmutableList(),
+                rehearsal: false,
+                previousBlockStatesTrie: previousBlockStatesTrie,
+                blockAction: true,
+                nativeTokenPredicate: _nativeTokenPredicate
+            ).Single();
         }
 
         /// <summary>

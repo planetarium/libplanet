@@ -6,8 +6,6 @@ using System.Linq;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -47,6 +45,10 @@ namespace Libplanet.Blockchain.Policies
         /// every <see cref="Block{T}"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
+        /// <param name="updateValidatorSetAction">An <see cref="IAction"/> to executed for
+        /// every <see cref="Block{T}"/>'s ended. Set to <c>null</c> by default, which results
+        /// in use basic <see cref="PoSAction"/> when execute
+        /// <see cref="ActionEvaluator{T}.Evaluate"/>.</param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
         /// Set to <see cref="DefaultTargetBlockInterval"/> by default.
         /// </param>
@@ -80,6 +82,7 @@ namespace Libplanet.Blockchain.Policies
         /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
             IAction? blockAction = null,
+            IAction? updateValidatorSetAction = null,
             TimeSpan? blockInterval = null,
             Func<BlockChain<T>, Transaction<T>, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
@@ -92,6 +95,7 @@ namespace Libplanet.Blockchain.Policies
             Func<long, ValidatorSet>? getValidatorSet = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
+            UpdateValidatorSetAction = updateValidatorSetAction ?? new PoSAction();
             BlockAction = blockAction;
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
@@ -171,6 +175,9 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public IAction? BlockAction { get; }
 
+        /// <inheritdoc/>
+        public IAction UpdateValidatorSetAction { get; }
+
         /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
         // TODO: This should be configurable through the constructor.
         public IImmutableSet<Currency> NativeTokens { get; }
@@ -211,9 +218,5 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
-
-        /// <inheritdoc/>
-        [Pure]
-        public ValidatorSet GetValidatorSet(long index) => _getValidatorSet(index);
     }
 }

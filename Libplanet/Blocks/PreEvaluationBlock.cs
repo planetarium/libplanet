@@ -101,6 +101,8 @@ namespace Libplanet.Blocks
         /// <see cref="PreEvaluationBlockHeader.PublicKey"/>.</param>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="updateValidatorSetAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
@@ -124,10 +126,15 @@ namespace Libplanet.Blocks
         public Block<T> Evaluate(
             PrivateKey privateKey,
             IAction? blockAction,
+            IAction? updateValidatorSetAction,
             Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         ) =>
-            Sign(privateKey, DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore));
+            Sign(privateKey, DetermineStateRootHash(
+                blockAction,
+                updateValidatorSetAction,
+                nativeTokenPredicate,
+                stateStore));
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and an optional
@@ -189,6 +196,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="updateValidatorSetAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
@@ -201,10 +210,16 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            IAction? updateValidatorSetAction,
             Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore
         )
-            => DetermineStateRootHash(blockAction, nativeTokenPredicate, stateStore, out _);
+            => DetermineStateRootHash(
+                blockAction,
+                updateValidatorSetAction,
+                nativeTokenPredicate,
+                stateStore,
+                out _);
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -213,6 +228,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="blockAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
+        /// <param name="updateValidatorSetAction">An optional
+        /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
@@ -226,6 +243,7 @@ namespace Libplanet.Blocks
         /// <see cref="IBlockMetadata.Index"/> is not zero.</exception>
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
+            IAction? updateValidatorSetAction,
             Predicate<Currency> nativeTokenPredicate,
             IStateStore stateStore,
             out IImmutableDictionary<string, IValue> statesDelta
@@ -243,6 +261,7 @@ namespace Libplanet.Blocks
 
             var actionEvaluator = new ActionEvaluator<T>(
                 blockAction,
+                updateValidatorSetAction,
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
                 genesisHash: null,

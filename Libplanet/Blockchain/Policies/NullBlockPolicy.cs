@@ -25,12 +25,14 @@ namespace Libplanet.Blockchain.Policies
         {
             _exceptionToThrow = exceptionToThrow;
             _difficulty = difficulty;
-            _getValidatorSet = getValidatorSet ?? (_ => new ValidatorSet(new List<PublicKey>()));
+            UpdateValidatorSetAction = new PoSAction();
         }
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
         public IAction BlockAction => null;
+
+        public IAction UpdateValidatorSetAction { get; }
 
         /// <inheritdoc cref="IBlockPolicy{T}.NativeTokens"/>
         public IImmutableSet<Currency> NativeTokens => ImmutableHashSet<Currency>.Empty;
