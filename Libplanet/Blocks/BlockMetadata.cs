@@ -155,10 +155,11 @@ namespace Libplanet.Blocks
                 TotalDifficulty = totalDifficulty;
             }
 
-            if (index != 0 && previousHash is null)
+            if ((index == 0 && previousHash is { }) ||
+                (index != 0 && previousHash is null))
             {
                 throw new InvalidBlockPreviousHashException(
-                    $"{nameof(previousHash)} cannot be null for {nameof(index)} > 0.");
+                    $"{nameof(previousHash)} can be null if and only if {nameof(index)} is 0.");
             }
             else
             {
@@ -177,7 +178,7 @@ namespace Libplanet.Blocks
         public int ProtocolVersion
         {
             get => _protocolVersion;
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -204,7 +205,7 @@ namespace Libplanet.Blocks
         public long Index
         {
             get => _index;
-            set => _index = value >= 0L
+            private set => _index = value >= 0L
                 ? value
                 : throw new InvalidBlockIndexException(
                     $"A negative index is not allowed: {value}.");
@@ -307,7 +308,7 @@ namespace Libplanet.Blocks
         }
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash { get; set; }
+        public BlockHash? PreviousHash { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash { get; private set; }

@@ -43,18 +43,6 @@ namespace Libplanet.Tests.Blocks
             );
 
             content = _contents.Block1Content.Copy();
-            content.PreviousHash = null;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.PreviousHash = _contents.GenesisHash;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
-            );
-
-            content = _contents.Block1Content.Copy();
             content.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
@@ -96,10 +84,6 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
-            content.Index++;
-            Assert.Equal(_contents.Block1Content.Index, preEvalBlock.Index);
-
             content = _contents.Block1Content.Copy();
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
@@ -138,27 +122,11 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            // Mutating the BlockContent<T> instance does not affect PreEvaluatingBlock<T> instance:
-            content.Index++;
-            Assert.Equal(_contents.Block1Content.Index, preEvalBlock.Index);
-
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     _contents.Block1Content,
                     nonce: _invalidBlock1Proof.Nonce
                 )
-            );
-
-            content = _contents.Block1Content.Copy();
-            content.PreviousHash = null;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.PreviousHash = _contents.GenesisHash;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof.Nonce)
             );
 
             content = _contents.Block1Content.Copy();
@@ -186,10 +154,17 @@ namespace Libplanet.Tests.Blocks
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
             // ProtocolVersion < 1 for backward compatibility:
-            BlockContent<Arithmetic> contentPv0 = _contents.Block1Content.Copy();
-            contentPv0.ProtocolVersion = 0;
-            contentPv0.PublicKey = null;
-            contentPv0.Timestamp += TimeSpan.FromSeconds(1);
+            BlockContent<Arithmetic> contentPv0 = new BlockContent<Arithmetic>(
+                protocolVersion: 0,
+                index: _contents.Block1Content.Index,
+                timestamp: _contents.Block1Content.Timestamp.AddSeconds(1),
+                miner: _contents.Block1Content.Miner,
+                publicKey: null,
+                difficulty: _contents.Block1Content.Difficulty,
+                totalDifficulty: _contents.Block1Content.TotalDifficulty,
+                previousHash: _contents.Block1Content.PreviousHash,
+                txHash: _contents.Block1Content.TxHash,
+                transactions: _contents.Block1Content.Transactions);
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
                 contentPv0,
                 nonce: _validBlock1Proof.Nonce,
@@ -255,10 +230,13 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1Content;
-                content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
-                content1.Transactions = new[] { _contents.Block1Tx0 };
+                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                    index: _contents.Block1Content.Index,
+                    publicKey: _contents.Block1Content.PublicKey,
+                    difficulty: _contents.Block1Content.Difficulty,
+                    totalDifficulty: _contents.Block1Content.TotalDifficulty,
+                    previousHash: genesis.Hash,
+                    transactions: new[] { _contents.Block1Tx0 });
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
@@ -315,10 +293,13 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1Content;
-                content1.PreviousHash = genesis.Hash;
-                content1.Difficulty = 2;
-                content1.Transactions = new[] { _contents.Block1Tx0 };
+                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                    index: _contents.Block1Content.Index,
+                    publicKey: _contents.Block1Content.PublicKey,
+                    difficulty: _contents.Block1Content.Difficulty,
+                    totalDifficulty: _contents.Block1Content.TotalDifficulty,
+                    previousHash: genesis.Hash,
+                    transactions: new[] { _contents.Block1Tx0 });
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Mine();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);

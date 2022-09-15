@@ -34,23 +34,40 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ProtocolVersion()
         {
-            int v = Block1Metadata.ProtocolVersion;
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = -1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: -1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    difficulty: Block1Metadata.Difficulty,
+                    totalDifficulty: Block1Metadata.TotalDifficulty,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash));
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = Block<Arithmetic>.CurrentProtocolVersion + 1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    difficulty: Block1Metadata.Difficulty,
+                    totalDifficulty: Block1Metadata.TotalDifficulty,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
         public void Index()
         {
-            long idx = Block1Metadata.Index;
-            Assert.Throws<InvalidBlockIndexException>(() => Block1Metadata.Index = -1);
-            Assert.Equal(idx, Block1Metadata.Index);
+            Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
+                index: -1L,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
@@ -103,6 +120,25 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(Block1Metadata.Difficulty, b.Difficulty);
             Assert.Equal(b.Difficulty, e.Difficulty);
             Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
+        }
+
+        [Fact]
+        public void PreviousHash()
+        {
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: GenesisMetadata.Index,
+                publicKey: GenesisMetadata.PublicKey,
+                difficulty: GenesisMetadata.Difficulty,
+                totalDifficulty: GenesisMetadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: GenesisMetadata.TxHash));
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: null,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]

@@ -99,18 +99,6 @@ namespace Libplanet.Tests.Blocks
             );
 
             metadata = _contents.Block1Metadata.Copy();
-            metadata.PreviousHash = null;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlockHeader(metadata, _validBlock1Proof)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.PreviousHash = _contents.GenesisHash;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof)
-            );
-
-            metadata = _contents.Block1Metadata.Copy();
             metadata.Difficulty = 0L;
             Assert.Throws<InvalidBlockDifficultyException>(
                 () => new PreEvaluationBlockHeader(metadata, _validBlock1Proof.Nonce)
@@ -152,11 +140,6 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            // Mutating the BlockMetadata instance does not affect PreEvaluatingBlockHeader
-            // instance:
-            metadata.Index++;
-            Assert.Equal(_contents.Block1Metadata.Index, preEvalBlock.Index);
-
             metadata = _contents.Block1Metadata.Copy();
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlockHeader(
@@ -195,27 +178,11 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
 
-            // Mutating the BlockMetadata instance doesn't affect PreEvaluatingBlockHeader instance:
-            metadata.Index++;
-            Assert.Equal(_contents.Block1Metadata.Index, preEvalBlock.Index);
-
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlockHeader(
                     _contents.Block1Metadata,
                     nonce: _invalidBlock1Proof.Nonce
                 )
-            );
-
-            metadata = _contents.Block1Metadata.Copy();
-            metadata.PreviousHash = null;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlockHeader(metadata, _validBlock1Proof.Nonce)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.PreviousHash = _contents.GenesisHash;
-            Assert.Throws<InvalidBlockPreviousHashException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof.Nonce)
             );
 
             metadata = _contents.Block1Metadata.Copy();
@@ -255,10 +222,16 @@ namespace Libplanet.Tests.Blocks
             // Since PreEvaluationHash comparison between the actual and the expected was not
             // implemented in ProtocolVersion == 0, we need to maintain this bug on
             // ProtocolVersion < 1 for backward compatibility:
-            BlockMetadata metadataPv0 = _contents.Block1Metadata.Copy();
-            metadataPv0.ProtocolVersion = 0;
-            metadataPv0.PublicKey = null;
-            metadataPv0.Timestamp += TimeSpan.FromSeconds(1);
+            BlockMetadata metadataPv0 = new BlockMetadata(
+                protocolVersion: 0,
+                index: _contents.Block1Metadata.Index,
+                timestamp: _contents.Block1Metadata.Timestamp.AddSeconds(1),
+                miner: _contents.Block1Metadata.Miner,
+                publicKey: null,
+                difficulty: _contents.Block1Metadata.Difficulty,
+                totalDifficulty: _contents.Block1Metadata.TotalDifficulty,
+                previousHash: _contents.Block1Metadata.PreviousHash,
+                txHash: _contents.Block1Metadata.TxHash);
             var preEvalBlockPv0 = new PreEvaluationBlockHeader(
                 metadataPv0,
                 nonce: _validBlock1Proof.Nonce,
@@ -272,13 +245,19 @@ namespace Libplanet.Tests.Blocks
             );
 
             // However, such bug must be fixed after ProtocolVersion > 0:
-            BlockMetadata contentPv1 = _contents.Block1Metadata.Copy();
-            contentPv1.ProtocolVersion = 1;
-            contentPv1.PublicKey = null;
-            contentPv1.Timestamp += TimeSpan.FromSeconds(1);
+            BlockMetadata metadataPv1 = new BlockMetadata(
+                protocolVersion: 1,
+                index: _contents.Block1Metadata.Index,
+                timestamp: _contents.Block1Metadata.Timestamp.AddSeconds(1),
+                miner: _contents.Block1Metadata.Miner,
+                publicKey: null,
+                difficulty: _contents.Block1Metadata.Difficulty,
+                totalDifficulty: _contents.Block1Metadata.TotalDifficulty,
+                previousHash: _contents.Block1Metadata.PreviousHash,
+                txHash: _contents.Block1Metadata.TxHash);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlockHeader(
-                    contentPv1,
+                    metadataPv1,
                     nonce: _validBlock1Proof.Nonce,
                     preEvaluationHash: _validBlock1Proof.PreEvaluationHash
                 )
