@@ -80,6 +80,8 @@ namespace Libplanet.Blocks
             Difficulty = metadata.Difficulty;
             TotalDifficulty = metadata.TotalDifficulty;
             PreviousHash = metadata.PreviousHash;
+
+            // FIXME: This is to bypass setter check.
             _txHash = metadata.TxHash;
         }
 
@@ -175,7 +177,8 @@ namespace Libplanet.Blocks
                 PreviousHash = previousHash;
             }
 
-            TxHash = txHash;
+            // FIXME: This is to bypass setter check.
+            _txHash = txHash;
         }
 
         public static HashAlgorithmType HashAlgorithmType { get; private set; }
