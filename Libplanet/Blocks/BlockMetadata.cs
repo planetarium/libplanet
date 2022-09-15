@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -44,7 +43,6 @@ namespace Libplanet.Blocks
         private PublicKey? _publicKey;
         private long _difficulty;
         private BigInteger _totalDifficulty;
-        private HashDigest<SHA256>? _txHash;
 
         static BlockMetadata()
         {
@@ -80,9 +78,7 @@ namespace Libplanet.Blocks
             Difficulty = metadata.Difficulty;
             TotalDifficulty = metadata.TotalDifficulty;
             PreviousHash = metadata.PreviousHash;
-
-            // FIXME: This is to bypass setter check.
-            _txHash = metadata.TxHash;
+            TxHash = metadata.TxHash;
         }
 
         public BlockMetadata(
@@ -169,8 +165,7 @@ namespace Libplanet.Blocks
                 PreviousHash = previousHash;
             }
 
-            // FIXME: This is to bypass setter check.
-            _txHash = txHash;
+            TxHash = txHash;
         }
 
         public static HashAlgorithmType HashAlgorithmType { get; private set; }
@@ -315,15 +310,7 @@ namespace Libplanet.Blocks
         public BlockHash? PreviousHash { get; set; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        [SuppressMessage(
-            "SonarQube",
-            "S2292",
-            Justification = "The backing field purposes to prevent intercepting from subclasses.")]
-        public virtual HashDigest<SHA256>? TxHash
-        {
-            get => _txHash;
-            set => _txHash = value;
-        }
+        public HashDigest<SHA256>? TxHash { get; private set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -362,7 +349,7 @@ namespace Libplanet.Blocks
             // derived from PublicKeys, we don't need to include both at a time.)  The PublicKey
             // property in this class guarantees that its ProtocolVersion is <= 1 when it is null
             // and its ProtocolVersion is >= 2 when it is not null:
-            dict = PublicKey is { } pubKey && ProtocolVersion > 1
+            dict = PublicKey is { } pubKey && ProtocolVersion >= 2
                 ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
                 : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
 

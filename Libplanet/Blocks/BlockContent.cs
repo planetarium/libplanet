@@ -28,43 +28,6 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
-        /// <paramref name="metadata"/>'s contents and <paramref name="transactions"/>.
-        /// </summary>
-        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
-        /// <param name="transactions">The transactions to include in the block.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
-        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
-        /// <paramref name="transactions"/>.</exception>
-        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
-            : base(metadata)
-        {
-            Transactions = transactions.ToImmutableArray();
-            TxHash = metadata.TxHash;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
         /// <paramref name="metadata"/>'s contents and zero transactions.
         /// </summary>
         /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
@@ -129,6 +92,43 @@ namespace Libplanet.Blocks
         public BlockContent(IBlockContent<T> content)
             : this(content, content.Transactions)
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
+        /// <paramref name="metadata"/>'s contents and <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
+        /// <param name="transactions">The transactions to include in the block.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
+        /// the latest known protocol version.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
+        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
+        /// </exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
+        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
+        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
+        /// not signed by its signer.</exception>
+        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
+        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
+        /// Note that this validates only a block's intrinsic integrity between its transactions,
+        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
+        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
+        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
+        /// inconsistent genesis hashes.</exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
+        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
+        /// <paramref name="transactions"/>.</exception>
+        public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
+            : base(metadata)
+        {
+            Transactions = transactions.ToImmutableArray();
+            ValidateTxHash();
         }
 
         /// <summary>
@@ -240,15 +240,13 @@ namespace Libplanet.Blocks
                 txHash: txHash)
         {
             Transactions = transactions.ToImmutableArray();
-            TxHash = txHash;
+            ValidateTxHash();
         }
 
         /// <summary>
         /// Transactions belonging to the block.
         /// </summary>
-        /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.
-        /// <para>When <see cref="Transactions"/> is updated, <see cref="TxHash"/> is also updated
-        /// together.</para></remarks>
+        /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
         /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
         /// not signed by its signer.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
@@ -272,48 +270,6 @@ namespace Libplanet.Blocks
                 }
 
                 _transactions = value.OrderBy(tx => tx.Id).ToImmutableArray();
-                base.TxHash = DeriveTxHash(_transactions);
-            }
-        }
-
-        /// <summary>
-        /// The hash of all transactions in the block.  This is <c>null</c> if the block has no
-        /// transactions.
-        /// </summary>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the <see cref="TxHash"/> is
-        /// inconsistent with <see cref="Transactions"/>.</exception>
-        // FIXME: Remove Block<T>.CalculateTxHashes() method, and move the logic behind it to here.
-        public override HashDigest<SHA256>? TxHash
-        {
-            get => base.TxHash;
-            set
-            {
-                HashDigest<SHA256>? prevValue = TxHash;
-                if (prevValue is { } prev)
-                {
-                    if (!(value is { } v))
-                    {
-                        string msg =
-                            $"As the block #{Index} has transactions, " +
-                            $"its {nameof(TxHash)} must not be null.";
-                        throw new InvalidBlockTxHashException(msg, value, prev);
-                    }
-                    else if (!v.Equals(prev))
-                    {
-                        throw new InvalidBlockTxHashException(
-                            $"The block #{Index}'s {nameof(TxHash)} is invalid.",
-                            value,
-                            prev
-                        );
-                    }
-                }
-                else if (value is { })
-                {
-                    string msg =
-                        $"As the block #{Index} has no transactions, " +
-                        $"its {nameof(TxHash)} must be null.";
-                    throw new InvalidBlockTxHashException(msg, value, prevValue);
-                }
             }
         }
 
@@ -332,11 +288,12 @@ namespace Libplanet.Blocks
             new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
 
         /// <summary>
-        /// Derives <see cref="TxHash"/> from the given <paramref name="transactions"/>.
+        /// Derives <see cref="IBlockMetadata.TxHash"/> from given <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="transactions">The transactions to derive <see cref="TxHash"/> from.
-        /// This must be ordered by <see cref="Transaction{T}.Id"/>.</param>
-        /// <returns>The derived <see cref="TxHash"/>.</returns>
+        /// <param name="transactions">The transactions to derive
+        /// <see cref="IBlockMetadata.TxHash"/> from.  This must be ordered by
+        /// <see cref="Transaction{T}.Id"/>.</param>
+        /// <returns>The derived <see cref="IBlockMetadata.TxHash"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="transactions"/> are
         /// not ordered by their <see cref="Transaction{T}.Id"/>s.</exception>
         internal static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction<T>> transactions)
@@ -368,6 +325,19 @@ namespace Libplanet.Blocks
 
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
             return new HashDigest<SHA256>(hasher.Hash);
+        }
+
+        private void ValidateTxHash()
+        {
+            HashDigest<SHA256>? derivedTxHash = DeriveTxHash(Transactions);
+            if (!((TxHash is { } a && derivedTxHash is { } b && a.Equals(b)) ||
+                (TxHash is null && derivedTxHash is null)))
+            {
+                throw new InvalidBlockTxHashException(
+                    $"The block #{Index}'s {nameof(TxHash)} is invalid.",
+                    TxHash,
+                    derivedTxHash);
+            }
         }
     }
 }
