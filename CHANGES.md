@@ -32,6 +32,7 @@ To be released.
 
 ### Added APIs
 
+ -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
@@ -60,6 +61,7 @@ To be released.
 [#2290]: https://github.com/planetarium/libplanet/issues/2290
 [#2291]: https://github.com/planetarium/libplanet/pull/2291
 [#2298]: https://github.com/planetarium/libplanet/pull/2298
+[#2320]: https://github.com/planetarium/libplanet/pull/2320
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 [Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
 

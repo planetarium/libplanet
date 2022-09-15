@@ -39,7 +39,8 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     [Serializable]
-    public readonly struct Address : ISerializable, IComparable<Address>, IComparable
+    public readonly struct Address
+        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
