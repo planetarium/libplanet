@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -134,6 +136,118 @@ namespace Libplanet.Blocks
         /// </summary>
         public BlockContent()
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BlockContent{T}"/> instance with no
+        /// <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
+        /// automatically derived.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        public BlockContent(
+            long index,
+            PublicKey publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash)
+            : this(
+                index: index,
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                transactions: new List<Transaction<T>>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BlockContent{T}"/> instance with given
+        /// <paramref name="transactions"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
+        /// automatically derived.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="transactions">Goes to <see cref="IBlockContent{T}.Transactions"/>.</param>
+        public BlockContent(
+            long index,
+            PublicKey publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            IReadOnlyList<Transaction<T>> transactions)
+            : this(
+                index: index,
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                txHash: DeriveTxHash(transactions.OrderBy(tx => tx.Id).ToList()),
+                transactions: transactions)
+        {
+        }
+
+        internal BlockContent(
+            long index,
+            PublicKey publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            IEnumerable<Transaction<T>> transactions)
+            : this(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: index,
+                timestamp: DateTimeOffset.UtcNow,
+                miner: null,
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                txHash: txHash,
+                transactions: transactions)
+        {
+        }
+
+        // Constructor for manually assigning fields.
+        internal BlockContent(
+            int protocolVersion,
+            long index,
+            DateTimeOffset timestamp,
+            Address? miner,
+            PublicKey? publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            IEnumerable<Transaction<T>> transactions)
+            : base(
+                protocolVersion: protocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: miner,
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                txHash: txHash)
+        {
+            Transactions = transactions.ToImmutableArray();
+            TxHash = txHash;
         }
 
         /// <summary>
