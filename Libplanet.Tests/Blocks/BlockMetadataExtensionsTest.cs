@@ -1,5 +1,6 @@
 using System;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -21,11 +22,16 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset future = now + TimeSpan.FromSeconds(17);
-            IBlockMetadata metadata = new BlockMetadata
-            {
-                Timestamp = future,
-            };
-
+            IBlockMetadata metadata = new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 0,
+                timestamp: future,
+                miner: null,
+                publicKey: new PrivateKey().PublicKey,
+                difficulty: 0,
+                totalDifficulty: 0,
+                previousHash: null,
+                txHash: null);
             Assert.Throws<InvalidBlockTimestampException>(() => metadata.ValidateTimestamp(now));
 
             // It's okay because 3 seconds later.

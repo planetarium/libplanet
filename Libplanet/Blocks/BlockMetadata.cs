@@ -93,7 +93,6 @@ namespace Libplanet.Blocks
 
         public BlockMetadata(
             long index,
-            DateTimeOffset timestamp,
             PublicKey publicKey,
             long difficulty,
             BigInteger totalDifficulty,
@@ -102,7 +101,7 @@ namespace Libplanet.Blocks
             : this(
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
-                timestamp: timestamp,
+                timestamp: DateTimeOffset.UtcNow,
                 miner: null,
                 publicKey: publicKey,
                 difficulty: difficulty,
@@ -134,7 +133,12 @@ namespace Libplanet.Blocks
                         $"Argument {nameof(publicKey)} cannot be null for " +
                         $"{nameof(protocolVersion)} >= 2.",
                         nameof(publicKey));
-                Miner = new Address(p);
+                Miner = miner is { } m
+                    ? throw new ArgumentException(
+                        $"Argument {nameof(miner)} should be null for " +
+                        $"{nameof(protocolVersion)} >= 2.",
+                        nameof(miner))
+                    : new Address(p);
             }
             else
             {
