@@ -91,6 +91,89 @@ namespace Libplanet.Blocks
         {
         }
 
+        public BlockMetadata(
+            long index,
+            DateTimeOffset timestamp,
+            PublicKey publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash)
+            : this(
+                protocolVersion: CurrentProtocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: publicKey,
+                difficulty: difficulty,
+                totalDifficulty: totalDifficulty,
+                previousHash: previousHash,
+                txHash: txHash)
+        {
+        }
+
+        internal BlockMetadata(
+            int protocolVersion,
+            long index,
+            DateTimeOffset timestamp,
+            Address? miner,
+            PublicKey? publicKey,
+            long difficulty,
+            BigInteger totalDifficulty,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash)
+        {
+            ProtocolVersion = protocolVersion;
+            Index = index;
+            Timestamp = timestamp;
+            if (protocolVersion >= 2)
+            {
+                PublicKey = publicKey is { } p
+                    ? p
+                    : throw new ArgumentException(
+                        $"Argument {nameof(publicKey)} cannot be null for " +
+                        $"{nameof(protocolVersion)} >= 2.",
+                        nameof(publicKey));
+                Miner = new Address(p);
+            }
+            else
+            {
+                PublicKey = null;
+                Miner = miner is { } m
+                    ? m
+                    : throw new ArgumentException(
+                        $"Argument {nameof(miner)} cannot be null for " +
+                        $"{nameof(protocolVersion)} < 2.",
+                        nameof(miner));
+            }
+
+            if (totalDifficulty < difficulty)
+            {
+                throw new InvalidBlockTotalDifficultyException(
+                    $"{nameof(totalDifficulty)} ({totalDifficulty}) cannot be less than " +
+                    $"{nameof(difficulty)} ({difficulty}).",
+                    difficulty,
+                    totalDifficulty);
+            }
+            else
+            {
+                Difficulty = difficulty;
+                TotalDifficulty = totalDifficulty;
+            }
+
+            if (index != 0 && previousHash is null)
+            {
+                throw new InvalidBlockPreviousHashException(
+                    $"{nameof(previousHash)} cannot be null for {nameof(index)} > 0.");
+            }
+            else
+            {
+                PreviousHash = previousHash;
+            }
+
+            TxHash = txHash;
+        }
+
         public static HashAlgorithmType HashAlgorithmType { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
@@ -111,10 +194,10 @@ namespace Libplanet.Blocks
                 }
                 else if (value > CurrentProtocolVersion)
                 {
-                    string msg =
+                    throw new InvalidBlockProtocolVersionException(
                         "A block's protocol version cannot be greater than " +
-                        $"{CurrentProtocolVersion}: {value}.";
-                    throw new InvalidBlockProtocolVersionException(msg, value);
+                        $"{CurrentProtocolVersion}: {value}.",
+                        value);
                 }
 
                 _protocolVersion = value;
@@ -127,10 +210,10 @@ namespace Libplanet.Blocks
         public long Index
         {
             get => _index;
-            set => _index
-                = value >= 0L
+            set => _index = value >= 0L
                 ? value
-                : throw new InvalidBlockIndexException($"A negative index is disallowed: {value}.");
+                : throw new InvalidBlockIndexException(
+                    $"A negative index is not allowed: {value}.");
         }
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
