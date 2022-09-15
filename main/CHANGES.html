@@ -89,6 +89,8 @@ to <code>max-transactions-bytes</code> and <code>max-genesis-bytes</code> to
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li><code>Address</code> now implements <code>IEquatable&lt;Address&gt;</code> interface. [<a href="https://github.com/planetarium/libplanet/pull/2320">#2320</a>]</li>
+<li><code>TxId</code> now implements <code>IEquatable&lt;TxId&gt;</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/2320">#2320</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IAction, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code> overloaded method.
 [<a href="https://github.com/planetarium/libplanet/issues/2151">#2151</a>, <a href="https://github.com/planetarium/libplanet/pull/2273">#2273</a>]</li>
 <li>Added <code>GetInnerActionTypeName()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/1910">#1910</a>, <a href="https://github.com/planetarium/libplanet/pull/2189">#2189</a>]</li>
