@@ -64,16 +64,19 @@ namespace Libplanet.Tests.Fixtures
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            Genesis = new BlockContent<Arithmetic>
-            {
-                PublicKey = Miner.PublicKey,
-                Timestamp = DateTimeOffset.UtcNow,
-                Transactions = Txs,
-            }.Mine().Evaluate(
-                privateKey: Miner,
-                blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: StateStore
+            Genesis = new BlockContent<Arithmetic>(
+                index: 0,
+                publicKey: Miner.PublicKey,
+                difficulty: 0,
+                totalDifficulty: 0,
+                previousHash: null,
+                transactions: Txs)
+                .Mine()
+                .Evaluate(
+                    privateKey: Miner,
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: StateStore
             );
             Chain = new BlockChain<Arithmetic>(
                 policy,

@@ -557,13 +557,17 @@ namespace Libplanet.Tests.Blockchain
         public async Task AbortMining()
         {
             // Pre-mined genesis 7ae04b6fc0a3410eef40341129b19030ea2e6a0b922e5ae7cc96ab19109495c4:
-            var genesisContent = new BlockContent<DumbAction>
-            {
-                Miner = GenesisMiner.ToAddress(),
-                ProtocolVersion = 2,
-                PublicKey = GenesisMiner.PublicKey,
-                Timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-            };
+            var genesisContent = new BlockContent<DumbAction>(
+                protocolVersion: 2,
+                index: 0L,
+                timestamp: new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                miner: null,
+                publicKey: GenesisMiner.PublicKey,
+                difficulty: 0L,
+                totalDifficulty: 0L,
+                previousHash: null,
+                txHash: null,
+                transactions: new List<Transaction<DumbAction>>());
             var preEvalGenesis = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
                 new Nonce(new byte[] { 0x01, 0, 0, 0 })
@@ -580,21 +584,20 @@ namespace Libplanet.Tests.Blockchain
             );
 
             // Pre-mined block #1 ae44df4319711de80cc711668f56bfde9e5d958cc2296b63056c1b9c3df62d51:
-            var block1Content = new BlockContent<DumbAction>
-            {
-                ProtocolVersion = 2,
-                Index = 1,
-                Miner = GenesisMiner.ToAddress(),
-                PublicKey = GenesisMiner.PublicKey,
-                Timestamp = DateTimeOffset.ParseExact(
+            var block1Content = new BlockContent<DumbAction>(
+                protocolVersion: 2,
+                index: 1L,
+                timestamp: DateTimeOffset.ParseExact(
                     "2021-10-25T07:54:53.512280Z",
                     "yyyy-MM-ddTHH:mm:ss.ffffffZ",
-                    CultureInfo.InvariantCulture
-                ),
-                Difficulty = 100_000_000,
-                TotalDifficulty = 100_000_000,
-                PreviousHash = genesis.Hash,
-            };
+                    CultureInfo.InvariantCulture),
+                miner: null,
+                publicKey: GenesisMiner.PublicKey,
+                difficulty: 100_000_000L,
+                totalDifficulty: 100_000_000L,
+                previousHash: genesis.Hash,
+                txHash: null,
+                transactions: new List<Transaction<DumbAction>>());
             var preEvalBlock1 = new PreEvaluationBlock<DumbAction>(
                 block1Content,
                 new Nonce(new byte[] { 0x0a, 0x24, 0xc6, 0x92, 0xde, 0xfa, 0x5c, 0x64, 0xd0, 0x26 })

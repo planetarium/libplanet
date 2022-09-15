@@ -862,11 +862,12 @@ namespace Libplanet.Net.Tests
         {
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
-            var genesisContent = new BlockContent<DumbAction>
-            {
-                PublicKey = minerKey.PublicKey,
-                Timestamp = DateTimeOffset.MinValue,
-            };
+            var genesisContent = new BlockContent<DumbAction>(
+                index: 0,
+                publicKey: minerKey.PublicKey,
+                difficulty: 0,
+                totalDifficulty: 0,
+                previousHash: null);
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })

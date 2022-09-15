@@ -155,16 +155,20 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToMine.Count);
 
-            var blockContent = new BlockContent<T>
-            {
-                Index = index,
-                Difficulty = difficulty,
-                TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                PublicKey = miner.PublicKey,
-                PreviousHash = prevHash,
-                Timestamp = timestamp,
-                Transactions = transactionsToMine,
-            };
+            // FIXME: Should use automated public constructor.
+            // Manual internal constructor is used purely for testing custom timestamps.
+            var transactions = transactionsToMine.OrderBy(tx => tx.Id).ToList();
+            var blockContent = new BlockContent<T>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: miner.PublicKey,
+                difficulty: difficulty,
+                totalDifficulty: Tip.TotalDifficulty + difficulty,
+                previousHash: prevHash,
+                txHash: BlockContent<T>.DeriveTxHash(transactions),
+                transactions: transactions);
             PreEvaluationBlock<T> preEval;
 
             TipChanged += WatchTip;

@@ -329,14 +329,20 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var content = new BlockContent<T>
-            {
-                Miner = (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                PublicKey = protocolVersion < 2 ? null : miner ?? GenesisMiner.PublicKey,
-                Timestamp = timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                Transactions = transactions ?? Array.Empty<Transaction<T>>(),
-                ProtocolVersion = protocolVersion,
-            };
+            var txs = transactions?.ToList() ?? new List<Transaction<T>>();
+            var content = new BlockContent<T>(
+                protocolVersion: protocolVersion,
+                index: 0,
+                timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                miner: protocolVersion >= 2
+                    ? (Address?)null
+                    : (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
+                difficulty: 0,
+                totalDifficulty: 0,
+                previousHash: null,
+                txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
+                transactions: txs);
             return new PreEvaluationBlock<T>(
                 content,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
@@ -365,7 +371,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static PreEvaluationBlock<T> MineNext<T>(
             Block<T> previousBlock,
-            IReadOnlyList<Transaction<T>> txs = null,
+            IReadOnlyList<Transaction<T>> transactions = null,
             byte[] nonce = null,
             long difficulty = 1,
             PublicKey miner = null,
@@ -374,19 +380,22 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var content = new BlockContent<T>
-            {
-                Index = previousBlock.Index + 1,
-                Difficulty = difficulty,
-                TotalDifficulty = previousBlock.TotalDifficulty + difficulty,
-                Miner = miner?.ToAddress() ?? previousBlock.Miner,
-                PublicKey = protocolVersion < 2 ? null : miner ?? previousBlock.PublicKey,
-                PreviousHash = previousBlock.Hash,
-                Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
-                Transactions = txs ?? Array.Empty<Transaction<T>>(),
-                ProtocolVersion = protocolVersion,
-            };
-
+            var txs = transactions is null
+                ? new List<Transaction<T>>()
+                : transactions.OrderBy(tx => tx.Id).ToList();
+            var content = new BlockContent<T>(
+                protocolVersion: protocolVersion,
+                index: previousBlock.Index + 1,
+                timestamp: previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
+                miner: protocolVersion >= 2
+                    ? (Address?)null
+                    : miner?.ToAddress() ?? previousBlock.Miner,
+                publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
+                difficulty: difficulty,
+                totalDifficulty: previousBlock.TotalDifficulty + difficulty,
+                previousHash: previousBlock.Hash,
+                txHash: BlockContent<T>.DeriveTxHash(txs),
+                transactions: txs);
             var preEval = nonce is byte[] nonceBytes
                 ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
                 : content.Mine();
@@ -437,23 +446,28 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             actions = actions ?? ImmutableArray<T>.Empty;
             privateKey = privateKey ?? ChainPrivateKey;
 
-            var tx = Transaction<T>.Create(
-                0,
-                privateKey,
-                null,
-                actions,
-                timestamp: timestamp ?? DateTimeOffset.MinValue);
-
+            var txs = new[]
+            {
+                Transaction<T>.Create(
+                    0,
+                    privateKey,
+                    null,
+                    actions,
+                    timestamp: timestamp ?? DateTimeOffset.MinValue),
+            };
             if (genesisBlock is null)
             {
-                var content = new BlockContent<T>()
-                {
-                    Miner = GenesisMiner.ToAddress(),
-                    PublicKey = protocolVersion < 2 ? null : GenesisMiner.PublicKey,
-                    Timestamp = timestamp ?? DateTimeOffset.MinValue,
-                    Transactions = new[] { tx },
-                    ProtocolVersion = protocolVersion,
-                };
+                var content = new BlockContent<T>(
+                    protocolVersion: protocolVersion,
+                    index: 0,
+                    timestamp: timestamp ?? DateTimeOffset.MinValue,
+                    miner: protocolVersion >= 2 ? (Address?)null : GenesisMiner.ToAddress(),
+                    publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(txs),
+                    transactions: txs);
                 var preEval = new PreEvaluationBlock<T>(
                     content,
                     new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })

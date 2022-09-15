@@ -85,14 +85,6 @@ namespace Libplanet.Blocks
             _txHash = metadata.TxHash;
         }
 
-        /// <summary>
-        /// Creates an empty <see cref="BlockMetadata"/> instance.  Its properties can be easily
-        /// filled with C# object initializers.
-        /// </summary>
-        public BlockMetadata()
-        {
-        }
-
         public BlockMetadata(
             long index,
             PublicKey publicKey,

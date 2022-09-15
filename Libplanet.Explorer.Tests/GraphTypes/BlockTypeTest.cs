@@ -20,15 +20,13 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         public async void Query()
         {
             var privateKey = new PrivateKey();
-            var preEval = new BlockContent<NullAction>
-            {
-                Index = 1,
-                Difficulty = 1,
-                TotalDifficulty = 1,
-                PublicKey = privateKey.PublicKey,
-                PreviousHash = new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                Timestamp = DateTimeOffset.UtcNow,
-            }.Mine();
+            var preEval = new BlockContent<NullAction>(
+                index: 1,
+                publicKey: privateKey.PublicKey,
+                difficulty: 1,
+                totalDifficulty: 1,
+                previousHash: new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)))
+                .Mine();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
             var block = new Block<NullAction>(
