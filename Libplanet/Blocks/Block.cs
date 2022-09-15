@@ -52,14 +52,27 @@ namespace Libplanet.Blocks
         /// <paramref name="header"/> has an invalid
         /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>.</exception>
         public Block(IBlockHeader header, IEnumerable<Transaction<T>> transactions)
-            : this(
-                new PreEvaluationBlock<T>(
-                    new BlockContent<T>(header, transactions),
-                    header.PreEvaluationHash),
-                header.StateRootHash,
-                header.Signature
-            )
         {
+            _preEvaluationBlock = new PreEvaluationBlock<T>(
+                new BlockContent<T>(header, transactions),
+                header.PreEvaluationHash);
+            if (((IBlockMetadata)header).ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                // Skip hash check for PoW blocks due to change of the block structure.
+                // If verification is required, use older version of LibPlanet(<0.43).
+                Header = new BlockHeader(
+                    _preEvaluationBlock,
+                    header.StateRootHash,
+                    header.Signature,
+                    header.Hash);
+            }
+            else
+            {
+                Header = new BlockHeader(
+                    _preEvaluationBlock,
+                    header.StateRootHash,
+                    header.Signature);
+            }
         }
 
         /// <summary>

@@ -44,7 +44,12 @@ namespace Libplanet.Store
                     );
                 }
 
-                if (!block.Hash.Equals(key))
+                if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+                {
+                    // Skip verifying BlockHash of PoW blocks due to change of the block structure.
+                    // If verification is required, use older version of LibPlanet(<0.43).
+                }
+                else if (!block.Hash.Equals(key))
                 {
                     throw new InvalidBlockHashException(
                         $"The given hash[{key}] was not equal to actual[{block.Hash}].");
