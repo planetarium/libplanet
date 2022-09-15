@@ -97,24 +97,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockNonceException>(
                 () => new PreEvaluationBlockHeader(metadata, _invalidBlock1Proof)
             );
-
-            metadata = _contents.Block1Metadata.Copy();
-            metadata.Difficulty = 0L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validBlock1Proof.Nonce)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.Difficulty = 1L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.TotalDifficulty = 1;
-            Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof)
-            );
         }
 
         [Fact]
@@ -183,24 +165,6 @@ namespace Libplanet.Tests.Blocks
                     _contents.Block1Metadata,
                     nonce: _invalidBlock1Proof.Nonce
                 )
-            );
-
-            metadata = _contents.Block1Metadata.Copy();
-            metadata.Difficulty = 0L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validBlock1Proof.Nonce)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.Difficulty = 1L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof)
-            );
-
-            metadata = _contents.GenesisMetadata.Copy();
-            metadata.TotalDifficulty = 1;
-            Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlockHeader(metadata, _validGenesisProof)
             );
         }
 

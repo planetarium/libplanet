@@ -205,14 +205,20 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                Block1Content.Difficulty = long.MaxValue;
+                var content = new BlockContent<Arithmetic>(
+                    index: Block1Content.Index,
+                    publicKey: Block1Content.PublicKey,
+                    difficulty: long.MaxValue,
+                    totalDifficulty: Block1Content.TotalDifficulty + long.MaxValue,
+                    previousHash: Block1Content.PreviousHash,
+                    transactions: Block1Content.Transactions);
 
                 Exception exception = null;
                 Task task = Task.Run(() =>
                 {
                     try
                     {
-                        Block1Content.Mine(source.Token);
+                        content.Mine(source.Token);
                     }
                     catch (OperationCanceledException ce)
                     {

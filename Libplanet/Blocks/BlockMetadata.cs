@@ -38,9 +38,7 @@ namespace Libplanet.Blocks
 
         private int _protocolVersion = CurrentProtocolVersion;
         private long _index;
-        private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
-        private Address _miner;
-        private PublicKey? _publicKey;
+        private DateTimeOffset _timestamp;
         private long _difficulty;
         private BigInteger _totalDifficulty;
 
@@ -69,16 +67,17 @@ namespace Libplanet.Blocks
         /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
         /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
+            : this(
+                protocolVersion: metadata.ProtocolVersion,
+                index: metadata.Index,
+                timestamp: metadata.Timestamp,
+                miner: metadata.Miner,
+                publicKey: metadata.PublicKey,
+                difficulty: metadata.Difficulty,
+                totalDifficulty: metadata.TotalDifficulty,
+                previousHash: metadata.PreviousHash,
+                txHash: metadata.TxHash)
         {
-            ProtocolVersion = metadata.ProtocolVersion;
-            Index = metadata.Index;
-            Timestamp = metadata.Timestamp;
-            Miner = metadata.Miner;
-            PublicKey = metadata.PublicKey;
-            Difficulty = metadata.Difficulty;
-            TotalDifficulty = metadata.TotalDifficulty;
-            PreviousHash = metadata.PreviousHash;
-            TxHash = metadata.TxHash;
         }
 
         public BlockMetadata(
@@ -92,7 +91,7 @@ namespace Libplanet.Blocks
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
                 timestamp: DateTimeOffset.UtcNow,
-                miner: null,
+                miner: publicKey.ToAddress(),
                 publicKey: publicKey,
                 difficulty: difficulty,
                 totalDifficulty: totalDifficulty,
@@ -105,7 +104,7 @@ namespace Libplanet.Blocks
             int protocolVersion,
             long index,
             DateTimeOffset timestamp,
-            Address? miner,
+            Address miner,
             PublicKey? publicKey,
             long difficulty,
             BigInteger totalDifficulty,
@@ -123,22 +122,21 @@ namespace Libplanet.Blocks
                         $"Argument {nameof(publicKey)} cannot be null for " +
                         $"{nameof(protocolVersion)} >= 2.",
                         nameof(publicKey));
-                Miner = miner is { } m
-                    ? throw new ArgumentException(
-                        $"Argument {nameof(miner)} should be null for " +
-                        $"{nameof(protocolVersion)} >= 2.",
-                        nameof(miner))
-                    : new Address(p);
+                Miner = miner == p.ToAddress()
+                    ? miner
+                    : throw new ArgumentException(
+                        $"Argument {nameof(miner)} should match the derived address of " +
+                        $"{nameof(publicKey)} for {nameof(protocolVersion)} >= 2.",
+                        nameof(miner));
             }
             else
             {
-                PublicKey = null;
-                Miner = miner is { } m
-                    ? m
+                PublicKey = publicKey is null
+                    ? (PublicKey?)null
                     : throw new ArgumentException(
-                        $"Argument {nameof(miner)} cannot be null for " +
-                        $"{nameof(protocolVersion)} < 2.",
-                        nameof(miner));
+                        $"Argument {nameof(publicKey)} should be null for " +
+                        $"{nameof(protocolVersion)} < 2.");
+                Miner = miner;
             }
 
             if (totalDifficulty < difficulty)
@@ -215,56 +213,24 @@ namespace Libplanet.Blocks
         public DateTimeOffset Timestamp
         {
             get => _timestamp;
-            set => _timestamp = value.ToUniversalTime();
+            private set => _timestamp = value.ToUniversalTime();
         }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner
-        {
-            get => _miner;
-            set
-            {
-                if (PublicKey is { } pubKey && !pubKey.ToAddress().Equals(value))
-                {
-                    throw new InvalidBlockPublicKeyException(
-                        $"The miner address {value} is not consistent" +
-                        $"with its public key {pubKey}.",
-                        pubKey
-                    );
-                }
-
-                _miner = value;
-            }
-        }
+        public Address Miner { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
-        /// <remarks>Its setter also updates the <see cref="Miner"/> property too.</remarks>
-        public PublicKey? PublicKey
-        {
-            get => _publicKey;
-            set
-            {
-                _publicKey = value;
-                if (value is { } pubKey)
-                {
-                    _miner = pubKey.ToAddress();
-                }
-            }
-        }
+        public PublicKey? PublicKey { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
         /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
         /// negative.</exception>
         /// <remarks>This cannot not be negative.
-        /// <para>When <see cref="Difficulty"/> is updated, <see cref="TotalDifficulty"/> is also
-        /// updated together.  For example, when <see cref="Difficulty"/> = 10 and
-        /// <see cref="TotalDifficulty"/> = 50, if <see cref="Difficulty"/> is updated to
-        /// 20 (= 10 + 10) <see cref="TotalDifficulty"/> is also updated to 60 (= 50 + 10).</para>
         /// </remarks>
         public long Difficulty
         {
             get => _difficulty;
-            set
+            private set
             {
                 if (value < 0L)
                 {
@@ -273,9 +239,7 @@ namespace Libplanet.Blocks
                     );
                 }
 
-                long delta = value - _difficulty;
                 _difficulty = value;
-                _totalDifficulty += delta;
             }
         }
 
@@ -285,7 +249,7 @@ namespace Libplanet.Blocks
         public BigInteger TotalDifficulty
         {
             get => _totalDifficulty;
-            set
+            private set
             {
                 if (value < BigInteger.Zero)
                 {
@@ -294,13 +258,6 @@ namespace Libplanet.Blocks
                         Difficulty,
                         value
                     );
-                }
-                else if (value < Difficulty)
-                {
-                    string msg =
-                        $"{nameof(TotalDifficulty)} ({value}) cannot be less than " +
-                        $"{nameof(Difficulty)} ({Difficulty}).";
-                    throw new InvalidBlockTotalDifficultyException(msg, Difficulty, value);
                 }
 
                 _totalDifficulty = value;

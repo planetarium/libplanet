@@ -60,7 +60,7 @@ namespace Libplanet.Node.Tests
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 0L,
                 timestamp: new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
-                miner: null,
+                miner: _minerKey.PublicKey.ToAddress(),
                 publicKey: _minerKey.PublicKey,
                 difficulty: 0L,
                 totalDifficulty: 0L,

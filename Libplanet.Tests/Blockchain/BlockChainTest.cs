@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 1,
                 timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                miner: null,
+                miner: _fx.Miner.PublicKey.ToAddress(),
                 publicKey: _fx.Miner.PublicKey,
                 difficulty: 1024L,
                 totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,

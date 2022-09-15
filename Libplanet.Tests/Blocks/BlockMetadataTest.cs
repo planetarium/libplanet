@@ -75,51 +75,76 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset kstTimestamp =
                 new DateTimeOffset(2021, 9, 7, 9, 30, 12, 345, TimeSpan.FromHours(9));
-            Block1Metadata.Timestamp = kstTimestamp;
-            Assert.Equal(TimeSpan.Zero, Block1Metadata.Timestamp.Offset);
+            BlockMetadata metadata = new BlockMetadata(
+                protocolVersion: Block1Metadata.ProtocolVersion,
+                index: Block1Metadata.Index,
+                timestamp: kstTimestamp,
+                miner: Block1Metadata.Miner,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash);
+            Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
                 new DateTime(2021, 9, 7, 0, 30, 12, 345),
-                Block1Metadata.Timestamp.DateTime
-            );
-            Assert.Equal(kstTimestamp, Block1Metadata.Timestamp);
+                metadata.Timestamp.DateTime);
+            Assert.Equal(kstTimestamp, metadata.Timestamp);
         }
 
         [Fact]
         public void Difficulty()
         {
-            BlockMetadata a = Block1Metadata.Copy();
-            a.Difficulty = Block1Metadata.Difficulty + 10L;
-            Assert.Equal(Block1Metadata.Difficulty + 10L, a.Difficulty);
-            Assert.Equal(Block1Metadata.TotalDifficulty + 10, a.TotalDifficulty);
-
-            BlockMetadata b = Block1Metadata.Copy();
-            Assert.Throws<InvalidBlockDifficultyException>(() => b.Difficulty = -1);
-            Assert.Equal(Block1Metadata.Difficulty, b.Difficulty);
+            Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty + 10L,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
+            Assert.Throws<InvalidBlockDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: -1L,
+                totalDifficulty: Block1Metadata.TotalDifficulty,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
         }
 
         [Fact]
         public void TotalDifficulty()
         {
-            BlockMetadata a = Block1Metadata.Copy();
-            a.TotalDifficulty = Block1Metadata.TotalDifficulty + 10;
-            Assert.Equal(Block1Metadata.TotalDifficulty + 10, a.TotalDifficulty);
-            Assert.Equal(Block1Metadata.Difficulty, a.Difficulty);
+            BlockMetadata metadata = new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.TotalDifficulty + 10,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash);
+            Assert.Equal(Block1Metadata.TotalDifficulty + 10, metadata.TotalDifficulty);
+            Assert.Equal(Block1Metadata.Difficulty, metadata.Difficulty);
 
-            BlockMetadata b = Block1Content.Copy();
+            // Negative total difficulty is not allowed.
             InvalidBlockTotalDifficultyException e =
-                Assert.Throws<InvalidBlockTotalDifficultyException>(() => b.TotalDifficulty = -1);
-            Assert.Equal(Block1Metadata.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(Block1Metadata.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
+                Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: -1L,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
             Assert.Equal(-1, e.TotalDifficulty);
 
+            // Total difficulty less than difficulty is not allowed.
             e = Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => b.TotalDifficulty = b.Difficulty - 1L
-            );
-            Assert.Equal(Block1Metadata.TotalDifficulty, b.TotalDifficulty);
-            Assert.Equal(Block1Metadata.Difficulty, b.Difficulty);
-            Assert.Equal(b.Difficulty, e.Difficulty);
-            Assert.Equal(b.Difficulty - 1L, e.TotalDifficulty);
+                () => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                difficulty: Block1Metadata.Difficulty,
+                totalDifficulty: Block1Metadata.Difficulty - 1L,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash));
+            Assert.Equal(Block1Metadata.Difficulty - 1L, e.TotalDifficulty);
         }
 
         [Fact]
@@ -317,7 +342,13 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                Block1Metadata.Difficulty = long.MaxValue;
+                BlockMetadata metadata = new BlockMetadata(
+                    index: Block1Metadata.Index,
+                    publicKey: Block1Metadata.PublicKey,
+                    difficulty: long.MaxValue,
+                    totalDifficulty: Block1Metadata.TotalDifficulty + long.MaxValue,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash);
 
                 Exception exception = null;
                 Task task = Task.Run(() =>

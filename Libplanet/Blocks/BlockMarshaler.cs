@@ -158,6 +158,18 @@ namespace Libplanet.Blocks
 
         public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
         {
+            Address miner;
+            PublicKey? publicKey = null;
+            if (marshaled.ContainsKey(PublicKeyKey))
+            {
+                publicKey = new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+                miner = publicKey.ToAddress();
+            }
+            else
+            {
+                miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+            }
+
 #pragma warning disable SA1118 // The parameter spans multiple lines
             return new BlockMetadata(
                 protocolVersion: marshaled.ContainsKey(ProtocolVersionKey)
@@ -168,12 +180,8 @@ namespace Libplanet.Blocks
                     marshaled.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
-                miner: marshaled.ContainsKey(MinerKey)
-                    ? new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray)
-                    : (Address?)null,
-                publicKey: marshaled.ContainsKey(PublicKeyKey)
-                    ? new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray)
-                    : (PublicKey?)null,
+                miner: miner,
+                publicKey: publicKey,
                 difficulty: marshaled.GetValue<Integer>(DifficultyKey),
                 totalDifficulty: marshaled.GetValue<Integer>(TotalDifficultyKey),
                 previousHash: marshaled.ContainsKey(PreviousHashKey)
@@ -182,7 +190,8 @@ namespace Libplanet.Blocks
                 txHash: marshaled.ContainsKey(TxHashKey)
                     ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null);
-        }
+#pragma warning restore SA1118
+}
 
         public static Nonce UnmarshalNonce(Dictionary marshaled) =>
             new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);

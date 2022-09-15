@@ -162,7 +162,7 @@ namespace Libplanet.Blockchain
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: index,
                 timestamp: timestamp,
-                miner: null,
+                miner: miner.ToAddress(),
                 publicKey: miner.PublicKey,
                 difficulty: difficulty,
                 totalDifficulty: Tip.TotalDifficulty + difficulty,

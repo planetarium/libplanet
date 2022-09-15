@@ -41,24 +41,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockNonceException>(
                 () => new PreEvaluationBlock<Arithmetic>(content, _invalidBlock1Proof)
             );
-
-            content = _contents.Block1Content.Copy();
-            content.Difficulty = 0L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.Difficulty = 1L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.TotalDifficulty = 1;
-            Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
-            );
         }
 
         [Fact]
@@ -128,24 +110,6 @@ namespace Libplanet.Tests.Blocks
                     nonce: _invalidBlock1Proof.Nonce
                 )
             );
-
-            content = _contents.Block1Content.Copy();
-            content.Difficulty = 0L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validBlock1Proof.Nonce)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.Difficulty = 1L;
-            Assert.Throws<InvalidBlockDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
-            );
-
-            content = _contents.GenesisContent.Copy();
-            content.TotalDifficulty = 1;
-            Assert.Throws<InvalidBlockTotalDifficultyException>(
-                () => new PreEvaluationBlock<Arithmetic>(content, _validGenesisProof)
-            );
         }
 
         [Fact]
@@ -168,26 +132,19 @@ namespace Libplanet.Tests.Blocks
             var preEvalBlockPv0 = new PreEvaluationBlock<Arithmetic>(
                 contentPv0,
                 nonce: _validBlock1Proof.Nonce,
-                preEvaluationHash: _validBlock1Proof.PreEvaluationHash
-            );
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             AssertBlockContentsEqual(contentPv0, preEvalBlockPv0);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlockPv0.Nonce);
             AssertBytesEqual(
                 _validBlock1Proof.PreEvaluationHash,
-                preEvalBlockPv0.PreEvaluationHash
-            );
+                preEvalBlockPv0.PreEvaluationHash);
 
             // However, such bug must be fixed after ProtocolVersion > 0:
-            BlockContent<Arithmetic> contentPv1 = _contents.Block1Content.Copy();
-            contentPv1.PublicKey = null;
-            contentPv1.Timestamp += TimeSpan.FromSeconds(1);
             Assert.Throws<InvalidBlockPreEvaluationHashException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
-                    contentPv1,
+                    _contents.Block1ContentPv1,
                     nonce: _validBlock1Proof.Nonce,
-                    preEvaluationHash: _validBlock1Proof.PreEvaluationHash
-                )
-            );
+                    preEvaluationHash: _validBlock1Proof.PreEvaluationHash));
         }
 
         [Fact]
