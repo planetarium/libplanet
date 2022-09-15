@@ -40,7 +40,7 @@ namespace Libplanet.Action
         /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
         /// <see cref="Block{T}"/> that gets evaluated.</param>
         /// <param name="policyUpdateValidatorAction">The <see cref="IAction"/> provided by
-        /// <see cref="IBlockPolicy{T}.UpdateValidatorSetAction"/> to evaluate at th end for
+        /// <see cref="IBlockPolicy{T}.UpdateValidatorSetAction"/> to evaluate at the end for
         /// each <see cref="Block{T}"/>.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
