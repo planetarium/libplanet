@@ -33,6 +33,7 @@ To be released.
 ### Added APIs
 
  -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
+ -  `TxId` now implements `IEquatable<TxId>` interface.  [[#2320]]
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
