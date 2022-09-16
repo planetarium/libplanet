@@ -21,10 +21,6 @@ namespace Libplanet.Blocks
     /// <para>To represent a block content including its metadata and transactions, use <see
     /// cref="BlockContent{T}"/>, which is its subclass.</para>
     /// </summary>
-    /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
-    /// <see cref="PreEvaluationBlock{T}"/>, this type is mutable.  To get a distinct instance with
-    /// partly changed fields, use <see cref="BlockMetadata(IBlockMetadata)"/> constructor and
-    /// property setters on a copy instead.</remarks>
     /// <seealso cref="BlockContent{T}"/>
     public class BlockMetadata : IBlockMetadata
     {
@@ -54,18 +50,6 @@ namespace Libplanet.Blocks
         /// <param name="metadata">This source of the block metadata to copy.  This hasn't be
         /// a actual <see cref="BlockMetadata"/> instance, but can be any object which implements
         /// <see cref="IBlockMetadata"/> instance.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
-        /// protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.Difficulty"/> is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
             : this(
                 protocolVersion: metadata.ProtocolVersion,
@@ -80,6 +64,33 @@ namespace Libplanet.Blocks
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockMetadata"/> with
+        /// <see cref="BlockMetadata.CurrentProtocolVersion"/> as its
+        /// <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </summary>
+        /// <remarks>
+        /// With this, <see cref="IBlockMetadata.Timestamp"/> is set as current time and
+        /// <see cref="IBlockMetadata.Miner"/> is derived from <paramref name="publicKey"/>.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
+        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
+        /// less than zero.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// <paramref name="difficulty"/> is less than zero.</exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when either
+        /// <paramref name="totalDifficulty"/> is less than zero or less than
+        /// <paramref name="difficulty"/>.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
+        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
+        /// </exception>
         public BlockMetadata(
             long index,
             PublicKey publicKey,
@@ -100,6 +111,42 @@ namespace Libplanet.Blocks
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockMetadata"/> by manually filling in the fields for
+        /// <see cref="BlockMetadata"/>.  All public constructors should be redirected to this one.
+        /// </summary>
+        /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </param>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
+        /// <param name="miner">Goes to <see cref="IBlockMetadata.Miner"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
+        /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
+        /// </param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
+        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
+        /// less than zero.</exception>
+        /// <exception cref="InvalidBlockPublicKeyException">Thrown when the following conditions
+        /// aren't met:
+        /// <list type="bullet">
+        ///   <item><description>If <paramref name="protocolVersion"/> >= 2,
+        ///   <paramref name="miner"/> should match the derived address of
+        ///   <paramref name="publicKey"/>.</description></item>
+        ///   <item><description>Otherwise, <paramref name="publicKey"/> must be
+        ///   <see langword="null"/>.</description></item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// <paramref name="difficulty"/> is less than zero.</exception>
+        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when either
+        /// <paramref name="totalDifficulty"/> is less than zero or less than
+        /// <paramref name="difficulty"/>.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
+        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
+        /// </exception>
         internal BlockMetadata(
             int protocolVersion,
             long index,
@@ -118,24 +165,25 @@ namespace Libplanet.Blocks
             {
                 PublicKey = publicKey is { } p
                     ? p
-                    : throw new ArgumentException(
+                    : throw new InvalidBlockPublicKeyException(
                         $"Argument {nameof(publicKey)} cannot be null for " +
                         $"{nameof(protocolVersion)} >= 2.",
-                        nameof(publicKey));
+                        publicKey);
                 Miner = miner == p.ToAddress()
                     ? miner
-                    : throw new ArgumentException(
+                    : throw new InvalidBlockPublicKeyException(
                         $"Argument {nameof(miner)} should match the derived address of " +
                         $"{nameof(publicKey)} for {nameof(protocolVersion)} >= 2.",
-                        nameof(miner));
+                        publicKey);
             }
             else
             {
                 PublicKey = publicKey is null
                     ? (PublicKey?)null
-                    : throw new ArgumentException(
+                    : throw new InvalidBlockPublicKeyException(
                         $"Argument {nameof(publicKey)} should be null for " +
-                        $"{nameof(protocolVersion)} < 2.");
+                        $"{nameof(protocolVersion)} < 2.",
+                        publicKey);
                 Miner = miner;
             }
 

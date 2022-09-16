@@ -19,7 +19,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The height of the block.
         /// </summary>
-        /// <remarks>Zero means it is a genesis block.  Disallowed to be negative.</remarks>
+        /// <remarks>Zero means it is a genesis block.  Not allowed to be negative.</remarks>
         long Index { get; }
 
         /// <summary>
