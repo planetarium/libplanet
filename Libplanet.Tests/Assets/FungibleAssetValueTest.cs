@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Assets;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Assets
 {
@@ -530,6 +531,40 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(new FungibleAssetValue(FOO, 123, 0), FungibleAssetValue.Parse(FOO, "123"));
             Assert.Equal(new FungibleAssetValue(FOO, 12, 0), FungibleAssetValue.Parse(FOO, "+12"));
             Assert.Equal(new FungibleAssetValue(FOO, -12, 0), FungibleAssetValue.Parse(FOO, "-12"));
+        }
+
+        [Fact]
+        public void JsonSerialization()
+        {
+            var v = new FungibleAssetValue(FOO, 123, 45);
+            AssertJsonSerializable(v, @"
+                {
+                    ""quantity"": ""123.45"",
+                    ""currency"": {
+                        ""hash"": ""946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25"",
+                        ""ticker"": ""FOO"",
+                        ""decimalPlaces"": 2,
+                        ""minters"": null,
+                        ""maximumSupply"": null,
+                        ""totalSupplyTrackable"": true,
+                    }
+                }
+            ");
+
+            v = new FungibleAssetValue(FOO, -456, 0);
+            AssertJsonSerializable(v, @"
+                {
+                    ""quantity"": ""-456"",
+                    ""currency"": {
+                        ""hash"": ""946ea39b6f49926c0ed3df2a3aa0d2aba0f0fc25"",
+                        ""ticker"": ""FOO"",
+                        ""decimalPlaces"": 2,
+                        ""minters"": null,
+                        ""maximumSupply"": null,
+                        ""totalSupplyTrackable"": true,
+                    }
+                }
+            ");
         }
     }
 }

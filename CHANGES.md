@@ -32,6 +32,8 @@ To be released.
         Note that it contains its `Hash` and it throws `JsonException`
         if a JSON object to deserialize has an inconsistent `Hash` with
         other field values.
+     -  A `FungibleAssetValue` became represented as an object with
+        its `Currency` object and `Quantity` string.
      -  A `HashDigest` became represented as a single hexadecimal string in
         JSON.
      -  A `TxId` became represented as a single hexadecimal string in JSON.
