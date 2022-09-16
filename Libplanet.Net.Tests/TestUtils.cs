@@ -176,7 +176,7 @@ namespace Libplanet.Net.Tests
                     GenesisMiner,
                     TestUtils.Policy.BlockAction,
                     TestUtils.Policy.UpdateValidatorSetAction,
-                    _ => true,
+                    TestUtils.Policy.NativeTokens,
                     new TrieStateStore(new DefaultKeyValueStore(null)));
         }
 

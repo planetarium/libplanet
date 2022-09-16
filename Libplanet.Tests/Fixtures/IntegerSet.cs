@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Fixtures
                 privateKey: Miner,
                 blockAction: policy.BlockAction,
                 updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
+                nativeTokens: policy.NativeTokens,
                 stateStore: StateStore
             );
             Chain = new BlockChain<Arithmetic>(

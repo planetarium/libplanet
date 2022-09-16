@@ -31,7 +31,7 @@ namespace Libplanet.Action
         private readonly IAction? _policyUpdateValidatorAction;
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
-        private readonly Predicate<Currency> _nativeTokenPredicate;
+        private readonly IImmutableSet<Currency> _nativeTokens;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
@@ -48,16 +48,16 @@ namespace Libplanet.Action
         /// a provided <see cref="BlockHash"/>.</param>
         /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
         public ActionEvaluator(
             IAction? policyBlockAction,
             IAction? policyUpdateValidatorAction,
             IBlockChainStates<T> blockChainStates,
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
-            Predicate<Currency> nativeTokenPredicate)
+            IImmutableSet<Currency>? nativeTokens)
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
@@ -65,7 +65,7 @@ namespace Libplanet.Action
             _blockChainStates = blockChainStates;
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
-            _nativeTokenPredicate = nativeTokenPredicate;
+            _nativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Libplanet.Action
                 lastCommit: null,
                 rehearsal: true,
                 previousBlockStatesTrie: null,
-                nativeTokenPredicate: _ => true);
+                nativeTokens: null);
 
             if (evaluations.Any())
             {
@@ -248,9 +248,9 @@ namespace Libplanet.Action
         /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of last <see cref="Block{T}"/>.
         /// </param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
@@ -292,7 +292,7 @@ namespace Libplanet.Action
             Address signer,
             byte[] signature,
             IImmutableList<IAction> actions,
-            Predicate<Currency> nativeTokenPredicate,
+            IImmutableSet<Currency>? nativeTokens = null,
             BlockCommit? lastCommit = null,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
@@ -313,7 +313,7 @@ namespace Libplanet.Action
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
-                    nativeTokenPredicate: nativeTokenPredicate);
+                    nativeTokens: nativeTokens);
             }
 
             byte[] hashedSignature;
@@ -621,7 +621,7 @@ namespace Libplanet.Action
                 lastCommit: block.LastCommit,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
-                nativeTokenPredicate: _nativeTokenPredicate);
+                nativeTokens: _nativeTokens);
         }
 
         /// <summary>
@@ -690,7 +690,7 @@ namespace Libplanet.Action
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,
-                nativeTokenPredicate: _nativeTokenPredicate
+                nativeTokens: _nativeTokens
             ).Single();
         }
 
@@ -739,7 +739,7 @@ namespace Libplanet.Action
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,
-                nativeTokenPredicate: _nativeTokenPredicate
+                nativeTokens: _nativeTokens
             ).Single();
         }
 

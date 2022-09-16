@@ -9,10 +9,11 @@ namespace Libplanet.PoS.Model
     {
         private readonly SortedList<long, FungibleAssetValue> _rewards;
 
-        public ValidatorRewards(Address validatorAddress)
+        public ValidatorRewards(Address validatorAddress, Currency currency)
         {
-            Address = DeriveAddress(validatorAddress);
+            Address = DeriveAddress(validatorAddress, currency);
             ValidatorAddress = validatorAddress;
+            Currency = currency;
             _rewards = new SortedList<long, FungibleAssetValue>();
         }
 
@@ -41,16 +42,23 @@ namespace Libplanet.PoS.Model
 
         public Address ValidatorAddress { get; }
 
+        public Currency Currency { get; }
+
         public ImmutableSortedDictionary<long, FungibleAssetValue> Rewards
             => _rewards.ToImmutableSortedDictionary();
 
-        public static Address DeriveAddress(Address validatorAddress)
+        public static Address DeriveAddress(Address validatorAddress, Currency currency)
         {
-            return validatorAddress.Derive("ValidatorRewardsAddress");
+            return validatorAddress.Derive("ValidatorRewardsAddress").Derive(currency.Ticker);
         }
 
         public void Add(long blockHeight, FungibleAssetValue reward)
         {
+            if (!reward.Currency.Equals(Currency))
+            {
+                throw new InvalidCurrencyException(Currency, reward.Currency);
+            }
+
             _rewards.Add(blockHeight, reward);
         }
 

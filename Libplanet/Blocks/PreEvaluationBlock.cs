@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -67,9 +66,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The block combined with the resulting <see cref="Block{T}.StateRootHash"/>.
         /// It is signed by the given <paramref name="privateKey"/>.</returns>
@@ -91,13 +90,13 @@ namespace Libplanet.Blocks
             PrivateKey privateKey,
             IAction? blockAction,
             IAction? updateValidatorSetAction,
-            Predicate<Currency> nativeTokenPredicate,
+            IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore
         ) =>
             Sign(privateKey, DetermineStateRootHash(
                 blockAction,
                 updateValidatorSetAction,
-                nativeTokenPredicate,
+                nativeTokens,
                 stateStore));
 
         /// <summary>
@@ -161,9 +160,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
         /// <remarks>This can be used with only genesis blocks.  For blocks with indices greater
@@ -174,13 +173,13 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
             IAction? updateValidatorSetAction,
-            Predicate<Currency> nativeTokenPredicate,
+            IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore
         )
             => DetermineStateRootHash(
                 blockAction,
                 updateValidatorSetAction,
-                nativeTokenPredicate,
+                nativeTokens,
                 stateStore,
                 out _);
 
@@ -193,9 +192,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
-        /// <param name="nativeTokenPredicate">A predicate function to determine whether
-        /// the specified <see cref="Currency"/> is a native token defined by chain's
-        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
+        /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
+        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
         /// <param name="stateStore">The <see cref="BlockChain{T}.StateStore"/>.</param>
         /// <param name="statesDelta">Returns made changes on states.</param>
         /// <returns>The resulting <see cref="Block{T}.StateRootHash"/>.</returns>
@@ -207,7 +206,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
             IAction? updateValidatorSetAction,
-            Predicate<Currency> nativeTokenPredicate,
+            IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore,
             out IImmutableDictionary<string, IValue> statesDelta
         )
@@ -228,7 +227,7 @@ namespace Libplanet.Blocks
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
                 genesisHash: null,
-                nativeTokenPredicate: nativeTokenPredicate
+                nativeTokens: nativeTokens
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =
                 actionEvaluator.Evaluate(this, StateCompleterSet<T>.Reject);

@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -14,6 +16,7 @@ namespace Libplanet.Tests.PoS
         private readonly Address _delegatorAddress;
         private readonly Address _validatorAddress;
         private readonly Address _undelegationAddress;
+        private ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public UndelegateCtrlTest()
@@ -23,6 +26,8 @@ namespace Libplanet.Tests.PoS
             _delegatorAddress = CreateAddress();
             _validatorAddress = Validator.DeriveAddress(_operatorAddress);
             _undelegationAddress = Undelegation.DeriveAddress(_delegatorAddress, _validatorAddress);
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
         }
 
@@ -33,10 +38,20 @@ namespace Libplanet.Tests.PoS
             _states = _states.MintAsset(_delegatorAddress, Asset.ConsensusToken * 50);
             Assert.Throws<InvalidCurrencyException>(
                 () => _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.ConsensusToken * 30, 1));
+                    _states,
+                    _delegatorAddress,
+                    _validatorAddress,
+                    Asset.ConsensusToken * 30,
+                    _nativeTokens,
+                    1));
             Assert.Throws<InvalidCurrencyException>(
                 () => _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.GovernanceToken * 30, 1));
+                    _states,
+                    _delegatorAddress,
+                    _validatorAddress,
+                    Asset.GovernanceToken * 30,
+                    _nativeTokens,
+                    1));
         }
 
         [Fact]
@@ -45,7 +60,12 @@ namespace Libplanet.Tests.PoS
             Initialize(500, 500, 100, 100);
             Assert.Throws<NullValidatorException>(
                 () => _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, CreateAddress(), Asset.Share * 10, 1));
+                    _states,
+                    _delegatorAddress,
+                    CreateAddress(),
+                    Asset.Share * 10,
+                    _nativeTokens,
+                    1));
         }
 
         [Fact]
@@ -55,12 +75,22 @@ namespace Libplanet.Tests.PoS
             for (long i = 0; i < 10; i++)
             {
                 _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.Share * 1, i);
+                    _states,
+                    _delegatorAddress,
+                    _validatorAddress,
+                    Asset.Share * 1,
+                    _nativeTokens,
+                    i);
             }
 
             Assert.Throws<MaximumUndelegationEntriesException>(
                 () => _states = UndelegateCtrl.Execute(
-                    _states, _delegatorAddress, _validatorAddress, Asset.Share * 1, 1));
+                    _states,
+                    _delegatorAddress,
+                    _validatorAddress,
+                    Asset.Share * 1,
+                    _nativeTokens,
+                    1));
         }
 
         [Fact]
@@ -73,6 +103,7 @@ namespace Libplanet.Tests.PoS
                     _delegatorAddress,
                     _validatorAddress,
                     Asset.Share * 101,
+                    _nativeTokens,
                     1));
         }
 
@@ -88,7 +119,12 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(operatorMintAmount, delegatorMintAmount, selfDelegateAmount, delegateAmount);
             _states = UndelegateCtrl.Execute(
-                _states, _delegatorAddress, _validatorAddress, Asset.Share * undelegateAmount, 1);
+                _states,
+                _delegatorAddress,
+                _validatorAddress,
+                Asset.Share * undelegateAmount,
+                _nativeTokens,
+                1);
             Assert.Single(
                 UndelegateCtrl.GetUndelegation(_states, _undelegationAddress)
                 .UndelegationEntryAddresses);
@@ -135,6 +171,7 @@ namespace Libplanet.Tests.PoS
                 _delegatorAddress,
                 _validatorAddress,
                 Asset.Share * undelegateAmount,
+                _nativeTokens,
                 1);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
@@ -143,7 +180,11 @@ namespace Libplanet.Tests.PoS
                 Asset.ConsensusToken * (selfDelegateAmount + delegateAmount - undelegateAmount),
                 _states.GetBalance(_validatorAddress, Asset.ConsensusToken));
             _states = UndelegateCtrl.Cancel(
-                _states, _undelegationAddress, Asset.ConsensusToken * cancelAmount, 2);
+                _states,
+                _undelegationAddress,
+                Asset.ConsensusToken * cancelAmount,
+                _nativeTokens,
+                2);
             Assert.Equal(
                 Asset.GovernanceToken * (delegatorMintAmount - delegateAmount),
                 _states.GetBalance(_delegatorAddress, Asset.GovernanceToken));
@@ -182,7 +223,12 @@ namespace Libplanet.Tests.PoS
         {
             Initialize(operatorMintAmount, delegatorMintAmount, selfDelegateAmount, delegateAmount);
             _states = UndelegateCtrl.Execute(
-                _states, _delegatorAddress, _validatorAddress, Asset.Share * undelegateAmount, 1);
+                _states,
+                _delegatorAddress,
+                _validatorAddress,
+                Asset.Share * undelegateAmount,
+                _nativeTokens,
+                1);
             Assert.Equal(
                 Asset.GovernanceToken * 0,
                 _states.GetBalance(_validatorAddress, Asset.GovernanceToken));
@@ -236,12 +282,14 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress,
                 _operatorPublicKey,
                 Asset.GovernanceToken * selfDelegateAmount,
+                _nativeTokens,
                 1);
             _states = DelegateCtrl.Execute(
                 _states,
                 _delegatorAddress,
                 _validatorAddress,
                 Asset.GovernanceToken * delegateAmount,
+                _nativeTokens,
                 1);
         }
     }

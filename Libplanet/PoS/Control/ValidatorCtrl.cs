@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Crypto;
@@ -49,6 +50,7 @@ namespace Libplanet.PoS.Control
             Address operatorAddress,
             PublicKey operatorPublicKey,
             FungibleAssetValue governanceToken,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             if (!governanceToken.Currency.Equals(Asset.GovernanceToken))
@@ -77,6 +79,7 @@ namespace Libplanet.PoS.Control
                 operatorAddress,
                 validator.Address,
                 governanceToken,
+                nativeTokens,
                 blockHeight);
 
             // Does not save current instance, since it's done on delegation

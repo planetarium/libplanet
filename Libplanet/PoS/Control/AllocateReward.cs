@@ -20,14 +20,18 @@ namespace Libplanet.PoS.Control
 
         public static BigInteger BonusProposerRewardDenom => 100;
 
+        public static Address RewardAddress(Address holderAddress)
+        {
+            return holderAddress.Derive("RewardAddress");
+        }
+
         internal static IAccountStateDelta Execute(
             IAccountStateDelta states,
-            FungibleAssetValue blockReward,
+            IImmutableSet<Currency> nativeTokens,
             IEnumerable<Vote>? votes,
             Address miner,
             long blockIndex)
         {
-            states = states.MintAsset(ReservedAddress.RewardPool, blockReward);
             ValidatorSet bondedValidatorSet;
             (states, bondedValidatorSet) = ValidatorSetCtrl.FetchBondedValidatorSet(states);
 
@@ -36,29 +40,46 @@ namespace Libplanet.PoS.Control
                 return states;
             }
 
-            states = DistributeProposerReward(states, miner, bondedValidatorSet, votes);
-            states = DistributeValidatorReward(states, bondedValidatorSet, votes, blockIndex);
+            foreach (Currency nativeToken in nativeTokens)
+            {
+                states = DistributeProposerReward(
+                    states, nativeToken, miner, bondedValidatorSet, votes);
+                states = DistributeValidatorReward(
+                    states, nativeToken, bondedValidatorSet, votes, blockIndex);
 
-            states = states.TransferAsset(
-                ReservedAddress.RewardPool,
-                ReservedAddress.CommunityPool,
-                states.GetBalance(ReservedAddress.RewardPool, Asset.ConsensusToken));
+                FungibleAssetValue communityFund = states.GetBalance(
+                    ReservedAddress.RewardPool, nativeToken);
+
+                if (communityFund.Sign > 0)
+                {
+                    states = states.TransferAsset(
+                        ReservedAddress.RewardPool,
+                        ReservedAddress.CommunityPool,
+                        states.GetBalance(ReservedAddress.RewardPool, nativeToken));
+                }
+            }
 
             return states;
         }
 
         internal static IAccountStateDelta DistributeProposerReward(
             IAccountStateDelta states,
+            Currency nativeToken,
             Address proposer,
             ValidatorSet bondedValidatorSet,
             IEnumerable<Vote> votes)
         {
+            FungibleAssetValue blockReward = states.GetBalance(
+                ReservedAddress.RewardPool, nativeToken);
+
+            if (blockReward.Sign <= 0)
+            {
+                return states;
+            }
+
             ImmutableDictionary<PublicKey, ValidatorPower> bondedValidatorDict
                 = bondedValidatorSet.Set.ToImmutableDictionary(
                     bondedValidator => bondedValidator.OperatorPublicKey);
-
-            FungibleAssetValue blockReward = states.GetBalance(
-                ReservedAddress.RewardPool, Asset.ConsensusToken);
 
             FungibleAssetValue votePowerNumer
                 = votes.Aggregate(
@@ -69,31 +90,36 @@ namespace Libplanet.PoS.Control
                 = bondedValidatorSet.TotalConsensusToken;
 
             var (baseProposerReward, _)
-                = (blockReward * BaseProposerRewardNumer)
-                .DivRem(BaseProposerRewardDenom);
+                = (blockReward * BaseProposerRewardNumer).DivRem(BaseProposerRewardDenom);
             var (bonusProposerReward, _)
                 = (blockReward * votePowerNumer.RawValue * BonusProposerRewardNumer)
                 .DivRem(votePowerDenom.RawValue * BonusProposerRewardDenom);
-
             FungibleAssetValue proposerReward = baseProposerReward + bonusProposerReward;
 
-            states = states.TransferAsset(ReservedAddress.RewardPool, proposer, proposerReward);
+            states = states.TransferAsset(
+                ReservedAddress.RewardPool, RewardAddress(proposer), proposerReward);
 
             return states;
         }
 
         internal static IAccountStateDelta DistributeValidatorReward(
             IAccountStateDelta states,
+            Currency nativeToken,
             ValidatorSet bondedValidatorSet,
             IEnumerable<Vote> votes,
             long blockHeight)
         {
+            FungibleAssetValue validatorRewardSum = states.GetBalance(
+                ReservedAddress.RewardPool, nativeToken);
+
+            if (validatorRewardSum.Sign <= 0)
+            {
+                return states;
+            }
+
             ImmutableDictionary<PublicKey, ValidatorPower> bondedValidatorDict
                 = bondedValidatorSet.Set.ToImmutableDictionary(
                     bondedValidator => bondedValidator.OperatorPublicKey);
-
-            FungibleAssetValue validatorRewardSum = states.GetBalance(
-                ReservedAddress.RewardPool, Asset.ConsensusToken);
 
             foreach (Vote vote in votes)
             {
@@ -120,15 +146,21 @@ namespace Libplanet.PoS.Control
                 FungibleAssetValue delegationRewardSum = validatorReward - commission;
 
                 states = states.TransferAsset(
-                    ReservedAddress.RewardPool, vote.Validator.ToAddress(), commission);
+                    ReservedAddress.RewardPool,
+                    RewardAddress(vote.Validator.ToAddress()),
+                    commission);
 
                 states = states.TransferAsset(
                     ReservedAddress.RewardPool,
-                    ValidatorRewards.DeriveAddress(bondedValidator.ValidatorAddress),
+                    ValidatorRewards.DeriveAddress(bondedValidator.ValidatorAddress, nativeToken),
                     delegationRewardSum);
 
                 states = ValidatorRewardsCtrl.Add(
-                    states, bondedValidator.ValidatorAddress, blockHeight, delegationRewardSum);
+                    states,
+                    bondedValidator.ValidatorAddress,
+                    nativeToken,
+                    blockHeight,
+                    delegationRewardSum);
             }
 
             return states;

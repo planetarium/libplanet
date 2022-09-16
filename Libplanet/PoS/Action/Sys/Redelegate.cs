@@ -73,6 +73,7 @@ namespace Libplanet.Action.Sys
                 SrcValidator,
                 DstValidator,
                 ShareAmount,
+                ctx.NativeTokens,
                 ctx.BlockIndex);
 
             return states;

@@ -10,7 +10,11 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added `LastCommit` property to `IActionContext`.  [[#2297]]
+ -  Added property `LastCommit` to `IActionContext`.  [[#2297]]
+ -  Replace property `NativeTokenPredicate` with `NativeTokens` on
+    `IActionContext`.  [[#2316]]
+ -  Replace parameter `nativeTokenPredicate` with `nativeTokens` on
+    `ActionEvaluator`.  [[#2316]]
 
 ### Backward-incompatible network protocol changes
 
@@ -70,6 +74,10 @@ To be released.
 ### CLI tools
 
 [#2234]: https://github.com/planetarium/libplanet/pull/2234
+[#2237]: https://github.com/planetarium/libplanet/pull/2237
+[#2287]: https://github.com/planetarium/libplanet/pull/2287
+[#2297]: https://github.com/planetarium/libplanet/pull/2297
+[#2316]: https://github.com/planetarium/libplanet/pull/2316
 
 
 Version PBFT

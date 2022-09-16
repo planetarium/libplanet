@@ -56,7 +56,8 @@ namespace Libplanet.Action.Sys
 
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
-            states = DelegateCtrl.Execute(states, ctx.Signer, Validator, Amount, ctx.BlockIndex);
+            states = DelegateCtrl.Execute(
+                states, ctx.Signer, Validator, Amount, ctx.NativeTokens, ctx.BlockIndex);
 
             return states;
         }

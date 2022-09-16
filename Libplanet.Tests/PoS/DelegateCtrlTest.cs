@@ -1,4 +1,6 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
+using Libplanet.Assets;
 using Libplanet.Crypto;
 using Libplanet.PoS;
 using Libplanet.PoS.Control;
@@ -13,6 +15,7 @@ namespace Libplanet.Tests.PoS
         private readonly Address _operatorAddress;
         private readonly Address _delegatorAddress;
         private readonly Address _validatorAddress;
+        private ImmutableHashSet<Currency> _nativeTokens;
         private IAccountStateDelta _states;
 
         public DelegateCtrlTest()
@@ -21,6 +24,8 @@ namespace Libplanet.Tests.PoS
             _operatorAddress = _operatorPublicKey.ToAddress();
             _delegatorAddress = CreateAddress();
             _validatorAddress = Validator.DeriveAddress(_operatorAddress);
+            _nativeTokens = ImmutableHashSet.Create(
+                Asset.GovernanceToken, Asset.ConsensusToken, Asset.Share);
             _states = InitializeStates();
         }
 
@@ -35,6 +40,7 @@ namespace Libplanet.Tests.PoS
                         _delegatorAddress,
                         _validatorAddress,
                         Asset.ConsensusToken * 30,
+                        _nativeTokens,
                         1));
         }
 
@@ -48,6 +54,7 @@ namespace Libplanet.Tests.PoS
                         _delegatorAddress,
                         CreateAddress(),
                         Asset.GovernanceToken * 10,
+                        _nativeTokens,
                         1));
         }
 
@@ -62,6 +69,7 @@ namespace Libplanet.Tests.PoS
                     _delegatorAddress,
                     _validatorAddress,
                     Asset.GovernanceToken * 10,
+                    _nativeTokens,
                     1));
         }
 
@@ -80,6 +88,7 @@ namespace Libplanet.Tests.PoS
                 _delegatorAddress,
                 _validatorAddress,
                 Asset.GovernanceToken * delegateAmount,
+                _nativeTokens,
                 1);
             Assert.Equal(
                 Asset.GovernanceToken * 0,
@@ -129,6 +138,7 @@ namespace Libplanet.Tests.PoS
                 _operatorAddress,
                 _operatorPublicKey,
                 Asset.GovernanceToken * selfDelegateAmount,
+                _nativeTokens,
                 1);
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -52,6 +53,7 @@ namespace Libplanet.PoS.Control
             Address srcValidatorAddress,
             Address dstValidatorAddress,
             FungibleAssetValue redelegatingShare,
+            IImmutableSet<Currency> nativeTokens,
             long blockHeight)
         {
             // TODO: Failure condition
@@ -100,12 +102,14 @@ namespace Libplanet.PoS.Control
                 redelegatingShare,
                 srcValidatorAddress,
                 redelegation.SrcDelegationAddress,
+                nativeTokens,
                 blockHeight);
             (states, issuedShare) = Bond.Execute(
                 states,
                 unbondingConsensusToken,
                 dstValidatorAddress,
                 redelegation.DstDelegationAddress,
+                nativeTokens,
                 blockHeight);
 
             if (!(ValidatorCtrl.GetValidator(states, srcValidatorAddress) is { } srcValidator))

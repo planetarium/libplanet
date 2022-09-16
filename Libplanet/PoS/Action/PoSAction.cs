@@ -35,6 +35,8 @@ namespace Libplanet.Action
             // Rehearsal mode is not implemented
             states = ValidatorSetCtrl.Update(states, ctx.BlockIndex);
 
+            states = AllocateReward.Execute(
+                states, ctx.NativeTokens, ctx.LastCommit?.Votes, ctx.Miner, ctx.BlockIndex);
             return states;
         }
     }

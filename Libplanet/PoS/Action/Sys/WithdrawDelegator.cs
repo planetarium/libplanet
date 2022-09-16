@@ -49,10 +49,18 @@ namespace Libplanet.Action.Sys
             // if (ctx.Rehearsal)
             // Rehearsal mode is not implemented
             states = DelegateCtrl.Distribute(
-                states, Delegation.DeriveAddress(ctx.Signer, Validator), ctx.BlockIndex);
-            FungibleAssetValue withdrawAmount = states.GetBalance(ctx.Signer, Asset.ConsensusToken);
-            states = states.MintAsset(ctx.Signer, Asset.GovernanceFromConsensus(withdrawAmount));
-            states = states.BurnAsset(ctx.Signer, withdrawAmount);
+                states,
+                ctx.NativeTokens,
+                Delegation.DeriveAddress(ctx.Signer, Validator),
+                ctx.BlockIndex);
+
+            foreach (Currency nativeToken in context.NativeTokens)
+            {
+                states = states.TransferAsset(
+                    AllocateReward.RewardAddress(ctx.Signer),
+                    ctx.Signer,
+                    states.GetBalance(ctx.Signer, nativeToken));
+            }
 
             return states;
         }

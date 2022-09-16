@@ -396,7 +396,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     miner,
                     policy.BlockAction,
                     policy.UpdateValidatorSetAction,
-                    policy.NativeTokens.Contains,
+                    policy.NativeTokens,
                     stateStore);
         }
 
@@ -488,14 +488,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                          preEval.DetermineStateRootHash(
                              blockAction: policy.BlockAction,
                              updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                             nativeTokenPredicate: policy.NativeTokens.Contains,
+                             nativeTokens: policy.NativeTokens,
                              stateStore: stateStore),
                          signature: null)
                     : preEval.Evaluate(
                          privateKey: GenesisMiner,
                          blockAction: policy.BlockAction,
                          updateValidatorSetAction: policy.UpdateValidatorSetAction,
-                         nativeTokenPredicate: policy.NativeTokens.Contains,
+                         nativeTokens: policy.NativeTokens,
                          stateStore: stateStore);
             }
 

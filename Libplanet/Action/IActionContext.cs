@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using Libplanet.Assets;
@@ -98,15 +99,11 @@ namespace Libplanet.Action
         bool BlockAction { get; }
 
         /// <summary>
-        /// Checks whether the specified <paramref name="currency"/> is a native token defined by
-        /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// A set of <see cref="Currency"/>s defined as native tokens by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
         /// </summary>
-        /// <param name="currency">A token currency to check.</param>
-        /// <returns><see langword="true"/> if the specified <paramref name="currency"/> is a native
-        /// token, otherwise <see langword="false"/>.</returns>
-        /// <seealso cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>
         [Pure]
-        bool IsNativeToken(Currency currency);
+        IImmutableSet<Currency> NativeTokens { get; }
 
         /// <summary>
         /// Returns a clone of this context, except that its <see cref="Random"/> has the unconsumed

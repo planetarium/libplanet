@@ -107,9 +107,7 @@ namespace Libplanet.Tests.Store
                 privateKey: Miner,
                 blockAction: blockAction,
                 updateValidatorSetAction: new PoSAction(),
-                nativeTokenPredicate: nativeTokens is null
-                    ? _ => true
-                    : (Predicate<Currency>)nativeTokens.Contains,
+                nativeTokens: nativeTokens,
                 stateStore: stateStore
             );
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;

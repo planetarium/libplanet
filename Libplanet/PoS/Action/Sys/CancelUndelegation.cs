@@ -65,6 +65,7 @@ namespace Libplanet.Action.Sys
                 states,
                 Undelegation.DeriveAddress(ctx.Signer, Validator),
                 Amount,
+                ctx.NativeTokens,
                 ctx.BlockIndex);
 
             return states;
