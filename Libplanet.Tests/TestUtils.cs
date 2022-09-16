@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.JsonDiffPatch.Xunit;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
@@ -542,5 +546,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 output,
                 conditionLabel
             );
+
+        public static void AssertJsonSerializable<T>(T obj, string expectedJson)
+            where T : IEquatable<T>
+        {
+            var buffer = new MemoryStream();
+            JsonSerializer.Serialize(buffer, obj);
+            buffer.Seek(0L, SeekOrigin.Begin);
+            JsonNode actual = JsonSerializer.SerializeToNode(obj);
+            JsonNode expected = JsonNode.Parse(expectedJson);
+            JsonAssert.Equal(expected, actual, true);
+            var deserialized = JsonSerializer.Deserialize<T>(expectedJson);
+            Assert.Equal(obj, deserialized);
+        }
     }
 }

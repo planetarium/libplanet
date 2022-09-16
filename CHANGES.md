@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Extensions.Cocona) The return type of
+    `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
+    [[#2322]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,11 +22,26 @@ To be released.
 
 ### Behavioral changes
 
+ -  Many types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  [[#2322]]
+
+     -  An `Address` became represented as a single hexadecimal string in JSON.
+
 ### Bug fixes
 
 ### Dependencies
 
+ -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
+    [6.0.0][System.Text.Json 6.0.0].  [[#2322]]
+
 ### CLI tools
+
+[#2322]: https://github.com/planetarium/libplanet/pull/2322
+[`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
+[custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
+[System.Text.Json 6.0.0]: https://www.nuget.org/packages/System.Text.Json/6.0.0
 
 
 Version 0.42.0
