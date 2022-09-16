@@ -340,7 +340,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 totalDifficulty: 0,
                 previousHash: null,
                 txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
-                transactions: txs);
+                transactions: txs.OrderBy(tx => tx.Id).ToList());
             return new PreEvaluationBlock<T>(
                 content,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })

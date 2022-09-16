@@ -64,13 +64,12 @@ namespace Libplanet.Node
             PrivateKey privateKey,
             IBlockPolicy<T> blockPolicy)
         {
-            return new BlockContent<T>(new BlockMetadata(
+            return new BlockContent<T>(
                 index: 0,
                 publicKey: privateKey.PublicKey,
                 difficulty: 0,
                 totalDifficulty: 0,
-                previousHash: null,
-                txHash: null))
+                previousHash: null)
                 .Mine()
                 .Evaluate(
                     privateKey: privateKey,
