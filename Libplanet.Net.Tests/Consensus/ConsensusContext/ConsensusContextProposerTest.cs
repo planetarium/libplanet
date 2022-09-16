@@ -31,7 +31,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var timeoutProcessed = new AsyncAutoResetEvent();
 
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1, Validators);
             ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutProcessed +=
                 (sender, message) =>
                 {

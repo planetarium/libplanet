@@ -148,6 +148,11 @@ namespace Libplanet.Blockchain.Renderers.Debug
             IEnumerable<TxId> txIds = oldTip.Transactions.Select(tx => tx.Id);
             while (!header.Hash.Equals(branchpoint.Hash))
             {
+                if (policy.UpdateValidatorSetAction is IAction updateValidatorSetAction)
+                {
+                    expectedUnrenderedActions.Add(updateValidatorSetAction);
+                }
+
                 if (policy.BlockAction is IAction blockAction)
                 {
                     expectedUnrenderedActions.Add(blockAction);
@@ -197,6 +202,19 @@ namespace Libplanet.Blockchain.Renderers.Debug
 #else
 #pragma warning disable PC002
                     actions = actions.Append(blockAction);
+#pragma warning restore PC002
+#endif
+                }
+
+                if (policy.UpdateValidatorSetAction is IAction updateValidatorSetAction)
+                {
+#if NET472 || NET471 || NET47 || NET462 || NET461
+                     // Even though .NET Framework 4.6.1 or higher supports .NET Standard 2.0,
+                     // versions lower than 4.8 lacks Enumerable.Append(IEnumerable<T>, T) method.
+                     actions = actions.Concat(new IAction[] { blockAction });
+#else
+#pragma warning disable PC002
+                    actions = actions.Append(updateValidatorSetAction);
 #pragma warning restore PC002
 #endif
                 }

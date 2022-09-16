@@ -72,6 +72,7 @@ namespace Libplanet.Node
                 .Evaluate(
                     privateKey: privateKey,
                     blockAction: blockPolicy.BlockAction,
+                    updateValidatorSetAction: blockPolicy.UpdateValidatorSetAction,
                     nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                     stateStore: new TrieStateStore(new MemoryKeyValueStore()));
         }

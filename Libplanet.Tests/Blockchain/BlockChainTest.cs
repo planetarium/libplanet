@@ -354,7 +354,7 @@ namespace Libplanet.Tests.Blockchain
                     renderers: new[] { renderer }
                 );
                 chain.Swap(newChain, true)();
-                Assert.Empty(renderer.ActionRecords);
+                Assert.Single(renderer.ActionRecords);
                 Assert.Empty(NonRehearsalExecutions());
             }
         }
@@ -393,7 +393,7 @@ namespace Libplanet.Tests.Blockchain
             generatedRandomValueLogs.Clear();
             Assert.Empty(generatedRandomValueLogs);
             blockChain.Append(block);
-            Assert.Equal(2, generatedRandomValueLogs.Count);
+            Assert.Equal(4, generatedRandomValueLogs.Count);
             Assert.Equal(generatedRandomValueLogs[0], generatedRandomValueLogs[1]);
         }
 
@@ -432,7 +432,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(action, actionLogs[0].Action);
             Assert.Equal(prevBlock, blockLogs[1].OldTip);
             Assert.Equal(block, blockLogs[1].NewTip);
-            Assert.Equal(2, blockLogs[1].Index);
+            Assert.Equal(3, blockLogs[1].Index);
         }
 
         [Fact]
@@ -444,7 +444,12 @@ namespace Libplanet.Tests.Blockchain
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
             {
                 ActionRenderer = (_, __, nextStates) =>
-                    throw new SomeException("thrown by renderer"),
+                {
+                    if (!(_ is PoSAction))
+                    {
+                        throw new SomeException("thrown by renderer");
+                    }
+                },
             };
             renderer = new LoggedActionRenderer<DumbAction>(renderer, Log.Logger);
             BlockChain<DumbAction> blockChain =
@@ -639,6 +644,7 @@ namespace Libplanet.Tests.Blockchain
                 ).Evaluate(
                     privateKey: GenesisMiner,
                     blockAction: _policy.BlockAction,
+                    updateValidatorSetAction: _policy.UpdateValidatorSetAction,
                     nativeTokenPredicate: _policy.NativeTokens.Contains,
                     stateStore: stateStore
                 );
@@ -1054,6 +1060,7 @@ namespace Libplanet.Tests.Blockchain
                 ).Evaluate(
                     GenesisMiner,
                     _policy.BlockAction,
+                    _policy.UpdateValidatorSetAction,
                     _policy.NativeTokens.Contains,
                     fx2.StateStore
                 );
@@ -1117,6 +1124,7 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(
                 privateKey: GenesisMiner,
                 blockAction: policy.BlockAction,
+                updateValidatorSetAction: policy.UpdateValidatorSetAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: stateStore
             );
@@ -1727,6 +1735,7 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(
                 privateKey: GenesisMiner,
                 blockAction: blockPolicy.BlockAction,
+                updateValidatorSetAction: blockPolicy.UpdateValidatorSetAction,
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 stateStore: stateStore
             );
@@ -2021,6 +2030,7 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(
                 privateKey: GenesisMiner,
                 blockAction: policy.BlockAction,
+                updateValidatorSetAction: policy.UpdateValidatorSetAction,
                 nativeTokenPredicate: policy.NativeTokens.Contains,
                 stateStore: stateStore
             );

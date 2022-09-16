@@ -71,6 +71,7 @@ namespace Libplanet.Node.Tests
             _block = _preEval.Evaluate(
                 privateKey: _minerKey,
                 blockAction: null,
+                updateValidatorSetAction: null,
                 nativeTokenPredicate: _ => true,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );

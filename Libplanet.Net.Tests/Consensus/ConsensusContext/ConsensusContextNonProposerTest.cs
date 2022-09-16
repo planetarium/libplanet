@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            ConsensusContext.NewHeight(1);
+            ConsensusContext.NewHeight(1, Validators);
             var block1 = BlockChain.ProposeBlock(TestUtils.Peer1Priv);
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
@@ -143,7 +143,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             BlockChain.Append(BlockChain.ProposeBlock(TestUtils.Peer1Priv));
             var blockHeightThree = BlockChain.ProposeBlock(TestUtils.Peer3Priv);
 
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1, Validators);
             await proposeSent.WaitAsync();
 
             Assert.Equal(2, ConsensusContext.Height);

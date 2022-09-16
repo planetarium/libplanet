@@ -41,7 +41,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             _logger = Log.ForContext<ContextTestBase>();
             _fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
-            BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx);
+            BlockChain = TestUtils.CreateDummyBlockChain((MemoryStoreFixture)_fx, null, null);
 
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -18,6 +19,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tx;
 
 namespace Libplanet.Net.Tests
 {
@@ -90,7 +92,13 @@ namespace Libplanet.Net.Tests
 
         public static IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
+            nativeTokens: new List<Currency>
+            {
+                Currency.Uncapped("GovernanceToken", 18, minters: null),
+            }.ToImmutableHashSet(),
             getMaxBlockBytes: _ => 50 * 1024);
+
+        public static PrivateKey GenesisMiner = new PrivateKey();
 
         public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 
@@ -136,17 +144,40 @@ namespace Libplanet.Net.Tests
             return privateKey;
         }
 
-        public static BlockChain<DumbAction> CreateDummyBlockChain(MemoryStoreFixture fx)
+        public static BlockChain<DumbAction> CreateDummyBlockChain(
+            MemoryStoreFixture fx,
+            Block<DumbAction>? genesis,
+            IStateStore? stateStore)
         {
             var store = new MemoryStore();
             var blockChain = new BlockChain<DumbAction>(
                 TestUtils.Policy,
                 new VolatileStagePolicy<DumbAction>(),
                 store,
-                new TrieStateStore(new MemoryKeyValueStore()),
-                fx.GenesisBlock);
+                stateStore ?? new TrieStateStore(new MemoryKeyValueStore()),
+                genesis ?? fx.GenesisBlock);
 
             return blockChain;
+        }
+
+        public static Block<DumbAction> CreateDummyGenesisBlockForPoS(
+            List<Transaction<DumbAction>> txs)
+        {
+            var content = new BlockContent<DumbAction>
+            {
+                Miner = GenesisMiner.ToAddress(),
+                PublicKey = GenesisMiner.PublicKey,
+                Timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                Transactions = txs,
+                ProtocolVersion = Block<DumbAction>.CurrentProtocolVersion,
+            };
+            return content.Propose()
+                .Evaluate(
+                    GenesisMiner,
+                    TestUtils.Policy.BlockAction,
+                    TestUtils.Policy.UpdateValidatorSetAction,
+                    _ => true,
+                    new TrieStateStore(new DefaultKeyValueStore(null)));
         }
 
         public static ITransport CreateNetMQTransport(

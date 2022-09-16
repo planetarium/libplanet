@@ -118,6 +118,7 @@ namespace Libplanet.Tests.Blockchain
             ).Evaluate(
                 TestUtils.GenesisMiner,
                 policy.BlockAction,
+                policy.UpdateValidatorSetAction,
                 policy.NativeTokens.Contains,
                 stateStore
             );
@@ -143,6 +144,7 @@ namespace Libplanet.Tests.Blockchain
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
+                policy.UpdateValidatorSetAction,
                 policy.BlockInterval
             );
             var chain2 = new BlockChain<DumbAction>(
