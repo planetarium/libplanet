@@ -27,39 +27,6 @@ namespace Libplanet.Blocks
         private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;
 
         /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
-        /// <paramref name="metadata"/>'s contents and zero transactions.
-        /// </summary>
-        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        /// <exception cref="InvalidBlockDifficultyException">Thrown when the value to set is
-        ///  is negative.</exception>
-        /// <exception cref="InvalidBlockTotalDifficultyException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.TotalDifficulty"/> is less
-        /// than its <see cref="IBlockMetadata.Difficulty"/>.</exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
-        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is not <c>null</c>.
-        /// </exception>
-        public BlockContent(IBlockMetadata metadata)
-            : this(metadata, Enumerable.Empty<Transaction<T>>())
-        {
-        }
-
-        /// <summary>
         /// Creates a <see cref="BlockContent{T}"/> by copying the fields of another block
         /// <paramref name="content"/>.
         /// </summary>

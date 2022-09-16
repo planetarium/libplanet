@@ -33,21 +33,8 @@ namespace Libplanet.Tests.Blocks
             var b1 = new BlockContent<Arithmetic>(Block1Content);
             AssertBlockContentsEqual(Block1Content, b1);
 
-            Assert.Throws<InvalidBlockTxHashException>(() =>
-                new BlockContent<Arithmetic>(new BlockMetadata(Block1Content))
-            );
-
-            var gM = new BlockContent<Arithmetic>(new BlockMetadata(GenesisContent));
-            AssertBlockMetadataEqual(GenesisContent, gM);
-
-            var genesis = new BlockContent<Arithmetic>(GenesisMetadata);
-            AssertBlockContentsEqual(GenesisContent, genesis);
-
             var block1 = new BlockContent<Arithmetic>(Block1Metadata, Block1Content.Transactions);
             AssertBlockContentsEqual(Block1Content, block1);
-
-            var blockPv0 = new BlockContent<Arithmetic>(GenesisMetadataPv0);
-            AssertBlockContentsEqual(GenesisContentPv0, blockPv0);
 
             Assert.Throws<InvalidBlockTxHashException>(() =>
                 new BlockContent<Arithmetic>(Block1Metadata, Array.Empty<Transaction<Arithmetic>>())
