@@ -336,9 +336,20 @@ namespace Libplanet
     )]
     internal class HashDigestJsonConverter : JsonConverter<object>
     {
-        public override bool CanConvert(Type typeToConvert) =>
-            typeToConvert.IsConstructedGenericType &&
-            typeToConvert.GetGenericTypeDefinition() == typeof(HashDigest<>);
+        private Type? _queriedType;
+
+        public override bool CanConvert(Type typeToConvert)
+        {
+            if (typeToConvert.IsConstructedGenericType &&
+                typeToConvert.GetGenericTypeDefinition() == typeof(HashDigest<>))
+            {
+                _queriedType = typeToConvert;
+                return true;
+            }
+
+            _queriedType = null;
+            return false;
+        }
 
         public override object Read(
             ref Utf8JsonReader reader,
@@ -346,6 +357,11 @@ namespace Libplanet
             JsonSerializerOptions options
         )
         {
+            if (typeToConvert == typeof(object) && _queriedType is { } t)
+            {
+                typeToConvert = t;
+            }
+
             MethodInfo fromString = typeToConvert.GetMethod(
                 "FromString",
                 BindingFlags.Public | BindingFlags.Static

@@ -28,6 +28,10 @@ To be released.
 
      -  An `Address` became represented as a single hexadecimal string in JSON.
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.
+     -  A `Currency` became represented as an object with values in JSON.
+        Note that it contains its `Hash` and it throws `JsonException`
+        if a JSON object to deserialize has an inconsistent `Hash` with
+        other field values.
      -  A `HashDigest` became represented as a single hexadecimal string in
         JSON.
      -  A `TxId` became represented as a single hexadecimal string in JSON.

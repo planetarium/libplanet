@@ -553,10 +553,20 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var buffer = new MemoryStream();
             JsonSerializer.Serialize(buffer, obj);
             buffer.Seek(0L, SeekOrigin.Begin);
-            JsonNode actual = JsonSerializer.SerializeToNode(obj);
-            JsonNode expected = JsonNode.Parse(expectedJson);
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+            JsonNode actual = JsonSerializer.SerializeToNode(obj, options);
+            JsonNode expected = JsonNode.Parse(expectedJson, null, new JsonDocumentOptions
+            {
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip,
+            });
             JsonAssert.Equal(expected, actual, true);
-            var deserialized = JsonSerializer.Deserialize<T>(expectedJson);
+            var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
             Assert.Equal(obj, deserialized);
         }
     }
