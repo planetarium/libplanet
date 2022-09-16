@@ -8,8 +8,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using Libplanet.Serialization;
+using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace Libplanet
 {
@@ -27,6 +30,7 @@ namespace Libplanet
         "StaticMemberInGenericType",
         Justification = "Size & DefaultByteArray differ between HashAlgorithm types."
     )]
+    [JsonConverter(typeof(HashDigestJsonConverter))]
     [Serializable]
     public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>
         where T : HashAlgorithm
@@ -321,5 +325,47 @@ namespace Libplanet
         {
             return HashDigest<T>.FromString(hexDigest);
         }
+    }
+
+    // NOTE: As JsonConverterAttribute does not take a generic type, we need to make
+    // a JsonConverter<System.Object> instead.
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class HashDigestJsonConverter : JsonConverter<object>
+    {
+        public override bool CanConvert(Type typeToConvert) =>
+            typeToConvert.IsConstructedGenericType &&
+            typeToConvert.GetGenericTypeDefinition() == typeof(HashDigest<>);
+
+        public override object Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            MethodInfo fromString = typeToConvert.GetMethod(
+                "FromString",
+                BindingFlags.Public | BindingFlags.Static
+            )!;
+            string? hex = reader.GetString();
+            try
+            {
+                return fromString.Invoke(null, new object?[] { hex })!;
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            object value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToString());
     }
 }

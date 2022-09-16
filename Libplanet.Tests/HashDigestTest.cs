@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests
 {
@@ -172,6 +173,17 @@ namespace Libplanet.Tests
             }
 
             Assert.Equal(deserializedHashDigest, expectedHashDigest);
+        }
+
+        [Fact]
+        public void JsonSerialization()
+        {
+            HashDigest<SHA1> digest =
+                HashDigest<SHA1>.FromString("0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33");
+            AssertJsonSerializable(
+                digest,
+                "\"0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33\""
+            );
         }
     }
 }
