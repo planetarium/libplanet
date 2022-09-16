@@ -142,7 +142,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public virtual void SafeConstructorWithoutPreEvaluationHash()
         {
-            BlockMetadata metadata = _contents.GenesisContent.Copy();
+            BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
             var preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 nonce: _validGenesisProof.Nonce
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CopyConstructor()
         {
-            BlockMetadata metadata = _contents.GenesisContent.Copy();
+            BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
             var preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
                 nonce: _validGenesisProof.Nonce
@@ -300,11 +300,11 @@ namespace Libplanet.Tests.Blocks
                 .Add("nonce", blockPv0.Nonce.ByteArray)
                 .Add("reward_beneficiary", ParseHex("268344BA46e6CA2A8a5096565548b9018bc687Ce"))
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv0, blockPv0.MakeCandidateData(default));
+            AssertBencodexEqual(expectedBlockPv0, blockPv0.Header.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedBlockPv0.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv0.MakeCandidateData(stateRootHash)
+                blockPv0.Header.MakeCandidateData(stateRootHash)
             );
 
             var blockPv1 = _contents.Block1ContentPv1.Mine();
@@ -324,11 +324,11 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add("protocol_version", 1)
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
-            AssertBencodexEqual(expectedBlockPv1, blockPv1.MakeCandidateData(default));
+            AssertBencodexEqual(expectedBlockPv1, blockPv1.Header.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
                 expectedBlockPv1.SetItem("state_root_hash", stateRootHash.ByteArray),
-                blockPv1.MakeCandidateData(stateRootHash)
+                blockPv1.Header.MakeCandidateData(stateRootHash)
             );
         }
 
@@ -368,7 +368,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Contains("does not match", e.Message);
 
             var blockPv1 = new PreEvaluationBlockHeader(
-                _contents.Block1ContentPv1,
+                _contents.Block1ContentPv1.BlockMetadata,
                 _contents.Block1ContentPv1.Mine().Nonce
             );
             InvalidOperationException e2 = Assert.Throws<InvalidOperationException>(
@@ -404,7 +404,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             var blockPv1 = new PreEvaluationBlockHeader(
-                _contents.Block1ContentPv1,
+                _contents.Block1ContentPv1.BlockMetadata,
                 _contents.Block1ContentPv1.Mine().Nonce
             );
             Assert.True(blockPv1.VerifySignature(null, arbitraryHash));

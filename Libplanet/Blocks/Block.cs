@@ -92,7 +92,7 @@ namespace Libplanet.Blocks
         )
         {
             _preEvaluationBlock = preEvaluationBlock;
-            Header = new BlockHeader(preEvaluationBlock, stateRootHash, signature);
+            Header = new BlockHeader(preEvaluationBlock.Header, stateRootHash, signature);
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>

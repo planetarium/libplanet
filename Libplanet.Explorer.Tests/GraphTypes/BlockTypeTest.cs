@@ -32,7 +32,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             var block = new Block<NullAction>(
                 preEval,
                 stateRootHash,
-                preEval.MakeSignature(privateKey, stateRootHash)
+                preEval.Header.MakeSignature(privateKey, stateRootHash)
             );
 
             // FIXME We need to test for `previousBlock` field too.

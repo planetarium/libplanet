@@ -68,7 +68,7 @@ namespace Libplanet.Node.Tests
                 txHash: BlockContent<NullAction>.DeriveTxHash(_txs.OrderBy(tx => tx.Id).ToList()),
                 transactions: _txs.OrderBy(tx => tx.Id));
             var nonce = default(Nonce);
-            byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
+            byte[] blockBytes = Codec.Encode(_content.BlockMetadata.MakeCandidateData(nonce));
             ImmutableArray<byte> preEvalHash = _sha256.Digest(blockBytes).ToImmutableArray();
             var proof = (nonce, preEvalHash);
             _preEval = new PreEvaluationBlock<NullAction>(_content, proof);

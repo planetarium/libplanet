@@ -191,7 +191,7 @@ namespace Libplanet.Blocks
                     ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null);
 #pragma warning restore SA1118
-}
+        }
 
         public static Nonce UnmarshalNonce(Dictionary marshaled) =>
             new Nonce(marshaled.GetValue<Binary>(NonceKey).ByteArray);

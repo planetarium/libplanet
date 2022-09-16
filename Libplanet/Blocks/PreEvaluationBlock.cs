@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using Bencodex.Types;
@@ -26,9 +27,12 @@ namespace Libplanet.Blocks
     /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
     /// <see cref="Nonce"/> which satisfies its <see cref="PreEvaluationBlockHeader.Difficulty"/>.
     /// </remarks>
-    public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader, IPreEvaluationBlock<T>
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>
         where T : IAction, new()
     {
+        private BlockContent<T> _content;
+        private PreEvaluationBlockHeader _header;
+
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
         /// <paramref name="content"/> data and a valid proof-of-work <paramref name="nonce"/>
@@ -68,10 +72,10 @@ namespace Libplanet.Blocks
         /// derived from the given arguments.</remarks>
         public PreEvaluationBlock(
             IBlockContent<T> content,
-            Nonce nonce
-        )
-            : base(new BlockContent<T>(content), nonce)
+            Nonce nonce)
         {
+            _content = new BlockContent<T>(content);
+            _header = new PreEvaluationBlockHeader(new BlockMetadata(content), nonce);
         }
 
         /// <summary>
@@ -116,10 +120,11 @@ namespace Libplanet.Blocks
         public PreEvaluationBlock(
             IBlockContent<T> content,
             Nonce nonce,
-            ImmutableArray<byte> preEvaluationHash
-        )
-            : base(new BlockContent<T>(content), nonce, preEvaluationHash)
+            ImmutableArray<byte> preEvaluationHash)
         {
+            _content = new BlockContent<T>(content);
+            _header = new PreEvaluationBlockHeader(
+                new BlockMetadata(content), nonce, preEvaluationHash);
         }
 
         /// <summary>
@@ -139,19 +144,54 @@ namespace Libplanet.Blocks
         /// shouldn't be used except for <see cref="BlockContent{T}.Mine"/> method.</remarks>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof
-        )
-            : base(content, proof)
+            in (Nonce Nonce, ImmutableArray<byte> PreEvaluationHash) proof)
         {
+            _content = content;
+            _header = new PreEvaluationBlockHeader(content.BlockMetadata, proof);
         }
 
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
+        public PreEvaluationBlockHeader Header => _header;
+
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        public int ProtocolVersion => _header.ProtocolVersion;
+
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
+        public long Index => _header.Index;
+
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _header.Timestamp;
+
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
+        public Address Miner => _header.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _header.PublicKey;
+
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
+        public long Difficulty => _header.Difficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
+        public BigInteger TotalDifficulty => _header.TotalDifficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
+        public BlockHash? PreviousHash => _header.PreviousHash;
+
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        public HashDigest<SHA256>? TxHash => _header.TxHash;
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.Nonce"/>
+        public Nonce Nonce => _header.Nonce;
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        public ImmutableArray<byte> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <summary>
         /// The internal block content.
         /// </summary>
-        private BlockContent<T> Content => (BlockContent<T>)Metadata;
+        public BlockContent<T> Content => _content;
+
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -241,7 +281,8 @@ namespace Libplanet.Blocks
         /// </remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {
-            ImmutableArray<byte> sig = MakeSignature(privateKey, stateRootHash);
+            ImmutableArray<byte> sig =
+                _header.MakeSignature(privateKey, stateRootHash);
             return new Block<T>(this, stateRootHash, sig);
         }
 

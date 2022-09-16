@@ -183,7 +183,9 @@ namespace Libplanet.Tests.Blocks
             Assert.True(
                 ByteUtil.Satisfies(preEvalBlock.PreEvaluationHash, GenesisContent.Difficulty));
             AssertBytesEqual(
-                sha256.Digest(codec.Encode(GenesisContent.MakeCandidateData(preEvalBlock.Nonce))),
+                sha256.Digest(
+                    codec.Encode(
+                        GenesisContent.BlockMetadata.MakeCandidateData(preEvalBlock.Nonce))),
                 preEvalBlock.PreEvaluationHash.ToArray()
             );
         }

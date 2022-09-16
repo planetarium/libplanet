@@ -21,9 +21,10 @@ namespace Libplanet.Blocks
     /// <see cref="Transaction{T}"/>, this type is mutable.  To get a distinct instance with
     /// partly changed fields, use <see cref="BlockContent{T}(IBlockContent{T})"/> constructor and
     /// property setters on a copy instead.</remarks>
-    public sealed class BlockContent<T> : BlockMetadata, IBlockContent<T>
+    public sealed class BlockContent<T> : IBlockContent<T>
         where T : IAction, new()
     {
+        private BlockMetadata _blockMetadata;
         private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;
 
         /// <summary>
@@ -244,7 +245,8 @@ namespace Libplanet.Blocks
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
             IEnumerable<Transaction<T>> transactions)
-            : base(
+        {
+            _blockMetadata = new BlockMetadata(
                 protocolVersion: protocolVersion,
                 index: index,
                 timestamp: timestamp,
@@ -253,11 +255,39 @@ namespace Libplanet.Blocks
                 difficulty: difficulty,
                 totalDifficulty: totalDifficulty,
                 previousHash: previousHash,
-                txHash: txHash)
-        {
+                txHash: txHash);
             Transactions = transactions.ToImmutableList();
             ValidateTxHash();
         }
+
+        public BlockMetadata BlockMetadata => _blockMetadata;
+
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        public int ProtocolVersion => _blockMetadata.ProtocolVersion;
+
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
+        public long Index => _blockMetadata.Index;
+
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _blockMetadata.Timestamp;
+
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
+        public Address Miner => _blockMetadata.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _blockMetadata.PublicKey;
+
+        /// <inheritdoc cref="IBlockMetadata.Difficulty"/>
+        public long Difficulty => _blockMetadata.Difficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.TotalDifficulty"/>
+        public BigInteger TotalDifficulty => _blockMetadata.TotalDifficulty;
+
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
+        public BlockHash? PreviousHash => _blockMetadata.PreviousHash;
+
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        public HashDigest<SHA256>? TxHash => _blockMetadata.TxHash;
 
         /// <summary>
         /// Transactions belonging to the block.
@@ -310,7 +340,7 @@ namespace Libplanet.Blocks
         /// <exception cref="OperationCanceledException">Thrown when the specified
         /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
         public PreEvaluationBlock<T> Mine(CancellationToken cancellationToken = default) =>
-            new PreEvaluationBlock<T>(this, MineNonce(cancellationToken));
+            new PreEvaluationBlock<T>(this, _blockMetadata.MineNonce(cancellationToken));
 
         /// <summary>
         /// Derives <see cref="IBlockMetadata.TxHash"/> from given <paramref name="transactions"/>.
