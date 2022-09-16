@@ -27,6 +27,7 @@ To be released.
     [custom converters].  [[#2322]]
 
      -  An `Address` became represented as a single hexadecimal string in JSON.
+     -  A `BlockHash` became represented as a single hexadecimal string in JSON.
 
 ### Bug fixes
 
