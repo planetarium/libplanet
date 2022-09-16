@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Tx
 {
@@ -25,7 +26,7 @@ namespace Libplanet.Tests.Tx
                     continue;
                 }
 
-                byte[] bytes = TestUtils.GetRandomBytes(size);
+                byte[] bytes = GetRandomBytes(size);
                 Assert.Throws<ArgumentOutOfRangeException>(
                     "txid",
                     () => new TxId(bytes)
@@ -71,7 +72,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ToByteArray()
         {
-            var bytes = TestUtils.GetRandomBytes(32);
+            var bytes = GetRandomBytes(32);
             var txId = new TxId(bytes);
 
             Assert.Equal(bytes, txId.ToByteArray());
@@ -225,6 +226,17 @@ namespace Libplanet.Tests.Tx
             );
             Assert.Throws<ArgumentException>(() =>
                 txIds[0].CompareTo("invalid")
+            );
+        }
+
+        [Fact]
+        public void JsonSerialization()
+        {
+            TxId txid = TxId.FromHex(
+                "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc");
+            AssertJsonSerializable(
+                txid,
+                "\"45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc\""
             );
         }
     }

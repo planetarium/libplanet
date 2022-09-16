@@ -30,6 +30,7 @@ To be released.
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.
      -  A `HashDigest` became represented as a single hexadecimal string in
         JSON.
+     -  A `TxId` became represented as a single hexadecimal string in JSON.
 
 ### Bug fixes
 
