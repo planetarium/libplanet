@@ -24,7 +24,7 @@ namespace Libplanet.Store
 
         private readonly BlockMetadata _metadata;
         private readonly Nonce _nonce;
-        private readonly ImmutableArray<byte>? _preEvaluationHash;
+        private readonly ImmutableArray<byte> _preEvaluationHash;
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
@@ -170,9 +170,7 @@ namespace Libplanet.Store
         /// <returns>The block header.</returns>
         public BlockHeader GetHeader()
         {
-            var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
-                : new PreEvaluationBlockHeader(_metadata, _nonce);
+            var preEvalHeader = new PreEvaluationBlockHeader(_metadata, _nonce, _preEvaluationHash);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
@@ -187,8 +185,7 @@ namespace Libplanet.Store
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
                 _nonce,
-                _preEvaluationHash ?? ImmutableArray<byte>.Empty
-            );
+                _preEvaluationHash);
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
                 preEvalHeaderDict,
                 StateRootHash,
