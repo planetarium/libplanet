@@ -868,14 +868,16 @@ namespace Libplanet.Net.Tests
                 difficulty: 0,
                 totalDifficulty: 0,
                 previousHash: null);
+            var genesisBlock1Nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+                genesisBlock1Nonce,
+                genesisContent.BlockMetadata.DerivePreEvaluationHash(genesisBlock1Nonce));
+            var genesisBlock2Nonce = new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 });
             var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 })
-            );
+                genesisBlock2Nonce,
+                genesisContent.BlockMetadata.DerivePreEvaluationHash(genesisBlock2Nonce));
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
                 PreEvaluationBlock<DumbAction> genesisBlock)

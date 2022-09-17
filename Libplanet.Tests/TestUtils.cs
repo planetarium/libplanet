@@ -341,10 +341,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 previousHash: null,
                 txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
                 transactions: txs.OrderBy(tx => tx.Id).ToList());
+            var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
             return new PreEvaluationBlock<T>(
                 content,
-                new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-            );
+                nonce,
+                content.BlockMetadata.DerivePreEvaluationHash(nonce));
         }
 
         public static Block<T> MineGenesisBlock<T>(
@@ -393,7 +394,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txHash: BlockContent<T>.DeriveTxHash(txs),
                 transactions: txs);
             var preEval = nonce is byte[] nonceBytes
-                ? new PreEvaluationBlock<T>(content, new Nonce(nonceBytes))
+                ? new PreEvaluationBlock<T>(
+                    content,
+                    new Nonce(nonceBytes),
+                    content.BlockMetadata.DerivePreEvaluationHash(new Nonce(nonceBytes)))
                 : content.Mine();
 
             preEval.ValidateTimestamp();
@@ -464,10 +468,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: null,
                     txHash: BlockContent<T>.DeriveTxHash(txs),
                     transactions: txs);
+                var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
                 var preEval = new PreEvaluationBlock<T>(
                     content,
-                    new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 })
-                );
+                    nonce,
+                    content.BlockMetadata.DerivePreEvaluationHash(nonce));
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
                          preEval,

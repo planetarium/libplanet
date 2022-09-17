@@ -140,42 +140,13 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public virtual void SafeConstructorWithoutPreEvaluationHash()
-        {
-            BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
-            var preEvalBlock = new PreEvaluationBlockHeader(
-                metadata,
-                nonce: _validGenesisProof.Nonce
-            );
-            AssertBlockMetadataEqual(metadata, preEvalBlock);
-            AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
-            AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
-
-            metadata = _contents.Block1Metadata.Copy();
-            preEvalBlock = new PreEvaluationBlockHeader(
-                metadata,
-                nonce: _validBlock1Proof.Nonce
-            );
-            AssertBlockMetadataEqual(metadata, preEvalBlock);
-            AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
-            AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
-
-            Assert.Throws<InvalidBlockNonceException>(() =>
-                new PreEvaluationBlockHeader(
-                    _contents.Block1Metadata,
-                    nonce: _invalidBlock1Proof.Nonce
-                )
-            );
-        }
-
-        [Fact]
         public void CopyConstructor()
         {
             BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
             var preEvalBlock = new PreEvaluationBlockHeader(
                 metadata,
-                nonce: _validGenesisProof.Nonce
-            );
+                nonce: _validGenesisProof.Nonce,
+                preEvaluationHash: _validGenesisProof.PreEvaluationHash);
             var copy = new PreEvaluationBlockHeader(preEvalBlock);
             AssertPreEvaluationBlockHeadersEqual(preEvalBlock, copy);
         }
@@ -283,8 +254,8 @@ namespace Libplanet.Tests.Blocks
                 .Add("state_root_hash", default(HashDigest<SHA256>).ByteArray);
             var block1 = new PreEvaluationBlockHeader(
                 _contents.Block1Metadata,
-                nonce: _validBlock1Proof.Nonce
-            );
+                nonce: _validBlock1Proof.Nonce,
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             AssertBencodexEqual(expectedBlock1, block1.MakeCandidateData(default));
             stateRootHash = random.NextHashDigest<SHA256>();
             AssertBencodexEqual(
@@ -342,8 +313,8 @@ namespace Libplanet.Tests.Blocks
             var key = _contents.Block1Key;
             var block1 = new PreEvaluationBlockHeader(
                 _contents.Block1Metadata,
-                nonce: _validBlock1Proof.Nonce
-            );
+                nonce: _validBlock1Proof.Nonce,
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             ImmutableArray<byte> validSig = block1.MakeSignature(key, arbitraryHash);
             Assert.True(
                 key.PublicKey.Verify(
@@ -367,10 +338,11 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal("privateKey", e.ParamName);
             Assert.Contains("does not match", e.Message);
 
+            var proof = _contents.Block1ContentPv1.Mine();
             var blockPv1 = new PreEvaluationBlockHeader(
                 _contents.Block1ContentPv1.BlockMetadata,
-                _contents.Block1ContentPv1.Mine().Nonce
-            );
+                proof.Nonce,
+                proof.PreEvaluationHash);
             InvalidOperationException e2 = Assert.Throws<InvalidOperationException>(
                 () => blockPv1.MakeSignature(key, arbitraryHash)
             );
@@ -387,8 +359,8 @@ namespace Libplanet.Tests.Blocks
 
             var block1 = new PreEvaluationBlockHeader(
                 _contents.Block1Metadata,
-                nonce: _validBlock1Proof.Nonce
-            );
+                nonce: _validBlock1Proof.Nonce,
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             ImmutableArray<byte> validSig = ByteUtil.ParseHex(
                 "3045022100e0c6bc5ccbde4a6fc0bc255b663972904373543247e6c7ea082817ebe6ae6" +
                 "3f202201a4fa72853caddca4027be60b88652106d096a901521c59d22ec980ff6a8d184"
@@ -403,10 +375,11 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
+            var proof = _contents.Block1ContentPv1.Mine();
             var blockPv1 = new PreEvaluationBlockHeader(
                 _contents.Block1ContentPv1.BlockMetadata,
-                _contents.Block1ContentPv1.Mine().Nonce
-            );
+                proof.Nonce,
+                proof.PreEvaluationHash);
             Assert.True(blockPv1.VerifySignature(null, arbitraryHash));
             Assert.False(blockPv1.VerifySignature(validSig, arbitraryHash));
         }
@@ -449,8 +422,8 @@ namespace Libplanet.Tests.Blocks
 
             var block1 = new PreEvaluationBlockHeader(
                 _contents.Block1Metadata,
-                nonce: _validBlock1Proof.Nonce
-            );
+                nonce: _validBlock1Proof.Nonce,
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             AssertBytesEqual(
                 fromHex("feb41eb7e2123244d1df38c0750d0687a89efcbd8f6035d13a8ca80f73e69d91"),
                 block1.DeriveBlockHash(default, null)

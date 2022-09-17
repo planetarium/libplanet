@@ -568,10 +568,11 @@ namespace Libplanet.Tests.Blockchain
                 previousHash: null,
                 txHash: null,
                 transactions: new List<Transaction<DumbAction>>());
+            var nonce = new Nonce(new byte[] { 0x01, 0, 0, 0 });
             var preEvalGenesis = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                new Nonce(new byte[] { 0x01, 0, 0, 0 })
-            );
+                nonce,
+                genesisContent.BlockMetadata.DerivePreEvaluationHash(nonce));
             var genesis = new Block<DumbAction>(
                 preEvalGenesis,
                 HashDigest<SHA256>.FromString(
@@ -598,10 +599,12 @@ namespace Libplanet.Tests.Blockchain
                 previousHash: genesis.Hash,
                 txHash: null,
                 transactions: new List<Transaction<DumbAction>>());
+            var block1Nonce = new Nonce(
+                new byte[] { 0x0a, 0x24, 0xc6, 0x92, 0xde, 0xfa, 0x5c, 0x64, 0xd0, 0x26 });
             var preEvalBlock1 = new PreEvaluationBlock<DumbAction>(
                 block1Content,
-                new Nonce(new byte[] { 0x0a, 0x24, 0xc6, 0x92, 0xde, 0xfa, 0x5c, 0x64, 0xd0, 0x26 })
-            );
+                block1Nonce,
+                block1Content.BlockMetadata.DerivePreEvaluationHash(block1Nonce));
             var block = new Block<DumbAction>(
                 preEvalBlock1,
                 HashDigest<SHA256>.FromString(

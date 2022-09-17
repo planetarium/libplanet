@@ -84,13 +84,13 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public override void SafeConstructorWithoutPreEvaluationHash()
+        public void SafeConstructorWithoutPreEvaluationHash()
         {
             BlockContent<Arithmetic> content = _contents.GenesisContent.Copy();
             var preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                nonce: _validGenesisProof.Nonce
-            );
+                nonce: _validGenesisProof.Nonce,
+                preEvaluationHash: _validGenesisProof.PreEvaluationHash);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validGenesisProof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validGenesisProof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -98,8 +98,8 @@ namespace Libplanet.Tests.Blocks
             content = _contents.Block1Content.Copy();
             preEvalBlock = new PreEvaluationBlock<Arithmetic>(
                 content,
-                nonce: _validBlock1Proof.Nonce
-            );
+                nonce: _validBlock1Proof.Nonce,
+                preEvaluationHash: _validBlock1Proof.PreEvaluationHash);
             AssertBlockContentsEqual(content, preEvalBlock);
             AssertBytesEqual(_validBlock1Proof.Nonce, preEvalBlock.Nonce);
             AssertBytesEqual(_validBlock1Proof.PreEvaluationHash, preEvalBlock.PreEvaluationHash);
@@ -107,9 +107,8 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockNonceException>(() =>
                 new PreEvaluationBlock<Arithmetic>(
                     _contents.Block1Content,
-                    nonce: _invalidBlock1Proof.Nonce
-                )
-            );
+                    nonce: _invalidBlock1Proof.Nonce,
+                    preEvaluationHash: _invalidBlock1Proof.PreEvaluationHash));
         }
 
         [Fact]
