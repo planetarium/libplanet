@@ -204,8 +204,7 @@ namespace Libplanet.Blocks
         {
             return new PreEvaluationBlockHeader(
                     metadata: UnmarshalBlockMetadata(marshaled),
-                    nonce: UnmarshalNonce(marshaled),
-                    preEvaluationHash: UnmarshalPreEvaluationHash(marshaled));
+                    proof: (UnmarshalNonce(marshaled), UnmarshalPreEvaluationHash(marshaled)));
         }
 
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
@@ -231,7 +230,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
             ImmutableArray<byte>? sig = UnmarshalBlockHeaderSignature(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
-            return new BlockHeader(preEvalHeader, stateRootHash, sig, hash);
+            return new BlockHeader(preEvalHeader, (stateRootHash, sig, hash));
         }
 
         public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)

@@ -58,6 +58,7 @@ namespace Libplanet.Tests.Fixtures
                         ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
                     )
                 )
+                .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullBlockPolicy<Arithmetic>();
@@ -65,11 +66,13 @@ namespace Libplanet.Tests.Fixtures
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>(
-                index: 0,
-                publicKey: Miner.PublicKey,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null,
+                new BlockMetadata(
+                    index: 0,
+                    publicKey: Miner.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs)),
                 transactions: Txs)
                 .Mine()
                 .Evaluate(

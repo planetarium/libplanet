@@ -375,11 +375,13 @@ namespace Libplanet.Blockchain
             };
 
             BlockContent<T> content = new BlockContent<T>(
-                index: 0,
-                publicKey: privateKey.PublicKey,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null,
+                new BlockMetadata(
+                    index: 0L,
+                    publicKey: privateKey.PublicKey,
+                    difficulty: 0L,
+                    totalDifficulty: 0L,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(transactions)),
                 transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Mine();

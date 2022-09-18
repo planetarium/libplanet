@@ -57,13 +57,16 @@ namespace Libplanet.Tests.Blocks
                     "d022073bf8a48403cf46f5fa63f26f3e8ef4db8ef1d841684856da63d9b7eeb91759a"
                 )
             );
+            var txs = new[] { tx2, Block1Tx0, Block1Tx1 }.OrderBy(tx => tx.Id).ToArray();
             var blockContent = new BlockContent<Arithmetic>(
-                index: Block1Content.Index,
-                publicKey: Block1Content.PublicKey,
-                difficulty: Block1Content.Difficulty,
-                totalDifficulty: Block1Content.TotalDifficulty,
-                previousHash: Block1Content.PreviousHash,
-                transactions: new[] { tx2, Block1Tx0, Block1Tx1 });
+                new BlockMetadata(
+                    index: Block1Content.Index,
+                    publicKey: Block1Content.PublicKey,
+                    difficulty: Block1Content.Difficulty,
+                    totalDifficulty: Block1Content.TotalDifficulty,
+                    previousHash: Block1Content.PreviousHash,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(txs)),
+                transactions: txs);
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
                 blockContent.Transactions.Select(tx => tx.Id).ToArray());
@@ -86,17 +89,20 @@ namespace Libplanet.Tests.Blocks
                     "e63022002feb21bf0e4d76d25d17c8c1c4fbb3dfbda986e0693f984fbb302183ab7ece1"
                 )
             );
+            var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => new BlockContent<Arithmetic>(
-                    index: Block1Content.Index,
-                    publicKey: Block1Content.PublicKey,
-                    difficulty: Block1Content.Difficulty,
-                    totalDifficulty: Block1Content.TotalDifficulty,
-                    previousHash: Block1Content.PreviousHash,
-                    transactions: new[] { Block1Tx0, Block1Tx1, dupTx1 }));
-            Assert.Equal(dupTx1.Id, e.TxId);
+                    new BlockMetadata(
+                        index: Block1Content.Index,
+                        publicKey: Block1Content.PublicKey,
+                        difficulty: Block1Content.Difficulty,
+                        totalDifficulty: Block1Content.TotalDifficulty,
+                        previousHash: Block1Content.PreviousHash,
+                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs)),
+                    transactions: txs));
+            Assert.Equal(Block1Tx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
-            Assert.Equal(dupTx1.Nonce, e.ImproperNonce);
+            Assert.Equal(Block1Tx1.Nonce, e.ImproperNonce);
         }
 
         [Fact]
@@ -116,14 +122,17 @@ namespace Libplanet.Tests.Blocks
                     "cb16022057c851a01dd74797121385ccfc81e7b33842941189154b4d46d05e891a28e3eb"
                 )
             );
+            var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => new BlockContent<Arithmetic>(
-                    index: Block1Content.Index,
-                    publicKey: Block1Content.PublicKey,
-                    difficulty: Block1Content.Difficulty,
-                    totalDifficulty: Block1Content.TotalDifficulty,
-                    previousHash: Block1Content.PreviousHash,
-                    transactions: new[] { Block1Tx0, Block1Tx1, dupTx1 }));
+                    new BlockMetadata(
+                        index: Block1Content.Index,
+                        publicKey: Block1Content.PublicKey,
+                        difficulty: Block1Content.Difficulty,
+                        totalDifficulty: Block1Content.TotalDifficulty,
+                        previousHash: Block1Content.PreviousHash,
+                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs)),
+                    transactions: txs));
             Assert.Equal(dupTx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
             Assert.Equal(dupTx1.Nonce, e.ImproperNonce);
@@ -156,11 +165,13 @@ namespace Libplanet.Tests.Blocks
                 Block1Content.Transactions.Append(txWithDifferentGenesis).ToArray();
             InvalidTxGenesisHashException e = Assert.Throws<InvalidTxGenesisHashException>(
                 () => new BlockContent<Arithmetic>(
-                    index: Block1Content.Index,
-                    publicKey: Block1Content.PublicKey,
-                    difficulty: Block1Content.Difficulty,
-                    totalDifficulty: Block1Content.TotalDifficulty,
-                    previousHash: Block1Content.PreviousHash,
+                    new BlockMetadata(
+                        index: Block1Content.Index,
+                        publicKey: Block1Content.PublicKey,
+                        difficulty: Block1Content.Difficulty,
+                        totalDifficulty: Block1Content.TotalDifficulty,
+                        previousHash: Block1Content.PreviousHash,
+                        txHash: BlockContent<Arithmetic>.DeriveTxHash(inconsistentTxs)),
                     transactions: inconsistentTxs));
             Assert.Equal(Block1Content.Transactions[0].GenesisHash, e.ExpectedGenesisHash);
             Assert.Equal(differentGenesisHash, e.ImproperGenesisHash);
@@ -192,7 +203,7 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(
                 sha256.Digest(
                     codec.Encode(
-                        GenesisContent.BlockMetadata.MakeCandidateData(preEvalBlock.Nonce))),
+                        GenesisContent.Metadata.MakeCandidateData(preEvalBlock.Nonce))),
                 preEvalBlock.PreEvaluationHash.ToArray()
             );
         }
@@ -203,11 +214,13 @@ namespace Libplanet.Tests.Blocks
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
                 var content = new BlockContent<Arithmetic>(
-                    index: Block1Content.Index,
-                    publicKey: Block1Content.PublicKey,
-                    difficulty: long.MaxValue,
-                    totalDifficulty: Block1Content.TotalDifficulty + long.MaxValue,
-                    previousHash: Block1Content.PreviousHash,
+                    new BlockMetadata(
+                        index: Block1Content.Index,
+                        publicKey: Block1Content.PublicKey,
+                        difficulty: long.MaxValue,
+                        totalDifficulty: Block1Content.TotalDifficulty + long.MaxValue,
+                        previousHash: Block1Content.PreviousHash,
+                        txHash: Block1Content.TxHash),
                     transactions: Block1Content.Transactions);
 
                 Exception exception = null;

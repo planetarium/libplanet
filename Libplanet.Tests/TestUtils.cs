@@ -329,23 +329,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var txs = transactions?.ToList() ?? new List<Transaction<T>>();
+            var txs = transactions?.OrderBy(tx => tx.Id).ToList() ?? new List<Transaction<T>>();
             var content = new BlockContent<T>(
-                protocolVersion: protocolVersion,
-                index: 0,
-                timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
-                publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null,
-                txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
-                transactions: txs.OrderBy(tx => tx.Id).ToList());
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: 0,
+                    timestamp: timestamp ??
+                        new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                    miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                    publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(txs)),
+                transactions: txs.ToList());
             var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
             return new PreEvaluationBlock<T>(
                 content,
-                nonce,
-                content.BlockMetadata.DerivePreEvaluationHash(nonce));
+                (nonce, content.Metadata.DerivePreEvaluationHash(nonce)));
         }
 
         public static Block<T> MineGenesisBlock<T>(
@@ -361,10 +362,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner?.PublicKey,
                 transactions,
                 timestamp,
-                protocolVersion
-            );
+                protocolVersion);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             return protocolVersion < 2
-                ? new Block<T>(preEval, stateRootHash, null)
+                ? new Block<T>(preEval, (stateRootHash, null, hash))
                 : preEval.Sign(miner, stateRootHash);
         }
 
@@ -383,21 +384,25 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ? new List<Transaction<T>>()
                 : transactions.OrderBy(tx => tx.Id).ToList();
             var content = new BlockContent<T>(
-                protocolVersion: protocolVersion,
-                index: previousBlock.Index + 1,
-                timestamp: previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
-                miner: miner?.ToAddress() ?? previousBlock.Miner,
-                publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
-                difficulty: difficulty,
-                totalDifficulty: previousBlock.TotalDifficulty + difficulty,
-                previousHash: previousBlock.Hash,
-                txHash: BlockContent<T>.DeriveTxHash(txs),
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: previousBlock.Index + 1,
+                    timestamp: previousBlock.Timestamp
+                        .Add(blockInterval ?? TimeSpan.FromSeconds(15)),
+                    miner: miner?.ToAddress() ?? previousBlock.Miner,
+                    publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
+                    difficulty: difficulty,
+                    totalDifficulty: previousBlock.TotalDifficulty + difficulty,
+                    previousHash: previousBlock.Hash,
+                    txHash: BlockContent<T>.DeriveTxHash(txs)),
                 transactions: txs);
             var preEval = nonce is byte[] nonceBytes
                 ? new PreEvaluationBlock<T>(
                     content,
-                    new Nonce(nonceBytes),
-                    content.BlockMetadata.DerivePreEvaluationHash(new Nonce(nonceBytes)))
+                    (
+                        new Nonce(nonceBytes),
+                        content.Metadata.DerivePreEvaluationHash(new Nonce(nonceBytes))
+                    ))
                 : content.Mine();
 
             preEval.ValidateTimestamp();
@@ -423,10 +428,10 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 difficulty,
                 miner?.PublicKey,
                 blockInterval,
-                protocolVersion
-            );
+                protocolVersion);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
             return protocolVersion < 2
-                ? new Block<T>(preEval, stateRootHash, null)
+                ? new Block<T>(preEval, (stateRootHash, null, hash))
                 : preEval.Sign(miner, stateRootHash);
         }
 
@@ -458,29 +463,32 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             if (genesisBlock is null)
             {
                 var content = new BlockContent<T>(
-                    protocolVersion: protocolVersion,
-                    index: 0,
-                    timestamp: timestamp ?? DateTimeOffset.MinValue,
-                    miner: GenesisMiner.PublicKey.ToAddress(),
-                    publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
-                    difficulty: 0,
-                    totalDifficulty: 0,
-                    previousHash: null,
-                    txHash: BlockContent<T>.DeriveTxHash(txs),
+                    new BlockMetadata(
+                        protocolVersion: protocolVersion,
+                        index: 0,
+                        timestamp: timestamp ?? DateTimeOffset.MinValue,
+                        miner: GenesisMiner.PublicKey.ToAddress(),
+                        publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
+                        difficulty: 0,
+                        totalDifficulty: 0,
+                        previousHash: null,
+                        txHash: BlockContent<T>.DeriveTxHash(txs)),
                     transactions: txs);
                 var nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
                 var preEval = new PreEvaluationBlock<T>(
-                    content,
-                    nonce,
-                    content.BlockMetadata.DerivePreEvaluationHash(nonce));
+                    content, (nonce, content.Metadata.DerivePreEvaluationHash(nonce)));
+                var stateRootHash = preEval.DetermineStateRootHash(
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: stateStore);
                 genesisBlock = protocolVersion < 2
                     ? new Block<T>(
-                         preEval,
-                         preEval.DetermineStateRootHash(
-                             blockAction: policy.BlockAction,
-                             nativeTokenPredicate: policy.NativeTokens.Contains,
-                             stateStore: stateStore),
-                         signature: null)
+                        preEval,
+                        (
+                            stateRootHash,
+                            null,
+                            preEval.Header.DeriveBlockHash(stateRootHash, null)
+                        ))
                     : preEval.Evaluate(
                          privateKey: GenesisMiner,
                          blockAction: policy.BlockAction,

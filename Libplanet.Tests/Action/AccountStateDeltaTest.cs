@@ -235,14 +235,12 @@ namespace Libplanet.Tests.Action
                 chain.Tip,
                 new[] { tx },
                 miner: privateKey.PublicKey,
-                protocolVersion: ProtocolVersion
-            );
+                protocolVersion: ProtocolVersion);
+            var stateRootHash = preEvalBlock.DetermineStateRootHash(chain);
+            var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
             chain.Append(
                 ProtocolVersion < 2
-                ? new Block<DumbAction>(
-                    preEvalBlock,
-                    preEvalBlock.DetermineStateRootHash(chain),
-                    signature: null)
+                ? new Block<DumbAction>(preEvalBlock, (stateRootHash, null, hash))
                 : preEvalBlock.Evaluate(privateKey, chain)
             );
             Assert.Equal(

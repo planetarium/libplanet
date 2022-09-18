@@ -37,15 +37,16 @@ namespace Libplanet.Tests.Fixtures
             GenesisKey = PrivateKey.FromString(
                 "9bf4664ba09a89faeb684b94e69ffde01d26ae14b556204d3f6ab58f61f78418");
             GenesisContent = new BlockContent<Arithmetic>(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: 0,
-                timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                miner: GenesisKey.PublicKey.ToAddress(),
-                publicKey: GenesisKey.PublicKey,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null,
-                txHash: null,
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: 0,
+                    timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
+                    miner: GenesisKey.PublicKey.ToAddress(),
+                    publicKey: GenesisKey.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null),
                 transactions: new List<Transaction<Arithmetic>>());
             GenesisMetadata = new BlockMetadata(GenesisContent);
             GenesisHash = BlockHash.FromString(
@@ -92,42 +93,45 @@ namespace Libplanet.Tests.Fixtures
             var block1Transactions = new List<Transaction<Arithmetic>>() { Block1Tx0, Block1Tx1 }
                 .OrderBy(tx => tx.Id).ToList();
             Block1Content = new BlockContent<Arithmetic>(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: 1,
-                timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                miner: Block1Key.PublicKey.ToAddress(),
-                publicKey: Block1Key.PublicKey,
-                difficulty: 123,
-                totalDifficulty: 123,
-                previousHash: GenesisHash,
-                txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions),
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: 1,
+                    timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
+                    miner: Block1Key.PublicKey.ToAddress(),
+                    publicKey: Block1Key.PublicKey,
+                    difficulty: 123,
+                    totalDifficulty: 123,
+                    previousHash: GenesisHash,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions)),
                 transactions: block1Transactions);
             Block1TxHash = HashDigest<SHA256>.FromString(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
 
             GenesisContentPv0 = new BlockContent<Arithmetic>(
-                protocolVersion: 0,
-                index: 0,
-                timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                miner: GenesisKey.ToAddress(),
-                publicKey: null,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null,
-                txHash: null,
+                new BlockMetadata(
+                    protocolVersion: 0,
+                    index: 0,
+                    timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
+                    miner: GenesisKey.ToAddress(),
+                    publicKey: null,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null),
                 transactions: new List<Transaction<Arithmetic>>()); // Tweaked GenesisContent
             GenesisMetadataPv0 = new BlockMetadata(GenesisContentPv0);
             Block1ContentPv1 = new BlockContent<Arithmetic>(
-                protocolVersion: 1,
-                index: 1,
-                timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                miner: Block1Key.ToAddress(),
-                publicKey: null,
-                difficulty: 123,
-                totalDifficulty: 123,
-                previousHash: GenesisHash,
-                txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions),
+                new BlockMetadata(
+                    protocolVersion: 1,
+                    index: 1,
+                    timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
+                    miner: Block1Key.ToAddress(),
+                    publicKey: null,
+                    difficulty: 123,
+                    totalDifficulty: 123,
+                    previousHash: GenesisHash,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(block1Transactions)),
                 transactions: block1Transactions); // Tweaked Block1Content
             Block1MetadataPv1 = new BlockMetadata(Block1ContentPv1);
         }

@@ -863,21 +863,25 @@ namespace Libplanet.Net.Tests
             var minerKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>();
             var genesisContent = new BlockContent<DumbAction>(
-                index: 0,
-                publicKey: minerKey.PublicKey,
-                difficulty: 0,
-                totalDifficulty: 0,
-                previousHash: null);
+                new BlockMetadata(
+                    index: 0,
+                    publicKey: minerKey.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null));
             var genesisBlock1Nonce = new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 });
+            var genesisBlock1PreEvaluationHash = genesisContent.Metadata.DerivePreEvaluationHash(
+                genesisBlock1Nonce);
             var genesisBlock1 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                genesisBlock1Nonce,
-                genesisContent.BlockMetadata.DerivePreEvaluationHash(genesisBlock1Nonce));
+                (genesisBlock1Nonce, genesisBlock1PreEvaluationHash));
             var genesisBlock2Nonce = new Nonce(new byte[] { 0x02, 0x00, 0x00, 0x00 });
+            var genesisBlock2PreEvaluationHash = genesisContent.Metadata.DerivePreEvaluationHash(
+                genesisBlock2Nonce);
             var genesisBlock2 = new PreEvaluationBlock<DumbAction>(
                 genesisContent,
-                genesisBlock2Nonce,
-                genesisContent.BlockMetadata.DerivePreEvaluationHash(genesisBlock2Nonce));
+                (genesisBlock2Nonce, genesisBlock2PreEvaluationHash));
 
             BlockChain<DumbAction> MakeBlockChainWithGenesis(
                 PreEvaluationBlock<DumbAction> genesisBlock)

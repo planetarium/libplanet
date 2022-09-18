@@ -209,12 +209,15 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 customActions: new[] { action });
+            var txs = new Transaction<ThrowException>[] { tx };
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
-                index: 1L,
-                publicKey: new PrivateKey().PublicKey,
-                difficulty: 1L,
-                totalDifficulty: 1L,
-                previousHash: genesis.Hash,
+                new BlockMetadata(
+                    index: 1L,
+                    publicKey: new PrivateKey().PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: 1L,
+                    previousHash: genesis.Hash,
+                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs)),
                 transactions: ImmutableArray.Create(tx)).Mine();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
@@ -564,13 +567,16 @@ namespace Libplanet.Tests.Action
             };
             var tx =
                 Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
+            var txs = new Transaction<DumbAction>[] { tx };
             var block = new BlockContent<DumbAction>(
-                index: 1L,
-                publicKey: keys[0].PublicKey,
-                difficulty: 1L,
-                totalDifficulty: 1L,
-                previousHash: default(BlockHash),
-                transactions: ImmutableArray.Create(tx)).Mine();
+                new BlockMetadata(
+                    index: 1L,
+                    publicKey: keys[0].PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: 1L,
+                    previousHash: default(BlockHash),
+                    txHash: BlockContent<DumbAction>.DeriveTxHash(txs)),
+                transactions: txs).Mine();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -694,28 +700,30 @@ namespace Libplanet.Tests.Action
         public void EvaluateTxResultThrowingException()
         {
             var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
-            Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
+            var tx = Transaction<ThrowException>.Create(
                 0,
                 _txFx.PrivateKey1,
                 null,
                 new[] { action },
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
+            var txs = new Transaction<ThrowException>[] { tx };
             var hash = new BlockHash(GetRandomBytes(32));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
-                nativeTokenPredicate: _ => true
-            );
+                nativeTokenPredicate: _ => true);
             var block = new BlockContent<ThrowException>(
-                index: 123,
-                publicKey: GenesisMiner.PublicKey,
-                difficulty: 1,
-                totalDifficulty: 1,
-                previousHash: default(BlockHash),
-                transactions: ImmutableArray.Create(tx)).Mine();
+                new BlockMetadata(
+                    index: 123,
+                    publicKey: GenesisMiner.PublicKey,
+                    difficulty: 1,
+                    totalDifficulty: 1,
+                    previousHash: default(BlockHash),
+                    txHash: BlockContent<ThrowException>.DeriveTxHash(txs)),
+                transactions: txs).Mine();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
