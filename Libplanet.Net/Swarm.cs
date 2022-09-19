@@ -108,6 +108,11 @@ namespace Libplanet.Net
             Options = options ?? new SwarmOptions();
             TxCompletion = new TxCompletion<BoundPeer, T>(BlockChain, GetTxsAsync, BroadcastTxs);
             RoutingTable = new RoutingTable(Address, Options.TableSize, Options.BucketSize);
+
+            // FIXME: after the initialization of NetMQTransport is fully converted to asynchronous
+            // code, the portion initializing the swarm in Agent.cs in NineChronicles should be
+            // fixed. for context, refer to
+            // https://github.com/planetarium/libplanet/discussions/2303.
             Transport = NetMQTransport.Create(
                 _privateKey,
                 _appProtocolVersion,

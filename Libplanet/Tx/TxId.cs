@@ -18,7 +18,7 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
     [Serializable]
-    public struct TxId : ISerializable, IComparable<TxId>, IComparable
+    public struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.

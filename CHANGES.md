@@ -148,9 +148,7 @@ https://www.nuget.org/packages/Planetarium.Cryptography.BLS12_381
 Version 0.42.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on September 19, 2022.
 
 ### Backward-incompatible API changes
 
@@ -170,12 +168,10 @@ To be released.
      -  All public method parameter names `maxBlockBytes` changed to
         `maxTransactionsBytes`.
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
+ -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
+ -  `TxId` now implements `IEquatable<TxId>` interface.  [[#2320]]
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
@@ -183,18 +179,12 @@ To be released.
  -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
     [[#2065], [#2198]]
 
-### Behavioral changes
-
-### Bug fixes
-
 ### Dependencies
 
  -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
     [[#2283]]
  -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
     [[#2298]]
-
-### CLI tools
 
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#2065]: https://github.com/planetarium/libplanet/issues/2065
@@ -204,8 +194,21 @@ To be released.
 [#2290]: https://github.com/planetarium/libplanet/issues/2290
 [#2291]: https://github.com/planetarium/libplanet/pull/2291
 [#2298]: https://github.com/planetarium/libplanet/pull/2298
+[#2320]: https://github.com/planetarium/libplanet/pull/2320
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 [Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
+
+
+Version 0.41.2
+--------------
+
+Released on September 13, 2022.
+
+ -  Fixed a bug where `NetMQTransport` is not correctly disposed of due to
+    `NetMQTransport._router` already being stopped in prior to
+    `_router.Unbind()` call in `NetMQTransport.Dispose()`.  [[#2311]]
+
+[#2311]: https://github.com/planetarium/libplanet/pull/2311
 
 
 Version 0.41.1
