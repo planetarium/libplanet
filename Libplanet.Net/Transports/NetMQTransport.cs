@@ -335,7 +335,8 @@ namespace Libplanet.Net.Transports
 
                 if (_router is { } router && !router.IsDisposed)
                 {
-                    _router.Unbind($"tcp://*:{_listenPort}");
+                    // We omitted _router.Unbind() with intention due to hangs.
+                    // See also: https://github.com/planetarium/libplanet/pull/2311
                     _router.Dispose();
                     _turnClient?.Dispose();
                 }
