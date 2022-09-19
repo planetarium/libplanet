@@ -43,7 +43,7 @@ To be released.
 ### Dependencies
 
  -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
-    [6.0.0][System.Text.Json 6.0.0].  [[#2322]]
+    [6.0.6][System.Text.Json 6.0.6].  [[#2322]]
 
 ### CLI tools
 
@@ -51,7 +51,7 @@ To be released.
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
-[System.Text.Json 6.0.0]: https://www.nuget.org/packages/System.Text.Json/6.0.0
+[System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
 
 
 Version 0.42.0
