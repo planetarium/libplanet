@@ -14,7 +14,7 @@ namespace Libplanet.Action.Sys
         /// <summary>
         /// Creates a new instance of <see cref="WithdrawValidator"/> action.
         /// </summary>
-        internal WithdrawValidator()
+        public WithdrawValidator()
         {
         }
 
