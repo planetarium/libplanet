@@ -163,8 +163,8 @@ namespace Libplanet.Tests.Store.Trie
                     .Add("bar", 2)
                     .Add(
                         "lst",
-                        Range(0, 1000).Select(i => (IValue)new Text($"long str {i}"))))
-                .Add(new List(Range(0, 1000).Select(i => (IValue)new Text($"long str {i}"))));
+                        new List(Range(0, 1000).Select(i => new Text($"long str {i}")))))
+                .Add(new List(Range(0, 1000).Select(i => new Text($"long str {i}"))));
             trie = trie.Set(new KeyBytes(0x11, 0x22), complexList);
             trie = commit ? trie.Commit() : trie;
             AssertBytesEqual(
@@ -184,16 +184,16 @@ namespace Libplanet.Tests.Store.Trie
             Dictionary complexDict = Dictionary.Empty
                 .Add("foo", 123)
                 .Add("bar", 456)
-                .Add("lst", Range(0, 1000).Select(i => (IValue)new Text($"long str {i}")))
-                .Add("cls", (IValue)complexList)
+                .Add("lst", new List(Range(0, 1000).Select(i => new Text($"long str {i}"))))
+                .Add("cls", complexList)
                 .Add(
                     "dct",
                     Dictionary.Empty
                         .Add("abcd", Null.Value)
                         .Add("efgh", false)
                         .Add("ijkl", true)
-                        .Add("mnop", (IValue)new Binary("hello world", Encoding.ASCII))
-                        .Add("qrst", (IValue)complexList)
+                        .Add("mnop", new Binary("hello world", Encoding.ASCII))
+                        .Add("qrst", complexList)
                         .Add("uvwx", Dictionary.Empty));
             trie = trie.Set(new KeyBytes(0x12, 0x34), complexDict);
             trie = commit ? trie.Commit() : trie;

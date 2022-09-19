@@ -621,7 +621,7 @@ namespace Libplanet.Assets
         public IValue Serialize()
         {
             IValue minters = Minters is ImmutableHashSet<Address> a
-                ? new List(a.OrderBy(m => m).Select(m => (IValue)new Binary(m.ByteArray)))
+                ? new List(a.OrderBy(m => m).Select(m => m.ByteArray))
                 : (IValue)Null.Value;
 
             var serialized = Dictionary.Empty

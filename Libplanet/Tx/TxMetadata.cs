@@ -133,7 +133,7 @@ namespace Libplanet.Tx
             IEnumerable<IValue> customActions,
             ImmutableArray<byte>? signature = null
         ) =>
-            ToBencodex(signature).Add(CustomActionsKey, customActions);
+            ToBencodex(signature).Add(CustomActionsKey, new List(customActions));
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
@@ -157,8 +157,8 @@ namespace Libplanet.Tx
             ImmutableArray<byte>? signature = null
         )
         {
-            IEnumerable<IValue> updatedAddresses =
-                UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray));
+            List updatedAddresses = new List(
+                UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray)));
             Bencodex.Types.Dictionary dict = Dictionary.Empty
                 .Add(NonceKey, Nonce)
                 .Add(SignerKey, Signer.ByteArray)

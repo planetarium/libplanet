@@ -19,10 +19,10 @@ namespace Libplanet.Tests.Common.Action
         public Type ExceptionTypeToThrow { get; set; } = typeof(SomeException);
 
         public IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, bool>
             {
-                [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
-                [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
+                ["throw_on_rehearsal"] = ThrowOnRehearsal,
+                ["throw_on_execution"] = ThrowOnExecution,
             });
 
         public void LoadPlainValue(IValue plainValue)

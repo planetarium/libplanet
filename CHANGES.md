@@ -32,6 +32,8 @@ To be released.
 
 ### Added APIs
 
+ -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
+ -  `TxId` now implements `IEquatable<TxId>` interface.  [[#2320]]
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
@@ -48,6 +50,8 @@ To be released.
 
  -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
     [[#2283]]
+ -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
+    [[#2298]]
 
 ### CLI tools
 
@@ -60,7 +64,22 @@ To be released.
 [#2189]: https://github.com/planetarium/libplanet/pull/2189
 [#2290]: https://github.com/planetarium/libplanet/issues/2290
 [#2291]: https://github.com/planetarium/libplanet/pull/2291
+[#2298]: https://github.com/planetarium/libplanet/pull/2298
+[#2320]: https://github.com/planetarium/libplanet/pull/2320
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
+[Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
+
+
+Version 0.41.2
+--------------
+
+Released on September 13, 2022.
+
+ -  Fixed a bug where `NetMQTransport` is not correctly disposed of due to
+    `NetMQTransport._router` already being stopped in prior to
+    `_router.Unbind()` call in `NetMQTransport.Dispose()`.  [[#2311]]
+
+[#2311]: https://github.com/planetarium/libplanet/pull/2311
 
 
 Version 0.41.1

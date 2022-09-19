@@ -8,9 +8,9 @@ namespace Libplanet.Tests.Common.Action
     public class DetectRehearsal : BaseAction
     {
         public override IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
             {
-                { (Text)"target_address", new Binary(TargetAddress.ByteArray) },
+                { "target_address", new Binary(TargetAddress.ByteArray) },
             });
 
         public bool ResultState { get; set; }
