@@ -4,9 +4,7 @@ Libplanet changelog
 Version 0.42.0
 --------------
 
-To be released.
-
-### Deprecated APIs
+Released on September 19, 2022.
 
 ### Backward-incompatible API changes
 
@@ -26,10 +24,6 @@ To be released.
      -  All public method parameter names `maxBlockBytes` changed to
         `maxTransactionsBytes`.
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
@@ -41,18 +35,12 @@ To be released.
  -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
     [[#2065], [#2198]]
 
-### Behavioral changes
-
-### Bug fixes
-
 ### Dependencies
 
  -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
     [[#2283]]
  -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
     [[#2298]]
-
-### CLI tools
 
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#2065]: https://github.com/planetarium/libplanet/issues/2065
