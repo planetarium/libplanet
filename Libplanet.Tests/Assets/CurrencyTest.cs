@@ -256,7 +256,7 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(bar, new Currency(bar.Serialize()));
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility

@@ -550,6 +550,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         public static void AssertJsonSerializable<T>(T obj, string expectedJson)
             where T : IEquatable<T>
         {
+            Skip.IfNot(
+                Type.GetType("Mono.Runtime") is null,
+                "System.Text.Json 6.0.0+ does not work well with Unity/Mono."
+            );
+
             var buffer = new MemoryStream();
             JsonSerializer.Serialize(buffer, obj);
             buffer.Seek(0L, SeekOrigin.Begin);

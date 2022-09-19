@@ -24,7 +24,8 @@ To be released.
 
  -  Many types became serialized and deserialized better with
     [`System.Text.Json.JsonSerializer`] as they now have their own
-    [custom converters].  [[#2322]]
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2322]]
 
      -  An `Address` became represented as a single hexadecimal string in JSON.
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.

@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(deserialized, expected);
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             BlockHash hash = BlockHash.FromString(

@@ -329,7 +329,7 @@ namespace Libplanet.Tests
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             var address = new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF");

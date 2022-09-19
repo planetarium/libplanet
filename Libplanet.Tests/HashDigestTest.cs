@@ -175,7 +175,7 @@ namespace Libplanet.Tests
             Assert.Equal(deserializedHashDigest, expectedHashDigest);
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             HashDigest<SHA1> digest =

@@ -229,7 +229,7 @@ namespace Libplanet.Tests.Tx
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             TxId txid = TxId.FromHex(

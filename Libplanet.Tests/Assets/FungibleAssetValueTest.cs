@@ -533,7 +533,7 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(new FungibleAssetValue(FOO, -12, 0), FungibleAssetValue.Parse(FOO, "-12"));
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             var v = new FungibleAssetValue(FOO, 123, 45);
