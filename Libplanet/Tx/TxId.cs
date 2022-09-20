@@ -1,9 +1,12 @@
 #nullable disable
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Libplanet.Serialization;
 
 namespace Libplanet.Tx
@@ -17,6 +20,7 @@ namespace Libplanet.Tx
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
+    [JsonConverter(typeof(TxIdJsonConverter))]
     [Serializable]
     public struct TxId : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable
     {
@@ -198,5 +202,38 @@ namespace Libplanet.Tx
         {
             info.AddValue("tx_id", _byteArray.ToArray());
         }
+    }
+
+#nullable enable
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class TxIdJsonConverter : JsonConverter<TxId>
+    {
+        public override TxId Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return TxId.FromHex(hex);
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            TxId value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToHex());
     }
 }
