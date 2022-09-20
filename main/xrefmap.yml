@@ -1694,6 +1694,15 @@ references:
   commentId: M:Libplanet.Assets.Currency.#ctor(IValue)
   fullName: Libplanet.Assets.Currency.Currency(IValue)
   nameWithType: Currency.Currency(IValue)
+- uid: Libplanet.Assets.Currency.#ctor(Libplanet.HashDigest{SHA1},System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}},System.Boolean,System.Nullable{Libplanet.Assets.FungibleAssetValue})
+  name: Currency(HashDigest<SHA1>, String, Byte, Nullable<IImmutableSet<Address>>, Boolean, Nullable<FungibleAssetValue>)
+  href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_Libplanet_HashDigest_SHA1__System_String_System_Byte_System_Nullable_IImmutableSet_Libplanet_Address___System_Boolean_System_Nullable_Libplanet_Assets_FungibleAssetValue__
+  commentId: M:Libplanet.Assets.Currency.#ctor(Libplanet.HashDigest{SHA1},System.String,System.Byte,System.Nullable{IImmutableSet{Libplanet.Address}},System.Boolean,System.Nullable{Libplanet.Assets.FungibleAssetValue})
+  name.vb: Currency(HashDigest(Of SHA1), String, Byte, Nullable(Of IImmutableSet(Of Address)), Boolean, Nullable(Of FungibleAssetValue))
+  fullName: Libplanet.Assets.Currency.Currency(Libplanet.HashDigest<SHA1>, System.String, System.Byte, System.Nullable<IImmutableSet<Libplanet.Address>>, System.Boolean, System.Nullable<Libplanet.Assets.FungibleAssetValue>)
+  fullName.vb: Libplanet.Assets.Currency.Currency(Libplanet.HashDigest(Of SHA1), System.String, System.Byte, System.Nullable(Of IImmutableSet(Of Libplanet.Address)), System.Boolean, System.Nullable(Of Libplanet.Assets.FungibleAssetValue))
+  nameWithType: Currency.Currency(HashDigest<SHA1>, String, Byte, Nullable<IImmutableSet<Address>>, Boolean, Nullable<FungibleAssetValue>)
+  nameWithType.vb: Currency.Currency(HashDigest(Of SHA1), String, Byte, Nullable(Of IImmutableSet(Of Address)), Boolean, Nullable(Of FungibleAssetValue))
 - uid: Libplanet.Assets.Currency.#ctor*
   name: Currency
   href: api/Libplanet.Assets.Currency.html#Libplanet_Assets_Currency__ctor_
