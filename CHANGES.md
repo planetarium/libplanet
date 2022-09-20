@@ -15,6 +15,42 @@ a system action, its features will be added more in the future.
 
 ### Backward-incompatible API changes
 
+ -  Removed `DateTimeOffset?` type parameter that allowed a creation of
+    a genesis `Block<T>` with specific timestamp from
+    `BlockChain<T>.MakeGenesisBlock()`.  [[#2321]]
+ -  Overhauled constructors for `BlockMetadata`, `BlockContent<T>`,
+    `PreEvaluationBlockHeader`, `PreEvaluationBlock<T>`, `BlockHeader`,
+    and `Block<T>`.  [[#2321]]
+     -  All unsafe constructors have been removed in order to prevent
+        instantiation of invalid block related objects.
+     -  `BlockMetadata` has constructors `BlockMetadata(IBlockMetadata)`
+        and `BlockMetadata(long, PublicKey, long, BigInteger, BlockHash?,
+        HashDigest<SHA256>)`.
+     -  `BlockContent` has constructors `BlockContent<T>(IBlockMetadata,
+        IEnumerable<Transaction<T>> transactions)`,
+        `BlockContent<T>(BlockMetadata)` and `BlockContent<T>(BlockMetadata,
+        IEnumerable<Trnasaction<T>> transactions)`.
+     -  `PreEvaluationBlockHeader` has constructors
+        `PreEvaluationBlockHeader(IPreEvaluationBlockHeader)` and
+        `PreEvaluationBlockHeader(BlockMetadata, (Nonce,
+        ImmutableArray<byte>))`.
+     -  `PreEvaluationBlock<T>` has constructors
+        `PreEvaluationBlock<T>(IPreEvaluationBlockHeader,
+        IEnumerable<Transaction<T>>)` and
+        `PreEvaluatoinBlock<T>(BlockContent<T>, (Nonce, ImmutableArray<byte>))`.
+     -  `BlockHeader` has constructors `BlockHeader(IBlockHeader)` and
+        `BlockHeader(PreEvaluationBlockHeader, (HashDigest<SHA256>,
+        ImmutableArray<byte>?, BlockHash))`.
+     -  `Block<T>` has constructors `Block<T>(IBlockHeader,
+        IEnumerable<Transaction<T>>)` and `Block<T>(PreEvaluationBlock<T>,
+        (HashDigest<SHA256>, ImmutableArray<byte>, BlockHash))`.
+ -  `BlockContent<T>` no longer inherits `BlockMetadata` and
+    `PreEvaluationBlock<T>` no longer inherits `PreEvaluationBlockHeader`.
+    [[#2231]]
+ -  Both `BlockMetadata` and `BlockContent<T>` are made immutable.  Their
+    properties can no longer be assigned to.  [[#2231]]
+ -  Copy extension methods for `BlockMetadata` and `BlockContent<T>` removed.
+    [[#2231]]
  -  (Libplanet.Extensions.Cocona) The return type of
     `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
     [[#2322]]
@@ -35,6 +71,14 @@ a system action, its features will be added more in the future.
     [[#2046], [#2229]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
+ -  Each `BlockMetadata`, `PreEvaluationBlockHeader`, and `BlockHeader`
+    can be accessed from any "larger" type object through properties.  [[#2231]]
+     -  `BlockMetadata` can be accessed through `BlockContent<T>.Metadata`
+        or `PreEvaluationBlockHeader.Metadata`.
+     -  `PreEvaluationBlockHeader` can be accessed through
+        `PreEvaluationBlock<T>.Header` or `BlockHeader.Header`.
+     -  `BlockHeader` can be accessed thorugh `Block<T>.Header` (this has not
+        changed, but only listed here for completeness in narrative).
  -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
     `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
  -  (Libplanet.Explorer) Added `nextNonce` query in `TransactionQuery<T>`.
@@ -94,6 +138,7 @@ a system action, its features will be added more in the future.
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2294]: https://github.com/planetarium/libplanet/pull/2294
+[#2321]: https://github.com/planetarium/libplanet/pull/2321
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [#2353]: https://github.com/planetarium/libplanet/pull/2353
 [#2356]: https://github.com/planetarium/libplanet/issues/2356
