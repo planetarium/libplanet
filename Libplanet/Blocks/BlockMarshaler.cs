@@ -37,6 +37,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] StateRootHashKey = { 0x73 }; // 's'
         private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
         private static readonly byte[] PreEvaluationHashKey = { 0x63 }; // 'c'
+        private static readonly byte[] PreviousMinerKey = { 0x4D }; // 'M'
         private static readonly byte[] LastCommitKey = { 0x43 }; // 'C'
 
         public static Dictionary MarshalBlockMetadata(IBlockMetadata metadata)
@@ -65,6 +66,11 @@ namespace Libplanet.Blocks
             dict = metadata.PublicKey is { } pubKey
                 ? dict.Add(PublicKeyKey, pubKey.Format(compress: true))
                 : dict.Add(MinerKey, metadata.Miner.ByteArray);
+
+            if (metadata.PreviousMiner is { } miner)
+            {
+                dict = dict.Add(PreviousMinerKey, miner.ByteArray);
+            }
 
             if (metadata.LastCommit is { } commit)
             {
@@ -195,6 +201,9 @@ namespace Libplanet.Blocks
                     ? new HashDigest<SHA256>(
                         marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null,
+                PreviousMiner = marshaled.ContainsKey(PreviousMinerKey)
+                ? new Address(marshaled.GetValue<Binary>(PreviousMinerKey).ByteArray)
+                : (Address?)null,
                 LastCommit = marshaled.ContainsKey(LastCommitKey)
                 ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
                 : (BlockCommit?)null,

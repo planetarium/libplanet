@@ -28,35 +28,37 @@ namespace Libplanet.PoS.Control
         internal static IAccountStateDelta Execute(
             IAccountStateDelta states,
             IImmutableSet<Currency> nativeTokens,
-            IEnumerable<Vote>? votes,
-            Address miner,
+            IEnumerable<Vote>? lastVotes,
+            Address? previousMiner,
             long blockIndex)
         {
             ValidatorSet bondedValidatorSet;
             (states, bondedValidatorSet) = ValidatorSetCtrl.FetchBondedValidatorSet(states);
 
-            if (votes is null)
+            if (previousMiner is { } miner && lastVotes is { } votes)
+            {
+                foreach (Currency nativeToken in nativeTokens)
+                {
+                    states = DistributeProposerReward(
+                        states, nativeToken, miner, bondedValidatorSet, votes);
+                    states = DistributeValidatorReward(
+                        states, nativeToken, bondedValidatorSet, votes, blockIndex);
+
+                    FungibleAssetValue communityFund = states.GetBalance(
+                        ReservedAddress.RewardPool, nativeToken);
+
+                    if (communityFund.Sign > 0)
+                    {
+                        states = states.TransferAsset(
+                            ReservedAddress.RewardPool,
+                            ReservedAddress.CommunityPool,
+                            states.GetBalance(ReservedAddress.RewardPool, nativeToken));
+                    }
+                }
+            }
+            else
             {
                 return states;
-            }
-
-            foreach (Currency nativeToken in nativeTokens)
-            {
-                states = DistributeProposerReward(
-                    states, nativeToken, miner, bondedValidatorSet, votes);
-                states = DistributeValidatorReward(
-                    states, nativeToken, bondedValidatorSet, votes, blockIndex);
-
-                FungibleAssetValue communityFund = states.GetBalance(
-                    ReservedAddress.RewardPool, nativeToken);
-
-                if (communityFund.Sign > 0)
-                {
-                    states = states.TransferAsset(
-                        ReservedAddress.RewardPool,
-                        ReservedAddress.CommunityPool,
-                        states.GetBalance(ReservedAddress.RewardPool, nativeToken));
-                }
             }
 
             return states;

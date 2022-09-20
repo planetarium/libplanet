@@ -53,6 +53,7 @@ namespace Libplanet.Blocks
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
         {
+            PreviousMiner = metadata.PreviousMiner;
             LastCommit = metadata.LastCommit;
             ProtocolVersion = metadata.ProtocolVersion;
             Index = metadata.Index;
@@ -165,6 +166,8 @@ namespace Libplanet.Blocks
             get => _txHash;
             set => _txHash = value;
         }
+
+        public Address? PreviousMiner { get; set; }
 
         public BlockCommit? LastCommit { get; set; }
 

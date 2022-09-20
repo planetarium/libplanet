@@ -1464,6 +1464,7 @@ namespace Libplanet.Blockchain
             Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+            Address? prevMiner = lastBlock?.Miner;
 
             if (!block.PreviousHash.Equals(prevHash))
             {
@@ -1488,6 +1489,21 @@ namespace Libplanet.Blockchain
                     $"The block #{index} {block.Hash}'s timestamp " +
                     $"({block.Timestamp}) is earlier than " +
                     $"the block #{index - 1}'s ({prevTimestamp}).");
+            }
+
+            if (!block.PreviousMiner.Equals(prevMiner) && actualProtocolVersion >= 5)
+            {
+                if (prevMiner is null)
+                {
+                    return new InvalidBlockPreviousHashException(
+                        $"The genesis block {block.Hash} should not have previous miner, " +
+                        $"but its value is {block.PreviousMiner}.");
+                }
+
+                return new InvalidBlockPreviousMinerException(
+                    $"The block #{index} {block.Hash}'s miner " +
+                    $"({block.PreviousMiner}) is different from " +
+                    $"the block #{index - 1}'s miner ({prevMiner}).");
             }
 
             return null;

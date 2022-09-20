@@ -94,6 +94,7 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
+                PreviousMiner = _fx.GenesisBlock.Miner,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
             }.Propose().Evaluate(_fx.Miner, _blockChain);

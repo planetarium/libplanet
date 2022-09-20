@@ -419,6 +419,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 Timestamp = previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
                 Transactions = txs ?? Array.Empty<Transaction<T>>(),
                 ProtocolVersion = protocolVersion,
+                PreviousMiner = previousBlock.Miner,
                 LastCommit = lastCommit,
             };
 

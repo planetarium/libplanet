@@ -36,7 +36,7 @@ namespace Libplanet.Action
             states = ValidatorSetCtrl.Update(states, ctx.BlockIndex);
 
             states = AllocateReward.Execute(
-                states, ctx.NativeTokens, ctx.LastCommit?.Votes, ctx.Miner, ctx.BlockIndex);
+                states, ctx.NativeTokens, ctx.LastCommit?.Votes, ctx.PreviousMiner, ctx.BlockIndex);
             return states;
         }
     }

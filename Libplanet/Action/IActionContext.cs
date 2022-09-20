@@ -47,6 +47,12 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
+        /// <see cref="Address"/> of a block miner account on last <see cref="Block{T}"/>.
+        /// </summary>
+        [Pure]
+        Address? PreviousMiner { get; }
+
+        /// <summary>
         /// <see cref="BlockCommit"/> of last <see cref="Block{T}"/>.
         /// </summary>
         [Pure]

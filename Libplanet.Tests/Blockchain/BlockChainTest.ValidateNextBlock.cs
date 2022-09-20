@@ -20,6 +20,7 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
+                PreviousMiner = _fx.GenesisBlock.Miner,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
             }.Propose().Evaluate(_fx.Miner, _blockChain);
@@ -35,6 +36,7 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _fx.GenesisBlock.Hash,
+                PreviousMiner = _fx.GenesisBlock.Miner,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
                 ProtocolVersion = _blockChain.Tip.ProtocolVersion,
@@ -47,6 +49,7 @@ namespace Libplanet.Tests.Blockchain
                 PublicKey = _fx.Miner.PublicKey,
                 Miner = _fx.Miner.ToAddress(),
                 PreviousHash = block1.Hash,
+                PreviousMiner = block1.Miner,
                 Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
                 ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
@@ -61,6 +64,7 @@ namespace Libplanet.Tests.Blockchain
                     Index = 2,
                     PublicKey = _fx.Miner.PublicKey,
                     PreviousHash = block1.Hash,
+                    PreviousMiner = block1.Miner,
                     Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
                     Transactions = _emptyTransaction,
                     ProtocolVersion = BlockMetadata.CurrentProtocolVersion + 1,
@@ -80,6 +84,7 @@ namespace Libplanet.Tests.Blockchain
                 PublicKey = _fx.Miner.PublicKey,
                 // Wrong PreviousHash for test; it should be _validNext.Hash:
                 PreviousHash = _validNext.PreviousHash,
+                PreviousMiner = _validNext.Miner,
                 Timestamp = _validNext.Timestamp.AddDays(1),
                 Transactions = _emptyTransaction,
             }.Propose().Evaluate(_fx.Miner, _blockChain);
@@ -97,6 +102,7 @@ namespace Libplanet.Tests.Blockchain
                 Index = 2,
                 PublicKey = _fx.Miner.PublicKey,
                 PreviousHash = _validNext.Hash,
+                PreviousMiner = _validNext.Miner,
                 Timestamp = _validNext.Timestamp.AddSeconds(-1),
                 Transactions = _emptyTransaction,
             }.Propose().Evaluate(_fx.Miner, _blockChain);
@@ -138,6 +144,7 @@ namespace Libplanet.Tests.Blockchain
                 Index = 1,
                 PublicKey = TestUtils.GenesisMiner.PublicKey,
                 PreviousHash = genesisBlock.Hash,
+                PreviousMiner = genesisBlock.Miner,
                 Timestamp = genesisBlock.Timestamp.AddSeconds(1),
                 Transactions = _emptyTransaction,
             }.Propose().Evaluate(TestUtils.GenesisMiner, chain1);

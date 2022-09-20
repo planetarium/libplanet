@@ -100,6 +100,15 @@ namespace Libplanet.Blockchain
             long index = Count;
             long difficulty = 1L;
             BlockHash? prevHash = index > 0 ? Store.IndexBlockHash(Id, index - 1) : null;
+            Address? prevMiner;
+            if (prevHash is { } hash && index > 0)
+            {
+                prevMiner = Store.GetBlock<T>(hash).Miner;
+            }
+            else
+            {
+                prevMiner = null;
+            }
 
             int sessionId = new System.Random().Next();
             int processId = Process.GetCurrentProcess().Id;
@@ -119,6 +128,7 @@ namespace Libplanet.Blockchain
                 PublicKey = proposer.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
+                PreviousMiner = prevMiner,
                 LastCommit = lastCommit,
             };
 

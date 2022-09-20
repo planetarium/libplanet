@@ -63,6 +63,7 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
+                content1.PreviousMiner = genesis.Miner;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
@@ -120,6 +121,7 @@ namespace Libplanet.Tests.Blocks
 
                 BlockContent<Arithmetic> content1 = _contents.Block1;
                 content1.PreviousHash = genesis.Hash;
+                content1.PreviousMiner = genesis.Miner;
                 content1.Transactions = new[] { _contents.Tx0InBlock1 };
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 

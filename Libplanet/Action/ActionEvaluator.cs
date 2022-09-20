@@ -212,6 +212,7 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
+                previousMiner: null,
                 lastCommit: null,
                 rehearsal: true,
                 previousBlockStatesTrie: null,
@@ -250,6 +251,9 @@ namespace Libplanet.Action
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
         /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
+        /// </param>
+        /// <param name="previousMiner">
+        /// <see cref="Address"/> of a block miner account on last <see cref="Block{T}"/>.
         /// </param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of last <see cref="Block{T}"/>.
         /// </param>
@@ -293,6 +297,7 @@ namespace Libplanet.Action
             byte[] signature,
             IImmutableList<IAction> actions,
             IImmutableSet<Currency>? nativeTokens = null,
+            Address? previousMiner = null,
             BlockCommit? lastCommit = null,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
@@ -309,6 +314,7 @@ namespace Libplanet.Action
                     blockIndex: blockIndex,
                     previousStates: prevStates,
                     randomSeed: randomSeed,
+                    previousMiner: previousMiner,
                     lastCommit: lastCommit,
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
@@ -618,6 +624,7 @@ namespace Libplanet.Action
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
+                previousMiner: block.PreviousMiner,
                 lastCommit: block.LastCommit,
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: previousBlockStatesTrie,
@@ -687,6 +694,8 @@ namespace Libplanet.Action
                 signer: block.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyUpdateValidatorAction }.ToImmutableList(),
+                previousMiner: block.PreviousMiner,
+                lastCommit: block.LastCommit,
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,
                 blockAction: true,
@@ -735,6 +744,7 @@ namespace Libplanet.Action
                 signer: block.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
+                previousMiner: block.PreviousMiner,
                 lastCommit: block.LastCommit,
                 rehearsal: false,
                 previousBlockStatesTrie: previousBlockStatesTrie,

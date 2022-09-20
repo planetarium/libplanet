@@ -2,10 +2,12 @@ using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    internal struct Asset
+    public struct Asset
     {
         public static readonly Currency GovernanceToken =
+#pragma warning disable CS0618
             Currency.Uncapped("GovernanceToken", 18, minters: null);
+#pragma warning restore CS0618
 
         public static readonly Currency ConsensusToken =
             Currency.Uncapped("ConsensusToken", 18, minters: null);

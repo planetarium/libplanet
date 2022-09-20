@@ -76,7 +76,16 @@ namespace Libplanet.Tests.Blockchain.Renderers
             LogEvent firstLog = null;
             IActionContext actionContext =
                 new ActionContext(
-                    default, default, default, default, 123, _stateDelta, default, null, rehearsal
+                    default,
+                    default,
+                    default,
+                    default,
+                    123,
+                    _stateDelta,
+                    default,
+                    null,
+                    null,
+                    rehearsal
                 );
             Exception actionError = new Exception();
             IActionRenderer<DumbAction> actionRenderer;
