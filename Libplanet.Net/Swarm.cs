@@ -144,6 +144,7 @@ namespace Libplanet.Net
                     BlockChain,
                     consensusReactorOption.ConsensusPrivateKey,
                     consensusReactorOption.ConsensusPeers,
+                    consensusReactorOption.SeedPeers,
                     consensusReactorOption.TargetBlockInterval);
             }
         }
