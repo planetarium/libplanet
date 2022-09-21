@@ -21,7 +21,8 @@ To be released.
 ### Added APIs
 
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
- -  `RoutingTable` became to implement `IRoutingTable` interface.  [[#2046], [#2229]]
+ -  `RoutingTable` became to implement `IRoutingTable` interface.
+    [[#2046], [#2229]]
 
 ### Behavioral changes
 
