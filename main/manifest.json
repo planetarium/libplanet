@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "CQuLb7fPk8iDvk7kcjXDOh726Bh7/s+RBbge6hZVkCQ="
+          "hash": "5LE0/+NRjceXxXEKiiW3Cjrv1xnxU1t1ksznia6amTg="
         }
       },
       "is_incremental": false,
@@ -2609,6 +2609,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.Protocols.IRoutingTable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.Protocols.IRoutingTable.html",
+          "hash": "pA4d3cZzBdarDoTSc836kHG7coyw/kvP2amlDo63NCI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.Protocols.Kademlia.yml",
       "output": {
         ".html": {
@@ -2661,7 +2673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.RoutingTable.html",
-          "hash": "LCoooiLdjx/x9/Fw3fCI5CXmLsfApT8LDjgZSfmpmVI="
+          "hash": "QZcGDnGAzit0YK4bEXyKkDrbc0pj4IRNl99VFj4L2ZQ="
         }
       },
       "is_incremental": false,
@@ -2673,7 +2685,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Protocols.html",
-          "hash": "YNjRak9rCS0qX7Ekt5Ifut9MRv0JoJB6uoGavC7c+1Y="
+          "hash": "cVunxZOhgHbb5R3qoKMempvoJQs+CHiqMuQOTQYDFGw="
         }
       },
       "is_incremental": false,
@@ -4185,7 +4197,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "yLDnWXBa0TCpZg+DRR+AGwb5Derpwnv5a5UDTpmV1os="
+          "hash": "iN9MstslrLbGZP3rSjcC0K5UUZgPSunadmscINBKVR4="
         }
       },
       "is_incremental": false,
@@ -4294,7 +4306,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 338,
+          "total_file_count": 339,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
