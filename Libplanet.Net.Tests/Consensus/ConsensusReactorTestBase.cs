@@ -164,6 +164,7 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain,
                 key,
                 validatorPeers.ToImmutableList(),
+                new List<BoundPeer>().ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
         }
 

@@ -140,6 +140,7 @@ namespace Libplanet.Net.Tests
                 options: options,
                 consensusOption: consensusReactorOption ?? new ConsensusReactorOption
                 {
+                    SeedPeers = ImmutableList<BoundPeer>.Empty,
                     ConsensusPeers = ImmutableList<BoundPeer>.Empty,
                     ConsensusPort = 0,
                     ConsensusPrivateKey = new PrivateKey(),
