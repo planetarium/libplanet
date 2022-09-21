@@ -56,10 +56,15 @@ namespace Libplanet.Action.Sys
 
             foreach (Currency nativeToken in context.NativeTokens)
             {
-                states = states.TransferAsset(
+                FungibleAssetValue reward = states.GetBalance(
+                    AllocateReward.RewardAddress(ctx.Signer), nativeToken);
+                if (reward.Sign > 0)
+                {
+                    states = states.TransferAsset(
                     AllocateReward.RewardAddress(ctx.Signer),
                     ctx.Signer,
-                    states.GetBalance(ctx.Signer, nativeToken));
+                    reward);
+                }
             }
 
             return states;
