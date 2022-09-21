@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
@@ -38,8 +41,10 @@ namespace Libplanet
     /// </summary>
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
+    [JsonConverter(typeof(AddressJsonConverter))]
     [Serializable]
-    public readonly struct Address : ISerializable, IComparable<Address>, IComparable
+    public readonly struct Address
+        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -358,5 +363,37 @@ namespace Libplanet
                 );
             }
         }
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class AddressJsonConverter : JsonConverter<Address>
+    {
+        public override Address Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? hex = reader.GetString();
+            try
+            {
+                return new Address(hex!);
+            }
+            catch (ArgumentException e)
+            {
+                throw new JsonException(e.Message);
+            }
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            Address value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(value.ToHex());
     }
 }

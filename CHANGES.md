@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 0.42.0
+Version 0.43.0
 --------------
 
 To be released.
@@ -10,9 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
-    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
-    `customActions`.  [[#2151], [#2273]]
+ -  (Libplanet.Extensions.Cocona) The return type of
+    `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
+    [[#2322]]
 
 ### Backward-incompatible network protocol changes
 
@@ -20,24 +20,84 @@ To be released.
 
 ### Added APIs
 
- -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
-    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
-    [[#2151], [#2273]]
- -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
- -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
-    [[#2065], [#2198]]
 
 ### Behavioral changes
+
+ -  Many types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2322]]
+
+     -  An `Address` became represented as a single hexadecimal string in JSON.
+     -  A `BlockHash` became represented as a single hexadecimal string in JSON.
+     -  A `Currency` became represented as an object with values in JSON.
+        Note that it contains its `Hash` and it throws `JsonException`
+        if a JSON object to deserialize has an inconsistent `Hash` with
+        other field values.
+     -  A `FungibleAssetValue` became represented as an object with
+        its `Currency` object and `Quantity` string.
+     -  A `HashDigest` became represented as a single hexadecimal string in
+        JSON.
+     -  A `TxId` became represented as a single hexadecimal string in JSON.
 
 ### Bug fixes
 
 ### Dependencies
 
- -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
-    [[#2283]]
+ -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
+    [6.0.6][System.Text.Json 6.0.6].  [[#2322]]
 
 ### CLI tools
+
+[#2229]: https://github.com/planetarium/libplanet/pull/2229
+[#2322]: https://github.com/planetarium/libplanet/pull/2322
+[`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
+[custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
+[System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
+
+
+Version 0.42.0
+--------------
+
+Released on September 19, 2022.
+
+### Backward-incompatible API changes
+
+ -  Renamed `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method's `actions` parameter to
+    `customActions`.  [[#2151], [#2273]]
+ -  Changed `IBlockPolicy.GetMaxBlockBytes()` to
+    `IBlockPolicy.GetMaxTransactionBytes()`.  Behaviourally, this is now used
+    as an upper limit for the encoded size of `Block<T>.Transactions`
+    instead of `Block<T>`.  [[#2290], [#2291]]
+     -  (Libplanet.Explorer) Changed `Options.MaxBlockBytes` to
+        `Options.MaxTransactionsBytes` and `Options.MaxGenesisBytes` to
+        `Options.MaxGenesisTransactionsBytes`.
+     -  (Libplanet.Explorer) Changed executable argument `max-block-bytes`
+        to `max-transactions-bytes` and `max-genesis-bytes` to
+        `max-genesis-transactions-bytes`.
+     -  All public method parameter names `maxBlockBytes` changed to
+        `maxTransactionsBytes`.
+
+### Added APIs
+
+ -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
+ -  `TxId` now implements `IEquatable<TxId>` interface.  [[#2320]]
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
+    IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
+    [[#2151], [#2273]]
+ -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
+ -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
+    [[#2065], [#2198]]
+
+### Dependencies
+
+ -  Upgraded *Bencodex* from [0.4.0][Bencodex 0.4.0] to [0.5.0][Bencodex 0.5.0].
+    [[#2283]]
+ -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
+    [[#2298]]
 
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#2046]: https://github.com/planetarium/libplanet/issues/2046
@@ -45,8 +105,24 @@ To be released.
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
 [#2189]: https://github.com/planetarium/libplanet/pull/2189
-[#2229]: https://github.com/planetarium/libplanet/pull/2229
+[#2290]: https://github.com/planetarium/libplanet/issues/2290
+[#2291]: https://github.com/planetarium/libplanet/pull/2291
+[#2298]: https://github.com/planetarium/libplanet/pull/2298
+[#2320]: https://github.com/planetarium/libplanet/pull/2320
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
+[Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
+
+
+Version 0.41.2
+--------------
+
+Released on September 13, 2022.
+
+ -  Fixed a bug where `NetMQTransport` is not correctly disposed of due to
+    `NetMQTransport._router` already being stopped in prior to
+    `_router.Unbind()` call in `NetMQTransport.Dispose()`.  [[#2311]]
+
+[#2311]: https://github.com/planetarium/libplanet/pull/2311
 
 
 Version 0.41.1

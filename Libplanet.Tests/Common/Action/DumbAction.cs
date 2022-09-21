@@ -85,11 +85,11 @@ namespace Libplanet.Tests.Common.Action
         {
             get
             {
-                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<string, IValue>
                 {
-                    [(Text)"item"] = (Text)Item,
-                    [(Text)"target_address"] = new Binary(TargetAddress.ByteArray),
-                    [(Text)"record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
+                    ["item"] = (Text)Item,
+                    ["target_address"] = new Binary(TargetAddress.ByteArray),
+                    ["record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
                 });
                 if (RecordRandom)
                 {

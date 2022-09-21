@@ -6,14 +6,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tx;
-using static Libplanet.Blocks.BlockMarshaler;
 
 namespace Libplanet.Blockchain
 {
@@ -32,8 +30,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
         /// </param>
@@ -51,7 +49,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
-            long? maxBlockBytes = null,
+            long? maxTransactionsBytes = null,
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
@@ -61,8 +59,8 @@ namespace Libplanet.Blockchain
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
-                    maxBlockBytes: maxBlockBytes
-                        ?? Policy.GetMaxBlockBytes(Count),
+                    maxTransactionsBytes: maxTransactionsBytes
+                        ?? Policy.GetMaxTransactionsBytes(Count),
                     maxTransactions: maxTransactions
                         ?? Policy.GetMaxTransactionsPerBlock(Count),
                     maxTransactionsPerSigner: maxTransactionsPerSigner
@@ -77,8 +75,8 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxBlockBytes(long)"/>.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
+        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
         /// <param name="maxTransactions">The maximum number of transactions that a block can
         /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
         /// </param>
@@ -96,7 +94,7 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,
-            long maxBlockBytes,
+            long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
@@ -133,19 +131,8 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            var metadata = new BlockMetadata
-            {
-                Index = index,
-                Difficulty = difficulty,
-                TotalDifficulty = Tip.TotalDifficulty + difficulty,
-                PublicKey = miner.PublicKey,
-                PreviousHash = prevHash,
-                Timestamp = timestamp,
-            };
-
             var transactionsToMine = GatherTransactionsToMine(
-                metadata,
-                maxBlockBytes: maxBlockBytes,
+                maxTransactionsBytes: maxTransactionsBytes,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
@@ -168,7 +155,16 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToMine.Count);
 
-            var blockContent = new BlockContent<T>(metadata) { Transactions = transactionsToMine };
+            var blockContent = new BlockContent<T>
+            {
+                Index = index,
+                Difficulty = difficulty,
+                TotalDifficulty = Tip.TotalDifficulty + difficulty,
+                PublicKey = miner.PublicKey,
+                PreviousHash = prevHash,
+                Timestamp = timestamp,
+                Transactions = transactionsToMine,
+            };
             PreEvaluationBlock<T> preEval;
 
             TipChanged += WatchTip;
@@ -227,8 +223,7 @@ namespace Libplanet.Blockchain
         /// Gathers <see cref="Transaction{T}"/>s for mining a next block
         /// from the current set of staged <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <param name="metadata">The metadata of the block to be mined.</param>
-        /// <param name="maxBlockBytes">The maximum number of bytes a block can have.</param>
+        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.</param>
         /// <param name="maxTransactions">The maximum number of <see cref="Transaction{T}"/>s
         /// allowed.</param>
         /// <param name="maxTransactionsPerSigner">The maximum number of
@@ -240,8 +235,7 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}"/>s in the list for each signer not exceeding
         /// <paramref name="maxTransactionsPerSigner"/>.</returns>
         internal ImmutableList<Transaction<T>> GatherTransactionsToMine(
-            BlockMetadata metadata,
-            long maxBlockBytes,
+            long maxTransactionsBytes,
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null
@@ -260,30 +254,8 @@ namespace Libplanet.Blockchain
             // FIXME: The tx collection timeout should be configurable.
             DateTimeOffset timeout = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(4);
 
-            int digestSize = BlockMetadata.HashAlgorithmType.DigestSize;
-
-            // Makes an empty block payload to estimate the length of bytes without transactions.
-            // FIXME: We'd better to estimate only transactions rather than the whole block.
-            var dumbSig = metadata.PublicKey is null
-                ? (ImmutableArray<byte>?)null
-                : ImmutableArray.Create(new byte[71]);
-            Bencodex.Types.Dictionary marshaledEmptyBlock = MarshalBlock(
-                marshaledBlockHeader: MarshalBlockHeader(
-                    marshaledPreEvaluatedBlockHeader: MarshalPreEvaluationBlockHeader(
-                        marshaledMetadata: MarshalBlockMetadata(metadata),
-                        nonce: default,
-                        preEvaluationHash: new byte[digestSize].ToImmutableArray()
-                    ),
-                    stateRootHash: default,
-                    signature: dumbSig,
-                    hash: default
-                ),
-                marshaledTransactions: BlockMarshaler.MarshalTransactions(
-                    Array.Empty<Transaction<T>>()
-                )
-            );
-            Dictionary estimatedEncoding = marshaledEmptyBlock;
-
+            List estimatedEncoding = BlockMarshaler.MarshalTransactions(
+                new List<Transaction<T>>());
             var storedNonces = new Dictionary<Address, long>();
             var nextNonces = new Dictionary<Address, long>();
             var toMineCounts = new Dictionary<Address, int>();
@@ -333,22 +305,21 @@ namespace Libplanet.Blockchain
                         continue;
                     }
 
-                    Dictionary txAddedBlockEncoding =
-                        AppendTxToMarshaledBlock(estimatedEncoding, tx);
-                    if (txAddedBlockEncoding.EncodingLength > maxBlockBytes)
+                    List txAddedEncoding = estimatedEncoding.Add(
+                        BlockMarshaler.MarshalTransaction(tx));
+                    if (txAddedEncoding.EncodingLength > maxTransactionsBytes)
                     {
                         _logger.Debug(
-                            "Ignoring tx {Iter}/{Total} {TxId} due to the maximum size " +
-                            "allowed for a block: {CurrentEstimate}/{MaximumBlockBytes}",
+                            "Ignoring tx {Iter}/{Total} {TxId} due to the maximum size allowed " +
+                            "for transactions in a block: {CurrentEstimate}/{MaximumBlockBytes}",
                             i,
                             stagedTransactions.Count,
                             tx.Id,
-                            txAddedBlockEncoding.EncodingLength,
-                            maxBlockBytes);
+                            txAddedEncoding.EncodingLength,
+                            maxTransactionsBytes);
                         continue;
                     }
-
-                    if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)
+                    else if (toMineCounts[tx.Signer] >= maxTransactionsPerSigner)
                     {
                         _logger.Debug(
                             "Ignoring tx {Iter}/{Total} {TxId} due to the maximum number " +
@@ -370,7 +341,7 @@ namespace Libplanet.Blockchain
                     transactionsToMine.Add(tx);
                     nextNonces[tx.Signer] += 1;
                     toMineCounts[tx.Signer] += 1;
-                    estimatedEncoding = txAddedBlockEncoding;
+                    estimatedEncoding = txAddedEncoding;
                 }
                 else if (tx.Nonce < storedNonces[tx.Signer])
                 {

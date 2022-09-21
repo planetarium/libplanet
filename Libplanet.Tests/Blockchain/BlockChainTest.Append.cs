@@ -325,7 +325,7 @@ namespace Libplanet.Tests.Blockchain
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(miner, _blockChain);
-            long maxBytes = _blockChain.Policy.GetMaxBlockBytes(block.Index);
+            long maxBytes = _blockChain.Policy.GetMaxTransactionsBytes(block.Index);
             Assert.True(block.MarshalBlock().EncodingLength > maxBytes);
 
             var e = Assert.Throws<InvalidBlockBytesLengthException>(() =>
