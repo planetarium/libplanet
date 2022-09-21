@@ -2,7 +2,7 @@ using Libplanet.Assets;
 
 namespace Libplanet.PoS
 {
-    internal struct Asset
+    public struct Asset
     {
         public static readonly Currency GovernanceToken =
             Currency.Uncapped("GovernanceToken", 18, minters: null);
