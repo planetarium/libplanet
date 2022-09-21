@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             Step = Step.Propose;
-            if (Proposer(Round) == _consensusPrivateKey.PublicKey)
+            if (Proposer(Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
                     "Starting round {NewRound} and is a proposer. (context: {Context})",
@@ -34,7 +34,7 @@ namespace Libplanet.Net.Consensus
 
                 BroadcastMessage(
                     new ConsensusPropose(
-                        _consensusPrivateKey.PublicKey,
+                        _privateKey.PublicKey,
                         Height,
                         Round,
                         proposal.Hash,

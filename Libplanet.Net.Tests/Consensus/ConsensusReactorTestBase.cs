@@ -35,7 +35,6 @@ namespace Libplanet.Net.Tests.Consensus
         private const int Port = 6100;
         private readonly StoreFixture _fx;
         private readonly PrivateKey[] _privateKey;
-        private readonly BlsPrivateKey[] _consensusPrivateKey;
         private readonly IStore[] _stores;
 
         private ILogger _logger;
@@ -56,7 +55,6 @@ namespace Libplanet.Net.Tests.Consensus
             CancellationTokenSource = new CancellationTokenSource();
 
             _privateKey = new PrivateKey[Count];
-            _consensusPrivateKey = new BlsPrivateKey[Count];
             ConsensusReactors = new ConsensusReactor<DumbAction>[Count];
             ValidatorPeers = new List<BoundPeer>();
             _stores = new IStore[Count];
@@ -65,10 +63,9 @@ namespace Libplanet.Net.Tests.Consensus
             for (var i = 0; i < Count; i++)
             {
                 _privateKey[i] = new PrivateKey();
-                _consensusPrivateKey[i] = new BlsPrivateKey();
                 ValidatorPeers.Add(
                     new BoundPeer(
-                        _consensusPrivateKey[i].PublicKey,
+                        _privateKey[i].PublicKey,
                         new DnsEndPoint("localhost", Port + i)));
                 _stores[i] = new MemoryStore();
                 BlockChains[i] = new BlockChain<DumbAction>(
@@ -84,7 +81,6 @@ namespace Libplanet.Net.Tests.Consensus
                 ConsensusReactors[i] = (ConsensusReactor<DumbAction>)CreateReactor(
                     blockChain: BlockChains[i],
                     key: _privateKey[i],
-                    consensusKey: _consensusPrivateKey[i],
                     consensusPort: Port + i,
                     validatorPeers: ValidatorPeers,
                     newHeightDelayMilliseconds: PropagationDelay * 2);
@@ -109,17 +105,15 @@ namespace Libplanet.Net.Tests.Consensus
         private IReactor CreateReactor(
             BlockChain<DumbAction> blockChain,
             PrivateKey? key = null,
-            BlsPrivateKey? consensusKey = null,
             string host = "localhost",
             int consensusPort = 5101,
             List<BoundPeer> validatorPeers = null!,
             int newHeightDelayMilliseconds = 10_000)
         {
             key ??= new PrivateKey();
-            consensusKey ??= new BlsPrivateKey();
 
             var consensusTransport = NetMQTransport.Create(
-                consensusKey,
+                key,
                 TestUtils.AppProtocolVersion,
                 null,
                 8,
@@ -132,7 +126,6 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusTransport,
                 blockChain,
                 key,
-                consensusKey,
                 validatorPeers.ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
         }

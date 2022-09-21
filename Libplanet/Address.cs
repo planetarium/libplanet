@@ -96,16 +96,16 @@ namespace Libplanet
 
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a <see
-        /// cref="IPublicKey"/>.
+        /// cref="PublicKey"/>.
         /// <para>Note that there is an equivalent extension method
-        /// <see cref="AddressExtensions.ToAddress(IPublicKey)"/>, which enables
+        /// <see cref="AddressExtensions.ToAddress(PublicKey)"/>, which enables
         /// a code like <c>publicKey.ToAddress()</c> instead of
         /// <c>new Address(publicKey)</c>, for convenience.</para>
         /// </summary>
         /// <param name="publicKey">A <see cref="PublicKey"/> to derive
         /// the corresponding <see cref="Address"/> from.</param>
-        /// <seealso cref="AddressExtensions.ToAddress(IPublicKey)"/>
-        public Address(IPublicKey publicKey)
+        /// <seealso cref="AddressExtensions.ToAddress(PublicKey)"/>
+        public Address(PublicKey publicKey)
             : this(DeriveAddress(publicKey))
         {
         }
@@ -306,9 +306,9 @@ namespace Libplanet
             return output;
         }
 
-        private static byte[] DeriveAddress(IPublicKey key)
+        private static byte[] DeriveAddress(PublicKey key)
         {
-            byte[] hashPayload = key.KeyBytes.Skip(1).ToArray();
+            byte[] hashPayload = key.Format(false).Skip(1).ToArray();
             var output = CalculateHash(hashPayload);
 
             return output.Skip(output.Length - Size).ToArray();
