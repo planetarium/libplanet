@@ -178,6 +178,7 @@ namespace Libplanet.Net.Tests.Consensus
             return new Gossip(
                 transport,
                 peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
+                ImmutableArray<BoundPeer>.Empty,
                 processMessage,
                 TimeSpan.FromMinutes(2));
         }
