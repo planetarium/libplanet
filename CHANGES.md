@@ -29,12 +29,6 @@ To be released.
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
- -  Parameter type `PrivateKey privateKey` in
-    `Crypto.ICryptoBackend.Sign(HashDigest<T>, PrivateKey)` is now
-    `IPrivateKey`.  [[#PBFT]]
- -  Parameter type `PublicKey publicKey` in
-    `Crypto.ICryptoBackend.Verify(HashDigest<T>, byte[], PublicKey)` is
-    now `IPublicKey`.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
@@ -53,18 +47,6 @@ To be released.
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
- -  Added `Crypto.ConsensusCryptoBackend` class.  [[#PBFT]]
- -  Added static `BlsCryptoBackend<T> ConsensusCryptoBackend` property to
-    `Crypto.CryptoConfig`.  [[#PBFT]]
- -  Added `Crypto.IPublicKey` interface.  [[#PBFT]]
- -  Added `Crypto.IPrivateKey` interface.  [[#PBFT]]
- -  Added `Crypto.IPrivateKey` inherited `Crypto.BlsPrivateKey` class.
-    [[#PBFT]]
- -  Added `Crypto.IPublicKey` inherited `Crypto.BlsPublicKey` class.
-    [[#PBFT]]
- -  Added `Crypto.BlsSignature` class.  [[#PBFT]]
- -  Added static `PublicKeyGetter` class.  [[#PBFT]]
- -  Added `BlockMetadata.PoWProtocolVersion` constant of value 3.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -97,50 +79,10 @@ To be released.
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
- -  `Crypto.PublicKey` is now inheriting `Crypto.IPrivateKey`.  [[#PBFT]]
- -  `Crypto.PrivateKey` is now inheriting `Crypto.IPublicKey`.  [[#PBFT]]
- -  `Address(PublicKey)` constructor is changed to
-    `Address(IPublicKey)`.  [[#PBFT]]
- -  `AddressExtensions.ToAddress(PublicKey)` is changed to
-    `AddressExtensions.ToAddress(IPublicKey)`.  [[#PBFT]]
- -  `AddressExtensions.ToAddress(PrivateKey)` is changed to
-    `AddressExtensions.ToAddress(IPrivateKey)`.  [[#PBFT]]
- -  (Libplanet.Net) Property `BoundPeer.PublicKey` type is now `IPublicKey`. the
-    following constructors `BoundPeer(PublicKey, IPAddress?)` and
-    `BoundPeer(PublicKey)` are also affected by this changes.  [[#PBFT]]
- -  (Libplanet.Net) Parameter type `PublicKey` in `BoundPeer(PublicKey,
-    DnsEndPoint)` and `BoundPeer(PublicKey, DnsEndPoint, IPAddress?)` is
-    now `IPublicKey`.  [[#PBFT]]
- -  (Libplanet.Net) Parameters type `PublicKey expected` and `PublicKey actual`
-    in `InvalidCredentialException` is now `IPublicKey`.  [[#PBFT]]
- -  (Libplanet.Net) Parameter type `PublicKey publicKey` in
-    `InvalidMessageSignatureException` is now `IPublicKey`.  [[#PBFT]]
- -  (Libplanet.Net) Parameter type `PrivateKey privateKey` in
-    `IMessageCodec<T>.Encode(Message, PrivateKey, AppProtocolVersion, Peer,
-    DateTimeOffset)` is now `IPrivatekey`.  [[#PBFT]]
- -  (Libplanet.Net) Parameter type `PrivateKey privateKey` in
-    `NetMQMessageCodec.Encode(Message, PrivateKey, AppProtocolVersion, Peer,
-    DateTimeOffset)` is now `IPrivateKey`.  [[#PBFT]]
- -  `BlockSet` element getter became not to verify hash for blocks
-    with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
-    [[#PBFT]]
- -  `Block()` constructor became not to verify hash for blocks
-    with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
-    [[#PBFT]]
- -  `BlockHeader()` constructor became not to verify hash and signature for
-    blocks with `ProtocolVersion` less than `BlockMetadata.PoWProtocolVersion`.
-    [[#PBFT]]
 
 ### Bug fixes
 
 ### Dependencies
- -  `Libplanet` is now depends on
-    [*Planetarium.Cryptography.BLS12_381* 0.1.10.1][BLS12_381 0.1.10.1].
-    [[#PBFT]]
-
-
-[BLS12_381 0.1.10.1]:
-https://www.nuget.org/packages/Planetarium.Cryptography.BLS12_381
 
 ### CLI tools
 

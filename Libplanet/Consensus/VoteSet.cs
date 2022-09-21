@@ -16,7 +16,7 @@ namespace Libplanet.Consensus
     {
         // FIXME: Should separate prevote lock and commit vote lock?
         private readonly object _lock;
-        private Dictionary<BlsPublicKey, Vote> _votes;
+        private Dictionary<PublicKey, Vote> _votes;
 
         /// <summary>
         /// Creates a <see cref="VoteSet"/> instance with its <paramref name="height"/>,
@@ -30,7 +30,7 @@ namespace Libplanet.Consensus
             long height,
             int round,
             BlockHash? blockHash,
-            IEnumerable<BlsPublicKey> validatorSet)
+            IEnumerable<PublicKey> validatorSet)
         {
             Height = height;
             Round = round;
@@ -62,9 +62,9 @@ namespace Libplanet.Consensus
         public int Round { get; }
 
         /// <summary>
-        /// A list of validator's <see cref="BlsPublicKey"/> of <see cref="VoteSet"/>'s target.
+        /// A list of validator's <see cref="PublicKey"/> of <see cref="VoteSet"/>'s target.
         /// </summary>
-        public ImmutableArray<BlsPublicKey> ValidatorSet { get; }
+        public ImmutableArray<PublicKey> ValidatorSet { get; }
 
         /// <summary>
         /// <see cref="Vote"/>s in this VoteSet.

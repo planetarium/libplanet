@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -17,7 +16,7 @@ namespace Libplanet.Net.Transports
         internal InvalidMessageSignatureException(
             string message,
             BoundPeer peer,
-            IPublicKey publicKey,
+            PublicKey publicKey,
             byte[] messageToVerify,
             byte[] signature)
             : base(message)
@@ -41,7 +40,7 @@ namespace Libplanet.Net.Transports
 
         public BoundPeer Peer { get; private set; }
 
-        public IPublicKey PublicKey { get; private set; }
+        public PublicKey PublicKey { get; private set; }
 
         public byte[] MessageToVerify { get; private set; }
 
@@ -52,7 +51,7 @@ namespace Libplanet.Net.Transports
         {
             base.GetObjectData(info, context);
             info.AddValue(nameof(Peer), Peer);
-            info.AddValue(nameof(PublicKey), PublicKey.KeyBytes.ToArray());
+            info.AddValue(nameof(PublicKey), PublicKey.Format(true));
             info.AddValue(nameof(MessageToVerify), MessageToVerify);
             info.AddValue(nameof(Signature), Signature);
         }

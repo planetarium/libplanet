@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ConsensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2ConsensusPriv,
+                        TestUtils.Peer2Priv,
                         1,
                         hash: null,
                         flag: VoteFlag.Absent))
@@ -57,7 +57,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ConsensusContext.HandleMessage(
                 new ConsensusVote(
                     vote: TestUtils.CreateVote(
-                        TestUtils.Peer3ConsensusPriv,
+                        TestUtils.Peer3Priv,
                         1,
                         hash: null,
                         flag: VoteFlag.Absent))
@@ -70,7 +70,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ConsensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2ConsensusPriv,
+                        TestUtils.Peer2Priv,
                         1,
                         hash: null,
                         flag: VoteFlag.Commit))
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ConsensusContext.HandleMessage(
                 new ConsensusCommit(
                     vote: TestUtils.CreateVote(
-                        TestUtils.Peer3ConsensusPriv,
+                        TestUtils.Peer3Priv,
                         1,
                         hash: null,
                         flag: VoteFlag.Commit))

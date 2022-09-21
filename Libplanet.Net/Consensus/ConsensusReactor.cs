@@ -36,9 +36,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
-        /// <param name="privateKey">A <see cref="PrivateKey"/> for using in signing a block.
-        /// </param>
-        /// <param name="consensusPrivateKey">A <see cref="BlsPrivateKey"/> for using in signing a
+        /// <param name="privateKey">A <see cref="PrivateKey"/> for using in signing a block,
         /// message.
         /// </param>
         /// <param name="validatorPeers">A list of validator's <see cref="PublicKey"/>, including
@@ -51,7 +49,6 @@ namespace Libplanet.Net.Consensus
             ITransport consensusTransport,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            BlsPrivateKey consensusPrivateKey,
             ImmutableList<BoundPeer> validatorPeers,
             TimeSpan newHeightDelay)
         {
@@ -67,8 +64,7 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 blockChain.Tip.Index,
                 privateKey,
-                consensusPrivateKey,
-                validatorPeers.Select(x => (BlsPublicKey)x.PublicKey).ToList(),
+                validatorPeers.Select(x => x.PublicKey).ToList(),
                 newHeightDelay);
 
             _logger = Log

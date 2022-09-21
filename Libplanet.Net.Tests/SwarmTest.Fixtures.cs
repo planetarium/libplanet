@@ -72,6 +72,7 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
+            PrivateKey consensusPrivateKey = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
@@ -141,7 +142,7 @@ namespace Libplanet.Net.Tests
                 {
                     ConsensusPeers = ImmutableList<BoundPeer>.Empty,
                     ConsensusPort = 0,
-                    ConsensusPrivateKey = new BlsPrivateKey(),
+                    ConsensusPrivateKey = new PrivateKey(),
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(10),
                 });

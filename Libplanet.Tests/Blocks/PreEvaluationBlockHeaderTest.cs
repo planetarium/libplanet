@@ -31,10 +31,6 @@ namespace Libplanet.Tests.Blocks
             var validatorB = new PrivateKey();
             var validatorC = new PrivateKey();
             var invalidValidator = new PrivateKey();
-            var validatorAConsensus = new BlsPrivateKey();
-            var validatorBConsensus = new BlsPrivateKey();
-            var validatorCConsensus = new BlsPrivateKey();
-            var invalidValidatorConsensus = new BlsPrivateKey();
             BlockHash blockHash = BlockHash.FromString(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
             );
@@ -44,25 +40,25 @@ namespace Libplanet.Tests.Blocks
                 0,
                 blockHash,
                 timestamp,
-                validatorAConsensus.PublicKey,
+                validatorA.PublicKey,
                 VoteFlag.Commit,
-                null).Sign(validatorAConsensus);
+                null).Sign(validatorA);
             var voteB = new Vote(
                 1,
                 0,
                 blockHash,
                 timestamp,
-                validatorBConsensus.PublicKey,
+                validatorB.PublicKey,
                 VoteFlag.Commit,
-                null).Sign(validatorBConsensus);
+                null).Sign(validatorB);
             var voteC = new Vote(
                 1,
                 0,
                 blockHash,
                 timestamp,
-                validatorCConsensus.PublicKey,
+                validatorC.PublicKey,
                 VoteFlag.Commit,
-                null).Sign(validatorCConsensus);
+                null).Sign(validatorC);
 
             // Height of the last commit is invalid.
             var invalidHeightLastCommit = new BlockCommit(
@@ -120,9 +116,9 @@ namespace Libplanet.Tests.Blocks
                         0,
                         blockHash,
                         timestamp,
-                        validatorCConsensus.PublicKey,
+                        validatorC.PublicKey,
                         VoteFlag.Commit,
-                        null).Sign(invalidValidatorConsensus),
+                        null).Sign(invalidValidator),
                 }.ToImmutableArray());
             var invalidVoteSignatureMetadata = new BlockMetadata
             {
@@ -152,9 +148,9 @@ namespace Libplanet.Tests.Blocks
                         0,
                         blockHash,
                         timestamp,
-                        validatorCConsensus.PublicKey,
+                        validatorC.PublicKey,
                         VoteFlag.Commit,
-                        null).Sign(validatorCConsensus),
+                        null).Sign(validatorC),
                 }.ToImmutableArray());
             var invalidVoteHeightMetadata = new BlockMetadata
             {
@@ -183,7 +179,7 @@ namespace Libplanet.Tests.Blocks
                         0,
                         blockHash,
                         timestamp,
-                        validatorBConsensus.PublicKey,
+                        validatorB.PublicKey,
                         VoteFlag.Null,
                         null),
                     new Vote(
@@ -191,7 +187,7 @@ namespace Libplanet.Tests.Blocks
                         0,
                         blockHash,
                         timestamp,
-                        validatorCConsensus.PublicKey,
+                        validatorC.PublicKey,
                         VoteFlag.Unknown,
                         null),
                 }.ToImmutableArray());

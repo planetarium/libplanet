@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Consensus
                 2,
                 fx.Hash1,
                 now,
-                new BlsPrivateKey().PublicKey,
+                new PrivateKey().PublicKey,
                 VoteFlag.Commit,
                 null);
             byte[] marshaled = vote.ByteArray;
@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Consensus
         {
             var fx = new MemoryStoreFixture();
             var now = DateTimeOffset.UtcNow;
-            var privateKey = new BlsPrivateKey();
+            var privateKey = new PrivateKey();
             var vote = new Vote(
                 1,
                 2,

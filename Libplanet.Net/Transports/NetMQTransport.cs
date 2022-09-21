@@ -23,7 +23,7 @@ namespace Libplanet.Net.Transports
     /// </summary>
     public class NetMQTransport : ITransport
     {
-        private readonly IPrivateKey _privateKey;
+        private readonly PrivateKey _privateKey;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -64,7 +64,7 @@ namespace Libplanet.Net.Transports
         /// <summary>
         /// Creates a <see cref="NetMQTransport"/> instance.
         /// </summary>
-        /// <param name="privateKey"><see cref="IPrivateKey"/> of the transport layer.</param>
+        /// <param name="privateKey"><see cref="PrivateKey"/> of the transport layer.</param>
         /// <param name="appProtocolVersion"><see cref="AppProtocolVersion"/>-typed
         /// version of the transport layer.</param>
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
@@ -91,8 +91,8 @@ namespace Libplanet.Net.Transports
         /// If <c>null</c>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
         /// <paramref name="iceServers"/> are <c>null</c>.</exception>
-        public NetMQTransport(
-            IPrivateKey privateKey,
+        private NetMQTransport(
+            PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
             int workers,
@@ -231,7 +231,7 @@ namespace Libplanet.Net.Transports
         /// receive reply <see cref="Message"/>s.
         /// </returns>
         public static async Task<NetMQTransport> Create(
-            IPrivateKey privateKey,
+            PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
             IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
             int workers,

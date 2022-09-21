@@ -20,15 +20,5 @@ namespace Libplanet.Tests
             Assert.Equal(expected, privateKey.ToAddress());
             Assert.Equal(expected, privateKey.PublicKey.ToAddress());
         }
-
-        [Fact]
-        public void BLSToAddress()
-        {
-            var privateKey = BlsPrivateKey.FromString(
-                    "228ca2b44ae6e03f29e8e90be5119d0bf763df538d8cdd81b051c9eabce1f1fb");
-            var expected = new Address("71Ad1E774Aa860076A585416f5bbACEd8A237E17");
-            Assert.Equal(expected, privateKey.ToAddress());
-            Assert.Equal(expected, privateKey.PublicKey.ToAddress());
-        }
     }
 }

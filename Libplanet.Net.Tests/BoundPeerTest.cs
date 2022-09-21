@@ -28,19 +28,6 @@ namespace Libplanet.Net.Tests
                     }),
                     new DnsEndPoint("0.0.0.0", 1234)),
             },
-            new object[]
-            {
-                new BoundPeer(
-                    new BlsPublicKey(new byte[]
-                    {
-                        0x95, 0x0f, 0xfc, 0x59, 0x13, 0x08, 0xf6, 0x77, 0x4a, 0xf6,
-                        0xac, 0x09, 0x0e, 0xa4, 0x1f, 0x9e, 0xdd, 0x45, 0x28, 0xe0,
-                        0xda, 0xc6, 0x22, 0xeb, 0x50, 0xbf, 0xa8, 0x43, 0xa2, 0xb4,
-                        0x37, 0xa9, 0xb6, 0x70, 0xc0, 0x0e, 0x9e, 0xde, 0x07, 0xb4,
-                        0x65, 0xc7, 0xab, 0x41, 0xa7, 0xcc, 0x6a, 0xde,
-                    }),
-                    new DnsEndPoint("0.0.0.0", 1234)),
-            },
         };
 
         [Theory]
@@ -83,16 +70,16 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact]
-        public void BLSParsePeer()
+        public void PeerString()
         {
 #pragma warning disable MEN002 // Line is too long
-            var peerInfo = "950ffc591308f6774af6ac090ea41f9edd4528e0dac622eb50bfa843a2b437a9b670c00e9ede07b465c7ab41a7cc6ade,192.168.0.1,3333";
-            var expected = new BoundPeer(
-                new BlsPublicKey(ByteUtil.ParseHex("950ffc591308f6774af6ac090ea41f9edd4528e0dac622eb50bfa843a2b437a9b670c00e9ede07b465c7ab41a7cc6ade")),
+            var expected = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
+            var boundPeer = new BoundPeer(
+                new PublicKey(ByteUtil.ParseHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233")),
                 new DnsEndPoint("192.168.0.1", 3333)
             );
 #pragma warning restore MEN002 // Line is too long
-            Assert.Equal(expected, BoundPeer.ParsePeer(peerInfo));
+            Assert.Equal(expected, boundPeer.PeerString);
         }
 
         [Fact]
@@ -104,9 +91,6 @@ namespace Libplanet.Net.Tests
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"));
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1"));
             Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,999999"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("950ffc591308f6774af6ac090ea41f9edd4528e0dac622eb50bfa843a2b437a9b670c00e9ede07b465c7ab41a7cc6ade"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("950ffc591308f6774af6ac090ea41f9edd4528e0dac622eb50bfa843a2b437a9b670c00e9ede07b465c7ab41a7cc6ade,192.168.0.1"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("950ffc591308f6774af6ac090ea41f9edd4528e0dac622eb50bfa843a2b437a9b670c00e9ede07b465c7ab41a7cc6ade,192.168.0.1,999999"));
 #pragma warning restore MEN002 // Line is too long
         }
     }

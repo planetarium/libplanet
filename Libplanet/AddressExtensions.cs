@@ -11,31 +11,31 @@ namespace Libplanet
     {
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a <see
-        /// cref="IPublicKey"/>.
+        /// cref="PublicKey"/>.
         /// <para>This enables a code like <c>publicKey.ToAddress()</c> instead
         /// of <c>new Address(publicKey)</c>.</para>
         /// </summary>
-        /// <param name="publicKey">A <see cref="IPublicKey"/> to derive
+        /// <param name="publicKey">A <see cref="PublicKey"/> to derive
         /// the corresponding <see cref="Address"/> from.</param>
         /// <returns>The corresponding <see cref="Address"/> derived from
         /// <paramref name="publicKey"/>.</returns>
-        /// <seealso cref="Address(IPublicKey)"/>
-        public static Address ToAddress(this IPublicKey publicKey)
+        /// <seealso cref="Address(PublicKey)"/>
+        public static Address ToAddress(this PublicKey publicKey)
         {
             return new Address(publicKey);
         }
 
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a <see
-        /// cref="IPrivateKey"/>.
+        /// cref="PrivateKey"/>.
         /// <para>This enables a code like <c>privateKey.ToAddress()</c> instead
         /// of <c>new Address(privateKey.PublicKey)</c>.</para>
         /// </summary>
-        /// <param name="privateKey">A <see cref="IPrivateKey"/> to derive
+        /// <param name="privateKey">A <see cref="PrivateKey"/> to derive
         /// the corresponding <see cref="Address"/> from.</param>
         /// <returns>The corresponding <see cref="Address"/> derived from
         /// <paramref name="privateKey"/>.</returns>
-        public static Address ToAddress(this IPrivateKey privateKey)
+        public static Address ToAddress(this PrivateKey privateKey)
         {
             return new Address(privateKey.PublicKey);
         }
