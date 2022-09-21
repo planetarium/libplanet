@@ -50,6 +50,7 @@ To be released.
 
 ### CLI tools
 
+[#2046]: https://github.com/planetarium/libplanet/issues/2046
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
@@ -100,7 +101,6 @@ Released on September 19, 2022.
     [[#2298]]
 
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
-[#2046]: https://github.com/planetarium/libplanet/issues/2046
 [#2065]: https://github.com/planetarium/libplanet/issues/2065
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
 [#2283]: https://github.com/planetarium/libplanet/pull/2283
