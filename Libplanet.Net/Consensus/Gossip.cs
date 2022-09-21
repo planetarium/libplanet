@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
@@ -24,11 +23,12 @@ namespace Libplanet.Net.Consensus
         private readonly MessageCache _cache;
         private readonly MemoryCache _seen;
         private readonly Action<Message> _processMessage;
-        private readonly RoutingTable _table;
+        private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object?> _runningEvent;
         private CancellationTokenSource? _heartbeatCts;
+        private IEnumerable<BoundPeer> _table;
 
         /// <summary>
         /// Creates a <see cref="Gossip"/> instance.
@@ -36,6 +36,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="transport">
         /// An <see cref="ITransport"/> used for communicating messages.</param>
         /// <param name="peers">A list of <see cref="BoundPeer"/> composing network.</param>
+        /// <param name="seeds">A list of <see cref="BoundPeer"/> for lookup network.</param>
         /// <param name="processMessage">Action to be called when receiving a new message.</param>
         /// <param name="seenTtl">Time To Live of each entry of the seen cache.
         /// 2 minutes is recommended.</param>
@@ -43,6 +44,7 @@ namespace Libplanet.Net.Consensus
         public Gossip(
             ITransport transport,
             ImmutableArray<BoundPeer> peers,
+            ImmutableArray<BoundPeer> seeds,
             Action<Message> processMessage,
             TimeSpan seenTtl,
             long? seenCacheLimit = null)
@@ -56,11 +58,8 @@ namespace Libplanet.Net.Consensus
                     SizeLimit = seenCacheLimit,
                 });
             _processMessage = processMessage;
-            _table = new RoutingTable(AsPeer.Address);
-            foreach (var peer in peers.Where(p => !p.Address.Equals(AsPeer.Address)))
-            {
-                _table.AddPeer(peer);
-            }
+            _table = peers;
+            _seeds = seeds;
 
             _runningEvent = new TaskCompletionSource<object?>();
             Running = false;
@@ -110,6 +109,7 @@ namespace Libplanet.Net.Consensus
                 CancellationTokenSource.CreateLinkedTokenSource(ctx);
             Task transportTask = _transport.StartAsync(ctx);
             await _transport.WaitForRunningAsync();
+            await UpdateTable(ctx);
             _transport.ProcessMessageHandler.Register(HandleMessageAsync(_heartbeatCts.Token));
             await CheckValidatorsLiveness(ctx);
             _logger.Debug("All peers are alive. Starting gossip...");
@@ -229,6 +229,8 @@ namespace Libplanet.Net.Consensus
                 case WantMessage w:
                     await HandleWantAsync(w, ctx);
                     break;
+                case FindNeighborsMsg _:
+                    break;
                 default:
                     AddMessage(msg);
                     break;
@@ -246,10 +248,11 @@ namespace Libplanet.Net.Consensus
             while (!ctx.IsCancellationRequested)
             {
                 MessageId[] ids = _cache.GetGossipIds();
+                await UpdateTable(ctx);
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
-                        PeersToBroadcast(_table.Peers, DLazy),
+                        PeersToBroadcast(_table, DLazy),
                         new HaveMessage(ids));
                 }
 
@@ -335,6 +338,59 @@ namespace Libplanet.Net.Consensus
             _logger.Debug("Finished replying WantMessage.");
         }
 
+        private async Task UpdateTable(CancellationToken ctx)
+        {
+            if (!_seeds.Any())
+            {
+                return;
+            }
+
+            var updateTable = new Func<BoundPeer, Task<(IEnumerable<BoundPeer>, bool)>>(
+                async peer =>
+                {
+                    try
+                    {
+                        Message? neighbor = await _transport.SendMessageAsync(
+                            peer,
+                            new FindNeighborsMsg(_transport.AsPeer.Address),
+                            TimeSpan.FromSeconds(1),
+                            ctx);
+                        if (neighbor is NeighborsMsg neighborsMsg)
+                        {
+                            return (neighborsMsg.Found, true);
+                        }
+                        else
+                        {
+                            return (new List<BoundPeer>(), false);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Debug(
+                            "{FName}: Failed. Exception => {Exception}",
+                            nameof(UpdateTable),
+                            e.Message);
+                        return (new List<BoundPeer>(), false);
+                    }
+                });
+            List<Task<(IEnumerable<BoundPeer>, bool)>> tasks = _seeds
+                .Select(peer => updateTable(peer))
+                .ToList();
+            var table = (await Task.WhenAll(tasks))
+                .Where(x => x.Item2)
+                .Select(x => x.Item1)
+                .Aggregate((x, y) =>
+                {
+                    var lh = x.ToList();
+                    var rh = y.ToList();
+                    return lh.Count > rh.Count ? lh : rh;
+                });
+            if (!(table is null))
+            {
+                _table = table;
+            }
+        }
+
         /// <summary>
         /// A task for checking how many validators are alive.
         /// </summary>
@@ -366,12 +422,12 @@ namespace Libplanet.Net.Consensus
                     }
                 });
 
-                List<Task<bool>> tasks = _table.Peers
+                List<Task<bool>> tasks = _table
                     .Select(peer => sendMessage(peer))
                     .ToList();
                 int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
 
-                var twoThird = _table.Peers.Count() * 2.0 / 3.0;
+                var twoThird = _table.Count() * 2.0 / 3.0;
                 _logger.Debug(
                     "{FName}: count of pong => {Pong}, twoThird => {TwoThirds}",
                     nameof(CheckValidatorsLiveness),
