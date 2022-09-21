@@ -84,6 +84,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousBlockStatesTrie: null,
                 blockAction: false,
                 genesisHash: genesisHash,
+                nativeTokenPredicate: c => c.Equals(FOO) || c.Equals(bazCurrency),
                 nativeTokens: ImmutableHashSet.Create(FOO, bazCurrency)
             );
             Address recipient = random.NextAddress();

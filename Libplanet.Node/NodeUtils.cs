@@ -73,6 +73,7 @@ namespace Libplanet.Node
                     privateKey: privateKey,
                     blockAction: blockPolicy.BlockAction,
                     updateValidatorSetAction: blockPolicy.UpdateValidatorSetAction,
+                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                     nativeTokens: blockPolicy.NativeTokens,
                     stateStore: new TrieStateStore(new MemoryKeyValueStore()));
         }

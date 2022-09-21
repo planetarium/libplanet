@@ -83,6 +83,7 @@ namespace Libplanet.Tests.Action.Sys
                 previousBlockStatesTrie: null,
                 blockAction: false,
                 genesisHash: genesisHash,
+                nativeTokenPredicate: FOO.Equals,
                 nativeTokens: ImmutableHashSet.Create(FOO)
             );
             Address recipient = random.NextAddress();

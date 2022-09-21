@@ -72,6 +72,7 @@ namespace Libplanet.Node.Tests
                 privateKey: _minerKey,
                 blockAction: null,
                 updateValidatorSetAction: null,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null,
                 stateStore: new TrieStateStore(new MemoryKeyValueStore())
             );
