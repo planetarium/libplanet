@@ -341,6 +341,7 @@ commands:
             "Libplanet.Net.Tests.Protocols.ProtocolTest"
             "Libplanet.Net.Tests.SwarmTest"
             "Libplanet.Net.Tests.Transports.NetMQTransportTest"
+            "Libplanet.Node.Tests.SwarmConfigTest"
           )
           args=(
             "--hang-seconds=60"
@@ -358,8 +359,10 @@ commands:
           done
           for project in *.Tests; do
             if [[
-              $project !=  *"Explorer"*
-              && $project != *"RocksDBStore"*
+              $project != Libplanet.Explorer.Tests
+              && $project != Libplanet.Extensions.Cocona.Tests
+              && $project != Libplanet.RocksDBStore.Tests
+              && $project != Libplanet.Tools.Tests
             ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")

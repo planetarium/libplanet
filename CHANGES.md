@@ -1,12 +1,73 @@
 Libplanet changelog
 ===================
 
-Version 0.42.0
+Version 0.43.0
 --------------
 
 To be released.
 
 ### Deprecated APIs
+
+### Backward-incompatible API changes
+
+ -  (Libplanet.Extensions.Cocona) The return type of
+    `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
+    [[#2322]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+ -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
+ -  `RoutingTable` became to implement `IRoutingTable` interface.
+    [[#2046], [#2229]]
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2131], [#2236]]
+
+### Behavioral changes
+
+ -  Many types became serialized and deserialized better with
+    [`System.Text.Json.JsonSerializer`] as they now have their own
+    [custom converters].  Note that these serializations are unavailable
+    on Unity due to its incomplete reflection support.  [[#2322]]
+
+     -  An `Address` became represented as a single hexadecimal string in JSON.
+     -  A `BlockHash` became represented as a single hexadecimal string in JSON.
+     -  A `Currency` became represented as an object with values in JSON.
+        Note that it contains its `Hash` and it throws `JsonException`
+        if a JSON object to deserialize has an inconsistent `Hash` with
+        other field values.
+     -  A `FungibleAssetValue` became represented as an object with
+        its `Currency` object and `Quantity` string.
+     -  A `HashDigest` became represented as a single hexadecimal string in
+        JSON.
+     -  A `TxId` became represented as a single hexadecimal string in JSON.
+
+### Bug fixes
+
+### Dependencies
+
+ -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
+    [6.0.6][System.Text.Json 6.0.6].  [[#2322]]
+
+### CLI tools
+
+[#2046]: https://github.com/planetarium/libplanet/issues/2046
+[#2131]: https://github.com/planetarium/libplanet/issues/2131
+[#2229]: https://github.com/planetarium/libplanet/pull/2229
+[#2236]: https://github.com/planetarium/libplanet/pull/2236
+[#2322]: https://github.com/planetarium/libplanet/pull/2322
+[`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
+[custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
+[System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
+
+
+Version 0.42.0
+--------------
+
+Released on September 19, 2022.
 
 ### Backward-incompatible API changes
 
@@ -26,10 +87,6 @@ To be released.
      -  All public method parameter names `maxBlockBytes` changed to
         `maxTransactionsBytes`.
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  `Address` now implements `IEquatable<Address>` interface. [[#2320]]
@@ -37,14 +94,9 @@ To be released.
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IAction,
     IImmutableSet<Address>, DateTimeOffset?)` overloaded method.
     [[#2151], [#2273]]
- -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2131], [#2236]]
  -  Added `GetInnerActionTypeName()` method. [[#1910], [#2189]]
  -  (Libplanet.Explorer) Added `LibplanetExplorerSchema` class.
     [[#2065], [#2198]]
-
-### Behavioral changes
-
-### Bug fixes
 
 ### Dependencies
 
@@ -53,10 +105,6 @@ To be released.
  -  Upgraded *Bencodex* from [0.5.0][Bencodex 0.5.0] to [0.6.0][Bencodex 0.6.0].
     [[#2298]]
 
-### CLI tools
-
-[#2131]: https://github.com/planetarium/libplanet/issues/2131
-[#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#1910]: https://github.com/planetarium/libplanet/issues/1910
 [#2065]: https://github.com/planetarium/libplanet/issues/2065
 [#2273]: https://github.com/planetarium/libplanet/pull/2273
