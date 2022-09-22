@@ -346,5 +346,13 @@ namespace Libplanet.Store
         /// <paramref name="noopWithoutCanon"/> is false.
         /// </exception>
         void PruneOutdatedChains(bool noopWithoutCanon = false);
+
+        BlockCommit? GetLastCommit(long height);
+
+        void PutLastCommit(BlockCommit lastCommit);
+
+        void DeleteLastCommit(long height);
+
+        IEnumerable<long> GetLastCommitIndices();
     }
 }

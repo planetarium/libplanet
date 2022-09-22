@@ -181,6 +181,14 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
+        public abstract BlockCommit? GetLastCommit(long height);
+
+        public abstract void PutLastCommit(BlockCommit lastCommit);
+
+        public abstract void DeleteLastCommit(long height);
+
+        public abstract IEnumerable<long> GetLastCommitIndices();
+
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {
             var sDelta = new Dictionary(
