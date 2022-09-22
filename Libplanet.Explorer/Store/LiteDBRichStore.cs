@@ -190,6 +190,26 @@ namespace Libplanet.Explorer.Store
             _store.PruneOutdatedChains(noopWithoutCanon);
         }
 
+        public BlockCommit? GetLastCommit(long height)
+        {
+            return _store.GetLastCommit(height);
+        }
+
+        public void PutLastCommit(BlockCommit lastCommit)
+        {
+            _store.PutLastCommit(lastCommit);
+        }
+
+        public void DeleteLastCommit(long height)
+        {
+            _store.DeleteLastCommit(height);
+        }
+
+        public IEnumerable<long> GetLastCommitIndices()
+        {
+            return _store.GetLastCommitIndices();
+        }
+
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()

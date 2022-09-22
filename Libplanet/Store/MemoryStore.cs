@@ -49,6 +49,9 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>> _txBlockIndices =
             new ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>>();
 
+        private readonly ConcurrentDictionary<long, BlockCommit> _lastCommits =
+            new ConcurrentDictionary<long, BlockCommit>();
+
         private Guid? _canonicalChainId;
 
         void IDisposable.Dispose()
@@ -280,6 +283,32 @@ namespace Libplanet.Store
                 ((IStore)this).DeleteChainId(id);
             }
         }
+
+        public BlockCommit? GetLastCommit(long height)
+        {
+            if (!_lastCommits.ContainsKey(height))
+            {
+                return null;
+            }
+
+            return _lastCommits[height];
+        }
+
+        public void PutLastCommit(BlockCommit lastCommit) =>
+            _lastCommits[lastCommit.Height] = lastCommit;
+
+        public void DeleteLastCommit(long height)
+        {
+            if (!_lastCommits.ContainsKey(height))
+            {
+                return;
+            }
+
+            _lastCommits.TryRemove(height, out _);
+        }
+
+        public IEnumerable<long> GetLastCommitIndices()
+            => _lastCommits.Keys;
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)
