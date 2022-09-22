@@ -23,7 +23,8 @@ To be released.
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
  -  `RoutingTable` became to implement `IRoutingTable` interface.
     [[#2046], [#2229]]
- -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  [[#2131], [#2236]]
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  
+    [[#2131], [#2236]]
 
 ### Behavioral changes
 
