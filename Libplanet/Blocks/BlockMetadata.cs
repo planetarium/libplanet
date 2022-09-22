@@ -88,6 +88,7 @@ namespace Libplanet.Blocks
         /// that may be thrown.
         /// </remarks>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
         /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
         /// <param name="difficulty">Goes to <see cref="IBlockMetadata.Difficulty"/>.</param>
         /// <param name="totalDifficulty">Goes to <see cref="IBlockMetadata.TotalDifficulty"/>.
@@ -98,6 +99,7 @@ namespace Libplanet.Blocks
         /// PublicKey?, long, BigInteger, BlockHash?, HashDigest{SHA256}?)"/>
         public BlockMetadata(
             long index,
+            DateTimeOffset timestamp,
             PublicKey publicKey,
             long difficulty,
             BigInteger totalDifficulty,
@@ -106,7 +108,7 @@ namespace Libplanet.Blocks
             : this(
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
-                timestamp: DateTimeOffset.UtcNow,
+                timestamp: timestamp,
                 miner: publicKey.ToAddress(),
                 publicKey: publicKey,
                 difficulty: difficulty,

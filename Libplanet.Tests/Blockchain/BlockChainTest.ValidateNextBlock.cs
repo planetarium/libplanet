@@ -17,10 +17,8 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: 1024L,
                     totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,
@@ -92,6 +90,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> blockWithAlreadyUsedIndex = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: prev.Index,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: 1L,
                     totalDifficulty: prev.TotalDifficulty + 1L,
@@ -104,6 +103,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> blockWithIndexAfterNonexistentIndex = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: prev.Index + 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: 1L,
                     totalDifficulty: prev.TotalDifficulty + 1L,
@@ -122,6 +122,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidDifficultyBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: 1L,
                     totalDifficulty: _validNext.TotalDifficulty,
@@ -140,6 +141,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidTotalDifficultyBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: difficulty,
                     totalDifficulty: _validNext.TotalDifficulty + difficulty - 1,
@@ -158,6 +160,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: difficulty,
                     totalDifficulty: _validNext.TotalDifficulty + difficulty,
@@ -176,10 +179,8 @@ namespace Libplanet.Tests.Blockchain
             long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
             Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 2,
                     timestamp: _validNext.Timestamp.AddSeconds(-1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
                     publicKey: _fx.Miner.PublicKey,
                     difficulty: difficulty,
                     totalDifficulty: _validNext.TotalDifficulty + difficulty,

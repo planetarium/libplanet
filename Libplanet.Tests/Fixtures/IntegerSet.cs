@@ -68,6 +68,7 @@ namespace Libplanet.Tests.Fixtures
             Genesis = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: Miner.PublicKey,
                     difficulty: 0,
                     totalDifficulty: 0,

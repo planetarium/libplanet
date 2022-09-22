@@ -61,6 +61,7 @@ namespace Libplanet.Tests.Blocks
             var blockContent = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: Block1Content.Index,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: Block1Content.PublicKey,
                     difficulty: Block1Content.Difficulty,
                     totalDifficulty: Block1Content.TotalDifficulty,
@@ -94,6 +95,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         difficulty: Block1Content.Difficulty,
                         totalDifficulty: Block1Content.TotalDifficulty,
@@ -127,6 +129,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         difficulty: Block1Content.Difficulty,
                         totalDifficulty: Block1Content.TotalDifficulty,
@@ -167,6 +170,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         difficulty: Block1Content.Difficulty,
                         totalDifficulty: Block1Content.TotalDifficulty,
@@ -216,6 +220,7 @@ namespace Libplanet.Tests.Blocks
                 var content = new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         difficulty: long.MaxValue,
                         totalDifficulty: Block1Content.TotalDifficulty + long.MaxValue,

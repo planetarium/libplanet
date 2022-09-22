@@ -24,8 +24,8 @@ a system action, its features will be added more in the future.
      -  All unsafe constructors have been removed in order to prevent
         instantiation of invalid block related objects.
      -  `BlockMetadata` has constructors `BlockMetadata(IBlockMetadata)`
-        and `BlockMetadata(long, PublicKey, long, BigInteger, BlockHash?,
-        HashDigest<SHA256>)`.
+        and `BlockMetadata(long, DateTimeOffset, PublicKey, long, BigInteger,
+        BlockHash?, HashDigest<SHA256>)`.
      -  `BlockContent` has constructors `BlockContent<T>(IBlockMetadata,
         IEnumerable<Transaction<T>> transactions)`,
         `BlockContent<T>(BlockMetadata)` and `BlockContent<T>(BlockMetadata,

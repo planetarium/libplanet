@@ -38,10 +38,8 @@ namespace Libplanet.Tests.Fixtures
                 "9bf4664ba09a89faeb684b94e69ffde01d26ae14b556204d3f6ab58f61f78418");
             GenesisContent = new BlockContent<Arithmetic>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
-                    miner: GenesisKey.PublicKey.ToAddress(),
                     publicKey: GenesisKey.PublicKey,
                     difficulty: 0,
                     totalDifficulty: 0,
@@ -94,10 +92,8 @@ namespace Libplanet.Tests.Fixtures
                 .OrderBy(tx => tx.Id).ToList();
             Block1Content = new BlockContent<Arithmetic>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1,
                     timestamp: new DateTimeOffset(2021, 9, 6, 17, 1, 9, 45, kst),
-                    miner: Block1Key.PublicKey.ToAddress(),
                     publicKey: Block1Key.PublicKey,
                     difficulty: 123,
                     totalDifficulty: 123,

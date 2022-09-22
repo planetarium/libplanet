@@ -377,6 +377,7 @@ namespace Libplanet.Blockchain
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
                     index: 0L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     difficulty: 0L,
                     totalDifficulty: 0L,

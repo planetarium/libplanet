@@ -126,6 +126,7 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: receiverKey.PublicKey,
                     difficulty: 0,
                     totalDifficulty: 0,

@@ -67,6 +67,7 @@ namespace Libplanet.Node
             return new BlockContent<T>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     difficulty: 0,
                     totalDifficulty: 0,

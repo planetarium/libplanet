@@ -213,6 +213,7 @@ namespace Libplanet.Tests.Action
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: new PrivateKey().PublicKey,
                     difficulty: 1L,
                     totalDifficulty: 1L,
@@ -571,6 +572,7 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: keys[0].PublicKey,
                     difficulty: 1L,
                     totalDifficulty: 1L,
@@ -718,6 +720,7 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<ThrowException>(
                 new BlockMetadata(
                     index: 123,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: GenesisMiner.PublicKey,
                     difficulty: 1,
                     totalDifficulty: 1,

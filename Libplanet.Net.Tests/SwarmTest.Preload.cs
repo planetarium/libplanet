@@ -865,6 +865,7 @@ namespace Libplanet.Net.Tests
             var genesisContent = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: minerKey.PublicKey,
                     difficulty: 0,
                     totalDifficulty: 0,

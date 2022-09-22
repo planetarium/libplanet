@@ -148,6 +148,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         difficulty: _contents.Block1Content.Difficulty,
                         totalDifficulty: _contents.Block1Content.TotalDifficulty,
@@ -214,6 +215,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         difficulty: _contents.Block1Content.Difficulty,
                         totalDifficulty: _contents.Block1Content.TotalDifficulty,

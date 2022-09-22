@@ -63,6 +63,7 @@ namespace Libplanet.Tests.Blocks
         {
             Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
                 index: -1L,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty,
                 totalDifficulty: Block1Metadata.TotalDifficulty,
@@ -97,6 +98,7 @@ namespace Libplanet.Tests.Blocks
         {
             Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty + 10L,
                 totalDifficulty: Block1Metadata.TotalDifficulty,
@@ -104,6 +106,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: Block1Metadata.TxHash));
             Assert.Throws<InvalidBlockDifficultyException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: -1L,
                 totalDifficulty: Block1Metadata.TotalDifficulty,
@@ -116,6 +119,7 @@ namespace Libplanet.Tests.Blocks
         {
             BlockMetadata metadata = new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty,
                 totalDifficulty: Block1Metadata.TotalDifficulty + 10,
@@ -128,6 +132,7 @@ namespace Libplanet.Tests.Blocks
             InvalidBlockTotalDifficultyException e =
                 Assert.Throws<InvalidBlockTotalDifficultyException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty,
                 totalDifficulty: -1L,
@@ -139,6 +144,7 @@ namespace Libplanet.Tests.Blocks
             e = Assert.Throws<InvalidBlockTotalDifficultyException>(
                 () => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty,
                 totalDifficulty: Block1Metadata.Difficulty - 1L,
@@ -152,6 +158,7 @@ namespace Libplanet.Tests.Blocks
         {
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: GenesisMetadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: GenesisMetadata.PublicKey,
                 difficulty: GenesisMetadata.Difficulty,
                 totalDifficulty: GenesisMetadata.TotalDifficulty,
@@ -159,6 +166,7 @@ namespace Libplanet.Tests.Blocks
                 txHash: GenesisMetadata.TxHash));
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 difficulty: Block1Metadata.Difficulty,
                 totalDifficulty: Block1Metadata.TotalDifficulty,
@@ -344,6 +352,7 @@ namespace Libplanet.Tests.Blocks
             {
                 BlockMetadata metadata = new BlockMetadata(
                     index: Block1Metadata.Index,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: Block1Metadata.PublicKey,
                     difficulty: long.MaxValue,
                     totalDifficulty: Block1Metadata.TotalDifficulty + long.MaxValue,
