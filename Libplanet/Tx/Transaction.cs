@@ -684,7 +684,7 @@ namespace Libplanet.Tx
                 ? ImmutableArray.Create(_signature)
                 : (ImmutableArray<byte>?)null;
             return SystemAction is { } sa
-                ? _metadata.ToBencodex(sa.PlainValue, sig)
+                ? _metadata.ToBencodex(Registry.Serialize(sa), sig)
                 : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue), sig);
         }
 
