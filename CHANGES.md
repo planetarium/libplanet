@@ -6,6 +6,11 @@ Version 0.40.2
 
 To be released.
 
+-  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method use
+   incorrect `PlainValue` when its include `SystemAction` [[#2339]]
+
+[#2339]: https://github.com/planetarium/libplanet/pull/2339
+
 
 Version 0.40.1
 --------------
