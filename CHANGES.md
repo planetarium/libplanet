@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.42.1
 --------------
 
-To be released.
+Released on September 23, 2022.
 
 -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
    serialized `SystemAction`.  [[#2339]]
