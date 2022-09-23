@@ -4,7 +4,10 @@ Libplanet changelog
 Version 0.42.1
 --------------
 
-To be released.
+Released on September 23, 2022.
+
+-  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+   serialized `SystemAction`.  [[#2339]]
 
 
 Version 0.42.0
@@ -59,6 +62,15 @@ Released on September 19, 2022.
 [#2320]: https://github.com/planetarium/libplanet/pull/2320
 [Bencodex 0.5.0]: https://www.nuget.org/packages/Bencodex/0.5.0
 [Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
+
+
+Version 0.41.3
+--------------
+
+Released on September 23, 2022.
+
+-  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+   serialized `SystemAction`.  [[#2339]]
 
 
 Version 0.41.2
@@ -246,6 +258,17 @@ Released on August 26, 2022.
 [#2232]: https://github.com/planetarium/libplanet/pull/2232
 [#2233]: https://github.com/planetarium/libplanet/pull/2233
 [#2241]: https://github.com/planetarium/libplanet/pull/2241
+
+
+Version 0.40.2
+--------------
+
+Released on September 23, 2022.
+
+-  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+   serialized `SystemAction`.  [[#2339]]
+
+[#2339]: https://github.com/planetarium/libplanet/pull/2339
 
 
 Version 0.40.1
