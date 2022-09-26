@@ -54,6 +54,9 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay)
         {
+            validatorPeers ??= ImmutableList<BoundPeer>.Empty;
+            seedPeers ??= ImmutableList<BoundPeer>.Empty;
+
             _gossip = new Gossip(
                 consensusTransport,
                 validatorPeers.ToImmutableArray(),
