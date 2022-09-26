@@ -1488,6 +1488,46 @@ namespace Libplanet.Blockchain
                     $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
+            if (block.ProtocolVersion > BlockMetadata.PoWProtocolVersion)
+            {
+                if ((block.Index == 0 || block.Index == 1) && block.LastCommit is { })
+                {
+                    return new InvalidBlockLastCommitException(
+                        "The genesis block and the next block should not have lastCommit");
+                }
+
+                if (block.Index > 1 && !(block.LastCommit is { }))
+                {
+                    return new InvalidBlockLastCommitException(
+                        $"Except the genesis block and the right after block, any block should " +
+                        $"have lastCommit.");
+                }
+
+                if (block.Index > 1 && block.LastCommit is { Votes: var votes } commit)
+                {
+                    if (!commit.HasSameValidators(Policy.GetValidators(block.Index - 1)))
+                    {
+                        return new InvalidBlockLastCommitException(
+                            "The validator set of block lastCommit is not matching " +
+                            "with known validator set in policy.");
+                    }
+
+                    if (!commit.HasTwoThirdCommits(Policy.GetValidators(block.Index - 1)))
+                    {
+                        return new InvalidBlockLastCommitException(
+                            $"The lastcommit votes of block #{block.Index} " +
+                            $"does not meet the criteria of +2/3 committed vote.");
+                    }
+
+                    if (!commit.HasValidVotes())
+                    {
+                        return new InvalidBlockLastCommitException(
+                            $"Some of the block #{block.Index}'s lastcommit's votes' " +
+                            "are not valid.");
+                    }
+                }
+            }
+
             return null;
         }
     }
