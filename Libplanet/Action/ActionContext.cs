@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
@@ -12,6 +13,7 @@ namespace Libplanet.Action
     {
         private readonly int _randomSeed;
         private readonly ITrie? _previousBlockStatesTrie;
+        private readonly Predicate<Currency>? _nativeTokenPredicate;
         private HashDigest<SHA256>? _previousStateRootHash;
 
         public ActionContext(
@@ -26,6 +28,7 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
+            Predicate<Currency>? nativeTokenPredicate = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
             GenesisHash = genesisHash;
@@ -40,6 +43,7 @@ namespace Libplanet.Action
             _randomSeed = randomSeed;
             _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
+            _nativeTokenPredicate = nativeTokenPredicate;
             NativeTokens = nativeTokens ?? ImmutableHashSet<Currency>.Empty;
         }
 
@@ -76,6 +80,9 @@ namespace Libplanet.Action
 
         public IImmutableSet<Currency> NativeTokens { get; }
 
+        public bool IsNativeToken(Currency currency) =>
+            _nativeTokenPredicate is { } && _nativeTokenPredicate(currency);
+
         [Pure]
         public IActionContext GetUnconsumedContext() =>
             new ActionContext(
@@ -90,6 +97,7 @@ namespace Libplanet.Action
                 Rehearsal,
                 _previousBlockStatesTrie,
                 BlockAction,
+                _nativeTokenPredicate,
                 NativeTokens);
     }
 }

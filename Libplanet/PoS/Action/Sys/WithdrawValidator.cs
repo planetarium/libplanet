@@ -37,10 +37,15 @@ namespace Libplanet.Action.Sys
             // Rehearsal mode is not implemented
             foreach (Currency nativeToken in context.NativeTokens ?? Enumerable.Empty<Currency>())
             {
-                states = states.TransferAsset(
+                FungibleAssetValue reward = states.GetBalance(
+                    AllocateReward.RewardAddress(ctx.Signer), nativeToken);
+                if (reward.Sign > 0)
+                {
+                    states = states.TransferAsset(
                     AllocateReward.RewardAddress(ctx.Signer),
                     ctx.Signer,
-                    states.GetBalance(ctx.Signer, nativeToken));
+                    reward);
+                }
             }
 
             return states;

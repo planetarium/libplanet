@@ -885,6 +885,7 @@ namespace Libplanet.Net.Tests
                         privateKey: privateKey,
                         blockAction: policy.BlockAction,
                         updateValidatorSetAction: policy.UpdateValidatorSetAction,
+                        nativeTokenPredicate: policy.NativeTokens.Contains,
                         nativeTokens: policy.NativeTokens,
                         stateStore: stateStore)
                 );

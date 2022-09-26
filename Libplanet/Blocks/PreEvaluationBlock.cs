@@ -66,6 +66,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
         /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
         /// </param>
@@ -90,12 +93,14 @@ namespace Libplanet.Blocks
             PrivateKey privateKey,
             IAction? blockAction,
             IAction? updateValidatorSetAction,
+            Predicate<Currency> nativeTokenPredicate,
             IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore
         ) =>
             Sign(privateKey, DetermineStateRootHash(
                 blockAction,
                 updateValidatorSetAction,
+                nativeTokenPredicate,
                 nativeTokens,
                 stateStore));
 
@@ -160,6 +165,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
         /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
         /// </param>
@@ -173,12 +181,14 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
             IAction? updateValidatorSetAction,
+            Predicate<Currency> nativeTokenPredicate,
             IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore
         )
             => DetermineStateRootHash(
                 blockAction,
                 updateValidatorSetAction,
+                nativeTokenPredicate,
                 nativeTokens,
                 stateStore,
                 out _);
@@ -192,6 +202,9 @@ namespace Libplanet.Blocks
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="updateValidatorSetAction">An optional
         /// <see cref="Blockchain.Policies.IBlockPolicy{T}.UpdateValidatorSetAction"/>.</param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
         /// <param name="nativeTokens">A set of <see cref="Currency"/>s defined as native tokens by
         /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
         /// </param>
@@ -206,6 +219,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256> DetermineStateRootHash(
             IAction? blockAction,
             IAction? updateValidatorSetAction,
+            Predicate<Currency> nativeTokenPredicate,
             IImmutableSet<Currency>? nativeTokens,
             IStateStore stateStore,
             out IImmutableDictionary<string, IValue> statesDelta
@@ -227,6 +241,7 @@ namespace Libplanet.Blocks
                 blockChainStates: NullChainStates<T>.Instance,
                 trieGetter: null,
                 genesisHash: null,
+                nativeTokenPredicate: nativeTokenPredicate,
                 nativeTokens: nativeTokens
             );
             IReadOnlyList<ActionEvaluation> actionEvaluations =

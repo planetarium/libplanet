@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Action
                 transactions: txs
             );
             Block<RandomAction> stateRootBlock =
-                noStateRootBlock.Evaluate(GenesisMiner, null, null, null, stateStore);
+                noStateRootBlock.Evaluate(GenesisMiner, null, null, _ => true, null, stateStore);
             var actionEvaluator =
                 new ActionEvaluator<RandomAction>(
                     policyBlockAction: null,
@@ -83,6 +83,7 @@ namespace Libplanet.Tests.Action
                     blockChainStates: NullChainStates<RandomAction>.Instance,
                     trieGetter: null,
                     genesisHash: null,
+                    nativeTokenPredicate: _ => true,
                     nativeTokens: null);
             var generatedRandomNumbers = new List<int>();
 
@@ -291,6 +292,7 @@ namespace Libplanet.Tests.Action
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: null,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null
             );
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
@@ -478,8 +480,8 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "RecordRehearsal:False" }, _txFx.Address3),
-                (1, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address2),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (2, 0, new[] { "A", "B", "C", "E", "RecordRehearsal:False" }, _txFx.Address3),
                 (
                     0,
                     0,
@@ -582,6 +584,7 @@ namespace Libplanet.Tests.Action
                 blockChainStates: NullChainStates<DumbAction>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null);
 
             foreach (bool rehearsal in new[] { false, true })
@@ -714,6 +717,7 @@ namespace Libplanet.Tests.Action
                 blockChainStates: NullChainStates<ThrowException>.Instance,
                 trieGetter: null,
                 genesisHash: tx.GenesisHash,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null
             );
             var block = new BlockContent<ThrowException>
@@ -765,6 +769,7 @@ namespace Libplanet.Tests.Action
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockA.PreviousHash),
                 blockAction: false,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null
             ).ToArray();
 
@@ -818,6 +823,7 @@ namespace Libplanet.Tests.Action
                 rehearsal: rehearsal,
                 previousBlockStatesTrie: fx.GetTrie(blockB.PreviousHash),
                 blockAction: false,
+                nativeTokenPredicate: _ => true,
                 nativeTokens: null
             ).ToArray();
 

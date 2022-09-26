@@ -56,7 +56,7 @@ namespace Libplanet.Action.Sys
         /// <inheritdoc cref="IAction.Execute(IActionContext)"/>
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (!context.NativeTokens.Contains(Amount.Currency))
+            if (!context.IsNativeToken(Amount.Currency))
             {
                 var message =
                     $"System action {nameof(Transfer)} only accepts native tokens, " +

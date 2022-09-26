@@ -14,6 +14,8 @@ namespace Libplanet.Action.Sys
             Redelegate = 102,
             Undelegate = 103,
             CancelUndelegation = 104,
+            WithdrawDelegator = 105,
+            WithdrawValidator = 106,
         }
 
         public static IAction Deserialize(Bencodex.Types.Dictionary serialized)
@@ -57,6 +59,8 @@ namespace Libplanet.Action.Sys
                 TypeId.Redelegate => new Redelegate(),
                 TypeId.Undelegate => new Undelegate(),
                 TypeId.CancelUndelegation => new CancelUndelegation(),
+                TypeId.WithdrawDelegator => new WithdrawDelegator(),
+                TypeId.WithdrawValidator => new WithdrawValidator(),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(typeId),
                     typeId,
@@ -74,6 +78,8 @@ namespace Libplanet.Action.Sys
                 Redelegate _ => TypeId.Redelegate,
                 Undelegate _ => TypeId.Undelegate,
                 CancelUndelegation _ => TypeId.CancelUndelegation,
+                WithdrawDelegator _ => TypeId.WithdrawDelegator,
+                WithdrawValidator _ => TypeId.WithdrawValidator,
                 _ => throw new ArgumentException("Unknown system action type.", nameof(action)),
             };
     }

@@ -133,6 +133,7 @@ namespace Libplanet.Net.Tests
                     privateKey: receiverKey,
                     blockAction: policy.BlockAction,
                     updateValidatorSetAction: policy.UpdateValidatorSetAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
                     nativeTokens: policy.NativeTokens,
                     stateStore: seedStateStore);
             BlockChain<DumbAction> seedChain = MakeBlockChain(

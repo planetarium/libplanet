@@ -168,6 +168,7 @@ namespace Libplanet.Blockchain
                 blockChainStates: this,
                 trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
                 genesisHash: genesisBlock.Hash,
+                nativeTokenPredicate: Policy.NativeTokens.Contains,
                 nativeTokens: Policy.NativeTokens
             );
 
@@ -350,6 +351,7 @@ namespace Libplanet.Blockchain
             PrivateKey privateKey = null,
             DateTimeOffset? timestamp = null,
             IAction blockAction = null,
+            Predicate<Currency> nativeTokenPredicate = null,
             IImmutableSet<Currency> nativeTokens = null)
         {
             privateKey ??= new PrivateKey();
@@ -371,6 +373,7 @@ namespace Libplanet.Blockchain
                 privateKey,
                 blockAction,
                 new PoSAction(),
+                nativeTokenPredicate,
                 nativeTokens,
                 new TrieStateStore(new DefaultKeyValueStore(null))
             );

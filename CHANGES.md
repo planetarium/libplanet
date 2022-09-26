@@ -10,11 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added property `LastCommit` to `IActionContext`.  [[#2297]]
- -  Replace property `NativeTokenPredicate` with `NativeTokens` on
-    `IActionContext`.  [[#2316]]
- -  Replace parameter `nativeTokenPredicate` with `nativeTokens` on
-    `ActionEvaluator`.  [[#2316]]
+ -  Added property `LastCommit` on `IActionContext`.  [[#2297]]
+ -  Added property `NativeTokens` on `IActionContext`.  [[#2316]]
+ -  Added parameter `nativeTokens` on `ActionEvaluator`.  [[#2316]]
 
 ### Backward-incompatible network protocol changes
 

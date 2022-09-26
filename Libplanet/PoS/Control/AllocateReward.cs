@@ -10,7 +10,7 @@ using Libplanet.PoS.Model;
 
 namespace Libplanet.PoS.Control
 {
-    internal static class AllocateReward
+    public static class AllocateReward
     {
         public static BigInteger BaseProposerRewardNumer => 1;
 
@@ -27,7 +27,7 @@ namespace Libplanet.PoS.Control
 
         internal static IAccountStateDelta Execute(
             IAccountStateDelta states,
-            IImmutableSet<Currency> nativeTokens,
+            IImmutableSet<Currency>? nativeTokens,
             IEnumerable<Vote>? votes,
             Address miner,
             long blockIndex)
@@ -35,17 +35,20 @@ namespace Libplanet.PoS.Control
             ValidatorSet bondedValidatorSet;
             (states, bondedValidatorSet) = ValidatorSetCtrl.FetchBondedValidatorSet(states);
 
-            if (votes is null)
+            if (nativeTokens is null)
             {
-                return states;
+                throw new NullNativeTokensException();
             }
 
             foreach (Currency nativeToken in nativeTokens)
             {
-                states = DistributeProposerReward(
-                    states, nativeToken, miner, bondedValidatorSet, votes);
-                states = DistributeValidatorReward(
-                    states, nativeToken, bondedValidatorSet, votes, blockIndex);
+                if (votes is { } lastVotes)
+                {
+                    states = DistributeProposerReward(
+                        states, nativeToken, miner, bondedValidatorSet, lastVotes);
+                    states = DistributeValidatorReward(
+                        states, nativeToken, bondedValidatorSet, votes, blockIndex);
+                }
 
                 FungibleAssetValue communityFund = states.GetBalance(
                     ReservedAddress.RewardPool, nativeToken);
@@ -55,7 +58,7 @@ namespace Libplanet.PoS.Control
                     states = states.TransferAsset(
                         ReservedAddress.RewardPool,
                         ReservedAddress.CommunityPool,
-                        states.GetBalance(ReservedAddress.RewardPool, nativeToken));
+                        communityFund);
                 }
             }
 

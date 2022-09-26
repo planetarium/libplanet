@@ -22,6 +22,7 @@ namespace Libplanet.PoS.Model
             var dict = (Dictionary)serialized;
             Address = dict["addr"].ToAddress();
             ValidatorAddress = dict["val_addr"].ToAddress();
+            Currency = dict["currency"].ToCurrency();
             _rewards = new SortedList<long, FungibleAssetValue>();
             foreach (
                 KeyValuePair<IKey, IValue> kv
@@ -35,6 +36,7 @@ namespace Libplanet.PoS.Model
         {
             Address = validatorRewards.Address;
             ValidatorAddress = validatorRewards.ValidatorAddress;
+            Currency = validatorRewards.Currency;
             _rewards = validatorRewards._rewards;
         }
 
@@ -76,6 +78,7 @@ namespace Libplanet.PoS.Model
             return Dictionary.Empty
                 .Add("addr", Address.Serialize())
                 .Add("val_addr", ValidatorAddress.Serialize())
+                .Add("currency", Currency.Serialize())
                 .Add("rewards", serializedRewards);
         }
     }
