@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -360,7 +361,7 @@ namespace Libplanet.Net.Consensus
                 DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
                 flag,
-                null).Sign(_privateKey);
+                ImmutableArray<byte>.Empty).Sign(_privateKey);
         }
 
         /// <summary>

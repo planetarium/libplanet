@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Store;
@@ -20,7 +21,7 @@ namespace Libplanet.Tests.Consensus
                 now,
                 new PrivateKey().PublicKey,
                 VoteFlag.Commit,
-                null);
+                ImmutableArray<byte>.Empty);
             byte[] marshaled = vote.ByteArray;
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
@@ -39,10 +40,10 @@ namespace Libplanet.Tests.Consensus
                 now,
                 privateKey.PublicKey,
                 VoteFlag.Commit,
-                null);
-            Assert.Null(vote.Signature);
+                ImmutableArray<byte>.Empty);
+            Assert.True(vote.Signature.IsDefaultOrEmpty);
             Vote signed = vote.Sign(privateKey);
-            Assert.NotNull(signed.Signature);
+            Assert.False(signed.Signature.IsDefaultOrEmpty);
             Assert.True(
                 privateKey.PublicKey.Verify(signed.RemoveSignature.ByteArray, signed.Signature));
         }

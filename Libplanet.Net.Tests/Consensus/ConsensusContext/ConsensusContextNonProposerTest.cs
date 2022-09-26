@@ -79,7 +79,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
                     VoteFlag.Absent,
-                    null).Sign(TestUtils.PrivateKeys[i]);
+                    ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
                     new ConsensusVote(expectedVotes[i])
                     {
@@ -98,7 +98,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
                     VoteFlag.Commit,
-                    null).Sign(TestUtils.PrivateKeys[i]);
+                    ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
                     new ConsensusCommit(expectedVotes[i])
                     {
@@ -190,7 +190,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
                             VoteFlag.Absent,
-                            null).Sign(privateKey))
+                            ImmutableArray<byte>.Empty).Sign(privateKey))
                     {
                         Remote = peer,
                     });
@@ -217,7 +217,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
                             VoteFlag.Commit,
-                            null).Sign(privateKey))
+                            ImmutableArray<byte>.Empty).Sign(privateKey))
                     {
                         Remote = peer,
                     });

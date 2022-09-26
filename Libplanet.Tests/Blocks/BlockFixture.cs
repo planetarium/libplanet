@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
                             Genesis.Timestamp,
                             Miner.PublicKey,
                             VoteFlag.Commit,
-                            null).Sign(Miner),
+                            ImmutableArray<byte>.Empty).Sign(Miner),
                     }.ToImmutableArray())
             );
             HasTx = TestUtils.ProposeNextBlock(
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Blocks
                             Next.Timestamp,
                             Miner.PublicKey,
                             VoteFlag.Commit,
-                            null).Sign(Miner),
+                            ImmutableArray<byte>.Empty).Sign(Miner),
                     }.ToImmutableArray())
             );
         }
