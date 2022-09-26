@@ -39,9 +39,10 @@ namespace Libplanet.Net.Consensus
         /// <param name="privateKey">A <see cref="PrivateKey"/> for using in signing a block,
         /// message.
         /// </param>
-        /// <param name="validatorPeers">A list of validator's <see cref="PublicKey"/>, including
+        /// <param name="validatorPeers">A list of validator's <see cref="BoundPeer"/>, including
         /// itself.
         /// </param>
+        /// <param name="seedPeers">A list of seed's <see cref="BoundPeer"/>.</param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
         /// </param>
@@ -50,11 +51,16 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             ImmutableList<BoundPeer> validatorPeers,
+            ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay)
         {
+            validatorPeers ??= ImmutableList<BoundPeer>.Empty;
+            seedPeers ??= ImmutableList<BoundPeer>.Empty;
+
             _gossip = new Gossip(
                 consensusTransport,
                 validatorPeers.ToImmutableArray(),
+                seedPeers.ToImmutableArray(),
                 ProcessMessage,
                 TimeSpan.FromMinutes(2));
             _blockChain = blockChain;

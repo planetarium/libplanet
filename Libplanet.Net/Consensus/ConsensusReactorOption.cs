@@ -27,6 +27,11 @@ namespace Libplanet.Net.Consensus
         public PrivateKey ConsensusPrivateKey { get; set; }
 
         /// <summary>
+        /// A list of seeds.
+        /// </summary>
+        public ImmutableList<BoundPeer> SeedPeers { get; set; }
+
+        /// <summary>
         /// A list of validators.
         /// </summary>
         public ImmutableList<BoundPeer> ConsensusPeers { get; set; }
