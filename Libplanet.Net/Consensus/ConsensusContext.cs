@@ -153,8 +153,29 @@ namespace Libplanet.Net.Consensus
                     : new BlockCommit(
                         _contexts[Height].VoteSet(_contexts[Height].CommittedRound),
                         _blockChain.Tip.Hash);
+
                 _contexts[Height].Dispose();
                 _contexts.Remove(Height);
+            }
+
+            if (lastCommit != null)
+            {
+                _logger.Debug(
+                    "Caching LastCommit of Height {Height}...", Height);
+                _blockChain.Store.PutLastCommit(lastCommit.Value);
+            }
+            else
+            {
+                BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(Height);
+                if (storedCommit != null)
+                {
+                    lastCommit = storedCommit;
+                    _logger.Debug(
+                        "Found cached LastCommit of Height #{Height} " +
+                        "and Round #{Round}",
+                        lastCommit.Value.Height,
+                        lastCommit.Value.Round);
+                }
             }
 
             Height = height;
