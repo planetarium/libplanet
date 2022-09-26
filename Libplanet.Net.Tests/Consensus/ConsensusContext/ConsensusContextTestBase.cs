@@ -28,7 +28,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextTestBase(
             ITestOutputHelper output,
             PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null)
+            Func<long, IEnumerable<PublicKey>>? getValidators = null)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -42,7 +42,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Fx = new MemoryStoreFixture(TestUtils.Policy.BlockAction);
 
             privateKey ??= TestUtils.Peer1Priv;
-            validators ??= TestUtils.Validators;
+            getValidators ??= TestUtils.Policy.GetValidators;
 
             void BroadcastMessage(ConsensusMessage message) =>
                 Task.Run(() =>
@@ -59,8 +59,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 BlockChain,
                 BlockChain.Tip.Index + 1,
                 privateKey,
-                validators,
-                NewHeightDelay);
+                NewHeightDelay,
+                getValidators);
         }
 
         protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;

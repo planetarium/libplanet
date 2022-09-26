@@ -427,7 +427,7 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
 
-            public IEnumerable<PublicKey> GetValidators() => new List<PublicKey>();
+            public IEnumerable<PublicKey> GetValidators(long index) => new List<PublicKey>();
         }
 
         internal class Startup : IBlockChainContext<NullAction>

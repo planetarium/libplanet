@@ -47,6 +47,7 @@ To be released.
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
+ -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]

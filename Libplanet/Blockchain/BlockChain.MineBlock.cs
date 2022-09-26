@@ -110,20 +110,20 @@ namespace Libplanet.Blockchain
                 difficulty,
                 prevHash);
 
-            var transactionsToMine = GatherTransactionsToPropose(
+            var transactionsToPropose = GatherTransactionsToPropose(
                 maxTransactionsBytes: maxTransactionsBytes,
                 maxTransactions: maxTransactions,
                 maxTransactionsPerSigner: maxTransactionsPerSigner,
                 txPriority: txPriority
             );
 
-            if (transactionsToMine.Count < Policy.GetMinTransactionsPerBlock(index))
+            if (transactionsToPropose.Count < Policy.GetMinTransactionsPerBlock(index))
             {
                 throw new OperationCanceledException(
                     $"Proposal operation canceled due to insufficient number of " +
                     $"gathered transactions to mine for the requirement of " +
                     $"{Policy.GetMinTransactionsPerBlock(index)} " +
-                    $"given by the policy: {transactionsToMine.Count}");
+                    $"given by the policy: {transactionsToPropose.Count}");
             }
 
             _logger.Verbose(
@@ -132,7 +132,7 @@ namespace Libplanet.Blockchain
                 sessionId,
                 processId,
                 index,
-                transactionsToMine.Count);
+                transactionsToPropose.Count);
 
             var blockContent = new BlockContent<T>
             {
@@ -140,7 +140,7 @@ namespace Libplanet.Blockchain
                 PublicKey = proposer.PublicKey,
                 PreviousHash = prevHash,
                 Timestamp = timestamp,
-                Transactions = transactionsToMine,
+                Transactions = transactionsToPropose,
                 LastCommit = lastCommit,
             };
             PreEvaluationBlock<T> preEval;
