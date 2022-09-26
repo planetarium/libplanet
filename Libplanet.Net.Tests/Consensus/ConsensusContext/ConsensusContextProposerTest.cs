@@ -7,7 +7,6 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
-    [Collection("NetMQConfiguration")]
     public class ConsensusContextProposerTest : ConsensusContextTestBase
     {
         private readonly ILogger _logger;
