@@ -17,6 +17,7 @@ using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
+    [Collection("NetMQConfiguration")]
     public class ConsensusContextNonProposerTest : ConsensusContextTestBase
     {
         private readonly ILogger _logger;
@@ -258,6 +259,85 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 heightThreeStartTimestamp - heightTwoEndTimestamp > NewHeightDelay);
             Assert.Equal(3, ConsensusContext.Height);
             Assert.Equal(Step.PreVote, ConsensusContext.Step);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void UseLastCommitCacheIfHeightContextIsEmpty()
+        {
+            var codec = new Codec();
+            var heightOneEnded = new AsyncAutoResetEvent();
+            var heightOneProposeSent = new AsyncAutoResetEvent();
+            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            Block<DumbAction>? proposedBlock = null;
+
+            // Do a consensus for height #1. (Genesis doesn't have last commit.)
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+                (sender, tuple) =>
+                {
+                    if (tuple.Step == Step.EndCommit)
+                    {
+                        heightOneEnded.Set();
+                    }
+                };
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageConsumed +=
+                (sender, message) =>
+                {
+                    if (message is ConsensusPropose propose)
+                    {
+                        heightOneProposeSent.Set();
+                    }
+                };
+
+            var block = BlockChain.ProposeBlock(TestUtils.Peer1Priv);
+            ConsensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+
+            await heightOneProposeSent.WaitAsync();
+
+            // Use PreCommit votes for skipping PreVote step.
+            TestUtils.HandleFourPeersPreCommitMessages(
+                ConsensusContext,
+                TestUtils.Peer2Priv,
+                block.Hash);
+
+            await heightOneEnded.WaitAsync();
+            // Gets a vote set of a current context.
+            var voteSet = ConsensusContext.Contexts[ConsensusContext.Height]
+                .VoteSet(ConsensusContext.Contexts[ConsensusContext.Height].CommittedRound);
+
+            // Forcefully dispose current context.
+            ConsensusContext.Contexts[ConsensusContext.Height].Dispose();
+
+            // Creates a cache of disposed context.
+            var blockCommit = new BlockCommit(voteSet, block.Hash);
+            BlockChain.Store.PutLastCommit(blockCommit);
+
+            // Remove context for testing whether context is getting LastCommit from store. Used
+            // ConsensusContext.Height because it is in EndCommit, so the height does not changed
+            // yet.
+            ConsensusContext.Contexts.Remove(ConsensusContext.Height);
+
+            // Restart consensus from height #2
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageConsumed +=
+                (sender, message) =>
+                {
+                    if (message is ConsensusPropose propose)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(propose!.Payload));
+                        heightTwoProposeSent.Set();
+                    }
+                };
+            await heightTwoProposeSent.WaitAsync();
+
+            if (proposedBlock == null)
+            {
+                throw new NullException("An error has occurred in block proposal.");
+            }
+
+            Assert.Equal(blockCommit, proposedBlock.LastCommit);
         }
     }
 }
