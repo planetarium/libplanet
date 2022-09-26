@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
@@ -22,9 +23,9 @@ namespace Libplanet.Net.Consensus
     {
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly List<PublicKey> _validators;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
+        private readonly Func<long, IEnumerable<PublicKey>> _getValidators;
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
@@ -43,26 +44,25 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
-        /// <param name="validators">A list of validator's <see cref="PublicKey"/>,
-        /// also including self.
-        /// </param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="OnBlockChainTipChanged"/>
         /// </param>
+        /// <param name="getValidators">The function determining the set of validators
+        /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
-            TimeSpan newHeightDelay)
+            TimeSpan newHeightDelay,
+            Func<long, IEnumerable<PublicKey>> getValidators)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
-            _validators = validators;
             Height = height;
             _newHeightDelay = newHeightDelay;
+            _getValidators = getValidators;
 
             _contexts = new Dictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
@@ -168,7 +168,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _validators);
+                    _getValidators(height).ToList());
             }
 
             _contexts[height].Start(lastCommit);
@@ -216,7 +216,7 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _validators);
+                    _getValidators(height).ToList());
             }
 
             _contexts[height].ProduceMessage(consensusMessage);

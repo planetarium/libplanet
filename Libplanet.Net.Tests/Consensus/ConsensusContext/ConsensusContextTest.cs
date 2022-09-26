@@ -22,7 +22,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         private readonly ILogger _logger;
 
         public ConsensusContextTest(ITestOutputHelper output)
-            : base(output, PrivateKeyPeer1, Validators)
+            : base(output, PrivateKeyPeer1, index => Validators)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";

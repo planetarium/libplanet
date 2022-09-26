@@ -90,7 +90,8 @@ namespace Libplanet.Net.Tests
 
         public static IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
-            getMaxTransactionsBytes: _ => 50 * 1024);
+            getMaxTransactionsBytes: _ => 50 * 1024,
+            getValidators: _ => Validators);
 
         public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 
@@ -221,8 +222,8 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                validators,
-                newHeightDelay: newHeightDelay);
+                newHeightDelay: newHeightDelay,
+                getValidators: _ => validators);
 
             async Task DummyHandle(Message message)
             {

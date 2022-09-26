@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,8 +69,8 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 blockChain.Tip.Index,
                 privateKey,
-                validatorPeers.Select(x => x.PublicKey).ToList(),
-                newHeightDelay);
+                newHeightDelay,
+                blockChain.Policy.GetValidators);
 
             _logger = Log
                 .ForContext("Tag", "Consensus")

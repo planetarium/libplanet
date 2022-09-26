@@ -129,8 +129,10 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// Gets <see cref="IEnumerable{T}"/> of validator.
         /// </summary>
+        /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
+        /// for which this constraint should apply.</param>
         /// <returns><see cref="IEnumerable{T}"/> of validator.</returns>
         [Pure]
-        IEnumerable<PublicKey> GetValidators();
+        IEnumerable<PublicKey> GetValidators(long index);
     }
 }

@@ -31,6 +31,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
+        private readonly Func<long, IEnumerable<PublicKey>> _getValidators;
 
         /// <summary>
         /// <para>
@@ -72,6 +73,8 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
+        /// <param name="getValidators">The function determining the set of validators
+        /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
         /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
         /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
@@ -85,6 +88,7 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
+            Func<long, IEnumerable<PublicKey>>? getValidators = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
@@ -95,6 +99,7 @@ namespace Libplanet.Blockchain.Policies
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
+            _getValidators = getValidators ?? (_ => ImmutableList<PublicKey>.Empty);
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -208,6 +213,6 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         [Pure]
-        public IEnumerable<PublicKey> GetValidators() => new List<PublicKey>();
+        public IEnumerable<PublicKey> GetValidators(long index) => _getValidators(index);
     }
 }
