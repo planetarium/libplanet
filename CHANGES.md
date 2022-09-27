@@ -7,7 +7,9 @@ Version 0.43.0
 To be released.
 
 Since 0.43.0, we officially provide *[@planetarium/tx]*, an npm package for
-creating unsigned transactions in JavaScript/TypeScript.
+creating unsigned transactions in JavaScript/TypeScript.  Although it is still
+in experimental stage, which can build only unsigned transactions with
+a system action, its features will be added more in the future.
 
 ### Deprecated APIs
 
