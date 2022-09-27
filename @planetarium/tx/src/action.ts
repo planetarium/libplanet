@@ -7,9 +7,15 @@ export type SystemAction = Mint | Transfer;
 export function encodeSystemAction(action: SystemAction): Encodable {
   switch (action.type) {
   case "mint":
-    return encodeMint(action);
+    return {
+      type_id: 0,
+      values: encodeMint(action),
+    };
   case "transfer":
-    return encodeTransfer(action);
+    return {
+      type_id: 1,
+      values: encodeTransfer(action),
+    };
   default:
     throw new TypeError(`Unknown action type: ${action["type"]}`);
   }

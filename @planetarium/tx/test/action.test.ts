@@ -29,8 +29,14 @@ test("encodeSystemAction", () => {
       currency: FOO,
     }
   };
-  expect(encodeSystemAction(mint)).toEqual(encodeMint(mint));
-  expect(encode(encodeSystemAction(mint))).toEqual(encode(encodeMint(mint)));
+  expect(encodeSystemAction(mint)).toEqual({
+    type_id: 0,
+    values: encodeMint(mint),
+  });
+  expect(encode(encodeSystemAction(mint))).toEqual(encode({
+    type_id: 0,
+    values: encodeMint(mint),
+  }));
   const transfer: Transfer = {
     type: "transfer",
     recipient: addressA,
@@ -39,9 +45,14 @@ test("encodeSystemAction", () => {
       currency: FOO,
     }
   };
-  expect(encodeSystemAction(transfer)).toEqual(encodeTransfer(transfer));
-  expect(encode(encodeSystemAction(transfer)))
-    .toEqual(encode(encodeTransfer(transfer)));
+  expect(encodeSystemAction(transfer)).toEqual({
+    type_id: 1,
+    values: encodeTransfer(transfer),
+  });
+  expect(encode(encodeSystemAction(transfer))).toEqual(encode({
+    type_id: 1,
+    values: encodeTransfer(transfer),
+  }));
 });
 
 test("encodeMint", () => {
