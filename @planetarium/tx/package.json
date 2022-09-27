@@ -1,10 +1,12 @@
 {
   "name": "@planetarium/tx",
+  "private": true,
   "description": "Creating Libplanet transactions from JavaScript/TypeScript",
   "main": "dist/pkg.cjs.js",
   "module": "dist/pkg.esm.js",
   "scripts": {
-    "build": "bunchee src/index.ts",
+    "build": "bunchee --target es2020 src/index.ts",
+    "prepack": "npm run build",
     "dev": "bunchee --watch src/index.ts",
     "test": "vitest",
     "coverage": "vitest run --coverage"
