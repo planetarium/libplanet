@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections.Immutable;
 using Bencodex;
 using Bencodex.Types;
 using GraphQL;
@@ -139,6 +140,12 @@ namespace Libplanet.Explorer.Queries
                     {
                         Name = "nonce",
                         Description = "The nonce for Transaction.",
+                    },
+                    new QueryArgument<ListGraphType<NonNullGraphType<StringGraphType>>>
+                    {
+                        Name = "updatedAddresses",
+                        Description = "Addresses with their state transitioned by Actions included"
+                                      + " in this Transaction.",
                     }
                 ),
                 resolve: context =>
@@ -155,12 +162,15 @@ namespace Libplanet.Explorer.Queries
                     Address signer = publicKey.ToAddress();
                     long nonce = context.GetArgument<long?>("nonce") ??
                         chain.GetNextTxNonce(signer);
+                    var updatedAddresses =
+                        context.GetArgument<IImmutableSet<Address>>("updatedAddresses");
                     Transaction<T> unsignedTransaction =
                         Transaction<T>.CreateUnsigned(
                             nonce,
                             publicKey,
                             chain.Genesis.Hash,
-                            new[] { action }
+                            new[] { action },
+                            updatedAddresses
                         );
                     return unsignedTransaction.Serialize(false);
                 }
