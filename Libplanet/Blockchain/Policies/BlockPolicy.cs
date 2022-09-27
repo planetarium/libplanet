@@ -134,9 +134,20 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
+                    int minBlockProtocolVersion = GetMinBlockProtocolVersion(block.Index);
 
                     long blockBytes = block.MarshalBlock().EncodingLength;
-                    if (blockBytes > maxBlockBytes)
+                    if (block.ProtocolVersion < minBlockProtocolVersion)
+                    {
+                        // NOTE: InvalidBlockProtocolVersionException would be more appropriate,
+                        // but it is not a BlockPolicyViolationException; as this is a temporary
+                        // solution to allow migration, we just use BlockPolicyViolationException.
+                        return new BlockPolicyViolationException(
+                            $"The minimum block protocol version of block #{block.Index} is " +
+                            $"{minBlockProtocolVersion} while the given block has " +
+                            $"block protocol versoin {block.ProtocolVersion}.");
+                    }
+                    else if (blockBytes > maxBlockBytes)
                     {
                         return new InvalidBlockBytesLengthException(
                             $"The size of block #{block.Index} {block.Hash} is too large " +
