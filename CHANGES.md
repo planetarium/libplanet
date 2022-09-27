@@ -25,9 +25,9 @@ To be released.
      -  `Mint` became to implement `IEquatable<IAction>`.
      -  `Transfer` became to implement `IEquatable<Transfer>`.
      -  `Transfer` became to implement `IEquatable<IAction>`.
- -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
- -  `RoutingTable` became to implement `IRoutingTable` interface.
-    [[#2046], [#2229]]
+ -  (Libplanet.Net) Added `IRoutingTable` interface.  [[#2046], [#2229]]
+ -  (Libplanet.Net) `RoutingTable` became to implement `IRoutingTable`
+    interface.  [[#2046], [#2229]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
 
