@@ -233,8 +233,24 @@ namespace Libplanet.Explorer.Queries
                     if (!(store.GetFirstTxIdBlockHashIndex(txId) is { } txExecutedBlockHash))
                     {
                         return blockChain.GetStagedTransactionIds().Contains(txId)
-                            ? new TxResult(TxStatus.STAGING, null, null, null, null)
-                            : new TxResult(TxStatus.INVALID, null, null, null, null);
+                            ? new TxResult(
+                                TxStatus.STAGING,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null)
+                            : new TxResult(
+                                TxStatus.INVALID,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null);
                     }
 
                     try
@@ -245,6 +261,9 @@ namespace Libplanet.Explorer.Queries
                         );
                         Block<T> txExecutedBlock = blockChain[txExecutedBlockHash];
 
+                        var updatedStates = ((TxSuccess)execution).UpdatedStates;
+                        var updatedFungibleAssets = ((TxSuccess)execution).UpdatedFungibleAssets;
+                        var fungibleAssetsDelta = ((TxSuccess)execution).FungibleAssetsDelta;
                         return execution switch
                         {
                             TxSuccess txSuccess => new TxResult(
@@ -252,14 +271,20 @@ namespace Libplanet.Explorer.Queries
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 null,
-                                null
+                                null,
+                                txSuccess.UpdatedStates,
+                                txSuccess.FungibleAssetsDelta,
+                                txSuccess.UpdatedFungibleAssets
                             ),
                             TxFailure txFailure => new TxResult(
                                 TxStatus.FAILURE,
                                 txExecutedBlock.Index,
                                 txExecutedBlock.Hash.ToString(),
                                 txFailure.ExceptionName,
-                                txFailure.ExceptionMetadata
+                                txFailure.ExceptionMetadata,
+                                null,
+                                null,
+                                null
                             ),
                             _ => throw new NotSupportedException(
                                 #pragma warning disable format
@@ -272,6 +297,9 @@ namespace Libplanet.Explorer.Queries
                     {
                         return new TxResult(
                             TxStatus.INVALID,
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             null,

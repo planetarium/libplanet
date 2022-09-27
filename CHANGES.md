@@ -35,6 +35,8 @@ a system action, its features will be added more in the future.
     [[#2046], [#2229]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
+ -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
+    `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
 
 ### Behavioral changes
 
@@ -90,6 +92,7 @@ a system action, its features will be added more in the future.
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2294]: https://github.com/planetarium/libplanet/pull/2294
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
+[#2353]: https://github.com/planetarium/libplanet/pull/2353
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx
