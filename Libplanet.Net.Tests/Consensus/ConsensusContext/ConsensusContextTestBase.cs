@@ -28,7 +28,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextTestBase(
             ITestOutputHelper output,
             PrivateKey? privateKey = null,
-            Func<long, IEnumerable<PublicKey>>? getValidators = null)
+            Func<long, IEnumerable<PublicKey>>? getValidators = null,
+            long lastCommitClearThreshold = 30)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -60,7 +61,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 BlockChain.Tip.Index + 1,
                 privateKey,
                 NewHeightDelay,
-                getValidators);
+                getValidators,
+                lastCommitClearThreshold);
         }
 
         protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;

@@ -57,7 +57,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 height,
                 privateKey: TestUtils.PrivateKeys[(int)nodeId],
                 _newHeightDelay,
-                BlockChain.Policy.GetValidators);
+                BlockChain.Policy.GetValidators,
+                30);
 
             Context = new Context<DumbAction>(
                 _consensusContext,
