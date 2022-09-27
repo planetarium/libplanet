@@ -74,6 +74,10 @@ To be released.
 
 ### CLI tools
 
+ -  Added `planet tx` subcommand group.  [[#2294]]
+     -  Added `planet tx analyze` subcommand.
+     -  Added `planet tx help` subcommand.
+
 [#2046]: https://github.com/planetarium/libplanet/issues/2046
 [#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
