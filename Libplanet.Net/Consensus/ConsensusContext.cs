@@ -49,13 +49,17 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="getValidators">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
+        /// <param name="lastCommitClearThreshold">A maximum size of cached
+        /// <see cref="BlockCommit"/>. See <see cref="LastCommitClearThreshold"/>.
+        /// The value must bigger than <c>0</c>.</param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
-            Func<long, IEnumerable<PublicKey>> getValidators)
+            Func<long, IEnumerable<PublicKey>> getValidators,
+            long lastCommitClearThreshold)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
@@ -63,6 +67,7 @@ namespace Libplanet.Net.Consensus
             Height = height;
             _newHeightDelay = newHeightDelay;
             _getValidators = getValidators;
+            LastCommitClearThreshold = lastCommitClearThreshold;
 
             _contexts = new Dictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
@@ -112,6 +117,9 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
 
+        /// <inheritdoc cref="ConsensusReactorOption.LastCommitClearThreshold"/>
+        private long LastCommitClearThreshold { get; }
+
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
@@ -157,6 +165,8 @@ namespace Libplanet.Net.Consensus
                 _contexts[Height].Dispose();
                 _contexts.Remove(Height);
             }
+
+            ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
             if (lastCommit != null)
             {
@@ -280,6 +290,25 @@ namespace Libplanet.Net.Consensus
                     }
                 },
                 _newHeightCts.Token);
+        }
+
+        private void ClearOldLastCommitCache(long maxSize = 30)
+        {
+            IEnumerable<long> indices = _blockChain.Store.GetLastCommitIndices().ToArray();
+
+            if (indices.Count() < maxSize)
+            {
+                return;
+            }
+
+            _logger.Debug(
+                "Pruning old LastCommit caches at height {PreviousTip}...",
+                _blockChain.Tip.Index);
+
+            foreach (var height in indices)
+            {
+                _blockChain.Store.DeleteLastCommit(height);
+            }
         }
     }
 }

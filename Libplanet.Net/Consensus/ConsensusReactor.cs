@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -45,13 +46,17 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
         /// </param>
+        /// <param name="lastCommitClearThreshold">A cache of <see cref="BlockCommit"/> cleanup
+        /// threshold. See <see cref="ConsensusContext{T}.LastCommitClearThreshold"/>.
+        /// The value must bigger than <c>0</c>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,
-            TimeSpan newHeightDelay)
+            TimeSpan newHeightDelay,
+            long lastCommitClearThreshold)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
             seedPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -70,7 +75,8 @@ namespace Libplanet.Net.Consensus
                 blockChain.Tip.Index,
                 privateKey,
                 newHeightDelay,
-                blockChain.Policy.GetValidators);
+                blockChain.Policy.GetValidators,
+                lastCommitClearThreshold);
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
