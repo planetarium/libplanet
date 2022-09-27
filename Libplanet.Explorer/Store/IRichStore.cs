@@ -11,7 +11,7 @@ namespace Libplanet.Explorer.Store
     {
         void StoreTxReferences(TxId txId, in BlockHash blockHash, long blockIndex);
 
-        IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
+        IEnumerable<(TxId, BlockHash)> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,
