@@ -36,19 +36,24 @@ To be released.
  -  Many types became serialized and deserialized better with
     [`System.Text.Json.JsonSerializer`] as they now have their own
     [custom converters].  Note that these serializations are unavailable
-    on Unity due to its incomplete reflection support.  [[#2322]]
+    on Unity due to its incomplete reflection support.  [[#2294], [#2322]]
 
      -  An `Address` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
      -  A `Currency` became represented as an object with values in JSON.
         Note that it contains its `Hash` and it throws `JsonException`
         if a JSON object to deserialize has an inconsistent `Hash` with
-        other field values.
+        other field values.  [[#2322]]
      -  A `FungibleAssetValue` became represented as an object with
-        its `Currency` object and `Quantity` string.
-     -  A `HashDigest` became represented as a single hexadecimal string in
-        JSON.
+        its `Currency` object and `Quantity` string.  [[#2322]]
+     -  A `HashDigest<T>` became represented as a single hexadecimal string in
+        JSON.  [[#2322]]
      -  A `TxId` became represented as a single hexadecimal string in JSON.
+        [[#2322]]
+     -  System actions became represented as a [Bencodex JSON Representation]
+        of their `PlainValue` with `type_id` field.  [[#2294]]
 
  -  System actions' `GetHashCode()` and `Equals(object)` methods now check
     value equality (rather than reference equality).  [[#2294]]
@@ -57,6 +62,11 @@ To be released.
 
 ### Dependencies
 
+ -  Now depends on [*Bencodex.Json*
+    0.7.0-dev.20220923062846][Bencodex.Json 0.7.0-dev.20220923062845].
+    [[#2294]]
+ -  Upgrade *Bencodex* from [0.6.0][Bencodex 0.6.0] to
+    [0.7.0-dev.20220923062845][Bencodex 0.7.0-dev.20220923062845].  [[#2294]]
  -  Upgrade *System.Text.Json* from [4.7.2][System.Text.Json 4.7.2] to
     [6.0.6][System.Text.Json 6.0.6].  [[#2322]]
 
@@ -70,6 +80,9 @@ To be released.
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[Bencodex JSON Representation]: https://github.com/planetarium/bencodex/blob/4a92a98e859a54bc6e9617d4dd3035250fe69a86/JSON.md
+[Bencodex 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex/0.7.0-dev.20220923062845
+[Bencodex.Json 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex.Json/0.7.0-dev.20220923062845
 [System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2
 [System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
 

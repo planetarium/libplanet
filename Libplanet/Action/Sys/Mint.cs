@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -9,6 +10,7 @@ namespace Libplanet.Action.Sys
     /// <see cref="Recipient"/>.
     /// </summary>
     /// <remarks>Only native tokens can be minted.</remarks>
+    [JsonConverter(typeof(SysActionJsonConverter))]
     public sealed class Mint : IAction, IEquatable<Mint>, IEquatable<IAction>
     {
         /// <summary>

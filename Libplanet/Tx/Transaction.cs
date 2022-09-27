@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -261,6 +262,8 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(SysActionJsonConverter))]
         public IAction? SystemAction { get; }
 
         /// <summary>

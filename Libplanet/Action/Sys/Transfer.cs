@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -9,6 +10,7 @@ namespace Libplanet.Action.Sys
     /// another account.
     /// </summary>
     /// <remarks>Only native tokens can be transferred.</remarks>
+    [JsonConverter(typeof(SysActionJsonConverter))]
     public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
     {
         /// <summary>
