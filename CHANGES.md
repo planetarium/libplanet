@@ -6,6 +6,9 @@ Version 0.43.0
 
 To be released.
 
+Since 0.43.0, we officially provide *[@planetarium/tx]*, an npm package for
+creating unsigned transactions in JavaScript/TypeScript.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
@@ -64,6 +67,7 @@ To be released.
 
 ### Dependencies
 
+ -  Added *[@planetarium/tx]* npm package.  [[#2294]]
  -  Now depends on [*Bencodex.Json*
     0.7.0-dev.20220923062846][Bencodex.Json 0.7.0-dev.20220923062845].
     [[#2294]]
@@ -86,6 +90,7 @@ To be released.
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
+[@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx
 [Bencodex JSON Representation]: https://github.com/planetarium/bencodex/blob/4a92a98e859a54bc6e9617d4dd3035250fe69a86/JSON.md
 [Bencodex 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex/0.7.0-dev.20220923062845
 [Bencodex.Json 0.7.0-dev.20220923062845]: https://www.nuget.org/packages/Bencodex.Json/0.7.0-dev.20220923062845
