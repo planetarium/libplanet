@@ -413,6 +413,9 @@ If omitted (default) explorer only the local blockchain store.")]
             public long GetMaxBlockBytes(long index) =>
                 _impl.GetMaxBlockBytes(index);
 
+            public int GetMinBlockProtocolVersion(long index) =>
+                _impl.GetMinBlockProtocolVersion(index);
+
             public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
             {
                 return 0;
