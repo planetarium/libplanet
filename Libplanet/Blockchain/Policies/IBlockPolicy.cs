@@ -142,5 +142,7 @@ namespace Libplanet.Blockchain.Policies
         /// a valid <see cref="Block{T}"/> can accept.</returns>
         [Pure]
         int GetMaxTransactionsPerSignerPerBlock(long index);
+
+        int GetMinBlockProtocolVersion(long index);
     }
 }

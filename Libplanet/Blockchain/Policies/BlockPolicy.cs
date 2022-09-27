@@ -29,6 +29,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
         private readonly Func<BlockChain<T>, long> _getNextBlockDifficulty;
+        private readonly Func<long, int> _getMinBlockProtocolVersion;
 
         /// <summary>
         /// <para>
@@ -79,6 +80,9 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
+        /// <param name="getMinBlockProtocolVersion">The function determining the minimum
+        /// block protocol version of a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s
+        /// index.  Set to a constant function of <c>0</c> by default.</param>
         /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
         /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
@@ -95,6 +99,7 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
+            Func<long, int>? getMinBlockProtocolVersion = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
@@ -113,6 +118,7 @@ namespace Libplanet.Blockchain.Policies
                 ?? GetMaxTransactionsPerBlock;
             _getNextBlockDifficulty = DifficultyAdjustment<T>.AlgorithmFactory(
                 BlockInterval, DifficultyStability, MinimumDifficulty);
+            _getMinBlockProtocolVersion = getMinBlockProtocolVersion ?? (_ => 0);
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -128,9 +134,20 @@ namespace Libplanet.Blockchain.Policies
                     int maxTransactionsPerBlock = GetMaxTransactionsPerBlock(block.Index);
                     int maxTransactionsPerSignerPerBlock =
                         GetMaxTransactionsPerSignerPerBlock(block.Index);
+                    int minBlockProtocolVersion = GetMinBlockProtocolVersion(block.Index);
 
                     long blockBytes = block.MarshalBlock().EncodingLength;
-                    if (blockBytes > maxBlockBytes)
+                    if (block.ProtocolVersion < minBlockProtocolVersion)
+                    {
+                        // NOTE: InvalidBlockProtocolVersionException would be more appropriate,
+                        // but it is not a BlockPolicyViolationException; as this is a temporary
+                        // solution to allow migration, we just use BlockPolicyViolationException.
+                        return new BlockPolicyViolationException(
+                            $"The minimum block protocol version of block #{block.Index} is " +
+                            $"{minBlockProtocolVersion} while the given block has " +
+                            $"block protocol versoin {block.ProtocolVersion}.");
+                    }
+                    else if (blockBytes > maxBlockBytes)
                     {
                         return new InvalidBlockBytesLengthException(
                             $"The size of block #{block.Index} {block.Hash} is too large " +
@@ -245,5 +262,8 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
+
+        public int GetMinBlockProtocolVersion(long index)
+            => _getMinBlockProtocolVersion(index);
     }
 }
