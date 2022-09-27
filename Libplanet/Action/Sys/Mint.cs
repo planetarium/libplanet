@@ -1,3 +1,4 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -8,7 +9,7 @@ namespace Libplanet.Action.Sys
     /// <see cref="Recipient"/>.
     /// </summary>
     /// <remarks>Only native tokens can be minted.</remarks>
-    public sealed class Mint : IAction
+    public sealed class Mint : IAction, IEquatable<Mint>, IEquatable<IAction>
     {
         /// <summary>
         /// Creates a new instance of <see cref="Mint"/> action.
@@ -67,5 +68,18 @@ namespace Libplanet.Action.Sys
 
             return context.PreviousStates.MintAsset(Recipient, Amount);
         }
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(Mint? other) =>
+            other is { } o && Recipient.Equals(o.Recipient) && Amount.Equals(o.Amount);
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(IAction? other) => other is Mint o && Equals(o);
+
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) => obj is Mint o && Equals(o);
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode() => HashCode.Combine(Recipient, Amount);
     }
 }

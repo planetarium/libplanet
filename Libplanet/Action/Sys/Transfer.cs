@@ -1,3 +1,4 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Assets;
 
@@ -8,7 +9,7 @@ namespace Libplanet.Action.Sys
     /// another account.
     /// </summary>
     /// <remarks>Only native tokens can be transferred.</remarks>
-    public sealed class Transfer : IAction
+    public sealed class Transfer : IAction, IEquatable<Transfer>, IEquatable<IAction>
     {
         /// <summary>
         /// Creates a new instance of <see cref="Transfer"/> action.
@@ -71,5 +72,18 @@ namespace Libplanet.Action.Sys
                 allowNegativeBalance: false
             );
         }
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(Transfer? other) =>
+            other is { } o && Recipient.Equals(o.Recipient) && Amount.Equals(o.Amount);
+
+        /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
+        public bool Equals(IAction? other) => other is Transfer o && Equals(o);
+
+        /// <inheritdoc cref="object.Equals(object?)"/>
+        public override bool Equals(object? obj) => obj is Transfer o && Equals(o);
+
+        /// <inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode() => HashCode.Combine(Recipient, Amount);
     }
 }

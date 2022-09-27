@@ -20,6 +20,11 @@ To be released.
 
 ### Added APIs
 
+ -  System actions became to have methods to check equality.  [[#2294]]
+     -  `Mint` became to implement `IEquatable<Mint>`.
+     -  `Mint` became to implement `IEquatable<IAction>`.
+     -  `Transfer` became to implement `IEquatable<Transfer>`.
+     -  `Transfer` became to implement `IEquatable<IAction>`.
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
  -  `RoutingTable` became to implement `IRoutingTable` interface.
     [[#2046], [#2229]]
@@ -45,6 +50,9 @@ To be released.
         JSON.
      -  A `TxId` became represented as a single hexadecimal string in JSON.
 
+ -  System actions' `GetHashCode()` and `Equals(object)` methods now check
+    value equality (rather than reference equality).  [[#2294]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -58,6 +66,7 @@ To be released.
 [#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
+[#2294]: https://github.com/planetarium/libplanet/pull/2294
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
