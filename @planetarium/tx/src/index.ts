@@ -16,3 +16,9 @@ export {
   type SystemAction,
   type Transfer,
 } from "./action";
+export {
+  TxMetadata,
+  UnsignedTxWithSystemAction,
+  encodeTxMetadata,
+  encodeUnsignedTxWithSystemAction,
+} from "./tx";
