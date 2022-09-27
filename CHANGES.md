@@ -50,6 +50,8 @@ To be released.
         its `Currency` object and `Quantity` string.  [[#2322]]
      -  A `HashDigest<T>` became represented as a single hexadecimal string in
         JSON.  [[#2322]]
+     -  A `Transaction<T>` became represented as an object with values in JSON.
+        [[#2294]]
      -  A `TxId` became represented as a single hexadecimal string in JSON.
         [[#2322]]
      -  System actions became represented as a [Bencodex JSON Representation]
