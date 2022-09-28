@@ -30,7 +30,7 @@ namespace Libplanet.Blocks
                 throw new Exception("Null votes are only allow genesis block.");
             }
 
-            Votes = votes;
+            Votes = votes ?? ImmutableArray<Vote>.Empty;
         }
 
         public BlockCommit(byte[] marshaled)
@@ -45,7 +45,7 @@ namespace Libplanet.Blocks
                 Votes = dict.ContainsKey(VotesKey)
                     ? ((IEnumerable<IValue>)dict.GetValue<IValue>(VotesKey)).Select(x =>
                         new Vote((Binary)x)).ToImmutableArray()
-                    : (ImmutableArray<Vote>?)null;
+                    : ImmutableArray<Vote>.Empty;
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace Libplanet.Blocks
 
         public BlockHash BlockHash { get; }
 
-        public ImmutableArray<Vote>? Votes { get; }
+        public ImmutableArray<Vote> Votes { get; }
 
         public byte[] ByteArray
         {
@@ -78,9 +78,9 @@ namespace Libplanet.Blocks
                     .Add(RoundKey, Round)
                     .Add(BlockHashKey, BlockHash.ByteArray);
 
-                if (Votes is { } votes)
+                if (!Votes.IsEmpty)
                 {
-                    var bencodexVotes = votes.Select(x => x.ByteArray);
+                    var bencodexVotes = Votes.Select(x => x.ByteArray);
                     dict = dict.Add(VotesKey, new List(bencodexVotes));
                 }
 
@@ -99,7 +99,7 @@ namespace Libplanet.Blocks
 
             return other.Votes != null && Votes != null && Height == other.Height &&
                    Round == other.Round && BlockHash.Equals(other.BlockHash) &&
-                   Votes.Value.SequenceEqual(other.Votes.Value);
+                   Votes.SequenceEqual(other.Votes);
         }
 
         /// <inheritdoc />
