@@ -1220,6 +1220,7 @@ namespace Libplanet.RocksDBStore
             batch.Clear();
         }
 
+        /// <inheritdoc />
         public override BlockCommit? GetLastCommit(long height)
         {
             _rwLastCommitLock.EnterReadLock();
@@ -1247,6 +1248,7 @@ namespace Libplanet.RocksDBStore
             return null;
         }
 
+        /// <inheritdoc />
         public override void PutLastCommit(BlockCommit lastCommit)
         {
             byte[] key = LastCommitKey(lastCommit.Height);
@@ -1273,6 +1275,7 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc />
         public override void DeleteLastCommit(long height)
         {
             byte[] key = LastCommitKey(height);
@@ -1298,6 +1301,7 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <inheritdoc />
         public override IEnumerable<long> GetLastCommitIndices()
         {
             IEnumerable<Iterator> iterators = IterateDb(_lastCommitDb, new byte[] { });

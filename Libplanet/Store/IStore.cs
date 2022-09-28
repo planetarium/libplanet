@@ -347,12 +347,30 @@ namespace Libplanet.Store
         /// </exception>
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
+        /// <summary>
+        /// Gets a <see cref="BlockCommit"/> of given height from store.
+        /// </summary>
+        /// <param name="height">A height to get.</param>
+        /// <returns>Returns <see cref="BlockCommit"/> if given height is stored and available,
+        /// otherwise returns <see langword="null"/>.</returns>
         BlockCommit? GetLastCommit(long height);
 
+        /// <summary>
+        /// Puts a <see cref="BlockCommit"/> to the store.
+        /// </summary>
+        /// <param name="lastCommit">A <see cref="BlockCommit"/> to store.</param>
         void PutLastCommit(BlockCommit lastCommit);
 
+        /// <summary>
+        /// Deletes a <see cref="BlockCommit"/> of given height from store.
+        /// </summary>
+        /// <param name="height">A height to delete from store.</param>
         void DeleteLastCommit(long height);
 
+        /// <summary>
+        /// Gets every indices (height) of <see cref="BlockCommit"/> from store.
+        /// </summary>
+        /// <returns>Returns a long <see cref="IEnumerable{T}"/>.</returns>
         IEnumerable<long> GetLastCommitIndices();
     }
 }

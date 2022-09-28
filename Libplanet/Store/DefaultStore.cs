@@ -664,6 +664,7 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc />
         public override BlockCommit? GetLastCommit(long height)
         {
             UPath path = LastCommitPath(height);
@@ -686,6 +687,7 @@ namespace Libplanet.Store
             return blockCommit;
         }
 
+        /// <inheritdoc />
         public override void PutLastCommit(BlockCommit lastCommit)
         {
             UPath path = LastCommitPath(lastCommit.Height);
@@ -697,6 +699,7 @@ namespace Libplanet.Store
             WriteContentAddressableFile(_lastCommits, path, lastCommit.ByteArray);
         }
 
+        /// <inheritdoc />
         public override void DeleteLastCommit(long height)
         {
             UPath path = LastCommitPath(height);

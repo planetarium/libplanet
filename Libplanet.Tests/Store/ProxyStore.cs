@@ -195,15 +195,19 @@ namespace Libplanet.Tests.Store
         public void PruneOutdatedChains(bool noopWithoutCanon = false) =>
             Store.PruneOutdatedChains(noopWithoutCanon);
 
+        /// <inheritdoc />
         public BlockCommit? GetLastCommit(long height) =>
             Store.GetLastCommit(height);
 
+        /// <inheritdoc />
         public void PutLastCommit(BlockCommit lastCommit) =>
             Store.PutLastCommit(lastCommit);
 
+        /// <inheritdoc />
         public void DeleteLastCommit(long height) =>
             Store.DeleteLastCommit(height);
 
+        /// <inheritdoc />
         public IEnumerable<long> GetLastCommitIndices() =>
             Store.GetLastCommitIndices();
     }
