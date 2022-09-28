@@ -23,13 +23,20 @@ namespace Libplanet.Blocks
             Height = height;
             Round = round;
             BlockHash = hash;
-            if (Height != 0 && votes is null)
+            if ((Height != 0 && votes is null) ||
+                (Height != 0 && votes != null && votes.Value.IsDefaultOrEmpty))
             {
                 // TODO: Make new exception.
                 throw new Exception("Null votes are only allow genesis block.");
             }
 
             Votes = votes ?? ImmutableArray<Vote>.Empty;
+
+            // Blocking uninitialized ImmutableArray case
+            if (Votes.IsDefault)
+            {
+                Votes = ImmutableArray<Vote>.Empty;
+            }
         }
 
         public BlockCommit(byte[] marshaled)
