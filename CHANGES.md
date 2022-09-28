@@ -23,6 +23,8 @@ To be released.
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
  -  `RoutingTable` became to implement `IRoutingTable` interface.
     [[#2046], [#2229]]
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  
+    [[#2131], [#2236]]
 
 ### Behavioral changes
 
@@ -53,7 +55,9 @@ To be released.
 ### CLI tools
 
 [#2046]: https://github.com/planetarium/libplanet/issues/2046
+[#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
+[#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
