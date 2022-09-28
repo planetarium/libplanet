@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Bencodex;
@@ -30,7 +29,7 @@ namespace Libplanet.Blocks
                 throw new Exception("Null votes are only allow genesis block.");
             }
 
-            Votes = votes;
+            Votes = votes ?? ImmutableArray<Vote>.Empty;
         }
 
         public BlockCommit(byte[] marshaled)
@@ -43,9 +42,10 @@ namespace Libplanet.Blocks
                 Round = dict.GetValue<Integer>(RoundKey);
                 BlockHash = new BlockHash(dict.GetValue<Binary>(BlockHashKey).ByteArray);
                 Votes = dict.ContainsKey(VotesKey)
-                    ? ((IEnumerable<IValue>)dict.GetValue<IValue>(VotesKey)).Select(x =>
-                        new Vote((Binary)x)).ToImmutableArray()
-                    : (ImmutableArray<Vote>?)null;
+                    ? dict.GetValue<List>(VotesKey)
+                        .Select(vote => new Vote((Binary)vote))
+                        .ToImmutableArray()
+                    : ImmutableArray<Vote>.Empty;
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace Libplanet.Blocks
 
         public BlockHash BlockHash { get; }
 
-        public ImmutableArray<Vote>? Votes { get; }
+        public ImmutableArray<Vote> Votes { get; }
 
         public byte[] ByteArray
         {
@@ -78,9 +78,9 @@ namespace Libplanet.Blocks
                     .Add(RoundKey, Round)
                     .Add(BlockHashKey, BlockHash.ByteArray);
 
-                if (Votes is { } votes)
+                if (!Votes.IsEmpty)
                 {
-                    var bencodexVotes = votes.Select(x => x.ByteArray);
+                    var bencodexVotes = Votes.Select(x => x.ByteArray);
                     dict = dict.Add(VotesKey, new List(bencodexVotes));
                 }
 
@@ -97,9 +97,10 @@ namespace Libplanet.Blocks
                        && BlockHash.Equals(other.BlockHash);
             }
 
-            return other.Votes != null && Votes != null && Height == other.Height &&
-                   Round == other.Round && BlockHash.Equals(other.BlockHash) &&
-                   Votes.Value.SequenceEqual(other.Votes.Value);
+            return Height == other.Height &&
+                   Round == other.Round &&
+                   BlockHash.Equals(other.BlockHash) &&
+                   Votes.SequenceEqual(other.Votes);
         }
 
         /// <inheritdoc />
