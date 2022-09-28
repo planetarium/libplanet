@@ -144,6 +144,24 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate
   nameWithType: ActionEvaluator<T>.Evaluate
   nameWithType.vb: ActionEvaluator(Of T).Evaluate
+- uid: Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
+  name: GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_GenerateRandomSeed_System_Byte___System_Byte___System_Byte___System_Int32_
+  commentId: M:Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed(System.Byte[],System.Byte[],System.Byte[],System.Int32)
+  name.vb: GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
+  fullName: Libplanet.Action.ActionEvaluator<T>.GenerateRandomSeed(System.Byte[], System.Byte[], System.Byte[], System.Int32)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).GenerateRandomSeed(System.Byte(), System.Byte(), System.Byte(), System.Int32)
+  nameWithType: ActionEvaluator<T>.GenerateRandomSeed(Byte[], Byte[], Byte[], Int32)
+  nameWithType.vb: ActionEvaluator(Of T).GenerateRandomSeed(Byte(), Byte(), Byte(), Int32)
+- uid: Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed*
+  name: GenerateRandomSeed
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_GenerateRandomSeed_
+  commentId: Overload:Libplanet.Action.ActionEvaluator`1.GenerateRandomSeed
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluator<T>.GenerateRandomSeed
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).GenerateRandomSeed
+  nameWithType: ActionEvaluator<T>.GenerateRandomSeed
+  nameWithType.vb: ActionEvaluator(Of T).GenerateRandomSeed
 - uid: Libplanet.Action.ActionTypeAttribute
   name: ActionTypeAttribute
   href: api/Libplanet.Action.ActionTypeAttribute.html
