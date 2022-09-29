@@ -140,7 +140,7 @@ namespace Libplanet.Blocks
         public BlockCommit? LastCommit => _preEvaluationBlockHeader.LastCommit;
 
         /// <inheritdoc cref="IBlockMetadata.Proof"/>
-        public Proof? Proof => _preEvaluationBlockHeader.Proof;
+        public BlockProof? Proof => _preEvaluationBlockHeader.Proof;
 
         /// <inheritdoc cref="IBlockHeader.Signature"/>
         public ImmutableArray<byte>? Signature { get; }

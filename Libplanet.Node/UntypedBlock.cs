@@ -101,7 +101,7 @@ namespace Libplanet.Node
         public BlockCommit? LastCommit => _header.LastCommit;
 
         /// <inheritdoc cref="IBlockMetadata.Proof"/>
-        public Proof? Proof => _header.Proof;
+        public BlockProof? Proof => _header.Proof;
 
         /// <inheritdoc cref="IBlockHeader.Signature"/>
         public ImmutableArray<byte>? Signature => _header.Signature;

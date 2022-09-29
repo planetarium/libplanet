@@ -28,12 +28,12 @@ namespace Libplanet.Net.Tests
         public static readonly PrivateKey Peer0Priv =
             new PrivateKey(
                 ByteUtil.ParseHex(
-                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
+                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
 
         public static readonly PrivateKey Peer1Priv =
             new PrivateKey(
                 ByteUtil.ParseHex(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
+                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
 
         public static readonly PrivateKey Peer2Priv =
             new PrivateKey(
@@ -77,12 +77,12 @@ namespace Libplanet.Net.Tests
             Peer3,
         };
 
-        public static readonly List<PublicKey> Validators = new List<PublicKey>()
+        public static readonly List<Validator> Validators = new List<Validator>()
         {
-            Peer0.PublicKey,
-            Peer1.PublicKey,
-            Peer2.PublicKey,
-            Peer3.PublicKey,
+            new Validator(Peer0.PublicKey),
+            new Validator(Peer1.PublicKey),
+            new Validator(Peer2.PublicKey),
+            new Validator(Peer3.PublicKey),
         };
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
@@ -222,7 +222,7 @@ namespace Libplanet.Net.Tests
             string host = "localhost",
             int port = 18192,
             PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null,
+            List<Validator>? validators = null,
             DelegateWatchConsensusMessage? watchConsensusMessage = null)
         {
             privateKey ??= new PrivateKey();
@@ -230,19 +230,20 @@ namespace Libplanet.Net.Tests
             {
                 new BoundPeer(privateKey.PublicKey, new DnsEndPoint(host, port)),
             };
-            validators ??= new List<PublicKey>()
+            validators ??= new List<Validator>()
             {
-                privateKey.PublicKey,
+                new Validator(privateKey.PublicKey),
             };
 
-            var exceptList = validators.Except(new[] { privateKey.PublicKey }).ToList();
+            var exceptList = validators.Except(
+                new[] { new Validator(privateKey.PublicKey) }).ToList();
 
-            foreach (var publicKey in exceptList)
+            foreach (var validator in exceptList)
             {
                 port += 1;
                 validatorPeers.Add(
                     new BoundPeer(
-                        publicKey, new DnsEndPoint("localhost", port)));
+                        validator.PublicKey, new DnsEndPoint("localhost", port)));
             }
 
             void BroadcastMessage(ConsensusMessage message) =>

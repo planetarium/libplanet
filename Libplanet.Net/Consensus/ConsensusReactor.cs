@@ -67,7 +67,7 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 blockChain.Tip.Index,
                 privateKey,
-                validatorPeers.Select(x => x.PublicKey).ToList(),
+                blockChain.ConsensusValidators().ToList(),
                 newHeightDelay);
 
             _logger = Log
@@ -101,7 +101,7 @@ namespace Libplanet.Net.Consensus
         {
             _consensusContext.NewHeight(
                 _blockChain.Tip.Index + 1,
-                _blockChain.BondedValidatorPubKey(_blockChain.Tip.Hash));
+                _blockChain.ConsensusValidators().ToList());
             await _gossip.StartAsync(cancellationToken);
         }
 

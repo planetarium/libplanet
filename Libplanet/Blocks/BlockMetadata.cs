@@ -55,6 +55,7 @@ namespace Libplanet.Blocks
         public BlockMetadata(IBlockMetadata metadata)
         {
             LastCommit = metadata.LastCommit;
+            Proof = metadata.Proof;
             ProtocolVersion = metadata.ProtocolVersion;
             Index = metadata.Index;
             Timestamp = metadata.Timestamp;
@@ -170,7 +171,7 @@ namespace Libplanet.Blocks
         public BlockCommit? LastCommit { get; set; }
 
         /// <inheritdoc cref="IBlockMetadata.Proof"/>
-        public Proof? Proof { get; set; }
+        public BlockProof? Proof { get; set; }
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.

@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Consensus
                  1,
                  2,
                  targetBlockHash,
-                 validators.Select(x => x.PublicKey).ToImmutableArray());
+                 validators.Select(x => new Validator(x.PublicKey)).ToImmutableArray());
 
              var now = DateTimeOffset.UtcNow;
 
@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Consensus
                  1,
                  2,
                  targetBlockHash,
-                 validators.Select(x => x.PublicKey));
+                 validators.Select(x => new Validator(x.PublicKey)));
 
              for (int i = 0; i < 3; i++)
              {
@@ -100,7 +100,7 @@ namespace Libplanet.Tests.Consensus
                  1,
                  2,
                  targetBlockHash,
-                 validators.Select(x => x.PublicKey).ToImmutableArray());
+                 validators.Select(x => new Validator(x.PublicKey)).ToImmutableArray());
 
              var now = DateTimeOffset.UtcNow;
 

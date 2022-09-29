@@ -205,8 +205,8 @@ namespace Libplanet.Blocks
                 ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
                 : (BlockCommit?)null,
                 Proof = marshaled.ContainsKey(ProofKey)
-                ? new Proof(marshaled.GetValue<Binary>(ProofKey).ByteArray.ToArray())
-                : (Proof?)null,
+                ? new BlockProof(marshaled.GetValue<Binary>(ProofKey).ByteArray.ToArray())
+                : (BlockProof?)null,
             };
 
             if (marshaled.ContainsKey(PublicKeyKey))

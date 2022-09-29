@@ -8,6 +8,7 @@ using Libplanet.PoS;
 using Libplanet.PoS.Control;
 using Libplanet.PoS.Model;
 using Xunit;
+using Validator = Libplanet.PoS.Model.Validator;
 
 namespace Libplanet.Tests.PoS
 {

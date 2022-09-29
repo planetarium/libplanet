@@ -61,6 +61,6 @@ namespace Libplanet.Blocks
         /// <summary>
         /// The <see cref="Proof"/> of the proposer, proposed height and round.
         /// </summary>
-        Proof? Proof { get; }
+        BlockProof? Proof { get; }
     }
 }

@@ -223,7 +223,7 @@ namespace Libplanet.Blocks
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
         /// <inheritdoc cref="IBlockMetadata.Proof"/>
-        public Proof? Proof => Metadata.Proof;
+        public BlockProof? Proof => Metadata.Proof;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash { get; }

@@ -87,7 +87,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
-        private readonly List<PublicKey> _validators;
+        private readonly List<Validator> _validators;
         private readonly Channel<ConsensusMessage> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
@@ -129,7 +129,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators)
+            List<Validator> validators)
             : this(
                 consensusContext,
                 blockChain,
@@ -146,7 +146,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            List<Validator> validators,
             Step step,
             int round = 0,
             int cacheSize = 128)
@@ -292,7 +292,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A new <see cref="Block{T}"/>.</returns>
         private Block<T> GetValue()
         {
-            Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            BlockProof proof = new BlockProof(_privateKey, Height, Round);
+            Block<T> block = _blockChain.ProposeBlock(
+                _privateKey, lastCommit: _lastCommit, proof: proof);
             _blockChain.Store.PutBlock(block);
             return block;
         }
@@ -301,13 +303,15 @@ namespace Libplanet.Net.Consensus
         /// Gets the proposer of the given round.
         /// </summary>
         /// <param name="round">A round to get proposer.</param>
-        /// <returns>Returns designated proposer's <see cref="PublicKey"/> for the
+        /// <returns>Returns designated proposer's <see cref="Validator"/> for the
         /// <paramref name="round"/>.
         /// </returns>
         private PublicKey Proposer(int round)
         {
             // return designated proposer for the height round pair.
-            return _validators[(int)((Height + round) % TotalValidators)];
+            BlockProof? lastProof = _blockChain.Tip.Proof;
+            return Sortition.SampleProposer(
+                _validators.ToArray(), lastProof, Height, round).PublicKey;
         }
 
         /// <summary>
@@ -333,6 +337,11 @@ namespace Libplanet.Net.Consensus
             }
             else
             {
+                if (block.ProtocolVersion > 10)
+                {
+                    return block.Proof?.Verify(block.PublicKey!, Height, Round) ?? false;
+                }
+
                 var exception = _blockChain.ValidateNextBlock(block);
                 bool isValid = exception is null;
                 _blockHashCache.AddReplace(block.Hash, isValid);

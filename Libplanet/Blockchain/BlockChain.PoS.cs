@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Blocks;
-using Libplanet.Crypto;
-using Libplanet.PoS;
 using Libplanet.PoS.Model;
 
 namespace Libplanet.Blockchain
@@ -16,21 +13,10 @@ namespace Libplanet.Blockchain
             return new ValidatorSet(value);
         }
 
-        public Validator Proposer(long height, int round)
-        {
-            IValue value = GetState(ReservedAddress.BondedValidatorSet);
-            ValidatorSet bondedValidatorSet = new ValidatorSet(value);
-            ValidatorPower bondedValidator =
-                bondedValidatorSet[(int)((int)(height + round) % bondedValidatorSet.Count)];
-            return new Validator(
-                bondedValidator.OperatorPublicKey.ToAddress(),
-                bondedValidator.OperatorPublicKey);
-        }
-
-        public List<PublicKey> BondedValidatorPubKey(BlockHash? hash = null)
+        public ImmutableArray<Consensus.Validator> ConsensusValidators(BlockHash? hash = null)
         {
             ValidatorSet validatorSet = GetBondedValidators(hash);
-            return validatorSet.Set.Select(x => x.OperatorPublicKey).ToList();
+            return validatorSet.ConsensusValidators;
         }
     }
 }

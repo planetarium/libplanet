@@ -16,7 +16,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 {
     public class ContextTest : ContextTestBase
     {
-        private const int NodeId = 1;
+        private const int NodeId = 2;
 
         public ContextTest(ITestOutputHelper output)
             : base(output, NodeId, 1, 0, Step.Default)
@@ -92,7 +92,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task ThrowInvalidProposer()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            BlockProof proof = new BlockProof(TestUtils.PrivateKeys[NodeId], 0, 0);
+            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId], proof: proof);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
             Context.ExceptionOccurred += (sender, e) =>
@@ -126,7 +127,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(default, TestUtils.PrivateKeys[NodeId]));
+                TestUtils.CreateConsensusPropose(default, Proposer(Context.Round)));
             await exceptionOccurred.WaitAsync();
 
             Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
@@ -155,7 +156,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         Context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
-                        TestUtils.Validators[0],
+                        TestUtils.Validators[0].PublicKey,
                         VoteFlag.Absent,
                         null).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
@@ -171,7 +172,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         Context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
-                        TestUtils.Validators[0],
+                        TestUtils.Validators[0].PublicKey,
                         VoteFlag.Absent,
                         null).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
@@ -261,17 +262,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.PrivateKeys[1], 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = TestUtils.Peers[2],
+                    Remote = TestUtils.Peers[1],
                 });
 
             Context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
+                        TestUtils.PrivateKeys[1], 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
-                    Remote = TestUtils.Peers[2],
+                    Remote = TestUtils.Peers[1],
                 });
 
             await stepChangedToPreCommit.WaitAsync();

@@ -42,7 +42,7 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
-        /// <param name="proof"><see cref="Proof"/> of the proposal.
+        /// <param name="proof"><see cref="BlockProof"/> of the proposal.
         /// </param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
@@ -55,7 +55,7 @@ namespace Libplanet.Blockchain
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit? lastCommit = null,
-            Proof? proof = null) =>
+            BlockProof? proof = null) =>
 #pragma warning disable SA1118
             ProposeBlock(
                 proposer: proposer,
@@ -89,7 +89,7 @@ namespace Libplanet.Blockchain
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
         /// </param>
-        /// <param name="proof"><see cref="Proof"/> of the proposal.
+        /// <param name="proof"><see cref="BlockProof"/> of the proposal.
         /// </param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is proposed.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
@@ -102,7 +102,7 @@ namespace Libplanet.Blockchain
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit? lastCommit = null,
-            Proof? proof = null)
+            BlockProof? proof = null)
         {
             long index = Count;
             long difficulty = 1L;

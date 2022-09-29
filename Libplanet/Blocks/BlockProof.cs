@@ -16,15 +16,15 @@ namespace Libplanet.Blocks
     /// <summary>
     /// VRF proof for generate verifiable random values.
     /// </summary>
-    public readonly struct Proof
+    public readonly struct BlockProof : IEquatable<BlockProof>
     {
         /// <summary>
-        /// Creates a new <see cref="Proof"/> instance generated from
+        /// Creates a new <see cref="BlockProof"/> instance generated from
         /// <paramref name="message"/> with <paramref name="privateKey"/>.
         /// </summary>
         /// <param name="privateKey">The <see cref="PrivateKey"/> for proving.</param>
         /// <param name="message">The byte array to prove.</param>
-        public Proof(PrivateKey privateKey, byte[] message)
+        public BlockProof(PrivateKey privateKey, byte[] message)
         {
             X9ECParameters ps = ECNamedCurveTable.GetByName("secp256k1");
             ECParams = new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
@@ -33,21 +33,40 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Converts an immutable <see cref="byte"/> array into a <see cref="Proof"/>.
+        /// Creates a new <see cref="BlockProof"/> instance generated from
+        /// <paramref name="height"/> and <paramref name="round"/>
+        /// with <paramref name="privateKey"/>.
+        /// </summary>
+        /// <param name="privateKey">The <see cref="PrivateKey"/> for proving.</param>
+        /// <param name="height">The height of the proposal.</param>
+        /// <param name="round">The round of the proposal.</param>
+        public BlockProof(PrivateKey privateKey, long? height, int? round)
+        {
+            X9ECParameters ps = ECNamedCurveTable.GetByName("secp256k1");
+            ECParams = new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
+            SuiteBytes = new byte[] { 1 }.ToImmutableArray();
+            ByteArray = Prove(privateKey, MessageFromHeightRound(height, round).ToArray())
+                .ToImmutableArray();
+        }
+
+        /// <summary>
+        /// Converts an immutable <see cref="byte"/> array into a <see cref="BlockProof"/>.
         /// </summary>
         /// <param name="proof">An immutable <see cref="byte"/> array that is
         /// generated from the <c>message</c> and <see cref="PrivateKey"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="proof"/>'s <see cref="ImmutableArray{T}.Length"/> is not accptable.
         /// </exception>
-        public Proof(ImmutableArray<byte> proof)
+        public BlockProof(ImmutableArray<byte> proof)
         {
             X9ECParameters ps = ECNamedCurveTable.GetByName("secp256k1");
             ECParams = new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
-            if (proof.Length != ((ECParams.Curve.FieldSize + 7) >> 3))
+            int compoLength = (ECParams.Curve.FieldSize + 7) >> 3;
+            int proofLength = compoLength * 3 + 1;
+            if (proof.Length != proofLength)
             {
                 string message =
-                    $"{nameof(BlockHash)} must be {(ECParams.Curve.FieldSize + 7) >> 3} bytes, " +
+                    $"{nameof(BlockProof)} must be {proofLength} bytes, " +
                     $"but {proof.Length} was given.";
                 throw new ArgumentOutOfRangeException(nameof(proof), message);
             }
@@ -66,7 +85,7 @@ namespace Libplanet.Blocks
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="proof"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>
-        public Proof(byte[] proof)
+        public BlockProof(byte[] proof)
             : this((proof ?? throw new ArgumentNullException(nameof(proof)))
                 .ToImmutableArray())
         {
@@ -89,6 +108,21 @@ namespace Libplanet.Blocks
 
         private ImmutableArray<byte> SuiteBytes { get; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is BlockProof other && Equals(other);
+        }
+
+        public bool Equals(BlockProof other)
+        {
+            return ByteArray.SequenceEqual(other.ByteArray);
+        }
+
+        public override int GetHashCode()
+        {
+            return ByteUtil.CalculateHashCode(ToByteArray());
+        }
+
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of the proof.
         /// </summary>
@@ -104,12 +138,12 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Verify proof with given <paramref name="publicKey"/> and <paramref name="message"/>.
         /// </summary>
-        /// <param name="publicKey"><see cref="PublicKey"/> to verify <see cref="Proof"/> with
+        /// <param name="publicKey"><see cref="PublicKey"/> to verify <see cref="BlockProof"/> with
         /// <paramref name="message"/>.
         /// </param>
-        /// <param name="message">A message bytearray to verify <see cref="Proof"/>.
+        /// <param name="message">A message bytearray to verify <see cref="BlockProof"/>.
         /// </param>
-        /// <returns>true if the <see cref="Proof"/> was created
+        /// <returns>true if the <see cref="BlockProof"/> was created
         /// from the <paramref name="message"/> with the corresponding
         /// <see cref="PrivateKey"/>, otherwise false.
         /// </returns>
@@ -119,78 +153,26 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a piBytes from <paramref name="alphaBytes"/> with the corresponding
-        /// <paramref name="privateKey"/>.
+        /// Verify proof with given <paramref name="publicKey"/>,
+        /// <paramref name="height"/> and <paramref name="round"/>.
         /// </summary>
-        /// <param name="privateKey"><see cref="PrivateKey"/> to prove
-        /// <paramref name="alphaBytes"/>.
+        /// <param name="publicKey"><see cref="PublicKey"/> to verify <see cref="BlockProof"/> with
+        /// <paramref name="height"/> and <paramref name="round"/>.
         /// </param>
-        /// <param name="alphaBytes">A message bytearray to generate piBytes and betaBytes.
+        /// <param name="height">Height of the proposal.
         /// </param>
-        /// <returns>A tuple of <c>piBytes</c> and <c>betabytes</c>.
-        /// <c>piBytes</c> is created from <paramref name="alphaBytes"/> with the corresponding
-        /// <paramref name="privateKey"/>, and called as "proof".
-        /// <c>betaBytes</c> is created from <c>piBytes</c>,
-        /// and used as 64-bytes "pseudorandom bytes".
-        /// </returns>
-        public (byte[], byte[]) EvaluateProof(PrivateKey privateKey, byte[] alphaBytes)
-        {
-            byte[] piBytes = Prove(privateKey, alphaBytes);
-            byte[] betaBytes = ProofToHash(piBytes);
-
-            return (piBytes, betaBytes);
-        }
-
-        /// <summary>
-        /// Verifies whether a <paramref name="piBytes"/> was created from
-        /// a <paramref name="alphaBytes"/> with the corresponding <see cref="PrivateKey"/>.
-        /// </summary>
-        /// <param name="publicKey"><see cref="PublicKey"/> used for verification.</param>
-        /// <param name="alphaBytes">A message bytearray.</param>
-        /// <param name="piBytes">A proof that was created from the
-        /// <paramref name="alphaBytes"/>.</param>
-        /// <returns>true if the <paramref name="piBytes"/> was created
-        /// from the <paramref name="alphaBytes"/> with the corresponding
+        /// <param name="round">Round of the proposal.
+        /// </param>
+        /// <returns>true if the <see cref="BlockProof"/> was created
+        /// from the <paramref name="height"/> and <paramref name="round"/> with the corresponding
         /// <see cref="PrivateKey"/>, otherwise false.
         /// </returns>
-        public bool VerifyProof(
-            PublicKey publicKey, byte[] alphaBytes, byte[] piBytes)
+        public bool Verify(PublicKey publicKey, long? height, int? round)
         {
-            ECPublicKeyParameters pubKeyParam = publicKey.KeyParam;
-            ECDomainParameters eCParam = pubKeyParam.Parameters;
-            ECPoint dPointH;
-            BigInteger c;
-            BigInteger s;
-
-            try
-            {
-                (dPointH, c, s) = DecodeProof(piBytes);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            // sG + cdG = (s+cd)G = kG
-            ECPoint sPointG = eCParam.G.Multiply(s);
-            ECPoint cdPointG = publicKey.KeyParam.Q.Multiply(c);
-            ECPoint scdPointG = sPointG.Subtract(cdPointG);
-
-            // sH + cdH = (s+cd)H = kH
-            ECPoint pointH = HashToCurveTai(alphaBytes, publicKey);
-            ECPoint sPointH = pointH.Multiply(s);
-            ECPoint cdPointH = dPointH.Multiply(c);
-            ECPoint scdPointH = sPointH.Subtract(cdPointH);
-
-            ECPoint[] points = new ECPoint[] { pointH, dPointH, scdPointG, scdPointH };
-
-            // check if checksum of payload is same
-            if (!c.Equals(HashPoints(points)))
-            {
-                return false;
-            }
-
-            return true;
+            return VerifyProof(
+                publicKey,
+                MessageFromHeightRound(height, round).ToArray(),
+                ByteArray.ToArray());
         }
 
         /// <summary>
@@ -253,7 +235,7 @@ namespace Libplanet.Blocks
             payload = payload.Concat(new byte[] { 0 }).ToArray();
             HashDigest<SHA512> cHash = HashDigest<SHA512>.DeriveFrom(payload);
             byte[] truncatedCBytes = cHash.ToByteArray()
-                .Take((ECParams.Curve.FieldSize + 7) >> 4).ToArray();
+                .Take((ECParams.Curve.FieldSize + 7) >> 3).ToArray();
             BigInteger c = new BigInteger(1, truncatedCBytes);
 
             return c;
@@ -312,7 +294,7 @@ namespace Libplanet.Blocks
             byte[] gammaBytes = dPointH.GetEncoded(true);
             byte[] cBytes = c.ToByteArrayUnsigned();
             byte[] sBytes = s.ToByteArrayUnsigned();
-            Array.Resize(ref cBytes, (ECParams.Curve.FieldSize + 7) >> 4);
+            Array.Resize(ref cBytes, (ECParams.Curve.FieldSize + 7) >> 3);
             Array.Resize(ref sBytes, (ECParams.Curve.FieldSize + 7) >> 3);
 
             byte[] piBytes = gammaBytes.Concat(cBytes).Concat(sBytes).ToArray();
@@ -333,7 +315,7 @@ namespace Libplanet.Blocks
         private (ECPoint, BigInteger, BigInteger) DecodeProof(byte[] piBytes)
         {
             int gammaBytesLen = ((ECParams.Curve.FieldSize + 7) >> 3) + 1;
-            int cBytesLen = (ECParams.Curve.FieldSize + 7) >> 4;
+            int cBytesLen = (ECParams.Curve.FieldSize + 7) >> 3;
             int sBytesLen = (ECParams.Curve.FieldSize + 7) >> 3;
             if (piBytes.Length != gammaBytesLen + cBytesLen + sBytesLen)
             {
@@ -356,6 +338,58 @@ namespace Libplanet.Blocks
             ECPoint gamma = ECParams.Curve.DecodePoint(gammaBytes);
 
             return (gamma, c, s);
+        }
+
+        /// <summary>
+        /// Verifies whether a <paramref name="piBytes"/> was created from
+        /// a <paramref name="alphaBytes"/> with the corresponding <see cref="PrivateKey"/>.
+        /// </summary>
+        /// <param name="publicKey"><see cref="PublicKey"/> used for verification.</param>
+        /// <param name="alphaBytes">A message bytearray.</param>
+        /// <param name="piBytes">A proof that was created from the
+        /// <paramref name="alphaBytes"/>.</param>
+        /// <returns>true if the <paramref name="piBytes"/> was created
+        /// from the <paramref name="alphaBytes"/> with the corresponding
+        /// <see cref="PrivateKey"/>, otherwise false.
+        /// </returns>
+        private bool VerifyProof(
+            PublicKey publicKey, byte[] alphaBytes, byte[] piBytes)
+        {
+            ECPublicKeyParameters pubKeyParam = publicKey.KeyParam;
+            ECDomainParameters eCParam = pubKeyParam.Parameters;
+            ECPoint dPointH;
+            BigInteger c;
+            BigInteger s;
+
+            try
+            {
+                (dPointH, c, s) = DecodeProof(piBytes);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            // sG - cdG = (s-cd)G = kG
+            ECPoint sPointG = eCParam.G.Multiply(s);
+            ECPoint cdPointG = publicKey.KeyParam.Q.Multiply(c);
+            ECPoint scdPointG = sPointG.Subtract(cdPointG);
+
+            // sH - cdH = (s-cd)H = kH
+            ECPoint pointH = HashToCurveTai(alphaBytes, publicKey);
+            ECPoint sPointH = pointH.Multiply(s);
+            ECPoint cdPointH = dPointH.Multiply(c);
+            ECPoint scdPointH = sPointH.Subtract(cdPointH);
+
+            ECPoint[] points = new ECPoint[] { pointH, dPointH, scdPointG, scdPointH };
+
+            // check if checksum of payload is same
+            if (!c.Equals(HashPoints(points)))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -389,6 +423,28 @@ namespace Libplanet.Blocks
             byte[] betaBytes = betaHash.ToByteArray();
 
             return betaBytes;
+        }
+
+        /// <summary>
+        /// Generate message from <paramref name="height"/> and <paramref name="round"/>.
+        /// </summary>
+        /// <param name="height">Height of the proposal.
+        /// </param>
+        /// <param name="round">Round of the proposal.
+        /// </param>
+        /// <returns>Concatenated bytes of <paramref name="height"/> and <paramref name="round"/>.
+        /// </returns>
+        private ImmutableArray<byte> MessageFromHeightRound(long? height, int? round)
+        {
+            long h = height ?? -1;
+            int r = round ?? -1;
+            ImmutableArray<byte> message
+                = BitConverter.IsLittleEndian
+                ? BitConverter.GetBytes(h).Reverse()
+                .Concat(BitConverter.GetBytes(r).Reverse()).ToImmutableArray()
+                : BitConverter.GetBytes(h)
+                .Concat(BitConverter.GetBytes(r)).ToImmutableArray();
+            return message;
         }
     }
 }

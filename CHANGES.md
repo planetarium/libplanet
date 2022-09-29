@@ -10,9 +10,19 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added property `LastCommit` on `IActionContext`.  [[#2297]]
- -  Added property `NativeTokens` on `IActionContext`.  [[#2316]]
- -  Added parameter `nativeTokens` on `ActionEvaluator`.  [[#2316]]
+ -  (Libplanet.Action) Added property `LastCommit` on `IActionContext`.
+    [[#2297]]
+ -  (Libplanet.Action) Added property `NativeTokens` on `IActionContext`.
+    [[#2316]]
+ -  (Libplanet.Action) Added parameter `nativeTokens` on `ActionEvaluator`.
+    [[#2316]]
+ -  (Libplanet.Blocks) Added `Proof` property on `IBlockMetadata` class.
+    [[#2306]]
+ -  (Libplanet.Blockchain) Added `proof` parameter
+    on `BlockChain.ProposeBlock()`.  [[#2306]]
+ -  (Libplanet.Consensus) Added `Validator` class.  [[#2306]]
+ -  (Libplanet.Consensus) Replaced `IEnumerable<PublicKey> validatorSet` to
+    `IEnumerable<Validator> validatorSet` on `VoteSet` class.  [[#2306]]
 
 ### Backward-incompatible network protocol changes
 
@@ -20,35 +30,35 @@ To be released.
 
 ### Added APIs
 
- -  (Libplanet.Pos.Model) Added `Validator` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `ValidatorPower` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `ValidatorPowerIndex` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `ValidatorSet` class.  [[#2297]]
- -  (Libplanet.Pos.Model) Added `ValidatorDelegationSet` class.  [[#2297]]
- -  (Libplanet.Pos.Model) Added `ValidatorRewards` class.  [[#2297]]
- -  (Libplanet.Pos.Model) Added `Delegation` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `Undelegation` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `Redelegation` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `UndelegationEntry` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `RedelegationEntry` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `UnbondingSet` class.  [[#2234]]
- -  (Libplanet.Pos.Model) Added `BondingStatus` class.  [[#2234]]
- -  (Libplanet.Pos) Added `NullValidatorException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `NullDelegationException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `NullUndelegationException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `NullRedelegationException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `DuplicatedValidatorException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `PublicKeyAddressMatchingException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `JailedValidatorException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `InvalidCurrencyException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `InsufficientFungibleAssetValueException` class.
+ -  (Libplanet.PoS.Model) Added `Validator` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `ValidatorPower` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `ValidatorPowerIndex` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `ValidatorSet` class.  [[#2297]]
+ -  (Libplanet.PoS.Model) Added `ValidatorDelegationSet` class.  [[#2297]]
+ -  (Libplanet.PoS.Model) Added `ValidatorRewards` class.  [[#2297]]
+ -  (Libplanet.PoS.Model) Added `Delegation` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `Undelegation` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `Redelegation` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `UndelegationEntry` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `RedelegationEntry` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `UnbondingSet` class.  [[#2234]]
+ -  (Libplanet.PoS.Model) Added `BondingStatus` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `NullValidatorException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `NullDelegationException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `NullUndelegationException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `NullRedelegationException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `DuplicatedValidatorException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `PublicKeyAddressMatchingException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `JailedValidatorException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `InvalidCurrencyException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `InsufficientFungibleAssetValueException` class.
     [[#2234]]
- -  (Libplanet.Pos) Added `InvalidExchangeRateException` class.  [[#2234]]
- -  (Libplanet.Pos) Added `MaximumUndelegationEntriesException` class.
+ -  (Libplanet.PoS) Added `InvalidExchangeRateException` class.  [[#2234]]
+ -  (Libplanet.PoS) Added `MaximumUndelegationEntriesException` class.
     [[#2234]]
- -  (Libplanet.Pos) Added `MaximumRedelegationEntriesException` class.
+ -  (Libplanet.PoS) Added `MaximumRedelegationEntriesException` class.
     [[#2234]]
- -  (Libplanet.Pos) Added `PostmatureUndelegationEntryException` class.
+ -  (Libplanet.PoS) Added `PostmatureUndelegationEntryException` class.
     [[#2234]]
  -  (Libplanet.Action.Sys) Added `PromoteValidator` class.  [[#2287]]
  -  (Libplanet.Action.Sys) Added `Delegate` class.  [[#2287]]
@@ -58,10 +68,9 @@ To be released.
  -  (Libplanet.Action.Sys) Added `WithdrawValidator` class.  [[#2287]]
  -  (Libplanet.Action.Sys) Added `WithdrawDelegator` class.  [[#2287]]
  -  (Libplanet.Action) Added `BlockAction` class.  [[#2297]]
- -  (Libplanet.Crypto) Added `PrivateKey.VrfEvaluate()` method. [[#2237]]
- -  (Libplanet.Crypto) Added `PublicKey.VrfVerify()` method. [[#2237]]
- -  (Libplanet.Crypto) Added `ICryptoBackend.VrfEvaluate()` method. [[#2237]]
- -  (Libplanet.Crypto) Added `ICryptoBackend.VrfVerify()` method. [[#2237]]
+ -  (Libplanet.Blocks) Added `BlockProof` class.  [[#2306]]
+
+
 
 ### Behavioral changes
 
@@ -75,6 +84,7 @@ To be released.
 [#2237]: https://github.com/planetarium/libplanet/pull/2237
 [#2287]: https://github.com/planetarium/libplanet/pull/2287
 [#2297]: https://github.com/planetarium/libplanet/pull/2297
+[#2306]: https://github.com/planetarium/libplanet/pull/2306
 [#2316]: https://github.com/planetarium/libplanet/pull/2316
 
 

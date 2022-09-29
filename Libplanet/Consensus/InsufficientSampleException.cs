@@ -1,6 +1,6 @@
 using System;
 
-namespace Libplanet.PoS
+namespace Libplanet.Consensus
 {
     public class InsufficientSampleException : Exception
     {

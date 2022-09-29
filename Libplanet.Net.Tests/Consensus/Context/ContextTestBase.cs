@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
@@ -55,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 BroadcastMessage,
                 BlockChain,
                 height,
-                privateKey: TestUtils.PrivateKeys[(int)nodeId],
+                TestUtils.PrivateKeys[(int)nodeId],
                 validators: TestUtils.Validators,
                 _newHeightDelay);
 
@@ -70,6 +73,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         protected event EventHandler<ConsensusMessage>? ConsensusMessageSent;
+
+        public PrivateKey Proposer(int round)
+        {
+            // return designated proposer for the height round pair.
+            BlockProof? lastProof = BlockChain.Tip.Proof;
+            PublicKey proposer = Sortition.SampleProposer(
+                TestUtils.Validators.ToArray(), lastProof, Context.Height, round).PublicKey;
+            return TestUtils.PrivateKeys.Single(x => x.PublicKey.Equals(proposer));
+        }
 
         public void Dispose()
         {

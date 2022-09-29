@@ -23,7 +23,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreVoteBlockOneThird()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
@@ -36,11 +36,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[1], round: 0));
+                    block, Proposer(0), round: 0));
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[2], round: 1));
+                    block, Proposer(1), round: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -60,7 +60,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreCommitBlockTwoThird()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var blockHash = block.Hash;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Context.Start();
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
+                TestUtils.CreateConsensusPropose(block, Proposer(0)));
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -183,7 +183,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreVoteNilOneThird()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, stage) =>
             {
@@ -196,11 +196,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[1], round: 0));
+                    block, Proposer(0), round: 0));
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[2], round: 1));
+                    block, Proposer(1), round: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -314,14 +314,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task TimeoutPreVote()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
             Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[1], round: 0));
+                    block, Proposer(0), round: 0));
 
             Context.ProduceMessage(
                 new ConsensusVote(
@@ -357,14 +357,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task TimeoutPreCommit()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var timeoutProcessed = new AsyncAutoResetEvent();
             Context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
             Context.Start();
 
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.PrivateKeys[1], round: 0));
+                    block, Proposer(0), round: 0));
 
             Context.ProduceMessage(
                 new ConsensusCommit(

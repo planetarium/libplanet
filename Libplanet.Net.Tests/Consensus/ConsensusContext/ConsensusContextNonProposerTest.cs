@@ -22,7 +22,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         private readonly ILogger _logger;
 
         public ConsensusContextNonProposerTest(ITestOutputHelper output)
-            : base(output, privateKey: TestUtils.Peer2Priv)
+            : base(output, privateKey: TestUtils.Peer1Priv)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -55,12 +55,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     heightTwoProposeSent.Set();
                 }
             };
-
             ConsensusContext.NewHeight(1, Validators);
-            var block1 = BlockChain.ProposeBlock(TestUtils.Peer1Priv);
+
+            BlockProof proof = new BlockProof(TestUtils.Peer2Priv, 1, 0);
+            var block1 = BlockChain.ProposeBlock(TestUtils.Peer2Priv, proof: proof);
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
-                    TestUtils.Peer1.PublicKey,
+                    TestUtils.Peer2.PublicKey,
                     1,
                     0,
                     block1.Hash,
@@ -68,16 +69,17 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     -1));
             var expectedVotes = new Vote[4];
 
-            // Peer2 sends a ConsensusVote via background process.
+            // Peer0 sends a ConsensusVote via background process.
             // Enough votes are present to proceed even without Peer3's vote.
-            for (int i = 0; i < 2; i++)
+            int[] vals = new int[] { 0, 3 };
+            foreach (int i in vals)
             {
                 expectedVotes[i] = new Vote(
                     1,
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.Validators[i],
+                    TestUtils.Validators[i].PublicKey,
                     VoteFlag.Absent,
                     null).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
@@ -89,14 +91,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Peer2 sends a ConsensusVote via background process.
             // Enough votes are present to proceed even without Peer3's vote.
-            for (int i = 0; i < 2; i++)
+            foreach (int i in vals)
             {
                 expectedVotes[i] = new Vote(
                     1,
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.Validators[i],
+                    TestUtils.Validators[i].PublicKey,
                     VoteFlag.Commit,
                     null).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
@@ -115,8 +117,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 votes.Where(vote => vote.BlockHash.Equals(BlockChain[1].Hash)).Count());
             Assert.Equal(VoteFlag.Commit, votes[0].Flag);
             Assert.Equal(VoteFlag.Commit, votes[1].Flag);
-            Assert.Equal(VoteFlag.Commit, votes[2].Flag);
-            Assert.Equal(VoteFlag.Null, votes[3].Flag);
+            Assert.Equal(VoteFlag.Commit, votes[3].Flag);
+            Assert.Equal(VoteFlag.Null, votes[2].Flag);
         }
 
         [Fact(Timeout = Timeout)]
@@ -140,8 +142,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            BlockChain.Append(BlockChain.ProposeBlock(TestUtils.Peer1Priv));
-            var blockHeightThree = BlockChain.ProposeBlock(TestUtils.Peer3Priv);
+            BlockProof proof1 = new BlockProof(TestUtils.Peer2Priv, 1, 0);
+            BlockChain.Append(BlockChain.ProposeBlock(TestUtils.Peer2Priv, proof: proof1));
+            BlockProof proof3 = new BlockProof(TestUtils.Peer1Priv, 3, 0);
+            var blockHeightThree = BlockChain.ProposeBlock(TestUtils.Peer1Priv, proof: proof3);
 
             ConsensusContext.NewHeight(BlockChain.Tip.Index + 1, Validators);
             await proposeSent.WaitAsync();
@@ -175,9 +179,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             foreach ((PrivateKey privateKey, BoundPeer peer)
                 in TestUtils.PrivateKeys.Zip(TestUtils.Peers, (first, second) => (first, second)))
             {
-                if (privateKey == TestUtils.Peer2Priv)
+                if (privateKey == TestUtils.Peer1Priv)
                 {
-                    // Peer2 will send a ConsensusVote by handling the ConsensusPropose message.
+                    // Peer0 will send a ConsensusVote by handling the ConsensusPropose message.
                     continue;
                 }
 
@@ -202,9 +206,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             foreach ((PrivateKey privateKey, BoundPeer peer)
                 in TestUtils.PrivateKeys.Zip(TestUtils.Peers, (first, second) => (first, second)))
             {
-                if (privateKey == TestUtils.Peer2Priv)
+                if (privateKey == TestUtils.Peer1Priv)
                 {
-                    // Peer2 will send a ConsensusCommit by handling the ConsensusVote message.
+                    // Peer0 will send a ConsensusCommit by handling the ConsensusVote message.
                     continue;
                 }
 
@@ -226,7 +230,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Message from higher height
             ConsensusContext.HandleMessage(
                 new ConsensusPropose(
-                    TestUtils.Peer3.PublicKey,
+                    TestUtils.Peer1.PublicKey,
                     3,
                     0,
                     blockHeightThree.Hash,

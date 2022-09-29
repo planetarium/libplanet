@@ -7,6 +7,7 @@ using Libplanet.Assets;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.PoS.Model;
+using Validator = Libplanet.PoS.Model.Validator;
 
 namespace Libplanet.PoS.Control
 {

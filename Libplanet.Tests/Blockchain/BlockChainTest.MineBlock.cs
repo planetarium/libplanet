@@ -557,7 +557,12 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Tip.Index,
                 0,
                 _blockChain.Tip.Hash,
-                new[] { keyA.PublicKey, keyB.PublicKey, keyC.PublicKey });
+                new[]
+                {
+                    new Validator(keyA.PublicKey),
+                    new Validator(keyB.PublicKey),
+                    new Validator(keyC.PublicKey),
+                });
             voteSet.Add(voteSet.Votes[0].Sign(keyA));
             voteSet.Add(voteSet.Votes[1].Sign(keyB));
             voteSet.Add(voteSet.Votes[2].Sign(keyC));

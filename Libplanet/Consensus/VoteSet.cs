@@ -30,7 +30,7 @@ namespace Libplanet.Consensus
             long height,
             int round,
             BlockHash? blockHash,
-            IEnumerable<PublicKey> validatorSet)
+            IEnumerable<Validator> validatorSet)
         {
             Height = height;
             Round = round;
@@ -43,7 +43,7 @@ namespace Libplanet.Consensus
                     round,
                     blockHash,
                     DateTimeOffset.Now,
-                    ValidatorSet[x],
+                    ValidatorSet[x].PublicKey,
                     VoteFlag.Null,
                     null))
                 .ToDictionary(keySelector: x => x.Validator, elementSelector: x => x);
@@ -64,7 +64,7 @@ namespace Libplanet.Consensus
         /// <summary>
         /// A list of validator's <see cref="PublicKey"/> of <see cref="VoteSet"/>'s target.
         /// </summary>
-        public ImmutableArray<PublicKey> ValidatorSet { get; }
+        public ImmutableArray<Validator> ValidatorSet { get; }
 
         /// <summary>
         /// <see cref="Vote"/>s in this VoteSet.
@@ -73,7 +73,7 @@ namespace Libplanet.Consensus
         {
             // ToDictionary() does not keep the order of the source. Creates a new list that will be
             // same as the order of ValidatorSet.
-            get => ValidatorSet.Select(publicKey => _votes[publicKey]).ToImmutableArray();
+            get => ValidatorSet.Select(validator => _votes[validator.PublicKey]).ToImmutableArray();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Libplanet.Consensus
                 return false;
             }
 
-            if (!ValidatorSet.Contains(vote.Validator))
+            if (!ValidatorSet.Any(item => item.PublicKey.Equals(vote.Validator)))
             {
                 // The voter is not a validator.
                 return false;

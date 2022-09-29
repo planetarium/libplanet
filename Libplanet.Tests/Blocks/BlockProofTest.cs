@@ -2,11 +2,30 @@ using System;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Xunit;
+using Xunit.Abstractions;
 
-namespace Libplanet.Tests.Crypto
+namespace Libplanet.Tests.Blocks
 {
-    public class VrfTest
+    public class BlockProofTest
     {
+        private readonly ITestOutputHelper _output;
+
+        public BlockProofTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [Fact]
+        public void Marshalling()
+        {
+            var blockProof = new BlockProof(new PrivateKey(), 0, 0);
+
+            byte[] marshaled = blockProof.ToByteArray();
+            var unMarshaled = new BlockProof(marshaled);
+
+            Assert.Equal(blockProof, unMarshaled);
+        }
+
         [Fact]
         public void ChecksumEqualTest()
         {
@@ -16,7 +35,7 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            Proof proof = new Proof(privateKey, message);
+            BlockProof proof = new BlockProof(privateKey, message);
             Assert.True(proof.Verify(publicKey, message));
         }
 
@@ -31,10 +50,10 @@ namespace Libplanet.Tests.Crypto
             byte[] message = new byte[1024];
             random.NextBytes(message);
 
-            Proof proofA = new Proof(privateKeyA, message);
+            BlockProof proofA = new BlockProof(privateKeyA, message);
             Assert.False(proofA.Verify(publicKeyB, message));
 
-            Proof proofB = new Proof(privateKeyB, message);
+            BlockProof proofB = new BlockProof(privateKeyB, message);
             Assert.False(proofB.Verify(publicKeyA, message));
         }
     }

@@ -6,6 +6,7 @@ using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -26,7 +27,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         protected readonly StoreFixture Fx;
         protected readonly BlockChain<DumbAction> BlockChain;
         protected readonly ConsensusContext<DumbAction> ConsensusContext;
-        protected readonly List<PublicKey> Validators;
+        protected readonly List<Validator> Validators;
         protected readonly TimeSpan NewHeightDelay = TimeSpan.FromSeconds(1);
 
         private const int Port = 19283;
@@ -35,7 +36,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextTestBase(
             ITestOutputHelper output,
             PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null)
+            List<Validator>? validators = null)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -27,7 +29,7 @@ namespace Libplanet.Net.Consensus
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
-        private List<PublicKey> _validators;
+        private List<Validator> _validators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
@@ -54,7 +56,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            List<Validator> validators,
             TimeSpan newHeightDelay)
         {
             BroadcastMessage = broadcastMessage;
@@ -135,7 +137,7 @@ namespace Libplanet.Net.Consensus
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
-        public void NewHeight(long height, List<PublicKey> validators)
+        public void NewHeight(long height, List<Validator> validators)
         {
             _newHeightCts?.Cancel();
 
@@ -259,7 +261,7 @@ namespace Libplanet.Net.Consensus
                     {
                         NewHeight(
                             e.NewTip.Index + 1,
-                            _blockChain.BondedValidatorPubKey());
+                            _blockChain.ConsensusValidators().ToList());
                     }
                 },
                 _newHeightCts.Token);

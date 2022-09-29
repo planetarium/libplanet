@@ -39,6 +39,10 @@ namespace Libplanet.PoS.Model
 
         public ImmutableSortedSet<ValidatorPower> Set => _set.ToImmutableSortedSet();
 
+        public ImmutableArray<Consensus.Validator> ConsensusValidators => Set.Select(
+            item => new Consensus.Validator(item.OperatorPublicKey, item.ConsensusToken.RawValue))
+            .ToImmutableArray();
+
         public FungibleAssetValue TotalConsensusToken
             => Set.Aggregate(
                 Asset.ConsensusToken * 0, (total, next) => total + next.ConsensusToken);

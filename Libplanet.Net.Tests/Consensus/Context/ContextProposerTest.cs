@@ -21,7 +21,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreCommitNil()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
@@ -45,7 +45,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
+                TestUtils.CreateConsensusPropose(block, Proposer(0)));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -75,7 +75,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlock()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var targetHash = block.Hash;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var commitSent = new AsyncAutoResetEvent();
@@ -100,7 +100,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
+                TestUtils.CreateConsensusPropose(block, Proposer(0)));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -179,7 +179,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EndCommitBlock()
         {
             var codec = new Codec();
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
             Context.StateChanged += (sender, state) =>
             {
@@ -194,7 +194,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
+                TestUtils.CreateConsensusPropose(block, Proposer(0)));
 
             Context.ProduceMessage(
                 new ConsensusCommit(
@@ -253,7 +253,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var invalidBlock = GetInvalidBlock();
             Context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    invalidBlock, TestUtils.PrivateKeys[NodeId]));
+                    invalidBlock, Proposer(0)));
 
             await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);
@@ -264,7 +264,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlock()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            var block = BlockChain.ProposeBlock(Proposer(0));
             var targetHash = block.Hash;
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var voteSent = new AsyncAutoResetEvent();
@@ -289,7 +289,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[NodeId]));
+                TestUtils.CreateConsensusPropose(block, Proposer(0)));
 
             await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, Context.Step);

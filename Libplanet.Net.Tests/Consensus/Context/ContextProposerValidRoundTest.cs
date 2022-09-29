@@ -37,13 +37,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
+                block, Proposer(0), round: 0, validRound: -1));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
+                block, Proposer(1), round: 1, validRound: 0));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+                block, Proposer(2), round: 2, validRound: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
@@ -102,13 +102,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = Context.MutationConsumerTask(default);
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[NodeId], round: 0, validRound: -1));
+                invalidBlock, Proposer(0), round: 0, validRound: -1));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[2], round: 1, validRound: 0));
+                invalidBlock, Proposer(1), round: 1, validRound: 0));
 
             Context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
+                invalidBlock, Proposer(2), round: 2, validRound: 1));
 
             Context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(

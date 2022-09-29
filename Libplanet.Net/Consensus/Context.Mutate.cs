@@ -1,3 +1,4 @@
+using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -118,7 +119,7 @@ namespace Libplanet.Net.Consensus
                 if (message is ConsensusVote vote &&
                     (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
                     !vote.ProposeVote.Verify(vote.Validator) ||
-                    !_validators.Contains(vote.Validator)))
+                    !_validators.Any(item => item.PublicKey.Equals(vote.Validator))))
                 {
                     throw new InvalidValidatorVoteMessageException(
                         "Received ConsensusVote message is made by invalid validator.",
@@ -128,7 +129,7 @@ namespace Libplanet.Net.Consensus
                 if (message is ConsensusCommit commit &&
                     (!commit.Validator.Equals(commit.CommitVote.Validator) ||
                     !commit.CommitVote.Verify(commit.Validator) ||
-                    !_validators.Contains(commit.Validator)))
+                    !_validators.Any(item => item.PublicKey.Equals(commit.Validator))))
                 {
                     throw new InvalidValidatorVoteMessageException(
                         "Received ConsensusCommit message is made by invalid validator.",
