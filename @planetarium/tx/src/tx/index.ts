@@ -1,5 +1,4 @@
-export { TxMetadata, encodeTxMetadata } from "./metadata";
-export {
-  UnsignedTxWithSystemAction,
-  encodeUnsignedTxWithSystemAction,
-} from "./unsigned";
+export type { TxMetadata } from "./metadata";
+export { encodeTxMetadata } from "./metadata";
+export type { UnsignedTxWithSystemAction } from "./unsigned";
+export { encodeUnsignedTxWithSystemAction } from "./unsigned";
