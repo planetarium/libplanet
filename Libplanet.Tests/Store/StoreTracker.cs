@@ -216,6 +216,30 @@ namespace Libplanet.Tests.Store
             _store.PruneOutdatedChains();
         }
 
+        public BlockCommit? GetLastCommit(long height)
+        {
+            Log(nameof(GetLastCommit), height);
+            return _store.GetLastCommit(height);
+        }
+
+        public void PutLastCommit(BlockCommit lastCommit)
+        {
+            Log(nameof(PutLastCommit), lastCommit);
+            _store.PutLastCommit(lastCommit);
+        }
+
+        public void DeleteLastCommit(long height)
+        {
+            Log(nameof(DeleteLastCommit), height);
+            _store.DeleteLastCommit(height);
+        }
+
+        public IEnumerable<long> GetLastCommitIndices()
+        {
+            Log(nameof(GetLastCommitIndices));
+            return _store.GetLastCommitIndices();
+        }
+
         public Guid? GetCanonicalChainId()
         {
             Log(nameof(GetCanonicalChainId));

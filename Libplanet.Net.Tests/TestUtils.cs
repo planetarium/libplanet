@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -13,7 +12,6 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
-using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
@@ -96,20 +94,6 @@ namespace Libplanet.Net.Tests
         public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
 
         public static Vote CreateVote(
-            PublicKey publicKey,
-            VoteFlag flag = VoteFlag.Null,
-            long height = 0,
-            int round = 0) =>
-            new Vote(
-                height,
-                round,
-                BlockHash0,
-                DateTimeOffset.Now,
-                publicKey,
-                flag,
-                ImmutableArray<byte>.Empty);
-
-        public static Vote CreateVote(
             PrivateKey privateKey,
             long height = 0,
             int round = 0,
@@ -150,19 +134,6 @@ namespace Libplanet.Net.Tests
             return blockChain;
         }
 
-        public static ITransport CreateNetMQTransport(
-            PrivateKey? privateKey = null,
-            string host = "localhost",
-            int port = 5000) => NetMQTransport.Create(
-                privateKey ?? new PrivateKey(),
-                TestUtils.AppProtocolVersion,
-                null,
-                8,
-                host,
-                port,
-                Array.Empty<IceServer>(),
-                null).ConfigureAwait(false).GetAwaiter().GetResult();
-
         public static ConsensusPropose CreateConsensusPropose(
             Block<DumbAction>? block,
             PrivateKey privateKey,
@@ -183,63 +154,33 @@ namespace Libplanet.Net.Tests
             };
         }
 
-        public static ConsensusContext<DumbAction> CreateStandaloneConsensusContext(
-            BlockChain<DumbAction> blockChain,
-            ITransport transport,
-            TimeSpan newHeightDelay,
-            long height = 0,
-            string host = "localhost",
-            int port = 18192,
-            PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null,
-            DelegateWatchConsensusMessage? watchConsensusMessage = null)
+        public static void HandleFourPeersPreCommitMessages(
+            ConsensusContext<DumbAction> consensusContext,
+            PrivateKey nodePrivateKey,
+            BlockHash roundBlockHash)
         {
-            privateKey ??= new PrivateKey();
-            var validatorPeers = new List<BoundPeer>()
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
             {
-                new BoundPeer(privateKey.PublicKey, new DnsEndPoint(host, port)),
-            };
-            validators ??= new List<PublicKey>()
-            {
-                privateKey.PublicKey,
-            };
-
-            var exceptList = validators.Except(new[] { privateKey.PublicKey }).ToList();
-
-            foreach (var publicKey in exceptList)
-            {
-                port += 1;
-                validatorPeers.Add(
-                    new BoundPeer(
-                        publicKey, new DnsEndPoint("localhost", port)));
-            }
-
-            void BroadcastMessage(ConsensusMessage message) =>
-                transport.BroadcastMessage(validatorPeers, message);
-
-            var consensusContext = new ConsensusContext<DumbAction>(
-                BroadcastMessage,
-                blockChain,
-                height,
-                privateKey,
-                newHeightDelay: newHeightDelay,
-                getValidators: _ => validators);
-
-            async Task DummyHandle(Message message)
-            {
-                switch (message)
+                if (privateKey == nodePrivateKey)
                 {
-                    case ConsensusMessage consensusMessage:
-                        await transport!.ReplyMessageAsync(message, default);
-                        consensusContext!.HandleMessage(consensusMessage);
-                        watchConsensusMessage?.Invoke(consensusMessage);
-                        break;
+                    continue;
                 }
+
+                consensusContext.HandleMessage(
+                    new ConsensusCommit(
+                        new Vote(
+                            consensusContext.Height,
+                            (int)consensusContext.Round,
+                            roundBlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.Commit,
+                            ImmutableArray<byte>.Empty).Sign(privateKey))
+                    {
+                        Remote = peer,
+                    });
             }
-
-            transport.ProcessMessageHandler.Register(DummyHandle);
-
-            return consensusContext;
         }
     }
 }

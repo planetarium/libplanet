@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -157,7 +158,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
                         VoteFlag.Absent,
-                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+                        ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
@@ -173,7 +174,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
                         VoteFlag.Absent,
-                        null).Sign(TestUtils.PrivateKeys[NodeId])));
+                        ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }

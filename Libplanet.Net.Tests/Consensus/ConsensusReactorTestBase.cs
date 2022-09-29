@@ -127,7 +127,8 @@ namespace Libplanet.Net.Tests.Consensus
                 key,
                 validatorPeers.ToImmutableList(),
                 new List<BoundPeer>().ToImmutableList(),
-                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds));
+                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
+                30);
         }
 
         private Task DisposeConsensusReactors()

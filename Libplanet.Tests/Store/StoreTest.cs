@@ -10,6 +10,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
@@ -1072,6 +1073,97 @@ namespace Libplanet.Tests.Store
                     fx.Store.GetBlock<DumbAction>(block.Hash);
 
                 Assert.Equal(block, storedBlock);
+            }
+        }
+
+        [SkippableFact]
+        public void GetLastCommit()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                // Empty vote cases 1.
+                BlockCommit blockCommit =
+                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty);
+
+                fx.Store.PutLastCommit(blockCommit);
+                BlockCommit? storedCommit = fx.Store.GetLastCommit(blockCommit.Height);
+
+                Assert.Equal(blockCommit, storedCommit);
+
+                // Commits with votes
+                var validators = Enumerable.Range(0, 4)
+                    .Select(x => new PrivateKey())
+                    .ToArray();
+                var voteSet = new VoteSet(
+                    1,
+                    0,
+                    Fx.Block2.Hash,
+                    validators.Select(x => x.PublicKey).ToImmutableArray());
+
+                BlockCommit blockCommitWithVoteSet = new BlockCommit(voteSet, fx.Block2.Hash);
+
+                fx.Store.PutLastCommit(blockCommitWithVoteSet);
+                BlockCommit? storedCommitVotes =
+                    fx.Store.GetLastCommit(blockCommitWithVoteSet.Height);
+
+                Assert.Equal(blockCommitWithVoteSet, storedCommitVotes);
+            }
+        }
+
+        [SkippableFact]
+        public void GetLastCommitIndices()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                var voteSetOne = new VoteSet(
+                    1,
+                    0,
+                    fx.Block1.Hash,
+                    new List<PublicKey>() { fx.Miner.PublicKey });
+
+                var voteSetTwo = new VoteSet(
+                    2,
+                    0,
+                    fx.Block2.Hash,
+                    new List<PublicKey>() { fx.Miner.PublicKey });
+
+                BlockCommit[] blockCommits =
+                {
+                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty),
+                    new BlockCommit(voteSetOne, fx.Block1.Hash),
+                    new BlockCommit(voteSetTwo, fx.Block2.Hash),
+                };
+
+                foreach (var blockCommit in blockCommits)
+                {
+                    fx.Store.PutLastCommit(blockCommit);
+                }
+
+                IEnumerable<long> indices = fx.Store.GetLastCommitIndices();
+
+                HashSet<long> indicesFromOperation = indices.ToHashSet();
+                HashSet<long> expectedIndices = new List<long>()
+                {
+                    0, 1, 2,
+                }.ToHashSet();
+
+                Assert.Equal(indicesFromOperation, expectedIndices);
+            }
+        }
+
+        [SkippableFact]
+        public void DeleteLastCommit()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                BlockCommit blockCommit =
+                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty);
+
+                fx.Store.PutLastCommit(blockCommit);
+                Assert.NotNull(fx.Store.GetLastCommit(blockCommit.Height));
+
+                fx.Store.DeleteLastCommit(blockCommit.Height);
+                Assert.Null(fx.Store.GetLastCommit(blockCommit.Height));
             }
         }
 

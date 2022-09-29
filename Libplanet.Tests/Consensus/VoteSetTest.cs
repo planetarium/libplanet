@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     null);
+                     ImmutableArray<byte>.Empty);
                  var vote = new Vote(
                      1,
                      2,
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Commit,
-                     null);
+                     ImmutableArray<byte>.Empty);
                  var vote = new Vote(
                      1,
                      2,
@@ -117,7 +117,7 @@ namespace Libplanet.Tests.Consensus
                      now,
                      validators[i].PublicKey,
                      VoteFlag.Absent,
-                     null);
+                     ImmutableArray<byte>.Empty);
                  var vote = new Vote(
                      1,
                      1,

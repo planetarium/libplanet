@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -22,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         private readonly ILogger _logger;
 
         public ConsensusContextTest(ITestOutputHelper output)
-            : base(output, PrivateKeyPeer1, index => Validators)
+            : base(output, PrivateKeyPeer1, index => Validators, lastCommitClearThreshold: 1)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -129,6 +132,131 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         Fx.Block1.Hash,
                         new byte[] { },
                         -1)));
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void ClearOldLastCommitCache()
+        {
+            // FIXME: Due to this test, lastCommitClearThreshold = 1 is set. every other test also
+            // affected by this parameter.
+            var codec = new Codec();
+            var heightOneEnded = new AsyncAutoResetEvent();
+            var heightOneProposeSent = new AsyncAutoResetEvent();
+            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            var heightTwoEnded = new AsyncAutoResetEvent();
+            var heightThreePreVote = new AsyncAutoResetEvent();
+            Block<DumbAction>? proposedBlock = null;
+
+            ConsensusMessageSent += (sender, message) =>
+            {
+                if (message is ConsensusPropose propose)
+                {
+                    proposedBlock =
+                        BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(propose.Payload));
+                    heightOneProposeSent.Set();
+                }
+            };
+
+            // Do a consensus for height to #2 consecutively.
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+                (sender, tuple) =>
+                {
+                    if (tuple.Step == Step.EndCommit)
+                    {
+                        heightOneEnded.Set();
+                    }
+                };
+
+            await heightOneProposeSent.WaitAsync();
+
+            ConsensusContext.HandleMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        1,
+                        0,
+                        proposedBlock!.Hash,
+                        VoteFlag.Absent))
+            );
+
+            ConsensusContext.HandleMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        1,
+                        0,
+                        proposedBlock!.Hash,
+                        VoteFlag.Commit))
+                );
+
+            await heightOneEnded.WaitAsync();
+
+            // Starts NewHeight manually.
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+                (sender, tuple) =>
+                {
+                    if (tuple.Step == Step.EndCommit)
+                    {
+                        heightTwoEnded.Set();
+                    }
+                };
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageConsumed +=
+                (sender, message) =>
+                {
+                    if (message is ConsensusPropose propose)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(propose!.Payload));
+                        heightTwoProposeSent.Set();
+                    }
+                };
+
+            var block = BlockChain.ProposeBlock(TestUtils.Peer0Priv);
+            ConsensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv, height: 2));
+
+            await heightTwoProposeSent.WaitAsync();
+
+            ConsensusContext.HandleMessage(
+                new ConsensusVote(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        2,
+                        0,
+                        block.Hash,
+                        VoteFlag.Absent))
+            );
+
+            ConsensusContext.HandleMessage(
+                new ConsensusCommit(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        2,
+                        0,
+                        block.Hash,
+                        VoteFlag.Commit))
+            );
+
+            await heightTwoEnded.WaitAsync();
+
+            // Starts round 3, Waits PreVote timeout
+            // Checks previous LastCommit and see if it's available.
+            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
+            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+                (sender, tuple) =>
+                {
+                    if (tuple.Step == Step.PreVote)
+                    {
+                        heightThreePreVote.Set();
+                    }
+                };
+
+            await heightThreePreVote.WaitAsync();
+            Assert.NotNull(BlockChain.Store.GetLastCommit(BlockChain.Tip.Index));
+            Assert.Null(BlockChain.Store.GetLastCommit(BlockChain.Tip.Index - 1));
         }
     }
 }

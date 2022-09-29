@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -21,7 +22,6 @@ namespace Libplanet.Consensus
         private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
         private const string FlagKey = "vote_flag";
-        private const string NodeIdKey = "node_id";
         private const string SignatureKey = "signature";
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Libplanet.Consensus
             DateTimeOffset timestamp,
             PublicKey validator,
             VoteFlag flag,
-            ImmutableArray<byte>? signature)
+            ImmutableArray<byte> signature)
         {
             Height = height;
             Round = round;
@@ -80,8 +80,8 @@ namespace Libplanet.Consensus
                 Validator = new PublicKey(dict.GetValue<Binary>(ValidatorKey).ByteArray);
                 Flag = (VoteFlag)(long)dict.GetValue<Integer>(FlagKey);
                 Signature = dict.ContainsKey(SignatureKey)
-                    ? dict.GetValue<Binary>(SignatureKey)
-                    : (ImmutableArray<byte>?)null;
+                    ? (ImmutableArray<byte>)dict.GetValue<Binary>(SignatureKey)
+                    : ImmutableArray<byte>.Empty;
             }
             catch (Exception)
             {
@@ -124,7 +124,7 @@ namespace Libplanet.Consensus
         /// <summary>
         /// Signature of the vote.
         /// </summary>
-        public ImmutableArray<byte>? Signature { get; }
+        public ImmutableArray<byte> Signature { get; }
 
         /// <summary>
         /// Marshaled vote data.
@@ -158,7 +158,14 @@ namespace Libplanet.Consensus
         }
 
         public Vote RemoveSignature =>
-            new Vote(Height, Round, BlockHash, Timestamp, Validator, Flag, null);
+            new Vote(
+                Height,
+                Round,
+                BlockHash,
+                Timestamp,
+                Validator,
+                Flag,
+                ImmutableArray<byte>.Empty);
 
         /// <summary>
         /// Sign a <see cref="Vote"/> using the given private key.
@@ -197,7 +204,7 @@ namespace Libplanet.Consensus
         {
             return Height == other.Height &&
                    Round == other.Round &&
-                   BlockHash.Equals(other.BlockHash) &&
+                   Nullable.Equals(BlockHash, other.BlockHash) &&
                    Timestamp
                        .ToString(TimestampFormat, CultureInfo.InvariantCulture).Equals(
                            other.Timestamp.ToString(
@@ -205,7 +212,7 @@ namespace Libplanet.Consensus
                                CultureInfo.InvariantCulture)) &&
                    Validator.Equals(other.Validator) &&
                    Flag == other.Flag &&
-                   Nullable.Equals(Signature, other.Signature);
+                   Signature.SequenceEqual(other.Signature);
         }
 
         /// <inheritdoc />

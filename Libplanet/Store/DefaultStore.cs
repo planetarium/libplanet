@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -96,6 +97,7 @@ namespace Libplanet.Store
         private static readonly UPath TxExecutionRootPath = UPath.Root / "txexec";
         private static readonly UPath TxIdBlockHashRootPath = UPath.Root / "txbindex";
         private static readonly UPath BlockPerceptionRootPath = UPath.Root / "blockpercept";
+        private static readonly UPath LastCommitRootPath = UPath.Root / "lastcommit";
         private static readonly Codec Codec = new Codec();
 
         private readonly ILogger _logger;
@@ -106,6 +108,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txExecutions;
         private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
+        private readonly SubFileSystem _lastCommits;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
@@ -211,6 +214,8 @@ namespace Libplanet.Store
             _txIdBlockHashIndex = new SubFileSystem(_root, TxIdBlockHashRootPath, owned: false);
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
+            _root.CreateDirectory(LastCommitRootPath);
+            _lastCommits = new SubFileSystem(_root, LastCommitRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
@@ -659,6 +664,75 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc />
+        public override BlockCommit? GetLastCommit(long height)
+        {
+            UPath path = LastCommitPath(height);
+            if (!_lastCommits.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
+            try
+            {
+                bytes = _lastCommits.ReadAllBytes(path);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            BlockCommit blockCommit = new BlockCommit(bytes);
+            return blockCommit;
+        }
+
+        /// <inheritdoc />
+        public override void PutLastCommit(BlockCommit lastCommit)
+        {
+            UPath path = LastCommitPath(lastCommit.Height);
+            if (_lastCommits.FileExists(path))
+            {
+                return;
+            }
+
+            WriteContentAddressableFile(_lastCommits, path, lastCommit.ByteArray);
+        }
+
+        /// <inheritdoc />
+        public override void DeleteLastCommit(long height)
+        {
+            UPath path = LastCommitPath(height);
+            if (!_lastCommits.FileExists(path))
+            {
+                return;
+            }
+
+            _lastCommits.DeleteFile(path);
+        }
+
+        /// <inheritdoc/>
+        public override IEnumerable<long> GetLastCommitIndices()
+        {
+            var listHeights = new List<long>();
+
+            foreach (UPath path in _lastCommits.EnumerateFiles(UPath.Root))
+            {
+                string name = path.FullName.Split('/').LastOrDefault();
+
+                if (long.TryParse(
+                        name,
+                        NumberStyles.Integer,
+                        CultureInfo.InvariantCulture,
+                        out var parsed))
+                {
+                    listHeights.Add(parsed);
+                }
+            }
+
+            return listHeights.AsEnumerable();
+        }
+
         /// <inheritdoc/>
         public override long CountBlocks()
         {
@@ -782,6 +856,12 @@ namespace Libplanet.Store
         {
             string idHex = txid.ToHex();
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
+        }
+
+        private UPath LastCommitPath(in long height)
+        {
+            string heightString = height.ToString(CultureInfo.InvariantCulture);
+            return UPath.Root / heightString;
         }
 
         private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>

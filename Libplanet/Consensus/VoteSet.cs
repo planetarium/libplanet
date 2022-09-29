@@ -45,7 +45,7 @@ namespace Libplanet.Consensus
                     DateTimeOffset.Now,
                     ValidatorSet[x],
                     VoteFlag.Null,
-                    null))
+                    ImmutableArray<byte>.Empty))
                 .ToDictionary(keySelector: x => x.Validator, elementSelector: x => x);
 
             _lock = new object();
@@ -104,7 +104,7 @@ namespace Libplanet.Consensus
         public bool HasTwoThirdAny()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
-            return _votes.Count(x => !(x.Value.Signature is null)) > twoThird;
+            return _votes.Count(x => !x.Value.Signature.IsDefaultOrEmpty) > twoThird;
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Libplanet.Consensus
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !(x.Value.Signature is null) && x.Value.Flag == VoteFlag.Absent) > twoThird;
+                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.Absent) > twoThird;
         }
 
         /// <summary>
@@ -129,12 +129,12 @@ namespace Libplanet.Consensus
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !(x.Value.Signature is null) && x.Value.Flag == VoteFlag.Commit) > twoThird;
+                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.Commit) > twoThird;
         }
 
         private bool IsVoteValid(Vote vote)
         {
-            if (vote.Signature is null)
+            if (vote.Signature.IsDefaultOrEmpty)
             {
                 return false;
             }
