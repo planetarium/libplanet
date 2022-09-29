@@ -23,7 +23,7 @@ To be released.
  -  Added `IRoutingTable` interface.  [[#2046], [#2229]]
  -  `RoutingTable` became to implement `IRoutingTable` interface.
     [[#2046], [#2229]]
- -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.  
+ -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
 
 ### Behavioral changes
@@ -65,13 +65,23 @@ To be released.
 [System.Text.Json 6.0.6]: https://www.nuget.org/packages/System.Text.Json/6.0.6
 
 
+Version 0.42.2
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+
 Version 0.42.1
 --------------
 
 Released on September 23, 2022.
 
--  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
-   serialized `SystemAction`.  [[#2339]]
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
 
 
 Version 0.42.0
@@ -128,13 +138,23 @@ Released on September 19, 2022.
 [Bencodex 0.6.0]: https://www.nuget.org/packages/Bencodex/0.6.0
 
 
+Version 0.41.4
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+
 Version 0.41.3
 --------------
 
 Released on September 23, 2022.
 
--  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
-   serialized `SystemAction`.  [[#2339]]
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
 
 
 Version 0.41.2
@@ -324,13 +344,25 @@ Released on August 26, 2022.
 [#2241]: https://github.com/planetarium/libplanet/pull/2241
 
 
+Version 0.40.3
+--------------
+
+Released on September 29, 2022.
+
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+[#2358]: https://github.com/planetarium/libplanet/pull/2358
+
+
 Version 0.40.2
 --------------
 
 Released on September 23, 2022.
 
--  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
-   serialized `SystemAction`.  [[#2339]]
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
 
 [#2339]: https://github.com/planetarium/libplanet/pull/2339
 
