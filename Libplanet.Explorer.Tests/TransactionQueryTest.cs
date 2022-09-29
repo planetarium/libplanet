@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
+using Libplanet.Action.Sys;
+using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -38,6 +41,31 @@ public class TransactionQueryTest
             new PrivateKey(),
             _source.BlockChain.Genesis.Hash,
             Enumerable.Empty<NullAction>()
+        );
+        ExecutionResult result = await ExecuteQueryAsync(@$"
+        {{
+            bindSignature(
+                unsignedTransaction: ""{Hex(tx.Serialize(false))}"",
+                signature: ""{Hex(tx.Signature)}""
+            )
+         }}
+         ", _queryGraph, source: _source);
+        Assert.Null(result.Errors);
+        ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+        IDictionary<string, object> resultDict =
+            Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+        Assert.Equal(tx.Serialize(true), ParseHex((string)resultDict["bindSignature"]));
+    }
+
+    [Fact]
+    public async Task BindSignatureWithSystemAction()
+    {
+        var foo = new Currency("FOO", 2, ImmutableHashSet<Address>.Empty);
+        var tx = Transaction<NullAction>.Create(
+            0L,
+            new PrivateKey(),
+            _source.BlockChain.Genesis.Hash,
+            new Transfer(default, foo * 10)
         );
         ExecutionResult result = await ExecuteQueryAsync(@$"
         {{

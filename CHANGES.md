@@ -6,6 +6,12 @@ Version 0.40.3
 
 To be released.
 
+ -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
+    `bindSignature()` had errored if `unsignedTransaction` has a system
+    action.  [[#2358]]
+
+[#2358]: https://github.com/planetarium/libplanet/pull/2358
+
 
 Version 0.40.2
 --------------
