@@ -1,5 +1,5 @@
 import { Encodable } from "bencodex";
-import { Address, encodeAddress } from "../address";
+import { Address, encodeAddress, encodeAddressSet } from "../address";
 import { BlockHash, encodeBlockHash } from "../blockhash";
 import { encodePublicKey, PublicKey } from "../key";
 
@@ -26,7 +26,7 @@ const TIMESTAMP_KEY = Buffer.from([0x74]); // 't'
 export function encodeTxMetadata(
   metadata: TxMetadata
 ): Map<string | Buffer,Encodable> {
-  const updatedAddresses = [...metadata.updatedAddresses].map(encodeAddress);
+  const updatedAddresses = encodeAddressSet(metadata.updatedAddresses);
   const timestamp = metadata.timestamp.toISOString()
     .replace(/Z$/, "000Z");
   const dict = new Map<string | Buffer, Encodable>([

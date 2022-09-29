@@ -5,10 +5,11 @@
   "main": "dist/pkg.cjs.js",
   "module": "dist/pkg.esm.js",
   "scripts": {
-    "build": "bunchee --target es2020 src/index.ts",
+    "prebuild": "npm install --include=dev",
+    "build": "bunchee --target es2020 --dts src/index.ts",
     "prepack": "npm run build",
-    "dev": "bunchee --watch src/index.ts",
-    "test": "vitest",
+    "dev": "bunchee --target es2020 --watch src/index.ts",
+    "test": "dotnet build ../../Libplanet.Tools && vitest run",
     "coverage": "vitest run --coverage"
   },
   "types": "dist/src/index.d.ts",
@@ -31,12 +32,13 @@
     "@typescript-eslint/parser": "^5.36.2",
     "@vitest/coverage-c8": "^0.22.1",
     "@vitest/ui": "^0.22.1",
-    "bunchee": "^2.0.3",
+    "bunchee": "^2.1.3",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "execa": "^6.1.0",
     "fast-check": "^3.1.2",
     "prettier": "2.7.1",
+    "typescript": "^4.8.4",
     "vitest": "^0.22.1"
   },
   "dependencies": {

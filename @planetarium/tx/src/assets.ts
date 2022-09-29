@@ -1,6 +1,5 @@
 import { Encodable, encode } from "bencodex";
-import { Address, encodeAddress } from "./address";
-import { compareUint8Array } from "./binary";
+import { Address, encodeAddressSet } from "./address";
 
 export interface Currency {
   ticker: string;
@@ -8,16 +7,15 @@ export interface Currency {
   minters: Set<Address> | null;
   totalSupplyTrackable: boolean;
   maximumSupply: {
-    major: bigint,
-    minor: bigint,
+    major: bigint;
+    minor: bigint;
   } | null;
 }
 
 export function encodeCurrency(currency: Currency): Encodable {
-  const minters: Encodable[] | null
-    = currency.minters === null
-      ? null
-      : [...currency.minters].sort(compareUint8Array).map(encodeAddress);
+  const minters: Encodable = currency.minters === null
+    ? null
+    : encodeAddressSet(currency.minters);
   const serialized: Encodable = {
     ticker: currency.ticker,
     decimals: currency.decimalPlaces,
