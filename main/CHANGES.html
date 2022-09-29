@@ -78,7 +78,7 @@
 <li>Added <code>IRoutingTable</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/2046">#2046</a>, <a href="https://github.com/planetarium/libplanet/pull/2229">#2229</a>]</li>
 <li><code>RoutingTable</code> became to implement <code>IRoutingTable</code> interface.
 [<a href="https://github.com/planetarium/libplanet/issues/2046">#2046</a>, <a href="https://github.com/planetarium/libplanet/pull/2229">#2229</a>]</li>
-<li>Added <code>ActionEvaluator&lt;T&gt;.GenerateRandomSeed()</code> static method.<br>
+<li>Added <code>ActionEvaluator&lt;T&gt;.GenerateRandomSeed()</code> static method.
 [<a href="https://github.com/planetarium/libplanet/issues/2131">#2131</a>, <a href="https://github.com/planetarium/libplanet/pull/2236">#2236</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
@@ -109,6 +109,13 @@ JSON.</li>
 <a href="https://www.nuget.org/packages/System.Text.Json/6.0.6">6.0.6</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-0422">Version 0.42.2</h2>
+<p>Released on September 29, 2022.</p>
+<ul>
+<li>(Libplanet.Explorer) Fixed a bug of <code>TransactionQuery&lt;T&gt;</code> that
+<code>bindSignature()</code> had errored if <code>unsignedTransaction</code> has a system
+action.  [<a href="https://github.com/planetarium/libplanet/pull/2358">#2358</a>]</li>
+</ul>
 <h2 id="version-0421">Version 0.42.1</h2>
 <p>Released on September 23, 2022.</p>
 <ul>
@@ -153,6 +160,13 @@ to <code>max-transactions-bytes</code> and <code>max-genesis-bytes</code> to
 [<a href="https://github.com/planetarium/libplanet/pull/2283">#2283</a>]</li>
 <li>Upgraded <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.5.0">0.5.0</a> to <a href="https://www.nuget.org/packages/Bencodex/0.6.0">0.6.0</a>.
 [<a href="https://github.com/planetarium/libplanet/pull/2298">#2298</a>]</li>
+</ul>
+<h2 id="version-0414">Version 0.41.4</h2>
+<p>Released on September 29, 2022.</p>
+<ul>
+<li>(Libplanet.Explorer) Fixed a bug of <code>TransactionQuery&lt;T&gt;</code> that
+<code>bindSignature()</code> had errored if <code>unsignedTransaction</code> has a system
+action.  [<a href="https://github.com/planetarium/libplanet/pull/2358">#2358</a>]</li>
 </ul>
 <h2 id="version-0413">Version 0.41.3</h2>
 <p>Released on September 23, 2022.</p>
@@ -332,6 +346,13 @@ to recieve requests and send replies.</li>
 to stop recieving requests and sending replies.</li>
 </ul>
 </li>
+</ul>
+<h2 id="version-0403">Version 0.40.3</h2>
+<p>Released on September 29, 2022.</p>
+<ul>
+<li>(Libplanet.Explorer) Fixed a bug of <code>TransactionQuery&lt;T&gt;</code> that
+<code>bindSignature()</code> had errored if <code>unsignedTransaction</code> has a system
+action.  [<a href="https://github.com/planetarium/libplanet/pull/2358">#2358</a>]</li>
 </ul>
 <h2 id="version-0402">Version 0.40.2</h2>
 <p>Released on September 23, 2022.</p>
