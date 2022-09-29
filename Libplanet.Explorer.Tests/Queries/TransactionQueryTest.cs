@@ -149,7 +149,16 @@ public class TransactionQueryTest
             Store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var minerKey = new PrivateKey();
-            var genesisContent = new BlockContent<T> { PublicKey = minerKey.PublicKey };
+            var genesisContent = new BlockContent<T>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: System.DateTimeOffset.UtcNow,
+                    publicKey: minerKey.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: null
+                ));
             Block<T> genesis = genesisContent.Mine().Evaluate(
                 minerKey,
                 null,
