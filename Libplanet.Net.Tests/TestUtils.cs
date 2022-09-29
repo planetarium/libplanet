@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using Bencodex;
@@ -99,14 +98,13 @@ namespace Libplanet.Net.Tests
             int round = 0,
             BlockHash? hash = null,
             VoteFlag flag = VoteFlag.Null) =>
-            new Vote(
+            new VoteMetadata(
                 height,
                 round,
                 hash,
                 DateTimeOffset.Now,
                 privateKey.PublicKey,
-                flag,
-                ImmutableArray<byte>.Empty).Sign(privateKey);
+                flag).Sign(privateKey);
 
         public static PrivateKey GeneratePrivateKeyOfBucketIndex(Address tableAddress, int target)
         {
@@ -169,14 +167,13 @@ namespace Libplanet.Net.Tests
 
                 consensusContext.HandleMessage(
                     new ConsensusCommit(
-                        new Vote(
+                        new VoteMetadata(
                             consensusContext.Height,
                             (int)consensusContext.Round,
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Commit,
-                            ImmutableArray<byte>.Empty).Sign(privateKey))
+                            VoteFlag.Commit).Sign(privateKey))
                     {
                         Remote = peer,
                     });

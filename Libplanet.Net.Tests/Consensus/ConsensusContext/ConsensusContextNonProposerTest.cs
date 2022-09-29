@@ -73,14 +73,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Enough votes are present to proceed even without Peer3's vote.
             for (int i = 0; i < 2; i++)
             {
-                expectedVotes[i] = new Vote(
+                expectedVotes[i] = new VoteMetadata(
                     1,
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
-                    VoteFlag.Absent,
-                    ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[i]);
+                    VoteFlag.Absent).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
                     new ConsensusVote(expectedVotes[i])
                     {
@@ -92,14 +91,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Enough votes are present to proceed even without Peer3's vote.
             for (int i = 0; i < 2; i++)
             {
-                expectedVotes[i] = new Vote(
+                expectedVotes[i] = new VoteMetadata(
                     1,
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
-                    VoteFlag.Commit,
-                    ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[i]);
+                    VoteFlag.Commit).Sign(TestUtils.PrivateKeys[i]);
                 ConsensusContext.HandleMessage(
                     new ConsensusCommit(expectedVotes[i])
                     {
@@ -184,14 +182,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
                 ConsensusContext.HandleMessage(
                     new ConsensusVote(
-                        new Vote(
+                        new VoteMetadata(
                             2,
                             0,
                             propose.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Absent,
-                            ImmutableArray<byte>.Empty).Sign(privateKey))
+                            VoteFlag.Absent).Sign(privateKey))
                     {
                         Remote = peer,
                     });
@@ -211,14 +208,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
                 ConsensusContext.HandleMessage(
                     new ConsensusCommit(
-                        new Vote(
+                        new VoteMetadata(
                             2,
                             0,
                             propose.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Commit,
-                            ImmutableArray<byte>.Empty).Sign(privateKey))
+                            VoteFlag.Commit).Sign(privateKey))
                     {
                         Remote = peer,
                     });

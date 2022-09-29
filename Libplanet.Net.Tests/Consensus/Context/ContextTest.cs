@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -151,14 +150,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Vote's signature does not match with remote
             Context.ProduceMessage(
                 new ConsensusVote(
-                    new Vote(
+                    new VoteMetadata(
                         Context.Height,
                         Context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent,
-                        ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[NodeId])));
+                        VoteFlag.Absent).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
@@ -167,14 +165,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Context.ProduceMessage(
                 new ConsensusVote(
-                    new Vote(
+                    new VoteMetadata(
                         Context.Height,
                         Context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent,
-                        ImmutableArray<byte>.Empty).Sign(TestUtils.PrivateKeys[NodeId])));
+                        VoteFlag.Absent).Sign(TestUtils.PrivateKeys[NodeId])));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }

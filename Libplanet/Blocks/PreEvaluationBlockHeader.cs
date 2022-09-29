@@ -154,8 +154,7 @@ namespace Libplanet.Blocks
                     if (!votes.All(
                             vote =>
                             {
-                                if (vote.Signature is { } sign &&
-                                    vote.Validator.Verify(vote.RemoveSignature.ByteArray, sign))
+                                if (vote.Verify())
                                 {
                                     return true;
                                 }

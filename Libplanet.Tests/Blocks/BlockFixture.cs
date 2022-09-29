@@ -37,14 +37,13 @@ namespace Libplanet.Tests.Blocks
                     hash: Genesis.Hash,
                     votes: new[]
                     {
-                        new Vote(
+                        new VoteMetadata(
                             Genesis.Index,
                             0,
                             Genesis.Hash,
                             Genesis.Timestamp,
                             Miner.PublicKey,
-                            VoteFlag.Commit,
-                            ImmutableArray<byte>.Empty).Sign(Miner),
+                            VoteFlag.Commit).Sign(Miner),
                     }.ToImmutableArray())
             );
             HasTx = TestUtils.ProposeNextBlock(
@@ -63,14 +62,13 @@ namespace Libplanet.Tests.Blocks
                     hash: Next.Hash,
                     votes: new[]
                     {
-                        new Vote(
+                        new VoteMetadata(
                             Next.Index,
                             0,
                             Next.Hash,
                             Next.Timestamp,
                             Miner.PublicKey,
-                            VoteFlag.Commit,
-                            ImmutableArray<byte>.Empty).Sign(Miner),
+                            VoteFlag.Commit).Sign(Miner),
                     }.ToImmutableArray())
             );
         }

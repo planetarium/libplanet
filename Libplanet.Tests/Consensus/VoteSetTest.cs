@@ -33,23 +33,14 @@ namespace Libplanet.Tests.Consensus
 
              for (int i = 0; i < 3; i++)
              {
-                 var voteWithoutSign = new Vote(
-                     1,
-                     2,
-                     targetBlockHash,
-                     now,
-                     validators[i].PublicKey,
-                     VoteFlag.Absent,
-                     ImmutableArray<byte>.Empty);
-                 var vote = new Vote(
-                     1,
-                     2,
-                     targetBlockHash,
-                     now,
-                     validators[i].PublicKey,
-                     VoteFlag.Absent,
-                     validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
-                 voteSet.Add(vote);
+                var vote = new VoteMetadata(
+                    1,
+                    2,
+                    targetBlockHash,
+                    now,
+                    validators[i].PublicKey,
+                    VoteFlag.Absent).Sign(validators[i]);
+                voteSet.Add(vote);
              }
 
              Assert.True(voteSet.HasTwoThirdAny());
@@ -64,22 +55,13 @@ namespace Libplanet.Tests.Consensus
 
              for (int i = 0; i < 3; i++)
              {
-                 var voteWithoutSign = new Vote(
+                 var vote = new VoteMetadata(
                      1,
                      2,
                      targetBlockHash,
                      now,
                      validators[i].PublicKey,
-                     VoteFlag.Commit,
-                     ImmutableArray<byte>.Empty);
-                 var vote = new Vote(
-                     1,
-                     2,
-                     targetBlockHash,
-                     now,
-                     validators[i].PublicKey,
-                     VoteFlag.Commit,
-                     validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
+                     VoteFlag.Commit).Sign(validators[i]);
                  voteSet.Add(vote);
              }
 
@@ -110,22 +92,13 @@ namespace Libplanet.Tests.Consensus
 
              for (int i = 0; i < 3; i++)
              {
-                 var voteWithoutSign = new Vote(
+                 var vote = new VoteMetadata(
                      1,
                      1,
                      targetBlockHash,
                      now,
                      validators[i].PublicKey,
-                     VoteFlag.Absent,
-                     ImmutableArray<byte>.Empty);
-                 var vote = new Vote(
-                     1,
-                     1,
-                     targetBlockHash,
-                     now,
-                     validators[i].PublicKey,
-                     VoteFlag.Absent,
-                     validators[i].Sign(voteWithoutSign.ByteArray).ToImmutableArray());
+                     VoteFlag.Absent).Sign(validators[i]);
                  voteSet.Add(vote);
              }
 

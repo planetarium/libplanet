@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Store;
@@ -14,14 +13,13 @@ namespace Libplanet.Tests.Consensus
         {
             var fx = new MemoryStoreFixture();
             var now = DateTimeOffset.UtcNow;
-            var vote = new Vote(
+            var vote = new VoteMetadata(
                 1,
                 2,
                 fx.Hash1,
                 now,
                 new PrivateKey().PublicKey,
-                VoteFlag.Commit,
-                ImmutableArray<byte>.Empty);
+                VoteFlag.Commit).Sign(new PrivateKey());
             byte[] marshaled = vote.ByteArray;
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
@@ -31,21 +29,25 @@ namespace Libplanet.Tests.Consensus
         public void Sign()
         {
             var fx = new MemoryStoreFixture();
-            var now = DateTimeOffset.UtcNow;
             var privateKey = new PrivateKey();
-            var vote = new Vote(
+            var voteMetadata = new VoteMetadata(
                 1,
                 2,
                 fx.Hash1,
-                now,
+                DateTimeOffset.UtcNow,
                 privateKey.PublicKey,
-                VoteFlag.Commit,
-                ImmutableArray<byte>.Empty);
-            Assert.True(vote.Signature.IsDefaultOrEmpty);
-            Vote signed = vote.Sign(privateKey);
-            Assert.False(signed.Signature.IsDefaultOrEmpty);
+                VoteFlag.Commit);
+            Vote vote = voteMetadata.Sign(privateKey);
             Assert.True(
-                privateKey.PublicKey.Verify(signed.RemoveSignature.ByteArray, signed.Signature));
+                privateKey.PublicKey.Verify(voteMetadata.ByteArray, vote.Signature));
+        }
+
+        [Fact]
+        public void DefaultSignatureIsInvalid()
+        {
+            var voteMetadata = new VoteMetadata(
+                0, 0, null, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.Commit);
+            Assert.Throws<ArgumentException>(() => new Vote(voteMetadata, default));
         }
     }
 }
