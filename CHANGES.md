@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.42.2
 --------------
 
-To be released.
+Released on September 29, 2022.
 
  -  (Libplanet.Explorer) Fixed a bug of `TransactionQuery<T>` that
     `bindSignature()` had errored if `unsignedTransaction` has a system
@@ -16,8 +16,8 @@ Version 0.42.1
 
 Released on September 23, 2022.
 
--  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
-   serialized `SystemAction`.  [[#2339]]
+ -  Fixed a bug where `Transaction<T>.ToBencodex(bool)` method had incorrectly
+    serialized `SystemAction`.  [[#2339]]
 
 
 Version 0.42.0
