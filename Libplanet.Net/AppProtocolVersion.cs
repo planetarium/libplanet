@@ -242,7 +242,6 @@ namespace Libplanet.Net
             other field values.  A value of this struct can represent an invalid claim. */
             Version == other.Version &&
             Signer.Equals(other.Signer) &&
-            Equals(Extra, other.Extra) &&
             Signature.SequenceEqual(other.Signature);
 
         /// <inheritdoc/>
@@ -258,7 +257,6 @@ namespace Libplanet.Net
             unchecked
             {
                 hash *= 31 + Version.GetHashCode();
-                hash *= 31 + (Extra is null ? 0 : Extra.GetHashCode());
                 hash *= 31 + Signature.GetHashCode();
                 hash *= 31 + Signer.GetHashCode();
             }

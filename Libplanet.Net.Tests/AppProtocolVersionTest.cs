@@ -131,11 +131,11 @@ namespace Libplanet.Net.Tests
                 claim.Signature,
                 claim.Signer
             );
-            Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim3));
-            Assert.False(((object)claim).Equals(claim3));
-            Assert.NotEqual(claim.GetHashCode(), claim3.GetHashCode());
-            Assert.False(claim == claim3);
-            Assert.True(claim != claim3);
+            Assert.True(((IEquatable<AppProtocolVersion>)claim).Equals(claim3));
+            Assert.True(((object)claim).Equals(claim3));
+            Assert.Equal(claim.GetHashCode(), claim3.GetHashCode());
+            Assert.False(claim != claim3);
+            Assert.True(claim == claim3);
 
             var claim4 = new AppProtocolVersion(
                 claim.Version,
