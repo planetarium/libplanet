@@ -199,12 +199,17 @@ namespace Libplanet.Explorer.Queries
                             ),
                             false
                         );
-                    var signedTransaction = new Transaction<T>(
-                        metadata: unsignedTransaction,
-                        customActions: unsignedTransaction.CustomActions,
-                        signature: signature
-                    );
-
+                    var signedTransaction = unsignedTransaction.SystemAction is { } sysAction
+                        ? new Transaction<T>(
+                            metadata: unsignedTransaction,
+                            systemAction: sysAction,
+                            signature: signature
+                        )
+                        : new Transaction<T>(
+                            metadata: unsignedTransaction,
+                            customActions: unsignedTransaction.CustomActions,
+                            signature: signature
+                        );
                     return ByteUtil.Hex(signedTransaction.Serialize(true));
                 }
             );
