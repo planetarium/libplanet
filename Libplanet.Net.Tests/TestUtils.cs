@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Bencodex;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -11,6 +12,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
+using Libplanet.Net.Transports;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
@@ -80,17 +82,15 @@ namespace Libplanet.Net.Tests
             Peer3.PublicKey,
         };
 
-        public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
-            "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
-            ".X8y4JpPIyccPYWGrsCXWA95sBfextucz3lOyAiBUoY5t8aYNPT0lwYwC0MSkK3HT7T" +
-            ".lGJJW13dJi+06nw==");
-
-        public static IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
+        public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
             getMaxTransactionsBytes: _ => 50 * 1024,
             getValidators: _ => Validators);
 
-        public delegate void DelegateWatchConsensusMessage(ConsensusMessage message);
+        public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
+            "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
+            ".X8y4JpPIyccPYWGrsCXWA95sBfextucz3lOyAiBUoY5t8aYNPT0lwYwC0MSkK3HT7T" +
+            ".lGJJW13dJi+06nw==");
 
         public static Vote CreateVote(
             PrivateKey privateKey,
@@ -178,6 +178,132 @@ namespace Libplanet.Net.Tests
                         Remote = peer,
                     });
             }
+        }
+
+        public static (
+            StoreFixture Fx,
+            BlockChain<DumbAction> BlockChain,
+            ConsensusContext<DumbAction> ConsensusContext)
+            CreateDummyConsensusContext(
+                TimeSpan newHeightDelay,
+                IBlockPolicy<DumbAction>? policy = null,
+                PrivateKey? privateKey = null,
+                List<PublicKey>? validators = null,
+                ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
+                EventHandler<ConsensusMessage>? consensusMessageSent = null,
+                long lastCommitClearThreshold = 30)
+        {
+            policy ??= Policy;
+            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var blockChain = CreateDummyBlockChain(fx);
+            ConsensusContext<DumbAction>? consensusContext = null;
+
+            privateKey ??= Peer1Priv;
+            validators ??= Validators;
+
+            void BroadcastMessage(ConsensusMessage message) =>
+                Task.Run(() =>
+                {
+                    // ReSharper disable once AccessToModifiedClosure
+                    consensusMessageSent?.Invoke(consensusContext, message);
+                    message.Remote = new BoundPeer(
+                        privateKey.PublicKey,
+                        new DnsEndPoint("1.2.3.4", 1234));
+                    // ReSharper disable once AccessToModifiedClosure
+                    consensusContext!.HandleMessage(message);
+                });
+
+            broadcastMessage ??= BroadcastMessage;
+
+            consensusContext = new ConsensusContext<DumbAction>(
+                broadcastMessage,
+                blockChain,
+                blockChain.Tip.Index + 1,
+                privateKey,
+                newHeightDelay,
+                _ => validators,
+                lastCommitClearThreshold);
+
+            return (fx, blockChain, consensusContext);
+        }
+
+        public static (
+            StoreFixture Fx,
+            BlockChain<DumbAction> BlockChain,
+            Context<DumbAction> Context)
+            CreateDummyContext(
+            long height = 1,
+            int round = 0,
+            IBlockPolicy<DumbAction>? policy = null,
+            PrivateKey? privateKey = null,
+            List<PublicKey>? validators = null,
+            EventHandler<ConsensusMessage>? consensusMessageSent = null,
+            Step startStep = Step.Default)
+        {
+            Context<DumbAction>? context = null;
+            privateKey ??= Peer1Priv;
+            policy ??= Policy;
+            validators ??= Validators;
+
+            void BroadcastMessage(ConsensusMessage message) =>
+                Task.Run(() =>
+                {
+                    consensusMessageSent?.Invoke(context, message);
+                    message.Remote = new BoundPeer(
+                        privateKey!.PublicKey,
+                        new DnsEndPoint("1.2.3.4", 1234));
+                    context!.ProduceMessage(message);
+                });
+
+            var (fx, blockChain, consensusContext) = CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                policy,
+                Peer1Priv,
+                validators,
+                broadcastMessage: BroadcastMessage,
+                consensusMessageSent: consensusMessageSent);
+
+            context = new Context<DumbAction>(
+                consensusContext,
+                blockChain,
+                height,
+                privateKey,
+                validators,
+                startStep,
+                round);
+
+            return (fx, blockChain, context);
+        }
+
+        public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(
+            BlockChain<DumbAction> blockChain,
+            PrivateKey? key = null,
+            string host = "localhost",
+            int consensusPort = 5101,
+            List<BoundPeer>? validatorPeers = null,
+            int newHeightDelayMilliseconds = 10_000)
+        {
+            key ??= Peer1Priv;
+            validatorPeers ??= Peers;
+
+            var consensusTransport = NetMQTransport.Create(
+                key,
+                AppProtocolVersion,
+                null,
+                8,
+                host,
+                consensusPort,
+                Array.Empty<IceServer>(),
+                null).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            return new ConsensusReactor<DumbAction>(
+                consensusTransport,
+                blockChain,
+                key,
+                validatorPeers.ToImmutableList(),
+                new List<BoundPeer>().ToImmutableList(),
+                TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
+                30);
         }
     }
 }
