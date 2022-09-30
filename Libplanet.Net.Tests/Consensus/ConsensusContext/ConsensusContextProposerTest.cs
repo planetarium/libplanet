@@ -1,3 +1,4 @@
+using System;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
 using Nito.AsyncEx;
@@ -7,12 +8,12 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
-    public class ConsensusContextProposerTest : ConsensusContextTestBase
+    public class ConsensusContextProposerTest
     {
+        private const int Timeout = 30000;
         private readonly ILogger _logger;
 
         public ConsensusContextProposerTest(ITestOutputHelper output)
-            : base(output)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -28,21 +29,26 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void IncreaseRoundWhenTimeout()
         {
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv);
+
             var timeoutProcessed = new AsyncAutoResetEvent();
 
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].TimeoutProcessed +=
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Contexts[blockChain.Tip.Index + 1].TimeoutProcessed +=
                 (sender, message) =>
                 {
                     timeoutProcessed.Set();
                 };
 
             // Wait for block to be proposed.
-            Assert.Equal(1, ConsensusContext.Height);
-            Assert.Equal(0, ConsensusContext.Round);
+            Assert.Equal(1, consensusContext.Height);
+            Assert.Equal(0, consensusContext.Round);
 
             // Triggers timeout +2/3 with NIL and Block
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
@@ -53,7 +59,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer2,
                 });
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusVote(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
@@ -66,7 +72,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             await timeoutProcessed.WaitAsync();
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
@@ -77,7 +83,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peer2,
                 });
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusCommit(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
@@ -89,8 +95,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 });
 
             await timeoutProcessed.WaitAsync();
-            Assert.Equal(1, ConsensusContext.Height);
-            Assert.Equal(1, ConsensusContext.Round);
+            Assert.Equal(1, consensusContext.Height);
+            Assert.Equal(1, consensusContext.Round);
         }
     }
 }

@@ -9,46 +9,61 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
+using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.Context
 {
-    public class ContextTest : ContextTestBase
+    public class ContextTest
     {
-        private const int NodeId = 1;
+        private const int Timeout = 30000;
+        private readonly ILogger _logger;
 
         public ContextTest(ITestOutputHelper output)
-            : base(output, NodeId, 1, 0, Step.Default)
         {
+            const string outputTemplate =
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                .CreateLogger()
+                .ForContext<ContextTest>();
+
+            _logger = Log.ForContext<ContextTest>();
         }
 
         [Fact(Timeout = Timeout)]
         public async void StartAsync()
         {
-            var stepChangedToPreVote = new AsyncAutoResetEvent();
             var proposeSent = new AsyncAutoResetEvent();
-            Context.StateChanged += (sender, state) =>
+
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                consensusMessageSent: CatchPropose,
+                startStep: Step.Default);
+
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            ConsensusMessageSent += (observer, message) =>
+            void CatchPropose(object? observer, ConsensusMessage? message)
             {
                 if (message is ConsensusPropose)
                 {
                     proposeSent.Set();
                 }
-            };
+            }
 
-            Context.Start();
+            context.Start();
             await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
-            Assert.Equal(Step.PreVote, Context.Step);
-            Assert.Equal(1, Context.Height);
-            Assert.Equal(0, Context.Round);
+            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(1, context.Height);
+            Assert.Equal(0, context.Round);
         }
 
         [Fact(Timeout = Timeout)]
@@ -56,30 +71,35 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var proposeSent = new AsyncAutoResetEvent();
+
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                consensusMessageSent: CatchPropose,
+                startStep: Step.Default);
+
             ConsensusPropose? proposedMessage = null;
-            Context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            ConsensusMessageSent += (observer, message) =>
+            void CatchPropose(object? observer, ConsensusMessage? message)
             {
                 if (message is ConsensusPropose propose)
                 {
                     proposedMessage = propose;
                     proposeSent.Set();
                 }
-            };
+            }
 
-            var voteSet = new VoteSet(0, 0, BlockChain.Tip.Hash, TestUtils.Validators);
-            var lastCommit = new BlockCommit(voteSet, BlockChain.Tip.Hash);
+            var voteSet = new VoteSet(0, 0, blockChain.Tip.Hash, TestUtils.Validators);
+            var lastCommit = new BlockCommit(voteSet, blockChain.Tip.Hash);
 
-            Context.Start(lastCommit);
+            context.Start(lastCommit);
             await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
-            Assert.Equal(Step.PreVote, Context.Step);
+            Assert.Equal(Step.PreVote, context.Step);
             Assert.NotNull(proposedMessage);
             Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
                 (Dictionary)new Codec().Decode(proposedMessage!.Payload));
@@ -92,20 +112,23 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task ThrowInvalidProposer()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                startStep: Step.Default);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            Context.ExceptionOccurred += (sender, e) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 
-            _ = Context.MessageConsumerTask(default);
-            _ = Context.MutationConsumerTask(default);
+            _ = context.MessageConsumerTask(default);
+            _ = context.MutationConsumerTask(default);
 
-            Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[0]));
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv));
             await exceptionOccurred.WaitAsync();
 
             Assert.True(exceptionThrown is InvalidProposerProposeMessageException);
@@ -114,19 +137,22 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowNilPropose()
         {
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                startStep: Step.Default);
+
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            Context.ExceptionOccurred += (sender, e) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 
-            _ = Context.MessageConsumerTask(default);
-            _ = Context.MutationConsumerTask(default);
+            _ = context.MessageConsumerTask(default);
+            _ = context.MutationConsumerTask(default);
 
-            Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(default, TestUtils.PrivateKeys[NodeId]));
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(default, TestUtils.Peer1Priv));
             await exceptionOccurred.WaitAsync();
 
             Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
@@ -135,43 +161,46 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task ThrowInvalidValidatorVote()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[NodeId]);
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                startStep: Step.Default);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            Context.ExceptionOccurred += (sender, e) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 
-            _ = Context.MessageConsumerTask(default);
-            _ = Context.MutationConsumerTask(default);
+            _ = context.MessageConsumerTask(default);
+            _ = context.MutationConsumerTask(default);
 
             // Vote's signature does not match with remote
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusVote(
                     new VoteMetadata(
-                        Context.Height,
-                        Context.Round,
+                        context.Height,
+                        context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent).Sign(TestUtils.PrivateKeys[NodeId])));
+                        VoteFlag.Absent).Sign(TestUtils.Peer1Priv)));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
             // Reset exception thrown.
             exceptionThrown = null;
 
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusVote(
                     new VoteMetadata(
-                        Context.Height,
-                        Context.Round,
+                        context.Height,
+                        context.Round,
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent).Sign(TestUtils.PrivateKeys[NodeId])));
+                        VoteFlag.Absent).Sign(TestUtils.Peer1Priv)));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }
@@ -179,31 +208,34 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task ThrowDifferentHeight()
         {
-            var block = BlockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                startStep: Step.Default);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer2Priv);
 
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            Context.ExceptionOccurred += (sender, e) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 
-            _ = Context.MessageConsumerTask(default);
-            _ = Context.MutationConsumerTask(default);
+            _ = context.MessageConsumerTask(default);
+            _ = context.MutationConsumerTask(default);
 
-            Context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], 2, 2));
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, 2, 2));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidHeightMessageException);
 
             // Reset exception thrown.
             exceptionThrown = null;
 
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2],
+                        TestUtils.Peer2Priv,
                         2,
                         0,
                         block.Hash,
@@ -217,10 +249,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Reset exception thrown.
             exceptionThrown = null;
 
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2],
+                        TestUtils.Peer2Priv,
                         2,
                         0,
                         block.Hash,
@@ -236,9 +268,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void VoteSet()
         {
             // FIXME: Pretty lousy testing method.
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                startStep: Step.Default);
+
             BlockHash? blockHash = null;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            Context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreCommit)
                 {
@@ -246,38 +281,37 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
-            Context.Start();
-
-            Context.ProduceMessage(
+            context.Start();
+            context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[0], 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = TestUtils.Peers[0],
+                    Remote = TestUtils.Peer0,
                 });
 
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
                 {
-                    Remote = TestUtils.Peers[2],
+                    Remote = TestUtils.Peer2,
                 });
 
-            Context.ProduceMessage(
+            context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[2], 1, hash: blockHash, flag: VoteFlag.Commit))
+                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.Commit))
                 {
-                    Remote = TestUtils.Peers[2],
+                    Remote = TestUtils.Peer2,
                 });
 
             await stepChangedToPreCommit.WaitAsync();
             // Wait for the vote to change from Absent to Commit to avoid flakiness.
             await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => Context.VoteSet(0).Votes[1].Flag == VoteFlag.Commit,
+                () => context.VoteSet(0).Votes[1].Flag == VoteFlag.Commit,
                 3_000);
-            VoteSet roundVoteSet = Context.VoteSet(0);
+            VoteSet roundVoteSet = context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
             Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
