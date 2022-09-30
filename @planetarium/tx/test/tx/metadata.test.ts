@@ -8,7 +8,7 @@ test("encodeTxMetadata", () => {
     nonce: 123n,
     publicKey: key1.public,
     signer: key1.address,
-    timestamp: new Date(2022, 4, 23, 10, 2, 0),
+    timestamp: new Date("2022-05-23T01:02:00+00:00"),
     updatedAddresses: new Set(),
     genesisHash: null,
   });
