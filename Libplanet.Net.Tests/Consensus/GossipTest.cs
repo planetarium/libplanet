@@ -28,9 +28,9 @@ namespace Libplanet.Net.Tests.Consensus
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ConsensusReactorTestBase>();
+                .ForContext<GossipTest>();
 
-            _logger = Log.ForContext<ConsensusReactorTestBase>();
+            _logger = Log.ForContext<GossipTest>();
         }
 
         public void Dispose()
