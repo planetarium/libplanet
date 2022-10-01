@@ -54,11 +54,14 @@ To be released.
 
 ### CLI tools
 
+ -  Added builds for Apple Silicon to releases.  [[#2365]]
+
 [#2046]: https://github.com/planetarium/libplanet/issues/2046
 [#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
+[#2365]: https://github.com/planetarium/libplanet/pull/2365
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [System.Text.Json 4.7.2]: https://www.nuget.org/packages/System.Text.Json/4.7.2

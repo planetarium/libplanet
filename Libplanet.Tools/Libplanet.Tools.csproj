@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6</TargetFramework>
     <RootNamespace>Libplanet.Tools</RootNamespace>
     <ToolCommandName>planet</ToolCommandName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -30,12 +30,6 @@
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="
-    '$([System.Runtime.InteropServices.RuntimeInformation]::
-      OSArchitecture.ToString())' == 'Arm64' ">
-    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
