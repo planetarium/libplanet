@@ -960,7 +960,10 @@ namespace Libplanet.Tests.Store
 
             // We need `Block<T>`s because `IStore` can't retrive index(long) by block hash without
             // actual block...
-            Block<DumbAction> anotherBlock3 = ProposeNextBlock(Fx.Block2, Fx.Miner);
+            Block<DumbAction> anotherBlock3 = ProposeNextBlock(
+                Fx.Block2,
+                Fx.Miner,
+                lastCommit: CreateLastCommit(Fx.Block2.Hash, 2, 0));
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1016,7 +1019,8 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
-                var policy = new NullBlockPolicy<DumbAction>();
+                var policy = new NullBlockPolicy<DumbAction>(
+                    getValidators: _ => ConsensusValidators);
                 var blocks = new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),
@@ -1033,8 +1037,12 @@ namespace Libplanet.Tests.Store
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
                 blocks.Append(blocks.ProposeBlock(key));
-                blocks.Append(blocks.ProposeBlock(key));
-                blocks.Append(blocks.ProposeBlock(key));
+                blocks.Append(blocks.ProposeBlock(
+                    key,
+                    lastCommit: CreateLastCommit(blocks.Tip.Hash, blocks.Tip.Index, 0)));
+                blocks.Append(blocks.ProposeBlock(
+                    key,
+                    lastCommit: CreateLastCommit(blocks.Tip.Hash, blocks.Tip.Index, 0)));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);

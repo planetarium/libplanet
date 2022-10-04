@@ -505,10 +505,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(0, delayedRenderer.GetBufferedActionUnRendererCount());
         }
 
-        [Fact]
+        [Fact(Skip = "No reorg in PBFT.")]
         public void DelayedRendererInReorg()
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                getValidators: _ => TestUtils.ConsensusValidators);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
@@ -573,7 +575,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
-            chain.Append(chain.ProposeBlock(key));
+            chain.Append(chain.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0)));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -582,7 +586,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var forked = chain.Fork(chain[0].Hash);
             chain.StagePolicy.Stage(chain, tx1);
-            var block = forked.ProposeBlock(key);
+            var block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -590,15 +596,19 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
             chain.StagePolicy.Stage(chain, tx2);
-            block = forked.ProposeBlock(key);
+            block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
-                );
+            );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#3") });
-            block = forked.ProposeBlock(key);
+            block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -606,7 +616,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
                     renderActions: false
                 );
             forked.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#4") });
-            block = forked.ProposeBlock(key);
+            block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -622,10 +634,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(4, renderLogs.Count);
         }
 
-        [Fact]
+        [Fact(Skip = "No reorg in PBFT.")]
         public void DelayedRendererAfterReorg()
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                getValidators: _ => TestUtils.ConsensusValidators);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
@@ -690,7 +704,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Empty(renderLogs);
 
             var tx2 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#2") });
-            chain.Append(chain.ProposeBlock(key));
+            chain.Append(chain.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0)));
 
             Assert.Equal(chain[0], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
@@ -699,14 +715,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var forked = chain.Fork(chain[1].Hash);
             chain.StagePolicy.Stage(chain, tx2);
-            var block = forked.ProposeBlock(key);
+            var block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
                     renderBlocks: false,
                     renderActions: false
                 );
-            block = forked.ProposeBlock(key);
+            block = forked.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(forked.Tip.Hash, forked.Tip.Index, 0));
             forked.Append(
                     block,
                     evaluateActions: true,
@@ -721,7 +741,9 @@ namespace Libplanet.Tests.Blockchain.Renderers
             Assert.Equal(new[] { (chain[0], chain[1]) }, blockLogs);
             Assert.Equal(2, renderLogs.Count);
 
-            chain.Append(chain.ProposeBlock(key));
+            chain.Append(chain.ProposeBlock(
+                key,
+                lastCommit: TestUtils.CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0)));
             Assert.Equal(chain[2], delayedRenderer.Tip);
             Assert.Empty(reorgLogs);
             Assert.Equal(new[] { (chain[0], chain[1]), (chain[1], chain[2]) }, blockLogs);

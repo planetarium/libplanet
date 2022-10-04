@@ -31,7 +31,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 _branchpoint = chainA[i] = chainB[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    TestUtils.GenesisMiner
+                    TestUtils.GenesisMiner,
+                    lastCommit: TestUtils.CreateLastCommit(
+                        chainA[i - 1].Hash,
+                        chainA[i - 1].Index,
+                        0)
                 );
             }
 
@@ -39,10 +43,18 @@ namespace Libplanet.Tests.Blockchain.Renderers
             {
                 chainA[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
-                    TestUtils.GenesisMiner);
+                    TestUtils.GenesisMiner,
+                    lastCommit: TestUtils.CreateLastCommit(
+                        chainA[i - 1].Hash,
+                        chainA[i - 1].Index,
+                        0));
                 chainB[i] = TestUtils.ProposeNextBlock(
                     chainB[i - 1],
-                    TestUtils.GenesisMiner);
+                    TestUtils.GenesisMiner,
+                    lastCommit: TestUtils.CreateLastCommit(
+                        chainB[i - 1].Hash,
+                        chainB[i - 1].Index,
+                        0));
             }
 
             _chainA = chainA;
