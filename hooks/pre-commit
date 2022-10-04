@@ -5,4 +5,12 @@ set -e
 "$(dirname "$0")/check-changelog"
 "$(dirname "$0")/check-projects"
 
+for jsproj in "$(dirname "$0")/../@planetarium"/*; do
+  if [[ -x "$jsproj/hooks/pre-commit" ]]; then
+    pushd "$jsproj"
+    hooks/pre-commit
+    popd
+  fi
+done
+
 # vim: set filetype=sh ts=2 sw=2 et:
