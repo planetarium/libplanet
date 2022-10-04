@@ -31,20 +31,7 @@ namespace Libplanet.Tests.Blocks
                 protocolVersion: ProtocolVersion,
                 stateRootHash: HashDigest<SHA256>.FromString(
                     "6a648da9e91c21aa22bdae4e35c338406392aad0db4a0f998c01a7d7973cb8aa"),
-                lastCommit: new BlockCommit(
-                    height: Genesis.Index,
-                    round: 0,
-                    hash: Genesis.Hash,
-                    votes: new[]
-                    {
-                        new VoteMetadata(
-                            Genesis.Index,
-                            0,
-                            Genesis.Hash,
-                            Genesis.Timestamp,
-                            Miner.PublicKey,
-                            VoteFlag.Commit).Sign(Miner),
-                    }.ToImmutableArray())
+                lastCommit: null
             );
             HasTx = TestUtils.ProposeNextBlock(
                 Next,

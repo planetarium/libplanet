@@ -73,6 +73,7 @@ namespace Libplanet.Tests
             _marshaledGenesis = Dictionary.Empty
                 .Add(HeaderKey, expectedGenesisHeader);
 
+            // Index #1 block does not have LastCommit.
             _marshaledNextMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Next.ProtocolVersion)
                 .Add(IndexKey, _fx.Next.Index)
@@ -80,8 +81,7 @@ namespace Libplanet.Tests
                 .Add(
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true))
-                .Add(LastCommitKey, _fx.Next.LastCommit.Value.ByteArray);
+                .Add(PublicKeyKey, _fx.Next.PublicKey.Format(compress: true));
             var expectedNextHeader = _marshaledNextMetadata
                 .Add(PreEvaluationHashKey, _fx.Next.PreEvaluationHash.ByteArray)
                 .Add(StateRootHashKey, _fx.Next.StateRootHash.ByteArray)

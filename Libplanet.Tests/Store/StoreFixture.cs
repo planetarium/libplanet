@@ -112,11 +112,20 @@ namespace Libplanet.Tests.Store
                 stateStore: stateStore
             );
             stateRootHashes[GenesisBlock.Hash] = GenesisBlock.StateRootHash;
-            Block1 = TestUtils.ProposeNextBlock(GenesisBlock, miner: Miner);
+            Block1 = TestUtils.ProposeNextBlock(
+                GenesisBlock,
+                miner: Miner,
+                lastCommit: null);
             stateRootHashes[Block1.Hash] = Block1.StateRootHash;
-            Block2 = TestUtils.ProposeNextBlock(Block1, miner: Miner);
+            Block2 = TestUtils.ProposeNextBlock(
+                Block1,
+                miner: Miner,
+                lastCommit: TestUtils.CreateLastCommit(Block1.Hash, Block1.Index, 0));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
-            Block3 = TestUtils.ProposeNextBlock(Block2, miner: Miner);
+            Block3 = TestUtils.ProposeNextBlock(
+                Block2,
+                miner: Miner,
+                lastCommit: TestUtils.CreateLastCommit(Block2.Hash, Block2.Index, 0));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
