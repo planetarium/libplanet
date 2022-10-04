@@ -21,7 +21,7 @@ namespace Libplanet.Explorer.Queries
         private static readonly Codec _codec = new Codec();
         private readonly IBlockChainContext<T> _context;
 
-        // FIXME should be refactored to reduce LoC of consturctor.
+        // FIXME should be refactored to reduce LoC of constructor.
         #pragma warning disable MEN003
         public TransactionQuery(IBlockChainContext<T> context)
         #pragma warning restore MEN003
@@ -164,6 +164,19 @@ namespace Libplanet.Explorer.Queries
                         );
                     return unsignedTransaction.Serialize(false);
                 }
+            );
+
+            Field<NonNullGraphType<LongGraphType>>(
+                name: "nextNonce",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<AddressType>>
+                    {
+                        Name = "address",
+                        Description = "Address of the account to get the next tx nonce.",
+                    }
+                ),
+                resolve: context =>
+                    _context.BlockChain.GetNextTxNonce(context.GetArgument<Address>("address"))
             );
 
             Field<NonNullGraphType<StringGraphType>>(
