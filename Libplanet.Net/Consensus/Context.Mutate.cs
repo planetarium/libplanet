@@ -117,7 +117,7 @@ namespace Libplanet.Net.Consensus
 
                 if (message is ConsensusVote vote &&
                     (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
-                    !vote.ProposeVote.Verify(vote.Validator) ||
+                    !vote.ProposeVote.Verify() ||
                     !_validators.Contains(vote.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
@@ -127,7 +127,7 @@ namespace Libplanet.Net.Consensus
 
                 if (message is ConsensusCommit commit &&
                     (!commit.Validator.Equals(commit.CommitVote.Validator) ||
-                    !commit.CommitVote.Verify(commit.Validator) ||
+                    !commit.CommitVote.Verify() ||
                     !_validators.Contains(commit.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
@@ -185,12 +185,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(Voting(Round, block1.Hash, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, block1.Hash, VoteFlag.Absent)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
                 }
             }
 
@@ -210,12 +210,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(Voting(Round, block2.Hash, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, block2.Hash, VoteFlag.Absent)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
                 }
             }
 
@@ -255,7 +255,7 @@ namespace Libplanet.Net.Consensus
                     _lockedValue = block3;
                     _lockedRound = Round;
                     BroadcastMessage(
-                        new ConsensusCommit(Voting(Round, block3.Hash, VoteFlag.Commit)));
+                        new ConsensusCommit(MakeVote(Round, block3.Hash, VoteFlag.Commit)));
                 }
 
                 _validValue = block3;
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreCommit;
                 BroadcastMessage(
-                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
+                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.Commit)));
             }
 
             if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitTimeoutFlags.Contains(Round))
@@ -337,7 +337,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.Propose)
             {
                 BroadcastMessage(
-                    new ConsensusVote(Voting(Round, null, VoteFlag.Absent)));
+                    new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
                 Step = Step.PreVote;
                 TimeoutProcessed?.Invoke(this, round);
             }
@@ -354,7 +354,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.PreVote)
             {
                 BroadcastMessage(
-                    new ConsensusCommit(Voting(Round, null, VoteFlag.Commit)));
+                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.Commit)));
                 Step = Step.PreCommit;
                 TimeoutProcessed?.Invoke(this, round);
             }

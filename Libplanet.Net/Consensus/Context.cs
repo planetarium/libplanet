@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -122,7 +121,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="privateKey">A private key for signing a block and message.
         /// <seealso cref="GetValue"/>
         /// <seealso cref="ProcessGenericUponRules"/>
-        /// <seealso cref="Voting"/>
+        /// <seealso cref="MakeVote"/>
         /// </param>
         /// <param name="validators">A list of <see cref="PublicKey"/> of validators.</param>
         public Context(
@@ -342,8 +341,8 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Creates a <see cref="Vote"/> for <see cref="ConsensusVote"/> or
-        /// <see cref="ConsensusCommit"/>.
+        /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusVote"/> or
+        /// a <see cref="ConsensusCommit"/>.
         /// </summary>
         /// <param name="round">Current context round.</param>
         /// <param name="hash">Current context locked <see cref="BlockHash"/>.</param>
@@ -352,16 +351,24 @@ namespace Libplanet.Net.Consensus
         /// Set <see cref="VoteFlag.Commit"/>.
         /// </param>
         /// <returns>Returns a signed <see cref="Vote"/> with consensus private key.</returns>
-        private Vote Voting(int round, BlockHash? hash, VoteFlag flag)
+        /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
+        /// <see cref="VoteFlag.Null"/> or <see cref="VoteFlag.Unknown"/>.</exception>
+        private Vote MakeVote(int round, BlockHash? hash, VoteFlag flag)
         {
-            return new Vote(
+            if (flag == VoteFlag.Null || flag == VoteFlag.Unknown)
+            {
+                throw new ArgumentException(
+                    $"{nameof(flag)} must be either {VoteFlag.Absent} or {VoteFlag.Commit}" +
+                    $"to create a valid signed vote.");
+            }
+
+            return new VoteMetadata(
                 Height,
                 round,
                 hash,
                 DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
-                flag,
-                ImmutableArray<byte>.Empty).Sign(_privateKey);
+                flag).Sign(_privateKey);
         }
 
         /// <summary>

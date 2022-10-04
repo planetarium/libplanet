@@ -46,7 +46,9 @@ To be released.
 
  -  Added `VoteSet` class.  [[#PBFT]]
  -  Added `VoteFlag` enum.  [[#PBFT]]
- -  Added `Vote` readonly struct.  [[#PBFT]]
+ -  Added `IVoteMetadata` interface.  [[#PBFT]]
+ -  Added `VoteMetadata` class.  [[#PBFT]]
+ -  Added `Vote` class.  [[#PBFT]]
  -  Added `BlockContent.Propose()` method.  [[#PBFT]]
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]

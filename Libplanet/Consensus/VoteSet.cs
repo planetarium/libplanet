@@ -38,14 +38,13 @@ namespace Libplanet.Consensus
 
             // TODO: Order of validators should not depend on given validatorSet's order?
             _votes = Enumerable.Range(0, ValidatorSet.Length)
-                .Select(x => new Vote(
+                .Select(x => new VoteMetadata(
                     height,
                     round,
                     blockHash,
                     DateTimeOffset.Now,
                     ValidatorSet[x],
-                    VoteFlag.Null,
-                    ImmutableArray<byte>.Empty))
+                    VoteFlag.Null).Sign(null))
                 .ToDictionary(keySelector: x => x.Validator, elementSelector: x => x);
 
             _lock = new object();
@@ -77,22 +76,22 @@ namespace Libplanet.Consensus
         }
 
         /// <summary>
-        /// Add the <paramref name="vote"/> to the collection.
+        /// Adds <paramref name="vote"/> to the collection.
         /// </summary>
-        /// <param name="vote">A <see cref="Vote"/> for add.</param>
+        /// <param name="vote">The <see cref="Vote"/> to add.</param>
         /// <returns><c>true</c> if the <paramref name="vote"/> is successfully added.
         /// <c>false</c> otherwise.</returns>
         public bool Add(Vote vote)
         {
             lock (_lock)
             {
-                if (!IsVoteValid(vote))
+                if (IsVoteValid(vote))
                 {
-                    return false;
+                    _votes[vote.Validator] = vote;
+                    return true;
                 }
 
-                _votes[vote.Validator] = vote;
-                return true;
+                return false;
             }
         }
 
@@ -134,38 +133,11 @@ namespace Libplanet.Consensus
 
         private bool IsVoteValid(Vote vote)
         {
-            if (vote.Signature.IsDefaultOrEmpty)
-            {
-                return false;
-            }
-
-            if (!vote.Verify(vote.Validator))
-            {
-                return false;
-            }
-
-            if (!ValidatorSet.Contains(vote.Validator))
-            {
-                // The voter is not a validator.
-                return false;
-            }
-
-            if (vote.Height != Height)
-            {
-                return false;
-            }
-
-            if (vote.Round != Round)
-            {
-                return false;
-            }
-
-            if (vote.Flag < _votes[vote.Validator].Flag)
-            {
-                return false;
-            }
-
-            return true;
+            return ValidatorSet.Contains(vote.Validator) &&
+                vote.Verify() &&
+                vote.Height == Height &&
+                vote.Round == Round &&
+                _votes[vote.Validator].Flag <= vote.Flag;
         }
     }
 }

@@ -35,30 +35,27 @@ namespace Libplanet.Tests.Blocks
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
             );
             DateTimeOffset timestamp = DateTimeOffset.UtcNow;
-            var voteA = new Vote(
+            var voteA = new VoteMetadata(
                 1,
                 0,
                 blockHash,
                 timestamp,
                 validatorA.PublicKey,
-                VoteFlag.Commit,
-                ImmutableArray<byte>.Empty).Sign(validatorA);
-            var voteB = new Vote(
+                VoteFlag.Commit).Sign(validatorA);
+            var voteB = new VoteMetadata(
                 1,
                 0,
                 blockHash,
                 timestamp,
                 validatorB.PublicKey,
-                VoteFlag.Commit,
-                ImmutableArray<byte>.Empty).Sign(validatorB);
-            var voteC = new Vote(
+                VoteFlag.Commit).Sign(validatorB);
+            var voteC = new VoteMetadata(
                 1,
                 0,
                 blockHash,
                 timestamp,
                 validatorC.PublicKey,
-                VoteFlag.Commit,
-                ImmutableArray<byte>.Empty).Sign(validatorC);
+                VoteFlag.Commit).Sign(validatorC);
 
             // Height of the last commit is invalid.
             var invalidHeightLastCommit = new BlockCommit(
@@ -111,14 +108,13 @@ namespace Libplanet.Tests.Blocks
                 {
                     voteA,
                     voteB,
-                    new Vote(
+                    new VoteMetadata(
                         1,
                         0,
                         blockHash,
                         timestamp,
                         validatorC.PublicKey,
-                        VoteFlag.Commit,
-                        ImmutableArray<byte>.Empty).Sign(invalidValidator),
+                        VoteFlag.Commit).Sign(invalidValidator),
                 }.ToImmutableArray());
             var invalidVoteSignatureMetadata = new BlockMetadata
             {
@@ -143,14 +139,13 @@ namespace Libplanet.Tests.Blocks
                 {
                     voteA,
                     voteB,
-                    new Vote(
+                    new VoteMetadata(
                         2,
                         0,
                         blockHash,
                         timestamp,
                         validatorC.PublicKey,
-                        VoteFlag.Commit,
-                        ImmutableArray<byte>.Empty).Sign(validatorC),
+                        VoteFlag.Commit).Sign(validatorC),
                 }.ToImmutableArray());
             var invalidVoteHeightMetadata = new BlockMetadata
             {
@@ -174,22 +169,20 @@ namespace Libplanet.Tests.Blocks
                 new[]
                 {
                     voteA,
-                    new Vote(
+                    new VoteMetadata(
                         1,
                         0,
                         blockHash,
                         timestamp,
                         validatorB.PublicKey,
-                        VoteFlag.Null,
-                        ImmutableArray<byte>.Empty),
-                    new Vote(
+                        VoteFlag.Null).Sign(null),
+                    new VoteMetadata(
                         1,
                         0,
                         blockHash,
                         timestamp,
                         validatorC.PublicKey,
-                        VoteFlag.Unknown,
-                        ImmutableArray<byte>.Empty),
+                        VoteFlag.Unknown).Sign(null),
                 }.ToImmutableArray());
             var validMetadata = new BlockMetadata
             {

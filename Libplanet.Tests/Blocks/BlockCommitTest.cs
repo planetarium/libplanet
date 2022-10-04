@@ -24,15 +24,14 @@ namespace Libplanet.Tests.Blocks
          {
              var fx = new MemoryStoreFixture();
              var votes = Enumerable.Range(0, 4)
-                                          .Select(x => new Vote(
-                                              1,
-                                              0,
-                                              fx.Hash1,
-                                              DateTimeOffset.Now,
-                                              new PrivateKey().PublicKey,
-                                              VoteFlag.Absent,
-                                              ImmutableArray<byte>.Empty))
-                                          .ToImmutableArray();
+                .Select(x => new VoteMetadata(
+                    1,
+                    0,
+                    fx.Hash1,
+                    DateTimeOffset.Now,
+                    new PrivateKey().PublicKey,
+                    VoteFlag.Null).Sign(null))
+                .ToImmutableArray();
              var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
 
              byte[] marshaled = blockCommit.ByteArray;
