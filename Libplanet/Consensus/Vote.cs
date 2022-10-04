@@ -80,20 +80,10 @@ namespace Libplanet.Consensus
         /// </summary>
         public ImmutableArray<byte> Signature { get; }
 
-        public Dictionary Encoded
-        {
-            get
-            {
-                return !Signature.IsEmpty
-                    ? _metadata.Encoded.Add(SignatureKey, Signature)
-                    : _metadata.Encoded;
-            }
-        }
-
         /// <summary>
         /// <see cref="byte"/> encoded <see cref="Vote"/> data.
         /// </summary>
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public byte[] ByteArray => _codec.Encode(Encoded());
 
         /// <summary>
         /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
@@ -105,6 +95,11 @@ namespace Libplanet.Consensus
         public bool Verify() =>
             !Signature.IsEmpty &&
             Validator.Verify(_metadata.ByteArray.ToImmutableArray(), Signature);
+
+        public Dictionary Encoded() =>
+            !Signature.IsEmpty
+                ? _metadata.Encoded().Add(SignatureKey, Signature)
+                : _metadata.Encoded();
 
         /// <inheritdoc/>
         [Pure]
