@@ -64,6 +64,10 @@
 
 <h2 id="version-0430">Version 0.43.0</h2>
 <p>To be released.</p>
+<p>Since 0.43.0, we officially provide <em><a href="https://www.npmjs.com/package/@planetarium/tx">@planetarium/tx</a></em>, an npm package for
+creating unsigned transactions in JavaScript/TypeScript.  Although it is still
+in experimental stage, which can build only unsigned transactions with
+a system action, its features will be added more in the future.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
@@ -75,8 +79,16 @@
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
-<li>Added <code>IRoutingTable</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/2046">#2046</a>, <a href="https://github.com/planetarium/libplanet/pull/2229">#2229</a>]</li>
-<li><code>RoutingTable</code> became to implement <code>IRoutingTable</code> interface.
+<li>System actions now have methods to check equality.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]
+<ul>
+<li><code>Mint</code> now implements <code>IEquatable&lt;Mint&gt;</code>.</li>
+<li><code>Mint</code> now implements <code>IEquatable&lt;IAction&gt;</code>.</li>
+<li><code>Transfer</code> now implements <code>IEquatable&lt;Transfer&gt;</code>.</li>
+<li><code>Transfer</code> now implements <code>IEquatable&lt;IAction&gt;</code>.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>IRoutingTable</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/2046">#2046</a>, <a href="https://github.com/planetarium/libplanet/pull/2229">#2229</a>]</li>
+<li>(Libplanet.Net) <code>RoutingTable</code> now implements <code>IRoutingTable</code> interface.
 [<a href="https://github.com/planetarium/libplanet/issues/2046">#2046</a>, <a href="https://github.com/planetarium/libplanet/pull/2229">#2229</a>]</li>
 <li>Added <code>ActionEvaluator&lt;T&gt;.GenerateRandomSeed()</code> static method.
 [<a href="https://github.com/planetarium/libplanet/issues/2131">#2131</a>, <a href="https://github.com/planetarium/libplanet/pull/2236">#2236</a>]</li>
@@ -86,29 +98,53 @@
 <li><p>Many types became serialized and deserialized better with
 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer"><code>System.Text.Json.JsonSerializer</code></a> as they now have their own
 <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to">custom converters</a>.  Note that these serializations are unavailable
-on Unity due to its incomplete reflection support.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</p>
+on Unity due to its incomplete reflection support.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>, <a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</p>
 <ul>
-<li>An <code>Address</code> became represented as a single hexadecimal string in JSON.</li>
-<li>A <code>BlockHash</code> became represented as a single hexadecimal string in JSON.</li>
+<li>An <code>Address</code> became represented as a single hexadecimal string in JSON.
+[<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
+<li>A <code>BlockHash</code> became represented as a single hexadecimal string in JSON.
+[<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 <li>A <code>Currency</code> became represented as an object with values in JSON.
 Note that it contains its <code>Hash</code> and it throws <code>JsonException</code>
 if a JSON object to deserialize has an inconsistent <code>Hash</code> with
-other field values.</li>
+other field values.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 <li>A <code>FungibleAssetValue</code> became represented as an object with
-its <code>Currency</code> object and <code>Quantity</code> string.</li>
-<li>A <code>HashDigest</code> became represented as a single hexadecimal string in
-JSON.</li>
-<li>A <code>TxId</code> became represented as a single hexadecimal string in JSON.</li>
+its <code>Currency</code> object and <code>Quantity</code> string.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
+<li>A <code>HashDigest&lt;T&gt;</code> became represented as a single hexadecimal string in
+JSON.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
+<li>A <code>Transaction&lt;T&gt;</code> became represented as an object with values in JSON.
+[<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
+<li>A <code>TxId</code> became represented as a single hexadecimal string in JSON.
+[<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
+<li>System actions became represented as a <a href="https://github.com/planetarium/bencodex/blob/4a92a98e859a54bc6e9617d4dd3035250fe69a86/JSON.md">Bencodex JSON Representation</a>
+of their <code>PlainValue</code> with <code>type_id</code> field.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
 </ul>
+</li>
+<li><p>System actions' <code>GetHashCode()</code> and <code>Equals(object)</code> methods now check
+value equality (rather than reference equality).  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</p>
 </li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
+<li>Added <em><a href="https://www.npmjs.com/package/@planetarium/tx">@planetarium/tx</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
+<li>Now depends on <a href="https://www.nuget.org/packages/Bencodex.Json/0.7.0-dev.20220923062845"><em>Bencodex.Json</em>
+0.7.0-dev.20220923062846</a>.
+[<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
+<li>Upgrade <em>Bencodex</em> from <a href="https://www.nuget.org/packages/Bencodex/0.6.0">0.6.0</a> to
+<a href="https://www.nuget.org/packages/Bencodex/0.7.0-dev.20220923062845">0.7.0-dev.20220923062845</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
 <li>Upgrade <em>System.Text.Json</em> from <a href="https://www.nuget.org/packages/System.Text.Json/4.7.2">4.7.2</a> to
 <a href="https://www.nuget.org/packages/System.Text.Json/6.0.6">6.0.6</a>.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<ul>
+<li>Added <code>planet tx</code> subcommand group.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]
+<ul>
+<li>Added <code>planet tx analyze</code> subcommand.</li>
+<li>Added <code>planet tx help</code> subcommand.</li>
+</ul>
+</li>
+</ul>
 <h2 id="version-0422">Version 0.42.2</h2>
 <p>Released on September 29, 2022.</p>
 <ul>

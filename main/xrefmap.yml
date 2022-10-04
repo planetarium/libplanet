@@ -1198,6 +1198,34 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Mint.Amount
   nameWithType: Mint.Amount
+- uid: Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)
+  name: Equals(IAction)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)
+  fullName: Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.IAction)
+  nameWithType: Mint.Equals(IAction)
+- uid: Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)
+  name: Equals(Mint)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Equals_Libplanet_Action_Sys_Mint_
+  commentId: M:Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)
+  fullName: Libplanet.Action.Sys.Mint.Equals(Libplanet.Action.Sys.Mint)
+  nameWithType: Mint.Equals(Mint)
+- uid: Libplanet.Action.Sys.Mint.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Action.Sys.Mint.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Action.Sys.Mint.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Action.Sys.Mint.Equals(System.Nullable(Of System.Object))
+  nameWithType: Mint.Equals(Nullable<Object>)
+  nameWithType.vb: Mint.Equals(Nullable(Of Object))
+- uid: Libplanet.Action.Sys.Mint.Equals*
+  name: Equals
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Equals_
+  commentId: Overload:Libplanet.Action.Sys.Mint.Equals
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.Equals
+  nameWithType: Mint.Equals
 - uid: Libplanet.Action.Sys.Mint.Execute(Libplanet.Action.IActionContext)
   name: Execute(IActionContext)
   href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_Execute_Libplanet_Action_IActionContext_
@@ -1211,6 +1239,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Mint.Execute
   nameWithType: Mint.Execute
+- uid: Libplanet.Action.Sys.Mint.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_GetHashCode
+  commentId: M:Libplanet.Action.Sys.Mint.GetHashCode
+  fullName: Libplanet.Action.Sys.Mint.GetHashCode()
+  nameWithType: Mint.GetHashCode()
+- uid: Libplanet.Action.Sys.Mint.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_GetHashCode_
+  commentId: Overload:Libplanet.Action.Sys.Mint.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Mint.GetHashCode
+  nameWithType: Mint.GetHashCode
 - uid: Libplanet.Action.Sys.Mint.LoadPlainValue(IValue)
   name: LoadPlainValue(IValue)
   href: api/Libplanet.Action.Sys.Mint.html#Libplanet_Action_Sys_Mint_LoadPlainValue_IValue_
@@ -1282,6 +1323,34 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Transfer.Amount
   nameWithType: Transfer.Amount
+- uid: Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.IAction)
+  name: Equals(IAction)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_IAction_
+  commentId: M:Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.IAction)
+  fullName: Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.IAction)
+  nameWithType: Transfer.Equals(IAction)
+- uid: Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.Sys.Transfer)
+  name: Equals(Transfer)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_Sys_Transfer_
+  commentId: M:Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.Sys.Transfer)
+  fullName: Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.Sys.Transfer)
+  nameWithType: Transfer.Equals(Transfer)
+- uid: Libplanet.Action.Sys.Transfer.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Action.Sys.Transfer.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Action.Sys.Transfer.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Action.Sys.Transfer.Equals(System.Nullable(Of System.Object))
+  nameWithType: Transfer.Equals(Nullable<Object>)
+  nameWithType.vb: Transfer.Equals(Nullable(Of Object))
+- uid: Libplanet.Action.Sys.Transfer.Equals*
+  name: Equals
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Equals_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.Equals
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.Equals
+  nameWithType: Transfer.Equals
 - uid: Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)
   name: Execute(IActionContext)
   href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_Execute_Libplanet_Action_IActionContext_
@@ -1295,6 +1364,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.Sys.Transfer.Execute
   nameWithType: Transfer.Execute
+- uid: Libplanet.Action.Sys.Transfer.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_GetHashCode
+  commentId: M:Libplanet.Action.Sys.Transfer.GetHashCode
+  fullName: Libplanet.Action.Sys.Transfer.GetHashCode()
+  nameWithType: Transfer.GetHashCode()
+- uid: Libplanet.Action.Sys.Transfer.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_GetHashCode_
+  commentId: Overload:Libplanet.Action.Sys.Transfer.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Action.Sys.Transfer.GetHashCode
+  nameWithType: Transfer.GetHashCode
 - uid: Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)
   name: LoadPlainValue(IValue)
   href: api/Libplanet.Action.Sys.Transfer.html#Libplanet_Action_Sys_Transfer_LoadPlainValue_IValue_
@@ -11662,6 +11744,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Extensions.Cocona.Commands.StoreCommand.TxById
   nameWithType: StoreCommand.TxById
+- uid: Libplanet.Extensions.Cocona.Commands.TxCommand
+  name: TxCommand
+  href: api/Libplanet.Extensions.Cocona.Commands.TxCommand.html
+  commentId: T:Libplanet.Extensions.Cocona.Commands.TxCommand
+  fullName: Libplanet.Extensions.Cocona.Commands.TxCommand
+  nameWithType: TxCommand
+- uid: Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze(System.String,System.Boolean,System.Boolean)
+  name: Analyze(String, Boolean, Boolean)
+  href: api/Libplanet.Extensions.Cocona.Commands.TxCommand.html#Libplanet_Extensions_Cocona_Commands_TxCommand_Analyze_System_String_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze(System.String,System.Boolean,System.Boolean)
+  fullName: Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze(System.String, System.Boolean, System.Boolean)
+  nameWithType: TxCommand.Analyze(String, Boolean, Boolean)
+- uid: Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze*
+  name: Analyze
+  href: api/Libplanet.Extensions.Cocona.Commands.TxCommand.html#Libplanet_Extensions_Cocona_Commands_TxCommand_Analyze_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.TxCommand.Analyze
+  nameWithType: TxCommand.Analyze
+- uid: Libplanet.Extensions.Cocona.Commands.TxCommand.Help(ICoconaHelpMessageBuilder)
+  name: Help(ICoconaHelpMessageBuilder)
+  href: api/Libplanet.Extensions.Cocona.Commands.TxCommand.html#Libplanet_Extensions_Cocona_Commands_TxCommand_Help_ICoconaHelpMessageBuilder_
+  commentId: M:Libplanet.Extensions.Cocona.Commands.TxCommand.Help(ICoconaHelpMessageBuilder)
+  fullName: Libplanet.Extensions.Cocona.Commands.TxCommand.Help(ICoconaHelpMessageBuilder)
+  nameWithType: TxCommand.Help(ICoconaHelpMessageBuilder)
+- uid: Libplanet.Extensions.Cocona.Commands.TxCommand.Help*
+  name: Help
+  href: api/Libplanet.Extensions.Cocona.Commands.TxCommand.html#Libplanet_Extensions_Cocona_Commands_TxCommand_Help_
+  commentId: Overload:Libplanet.Extensions.Cocona.Commands.TxCommand.Help
+  isSpec: "True"
+  fullName: Libplanet.Extensions.Cocona.Commands.TxCommand.Help
+  nameWithType: TxCommand.Help
 - uid: Libplanet.Extensions.Cocona.Configuration
   name: Libplanet.Extensions.Cocona.Configuration
   href: api/Libplanet.Extensions.Cocona.Configuration.html

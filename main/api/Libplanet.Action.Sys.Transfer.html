@@ -85,12 +85,14 @@ another account.</p>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Action.Sys.Transfer.html">Transfer</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.Sys.html">Libplanet.Action.Sys</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_Sys_Transfer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Transfer : object, IAction</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Transfer : object, IAction, IEquatable&lt;Transfer&gt;, IEquatable&lt;IAction&gt;</code></pre>
   </div>
   <h5 id="Libplanet_Action_Sys_Transfer_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Only native tokens can be transferred.</p>
@@ -102,7 +104,7 @@ another account.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.%23ctor(Libplanet.Address%2CLibplanet.Assets.FungibleAssetValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L18">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L21">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer__ctor_" data-uid="Libplanet.Action.Sys.Transfer.#ctor*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer__ctor_Libplanet_Address_Libplanet_Assets_FungibleAssetValue_" data-uid="Libplanet.Action.Sys.Transfer.#ctor(Libplanet.Address,Libplanet.Assets.FungibleAssetValue)">Transfer(Address, FungibleAssetValue)</h4>
@@ -144,7 +146,7 @@ another account.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Amount.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Amount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L40">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer_Amount_" data-uid="Libplanet.Action.Sys.Transfer.Amount*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer_Amount" data-uid="Libplanet.Action.Sys.Transfer.Amount">Amount</h4>
@@ -175,7 +177,7 @@ another account.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer_PlainValue_" data-uid="Libplanet.Action.Sys.Transfer.PlainValue*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer_PlainValue" data-uid="Libplanet.Action.Sys.Transfer.PlainValue">PlainValue</h4>
@@ -216,7 +218,7 @@ by properties or fields).</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Recipient.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Recipient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L32">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer_Recipient_" data-uid="Libplanet.Action.Sys.Transfer.Recipient*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer_Recipient" data-uid="Libplanet.Action.Sys.Transfer.Recipient">Recipient</h4>
@@ -246,10 +248,151 @@ by properties or fields).</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_IAction_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.IAction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L83">View Source</a>
+  </span>
+  <a id="Libplanet_Action_Sys_Transfer_Equals_" data-uid="Libplanet.Action.Sys.Transfer.Equals*"></a>
+  <h4 id="Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_IAction_" data-uid="Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.IAction)">Equals(IAction)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(IAction other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_Sys_Transfer_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.Sys.Transfer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L79">View Source</a>
+  </span>
+  <a id="Libplanet_Action_Sys_Transfer_Equals_" data-uid="Libplanet.Action.Sys.Transfer.Equals*"></a>
+  <h4 id="Libplanet_Action_Sys_Transfer_Equals_Libplanet_Action_Sys_Transfer_" data-uid="Libplanet.Action.Sys.Transfer.Equals(Libplanet.Action.Sys.Transfer)">Equals(Transfer)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Transfer other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.Sys.Transfer.html">Transfer</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L86">View Source</a>
+  </span>
+  <a id="Libplanet_Action_Sys_Transfer_Equals_" data-uid="Libplanet.Action.Sys.Transfer.Equals*"></a>
+  <h4 id="Libplanet_Action_Sys_Transfer_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Action.Sys.Transfer.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L60">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer_Execute_" data-uid="Libplanet.Action.Sys.Transfer.Execute*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.Sys.Transfer.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -348,10 +491,40 @@ your project as a dependency.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L89">View Source</a>
+  </span>
+  <a id="Libplanet_Action_Sys_Transfer_GetHashCode_" data-uid="Libplanet.Action.Sys.Transfer.GetHashCode*"></a>
+  <h4 id="Libplanet_Action_Sys_Transfer_GetHashCode" data-uid="Libplanet.Action.Sys.Transfer.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer_LoadPlainValue_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Action_Sys_Transfer_LoadPlainValue_" data-uid="Libplanet.Action.Sys.Transfer.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_Sys_Transfer_LoadPlainValue_IValue_" data-uid="Libplanet.Action.Sys.Transfer.LoadPlainValue(IValue)">LoadPlainValue(IValue)</h4>
@@ -392,6 +565,12 @@ properties (or fields).</p>
   <div>
       <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
   </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
 </article>
           </div>
           
@@ -403,7 +582,7 @@ properties (or fields).</p>
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_Sys_Transfer.md&amp;value=---%0Auid%3A%20Libplanet.Action.Sys.Transfer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Action/Sys/Transfer.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
