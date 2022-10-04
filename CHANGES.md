@@ -25,14 +25,14 @@ a system action, its features will be added more in the future.
 
 ### Added APIs
 
- -  System actions became to have methods to check equality.  [[#2294]]
-     -  `Mint` became to implement `IEquatable<Mint>`.
-     -  `Mint` became to implement `IEquatable<IAction>`.
-     -  `Transfer` became to implement `IEquatable<Transfer>`.
-     -  `Transfer` became to implement `IEquatable<IAction>`.
+ -  System actions now have methods to check equality.  [[#2294]]
+     -  `Mint` now implements `IEquatable<Mint>`.
+     -  `Mint` now implements `IEquatable<IAction>`.
+     -  `Transfer` now implements `IEquatable<Transfer>`.
+     -  `Transfer` now implements `IEquatable<IAction>`.
  -  (Libplanet.Net) Added `IRoutingTable` interface.  [[#2046], [#2229]]
- -  (Libplanet.Net) `RoutingTable` became to implement `IRoutingTable`
-    interface.  [[#2046], [#2229]]
+ -  (Libplanet.Net) `RoutingTable` now implements `IRoutingTable` interface.
+    [[#2046], [#2229]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
 
