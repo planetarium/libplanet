@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -72,7 +71,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var proposeSent = new AsyncAutoResetEvent();
 
+            // Assumed that height 1 is already committed. It will catch a propose to check whether
+            // the lastCommit of height 1 is used for propose. Note that Peer2 is the height 2
+            // proposer.
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                height: 2,
+                privateKey: TestUtils.Peer2Priv,
                 consensusMessageSent: CatchPropose,
                 startStep: Step.Default);
 
@@ -93,8 +97,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             }
 
-            var voteSet = new VoteSet(0, 0, blockChain.Tip.Hash, TestUtils.Validators);
-            var lastCommit = new BlockCommit(voteSet, blockChain.Tip.Hash);
+            // It needs a lastCommit to use, so we assume that index #1 block is already committed.
+            var heightOneBlock = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            blockChain.Append(heightOneBlock);
+            var lastCommit =
+                TestUtils.CreateLastCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
 
             context.Start(lastCommit);
             await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
@@ -104,9 +111,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Block<DumbAction> mined = BlockMarshaler.UnmarshalBlock<DumbAction>(
                 (Dictionary)new Codec().Decode(proposedMessage!.Payload));
             Assert.NotNull(mined.LastCommit);
-            Assert.Equal(
-                new HashSet<Vote>(voteSet.Votes),
-                new HashSet<Vote>(mined.LastCommit?.Votes!));
+
+            for (int i = 0; i < lastCommit.Votes.Length; ++i)
+            {
+                Assert.Equal(lastCommit.Votes[i], mined.LastCommit?.Votes[i]);
+            }
         }
 
         [Fact(Timeout = Timeout)]
