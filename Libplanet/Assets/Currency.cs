@@ -696,11 +696,23 @@ namespace Libplanet.Assets
             return serialized;
         }
 
+        private static SHA1 GetSHA1()
+        {
+            try
+            {
+                return new SHA1CryptoServiceProvider();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return new SHA1Managed();
+            }
+        }
+
         [Pure]
         private HashDigest<SHA1> GetHash()
         {
             using var buffer = new MemoryStream();
-            using var sha1 = new SHA1CryptoServiceProvider();
+            using var sha1 = GetSHA1();
             using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
             var codec = new Codec();
             codec.Encode(Serialize(), stream);
