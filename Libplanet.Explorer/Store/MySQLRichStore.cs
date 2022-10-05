@@ -281,7 +281,7 @@ namespace Libplanet.Explorer.Store
             });
         }
 
-        public IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
+        public IEnumerable<(TxId, BlockHash)> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,
@@ -296,7 +296,7 @@ namespace Libplanet.Explorer.Store
 
             query = desc ? query.OrderByDesc("tx_nonce") : query.OrderBy("tx_nonce");
             query = query.Offset(offset).Limit(limit);
-            return db.GetDictionary(query).Select(dict => new ValueTuple<TxId, BlockHash>(
+            return db.GetDictionary(query).Select(dict => (
                 new TxId((byte[])dict["tx_id"]),
                 new BlockHash((byte[])dict["block_hash"])));
         }

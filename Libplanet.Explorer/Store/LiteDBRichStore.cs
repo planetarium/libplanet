@@ -318,7 +318,7 @@ namespace Libplanet.Explorer.Store
             collection.EnsureIndex(nameof(TxRefDoc.BlockIndex));
         }
 
-        public IEnumerable<ValueTuple<TxId, BlockHash>> IterateTxReferences(
+        public IEnumerable<(TxId, BlockHash)> IterateTxReferences(
             TxId? txId = null,
             bool desc = false,
             int offset = 0,
