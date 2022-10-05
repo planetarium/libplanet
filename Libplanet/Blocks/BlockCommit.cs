@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Bencodex;
 using Bencodex.Types;
@@ -9,10 +10,12 @@ namespace Libplanet.Blocks
 {
     public readonly struct BlockCommit
     {
-        private const string HeightKey = "height";
-        private const string RoundKey = "round";
-        private const string BlockHashKey = "block_hash";
+        internal const string HeightKey = "height";
+        internal const string RoundKey = "round";
+        internal const string BlockHashKey = "block_hash";
         private const string VotesKey = "votes";
+
+        private static Codec _codec = new Codec();
 
         public BlockCommit(
             long height,
@@ -20,8 +23,31 @@ namespace Libplanet.Blocks
             BlockHash hash,
             ImmutableArray<Vote>? votes)
         {
+            if (height < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(height),
+                    $"Height must be non-negative: {height}");
+            }
+
             Height = height;
+
+            if (round < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(round),
+                    $"Round must be non-negative: {round}");
+            }
+
             Round = round;
+
+            if (hash.Equals(default))
+            {
+                throw new ArgumentNullException(
+                    nameof(hash),
+                    "Block hash for BlockCommit must not be null.");
+            }
+
             BlockHash = hash;
             if ((Height != 0 && votes is null) ||
                 (Height != 0 && votes != null && votes.Value.IsDefaultOrEmpty))
@@ -39,31 +65,32 @@ namespace Libplanet.Blocks
             }
         }
 
-        public BlockCommit(byte[] marshaled)
-        {
-            var codec = new Codec();
-            try
-            {
-                var dict = (Dictionary)codec.Decode(marshaled);
-                Height = dict.GetValue<Integer>(HeightKey);
-                Round = dict.GetValue<Integer>(RoundKey);
-                BlockHash = new BlockHash(dict.GetValue<Binary>(BlockHashKey).ByteArray);
-                Votes = dict.ContainsKey(VotesKey)
-                    ? dict.GetValue<List>(VotesKey)
-                        .Select(vote => new Vote((Binary)vote))
-                        .ToImmutableArray()
-                    : ImmutableArray<Vote>.Empty;
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException(
-                    "Cannot unmarshal given bytearray into vote.",
-                    nameof(marshaled));
-            }
-        }
-
         public BlockCommit(VoteSet set, BlockHash hash)
             : this(set.Height, set.Round, hash, set.Votes)
+        {
+        }
+
+        public BlockCommit(byte[] marshaled)
+            : this((Dictionary)_codec.Decode(marshaled))
+        {
+        }
+
+        [SuppressMessage(
+            "StyleCop.CSharp.ReadabilityRules",
+            "SA1118:ParameterMustNotSpanMultipleLines",
+            Justification =
+                "Multiple lines are Vote decoding. Redirect Bencodex value to public " +
+                "constructor for checking not allowed values.")]
+        internal BlockCommit(Dictionary dictionary)
+            : this(
+                dictionary.GetValue<Integer>(HeightKey),
+                dictionary.GetValue<Integer>(RoundKey),
+                new BlockHash(dictionary.GetValue<Binary>(BlockHashKey).ByteArray),
+                dictionary.ContainsKey(VotesKey)
+                    ? dictionary.GetValue<List>(VotesKey)
+                        .Select(vote => new Vote((Binary)vote))
+                        .ToImmutableArray()
+                    : ImmutableArray<Vote>.Empty)
         {
         }
 
