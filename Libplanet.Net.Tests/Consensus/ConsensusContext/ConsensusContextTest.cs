@@ -16,16 +16,12 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
-    public class ConsensusContextTest : ConsensusContextTestBase
+    public class ConsensusContextTest
     {
-        private static readonly PrivateKey PrivateKeyPeer1 = TestUtils.Peer1Priv;
-        private static readonly List<PublicKey> Validators = new List<PublicKey>()
-            { TestUtils.Peer0Priv.PublicKey, PrivateKeyPeer1.PublicKey, };
-
+        private const int Timeout = 30000;
         private readonly ILogger _logger;
 
         public ConsensusContextTest(ITestOutputHelper output)
-            : base(output, PrivateKeyPeer1, index => Validators, lastCommitClearThreshold: 1)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -41,15 +37,26 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightIncreasing()
         {
+            var validators = new List<PublicKey>()
+            {
+                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+            };
+
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                validators);
+
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
 
             Assert.Throws<InvalidHeightIncreasingException>(
-                () => ConsensusContext.NewHeight(BlockChain.Tip.Index));
+                () => consensusContext.NewHeight(blockChain.Tip.Index));
             Assert.Throws<InvalidHeightIncreasingException>(
-                () => ConsensusContext.NewHeight(BlockChain.Tip.Index + 2));
+                () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
 
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged += (sender, state) =>
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.EndCommit)
                 {
@@ -64,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             {
                 try
                 {
-                    var voteSet = ConsensusContext.Contexts[BlockChain.Tip.Index + 1].VoteSet(0);
+                    var voteSet = consensusContext.Contexts[blockChain.Tip.Index + 1].VoteSet(0);
                     if (voteSet.Votes[0].BlockHash is BlockHash hash)
                     {
                         blockHash = hash;
@@ -78,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 await Task.Delay(100);
             }
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
@@ -86,7 +93,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     Remote = TestUtils.Peers[0],
                 });
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Commit))
@@ -96,40 +103,74 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Waiting for commit.
             await stepChangedToEndCommit.WaitAsync();
-            Assert.Equal(1, BlockChain.Tip.Index);
+            Assert.Equal(1, blockChain.Tip.Index);
             // Next NewHeight is not called yet.
-            Assert.Equal(1, ConsensusContext.Height);
-            Assert.Equal(0, ConsensusContext.Round);
+            Assert.Equal(1, consensusContext.Height);
+            Assert.Equal(0, consensusContext.Round);
         }
 
         [Fact(Timeout = Timeout)]
         public void Ctor()
         {
-            Assert.Equal(Step.Null, ConsensusContext.Step);
-            Assert.Equal("No context", ConsensusContext.ToString());
+            var validators = new List<PublicKey>()
+            {
+                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+            };
+
+            var (_, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                validators);
+
+            Assert.Equal(Step.Null, consensusContext.Step);
+            Assert.Equal("No context", consensusContext.ToString());
         }
 
         [Fact(Timeout = Timeout)]
         public async void NewHeightWhenTipChanged()
         {
-            Assert.Equal(1, ConsensusContext.Height);
-            BlockChain.Append(BlockChain.ProposeBlock(new PrivateKey()));
-            Assert.Equal(1, ConsensusContext.Height);
-            await Task.Delay(NewHeightDelay + TimeSpan.FromSeconds(1));
-            Assert.Equal(2, ConsensusContext.Height);
+            var newHeightDelay = TimeSpan.FromSeconds(1);
+            var validators = new List<PublicKey>()
+            {
+                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+            };
+
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                newHeightDelay,
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                validators);
+
+            Assert.Equal(1, consensusContext.Height);
+            blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
+            Assert.Equal(1, consensusContext.Height);
+            await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
+            Assert.Equal(2, consensusContext.Height);
         }
 
         [Fact(Timeout = Timeout)]
         public void IgnoreMessagesFromLowerHeight()
         {
-            Assert.True(ConsensusContext.Height > 0);
+            var validators = new List<PublicKey>()
+            {
+                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+            };
+
+            var (fx, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                validators);
+
+            Assert.True(consensusContext.Height > 0);
             Assert.Throws<InvalidHeightMessageException>(
-                () => ConsensusContext.HandleMessage(
+                () => consensusContext.HandleMessage(
                     new ConsensusPropose(
                         new PrivateKey().PublicKey,
                         0,
                         0,
-                        Fx.Block1.Hash,
+                        fx.Block1.Hash,
                         new byte[] { },
                         -1)));
         }
@@ -137,8 +178,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void ClearOldLastCommitCache()
         {
-            // FIXME: Due to this test, lastCommitClearThreshold = 1 is set. every other test also
-            // affected by this parameter.
             var codec = new Codec();
             var heightOneEnded = new AsyncAutoResetEvent();
             var heightOneProposeSent = new AsyncAutoResetEvent();
@@ -147,7 +186,20 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightThreePreVote = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
 
-            ConsensusMessageSent += (sender, message) =>
+            var validators = new List<PublicKey>()
+            {
+                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+            };
+
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                validators,
+                consensusMessageSent: CatchPropose,
+                lastCommitClearThreshold: 1);
+
+            void CatchPropose(object? sender, ConsensusMessage? message)
             {
                 if (message is ConsensusPropose propose)
                 {
@@ -156,11 +208,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             (Dictionary)codec.Decode(propose.Payload));
                     heightOneProposeSent.Set();
                 }
-            };
+            }
 
             // Do a consensus for height to #2 consecutively.
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
                 (sender, tuple) =>
                 {
                     if (tuple.Step == Step.EndCommit)
@@ -171,7 +223,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             await heightOneProposeSent.WaitAsync();
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
@@ -181,7 +233,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         VoteFlag.Absent))
             );
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
@@ -194,8 +246,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightOneEnded.WaitAsync();
 
             // Starts NewHeight manually.
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
                 (sender, tuple) =>
                 {
                     if (tuple.Step == Step.EndCommit)
@@ -203,7 +255,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         heightTwoEnded.Set();
                     }
                 };
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].MessageConsumed +=
+            consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
                 (sender, message) =>
                 {
                     if (message is ConsensusPropose propose)
@@ -214,13 +266,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     }
                 };
 
-            var block = BlockChain.ProposeBlock(TestUtils.Peer0Priv);
-            ConsensusContext.HandleMessage(
+            var block = blockChain.ProposeBlock(TestUtils.Peer0Priv);
+            consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv, height: 2));
 
             await heightTwoProposeSent.WaitAsync();
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
@@ -230,7 +282,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         VoteFlag.Absent))
             );
 
-            ConsensusContext.HandleMessage(
+            consensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
@@ -244,8 +296,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Starts round 3, Waits PreVote timeout
             // Checks previous LastCommit and see if it's available.
-            ConsensusContext.NewHeight(BlockChain.Tip.Index + 1);
-            ConsensusContext.Contexts[BlockChain.Tip.Index + 1].StateChanged +=
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
                 (sender, tuple) =>
                 {
                     if (tuple.Step == Step.PreVote)
@@ -255,8 +307,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 };
 
             await heightThreePreVote.WaitAsync();
-            Assert.NotNull(BlockChain.Store.GetLastCommit(BlockChain.Tip.Index));
-            Assert.Null(BlockChain.Store.GetLastCommit(BlockChain.Tip.Index - 1));
+            Assert.NotNull(blockChain.Store.GetLastCommit(blockChain.Tip.Index));
+            Assert.Null(blockChain.Store.GetLastCommit(blockChain.Tip.Index - 1));
         }
     }
 }
