@@ -265,7 +265,7 @@ namespace Libplanet.Explorer.Queries
                                 #pragma warning disable format
                                 $"{nameof(execution)} is not expected concrete class."
                                 #pragma warning restore format
-                            )
+                            ),
                         };
                     }
                     catch (Exception)

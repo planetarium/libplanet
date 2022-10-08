@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -249,6 +250,7 @@ namespace Libplanet.Tx
         /// </summary>
         /// <remarks>This property is deprecated.  Use <see cref="CustomActions"/> or
         /// <see cref="SystemAction"/> instead.</remarks>
+        [JsonIgnore]
         [Obsolete("Use " + nameof(CustomActions) + " or " + nameof(SystemAction) + " instead.")]
         public IImmutableList<IAction> Actions =>
             SystemAction is { } sysAction
@@ -261,6 +263,8 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="CustomActions"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(SysActionJsonConverter))]
         public IAction? SystemAction { get; }
 
         /// <summary>
@@ -270,6 +274,8 @@ namespace Libplanet.Tx
         /// <remarks>This property is mutually exclusive with <see cref="SystemAction"/>;
         /// either one of them must be <see langword="null"/> and the other must not be
         /// <see langword="null"/>.</remarks>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonConverter(typeof(ActionListJsonConverter))]
         public IImmutableList<T>? CustomActions { get; }
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>

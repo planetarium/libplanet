@@ -51,14 +51,6 @@ for project in "${executables[@]}"; do
     popd
     rm -rf "$output_dir"
   done
-
-  if [[ -f "./$project/package.json" ]]; then
-    pushd "./$project/"
-    jq --arg v "$version" 'del(.private) | .version = $v' package.json \
-      > .package.json.tmp
-    mv .package.json.tmp package.json
-    popd
-  fi
 done
 
 for project in "${projects[@]}"; do
@@ -90,5 +82,17 @@ for project in "${projects[@]}"; do
   ls -al "./$project/bin/$configuration/"
   if [ "$package_version" != "$version_prefix" ]; then
     rm -f "./$project/bin/$configuration/$project.$version_prefix.nupkg"
+  fi
+done
+
+for npmpkg in "${npm_packages[@]}"; do
+  if [[ -f "./$npmpkg/package.json" ]]; then
+    pushd "./$npmpkg/"
+    jq --arg v "$version" 'del(.private) | .version = $v' package.json \
+      > .package.json.tmp
+    mv .package.json.tmp package.json
+    npm pack
+    mv ./*.tgz "${npmpkg//\//-}-$version.tgz"
+    popd
   fi
 done

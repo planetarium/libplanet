@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+if ! command -v npm > /dev/null || ! command -v npx > /dev/null; then
+  echo warn: npm is not available\; pre-commit hook is ignored... >&2
+  exit 0
+fi
+
+if [[ ! -d node_modules ]]; then
+  echo warn: installing npm packages... it can take few minutes... >&2
+  npm install --silent
+fi
+
+npx eslint "src/**"
+
+# vim: set filetype=sh ts=2 sw=2 et:
