@@ -273,7 +273,7 @@ namespace Libplanet.Blockchain.Policies
             return nonce;
         }
 
-        private bool Exipred(Transaction<T> transaction) =>
+        private bool Expired(Transaction<T> transaction) =>
             transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
     }
 }
