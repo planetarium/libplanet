@@ -1361,25 +1361,47 @@ namespace Libplanet.RocksDBStore
             bool includeDeleted
         )
         {
+            long count = 0;
+            Stack<(Guid, long)> chainInfos = new Stack<(Guid, long)>();
+
             if (!includeDeleted && IsDeletionMarked(chainId))
             {
                 yield break;
             }
 
-            long count = 0;
+            chainInfos.Push((chainId, CountIndex(chainId)));
 
-            if (GetPreviousChainInfo(chainId) is { } chainInfo)
+            while (true)
             {
-                Guid prevId = chainInfo.Item1;
-                long pi = chainInfo.Item2;
-
-                int expectedCount = (int)(pi - offset + 1);
-                if (limit is { } limitNotNull && limitNotNull < expectedCount)
+                if (chainInfos.Peek().Item2 > offset &&
+                    GetPreviousChainInfo(chainInfos.Peek().Item1) is { } chainInfo)
                 {
-                    expectedCount = limitNotNull;
+                    chainInfos.Push(chainInfo);
                 }
+                else
+                {
+                    break;
+                }
+            }
 
-                foreach (BlockHash hash in IterateIndexes(prevId, offset, expectedCount, true))
+            long previousChainTipIndex;
+
+            // Adjust offset if it skipped some previous chains.
+            (offset, previousChainTipIndex) =
+                GetPreviousChainInfo(chainInfos.Peek().Item1) is { } cinfo
+                    ? (Math.Max(0, (int)(offset - cinfo.Item2 - 1)), (int)cinfo.Item2)
+                    : (offset, 0);
+
+            while (chainInfos.Count > 0)
+            {
+                (Guid, long) chainInfo = chainInfos.Pop();
+                (Guid cid, long chainTipIndex) = chainInfo;
+
+                // Include genesis block.
+                long expectedCount = chainTipIndex - previousChainTipIndex +
+                                     (GetPreviousChainInfo(cid) is null ? 1 : 0);
+
+                foreach (BlockHash hash in IterateIndexesInner(cid, expectedCount).Skip(offset))
                 {
                     if (count >= limit)
                     {
@@ -1390,20 +1412,24 @@ namespace Libplanet.RocksDBStore
                     count += 1;
                 }
 
-                offset = (int)Math.Max(0, offset - pi - 1);
+                offset = Math.Max(0, (int)(offset - expectedCount));
+                previousChainTipIndex = chainTipIndex;
             }
+        }
 
+        private IEnumerable<BlockHash> IterateIndexesInner(Guid chainId, long expectedCount)
+        {
+            long count = 0;
             byte[] prefix = IndexKeyPrefix.Concat(chainId.ToByteArray()).ToArray();
-            foreach (Iterator it in IterateDb(_chainDb, prefix).Skip(offset))
+            foreach (Iterator it in IterateDb(_chainDb, prefix))
             {
-                if (count >= limit)
+                if (count >= expectedCount)
                 {
                     yield break;
                 }
 
                 byte[] value = it.Value();
                 yield return new BlockHash(value);
-
                 count += 1;
             }
         }
