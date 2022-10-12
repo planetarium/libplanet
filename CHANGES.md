@@ -37,6 +37,8 @@ a system action, its features will be added more in the future.
     [[#2131], [#2236]]
  -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
     `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
+ -  (Libplanet.Explorer) Added `nextNonce` query in `TransactionQuery<T>`.
+    [[#2356], [#2366]]
 
 ### Behavioral changes
 
@@ -93,6 +95,8 @@ a system action, its features will be added more in the future.
 [#2294]: https://github.com/planetarium/libplanet/pull/2294
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
 [#2353]: https://github.com/planetarium/libplanet/pull/2353
+[#2356]: https://github.com/planetarium/libplanet/issues/2356
+[#2366]: https://github.com/planetarium/libplanet/pull/2366
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx
