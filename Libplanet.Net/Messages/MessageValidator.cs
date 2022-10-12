@@ -154,18 +154,21 @@ namespace Libplanet.Net.Messages
                     dapve(peer, message.Version, appProtocolVersion);
                 }
 
-                throw new DifferentAppProtocolVersionException(
-                    $"The APV of a received message is invalid:\n" +
-                    $"Expected: APV {appProtocolVersion} with " +
-                    $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
-                    $"signer {appProtocolVersion.Signer}\n" +
-                    $"Actual: APV {message.Version} with " +
-                    $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
-                    $"signer: {message.Version.Signer}\n" +
-                    $"Signed by a trusted signer: {trusted}",
-                    appProtocolVersion,
-                    message.Version,
-                    trusted);
+                if (!message.Version.Version.Equals(appProtocolVersion.Version) || !trusted)
+                {
+                    throw new DifferentAppProtocolVersionException(
+                        $"The APV of a received message is invalid:\n" +
+                        $"Expected: APV {appProtocolVersion} with " +
+                        $"signature {ByteUtil.Hex(appProtocolVersion.Signature)} by " +
+                        $"signer {appProtocolVersion.Signer}\n" +
+                        $"Actual: APV {message.Version} with " +
+                        $"signature: {ByteUtil.Hex(message.Version.Signature)} by " +
+                        $"signer: {message.Version.Signer}\n" +
+                        $"Signed by a trusted signer: {trusted}",
+                        appProtocolVersion,
+                        message.Version,
+                        trusted);
+                }
             }
             else
             {

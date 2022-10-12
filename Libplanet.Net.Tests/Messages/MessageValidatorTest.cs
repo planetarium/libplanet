@@ -59,6 +59,7 @@ namespace Libplanet.Net.Tests.Messages
             var extra2 = new Bencodex.Types.Integer(17);
             var trustedApv1 = AppProtocolVersion.Sign(trustedSigner, version1, extra1);
             var trustedApv2 = AppProtocolVersion.Sign(trustedSigner, version2, extra2);
+            var trustedApv3 = AppProtocolVersion.Sign(trustedSigner, version1, extra2);
             var unknownApv1 = AppProtocolVersion.Sign(unknownSigner, version1, extra1);
             var unknownApv2 = AppProtocolVersion.Sign(unknownSigner, version1, extra2);
             ImmutableHashSet<PublicKey>? trustedApvSigners1 =
@@ -70,6 +71,7 @@ namespace Libplanet.Net.Tests.Messages
             var peer = new BoundPeer(trustedSigner.PublicKey, new DnsEndPoint("0.0.0.0", 0));
             var trustedPing1 = new PingMsg() { Remote = peer, Version = trustedApv1 };
             var trustedPing2 = new PingMsg() { Remote = peer, Version = trustedApv2 };
+            var trustedPing3 = new PingMsg() { Remote = peer, Version = trustedApv3 };
             var unknownPing1 = new PingMsg() { Remote = peer, Version = unknownApv1 };
             var unknownPing2 = new PingMsg() { Remote = peer, Version = unknownApv2 };
 
@@ -90,6 +92,9 @@ namespace Libplanet.Net.Tests.Messages
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
                 () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
             Assert.True(exception.Trusted);
+            Assert.True(called);
+            called = false;
+            messageValidator.ValidateAppProtocolVersion(trustedPing3);
             Assert.True(called);
             called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
@@ -124,9 +129,8 @@ namespace Libplanet.Net.Tests.Messages
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
             messageValidator.ValidateAppProtocolVersion(trustedPing1);
-            exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
-            Assert.True(exception.Trusted);
+            Assert.False(called);
+            messageValidator.ValidateAppProtocolVersion(unknownPing1);
             Assert.True(called);
             called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
@@ -134,9 +138,10 @@ namespace Libplanet.Net.Tests.Messages
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
-            exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
-            Assert.True(exception.Trusted);
+            messageValidator.ValidateAppProtocolVersion(trustedPing3);
+            Assert.True(called);
+            called = false;
+            messageValidator.ValidateAppProtocolVersion(unknownPing2);
             Assert.True(called);
         }
     }
