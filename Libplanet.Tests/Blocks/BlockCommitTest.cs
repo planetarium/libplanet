@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -13,18 +12,18 @@ namespace Libplanet.Tests.Blocks
 {
     public class BlockCommitTest
     {
-         private readonly ITestOutputHelper _output;
+        private readonly ITestOutputHelper _output;
 
-         public BlockCommitTest(ITestOutputHelper output)
-         {
-             _output = output;
-         }
+        public BlockCommitTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
 
-         [Fact]
-         public void Marshalling()
-         {
-             var fx = new MemoryStoreFixture();
-             var votes = Enumerable.Range(0, 4)
+        [Fact]
+        public void Marshalling()
+        {
+            var fx = new MemoryStoreFixture();
+            var votes = Enumerable.Range(0, 4)
                 .Select(x => new VoteMetadata(
                     1,
                     0,
@@ -33,17 +32,17 @@ namespace Libplanet.Tests.Blocks
                     new PrivateKey().PublicKey,
                     VoteFlag.Null).Sign(null))
                 .ToImmutableArray();
-             var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
+            var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
 
-             byte[] marshaled = blockCommit.ByteArray;
-             var unMarshaled = new BlockCommit(marshaled);
+            byte[] marshaled = blockCommit.ByteArray;
+            var unMarshaled = new BlockCommit(marshaled);
 
-             Assert.Equal(blockCommit, unMarshaled);
-         }
+            Assert.Equal(blockCommit, unMarshaled);
+        }
 
-         [Fact]
-         public void ConstructorInvalidValues()
-         {
+        [Fact]
+        public void ConstructorInvalidValues()
+        {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
             var privateKey = new PrivateKey();
             var votes = ImmutableArray<Vote>.Empty
@@ -64,39 +63,89 @@ namespace Libplanet.Tests.Blocks
                 new BlockCommit(1, -1, default, votes));
          }
 
-         [Fact]
-         public void DecodeFailsNegativeHeight()
-         {
-             var fx = new MemoryStoreFixture();
-             var dict = Bencodex.Types.Dictionary.Empty
-                 .Add(BlockCommit.HeightKey, -1)
-                 .Add(BlockCommit.RoundKey, 0)
-                 .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
-
-             Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
+        [Fact]
+        public void EveryVoteMustHaveValidHeightAndRound()
+        {
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(
+                    2,
+                    0,
+                    hash,
+                    new[]
+                    {
+                        new VoteMetadata(
+                            2,
+                            0,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.ConsensusPeer0PrivateKey.PublicKey,
+                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey),
+                        new VoteMetadata(
+                            1,
+                            0,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.ConsensusPeer1PrivateKey.PublicKey,
+                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey),
+                    }.ToImmutableArray()));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(
+                    2,
+                    0,
+                    hash,
+                    new[]
+                    {
+                        new VoteMetadata(
+                            2,
+                            0,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.ConsensusPeer0PrivateKey.PublicKey,
+                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey),
+                        new VoteMetadata(
+                            2,
+                            1,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.ConsensusPeer1PrivateKey.PublicKey,
+                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey),
+                    }.ToImmutableArray()));
          }
 
-         [Fact]
-         public void DecodeFailsNegativeRound()
-         {
-             var fx = new MemoryStoreFixture();
-             var dict = Bencodex.Types.Dictionary.Empty
-                 .Add(BlockCommit.HeightKey, 1)
-                 .Add(BlockCommit.RoundKey, -1)
-                 .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
+        [Fact]
+        public void DecodeFailsNegativeHeight()
+        {
+            var fx = new MemoryStoreFixture();
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add(BlockCommit.HeightKey, -1)
+                .Add(BlockCommit.RoundKey, 0)
+                .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
 
-             Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
-         }
+            Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
+        }
 
-         [Fact]
-         public void DecodeFailsNullHash()
-         {
-             var dict = Bencodex.Types.Dictionary.Empty
-                 .Add(BlockCommit.HeightKey, 1)
-                 .Add(BlockCommit.RoundKey, 0)
-                 .Add(BlockCommit.BlockHashKey, default(BlockHash).ByteArray);
+        [Fact]
+        public void DecodeFailsNegativeRound()
+        {
+            var fx = new MemoryStoreFixture();
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add(BlockCommit.HeightKey, 1)
+                .Add(BlockCommit.RoundKey, -1)
+                .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
 
-             Assert.Throws<ArgumentException>(() => new BlockCommit(dict));
-         }
+            Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
+        }
+
+        [Fact]
+        public void DecodeFailsNullHash()
+        {
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add(BlockCommit.HeightKey, 1)
+                .Add(BlockCommit.RoundKey, 0)
+                .Add(BlockCommit.BlockHashKey, default(BlockHash).ByteArray);
+
+            Assert.Throws<ArgumentException>(() => new BlockCommit(dict));
+        }
     }
 }
