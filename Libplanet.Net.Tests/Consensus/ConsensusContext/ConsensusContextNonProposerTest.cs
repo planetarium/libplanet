@@ -11,6 +11,7 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -268,17 +269,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Commit ends.
             await heightTwoStepChangedToEndCommit.WaitAsync();
-            var heightTwoEndTimestamp = DateTime.UtcNow;
             // New height started.
             await heightThreeStepChangedToPropose.WaitAsync();
-            var heightThreeStartTimestamp = DateTime.UtcNow;
             // Propose -> PreVote (message consumed)
             await heightThreeStepChangedToPreVote.WaitAsync();
-            // Check new height delay; slight margin of error is allowed as delay task
-            // is run asynchronously from context events.
-            Assert.True(
-                ((heightThreeStartTimestamp - heightTwoEndTimestamp) - newHeightDelay).Duration() <
-                    TimeSpan.FromMilliseconds(100));
             Assert.Equal(3, consensusContext.Height);
             Assert.Equal(Step.PreVote, consensusContext.Step);
         }
@@ -327,6 +321,58 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             }
 
             Assert.Equal(createdLastCommit, proposedBlock.LastCommit);
+        }
+
+        // Retry: This calculates delta time.
+        [RetryFact]
+        public async void NewHeightDelay()
+        {
+            var newHeightDelay = TimeSpan.FromSeconds(1);
+            // The maximum error margin. (macos-netcore-test)
+            var timeError = 500;
+            var heightOneEndCommit = new AsyncAutoResetEvent();
+            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                newHeightDelay,
+                TestUtils.Policy,
+                TestUtils.Peer2Priv,
+                consensusMessageSent: (sender, message) =>
+                {
+                    if (message is ConsensusPropose { Height: 2 })
+                    {
+                        heightTwoProposeSent.Set();
+                    }
+                });
+
+            consensusContext.StateChanged += (sender, state) =>
+            {
+                if (state.Height == 1 && state.Step == Step.EndCommit)
+                {
+                    heightOneEndCommit.Set();
+                }
+            };
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            consensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+
+            TestUtils.HandleFourPeersPreCommitMessages(
+                 consensusContext, TestUtils.Peer2Priv, block.Hash);
+
+            await heightOneEndCommit.WaitAsync();
+            var endCommitTime = DateTimeOffset.UtcNow;
+
+            await heightTwoProposeSent.WaitAsync();
+            var proposeTime = DateTimeOffset.UtcNow;
+            var difference = proposeTime - endCommitTime;
+
+            _logger.Debug("Difference: {Difference}", difference);
+            // Check new height delay; slight margin of error is allowed as delay task
+            // is run asynchronously from context events.
+            Assert.True(
+                ((proposeTime - endCommitTime) - newHeightDelay).Duration() <
+                    TimeSpan.FromMilliseconds(timeError));
         }
     }
 }
