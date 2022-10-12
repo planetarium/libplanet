@@ -39,13 +39,13 @@ namespace Libplanet.Tests
             "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550");
 
         public static readonly PrivateKey ConsensusPeer1PrivateKey = PrivateKey.FromString(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef");
+            "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef");
 
         public static readonly PrivateKey ConsensusPeer2PrivateKey = PrivateKey.FromString(
-                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93");
+            "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93");
 
         public static readonly PrivateKey ConsensusPeer3PrivateKey = PrivateKey.FromString(
-                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a");
+            "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a");
 
         public static readonly List<PublicKey> ConsensusValidators = new List<PublicKey>()
         {
