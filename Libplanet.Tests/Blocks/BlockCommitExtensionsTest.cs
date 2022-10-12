@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Blocks
             Assert.True(threeValidVotes.HasValidVotes());
 
             var invalidValidator = new PrivateKey();
-            var emptySignatureCommit = new BlockCommit(
+            var invalidSignatureCommit = new BlockCommit(
                 2,
                 0,
                 hash,
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blocks
                         new PrivateKey().PublicKey,
                         VoteFlag.Commit).Sign(invalidValidator),
                 }.ToImmutableArray());
-            Assert.False(emptySignatureCommit.HasValidVotes());
+            Assert.False(invalidSignatureCommit.HasValidVotes());
         }
     }
 }

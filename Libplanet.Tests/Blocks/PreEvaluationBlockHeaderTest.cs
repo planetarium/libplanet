@@ -30,11 +30,10 @@ namespace Libplanet.Tests.Blocks
             var validatorA = new PrivateKey();
             var validatorB = new PrivateKey();
             var validatorC = new PrivateKey();
-            var invalidValidator = new PrivateKey();
-            BlockHash blockHash = BlockHash.FromString(
-                "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
-            );
+            BlockHash blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
             DateTimeOffset timestamp = DateTimeOffset.UtcNow;
+
             var voteA = new VoteMetadata(
                 1,
                 0,
@@ -59,42 +58,40 @@ namespace Libplanet.Tests.Blocks
 
             // Height of the last commit is invalid.
             var invalidHeightLastCommit = new BlockCommit(
+                2,
                 0,
-                0,
-                _contents.GenesisHash,
+                blockHash,
                 new[]
                 {
                     new VoteMetadata(
+                        2,
                         0,
-                        0,
-                        _contents.GenesisHash,
-                        DateTimeOffset.UtcNow,
+                        blockHash,
+                        timestamp,
                         validatorA.PublicKey,
                         VoteFlag.Commit).Sign(validatorA),
                     new VoteMetadata(
+                        2,
                         0,
-                        0,
-                        _contents.GenesisHash,
-                        DateTimeOffset.UtcNow,
+                        blockHash,
+                        timestamp,
                         validatorB.PublicKey,
                         VoteFlag.Commit).Sign(validatorB),
                     new VoteMetadata(
+                        2,
                         0,
-                        0,
-                        _contents.GenesisHash,
-                        DateTimeOffset.UtcNow,
+                        blockHash,
+                        timestamp,
                         validatorC.PublicKey,
                         VoteFlag.Commit).Sign(validatorC),
                 }.ToImmutableArray());
             var invalidHeightMetadata = new BlockMetadata
             {
                 Index = 2,
-                Timestamp = DateTimeOffset.UtcNow,
+                Timestamp = timestamp,
                 PublicKey = validatorA.PublicKey,
-                PreviousHash = _contents.GenesisHash,
-                TxHash = HashDigest<SHA256>.FromString(
-                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                ),
+                PreviousHash = blockHash,
+                TxHash = null,
                 LastCommit = invalidHeightLastCommit,
             };
             Assert.Throws<InvalidBlockLastCommitException>(
@@ -104,19 +101,15 @@ namespace Libplanet.Tests.Blocks
             var invalidBlockHashLastCommit = new BlockCommit(
                 1,
                 0,
-                BlockHash.FromString(
-                    "141e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a"
-                ),
+                invalidBlockHash,
                 new[] { voteA, voteB, voteC }.ToImmutableArray());
             var invalidBlockHashMetadata = new BlockMetadata
             {
                 Index = 2,
-                Timestamp = DateTimeOffset.UtcNow,
+                Timestamp = timestamp,
                 PublicKey = validatorA.PublicKey,
                 PreviousHash = _contents.GenesisHash,
-                TxHash = HashDigest<SHA256>.FromString(
-                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                ),
+                TxHash = null,
                 LastCommit = invalidBlockHashLastCommit,
             };
             Assert.Throws<InvalidBlockLastCommitException>(
@@ -148,12 +141,10 @@ namespace Libplanet.Tests.Blocks
             var validMetadata = new BlockMetadata
             {
                 Index = 2,
-                Timestamp = DateTimeOffset.UtcNow,
+                Timestamp = timestamp,
                 PublicKey = validatorA.PublicKey,
-                PreviousHash = _contents.GenesisHash,
-                TxHash = HashDigest<SHA256>.FromString(
-                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                ),
+                PreviousHash = blockHash,
+                TxHash = null,
                 LastCommit = validLastCommit,
             };
             _ = new PreEvaluationBlockHeader(metadata: validMetadata);
