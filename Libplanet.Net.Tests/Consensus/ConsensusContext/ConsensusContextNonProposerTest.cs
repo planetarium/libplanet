@@ -17,7 +17,6 @@ using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
-    [Collection("NetMQConfiguration")]
     public class ConsensusContextNonProposerTest
     {
         private const int Timeout = 30000;
