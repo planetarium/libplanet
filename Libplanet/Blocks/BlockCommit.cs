@@ -135,13 +135,6 @@ namespace Libplanet.Blocks
 
         public bool Equals(BlockCommit other)
         {
-            if (Height == 0)
-            {
-                return Height == other.Height
-                       && Round == other.Round
-                       && BlockHash.Equals(other.BlockHash);
-            }
-
             return Height == other.Height &&
                    Round == other.Round &&
                    BlockHash.Equals(other.BlockHash) &&
