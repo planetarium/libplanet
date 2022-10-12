@@ -17,11 +17,25 @@ namespace Libplanet.Blocks
 
         private static Codec _codec = new Codec();
 
+        /// <summary>
+        /// Creates an instance of <see cref="BlockCommit"/> given a set of <see cref="Vote"/>s.
+        /// </summary>
+        /// <param name="height">The <see cref="Block{T}.Index"/> of the last committed
+        /// <see cref="Block{T}"/>.</param>
+        /// <param name="round">The round in which a consensus was reached.</param>
+        /// <param name="hash">The <see cref="Block{T}.Hash"/> of the last commited
+        /// <see cref="Block{T}"/>.</param>
+        /// <param name="votes">The set of <see cref="Vote"/>s as a proof for the commit
+        /// of the last <see cref="Block{T}"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when either
+        /// <paramref name="height"/> or <paramref name="round"/> is negative.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="votes"/> is
+        /// empty.</exception>
         public BlockCommit(
             long height,
             int round,
             BlockHash hash,
-            ImmutableArray<Vote>? votes)
+            ImmutableArray<Vote> votes)
         {
             if (height < 0)
             {
@@ -29,40 +43,21 @@ namespace Libplanet.Blocks
                     nameof(height),
                     $"Height must be non-negative: {height}");
             }
-
-            Height = height;
-
-            if (round < 0)
+            else if (round < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(round),
                     $"Round must be non-negative: {round}");
             }
+            else if (votes.IsDefaultOrEmpty)
+            {
+                throw new ArgumentException("Empty set of votes is not allowed.", nameof(votes));
+            }
 
+            Height = height;
             Round = round;
-
-            if (hash.Equals(default))
-            {
-                throw new ArgumentNullException(
-                    nameof(hash),
-                    "Block hash for BlockCommit must not be null.");
-            }
-
             BlockHash = hash;
-            if ((Height != 0 && votes is null) ||
-                (Height != 0 && votes != null && votes.Value.IsDefaultOrEmpty))
-            {
-                // TODO: Make new exception.
-                throw new Exception("Null votes are only allow genesis block.");
-            }
-
-            Votes = votes ?? ImmutableArray<Vote>.Empty;
-
-            // Blocking uninitialized ImmutableArray case
-            if (Votes.IsDefault)
-            {
-                Votes = ImmutableArray<Vote>.Empty;
-            }
+            Votes = votes;
         }
 
         public BlockCommit(VoteSet set, BlockHash hash)
