@@ -29,8 +29,18 @@ namespace Libplanet.Blocks
         /// of the last <see cref="Block{T}"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when either
         /// <paramref name="height"/> or <paramref name="round"/> is negative.</exception>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="votes"/> is
-        /// empty.</exception>
+        /// <exception cref="ArgumentException">Thrown for any of the following reasons:
+        /// <list type="bullet">
+        /// <item><description>
+        ///     Given <paramref name="votes"/> is empty.
+        /// </description></item>
+        /// <item><description>
+        ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has a different
+        ///     <see cref="Vote.Height"/> from <paramref name="height"/> or a different
+        ///     <see cref="Vote.Round"/> from <paramref name="round"/>.
+        /// </description></item>
+        /// </list>
+        /// </exception>
         public BlockCommit(
             long height,
             int round,
@@ -52,6 +62,12 @@ namespace Libplanet.Blocks
             else if (votes.IsDefaultOrEmpty)
             {
                 throw new ArgumentException("Empty set of votes is not allowed.", nameof(votes));
+            }
+            else if (votes.Any(vote => vote.Height != height || vote.Round != round))
+            {
+                throw new ArgumentException(
+                    $"All votes must have the same height as {height} and round as {round}",
+                    nameof(votes));
             }
 
             Height = height;

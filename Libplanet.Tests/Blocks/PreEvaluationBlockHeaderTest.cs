@@ -62,7 +62,30 @@ namespace Libplanet.Tests.Blocks
                 0,
                 0,
                 _contents.GenesisHash,
-                new[] { voteA, voteB, voteC }.ToImmutableArray());
+                new[]
+                {
+                    new VoteMetadata(
+                        0,
+                        0,
+                        _contents.GenesisHash,
+                        DateTimeOffset.UtcNow,
+                        validatorA.PublicKey,
+                        VoteFlag.Commit).Sign(validatorA),
+                    new VoteMetadata(
+                        0,
+                        0,
+                        _contents.GenesisHash,
+                        DateTimeOffset.UtcNow,
+                        validatorB.PublicKey,
+                        VoteFlag.Commit).Sign(validatorB),
+                    new VoteMetadata(
+                        0,
+                        0,
+                        _contents.GenesisHash,
+                        DateTimeOffset.UtcNow,
+                        validatorC.PublicKey,
+                        VoteFlag.Commit).Sign(validatorC),
+                }.ToImmutableArray());
             var invalidHeightMetadata = new BlockMetadata
             {
                 Index = 2,
@@ -98,37 +121,6 @@ namespace Libplanet.Tests.Blocks
             };
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(metadata: invalidBlockHashMetadata));
-
-            // Some of the vote's height are invalid.
-            var invalidVoteHeightLastCommit = new BlockCommit(
-                1,
-                0,
-                blockHash,
-                new[]
-                {
-                    voteA,
-                    voteB,
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.Commit).Sign(validatorC),
-                }.ToImmutableArray());
-            var invalidVoteHeightMetadata = new BlockMetadata
-            {
-                Index = 2,
-                Timestamp = DateTimeOffset.UtcNow,
-                PublicKey = validatorA.PublicKey,
-                PreviousHash = _contents.GenesisHash,
-                TxHash = HashDigest<SHA256>.FromString(
-                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                ),
-                LastCommit = invalidVoteHeightLastCommit,
-            };
-            Assert.Throws<InvalidBlockLastCommitException>(
-                () => new PreEvaluationBlockHeader(metadata: invalidVoteHeightMetadata));
 
             // Signature can be null for null or unknown votes.
             var validLastCommit = new BlockCommit(
