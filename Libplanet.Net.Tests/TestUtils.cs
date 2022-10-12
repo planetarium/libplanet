@@ -212,7 +212,8 @@ namespace Libplanet.Net.Tests
                 List<PublicKey>? validators = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 EventHandler<ConsensusMessage>? consensusMessageSent = null,
-                long lastCommitClearThreshold = 30)
+                long lastCommitClearThreshold = 30,
+                ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -243,7 +244,8 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 newHeightDelay,
                 _ => validators,
-                lastCommitClearThreshold);
+                lastCommitClearThreshold,
+                contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, consensusContext);
         }
@@ -259,7 +261,8 @@ namespace Libplanet.Net.Tests
             PrivateKey? privateKey = null,
             List<PublicKey>? validators = null,
             EventHandler<ConsensusMessage>? consensusMessageSent = null,
-            Step startStep = Step.Default)
+            Step startStep = Step.Default,
+            ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= Peer1Priv;
@@ -291,7 +294,8 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 validators,
                 startStep,
-                round);
+                round,
+                contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, context);
         }
@@ -302,7 +306,8 @@ namespace Libplanet.Net.Tests
             string host = "localhost",
             int consensusPort = 5101,
             List<BoundPeer>? validatorPeers = null,
-            int newHeightDelayMilliseconds = 10_000)
+            int newHeightDelayMilliseconds = 10_000,
+            ContextTimeoutOption? contextTimeoutOptions = null)
         {
             key ??= Peer1Priv;
             validatorPeers ??= Peers;
@@ -324,7 +329,8 @@ namespace Libplanet.Net.Tests
                 validatorPeers.ToImmutableList(),
                 new List<BoundPeer>().ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
-                30);
+                30,
+                contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
         }
     }
 }
