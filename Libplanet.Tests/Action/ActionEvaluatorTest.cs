@@ -46,7 +46,8 @@ namespace Libplanet.Tests.Action
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxTransactionsBytes: _ => 50 * 1024);
+                getMaxTransactionsBytes: _ => 50 * 1024,
+                getValidators: _ => ConsensusValidators);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
             _txFx = new TxFixture(null);
         }
@@ -451,7 +452,8 @@ namespace Libplanet.Tests.Action
             Block<DumbAction> block2 = ProposeNextBlock(
                 block1,
                 GenesisMiner,
-                block2Txs);
+                block2Txs,
+                lastCommit: CreateLastCommit(block1.Hash, block1.Index, 0));
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)
@@ -713,8 +715,9 @@ namespace Libplanet.Tests.Action
             {
                 Index = 123,
                 PublicKey = GenesisMiner.PublicKey,
-                PreviousHash = default(BlockHash),
+                PreviousHash = hash,
                 Transactions = ImmutableArray.Create(tx),
+                LastCommit = CreateLastCommit(hash, 122, 0),
             }.Propose();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,

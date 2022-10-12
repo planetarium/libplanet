@@ -31,7 +31,9 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+                var policy = new BlockPolicy<DumbAction>(
+                    new MinerReward(1),
+                    getValidators: _ => ConsensusValidators);
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
@@ -49,7 +51,9 @@ namespace Libplanet.Net.Tests
                             );
                         }
 
-                        Block<DumbAction> block = chain.ProposeBlock(miner);
+                        Block<DumbAction> block = chain.ProposeBlock(
+                            miner,
+                            lastCommit: CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                         chain.Append(block);
                     }
@@ -72,7 +76,6 @@ namespace Libplanet.Net.Tests
 
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
-            PrivateKey consensusPrivateKey = null,
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
@@ -84,7 +87,9 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            policy = policy ?? new BlockPolicy<DumbAction>(new MinerReward(1));
+            policy = policy ?? new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                getValidators: _ => ConsensusValidators);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = MakeBlockChain(
                 policy,

@@ -64,7 +64,11 @@ namespace Libplanet.Tests.Action
                     chain.Tip,
                     new[] { tx },
                     miner: _keys[1].PublicKey,
-                    protocolVersion: ProtocolVersion
+                    protocolVersion: ProtocolVersion,
+                    lastCommit: TestUtils.CreateLastCommit(
+                        chain.Tip.Hash,
+                        chain.Tip.Index,
+                        0)
                 ).Evaluate(_keys[1], chain)
             );
             Assert.Equal(

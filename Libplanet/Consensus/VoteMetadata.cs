@@ -87,33 +87,11 @@ namespace Libplanet.Consensus
         /// <inheritdoc/>
         public VoteFlag Flag { get; }
 
-        public Dictionary Encoded
-        {
-            get
-            {
-                Dictionary encoded = Bencodex.Types.Dictionary.Empty
-                    .Add(HeightKey, Height)
-                    .Add(RoundKey, Round)
-                    .Add(
-                        TimestampKey,
-                        Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                    .Add(ValidatorKey, Validator.Format(compress: true))
-                    .Add(FlagKey, (long)Flag);
-
-                if (BlockHash is { } blockHash)
-                {
-                    encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
-                }
-
-                return encoded;
-            }
-        }
-
         /// <summary>
         /// Marshaled <see cref="VoteMetadata"/> data.  This is used as a payload for
         /// signing.
         /// </summary>
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public byte[] ByteArray => _codec.Encode(Encoded());
 
         /// <summary>
         /// Signs a <see cref="VoteMetadata"/> to create a <see cref="Vote"/>
@@ -128,6 +106,25 @@ namespace Libplanet.Consensus
             return signer is PrivateKey key
                 ? new Vote(this, key.Sign(ByteArray).ToImmutableArray())
                 : new Vote(this, ImmutableArray<byte>.Empty);
+        }
+
+        public Dictionary Encoded()
+        {
+            Dictionary encoded = Bencodex.Types.Dictionary.Empty
+                .Add(HeightKey, Height)
+                .Add(RoundKey, Round)
+                .Add(
+                    TimestampKey,
+                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
+                .Add(ValidatorKey, Validator.Format(compress: true))
+                .Add(FlagKey, (long)Flag);
+
+            if (BlockHash is { } blockHash)
+            {
+                encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
+            }
+
+            return encoded;
         }
 
         public bool Equals(VoteMetadata? other)

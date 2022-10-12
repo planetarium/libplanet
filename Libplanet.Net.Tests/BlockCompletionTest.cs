@@ -404,7 +404,10 @@ namespace Libplanet.Net.Tests
 
                 for (int i = 1; i < count; i++)
                 {
-                    block = ProposeNextBlock(block, GenesisMiner);
+                    block = ProposeNextBlock(
+                        block,
+                        GenesisMiner,
+                        lastCommit: CreateLastCommit(block.Hash, block.Index, 0));
                     yield return block;
                 }
             }

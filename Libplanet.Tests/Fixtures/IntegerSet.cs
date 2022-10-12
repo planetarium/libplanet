@@ -58,7 +58,8 @@ namespace Libplanet.Tests.Fixtures
                 )
                 .ToImmutableArray();
             Miner = new PrivateKey();
-            policy = policy ?? new NullBlockPolicy<Arithmetic>();
+            policy = policy ?? new NullBlockPolicy<Arithmetic>(
+                getValidators: _ => TestUtils.ConsensusValidators);
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
@@ -144,7 +145,9 @@ namespace Libplanet.Tests.Fixtures
         public TxWithContext Sign(int signerIndex, params Arithmetic[] actions) =>
             Sign(PrivateKeys[signerIndex], actions);
 
-        public Block<Arithmetic> Propose() => Chain.ProposeBlock(Miner);
+        public Block<Arithmetic> Propose() => Chain.ProposeBlock(
+            Miner,
+            lastCommit: TestUtils.CreateLastCommit(Chain.Tip.Hash, Chain.Tip.Index, 0));
 
         public void Append(Block<Arithmetic> block) => Chain.Append(block);
 

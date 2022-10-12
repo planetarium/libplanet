@@ -266,7 +266,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     }
                 };
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer0Priv);
+            var block = blockChain.ProposeBlock(
+                TestUtils.Peer0Priv,
+                lastCommit:
+                TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv, height: 2));
 

@@ -1,4 +1,5 @@
 #nullable disable
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Libplanet.Action;
@@ -14,12 +15,16 @@ namespace Libplanet.Blockchain.Policies
     {
         private readonly BlockPolicyViolationException _exceptionToThrow;
         private readonly long _difficulty;
+        private readonly Func<long, IEnumerable<PublicKey>> _getValidators;
 
         public NullBlockPolicy(
-            BlockPolicyViolationException exceptionToThrow = null, long difficulty = 1)
+            BlockPolicyViolationException exceptionToThrow = null,
+            long difficulty = 1,
+            Func<long, IEnumerable<PublicKey>> getValidators = null)
         {
             _exceptionToThrow = exceptionToThrow;
             _difficulty = difficulty;
+            _getValidators = getValidators ?? (_ => ImmutableList<PublicKey>.Empty);
         }
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
@@ -57,6 +62,6 @@ namespace Libplanet.Blockchain.Policies
         public int GetMaxTransactionsPerSignerPerBlock(long index) =>
             GetMaxTransactionsPerBlock(index);
 
-        public IEnumerable<PublicKey> GetValidators(long index) => new List<PublicKey>();
+        public IEnumerable<PublicKey> GetValidators(long index) => _getValidators(index);
     }
 }

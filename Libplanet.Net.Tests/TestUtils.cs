@@ -153,6 +153,26 @@ namespace Libplanet.Net.Tests
             };
         }
 
+        public static BlockCommit CreateLastCommit(BlockHash blockHash, long height, int round)
+        {
+            var voteSet = new VoteSet(height, round, blockHash, Validators);
+
+            var privateKeys = PrivateKeys;
+
+            foreach (var privateKey in privateKeys)
+            {
+                voteSet.Add(new VoteMetadata(
+                    height,
+                    round,
+                    blockHash,
+                    DateTimeOffset.UtcNow,
+                    privateKey.PublicKey,
+                    VoteFlag.Commit).Sign(privateKey));
+            }
+
+            return new BlockCommit(voteSet, blockHash);
+        }
+
         public static void HandleFourPeersPreCommitMessages(
             ConsensusContext<DumbAction> consensusContext,
             PrivateKey nodePrivateKey,

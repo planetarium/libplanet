@@ -34,12 +34,14 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
             {
-                minerChain.Append(minerChain.ProposeBlock(miner));
+                minerChain.Append(minerChain.ProposeBlock(
+                    miner,
+                    lastCommit: CreateLastCommit(minerChain.Tip.Hash, minerChain.Tip.Index, 0)));
             }
 
             Swarm<DumbAction> seed = CreateSwarm(
@@ -186,7 +188,9 @@ namespace Libplanet.Net.Tests
                     {
                         try
                         {
-                            var block = chain.ProposeBlock(miner);
+                            var block = chain.ProposeBlock(
+                                miner,
+                                lastCommit: CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0));
                             chain.Append(block);
 
                             Log.Debug(
@@ -319,7 +323,9 @@ namespace Libplanet.Net.Tests
                 {
                     for (var i = 0; i < 10; i++)
                     {
-                        chainC.Append(chainC.ProposeBlock(minerC));
+                        chainC.Append(chainC.ProposeBlock(
+                            minerC,
+                            lastCommit: CreateLastCommit(chainC.Tip.Hash, chainC.Tip.Index, 0)));
                     }
                 });
 
@@ -577,12 +583,16 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                chainA.Append(chainA.ProposeBlock(keyA));
+                chainA.Append(chainA.ProposeBlock(
+                    keyA,
+                    lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0)));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                chainB.Append(chainB.ProposeBlock(keyB));
+                chainB.Append(chainB.ProposeBlock(
+                    keyB,
+                    lastCommit: CreateLastCommit(chainB.Tip.Hash, chainB.Tip.Index, 0)));
             }
 
             try
@@ -630,7 +640,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                getValidators: _ => ConsensusValidators);
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();
@@ -682,7 +694,8 @@ namespace Libplanet.Net.Tests
             Block<DumbAction> block2 = ProposeNext(
                 block1,
                 new[] { transactions[1] },
-                miner: GenesisMiner.PublicKey
+                miner: GenesisMiner.PublicKey,
+                lastCommit: CreateLastCommit(block1.Hash, block1.Index, 0)
             ).Evaluate(GenesisMiner, blockChain);
             blockChain.Append(block2, true, true, false);
 
@@ -731,14 +744,18 @@ namespace Libplanet.Net.Tests
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
 
-                chainA.Append(chainA.ProposeBlock(keyA));
+                chainA.Append(chainA.ProposeBlock(
+                    keyA,
+                    lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0)));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
 
                 Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
-                chainA.Append(chainA.ProposeBlock(keyB));
+                chainA.Append(chainA.ProposeBlock(
+                    keyB,
+                    lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0)));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
@@ -764,13 +781,17 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
-            Block<DumbAction> block = chainA.ProposeBlock(keyA);
+            Block<DumbAction> block = chainA.ProposeBlock(
+                keyA,
+                lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
             chainA.Append(block);
             chainB.Append(block);
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                chainA.Append(chainA.ProposeBlock(keyA));
+                chainA.Append(chainA.ProposeBlock(
+                    keyA,
+                    lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0)));
             }
 
             try
@@ -819,19 +840,25 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                chainA.Append(chainA.ProposeBlock(keyA));
+                chainA.Append(chainA.ProposeBlock(
+                    keyA,
+                    lastCommit: CreateLastCommit(chainA.Tip.Hash, chainA.Tip.Index, 0)));
             }
 
             Block<DumbAction> chainATip = chainA.Tip;
 
             foreach (int i in Enumerable.Range(0, 5))
             {
-                chainB.Append(chainB.ProposeBlock(keyB));
+                chainB.Append(chainB.ProposeBlock(
+                    keyB,
+                    lastCommit: CreateLastCommit(chainB.Tip.Hash, chainB.Tip.Index, 0)));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                chainC.Append(chainC.ProposeBlock(keyB));
+                chainC.Append(chainC.ProposeBlock(
+                    keyB,
+                    lastCommit: CreateLastCommit(chainC.Tip.Hash, chainC.Tip.Index, 0)));
             }
 
             try

@@ -99,37 +99,6 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(metadata: invalidBlockHashMetadata));
 
-            // Some of the vote's signature are invalid.
-            var invalidVoteSignatureLastCommit = new BlockCommit(
-                1,
-                0,
-                blockHash,
-                new[]
-                {
-                    voteA,
-                    voteB,
-                    new VoteMetadata(
-                        1,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.Commit).Sign(invalidValidator),
-                }.ToImmutableArray());
-            var invalidVoteSignatureMetadata = new BlockMetadata
-            {
-                Index = 2,
-                Timestamp = DateTimeOffset.UtcNow,
-                PublicKey = validatorA.PublicKey,
-                PreviousHash = _contents.GenesisHash,
-                TxHash = HashDigest<SHA256>.FromString(
-                    "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
-                ),
-                LastCommit = invalidVoteSignatureLastCommit,
-            };
-            Assert.Throws<InvalidBlockLastCommitException>(
-                () => new PreEvaluationBlockHeader(metadata: invalidVoteSignatureMetadata));
-
             // Some of the vote's height are invalid.
             var invalidVoteHeightLastCommit = new BlockCommit(
                 1,

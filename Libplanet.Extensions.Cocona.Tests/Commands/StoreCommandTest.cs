@@ -57,15 +57,29 @@ namespace Libplanet.Extensions.Cocona.Tests.Commands
             _transaction4 = DummyTransaction();
 
             _block1 = TestUtils.ProposeNextBlock(
-                _genesisBlock, TestUtils.GenesisMiner, new[] { _transaction1 });
+                _genesisBlock,
+                TestUtils.GenesisMiner,
+                new[] { _transaction1 },
+                lastCommit: null);
             _block2 = TestUtils.ProposeNextBlock(
-                _block1, TestUtils.GenesisMiner, new[] { _transaction2 });
+                _block1,
+                TestUtils.GenesisMiner,
+                new[] { _transaction2 },
+                lastCommit: TestUtils.CreateLastCommit(_block1.Hash, _block1.Index, 0));
             _block3 = TestUtils.ProposeNextBlock(
-                _block2, TestUtils.GenesisMiner, new[] { _transaction3 });
+                _block2,
+                TestUtils.GenesisMiner,
+                new[] { _transaction3 },
+                lastCommit: TestUtils.CreateLastCommit(_block2.Hash, _block2.Index, 0));
             _block4 = TestUtils.ProposeNextBlock(
-                _block3, TestUtils.GenesisMiner, new[] { _transaction3 });
+                _block3,
+                TestUtils.GenesisMiner,
+                new[] { _transaction3 },
+                lastCommit: TestUtils.CreateLastCommit(_block3.Hash, _block3.Index, 0));
             _block5 = TestUtils.ProposeNextBlock(
-                _block4, TestUtils.GenesisMiner);
+                _block4,
+                TestUtils.GenesisMiner,
+                lastCommit: TestUtils.CreateLastCommit(_block4.Hash, _block4.Index, 0));
 
             var guid = Guid.NewGuid();
             foreach (var v in _storeFixtures)
