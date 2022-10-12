@@ -50,5 +50,10 @@ namespace Libplanet.Net.Consensus
         /// (e.g., node restarted, joining consensus.)
         /// </summary>
         public long? LastCommitClearThreshold { get; set; }
+
+        /// <summary>
+        /// A timeout second and multiplier value for used in <see cref="Context{T}"/>.
+        /// </summary>
+        public ContextTimeoutOption ContextTimeoutOptions { get; set; }
     }
 }

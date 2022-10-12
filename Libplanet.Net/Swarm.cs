@@ -152,7 +152,8 @@ namespace Libplanet.Net
                     consensusReactorOption.ConsensusPeers,
                     consensusReactorOption.SeedPeers,
                     consensusReactorOption.TargetBlockInterval,
-                    consensusReactorOption.LastCommitClearThreshold ?? 30);
+                    consensusReactorOption.LastCommitClearThreshold ?? 30,
+                    consensusReactorOption.ContextTimeoutOptions);
             }
         }
 
