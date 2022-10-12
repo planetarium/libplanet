@@ -1089,15 +1089,6 @@ namespace Libplanet.Tests.Store
         {
             using (StoreFixture fx = FxConstructor())
             {
-                // Empty vote cases 1.
-                BlockCommit blockCommit =
-                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty);
-
-                fx.Store.PutLastCommit(blockCommit);
-                BlockCommit? storedCommit = fx.Store.GetLastCommit(blockCommit.Height);
-
-                Assert.Equal(blockCommit, storedCommit);
-
                 // Commits with votes
                 var validators = Enumerable.Range(0, 4)
                     .Select(x => new PrivateKey())
@@ -1108,13 +1099,13 @@ namespace Libplanet.Tests.Store
                     Fx.Block2.Hash,
                     validators.Select(x => x.PublicKey).ToImmutableArray());
 
-                BlockCommit blockCommitWithVoteSet = new BlockCommit(voteSet, fx.Block2.Hash);
+                BlockCommit blockCommit = new BlockCommit(voteSet, fx.Block2.Hash);
 
-                fx.Store.PutLastCommit(blockCommitWithVoteSet);
+                fx.Store.PutLastCommit(blockCommit);
                 BlockCommit? storedCommitVotes =
-                    fx.Store.GetLastCommit(blockCommitWithVoteSet.Height);
+                    fx.Store.GetLastCommit(blockCommit.Height);
 
-                Assert.Equal(blockCommitWithVoteSet, storedCommitVotes);
+                Assert.Equal(blockCommit, storedCommitVotes);
             }
         }
 
@@ -1132,12 +1123,11 @@ namespace Libplanet.Tests.Store
                 var voteSetTwo = new VoteSet(
                     2,
                     0,
-                    fx.Block2.Hash,
+                    fx.Block1.Hash,
                     new List<PublicKey>() { fx.Miner.PublicKey });
 
                 BlockCommit[] blockCommits =
                 {
-                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty),
                     new BlockCommit(voteSetOne, fx.Block1.Hash),
                     new BlockCommit(voteSetTwo, fx.Block2.Hash),
                 };
@@ -1150,10 +1140,7 @@ namespace Libplanet.Tests.Store
                 IEnumerable<long> indices = fx.Store.GetLastCommitIndices();
 
                 HashSet<long> indicesFromOperation = indices.ToHashSet();
-                HashSet<long> expectedIndices = new List<long>()
-                {
-                    0, 1, 2,
-                }.ToHashSet();
+                HashSet<long> expectedIndices = new HashSet<long>() { 1, 2 };
 
                 Assert.Equal(indicesFromOperation, expectedIndices);
             }
@@ -1164,8 +1151,20 @@ namespace Libplanet.Tests.Store
         {
             using (StoreFixture fx = FxConstructor())
             {
+                var validatorPrivateKey = new PrivateKey();
                 BlockCommit blockCommit =
-                    new BlockCommit(0, 0, Fx.GenesisBlock.Hash, ImmutableArray<Vote>.Empty);
+                    new BlockCommit(
+                        0,
+                        0,
+                        Fx.GenesisBlock.Hash,
+                        ImmutableArray<Vote>.Empty
+                            .Add(new VoteMetadata(
+                                0,
+                                0,
+                                null,
+                                DateTimeOffset.UtcNow,
+                                validatorPrivateKey.PublicKey,
+                                VoteFlag.Null).Sign(validatorPrivateKey)));
 
                 fx.Store.PutLastCommit(blockCommit);
                 Assert.NotNull(fx.Store.GetLastCommit(blockCommit.Height));

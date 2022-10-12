@@ -44,15 +44,24 @@ namespace Libplanet.Tests.Blocks
          [Fact]
          public void ConstructorInvalidValues()
          {
-             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                 new BlockCommit(-1, 0, hash, ImmutableArray<Vote>.Empty));
-
-             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                 new BlockCommit(1, -1, hash, ImmutableArray<Vote>.Empty));
-
-             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                 new BlockCommit(1, -1, default, ImmutableArray<Vote>.Empty));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var privateKey = new PrivateKey();
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    0,
+                    0,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    privateKey.PublicKey,
+                    VoteFlag.Null).Sign(privateKey));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(1, 1, hash, ImmutableArray<Vote>.Empty));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockCommit(-1, 0, hash, votes));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockCommit(1, -1, hash, votes));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockCommit(1, -1, default, votes));
          }
 
          [Fact]
@@ -87,7 +96,7 @@ namespace Libplanet.Tests.Blocks
                  .Add(BlockCommit.RoundKey, 0)
                  .Add(BlockCommit.BlockHashKey, default(BlockHash).ByteArray);
 
-             Assert.Throws<ArgumentNullException>(() => new BlockCommit(dict));
+             Assert.Throws<ArgumentException>(() => new BlockCommit(dict));
          }
     }
 }
