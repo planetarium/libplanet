@@ -46,7 +46,6 @@ a system action, its features will be added more in the future.
     [`System.Text.Json.JsonSerializer`] as they now have their own
     [custom converters].  Note that these serializations are unavailable
     on Unity due to its incomplete reflection support.  [[#2294], [#2322]]
-
      -  An `Address` became represented as a single hexadecimal string in JSON.
         [[#2322]]
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.
@@ -65,11 +64,13 @@ a system action, its features will be added more in the future.
         [[#2322]]
      -  System actions became represented as a [Bencodex JSON Representation]
         of their `PlainValue` with `type_id` field.  [[#2294]]
-
  -  System actions' `GetHashCode()` and `Equals(object)` methods now check
     value equality (rather than reference equality).  [[#2294]]
 
 ### Bug fixes
+
+ -  Interface methods `IComparable.CompareTo()` and
+    `IComparable<T>.CompareTo()` for `Address` are now accessible.  [#2384]
 
 ### Dependencies
 
@@ -97,6 +98,7 @@ a system action, its features will be added more in the future.
 [#2353]: https://github.com/planetarium/libplanet/pull/2353
 [#2356]: https://github.com/planetarium/libplanet/issues/2356
 [#2366]: https://github.com/planetarium/libplanet/pull/2366
+[#2384]: https://github.com/planetarium/libplanet/pull/2384
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx

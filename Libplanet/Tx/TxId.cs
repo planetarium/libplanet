@@ -180,20 +180,10 @@ namespace Libplanet.Tx
         }
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
-        public int CompareTo(object obj)
-        {
-            if (obj is TxId other)
-            {
-                return ((IComparable<TxId>)this).CompareTo(other);
-            }
-
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            throw new ArgumentException(nameof(obj));
-        }
+        public int CompareTo(object obj) => obj is TxId other
+            ? this.CompareTo(other)
+            : throw new ArgumentException(
+                $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
 
         /// <inheritdoc />
         public void GetObjectData(
