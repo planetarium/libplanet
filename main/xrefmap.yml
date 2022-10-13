@@ -7287,15 +7287,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.IBlockHeader, IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
   nameWithType: Block<T>.Block(IBlockHeader, IEnumerable<Transaction<T>>)
   nameWithType.vb: Block(Of T).Block(IBlockHeader, IEnumerable(Of Transaction(Of T)))
-- uid: Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}})
-  name: Block(PreEvaluationBlock<T>, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_Libplanet_Blocks_PreEvaluationBlock__0__Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}})
-  name.vb: Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
-  fullName: Libplanet.Blocks.Block<T>.Block(Libplanet.Blocks.PreEvaluationBlock<T>, Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.PreEvaluationBlock(Of T), Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
-  nameWithType: Block<T>.Block(PreEvaluationBlock<T>, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  nameWithType.vb: Block(Of T).Block(PreEvaluationBlock(Of T), HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},System.ValueTuple{Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash})
+  name: Block(PreEvaluationBlock<T>, (HashDigest<SHA256> StateRootHash, Nullable<ImmutableArray<Byte>> Signature, BlockHash Hash))
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_Libplanet_Blocks_PreEvaluationBlock__0__System_ValueTuple_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(Libplanet.Blocks.PreEvaluationBlock{`0},System.ValueTuple{Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash})
+  name.vb: Block(PreEvaluationBlock(Of T), (StateRootHash As HashDigest(Of SHA256), Signature As Nullable(Of ImmutableArray(Of Byte)), Hash As BlockHash)(Of HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash))
+  fullName: Libplanet.Blocks.Block<T>.Block(Libplanet.Blocks.PreEvaluationBlock<T>, System.ValueTuple<Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>, Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(Libplanet.Blocks.PreEvaluationBlock(Of T), System.ValueTuple(Of Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.Blocks.BlockHash))
+  nameWithType: Block<T>.Block(PreEvaluationBlock<T>, (HashDigest<SHA256> StateRootHash, Nullable<ImmutableArray<Byte>> Signature, BlockHash Hash))
+  nameWithType.vb: Block(Of T).Block(PreEvaluationBlock(Of T), (StateRootHash As HashDigest(Of SHA256), Signature As Nullable(Of ImmutableArray(Of Byte)), Hash As BlockHash)(Of HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash))
 - uid: Libplanet.Blocks.Block`1.#ctor*
   name: Block
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_
@@ -7691,31 +7691,23 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContent(Of T)
   nameWithType: BlockContent<T>
   nameWithType.vb: BlockContent(Of T)
-- uid: Libplanet.Blocks.BlockContent`1.#ctor
-  name: BlockContent()
-  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor
-  commentId: M:Libplanet.Blocks.BlockContent`1.#ctor
-  fullName: Libplanet.Blocks.BlockContent<T>.BlockContent()
-  fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent()
-  nameWithType: BlockContent<T>.BlockContent()
-  nameWithType.vb: BlockContent(Of T).BlockContent()
-- uid: Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.IBlockContent{`0})
-  name: BlockContent(IBlockContent<T>)
-  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor_Libplanet_Blocks_IBlockContent__0__
-  commentId: M:Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.IBlockContent{`0})
-  name.vb: BlockContent(IBlockContent(Of T))
-  fullName: Libplanet.Blocks.BlockContent<T>.BlockContent(Libplanet.Blocks.IBlockContent<T>)
-  fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent(Libplanet.Blocks.IBlockContent(Of T))
-  nameWithType: BlockContent<T>.BlockContent(IBlockContent<T>)
-  nameWithType.vb: BlockContent(Of T).BlockContent(IBlockContent(Of T))
-- uid: Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.IBlockMetadata)
-  name: BlockContent(IBlockMetadata)
-  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor_Libplanet_Blocks_IBlockMetadata_
-  commentId: M:Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.IBlockMetadata)
-  fullName: Libplanet.Blocks.BlockContent<T>.BlockContent(Libplanet.Blocks.IBlockMetadata)
-  fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent(Libplanet.Blocks.IBlockMetadata)
-  nameWithType: BlockContent<T>.BlockContent(IBlockMetadata)
-  nameWithType.vb: BlockContent(Of T).BlockContent(IBlockMetadata)
+- uid: Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.BlockMetadata)
+  name: BlockContent(BlockMetadata)
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor_Libplanet_Blocks_BlockMetadata_
+  commentId: M:Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.BlockMetadata)
+  fullName: Libplanet.Blocks.BlockContent<T>.BlockContent(Libplanet.Blocks.BlockMetadata)
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent(Libplanet.Blocks.BlockMetadata)
+  nameWithType: BlockContent<T>.BlockContent(BlockMetadata)
+  nameWithType.vb: BlockContent(Of T).BlockContent(BlockMetadata)
+- uid: Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.BlockMetadata,IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: BlockContent(BlockMetadata, IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor_Libplanet_Blocks_BlockMetadata_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.BlockMetadata,IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: BlockContent(BlockMetadata, IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Blocks.BlockContent<T>.BlockContent(Libplanet.Blocks.BlockMetadata, IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent(Libplanet.Blocks.BlockMetadata, IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockContent<T>.BlockContent(BlockMetadata, IEnumerable<Transaction<T>>)
+  nameWithType.vb: BlockContent(Of T).BlockContent(BlockMetadata, IEnumerable(Of Transaction(Of T)))
 - uid: Libplanet.Blocks.BlockContent`1.#ctor(Libplanet.Blocks.IBlockMetadata,IEnumerable{Libplanet.Tx.Transaction{`0}})
   name: BlockContent(IBlockMetadata, IEnumerable<Transaction<T>>)
   href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1__ctor_Libplanet_Blocks_IBlockMetadata_IEnumerable_Libplanet_Tx_Transaction__0___
@@ -7734,6 +7726,75 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContent(Of T).BlockContent
   nameWithType: BlockContent<T>.BlockContent
   nameWithType.vb: BlockContent(Of T).BlockContent
+- uid: Libplanet.Blocks.BlockContent`1.DeriveTxHash(IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: DeriveTxHash(IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_DeriveTxHash_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blocks.BlockContent`1.DeriveTxHash(IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: DeriveTxHash(IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Blocks.BlockContent<T>.DeriveTxHash(IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).DeriveTxHash(IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockContent<T>.DeriveTxHash(IEnumerable<Transaction<T>>)
+  nameWithType.vb: BlockContent(Of T).DeriveTxHash(IEnumerable(Of Transaction(Of T)))
+- uid: Libplanet.Blocks.BlockContent`1.DeriveTxHash*
+  name: DeriveTxHash
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_DeriveTxHash_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.DeriveTxHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.DeriveTxHash
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).DeriveTxHash
+  nameWithType: BlockContent<T>.DeriveTxHash
+  nameWithType.vb: BlockContent(Of T).DeriveTxHash
+- uid: Libplanet.Blocks.BlockContent`1.Difficulty
+  name: Difficulty
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Difficulty
+  commentId: P:Libplanet.Blocks.BlockContent`1.Difficulty
+  fullName: Libplanet.Blocks.BlockContent<T>.Difficulty
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Difficulty
+  nameWithType: BlockContent<T>.Difficulty
+  nameWithType.vb: BlockContent(Of T).Difficulty
+- uid: Libplanet.Blocks.BlockContent`1.Difficulty*
+  name: Difficulty
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Difficulty_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.Difficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.Difficulty
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Difficulty
+  nameWithType: BlockContent<T>.Difficulty
+  nameWithType.vb: BlockContent(Of T).Difficulty
+- uid: Libplanet.Blocks.BlockContent`1.Index
+  name: Index
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Index
+  commentId: P:Libplanet.Blocks.BlockContent`1.Index
+  fullName: Libplanet.Blocks.BlockContent<T>.Index
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Index
+  nameWithType: BlockContent<T>.Index
+  nameWithType.vb: BlockContent(Of T).Index
+- uid: Libplanet.Blocks.BlockContent`1.Index*
+  name: Index
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Index_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.Index
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.Index
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Index
+  nameWithType: BlockContent<T>.Index
+  nameWithType.vb: BlockContent(Of T).Index
+- uid: Libplanet.Blocks.BlockContent`1.Metadata
+  name: Metadata
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Metadata
+  commentId: P:Libplanet.Blocks.BlockContent`1.Metadata
+  fullName: Libplanet.Blocks.BlockContent<T>.Metadata
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Metadata
+  nameWithType: BlockContent<T>.Metadata
+  nameWithType.vb: BlockContent(Of T).Metadata
+- uid: Libplanet.Blocks.BlockContent`1.Metadata*
+  name: Metadata
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Metadata_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.Metadata
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.Metadata
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Metadata
+  nameWithType: BlockContent<T>.Metadata
+  nameWithType.vb: BlockContent(Of T).Metadata
 - uid: Libplanet.Blocks.BlockContent`1.Mine(CancellationToken)
   name: Mine(CancellationToken)
   href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Mine_CancellationToken_
@@ -7751,6 +7812,108 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContent(Of T).Mine
   nameWithType: BlockContent<T>.Mine
   nameWithType.vb: BlockContent(Of T).Mine
+- uid: Libplanet.Blocks.BlockContent`1.Miner
+  name: Miner
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Miner
+  commentId: P:Libplanet.Blocks.BlockContent`1.Miner
+  fullName: Libplanet.Blocks.BlockContent<T>.Miner
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Miner
+  nameWithType: BlockContent<T>.Miner
+  nameWithType.vb: BlockContent(Of T).Miner
+- uid: Libplanet.Blocks.BlockContent`1.Miner*
+  name: Miner
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Miner_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.Miner
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.Miner
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Miner
+  nameWithType: BlockContent<T>.Miner
+  nameWithType.vb: BlockContent(Of T).Miner
+- uid: Libplanet.Blocks.BlockContent`1.PreviousHash
+  name: PreviousHash
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_PreviousHash
+  commentId: P:Libplanet.Blocks.BlockContent`1.PreviousHash
+  fullName: Libplanet.Blocks.BlockContent<T>.PreviousHash
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).PreviousHash
+  nameWithType: BlockContent<T>.PreviousHash
+  nameWithType.vb: BlockContent(Of T).PreviousHash
+- uid: Libplanet.Blocks.BlockContent`1.PreviousHash*
+  name: PreviousHash
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_PreviousHash_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.PreviousHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.PreviousHash
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).PreviousHash
+  nameWithType: BlockContent<T>.PreviousHash
+  nameWithType.vb: BlockContent(Of T).PreviousHash
+- uid: Libplanet.Blocks.BlockContent`1.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_ProtocolVersion
+  commentId: P:Libplanet.Blocks.BlockContent`1.ProtocolVersion
+  fullName: Libplanet.Blocks.BlockContent<T>.ProtocolVersion
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).ProtocolVersion
+  nameWithType: BlockContent<T>.ProtocolVersion
+  nameWithType.vb: BlockContent(Of T).ProtocolVersion
+- uid: Libplanet.Blocks.BlockContent`1.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_ProtocolVersion_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.ProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.ProtocolVersion
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).ProtocolVersion
+  nameWithType: BlockContent<T>.ProtocolVersion
+  nameWithType.vb: BlockContent(Of T).ProtocolVersion
+- uid: Libplanet.Blocks.BlockContent`1.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_PublicKey
+  commentId: P:Libplanet.Blocks.BlockContent`1.PublicKey
+  fullName: Libplanet.Blocks.BlockContent<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).PublicKey
+  nameWithType: BlockContent<T>.PublicKey
+  nameWithType.vb: BlockContent(Of T).PublicKey
+- uid: Libplanet.Blocks.BlockContent`1.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_PublicKey_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).PublicKey
+  nameWithType: BlockContent<T>.PublicKey
+  nameWithType.vb: BlockContent(Of T).PublicKey
+- uid: Libplanet.Blocks.BlockContent`1.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Timestamp
+  commentId: P:Libplanet.Blocks.BlockContent`1.Timestamp
+  fullName: Libplanet.Blocks.BlockContent<T>.Timestamp
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Timestamp
+  nameWithType: BlockContent<T>.Timestamp
+  nameWithType.vb: BlockContent(Of T).Timestamp
+- uid: Libplanet.Blocks.BlockContent`1.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Timestamp_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.Timestamp
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).Timestamp
+  nameWithType: BlockContent<T>.Timestamp
+  nameWithType.vb: BlockContent(Of T).Timestamp
+- uid: Libplanet.Blocks.BlockContent`1.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_TotalDifficulty
+  commentId: P:Libplanet.Blocks.BlockContent`1.TotalDifficulty
+  fullName: Libplanet.Blocks.BlockContent<T>.TotalDifficulty
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).TotalDifficulty
+  nameWithType: BlockContent<T>.TotalDifficulty
+  nameWithType.vb: BlockContent(Of T).TotalDifficulty
+- uid: Libplanet.Blocks.BlockContent`1.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_TotalDifficulty_
+  commentId: Overload:Libplanet.Blocks.BlockContent`1.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockContent<T>.TotalDifficulty
+  fullName.vb: Libplanet.Blocks.BlockContent(Of T).TotalDifficulty
+  nameWithType: BlockContent<T>.TotalDifficulty
+  nameWithType.vb: BlockContent(Of T).TotalDifficulty
 - uid: Libplanet.Blocks.BlockContent`1.Transactions
   name: Transactions
   href: api/Libplanet.Blocks.BlockContent-1.html#Libplanet_Blocks_BlockContent_1_Transactions
@@ -7785,28 +7948,6 @@ references:
   fullName.vb: Libplanet.Blocks.BlockContent(Of T).TxHash
   nameWithType: BlockContent<T>.TxHash
   nameWithType.vb: BlockContent(Of T).TxHash
-- uid: Libplanet.Blocks.BlockContentExtensions
-  name: BlockContentExtensions
-  href: api/Libplanet.Blocks.BlockContentExtensions.html
-  commentId: T:Libplanet.Blocks.BlockContentExtensions
-  fullName: Libplanet.Blocks.BlockContentExtensions
-  nameWithType: BlockContentExtensions
-- uid: Libplanet.Blocks.BlockContentExtensions.Copy*
-  name: Copy
-  href: api/Libplanet.Blocks.BlockContentExtensions.html#Libplanet_Blocks_BlockContentExtensions_Copy_
-  commentId: Overload:Libplanet.Blocks.BlockContentExtensions.Copy
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockContentExtensions.Copy
-  nameWithType: BlockContentExtensions.Copy
-- uid: Libplanet.Blocks.BlockContentExtensions.Copy``1(Libplanet.Blocks.IBlockContent{``0})
-  name: Copy<T>(IBlockContent<T>)
-  href: api/Libplanet.Blocks.BlockContentExtensions.html#Libplanet_Blocks_BlockContentExtensions_Copy__1_Libplanet_Blocks_IBlockContent___0__
-  commentId: M:Libplanet.Blocks.BlockContentExtensions.Copy``1(Libplanet.Blocks.IBlockContent{``0})
-  name.vb: Copy(Of T)(IBlockContent(Of T))
-  fullName: Libplanet.Blocks.BlockContentExtensions.Copy<T>(Libplanet.Blocks.IBlockContent<T>)
-  fullName.vb: Libplanet.Blocks.BlockContentExtensions.Copy(Of T)(Libplanet.Blocks.IBlockContent(Of T))
-  nameWithType: BlockContentExtensions.Copy<T>(IBlockContent<T>)
-  nameWithType.vb: BlockContentExtensions.Copy(Of T)(IBlockContent(Of T))
 - uid: Libplanet.Blocks.BlockExcerptExtensions
   name: BlockExcerptExtensions
   href: api/Libplanet.Blocks.BlockExcerptExtensions.html
@@ -8014,24 +8155,21 @@ references:
   commentId: T:Libplanet.Blocks.BlockHeader
   fullName: Libplanet.Blocks.BlockHeader
   nameWithType: BlockHeader
-- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}})
-  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}})
-  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
-  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
-  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
-  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
-- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
-  name: BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
-  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash_
-  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash)
-  name.vb: BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
-  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>, Libplanet.Blocks.BlockHash)
-  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.Blocks.BlockHash)
-  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>, BlockHash)
-  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash)
+- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.IBlockHeader)
+  name: BlockHeader(IBlockHeader)
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_IBlockHeader_
+  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.IBlockHeader)
+  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.IBlockHeader)
+  nameWithType: BlockHeader.BlockHeader(IBlockHeader)
+- uid: Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,System.ValueTuple{Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash})
+  name: BlockHeader(PreEvaluationBlockHeader, (HashDigest<SHA256> StateRootHash, Nullable<ImmutableArray<Byte>> Signature, BlockHash Hash))
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_Libplanet_Blocks_PreEvaluationBlockHeader_System_ValueTuple_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Blocks_BlockHash__
+  commentId: M:Libplanet.Blocks.BlockHeader.#ctor(Libplanet.Blocks.PreEvaluationBlockHeader,System.ValueTuple{Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Blocks.BlockHash})
+  name.vb: BlockHeader(PreEvaluationBlockHeader, (StateRootHash As HashDigest(Of SHA256), Signature As Nullable(Of ImmutableArray(Of Byte)), Hash As BlockHash)(Of HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash))
+  fullName: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, System.ValueTuple<Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>, Libplanet.Blocks.BlockHash>)
+  fullName.vb: Libplanet.Blocks.BlockHeader.BlockHeader(Libplanet.Blocks.PreEvaluationBlockHeader, System.ValueTuple(Of Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)), Libplanet.Blocks.BlockHash))
+  nameWithType: BlockHeader.BlockHeader(PreEvaluationBlockHeader, (HashDigest<SHA256> StateRootHash, Nullable<ImmutableArray<Byte>> Signature, BlockHash Hash))
+  nameWithType.vb: BlockHeader.BlockHeader(PreEvaluationBlockHeader, (StateRootHash As HashDigest(Of SHA256), Signature As Nullable(Of ImmutableArray(Of Byte)), Hash As BlockHash)(Of HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)), BlockHash))
 - uid: Libplanet.Blocks.BlockHeader.#ctor*
   name: BlockHeader
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader__ctor_
@@ -8065,6 +8203,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockHeader.Hash
   nameWithType: BlockHeader.Hash
+- uid: Libplanet.Blocks.BlockHeader.Header
+  name: Header
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Header
+  commentId: P:Libplanet.Blocks.BlockHeader.Header
+  fullName: Libplanet.Blocks.BlockHeader.Header
+  nameWithType: BlockHeader.Header
+- uid: Libplanet.Blocks.BlockHeader.Header*
+  name: Header
+  href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Header_
+  commentId: Overload:Libplanet.Blocks.BlockHeader.Header
+  isSpec: "True"
+  fullName: Libplanet.Blocks.BlockHeader.Header
+  nameWithType: BlockHeader.Header
 - uid: Libplanet.Blocks.BlockHeader.Index
   name: Index
   href: api/Libplanet.Blocks.BlockHeader.html#Libplanet_Blocks_BlockHeader_Index
@@ -8522,18 +8673,30 @@ references:
   commentId: T:Libplanet.Blocks.BlockMetadata
   fullName: Libplanet.Blocks.BlockMetadata
   nameWithType: BlockMetadata
-- uid: Libplanet.Blocks.BlockMetadata.#ctor
-  name: BlockMetadata()
-  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata__ctor
-  commentId: M:Libplanet.Blocks.BlockMetadata.#ctor
-  fullName: Libplanet.Blocks.BlockMetadata.BlockMetadata()
-  nameWithType: BlockMetadata.BlockMetadata()
 - uid: Libplanet.Blocks.BlockMetadata.#ctor(Libplanet.Blocks.IBlockMetadata)
   name: BlockMetadata(IBlockMetadata)
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata__ctor_Libplanet_Blocks_IBlockMetadata_
   commentId: M:Libplanet.Blocks.BlockMetadata.#ctor(Libplanet.Blocks.IBlockMetadata)
   fullName: Libplanet.Blocks.BlockMetadata.BlockMetadata(Libplanet.Blocks.IBlockMetadata)
   nameWithType: BlockMetadata.BlockMetadata(IBlockMetadata)
+- uid: Libplanet.Blocks.BlockMetadata.#ctor(System.Int32,System.Int64,DateTimeOffset,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Int64,BigInteger,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: BlockMetadata(Int32, Int64, DateTimeOffset, Address, PublicKey, Int64, BigInteger, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata__ctor_System_Int32_System_Int64_DateTimeOffset_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Int64_BigInteger_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Blocks.BlockMetadata.#ctor(System.Int32,System.Int64,DateTimeOffset,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Int64,BigInteger,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: BlockMetadata(Int32, Int64, DateTimeOffset, Address, PublicKey, Int64, BigInteger, Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Blocks.BlockMetadata.BlockMetadata(System.Int32, System.Int64, DateTimeOffset, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Int64, BigInteger, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Blocks.BlockMetadata.BlockMetadata(System.Int32, System.Int64, DateTimeOffset, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Int64, BigInteger, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: BlockMetadata.BlockMetadata(Int32, Int64, DateTimeOffset, Address, PublicKey, Int64, BigInteger, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: BlockMetadata.BlockMetadata(Int32, Int64, DateTimeOffset, Address, PublicKey, Int64, BigInteger, Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Blocks.BlockMetadata.#ctor(System.Int64,DateTimeOffset,Libplanet.Crypto.PublicKey,System.Int64,BigInteger,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: BlockMetadata(Int64, DateTimeOffset, PublicKey, Int64, BigInteger, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata__ctor_System_Int64_DateTimeOffset_Libplanet_Crypto_PublicKey_System_Int64_BigInteger_System_Nullable_Libplanet_Blocks_BlockHash__System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Blocks.BlockMetadata.#ctor(System.Int64,DateTimeOffset,Libplanet.Crypto.PublicKey,System.Int64,BigInteger,System.Nullable{Libplanet.Blocks.BlockHash},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: BlockMetadata(Int64, DateTimeOffset, PublicKey, Int64, BigInteger, Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Blocks.BlockMetadata.BlockMetadata(System.Int64, DateTimeOffset, Libplanet.Crypto.PublicKey, System.Int64, BigInteger, System.Nullable<Libplanet.Blocks.BlockHash>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Blocks.BlockMetadata.BlockMetadata(System.Int64, DateTimeOffset, Libplanet.Crypto.PublicKey, System.Int64, BigInteger, System.Nullable(Of Libplanet.Blocks.BlockHash), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: BlockMetadata.BlockMetadata(Int64, DateTimeOffset, PublicKey, Int64, BigInteger, Nullable<BlockHash>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: BlockMetadata.BlockMetadata(Int64, DateTimeOffset, PublicKey, Int64, BigInteger, Nullable(Of BlockHash), Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Blocks.BlockMetadata.#ctor*
   name: BlockMetadata
   href: api/Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata__ctor_
@@ -8722,44 +8885,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockMetadata.TxHash
   nameWithType: BlockMetadata.TxHash
-- uid: Libplanet.Blocks.BlockMetadataExtensions
-  name: BlockMetadataExtensions
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html
-  commentId: T:Libplanet.Blocks.BlockMetadataExtensions
-  fullName: Libplanet.Blocks.BlockMetadataExtensions
-  nameWithType: BlockMetadataExtensions
-- uid: Libplanet.Blocks.BlockMetadataExtensions.Copy(Libplanet.Blocks.IBlockMetadata)
-  name: Copy(IBlockMetadata)
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html#Libplanet_Blocks_BlockMetadataExtensions_Copy_Libplanet_Blocks_IBlockMetadata_
-  commentId: M:Libplanet.Blocks.BlockMetadataExtensions.Copy(Libplanet.Blocks.IBlockMetadata)
-  fullName: Libplanet.Blocks.BlockMetadataExtensions.Copy(Libplanet.Blocks.IBlockMetadata)
-  nameWithType: BlockMetadataExtensions.Copy(IBlockMetadata)
-- uid: Libplanet.Blocks.BlockMetadataExtensions.Copy*
-  name: Copy
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html#Libplanet_Blocks_BlockMetadataExtensions_Copy_
-  commentId: Overload:Libplanet.Blocks.BlockMetadataExtensions.Copy
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockMetadataExtensions.Copy
-  nameWithType: BlockMetadataExtensions.Copy
-- uid: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
-  name: ValidateTimestamp(IBlockMetadata)
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html#Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_
-  commentId: M:Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
-  fullName: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
-  nameWithType: BlockMetadataExtensions.ValidateTimestamp(IBlockMetadata)
-- uid: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,DateTimeOffset)
-  name: ValidateTimestamp(IBlockMetadata, DateTimeOffset)
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html#Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_DateTimeOffset_
-  commentId: M:Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,DateTimeOffset)
-  fullName: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata, DateTimeOffset)
-  nameWithType: BlockMetadataExtensions.ValidateTimestamp(IBlockMetadata, DateTimeOffset)
-- uid: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp*
-  name: ValidateTimestamp
-  href: api/Libplanet.Blocks.BlockMetadataExtensions.html#Libplanet_Blocks_BlockMetadataExtensions_ValidateTimestamp_
-  commentId: Overload:Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp
-  isSpec: "True"
-  fullName: Libplanet.Blocks.BlockMetadataExtensions.ValidateTimestamp
-  nameWithType: BlockMetadataExtensions.ValidateTimestamp
 - uid: Libplanet.Blocks.BlockPerception
   name: BlockPerception
   href: api/Libplanet.Blocks.BlockPerception.html
@@ -9121,6 +9246,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.IBlockMetadata.TxHash
   nameWithType: IBlockMetadata.TxHash
+- uid: Libplanet.Blocks.IBlockMetadataExtensions
+  name: IBlockMetadataExtensions
+  href: api/Libplanet.Blocks.IBlockMetadataExtensions.html
+  commentId: T:Libplanet.Blocks.IBlockMetadataExtensions
+  fullName: Libplanet.Blocks.IBlockMetadataExtensions
+  nameWithType: IBlockMetadataExtensions
+- uid: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
+  name: ValidateTimestamp(IBlockMetadata)
+  href: api/Libplanet.Blocks.IBlockMetadataExtensions.html#Libplanet_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_
+  commentId: M:Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
+  fullName: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata)
+  nameWithType: IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata)
+- uid: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,DateTimeOffset)
+  name: ValidateTimestamp(IBlockMetadata, DateTimeOffset)
+  href: api/Libplanet.Blocks.IBlockMetadataExtensions.html#Libplanet_Blocks_IBlockMetadataExtensions_ValidateTimestamp_Libplanet_Blocks_IBlockMetadata_DateTimeOffset_
+  commentId: M:Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata,DateTimeOffset)
+  fullName: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp(Libplanet.Blocks.IBlockMetadata, DateTimeOffset)
+  nameWithType: IBlockMetadataExtensions.ValidateTimestamp(IBlockMetadata, DateTimeOffset)
+- uid: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp*
+  name: ValidateTimestamp
+  href: api/Libplanet.Blocks.IBlockMetadataExtensions.html#Libplanet_Blocks_IBlockMetadataExtensions_ValidateTimestamp_
+  commentId: Overload:Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockMetadataExtensions.ValidateTimestamp
+  nameWithType: IBlockMetadataExtensions.ValidateTimestamp
 - uid: Libplanet.Blocks.InvalidBlockBytesLengthException
   name: InvalidBlockBytesLengthException
   href: api/Libplanet.Blocks.InvalidBlockBytesLengthException.html
@@ -10022,24 +10172,15 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T)
   nameWithType: PreEvaluationBlock<T>
   nameWithType.vb: PreEvaluationBlock(Of T)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.Nonce)
-  name: PreEvaluationBlock(IBlockContent<T>, Nonce)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_Nonce_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.Nonce)
-  name.vb: PreEvaluationBlock(IBlockContent(Of T), Nonce)
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreEvaluationBlock(Libplanet.Blocks.IBlockContent<T>, Libplanet.Nonce)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationBlock(Libplanet.Blocks.IBlockContent(Of T), Libplanet.Nonce)
-  nameWithType: PreEvaluationBlock<T>.PreEvaluationBlock(IBlockContent<T>, Nonce)
-  nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationBlock(IBlockContent(Of T), Nonce)
-- uid: Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.Nonce,ImmutableArray{System.Byte})
-  name: PreEvaluationBlock(IBlockContent<T>, Nonce, ImmutableArray<Byte>)
-  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IBlockContent__0__Libplanet_Nonce_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IBlockContent{`0},Libplanet.Nonce,ImmutableArray{System.Byte})
-  name.vb: PreEvaluationBlock(IBlockContent(Of T), Nonce, ImmutableArray(Of Byte))
-  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreEvaluationBlock(Libplanet.Blocks.IBlockContent<T>, Libplanet.Nonce, ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationBlock(Libplanet.Blocks.IBlockContent(Of T), Libplanet.Nonce, ImmutableArray(Of System.Byte))
-  nameWithType: PreEvaluationBlock<T>.PreEvaluationBlock(IBlockContent<T>, Nonce, ImmutableArray<Byte>)
-  nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationBlock(IBlockContent(Of T), Nonce, ImmutableArray(Of Byte))
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IPreEvaluationBlockHeader,IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blocks.PreEvaluationBlock`1.#ctor(Libplanet.Blocks.IPreEvaluationBlockHeader,IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreEvaluationBlock(Libplanet.Blocks.IPreEvaluationBlockHeader, IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationBlock(Libplanet.Blocks.IPreEvaluationBlockHeader, IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: PreEvaluationBlock<T>.PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable<Transaction<T>>)
+  nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationBlock(IPreEvaluationBlockHeader, IEnumerable(Of Transaction(Of T)))
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.#ctor*
   name: PreEvaluationBlock
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1__ctor_
@@ -10094,6 +10235,23 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).DetermineStateRootHash
   nameWithType: PreEvaluationBlock<T>.DetermineStateRootHash
   nameWithType.vb: PreEvaluationBlock(Of T).DetermineStateRootHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Difficulty
+  name: Difficulty
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Difficulty
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Difficulty
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Difficulty
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Difficulty
+  nameWithType: PreEvaluationBlock<T>.Difficulty
+  nameWithType.vb: PreEvaluationBlock(Of T).Difficulty
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Difficulty*
+  name: Difficulty
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Difficulty_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Difficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Difficulty
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Difficulty
+  nameWithType: PreEvaluationBlock<T>.Difficulty
+  nameWithType.vb: PreEvaluationBlock(Of T).Difficulty
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Evaluate(Libplanet.Crypto.PrivateKey,Libplanet.Action.IAction,Predicate{Libplanet.Assets.Currency},Libplanet.Store.IStateStore)
   name: Evaluate(PrivateKey, IAction, Predicate<Currency>, IStateStore)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Evaluate_Libplanet_Crypto_PrivateKey_Libplanet_Action_IAction_Predicate_Libplanet_Assets_Currency__Libplanet_Store_IStateStore_
@@ -10121,6 +10279,142 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Evaluate
   nameWithType: PreEvaluationBlock<T>.Evaluate
   nameWithType.vb: PreEvaluationBlock(Of T).Evaluate
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Header
+  name: Header
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Header
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Header
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Header
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Header
+  nameWithType: PreEvaluationBlock<T>.Header
+  nameWithType.vb: PreEvaluationBlock(Of T).Header
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Header*
+  name: Header
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Header_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Header
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Header
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Header
+  nameWithType: PreEvaluationBlock<T>.Header
+  nameWithType.vb: PreEvaluationBlock(Of T).Header
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Index
+  name: Index
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Index
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Index
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Index
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Index
+  nameWithType: PreEvaluationBlock<T>.Index
+  nameWithType.vb: PreEvaluationBlock(Of T).Index
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Index*
+  name: Index
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Index_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Index
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Index
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Index
+  nameWithType: PreEvaluationBlock<T>.Index
+  nameWithType.vb: PreEvaluationBlock(Of T).Index
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Miner
+  name: Miner
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Miner
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Miner
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Miner
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Miner
+  nameWithType: PreEvaluationBlock<T>.Miner
+  nameWithType.vb: PreEvaluationBlock(Of T).Miner
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Miner*
+  name: Miner
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Miner_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Miner
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Miner
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Miner
+  nameWithType: PreEvaluationBlock<T>.Miner
+  nameWithType.vb: PreEvaluationBlock(Of T).Miner
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Nonce
+  name: Nonce
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Nonce
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Nonce
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Nonce
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Nonce
+  nameWithType: PreEvaluationBlock<T>.Nonce
+  nameWithType.vb: PreEvaluationBlock(Of T).Nonce
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Nonce*
+  name: Nonce
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Nonce_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Nonce
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Nonce
+  nameWithType: PreEvaluationBlock<T>.Nonce
+  nameWithType.vb: PreEvaluationBlock(Of T).Nonce
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PreEvaluationHash
+  name: PreEvaluationHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.PreEvaluationHash
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreEvaluationHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationHash
+  nameWithType: PreEvaluationBlock<T>.PreEvaluationHash
+  nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PreEvaluationHash*
+  name: PreEvaluationHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreEvaluationHash_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.PreEvaluationHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreEvaluationHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreEvaluationHash
+  nameWithType: PreEvaluationBlock<T>.PreEvaluationHash
+  nameWithType.vb: PreEvaluationBlock(Of T).PreEvaluationHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PreviousHash
+  name: PreviousHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreviousHash
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.PreviousHash
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreviousHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreviousHash
+  nameWithType: PreEvaluationBlock<T>.PreviousHash
+  nameWithType.vb: PreEvaluationBlock(Of T).PreviousHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PreviousHash*
+  name: PreviousHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PreviousHash_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.PreviousHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PreviousHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PreviousHash
+  nameWithType: PreEvaluationBlock<T>.PreviousHash
+  nameWithType.vb: PreEvaluationBlock(Of T).PreviousHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.ProtocolVersion
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_ProtocolVersion
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.ProtocolVersion
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.ProtocolVersion
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).ProtocolVersion
+  nameWithType: PreEvaluationBlock<T>.ProtocolVersion
+  nameWithType.vb: PreEvaluationBlock(Of T).ProtocolVersion
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.ProtocolVersion*
+  name: ProtocolVersion
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_ProtocolVersion_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.ProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.ProtocolVersion
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).ProtocolVersion
+  nameWithType: PreEvaluationBlock<T>.ProtocolVersion
+  nameWithType.vb: PreEvaluationBlock(Of T).ProtocolVersion
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PublicKey
+  name: PublicKey
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PublicKey
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.PublicKey
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PublicKey
+  nameWithType: PreEvaluationBlock<T>.PublicKey
+  nameWithType.vb: PreEvaluationBlock(Of T).PublicKey
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.PublicKey*
+  name: PublicKey
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_PublicKey_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.PublicKey
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.PublicKey
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).PublicKey
+  nameWithType: PreEvaluationBlock<T>.PublicKey
+  nameWithType.vb: PreEvaluationBlock(Of T).PublicKey
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Sign(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{SHA256})
   name: Sign(PrivateKey, HashDigest<SHA256>)
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Sign_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_SHA256__
@@ -10139,6 +10433,40 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Sign
   nameWithType: PreEvaluationBlock<T>.Sign
   nameWithType.vb: PreEvaluationBlock(Of T).Sign
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Timestamp
+  name: Timestamp
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Timestamp
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Timestamp
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Timestamp
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Timestamp
+  nameWithType: PreEvaluationBlock<T>.Timestamp
+  nameWithType.vb: PreEvaluationBlock(Of T).Timestamp
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Timestamp*
+  name: Timestamp
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Timestamp_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Timestamp
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Timestamp
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Timestamp
+  nameWithType: PreEvaluationBlock<T>.Timestamp
+  nameWithType.vb: PreEvaluationBlock(Of T).Timestamp
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.TotalDifficulty
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_TotalDifficulty
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.TotalDifficulty
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.TotalDifficulty
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).TotalDifficulty
+  nameWithType: PreEvaluationBlock<T>.TotalDifficulty
+  nameWithType.vb: PreEvaluationBlock(Of T).TotalDifficulty
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.TotalDifficulty*
+  name: TotalDifficulty
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_TotalDifficulty_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.TotalDifficulty
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.TotalDifficulty
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).TotalDifficulty
+  nameWithType: PreEvaluationBlock<T>.TotalDifficulty
+  nameWithType.vb: PreEvaluationBlock(Of T).TotalDifficulty
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Transactions
   name: Transactions
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Transactions
@@ -10156,42 +10484,38 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Transactions
   nameWithType: PreEvaluationBlock<T>.Transactions
   nameWithType.vb: PreEvaluationBlock(Of T).Transactions
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.TxHash
+  name: TxHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_TxHash
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.TxHash
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.TxHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).TxHash
+  nameWithType: PreEvaluationBlock<T>.TxHash
+  nameWithType.vb: PreEvaluationBlock(Of T).TxHash
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.TxHash*
+  name: TxHash
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_TxHash_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.TxHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.TxHash
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).TxHash
+  nameWithType: PreEvaluationBlock<T>.TxHash
+  nameWithType.vb: PreEvaluationBlock(Of T).TxHash
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader
   name: PreEvaluationBlockHeader
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html
   commentId: T:Libplanet.Blocks.PreEvaluationBlockHeader
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader
   nameWithType: PreEvaluationBlockHeader
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce)
-  name: PreEvaluationBlockHeader(BlockMetadata, Nonce)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce)
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.BlockMetadata, Libplanet.Nonce)
-  nameWithType: PreEvaluationBlockHeader.PreEvaluationBlockHeader(BlockMetadata, Nonce)
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})
-  name: PreEvaluationBlockHeader(BlockMetadata, Nonce, ImmutableArray<Byte>)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})
-  name.vb: PreEvaluationBlockHeader(BlockMetadata, Nonce, ImmutableArray(Of Byte))
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.BlockMetadata, Libplanet.Nonce, ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.BlockMetadata, Libplanet.Nonce, ImmutableArray(Of System.Byte))
-  nameWithType: PreEvaluationBlockHeader.PreEvaluationBlockHeader(BlockMetadata, Nonce, ImmutableArray<Byte>)
-  nameWithType.vb: PreEvaluationBlockHeader.PreEvaluationBlockHeader(BlockMetadata, Nonce, ImmutableArray(Of Byte))
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce)
-  name: PreEvaluationBlockHeader(IBlockMetadata, Nonce)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce)
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.IBlockMetadata, Libplanet.Nonce)
-  nameWithType: PreEvaluationBlockHeader.PreEvaluationBlockHeader(IBlockMetadata, Nonce)
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})
-  name: PreEvaluationBlockHeader(IBlockMetadata, Nonce, ImmutableArray<Byte>)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})
-  name.vb: PreEvaluationBlockHeader(IBlockMetadata, Nonce, ImmutableArray(Of Byte))
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.IBlockMetadata, Libplanet.Nonce, ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.IBlockMetadata, Libplanet.Nonce, ImmutableArray(Of System.Byte))
-  nameWithType: PreEvaluationBlockHeader.PreEvaluationBlockHeader(IBlockMetadata, Nonce, ImmutableArray<Byte>)
-  nameWithType.vb: PreEvaluationBlockHeader.PreEvaluationBlockHeader(IBlockMetadata, Nonce, ImmutableArray(Of Byte))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,System.ValueTuple{Libplanet.Nonce,ImmutableArray{System.Byte}}@)
+  name: PreEvaluationBlockHeader(BlockMetadata, in (Nonce Nonce, ImmutableArray<Byte> PreEvaluationHash))
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_System_ValueTuple_Libplanet_Nonce_ImmutableArray_System_Byte____
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,System.ValueTuple{Libplanet.Nonce,ImmutableArray{System.Byte}}@)
+  name.vb: PreEvaluationBlockHeader(BlockMetadata, ByRef (Nonce As Nonce, PreEvaluationHash As ImmutableArray(Of Byte))(Of Nonce, ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.BlockMetadata, in System.ValueTuple<Libplanet.Nonce, ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationBlockHeader(Libplanet.Blocks.BlockMetadata, ByRef System.ValueTuple(Of Libplanet.Nonce, ImmutableArray(Of System.Byte)))
+  nameWithType: PreEvaluationBlockHeader.PreEvaluationBlockHeader(BlockMetadata, in (Nonce Nonce, ImmutableArray<Byte> PreEvaluationHash))
+  nameWithType.vb: PreEvaluationBlockHeader.PreEvaluationBlockHeader(BlockMetadata, ByRef (Nonce As Nonce, PreEvaluationHash As ImmutableArray(Of Byte))(Of Nonce, ImmutableArray(Of Byte)))
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IPreEvaluationBlockHeader)
   name: PreEvaluationBlockHeader(IPreEvaluationBlockHeader)
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader_
@@ -10211,15 +10535,15 @@ references:
   commentId: F:Libplanet.Blocks.PreEvaluationBlockHeader.Codec
   fullName: Libplanet.Blocks.PreEvaluationBlockHeader.Codec
   nameWithType: PreEvaluationBlockHeader.Codec
-- uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}})
-  name: DeriveBlockHash(in HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}})
-  name.vb: DeriveBlockHash(ByRef HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
-  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(in Libplanet.HashDigest<SHA256>, System.Nullable<ImmutableArray<System.Byte>>)
-  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(ByRef Libplanet.HashDigest(Of SHA256), System.Nullable(Of ImmutableArray(Of System.Byte)))
-  nameWithType: PreEvaluationBlockHeader.DeriveBlockHash(in HashDigest<SHA256>, Nullable<ImmutableArray<Byte>>)
-  nameWithType.vb: PreEvaluationBlockHeader.DeriveBlockHash(ByRef HashDigest(Of SHA256), Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}}@)
+  name: DeriveBlockHash(in HashDigest<SHA256>, in Nullable<ImmutableArray<Byte>>)
+  href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte____
+  commentId: M:Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}}@)
+  name.vb: DeriveBlockHash(ByRef HashDigest(Of SHA256), ByRef Nullable(Of ImmutableArray(Of Byte)))
+  fullName: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(in Libplanet.HashDigest<SHA256>, in System.Nullable<ImmutableArray<System.Byte>>)
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(ByRef Libplanet.HashDigest(Of SHA256), ByRef System.Nullable(Of ImmutableArray(Of System.Byte)))
+  nameWithType: PreEvaluationBlockHeader.DeriveBlockHash(in HashDigest<SHA256>, in Nullable<ImmutableArray<Byte>>)
+  nameWithType.vb: PreEvaluationBlockHeader.DeriveBlockHash(ByRef HashDigest(Of SHA256), ByRef Nullable(Of ImmutableArray(Of Byte)))
 - uid: Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash*
   name: DeriveBlockHash
   href: api/Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_

@@ -81,7 +81,6 @@
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">PreEvaluationBlockHeader</span></div>
-      <div class="level2"><a class="xref" href="Libplanet.Blocks.PreEvaluationBlock-1.html">PreEvaluationBlock&lt;T&gt;</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -102,18 +101,21 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.BlockMetadata%2CLibplanet.Nonce)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_System_ValueTuple_Libplanet_Nonce_ImmutableArray_System_Byte____.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.BlockMetadata%2CSystem.ValueTuple%7BLibplanet.Nonce%2CImmutableArray%7BSystem.Byte%7D%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L211">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce)">PreEvaluationBlockHeader(BlockMetadata, Nonce)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_System_ValueTuple_Libplanet_Nonce_ImmutableArray_System_Byte____" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,System.ValueTuple{Libplanet.Nonce,ImmutableArray{System.Byte}}@)">PreEvaluationBlockHeader(BlockMetadata, in (Nonce Nonce, ImmutableArray&lt;Byte&gt; PreEvaluationHash))</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a> instance with its
+<code data-dev-comment-type="paramref" class="paramref">metadata</code> and a valid <code data-dev-comment-type="paramref" class="paramref">proof</code>.  All other public
+constructors should be redirected to this one.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected PreEvaluationBlockHeader(BlockMetadata metadata, Nonce nonce)</code></pre>
+    <pre><code class="lang-csharp hljs">public PreEvaluationBlockHeader(BlockMetadata metadata, in (Nonce Nonce, ImmutableArray&lt;byte&gt; PreEvaluationHash) proof)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -128,194 +130,16 @@
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></td>
         <td><span class="parametername">metadata</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td><span class="parametername">nonce</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.BlockMetadata%2CLibplanet.Nonce%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L222">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_BlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.BlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})">PreEvaluationBlockHeader(BlockMetadata, Nonce, ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected PreEvaluationBlockHeader(BlockMetadata metadata, Nonce nonce, ImmutableArray&lt;byte&gt; preEvaluationHash)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></td>
-        <td><span class="parametername">metadata</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td><span class="parametername">nonce</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
-        <td><span class="parametername">preEvaluationHash</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.IBlockMetadata%2CLibplanet.Nonce)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L76">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce)">PreEvaluationBlockHeader(IBlockMetadata, Nonce)</h4>
-  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a> instance with its
-<code data-dev-comment-type="paramref" class="paramref">metadata</code> and a valid proof-of-work <code data-dev-comment-type="paramref" class="paramref">nonce</code> which
-satisfies the required <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PreEvaluationBlockHeader(IBlockMetadata metadata, Nonce nonce)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a></td>
-        <td><span class="parametername">metadata</span></td>
         <td><p>Block's metadata.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td><span class="parametername">nonce</span></td>
-        <td><p>A valid proof-of-work nonce which satisfies the required
-<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p><a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_PreEvaluationHash">PreEvaluationHash</a> is automatically derived from the given
-arguments.</p>
-</div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s to set is <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a>
-is less than 0, or greater than <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>,
-the latest known protocol version.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">metadata</code>
-has a negative <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Index">Index</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a> is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockTotalDifficultyException.html">InvalidBlockTotalDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TotalDifficulty">TotalDifficulty</a> is less
-than its <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockNonceException.html">InvalidBlockNonceException</a></td>
-        <td><p>Thrown when the given proof-of-work
-<code data-dev-comment-type="paramref" class="paramref">nonce</code> does not satisfy the required <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.IBlockMetadata%2CLibplanet.Nonce%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L112">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IBlockMetadata_Libplanet_Nonce_ImmutableArray_System_Byte__" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IBlockMetadata,Libplanet.Nonce,ImmutableArray{System.Byte})">PreEvaluationBlockHeader(IBlockMetadata, Nonce, ImmutableArray&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a> instance with its
-<code data-dev-comment-type="paramref" class="paramref">metadata</code>, a valid proof-of-work <code data-dev-comment-type="paramref" class="paramref">nonce</code> which
-satisfies the required <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>, and
-a <code data-dev-comment-type="paramref" class="paramref">preEvaluationHash</code> digest derived from them.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PreEvaluationBlockHeader(IBlockMetadata metadata, Nonce nonce, ImmutableArray&lt;byte&gt; preEvaluationHash)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a></td>
-        <td><span class="parametername">metadata</span></td>
-        <td><p>Block's metadata.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td><span class="parametername">nonce</span></td>
-        <td><p>A valid proof-of-work nonce which satisfies the required
-<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
-        <td><span class="parametername">preEvaluationHash</span></td>
-        <td><p>The hash digest derived from the given arguments.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-2">(, )</a>&lt;<a class="xref" href="Libplanet.Nonce.html">Nonce</a>, <span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td><span class="parametername">proof</span></td>
+        <td><p>A pair of the valid proof-of-work nonce which is probably considered
+as to satisfy the required <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>, and the hash digest which is
+probably considered as to be derived from the block <code data-dev-comment-type="paramref" class="paramref">metadata</code> and the
+nonce.</p>
 </td>
       </tr>
     </tbody>
@@ -329,43 +153,16 @@ a <code data-dev-comment-type="paramref" class="paramref">preEvaluationHash</cod
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s to set is <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a>
-is less than 0, or greater than <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>,
-the latest known protocol version.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">metadata</code>
-has a negative <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Index">Index</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a> is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockTotalDifficultyException.html">InvalidBlockTotalDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">metadata</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TotalDifficulty">TotalDifficulty</a> is less
-than its <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">preEvaluationHash</code> is invalid.</p>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">proof.PreEvaluationHash.PreEvaluationHash</code> is invalid.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.InvalidBlockNonceException.html">InvalidBlockNonceException</a></td>
-        <td><p>Thrown when the given proof-of-work
-<code data-dev-comment-type="paramref" class="paramref">nonce</code> does not satisfy the required <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html#Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty">Difficulty</a>.</p>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">proof.Nonce.Nonce</code>
+does not satisfy the required <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -375,11 +172,11 @@ than its <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Bl
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.%23ctor(Libplanet.Blocks.IPreEvaluationBlockHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L56">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.#ctor(Libplanet.Blocks.IPreEvaluationBlockHeader)">PreEvaluationBlockHeader(IPreEvaluationBlockHeader)</h4>
-  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a>  by copying the fields of another
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a> by copying the fields of another
 pre-evaluation block <code data-dev-comment-type="paramref" class="paramref">header</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -400,11 +197,28 @@ pre-evaluation block <code data-dev-comment-type="paramref" class="paramref">hea
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></td>
         <td><span class="parametername">header</span></td>
-        <td><p>A pre-evaluation block header to copy.</p>
+        <td><p>The pre-evaluation block header to copy.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+As <code data-dev-comment-type="paramref" class="paramref">header</code> needn&apos;t be an actual <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a>
+instance, but simply any object implementing <a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a>
+interface, it can&apos;t be trusted to satisfy all the constraints for a valid
+<a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a> instance.  As such, conditions are checked again
+whilst creating a copy.  This is a relatively heavy operation, so must be used
+sparingly.
+</p>
+<p>
+In particular, this creates a new instance of
+<a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a> with data extracted from <code data-dev-comment-type="paramref" class="paramref">header</code>.
+Thus any <see cref="!:Exception"></see>s that can be thrown from a
+<a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a>&apos;s constructors may also be thrown in addition to the ones
+explicitly listed below.
+</p>
+</div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -414,33 +228,6 @@ pre-evaluation block <code data-dev-comment-type="paramref" class="paramref">hea
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">header</code>'s to set is <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a>
-is less than 0, or greater than <a class="xref" href="Libplanet.Blocks.BlockMetadata.html#Libplanet_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>,
-the latest known protocol version.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
-        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">header</code>
-has a negative <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Index">Index</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">header</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a> is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockTotalDifficultyException.html">InvalidBlockTotalDifficultyException</a></td>
-        <td><p>Thrown when
-the <code data-dev-comment-type="paramref" class="paramref">header</code>'s <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TotalDifficulty">TotalDifficulty</a> is less
-than its <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_Difficulty">Difficulty</a>.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a></td>
         <td><p>Thrown when the given
@@ -458,6 +245,10 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Blocks_PreEvaluationBlockHeader__ctor_Libplanet_Blocks_IPreEvaluationBlockHeader__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a></div>
+  </div>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
@@ -496,7 +287,7 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Difficulty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L253">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L115">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Difficulty*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Difficulty" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Difficulty">Difficulty</h4>
@@ -527,7 +318,7 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Index.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Index%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L238">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Index_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Index*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Index" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Index">Index</h4>
@@ -554,23 +345,23 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     </tbody>
   </table>
   <h5 id="Libplanet_Blocks_PreEvaluationBlockHeader_Index_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Zero means it is a genesis block.  Disallowed to be negative.</p>
+  <div class="markdown level1 remarks"><p>Zero means it is a genesis block.  Not allowed to be negative.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Metadata.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Metadata%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L270">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L97">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Metadata_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Metadata*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Metadata" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Metadata">Metadata</h4>
-  <div class="markdown level1 summary"><p>The internal block metadata.</p>
+  <div class="markdown level1 summary"><p>Internal <a class="xref" href="Libplanet.Blocks.BlockMetadata.html">BlockMetadata</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected BlockMetadata Metadata { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockMetadata Metadata { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -592,7 +383,7 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Miner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L247">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L109">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Miner_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Miner*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Miner" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Miner">Miner</h4>
@@ -623,7 +414,7 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Nonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L244">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L127">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Nonce_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Nonce*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Nonce" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Nonce">Nonce</h4>
@@ -655,7 +446,7 @@ pre-evaluation <code data-dev-comment-type="paramref" class="paramref">header</c
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_PreEvaluationHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L265">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_PreEvaluationHash_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_PreEvaluationHash" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PreEvaluationHash">PreEvaluationHash</h4>
@@ -691,7 +482,7 @@ action evaluation).  Used for validating <a class="xref" href="Libplanet.Blocks.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_PreviousHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.PreviousHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L259">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L121">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_PreviousHash_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PreviousHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_PreviousHash" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PreviousHash">PreviousHash</h4>
@@ -723,7 +514,7 @@ this must be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.ProtocolVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L235">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L100">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.ProtocolVersion*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_ProtocolVersion" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.ProtocolVersion">ProtocolVersion</h4>
@@ -754,7 +545,7 @@ this must be <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L250">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_PublicKey" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.PublicKey">PublicKey</h4>
@@ -789,7 +580,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.Timestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L241">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L106">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_Timestamp_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Timestamp*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_Timestamp" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.Timestamp">Timestamp</h4>
@@ -823,7 +614,7 @@ the previous protocol versions, the type of this is nullable.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_TotalDifficulty.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.TotalDifficulty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L256">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L118">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_TotalDifficulty_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.TotalDifficulty*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_TotalDifficulty" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.TotalDifficulty">TotalDifficulty</h4>
@@ -859,7 +650,7 @@ must not be negative.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_TxHash.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.TxHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L262">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_TxHash_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.TxHash*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_TxHash" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.TxHash">TxHash</h4>
@@ -890,20 +681,20 @@ transactions.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest%7BSHA256%7D%40%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte____.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest%7BSHA256%7D%40%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L378">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L235">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash*"></a>
-  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte___" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}})">DeriveBlockHash(in HashDigest&lt;SHA256&gt;, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
+  <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_DeriveBlockHash_Libplanet_HashDigest_SHA256___System_Nullable_ImmutableArray_System_Byte____" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.DeriveBlockHash(Libplanet.HashDigest{SHA256}@,System.Nullable{ImmutableArray{System.Byte}}@)">DeriveBlockHash(in HashDigest&lt;SHA256&gt;, in Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Derives a hash digest from the given pre-evaluation block header and
 <code data-dev-comment-type="paramref" class="paramref">stateRootHash</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockHash DeriveBlockHash(in HashDigest&lt;SHA256&gt; stateRootHash, ImmutableArray&lt;byte&gt;? signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockHash DeriveBlockHash(in HashDigest&lt;SHA256&gt; stateRootHash, in ImmutableArray&lt;byte&gt;? signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -952,7 +743,7 @@ blocks with earlier <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHea
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest%7BSHA256%7D%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L284">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_MakeCandidateData_Libplanet_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.MakeCandidateData(Libplanet.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}})">MakeCandidateData(HashDigest&lt;SHA256&gt;, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
@@ -1014,7 +805,7 @@ blocks with earlier <a class="xref" href="Libplanet.Blocks.PreEvaluationBlockHea
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L316">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L175">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_MakeSignature_Libplanet_Crypto_PrivateKey_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.MakeSignature(Libplanet.Crypto.PrivateKey,Libplanet.HashDigest{SHA256})">MakeSignature(PrivateKey, HashDigest&lt;SHA256&gt;)</h4>
@@ -1078,7 +869,7 @@ it is not usable with blocks of the earlier <a class="xref" href="Libplanet.Bloc
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_System_Nullable_ImmutableArray_System_Byte___Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L351">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/Libplanet/Blocks/PreEvaluationBlockHeader.cs/#L209">View Source</a>
   </span>
   <a id="Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature*"></a>
   <h4 id="Libplanet_Blocks_PreEvaluationBlockHeader_VerifySignature_System_Nullable_ImmutableArray_System_Byte___Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Blocks.PreEvaluationBlockHeader.VerifySignature(System.Nullable{ImmutableArray{System.Byte}},Libplanet.HashDigest{SHA256})">VerifySignature(Nullable&lt;ImmutableArray&lt;Byte&gt;&gt;, HashDigest&lt;SHA256&gt;)</h4>
