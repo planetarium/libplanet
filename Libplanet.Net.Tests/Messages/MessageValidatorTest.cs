@@ -57,92 +57,159 @@ namespace Libplanet.Net.Tests.Messages
             var version2 = 2;
             var extra1 = new Bencodex.Types.Integer(13);
             var extra2 = new Bencodex.Types.Integer(17);
-            var trustedApv1 = AppProtocolVersion.Sign(trustedSigner, version1, extra1);
-            var trustedApv2 = AppProtocolVersion.Sign(trustedSigner, version2, extra2);
-            var trustedApv3 = AppProtocolVersion.Sign(trustedSigner, version1, extra2);
-            var unknownApv1 = AppProtocolVersion.Sign(unknownSigner, version1, extra1);
-            var unknownApv2 = AppProtocolVersion.Sign(unknownSigner, version1, extra2);
-            ImmutableHashSet<PublicKey>? trustedApvSigners1 =
-                new HashSet<PublicKey>() { trustedSigner.PublicKey }.ToImmutableHashSet();
-            ImmutableHashSet<PublicKey>? trustedApvSigners2 =
-                new HashSet<PublicKey>() { }.ToImmutableHashSet();
-            ImmutableHashSet<PublicKey>? trustedApvSigners3 = null;
+
             DifferentAppProtocolVersionEncountered callback = (p, pv, lv) => { called = true; };
             var peer = new BoundPeer(trustedSigner.PublicKey, new DnsEndPoint("0.0.0.0", 0));
-            var trustedPing1 = new PingMsg() { Remote = peer, Version = trustedApv1 };
-            var trustedPing2 = new PingMsg() { Remote = peer, Version = trustedApv2 };
-            var trustedPing3 = new PingMsg() { Remote = peer, Version = trustedApv3 };
-            var unknownPing1 = new PingMsg() { Remote = peer, Version = unknownApv1 };
-            var unknownPing2 = new PingMsg() { Remote = peer, Version = unknownApv2 };
+
+            // Apv
+            var trustedApv = AppProtocolVersion.Sign(trustedSigner, version1, extra1);
+            var trustedDifferentVersionApv = AppProtocolVersion.Sign(
+                trustedSigner, version2, extra1);
+            var trustedDifferentExtraApv = AppProtocolVersion.Sign(trustedSigner, version1, extra2);
+            var unknownApv = AppProtocolVersion.Sign(unknownSigner, version1, extra1);
+            var unknownDifferentVersionApv = AppProtocolVersion.Sign(
+                unknownSigner, version2, extra1);
+            var unknownDifferentExtraApv = AppProtocolVersion.Sign(unknownSigner, version1, extra2);
+
+            // Signer
+            ImmutableHashSet<PublicKey>? trustedApvSigners =
+                new HashSet<PublicKey>() { trustedSigner.PublicKey }.ToImmutableHashSet();
+            ImmutableHashSet<PublicKey>? emptyApvSigners =
+                new HashSet<PublicKey>() { }.ToImmutableHashSet();
+            ImmutableHashSet<PublicKey>? nullApvSigners = null;
+
+            // Ping
+            var trustedPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = trustedApv,
+            };
+            var trustedDifferentVersionPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = trustedDifferentVersionApv,
+            };
+            var trustedDifferentExtraPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = trustedDifferentExtraApv,
+            };
+            var unknownPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = unknownApv,
+            };
+            var unknownDifferentVersionPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = unknownDifferentVersionApv,
+            };
+            var unknownDifferentExtraPing = new PingMsg()
+            {
+                Remote = peer,
+                Version = unknownDifferentExtraApv,
+            };
 
             DifferentAppProtocolVersionException exception;
             MessageValidator messageValidator;
 
             // Trust specific signers.
             messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv1,
-                trustedAppProtocolVersionSigners: trustedApvSigners1,
+                appProtocolVersion: trustedApv,
+                trustedAppProtocolVersionSigners: trustedApvSigners,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(trustedPing1);
-            exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
-            Assert.False(exception.Trusted);
+
+            // Check trust pings
+            messageValidator.ValidateAppProtocolVersion(trustedPing);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedDifferentVersionPing));
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
-            messageValidator.ValidateAppProtocolVersion(trustedPing3);
+            messageValidator.ValidateAppProtocolVersion(trustedDifferentExtraPing);
             Assert.True(called);
             called = false;
+
+            // Check unknown pings
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing));
+            Assert.False(exception.Trusted);
+            Assert.False(called);
+            exception = Assert.Throws<DifferentAppProtocolVersionException>(
+                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentVersionPing));
+            Assert.False(exception.Trusted);
+            Assert.False(called);
+            exception = Assert.Throws<DifferentAppProtocolVersionException>(
+                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentExtraPing));
             Assert.False(exception.Trusted);
             Assert.False(called);
 
             // Trust no one.
             messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv1,
-                trustedAppProtocolVersionSigners: trustedApvSigners2,
+                appProtocolVersion: trustedApv,
+                trustedAppProtocolVersionSigners: emptyApvSigners,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(trustedPing1);
+
+            // Check trust pings
+            messageValidator.ValidateAppProtocolVersion(trustedPing);
+            Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing1));
+                () => messageValidator.ValidateAppProtocolVersion(trustedDifferentVersionPing));
             Assert.False(exception.Trusted);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedDifferentExtraPing));
+            Assert.False(exception.Trusted);
+            Assert.False(called);
+
+            // Check unknown pings
+            exception = Assert.Throws<DifferentAppProtocolVersionException>(
+                () => messageValidator.ValidateAppProtocolVersion(unknownPing));
             Assert.False(exception.Trusted);
             Assert.False(called);
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(unknownPing2));
+                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentVersionPing));
+            Assert.False(exception.Trusted);
+            Assert.False(called);
+            exception = Assert.Throws<DifferentAppProtocolVersionException>(
+                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentExtraPing));
             Assert.False(exception.Trusted);
             Assert.False(called);
 
             // Trust anyone.
             messageValidator = new MessageValidator(
-                appProtocolVersion: trustedApv1,
-                trustedAppProtocolVersionSigners: trustedApvSigners3,
+                appProtocolVersion: trustedApv,
+                trustedAppProtocolVersionSigners: nullApvSigners,
                 messageTimestampBuffer: null,
                 differentAppProtocolVersionEncountered: callback);
-            messageValidator.ValidateAppProtocolVersion(trustedPing1);
+
+            // Check trust pings
+            messageValidator.ValidateAppProtocolVersion(trustedPing);
             Assert.False(called);
-            messageValidator.ValidateAppProtocolVersion(unknownPing1);
-            Assert.True(called);
-            called = false;
             exception = Assert.Throws<DifferentAppProtocolVersionException>(
-                () => messageValidator.ValidateAppProtocolVersion(trustedPing2));
+                () => messageValidator.ValidateAppProtocolVersion(trustedDifferentVersionPing));
             Assert.True(exception.Trusted);
             Assert.True(called);
             called = false;
-            messageValidator.ValidateAppProtocolVersion(trustedPing3);
+            messageValidator.ValidateAppProtocolVersion(trustedDifferentExtraPing);
             Assert.True(called);
             called = false;
-            messageValidator.ValidateAppProtocolVersion(unknownPing2);
+
+            // Check unknown pings
+            messageValidator.ValidateAppProtocolVersion(unknownPing);
             Assert.True(called);
+            called = false;
+            exception = Assert.Throws<DifferentAppProtocolVersionException>(
+                () => messageValidator.ValidateAppProtocolVersion(unknownDifferentVersionPing));
+            Assert.True(exception.Trusted);
+            Assert.True(called);
+            called = false;
+            messageValidator.ValidateAppProtocolVersion(unknownDifferentExtraPing);
+            Assert.True(called);
+            called = false;
         }
     }
 }
