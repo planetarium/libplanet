@@ -374,15 +374,20 @@ namespace Libplanet.Blockchain
             actions ??= ImmutableArray<T>.Empty;
             Transaction<T>[] transactions =
             {
-                Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
+                Transaction<T>.Create(
+                    0, privateKey, null, actions, timestamp: timestamp),
             };
 
-            BlockContent<T> content = new BlockContent<T>
-            {
-                PublicKey = privateKey.PublicKey,
-                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
-                Transactions = transactions,
-            };
+            BlockContent<T> content = new BlockContent<T>(
+                new BlockMetadata(
+                    index: 0L,
+                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                    publicKey: privateKey.PublicKey,
+                    difficulty: 0L,
+                    totalDifficulty: 0L,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(transactions)),
+                transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Mine();
             return preEval.Evaluate(

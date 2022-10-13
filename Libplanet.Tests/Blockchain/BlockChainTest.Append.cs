@@ -552,7 +552,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = TestUtils.MineNext(
                 genesis,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);
@@ -573,7 +573,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = TestUtils.MineNext(
                 block1,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);

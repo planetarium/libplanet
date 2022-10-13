@@ -15,16 +15,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ValidateNextBlock()
         {
-            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1024,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _fx.GenesisBlock.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1024L,
+                    totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions)
+                .Mine()
+                .Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(validNextBlock);
             Assert.Equal(_blockChain.Tip, validNextBlock);
         }
@@ -32,47 +34,49 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         private void ValidateNextBlockProtocolVersion()
         {
-            Block<DumbAction> block1 = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1024,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _fx.GenesisBlock.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-                ProtocolVersion = _blockChain.Tip.ProtocolVersion,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            var protocolVersion = _blockChain.Tip.ProtocolVersion;
+            Block<DumbAction> block1 = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: protocolVersion,
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    miner: _fx.Miner.PublicKey.ToAddress(),
+                    publicKey: protocolVersion >= 2 ? _fx.Miner.PublicKey : null,
+                    difficulty: 1024L,
+                    totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions).Mine().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            Block<DumbAction> block2 = new BlockContent<DumbAction>
-            {
-                Index = 2,
-                Difficulty = 1024,
-                TotalDifficulty = block1.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
-                Miner = _fx.Miner.ToAddress(),
-                PreviousHash = block1.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-                ProtocolVersion = _blockChain.Tip.ProtocolVersion - 1,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> block2 = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: protocolVersion - 1,
+                    index: 2L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(2),
+                    miner: _fx.Miner.PublicKey.ToAddress(),
+                    publicKey: protocolVersion - 1 >= 2 ? _fx.Miner.PublicKey : null,
+                    difficulty: 1024L,
+                    totalDifficulty: block1.TotalDifficulty + 1024L,
+                    previousHash: block1.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions).Mine().Evaluate(_fx.Miner, _blockChain);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() => _blockChain.Append(block2));
-
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
             {
-                Block<DumbAction> block3 = new BlockContent<DumbAction>
-                {
-                    Index = 2,
-                    Difficulty = 1024,
-                    TotalDifficulty = block1.TotalDifficulty + 1024,
-                    PublicKey = _fx.Miner.PublicKey,
-                    PreviousHash = block1.Hash,
-                    Timestamp = _fx.GenesisBlock.Timestamp.AddDays(1),
-                    Transactions = _emptyTransaction,
-                    ProtocolVersion = BlockMetadata.CurrentProtocolVersion + 1,
-                }.Mine().Evaluate(_fx.Miner, _blockChain);
+                Block<DumbAction> block3 = new BlockContent<DumbAction>(
+                    new BlockMetadata(
+                        protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
+                        index: 2L,
+                        timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                        miner: _fx.Miner.PublicKey.ToAddress(),
+                        publicKey: _fx.Miner.PublicKey,
+                        difficulty: 1024L,
+                        totalDifficulty: block1.TotalDifficulty + 1024L,
+                        previousHash: block1.Hash,
+                        txHash: null),
+                    transactions: _emptyTransactions).Mine().Evaluate(_fx.Miner, _blockChain);
                 _blockChain.Append(block3);
             });
         }
@@ -83,30 +87,28 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(_validNext);
 
             Block<DumbAction> prev = _blockChain.Tip;
-            Block<DumbAction> blockWithAlreadyUsedIndex = new BlockContent<DumbAction>
-            {
-                Index = prev.Index,
-                Difficulty = 1,
-                TotalDifficulty = 1 + prev.TotalDifficulty,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = prev.Hash,
-                Timestamp = prev.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> blockWithAlreadyUsedIndex = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: prev.Index,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: prev.TotalDifficulty + 1L,
+                    previousHash: prev.Hash,
+                    txHash: null)).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithAlreadyUsedIndex)
             );
 
-            Block<DumbAction> blockWithIndexAfterNonexistentIndex = new BlockContent<DumbAction>
-            {
-                Index = prev.Index + 2,
-                Difficulty = 1,
-                TotalDifficulty = 1 + prev.TotalDifficulty,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = prev.Hash,
-                Timestamp = prev.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> blockWithIndexAfterNonexistentIndex = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: prev.Index + 2,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: prev.TotalDifficulty + 1L,
+                    previousHash: prev.Hash,
+                    txHash: null)).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithIndexAfterNonexistentIndex)
             );
@@ -117,16 +119,15 @@ namespace Libplanet.Tests.Blockchain
         {
             _blockChain.Append(_validNext);
 
-            Block<DumbAction> invalidDifficultyBlock = new BlockContent<DumbAction>
-            {
-                Index = 2,
-                Difficulty = 1,
-                TotalDifficulty = _validNext.TotalDifficulty,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _validNext.Hash,
-                Timestamp = _validNext.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> invalidDifficultyBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1L,
+                    totalDifficulty: _validNext.TotalDifficulty,
+                    previousHash: _validNext.Hash,
+                    txHash: null)).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                     _blockChain.Append(invalidDifficultyBlock));
         }
@@ -137,16 +138,15 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(_validNext);
 
             long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
-            Block<DumbAction> invalidTotalDifficultyBlock = new BlockContent<DumbAction>
-            {
-                Index = 2,
-                Difficulty = difficulty,
-                TotalDifficulty = _validNext.TotalDifficulty + difficulty - 1,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _validNext.Hash,
-                Timestamp = _validNext.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> invalidTotalDifficultyBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: difficulty,
+                    totalDifficulty: _validNext.TotalDifficulty + difficulty - 1,
+                    previousHash: _validNext.Hash,
+                    txHash: null)).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
                     _blockChain.Append(invalidTotalDifficultyBlock));
         }
@@ -157,17 +157,16 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(_validNext);
 
             long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
-            Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>
-            {
-                Index = 2,
-                Difficulty = difficulty,
-                TotalDifficulty = _validNext.TotalDifficulty + difficulty,
-                PublicKey = _fx.Miner.PublicKey,
-                // Wrong PreviousHash for test; it should be _validNext.Hash:
-                PreviousHash = _validNext.PreviousHash,
-                Timestamp = _validNext.Timestamp.AddDays(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: difficulty,
+                    totalDifficulty: _validNext.TotalDifficulty + difficulty,
+                    // Should be _validNext.Hash instead
+                    previousHash: _validNext.PreviousHash,
+                    txHash: null)).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                     _blockChain.Append(invalidPreviousHashBlock));
         }
@@ -178,16 +177,16 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(_validNext);
 
             long difficulty = _policy.GetNextBlockDifficulty(_blockChain);
-            Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>
-            {
-                Index = 2,
-                Difficulty = difficulty,
-                TotalDifficulty = _validNext.TotalDifficulty + difficulty,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _validNext.Hash,
-                Timestamp = _validNext.Timestamp.AddSeconds(-1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 2,
+                    timestamp: _validNext.Timestamp.AddSeconds(-1),
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: difficulty,
+                    totalDifficulty: _validNext.TotalDifficulty + difficulty,
+                    previousHash: _validNext.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions).Mine().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
                     _blockChain.Append(invalidPreviousTimestamp));
         }
@@ -220,16 +219,18 @@ namespace Libplanet.Tests.Blockchain
                 genesisBlock
             );
 
-            Block<DumbAction> block1 = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1024L,
-                TotalDifficulty = genesisBlock.TotalDifficulty + 1024,
-                PublicKey = TestUtils.GenesisMiner.PublicKey,
-                PreviousHash = genesisBlock.Hash,
-                Timestamp = genesisBlock.Timestamp.AddSeconds(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(TestUtils.GenesisMiner, chain1);
+            Block<DumbAction> block1 = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: 1,
+                    timestamp: genesisBlock.Timestamp.AddSeconds(1),
+                    miner: TestUtils.GenesisMiner.PublicKey.ToAddress(),
+                    publicKey: TestUtils.GenesisMiner.PublicKey,
+                    difficulty: 1024L,
+                    totalDifficulty: genesisBlock.TotalDifficulty + 1024L,
+                    previousHash: genesisBlock.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions).Mine().Evaluate(TestUtils.GenesisMiner, chain1);
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
