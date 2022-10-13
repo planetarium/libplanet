@@ -183,14 +183,26 @@ commands:
           else
             head -n $part .head_tests.txt > .current_tests.txt
           fi
+          excluded_tests=(
+            "Libplanet.Net.Tests.Transports.NetMQTransportTest.AsPeer"
+            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
+          )
           cat .current_tests.txt
           first=1
           while read test; do
-            if [[ "$first" = "1" ]]; then
-              echo "FullyQualifiedName=$test"
-              first=0
-            else
-              echo "| FullyQualifiedName=$test"
+            write=1
+            for excl in "${excluded_tests[@]}"; do
+              if [[ "$test" == "$excl"* ]]; then
+                write=0
+              fi
+            done
+            if [[ "$write" == "1" ]]; then
+              if [[ "$first" = "1" ]]; then
+                echo "FullyQualifiedName=$test"
+                first=0
+              else
+                echo "| FullyQualifiedName=$test"
+              fi
             fi
           done < .current_tests.txt > .test-filter.txt
     - when:
@@ -338,10 +350,18 @@ commands:
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
           excluded_classes=(
-            "Libplanet.Net.Tests.Protocols.ProtocolTest"
-            "Libplanet.Net.Tests.SwarmTest"
-            "Libplanet.Net.Tests.Transports.NetMQTransportTest"
-            "Libplanet.Node.Tests.SwarmConfigTest"
+          )
+          excluded_methods=(
+            "Libplanet.Tests.Blockchain.BlockChainTest.MakeTransactionWithSystemAction"
+            "Libplanet.Tests.Blockchain.DefaultStoreBlockChainTest.GetStateWithRecalculation"
+            "Libplanet.Tests.Blockchain.Renderers.LoggedActionRendererTest.RenderReorg"
+            "Libplanet.Tests.Store.DefaultStoreTest.DeleteChainIdWithForks"
+            "Libplanet.Tests.Store.BlockSetTest.CanDetectInvalidHash"
+            "Libplanet.Tests.Blocks.BlockContentTest.TransactionsWithMissingNonce"
+            "Libplanet.Tests.Blockchain.Policies.BlockPolicyTest.GetNextBlockDifficulty"
+            "Libplanet.Node.Tests.SwarmConfigTest.Serialization"
+            "Libplanet.Tests.Blockchain.BlockChainTest.TreatGoingBackwardAsReorg"
+            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           args=(
             "--hang-seconds=60"
@@ -357,6 +377,9 @@ commands:
           for c in "${excluded_classes[@]}"; do
             args+=("--exclude-class=$c")
           done
+          for c in "${excluded_methods[@]}"; do
+            args+=("--exclude-method=$c")
+          done
           for project in *.Tests; do
             if [[
               $project != Libplanet.Explorer.Tests
@@ -369,7 +392,7 @@ commands:
             fi
           done
           "$xur_path" "${args[@]}"
-        no_output_timeout: 65s
+        no_output_timeout: 120s
     - run:
         name: Transform xUnit.net report XML to JUnit report XML
         shell: bash

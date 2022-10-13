@@ -110,7 +110,7 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal(bazCurrency, exc2.Currency);
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             FungibleAssetValue amount = FOO * 125;
