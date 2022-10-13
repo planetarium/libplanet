@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using Libplanet.Action;
@@ -80,6 +82,59 @@ public class TransactionQueryTest
         IDictionary<string, object> resultDict =
             Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
         Assert.Equal(tx.Serialize(true), ParseHex((string)resultDict["bindSignature"]));
+    }
+
+    [Fact]
+    public async Task NextNonce()
+    {
+        async Task AssertNextNonce(long expected, Address address) {
+            var result = await ExecuteQueryAsync(@$"
+            {{
+                nextNonce(
+                    address: ""{address}""
+                )
+            }}
+            ", _queryGraph, source: _source);
+
+            Assert.Null(result.Errors);
+            ExecutionNode resultData = Assert.IsAssignableFrom<ExecutionNode>(result.Data);
+            IDictionary<string, object> resultDict =
+                Assert.IsAssignableFrom<IDictionary<string, object>>(resultData!.ToValue());
+            Assert.Equal(_source.BlockChain.GetNextTxNonce(address), (long)resultDict["nextNonce"]);
+            Assert.Equal(expected, (long)resultDict["nextNonce"]);
+        }
+
+        var key1 = new PrivateKey();
+        // account nonce is 0 in the beginning
+        await AssertNextNonce(0, key1.ToAddress());
+
+        // staged txs increase next nonce
+        _source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        await AssertNextNonce(1, key1.ToAddress());
+        _source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        await AssertNextNonce(2, key1.ToAddress());
+        await _source.BlockChain.MineBlock(new PrivateKey());
+        await AssertNextNonce(2, key1.ToAddress());
+
+        var key2 = new PrivateKey();
+        await AssertNextNonce(0, key2.ToAddress());
+
+        // staging txs of key2 does not increase nonce of key1
+        _source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        await _source.BlockChain.MineBlock(new PrivateKey());
+        await AssertNextNonce(1, key2.ToAddress());
+        await AssertNextNonce(2, key1.ToAddress());
+
+        // unstaging txs decrease nonce
+        _source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        await AssertNextNonce(3, key1.ToAddress());
+        _source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
+        await AssertNextNonce(4, key1.ToAddress());
+        _source.BlockChain.GetStagedTransactionIds()
+            .Select(_source.BlockChain.GetTransaction)
+            .Select(_source.BlockChain.UnstageTransaction)
+            .ToImmutableList();
+        await AssertNextNonce(2, key1.ToAddress());
     }
 
     private class MockBlockChainContext<T> : IBlockChainContext<T>

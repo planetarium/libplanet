@@ -147,15 +147,19 @@ namespace Libplanet.Extensions.Cocona
                 }
             );
 
-        public static T DeserializeHumanReadable<T>(string target) => JsonSerializer.Deserialize<T>(
-            target, new JsonSerializerOptions
-            {
-                Converters =
+        public static T? DeserializeHumanReadable<T>(string target)
+            where T : notnull
+        =>
+            JsonSerializer.Deserialize<T>(
+                target, new JsonSerializerOptions
                 {
-                    new ByteArrayStringJsonConverter(),
-                    new DateTimeOffsetJsonConverter(),
-                },
-            });
+                    Converters =
+                    {
+                        new ByteArrayStringJsonConverter(),
+                        new DateTimeOffsetJsonConverter(),
+                    },
+                }
+            );
 
         private static void PrintTable(object[] header, IEnumerable<object[]> rows)
         {
@@ -239,7 +243,7 @@ namespace Libplanet.Extensions.Cocona
                 Type typeToConvert,
                 JsonSerializerOptions options)
             {
-                var hexString = reader.GetString();
+                var hexString = reader.GetString() ?? throw new JsonException("Expected a string.");
                 return ImmutableArray.Create(ByteUtil.ParseHex(hexString));
             }
 
@@ -257,7 +261,8 @@ namespace Libplanet.Extensions.Cocona
                 Type typeToConvert,
                 JsonSerializerOptions options)
             {
-                var jsonString = reader.GetString();
+                var jsonString = reader.GetString()
+                    ?? throw new JsonException("Expected a string.");
                 return DateTimeOffset.ParseExact(
                     jsonString,
                     DateTimeOffsetFormat,

@@ -1,5 +1,4 @@
 #nullable disable
-using System;
 using Bencodex.Types;
 
 namespace Libplanet.Action

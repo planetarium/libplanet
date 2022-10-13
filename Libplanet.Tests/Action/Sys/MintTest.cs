@@ -109,5 +109,29 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal(signer, exc2.TransactionSigner);
             Assert.Equal(bazCurrency, exc2.Currency);
         }
+
+        [Fact]
+        public void JsonSerialization()
+        {
+            FungibleAssetValue amount = FOO * 125;
+            var action = new Mint(new Address("474CB59Dea21159CeFcC828b30a8D864e0b94a6B"), amount);
+            AssertJsonSerializable(action, @"
+                {
+                    ""\ufefftype_id"": ""0"",
+                    ""\ufeffvalues"": {
+                        ""\ufeffamount"": ""12500"",
+                        ""\ufeffcurrency"": {
+                            ""\ufeffdecimals"": ""2"",
+                            ""\ufeffmaximumSupplyMajor"": ""1000000"",
+                            ""\ufeffmaximumSupplyMinor"": ""0"",
+                            ""\ufeffminters"": null,
+                            ""\ufeffticker"": ""\uFEFFFOO"",
+                            ""\ufefftotalSupplyTrackable"": true
+                        },
+                        ""\ufeffrecipient"": ""0x474cb59dea21159cefcc828b30a8d864e0b94a6b""
+                    }
+                }
+            ");
+        }
     }
 }

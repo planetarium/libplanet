@@ -18,14 +18,9 @@ else
   dry_run=
 fi
 
-for project in "${executables[@]}"; do
-  if [[ ! -f "./$project/package.json" ]]; then
-    echo "As $project does not have its npm manifest (package.json), skips " \
-         "publishing it to npm." > /dev/stderr
-    continue
-  fi
-  pushd "./$project/"
+for npmpkg in "${npm_packages[@]}"; do
+  for tgz in "./$npmpkg"/*.tgz; do
     # shellcheck disable=SC2086
-    npm publish --access=public $dry_run
-  popd
+    npm publish --access=public $dry_run "$tgz"
+  done
 done

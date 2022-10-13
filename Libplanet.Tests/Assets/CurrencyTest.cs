@@ -255,5 +255,39 @@ namespace Libplanet.Tests.Assets
 
             Assert.Equal(bar, new Currency(bar.Serialize()));
         }
+
+        [SkippableFact]
+        public void JsonSerialization()
+        {
+#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+            var foo = Currency.Legacy("FOO", 2, null);
+#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
+            AssertJsonSerializable(foo, @"
+                {
+                    ""hash"": ""8db87f973776e2218113202e00e09e185fff8971"",
+                    ""ticker"": ""FOO"",
+                    ""decimalPlaces"": 2,
+                    ""minters"": null,
+                    ""maximumSupply"": null,
+                    ""totalSupplyTrackable"": false,
+                }
+            ");
+
+            var bar =
+                Currency.Capped("BAR", 0, (100, 0), ImmutableHashSet.Create(AddressA, AddressB));
+            AssertJsonSerializable(bar, @"
+                {
+                    ""hash"": ""e4ee30562819a9e74be40098c76f84209d05da5e"",
+                    ""ticker"": ""BAR"",
+                    ""decimalPlaces"": 0,
+                    ""minters"": [
+                        ""5003712B63baAB98094aD678EA2B24BcE445D076"",
+                        ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9"",
+                    ],
+                    ""maximumSupply"": ""100.0"",
+                    ""totalSupplyTrackable"": true,
+                }
+            ");
+        }
     }
 }

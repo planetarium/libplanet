@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -50,6 +53,7 @@ namespace Libplanet.Assets
         /// <summary>
         /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
         /// </summary>
+        [JsonInclude]
         public readonly string Ticker;
 
         /// <summary>
@@ -57,6 +61,7 @@ namespace Libplanet.Assets
         /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
         /// units (i.e., exponent)</a>.
         /// </summary>
+        [JsonInclude]
         public readonly byte DecimalPlaces;
 
         /// <summary>
@@ -67,16 +72,19 @@ namespace Libplanet.Assets
         /// Unlike <c>null</c>, an empty set means <em>no one</em> can mint the currency.
         /// </remarks>
         /// <seealso cref="IAccountStateDelta.MintAsset"/>
+        [JsonInclude]
         public readonly IImmutableSet<Address>? Minters;
 
         /// <summary>
         /// The deterministic hash derived from other fields.
         /// </summary>
+        [JsonInclude]
         public readonly HashDigest<SHA1> Hash;
 
         /// <summary>
         /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
         /// </summary>
+        [JsonInclude]
         public readonly bool TotalSupplyTrackable;
 
         private readonly (BigInteger Major, BigInteger Minor)? _maximumSupply;
@@ -226,6 +234,48 @@ namespace Libplanet.Assets
             Hash = GetHash();
         }
 
+        /// <summary>
+        /// An internal constructor for JSON deserialization.  Do not use this directly.
+        /// </summary>
+        [JsonConstructor]
+        [Obsolete]
+#pragma warning disable SA1611
+        public Currency(
+            HashDigest<SHA1> hash,
+            string ticker,
+            byte decimalPlaces,
+            IImmutableSet<Address>? minters,
+            bool totalSupplyTrackable,
+            FungibleAssetValue? maximumSupply
+        )
+#pragma warning restore SA1611
+#pragma warning disable SA1118
+            : this(
+                ticker,
+                decimalPlaces,
+                maximumSupply is { } v
+                    ? (v.MajorUnit, v.MinorUnit)
+                    : ((BigInteger, BigInteger)?)null,
+                minters
+            )
+#pragma warning restore SA1118
+        {
+            TotalSupplyTrackable = totalSupplyTrackable;
+            HashDigest<SHA1> expectedHash = GetHash();
+            if (!expectedHash.Equals(hash))
+            {
+                var msg = $"Invalid currency hash; expected {expectedHash}, but got {hash}. " +
+                      "This probably means the given data is inconsistent with the given hash.\n" +
+                      $"  ticker: {Ticker}\n  decimalPlaces: {decimalPlaces}\n" +
+                      $"  minters: {(Minters is { } m ? string.Join(", ", m) : "N/A")}\n" +
+                      $"  totalSupplyTrackable: {TotalSupplyTrackable}\n" +
+                      $"  maximumSupply: {MaximumSupply?.ToString() ?? "N/A"}";
+                throw new JsonException(msg);
+            }
+
+            Hash = hash;
+        }
+
         private Currency(SerializationInfo info, StreamingContext context)
         {
             Ticker = info.GetValue<string>(nameof(Ticker));
@@ -291,7 +341,8 @@ namespace Libplanet.Assets
         }
 
         /// <summary>
-        /// Private implementation to create a capped instance of <see cref="Currency"/>.
+        /// Private implementation to create a capped instance of <see cref="Currency"/> or
+        /// a deserialized instance.
         /// </summary>
         /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
         /// <param name="decimalPlaces">The number of digits to treat as <a
@@ -311,7 +362,7 @@ namespace Libplanet.Assets
         private Currency(
             string ticker,
             byte decimalPlaces,
-            (BigInteger Major, BigInteger Minor) maximumSupply,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
             IImmutableSet<Address>? minters)
             : this(ticker, decimalPlaces, minters, true)
         {
@@ -330,9 +381,10 @@ namespace Libplanet.Assets
                               + $" big for the given decimal places {decimalPlaces}.";
                     throw new ArgumentException(msg, nameof(minor));
                 }
+
+                _maximumSupply = maximumSupply;
             }
 
-            _maximumSupply = maximumSupply;
             Hash = GetHash();
         }
 
@@ -378,6 +430,7 @@ namespace Libplanet.Assets
         /// The uppermost quantity of currency allowed to exist.
         /// <c>null</c> means unlimited supply.
         /// </summary>
+        [JsonConverter(typeof(MaximumSupplyJsonConverter))]
         public FungibleAssetValue? MaximumSupply =>
             _maximumSupply.HasValue
                 ? new FungibleAssetValue(
@@ -643,16 +696,63 @@ namespace Libplanet.Assets
             return serialized;
         }
 
+        private static SHA1 GetSHA1()
+        {
+            try
+            {
+                return new SHA1CryptoServiceProvider();
+            }
+            catch (PlatformNotSupportedException)
+            {
+                return new SHA1Managed();
+            }
+        }
+
         [Pure]
         private HashDigest<SHA1> GetHash()
         {
             using var buffer = new MemoryStream();
-            using var sha1 = new SHA1CryptoServiceProvider();
+            using var sha1 = GetSHA1();
             using var stream = new CryptoStream(buffer, sha1, CryptoStreamMode.Write);
             var codec = new Codec();
             codec.Encode(Serialize(), stream);
             stream.FlushFinalBlock();
             return new HashDigest<SHA1>(sha1.Hash);
         }
+    }
+
+    [SuppressMessage(
+        "StyleCop.CSharp.MaintainabilityRules",
+        "SA1402:FileMayOnlyContainASingleClass",
+        Justification = "It's okay to have non-public classes together in a single file."
+    )]
+    internal class MaximumSupplyJsonConverter : JsonConverter<FungibleAssetValue>
+    {
+        public override FungibleAssetValue Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            string? quantityString = reader.GetString();
+            if (!(quantityString is { } qs))
+            {
+                throw new JsonException("MaximumSupply must be a string.");
+            }
+
+            int periodPos = qs.IndexOf('.');
+            byte decimalPlaces = periodPos < 0 ? (byte)0 : (byte)(qs.Length - periodPos - 1);
+            var fakeCurrency = Currency.Uncapped("FAKE", decimalPlaces, null);
+            return FungibleAssetValue.Parse(fakeCurrency, qs);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            FungibleAssetValue value,
+            JsonSerializerOptions options
+        ) =>
+            writer.WriteStringValue(
+                value.GetQuantityString() + (value.MinorUnit.IsZero ? ".0" : string.Empty)
+            );
     }
 }

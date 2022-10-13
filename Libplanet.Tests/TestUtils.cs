@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.JsonDiffPatch.Xunit;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using DiffPlex.DiffBuilder;
@@ -647,5 +651,33 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 output,
                 conditionLabel
             );
+
+        public static void AssertJsonSerializable<T>(T obj, string expectedJson)
+            where T : IEquatable<T>
+        {
+            Skip.IfNot(
+                Type.GetType("Mono.Runtime") is null,
+                "System.Text.Json 6.0.0+ does not work well with Unity/Mono."
+            );
+
+            var buffer = new MemoryStream();
+            JsonSerializer.Serialize(buffer, obj);
+            buffer.Seek(0L, SeekOrigin.Begin);
+            var options = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+            JsonNode actual = JsonSerializer.SerializeToNode(obj, options);
+            JsonNode expected = JsonNode.Parse(expectedJson, null, new JsonDocumentOptions
+            {
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip,
+            });
+            JsonAssert.Equal(expected, actual, true);
+            var deserialized = JsonSerializer.Deserialize<T>(expectedJson, options);
+            Assert.Equal(obj, deserialized);
+        }
     }
 }

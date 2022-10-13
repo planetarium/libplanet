@@ -53,9 +53,20 @@ namespace Libplanet.Node
         /// <param name="jsonString">The json <see cref="string"/> to parse.</param>
         /// <returns>The <see cref="SwarmConfig"/> instance parsed from
         /// <paramref name="jsonString"/>.</returns>
+        /// <exception cref="JsonException">Thrown when the input <paramref name="jsonString"/>
+        /// is invalid.</exception>
         public static SwarmConfig FromJson(string jsonString)
         {
-            return JsonSerializer.Deserialize<SwarmConfig>(jsonString, _jsonSerializerOptions);
+            SwarmConfig? config =
+                JsonSerializer.Deserialize<SwarmConfig>(jsonString, _jsonSerializerOptions);
+            if (config is { } cfg)
+            {
+                return cfg;
+            }
+
+            // JsonSerializer.Deserialize() can return null if the root JSON node is null.
+            // https://github.com/dotnet/runtime/discussions/60195#discussioncomment-1649740
+            throw new JsonException("A null is disallowed for the root of the input JSON tree.");
         }
 
         /// <summary>
@@ -133,7 +144,9 @@ namespace Libplanet.Node
                 Type typeToConvert,
                 JsonSerializerOptions options)
             {
-                return BoundPeer.ParsePeer(reader.GetString());
+                return BoundPeer.ParsePeer(
+                    reader.GetString() ?? throw new JsonException("Expected a string.")
+                );
             }
 
             public override void Write(
