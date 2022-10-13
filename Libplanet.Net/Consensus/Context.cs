@@ -78,12 +78,7 @@ namespace Libplanet.Net.Consensus
     public partial class Context<T> : IDisposable
         where T : IAction, new()
     {
-        private const int TimeoutProposeBase = 5;
-        private const int TimeoutPreVoteBase = 5;
-        private const int TimeoutPreCommitBase = 5;
-        private const int TimeoutProposeMultiplier = 1;
-        private const int TimeoutPreVoteMultiplier = 1;
-        private const int TimeoutPreCommitMultiplier = 1;
+        private readonly ContextTimeoutOption _contextTimeoutOption;
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
@@ -124,12 +119,15 @@ namespace Libplanet.Net.Consensus
         /// <seealso cref="MakeVote"/>
         /// </param>
         /// <param name="validators">A list of <see cref="PublicKey"/> of validators.</param>
+        /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
+        /// configuring a timeout for each <see cref="Step"/>.</param>
         public Context(
             ConsensusContext<T> consensusContext,
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators)
+            List<PublicKey> validators,
+            ContextTimeoutOption contextTimeoutOptions)
             : this(
                 consensusContext,
                 blockChain,
@@ -137,7 +135,9 @@ namespace Libplanet.Net.Consensus
                 privateKey,
                 validators,
                 Step.Default,
-                0)
+                0,
+                128,
+                contextTimeoutOptions)
         {
         }
 
@@ -149,7 +149,8 @@ namespace Libplanet.Net.Consensus
             List<PublicKey> validators,
             Step step,
             int round = 0,
-            int cacheSize = 128)
+            int cacheSize = 128,
+            ContextTimeoutOption? contextTimeoutOptions = null)
         {
             _privateKey = privateKey;
             Height = height;
@@ -171,6 +172,8 @@ namespace Libplanet.Net.Consensus
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
             _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
+
+            _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -259,9 +262,11 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        private static TimeSpan TimeoutPreVote(long round)
+        private TimeSpan TimeoutPreVote(long round)
         {
-            return TimeSpan.FromSeconds(TimeoutPreVoteBase + round + TimeoutPreVoteMultiplier);
+            return TimeSpan.FromSeconds(
+                _contextTimeoutOption.PreVoteSecondBase +
+                round * _contextTimeoutOption.PreVoteMultiplier);
         }
 
         /// <summary>
@@ -270,9 +275,11 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        private static TimeSpan TimeoutPreCommit(long round)
+        private TimeSpan TimeoutPreCommit(long round)
         {
-            return TimeSpan.FromSeconds(TimeoutPreCommitBase + round + TimeoutPreCommitMultiplier);
+            return TimeSpan.FromSeconds(
+                _contextTimeoutOption.PreCommitSecondBase +
+                round * _contextTimeoutOption.PreCommitMultiplier);
         }
 
         /// <summary>
@@ -281,9 +288,11 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">A round to get the timeout.</param>
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
-        private static TimeSpan TimeoutPropose(long round)
+        private TimeSpan TimeoutPropose(long round)
         {
-            return TimeSpan.FromSeconds(TimeoutProposeBase + round * TimeoutProposeMultiplier);
+            return TimeSpan.FromSeconds(
+                _contextTimeoutOption.ProposeSecondBase +
+                round * _contextTimeoutOption.ProposeMultiplier);
         }
 
         /// <summary>

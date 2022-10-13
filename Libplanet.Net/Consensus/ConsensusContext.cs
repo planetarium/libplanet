@@ -21,6 +21,8 @@ namespace Libplanet.Net.Consensus
     public class ConsensusContext<T> : IDisposable
         where T : IAction, new()
     {
+        private readonly ContextTimeoutOption _contextTimeoutOption;
+
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
@@ -52,6 +54,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="lastCommitClearThreshold">A maximum size of cached
         /// <see cref="BlockCommit"/>. See <see cref="LastCommitClearThreshold"/>.
         /// The value must bigger than <c>0</c>.</param>
+        /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
+        /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
@@ -59,7 +63,8 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             Func<long, IEnumerable<PublicKey>> getValidators,
-            long lastCommitClearThreshold)
+            long lastCommitClearThreshold,
+            ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
@@ -68,6 +73,8 @@ namespace Libplanet.Net.Consensus
             _newHeightDelay = newHeightDelay;
             _getValidators = getValidators;
             LastCommitClearThreshold = lastCommitClearThreshold;
+
+            _contextTimeoutOption = contextTimeoutOption;
 
             _contexts = new Dictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
@@ -199,7 +206,9 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _getValidators(height).ToList());
+                    _getValidators(height).ToList(),
+                    Step.Default,
+                    contextTimeoutOptions: _contextTimeoutOption);
             }
 
             _contexts[height].Start(lastCommit);
@@ -247,7 +256,8 @@ namespace Libplanet.Net.Consensus
                     _blockChain,
                     height,
                     _privateKey,
-                    _getValidators(height).ToList());
+                    _getValidators(height).ToList(),
+                    _contextTimeoutOption);
             }
 
             _contexts[height].ProduceMessage(consensusMessage);

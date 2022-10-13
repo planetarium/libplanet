@@ -55,6 +55,7 @@ To be released.
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
  -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  Added `BlockCommitExtensions` class.  [[#PBFT]]
+ -  Added `ContextTimeoutOption` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
