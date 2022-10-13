@@ -154,7 +154,7 @@ namespace Libplanet.Net.Messages
                     dapve(peer, message.Version, appProtocolVersion);
                 }
 
-                if (!message.Version.Version.Equals(appProtocolVersion.Version) || !trusted)
+                if (!trusted || !message.Version.Version.Equals(appProtocolVersion.Version))
                 {
                     throw new DifferentAppProtocolVersionException(
                         $"The APV of a received message is invalid:\n" +
