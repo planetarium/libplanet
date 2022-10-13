@@ -254,7 +254,8 @@ namespace Libplanet
             info.AddValue("address", ToByteArray());
         }
 
-        int IComparable<Address>.CompareTo(Address other)
+        /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
+        public int CompareTo(Address other)
         {
             ImmutableArray<byte> self = ByteArray, operand = other.ByteArray;
 
@@ -270,20 +271,11 @@ namespace Libplanet
             return 0;
         }
 
-        int IComparable.CompareTo(object? obj)
-        {
-            if (obj is Address other)
-            {
-                return ((IComparable<Address>)this).CompareTo(other);
-            }
-
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            throw new ArgumentException(nameof(obj));
-        }
+        /// <inheritdoc cref="IComparable.CompareTo(object)"/>
+        public int CompareTo(object? obj) => obj is Address other
+            ? this.CompareTo(other)
+            : throw new ArgumentException(
+                $"Argument {nameof(obj)} is not an ${nameof(Address)}.", nameof(obj));
 
         private static string ToChecksumAddress(string hex)
         {
