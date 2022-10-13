@@ -110,6 +110,8 @@ a system action, its features will be added more in the future.
         of their `PlainValue` with `type_id` field.  [[#2294]]
  -  System actions' `GetHashCode()` and `Equals(object)` methods now check
     value equality (rather than reference equality).  [[#2294]]
+ -  A `ValidateAppProtocolVersion` became allow validation of different extra.
+    [[#2380]]
 
 ### Bug fixes
 
