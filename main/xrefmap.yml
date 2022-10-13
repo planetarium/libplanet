@@ -1632,6 +1632,28 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.ByteArray
   nameWithType: Address.ByteArray
+- uid: Libplanet.Address.CompareTo(Libplanet.Address)
+  name: CompareTo(Address)
+  href: api/Libplanet.Address.html#Libplanet_Address_CompareTo_Libplanet_Address_
+  commentId: M:Libplanet.Address.CompareTo(Libplanet.Address)
+  fullName: Libplanet.Address.CompareTo(Libplanet.Address)
+  nameWithType: Address.CompareTo(Address)
+- uid: Libplanet.Address.CompareTo(System.Nullable{System.Object})
+  name: CompareTo(Nullable<Object>)
+  href: api/Libplanet.Address.html#Libplanet_Address_CompareTo_System_Nullable_System_Object__
+  commentId: M:Libplanet.Address.CompareTo(System.Nullable{System.Object})
+  name.vb: CompareTo(Nullable(Of Object))
+  fullName: Libplanet.Address.CompareTo(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Address.CompareTo(System.Nullable(Of System.Object))
+  nameWithType: Address.CompareTo(Nullable<Object>)
+  nameWithType.vb: Address.CompareTo(Nullable(Of Object))
+- uid: Libplanet.Address.CompareTo*
+  name: CompareTo
+  href: api/Libplanet.Address.html#Libplanet_Address_CompareTo_
+  commentId: Overload:Libplanet.Address.CompareTo
+  isSpec: "True"
+  fullName: Libplanet.Address.CompareTo
+  nameWithType: Address.CompareTo
 - uid: Libplanet.Address.Equals(Libplanet.Address)
   name: Equals(Address)
   href: api/Libplanet.Address.html#Libplanet_Address_Equals_Libplanet_Address_

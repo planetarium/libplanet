@@ -99,10 +99,10 @@ a system action, its features will be added more in the future.</p>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li><p>Many types became serialized and deserialized better with
+<li>Many types became serialized and deserialized better with
 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer"><code>System.Text.Json.JsonSerializer</code></a> as they now have their own
 <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to">custom converters</a>.  Note that these serializations are unavailable
-on Unity due to its incomplete reflection support.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>, <a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</p>
+on Unity due to its incomplete reflection support.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>, <a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]
 <ul>
 <li>An <code>Address</code> became represented as a single hexadecimal string in JSON.
 [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]</li>
@@ -124,11 +124,14 @@ JSON.  [<a href="https://github.com/planetarium/libplanet/pull/2322">#2322</a>]<
 of their <code>PlainValue</code> with <code>type_id</code> field.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
 </ul>
 </li>
-<li><p>System actions' <code>GetHashCode()</code> and <code>Equals(object)</code> methods now check
-value equality (rather than reference equality).  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</p>
-</li>
+<li>System actions' <code>GetHashCode()</code> and <code>Equals(object)</code> methods now check
+value equality (rather than reference equality).  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Interface methods <code>IComparable.CompareTo()</code> and
+<code>IComparable&lt;T&gt;.CompareTo()</code> for <code>Address</code> are now accessible.  <a href="https://github.com/planetarium/libplanet/pull/2384">#2384</a></li>
+</ul>
 <h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>Added <em><a href="https://www.npmjs.com/package/@planetarium/tx">@planetarium/tx</a></em> npm package.  [<a href="https://github.com/planetarium/libplanet/pull/2294">#2294</a>]</li>
