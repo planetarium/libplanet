@@ -18,7 +18,7 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type of <see cref="BlockChain{T}"/>.
     /// </typeparam>
-    public class ConsensusContext<T> : IDisposable
+    public partial class ConsensusContext<T> : IDisposable
         where T : IAction, new()
     {
         private readonly ContextTimeoutOption _contextTimeoutOption;
@@ -209,6 +209,8 @@ namespace Libplanet.Net.Consensus
                     _getValidators(height).ToList(),
                     Step.Default,
                     contextTimeoutOptions: _contextTimeoutOption);
+
+                AttachEventHandlers(_contexts[height]);
             }
 
             _contexts[height].Start(lastCommit);
@@ -258,6 +260,8 @@ namespace Libplanet.Net.Consensus
                     _privateKey,
                     _getValidators(height).ToList(),
                     _contextTimeoutOption);
+
+                AttachEventHandlers(_contexts[height]);
             }
 
             _contexts[height].ProduceMessage(consensusMessage);
