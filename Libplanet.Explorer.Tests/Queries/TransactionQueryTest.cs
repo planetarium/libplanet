@@ -12,6 +12,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Queries;
@@ -113,7 +114,8 @@ public class TransactionQueryTest
         await AssertNextNonce(1, key1.ToAddress());
         _source.BlockChain.MakeTransaction(key1, ImmutableList<NullAction>.Empty.Add(new NullAction()));
         await AssertNextNonce(2, key1.ToAddress());
-        await _source.BlockChain.MineBlock(new PrivateKey());
+        var block = _source.BlockChain.ProposeBlock(new PrivateKey());
+        _source.BlockChain.Append(block);
         await AssertNextNonce(2, key1.ToAddress());
 
         var key2 = new PrivateKey();
@@ -121,7 +123,15 @@ public class TransactionQueryTest
 
         // staging txs of key2 does not increase nonce of key1
         _source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        await _source.BlockChain.MineBlock(new PrivateKey());
+        var lastCommit = new BlockCommit(
+                height: 1,
+                round: 0,
+                hash: block.Hash,
+                votes: ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(1, 0, block.Hash, DateTimeOffset.UtcNow,
+                    _source.Validator.PublicKey, VoteFlag.Commit).Sign(_source.Validator)));
+        block = _source.BlockChain.ProposeBlock(new PrivateKey(), lastCommit: lastCommit);
+        _source.BlockChain.Append(block);
         await AssertNextNonce(1, key2.ToAddress());
         await AssertNextNonce(2, key1.ToAddress());
 
@@ -143,9 +153,11 @@ public class TransactionQueryTest
         public bool Preloaded => true;
         public BlockChain<T> BlockChain { get; }
         public IStore Store { get; }
+        public PrivateKey Validator { get; }
 
         public MockBlockChainContext()
         {
+            Validator = new PrivateKey();
             Store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var minerKey = new PrivateKey();
@@ -157,7 +169,7 @@ public class TransactionQueryTest
                 stateStore
             );
             BlockChain = new BlockChain<T>(
-                new BlockPolicy<T>(),
+                new BlockPolicy<T>(getValidators: index => new[] { Validator.PublicKey }),
                 new VolatileStagePolicy<T>(),
                 Store,
                 stateStore,

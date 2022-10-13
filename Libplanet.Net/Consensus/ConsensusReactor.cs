@@ -135,7 +135,7 @@ namespace Libplanet.Net.Consensus
         {
             var dict =
                 JsonSerializer.Deserialize<Dictionary<string, object>>(
-                    _consensusContext.ToString());
+                    _consensusContext.ToString()) ?? new Dictionary<string, object>();
             dict["peer"] = _gossip.AsPeer.ToString();
 
             return JsonSerializer.Serialize(dict);

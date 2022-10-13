@@ -321,7 +321,7 @@ namespace Libplanet.Action
                 hashedSignature = hasher.ComputeHash(signature);
             }
 
-            byte[] preEvaluationHashBytes = preEvaluationHash.ToBuilder().ToArray();
+            byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
             int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
             IAccountStateDelta states = previousStates;

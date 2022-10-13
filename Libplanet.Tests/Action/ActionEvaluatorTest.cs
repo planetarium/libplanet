@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -1136,7 +1135,7 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        private async void CheckRandomSeedInAction()
+        private void CheckRandomSeedInAction()
         {
             IntegerSet fx = new IntegerSet(new[] { 5, 10 });
 
@@ -1147,7 +1146,7 @@ namespace Libplanet.Tests.Action
                 Arithmetic.Mul(2),
                 Arithmetic.Add(3));
 
-            Block<Arithmetic> blockA = await fx.Mine();
+            Block<Arithmetic> blockA = fx.Propose();
             ActionEvaluation[] evalsA = ActionEvaluator<DumbAction>.EvaluateActions(
                 txA.GenesisHash,
                 blockA.PreEvaluationHash,
@@ -1169,7 +1168,7 @@ namespace Libplanet.Tests.Action
                 hashedSignature = hasher.ComputeHash(txA.Signature);
             }
 
-            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToBuilder().ToArray();
+            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
             int initialRandomSeed =
                 ActionEvaluator<DumbAction>.GenerateRandomSeed(
                     preEvaluationHashBytes,
