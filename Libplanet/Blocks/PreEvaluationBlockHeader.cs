@@ -19,26 +19,7 @@ namespace Libplanet.Blocks
         private readonly HashDigest<SHA256> _preEvaluationHash;
 
         /// <summary>
-        /// Creates a <see cref="PreEvaluationBlockHeader"/>  by copying the fields of another
-        /// pre-evaluation block <paramref name="header"/>.
-        /// </summary>
-        /// <param name="header">A pre-evaluation block header to copy.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="header"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
-        /// pre-evaluation <paramref name="header"/>'s
-        /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
-        public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
-            : this(header, header.PreEvaluationHash)
-        {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
+        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with a
         /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
@@ -50,31 +31,27 @@ namespace Libplanet.Blocks
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
         /// arguments.</remarks>
-        public PreEvaluationBlockHeader(BlockMetadata metadata)
-            : this(metadata, metadata.DerivePreEvaluationHash(default))
+        public PreEvaluationBlockHeader(IBlockMetadata metadata)
+            : this(new BlockMetadata(metadata))
         {
         }
 
         /// <summary>
-        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, a valid proof-of-work
-        /// a <paramref name="preEvaluationHash"/> digest.
+        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with a
+        /// <paramref name="metadata"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
-        /// </param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
         /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
         /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
         /// the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
-        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
+        /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
+        /// arguments.</remarks>
         public PreEvaluationBlockHeader(
-            IBlockMetadata metadata,
-            HashDigest<SHA256> preEvaluationHash)
-                : this(new BlockMetadata(metadata), preEvaluationHash)
+            BlockMetadata metadata)
+                : this(metadata, metadata.DerivePreEvaluationHash(default))
         {
         }
 

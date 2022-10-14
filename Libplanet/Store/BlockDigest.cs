@@ -22,7 +22,7 @@ namespace Libplanet.Store
         private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
         private readonly BlockMetadata _metadata;
-        private readonly HashDigest<SHA256>? _preEvaluationHash;
+        private readonly HashDigest<SHA256> _preEvaluationHash;
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
@@ -163,9 +163,7 @@ namespace Libplanet.Store
         /// <returns>The block header.</returns>
         public BlockHeader GetHeader()
         {
-            var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(_metadata, preEvalHash)
-                : new PreEvaluationBlockHeader(_metadata);
+            var preEvalHeader = new PreEvaluationBlockHeader(_metadata, _preEvaluationHash);
             return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
         }
 
@@ -179,7 +177,7 @@ namespace Libplanet.Store
         {
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
-                _preEvaluationHash ?? new HashDigest<SHA256>(new byte[HashDigest<SHA256>.Size]));
+                _preEvaluationHash);
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
                 preEvalHeaderDict,
                 StateRootHash,
