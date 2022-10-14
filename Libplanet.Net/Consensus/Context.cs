@@ -216,9 +216,9 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
+            _cancellationTokenSource.Cancel();
             _messageRequests.Writer.TryComplete();
             _mutationRequests.Writer.TryComplete();
-            _cancellationTokenSource.Cancel();
         }
 
         /// <summary>
