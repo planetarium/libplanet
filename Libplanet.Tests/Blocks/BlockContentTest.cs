@@ -180,17 +180,6 @@ namespace Libplanet.Tests.Blocks
             });
             AssertBytesEqual(expected, Block1Content.TxHash);
             Assert.Null(GenesisContentPv0.TxHash);
-
-            Assert.Throws<InvalidBlockTxHashException>(
-                () => GenesisContent.TxHash = default(HashDigest<SHA256>)
-            );
-            Assert.Throws<InvalidBlockTxHashException>(() => Block1Content.TxHash = null);
-            Assert.Throws<InvalidBlockTxHashException>(
-                () => Block1Content.TxHash = default(HashDigest<SHA256>)
-            );
-            Assert.Throws<InvalidBlockTxHashException>(
-                () => GenesisContentPv0.TxHash = default(HashDigest<SHA256>)
-            );
         }
 
         [Fact]

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -41,7 +40,6 @@ namespace Libplanet.Blocks
         private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
         private Address _miner;
         private PublicKey? _publicKey;
-        private HashDigest<SHA256>? _txHash;
 
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
@@ -64,10 +62,8 @@ namespace Libplanet.Blocks
             Miner = metadata.Miner;
             PublicKey = metadata.PublicKey;
             PreviousHash = metadata.PreviousHash;
-
-            // FIXME: This is to bypass setter check.
-            _txHash = metadata.TxHash;
             LastCommit = metadata.LastCommit;
+            TxHash = metadata.TxHash;
         }
 
         public BlockMetadata(
@@ -137,8 +133,7 @@ namespace Libplanet.Blocks
                 PreviousHash = previousHash;
             }
 
-            // FIXME: This is to bypass setter check.
-            _txHash = txHash;
+            TxHash = txHash;
             LastCommit = lastCommit;
         }
 
@@ -227,15 +222,7 @@ namespace Libplanet.Blocks
         public BlockHash? PreviousHash { get; set; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
-        [SuppressMessage(
-            "SonarQube",
-            "S2292",
-            Justification = "The backing field purposes to prevent intercepting from subclasses.")]
-        public virtual HashDigest<SHA256>? TxHash
-        {
-            get => _txHash;
-            set => _txHash = value;
-        }
+        public HashDigest<SHA256>? TxHash { get; private set; }
 
         public BlockCommit? LastCommit { get; set; }
 
@@ -275,7 +262,7 @@ namespace Libplanet.Blocks
             // derived from PublicKeys, we don't need to include both at a time.)  The PublicKey
             // property in this class guarantees that its ProtocolVersion is <= 1 when it is null
             // and its ProtocolVersion is >= 2 when it is not null:
-            dict = PublicKey is { } pubKey && ProtocolVersion > 1
+            dict = PublicKey is { } pubKey && ProtocolVersion >= 2
                 ? dict.Add("public_key", pubKey.Format(compress: true)) // ProtocolVersion >= 2
                 : dict.Add("reward_beneficiary", Miner.ByteArray); /////// ProtocolVersion <= 1
 
