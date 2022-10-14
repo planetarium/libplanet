@@ -213,6 +213,7 @@ namespace Libplanet.Tests.Action
             PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: new PrivateKey().PublicKey,
                     previousHash: genesis.Hash,
                     txHash: BlockContent<ThrowException>.DeriveTxHash(txs),
@@ -572,6 +573,7 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: keys[0].PublicKey,
                     previousHash: default(BlockHash),
                     txHash: BlockContent<DumbAction>.DeriveTxHash(txs),
@@ -718,6 +720,7 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<ThrowException>(
                 new BlockMetadata(
                     index: 123,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: GenesisMiner.PublicKey,
                     previousHash: hash,
                     txHash: BlockContent<ThrowException>.DeriveTxHash(txs),

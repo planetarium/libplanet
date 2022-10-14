@@ -909,6 +909,7 @@ namespace Libplanet.Net.Tests
             var genesisContent1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: key1.PublicKey,
                     previousHash: null,
                     txHash: null,
@@ -916,6 +917,7 @@ namespace Libplanet.Net.Tests
             var genesisContent2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: key2.PublicKey,
                     previousHash: null,
                     txHash: null,

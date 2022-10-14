@@ -67,6 +67,7 @@ namespace Libplanet.Tests.Fixtures
             Genesis = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: Miner.PublicKey,
                     previousHash: null,
                     txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs),

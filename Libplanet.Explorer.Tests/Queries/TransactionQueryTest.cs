@@ -164,6 +164,7 @@ public class TransactionQueryTest
             var genesisContent = new BlockContent<T>(
                 new BlockMetadata(
                     index: 0L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: minerKey.PublicKey,
                     previousHash: null,
                     txHash: null,
