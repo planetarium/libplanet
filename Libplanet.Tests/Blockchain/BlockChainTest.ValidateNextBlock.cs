@@ -21,10 +21,8 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 1L,
                     timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -86,6 +84,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> blockWithAlreadyUsedIndex = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: prev.Index,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: prev.Hash,
                     txHash: null,
@@ -97,6 +96,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> blockWithIndexAfterNonexistentIndex = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: prev.Index + 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: prev.Hash,
                     txHash: null,
@@ -115,6 +115,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> invalidPreviousHashBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     // Should be _validNext.Hash instead
                     previousHash: _validNext.PreviousHash,
@@ -133,10 +134,8 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> invalidPreviousTimestamp = new BlockContent<DumbAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 2,
                     timestamp: _validNext.Timestamp.AddSeconds(-1),
-                    miner: _fx.Miner.PublicKey.ToAddress(),
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _validNext.Hash,
                     txHash: null,
@@ -205,6 +204,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -219,6 +219,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -229,6 +230,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
@@ -243,6 +245,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -253,6 +256,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
@@ -266,6 +270,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -314,6 +319,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
@@ -327,6 +333,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -350,6 +357,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
@@ -363,6 +371,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -387,6 +396,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,
@@ -400,6 +410,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 1L,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _fx.GenesisBlock.Hash,
                     txHash: null,
@@ -426,6 +437,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: block1.Hash,
                     txHash: null,

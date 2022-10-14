@@ -83,6 +83,7 @@ namespace Libplanet.Blocks
         /// that may be thrown.
         /// </remarks>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
         /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
@@ -91,6 +92,7 @@ namespace Libplanet.Blocks
         /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
         public BlockMetadata(
             long index,
+            DateTimeOffset timestamp,
             PublicKey publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
@@ -98,7 +100,7 @@ namespace Libplanet.Blocks
             : this(
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
-                timestamp: DateTimeOffset.UtcNow,
+                timestamp: timestamp,
                 miner: publicKey.ToAddress(),
                 publicKey: publicKey,
                 previousHash: previousHash,

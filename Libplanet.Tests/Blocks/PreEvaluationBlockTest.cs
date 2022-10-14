@@ -63,6 +63,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
@@ -125,6 +126,7 @@ namespace Libplanet.Tests.Blocks
                 BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: _contents.Block1Content.PublicKey,
                         previousHash: genesis.Hash,
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),

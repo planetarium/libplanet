@@ -58,6 +58,7 @@ namespace Libplanet.Tests.Blocks
             var blockContent = new BlockContent<Arithmetic>(
                 new BlockMetadata(
                     index: Block1Content.Index,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: Block1Content.PublicKey,
                     previousHash: Block1Content.PreviousHash,
                     txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
@@ -90,6 +91,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
@@ -122,6 +124,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
@@ -161,6 +164,7 @@ namespace Libplanet.Tests.Blocks
                 () => new BlockContent<Arithmetic>(
                     new BlockMetadata(
                         index: Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
                         publicKey: Block1Content.PublicKey,
                         previousHash: Block1Content.PreviousHash,
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(inconsistentTxs),

@@ -158,6 +158,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var invalidBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: blockChain.Tip.Index + 1,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: fx.Miner.PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,

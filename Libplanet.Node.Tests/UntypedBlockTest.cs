@@ -58,10 +58,8 @@ namespace Libplanet.Node.Tests
             });
             _content = new BlockContent<NullAction>(
                 new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: 0L,
                     timestamp: new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
-                    miner: _minerKey.PublicKey.ToAddress(),
                     publicKey: _minerKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent<NullAction>.DeriveTxHash(_txs),

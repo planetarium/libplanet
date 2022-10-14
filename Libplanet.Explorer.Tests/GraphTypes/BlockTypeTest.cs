@@ -23,6 +23,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             var preEval = new BlockContent<NullAction>(
                 new BlockMetadata(
                     index: 1,
+                    timestamp: DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     previousHash: new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                     txHash: null,

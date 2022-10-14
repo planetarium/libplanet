@@ -62,6 +62,7 @@ namespace Libplanet.Tests.Blocks
         {
             Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
                 index: -1L,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: Block1Metadata.TxHash,
@@ -94,12 +95,14 @@ namespace Libplanet.Tests.Blocks
         {
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: GenesisMetadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: GenesisMetadata.PublicKey,
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: GenesisMetadata.TxHash,
                 lastCommit: null));
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
                 previousHash: null,
                 txHash: Block1Metadata.TxHash,
