@@ -160,41 +160,33 @@ namespace Libplanet.Blocks
 
         public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
         {
-            var metadata = new BlockMetadata
-            {
-                ProtocolVersion = marshaled.ContainsKey(ProtocolVersionKey)
+#pragma warning disable SA1118 // The parameter spans multiple lines
+            return new BlockMetadata(
+                protocolVersion: marshaled.ContainsKey(ProtocolVersionKey)
                     ? (int)marshaled.GetValue<Integer>(ProtocolVersionKey)
                     : 0,
-                Index = UnmarshalBlockMetadataIndex(marshaled),
-                Timestamp = DateTimeOffset.ParseExact(
+                index: UnmarshalBlockMetadataIndex(marshaled),
+                timestamp: DateTimeOffset.ParseExact(
                     marshaled.GetValue<Text>(TimestampKey),
                     TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
-                PreviousHash = marshaled.ContainsKey(PreviousHashKey)
+                    CultureInfo.InvariantCulture),
+                miner: marshaled.ContainsKey(MinerKey)
+                    ? new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray)
+                    : (Address?)null,
+                publicKey: marshaled.ContainsKey(PublicKeyKey)
+                    ? new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray)
+                    : (PublicKey?)null,
+                previousHash: marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,
-                TxHash = marshaled.ContainsKey(TxHashKey)
-                    ? new HashDigest<SHA256>(
-                        marshaled.GetValue<Binary>(TxHashKey).ByteArray)
+                txHash: marshaled.ContainsKey(TxHashKey)
+                    ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
                     : (HashDigest<SHA256>?)null,
-                LastCommit = marshaled.ContainsKey(LastCommitKey)
-                ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
-                : (BlockCommit?)null,
-            };
-
-            if (marshaled.ContainsKey(PublicKeyKey))
-            {
-                metadata.PublicKey =
-                    new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
-            }
-            else
-            {
-                metadata.Miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
-            }
-
-            return metadata;
-        }
+                lastCommit: marshaled.ContainsKey(LastCommitKey)
+                    ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
+                    : (BlockCommit?)null);
+#pragma warning restore SA1118
+}
 
         public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
             new HashDigest<SHA256>(marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray);

@@ -85,15 +85,15 @@ namespace Libplanet.Tests.Blocks
                         validatorC.PublicKey,
                         VoteFlag.Commit).Sign(validatorC),
                 }.ToImmutableArray());
-            var invalidHeightMetadata = new BlockMetadata
-            {
-                Index = 2,
-                Timestamp = timestamp,
-                PublicKey = validatorA.PublicKey,
-                PreviousHash = blockHash,
-                TxHash = null,
-                LastCommit = invalidHeightLastCommit,
-            };
+            var invalidHeightMetadata = new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: validatorA.PublicKey,
+                previousHash: blockHash,
+                txHash: null,
+                lastCommit: invalidHeightLastCommit);
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(metadata: invalidHeightMetadata));
 
@@ -103,15 +103,15 @@ namespace Libplanet.Tests.Blocks
                 0,
                 invalidBlockHash,
                 new[] { voteA, voteB, voteC }.ToImmutableArray());
-            var invalidBlockHashMetadata = new BlockMetadata
-            {
-                Index = 2,
-                Timestamp = timestamp,
-                PublicKey = validatorA.PublicKey,
-                PreviousHash = _contents.GenesisHash,
-                TxHash = null,
-                LastCommit = invalidBlockHashLastCommit,
-            };
+            var invalidBlockHashMetadata = new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: validatorA.PublicKey,
+                previousHash: _contents.GenesisHash,
+                txHash: null,
+                lastCommit: invalidBlockHashLastCommit);
             Assert.Throws<InvalidBlockLastCommitException>(
                 () => new PreEvaluationBlockHeader(metadata: invalidBlockHashMetadata));
 
@@ -138,15 +138,15 @@ namespace Libplanet.Tests.Blocks
                         validatorC.PublicKey,
                         VoteFlag.Unknown).Sign(null),
                 }.ToImmutableArray());
-            var validMetadata = new BlockMetadata
-            {
-                Index = 2,
-                Timestamp = timestamp,
-                PublicKey = validatorA.PublicKey,
-                PreviousHash = blockHash,
-                TxHash = null,
-                LastCommit = validLastCommit,
-            };
+            var validMetadata = new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: validatorA.PublicKey,
+                previousHash: blockHash,
+                txHash: null,
+                lastCommit: validLastCommit);
             _ = new PreEvaluationBlockHeader(metadata: validMetadata);
         }
 

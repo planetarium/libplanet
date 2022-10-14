@@ -76,6 +76,77 @@ namespace Libplanet.Blocks
         {
         }
 
+        public BlockMetadata(
+            long index,
+            PublicKey publicKey,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            BlockCommit? lastCommit)
+            : this(
+                protocolVersion: CurrentProtocolVersion,
+                index: index,
+                timestamp: DateTimeOffset.UtcNow,
+                miner: null,
+                publicKey: publicKey,
+                previousHash: previousHash,
+                txHash: txHash,
+                lastCommit: lastCommit)
+        {
+        }
+
+        internal BlockMetadata(
+            int protocolVersion,
+            long index,
+            DateTimeOffset timestamp,
+            Address? miner,
+            PublicKey? publicKey,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            BlockCommit? lastCommit)
+        {
+            ProtocolVersion = protocolVersion;
+            Index = index;
+            Timestamp = timestamp;
+            if (protocolVersion >= 2)
+            {
+                PublicKey = publicKey is { } p
+                    ? p
+                    : throw new ArgumentException(
+                        $"Argument {nameof(publicKey)} cannot be null for " +
+                        $"{nameof(protocolVersion)} >= 2.",
+                        nameof(publicKey));
+                Miner = miner is { } m
+                    ? throw new ArgumentException(
+                        $"Argument {nameof(miner)} should be null for " +
+                        $"{nameof(protocolVersion)} >= 2.",
+                        nameof(miner))
+                    : new Address(p);
+            }
+            else
+            {
+                PublicKey = null;
+                Miner = miner is { } m
+                    ? m
+                    : throw new ArgumentException(
+                        $"Argument {nameof(miner)} cannot be null for " +
+                        $"{nameof(protocolVersion)} < 2.",
+                        nameof(miner));
+            }
+
+            if (index != 0 && previousHash is null)
+            {
+                throw new InvalidBlockPreviousHashException(
+                    $"{nameof(previousHash)} cannot be null for {nameof(index)} > 0.");
+            }
+            else
+            {
+                PreviousHash = previousHash;
+            }
+
+            TxHash = txHash;
+            LastCommit = lastCommit;
+        }
+
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
         /// less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
@@ -94,10 +165,10 @@ namespace Libplanet.Blocks
                 }
                 else if (value > CurrentProtocolVersion)
                 {
-                    string msg =
+                    throw new InvalidBlockProtocolVersionException(
                         "A block's protocol version cannot be greater than " +
-                        $"{CurrentProtocolVersion}: {value}.";
-                    throw new InvalidBlockProtocolVersionException(msg, value);
+                        $"{CurrentProtocolVersion}: {value}.",
+                        value);
                 }
 
                 _protocolVersion = value;
@@ -110,10 +181,10 @@ namespace Libplanet.Blocks
         public long Index
         {
             get => _index;
-            set => _index
-                = value >= 0L
+            set => _index = value >= 0L
                 ? value
-                : throw new InvalidBlockIndexException($"A negative index is disallowed: {value}.");
+                : throw new InvalidBlockIndexException(
+                    $"A negative index is not allowed: {value}.");
         }
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
