@@ -24,20 +24,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Constructor()
-        {
-            DateTimeOffset before = DateTimeOffset.UtcNow;
-            var m = new BlockMetadata();
-            DateTimeOffset after = DateTimeOffset.UtcNow;
-            Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
-            Assert.Equal(0, m.Index);
-            Assert.InRange(m.Timestamp, before, after);
-            AssertBytesEqual(default(Address), m.Miner);
-            AssertBytesEqual(null, m.PreviousHash);
-            AssertBytesEqual(null, m.TxHash);
-        }
-
-        [Fact]
         public void CopyConstructor()
         {
             var g = new BlockMetadata(GenesisContent);
