@@ -65,7 +65,7 @@ namespace Libplanet.Node.Tests
                 previousHash: null,
                 txHash: BlockContent<NullAction>.DeriveTxHash(_txs.OrderBy(tx => tx.Id).ToList()),
                 lastCommit: null,
-                transactions: _txs);
+                transactions: _txs.OrderBy(tx => tx.Id));
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
             HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);

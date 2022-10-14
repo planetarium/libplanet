@@ -435,7 +435,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            var txs = transactions?.ToList() ?? new List<Transaction<T>>();
+            var txs = transactions?.OrderBy(tx => tx.Id).ToList() ?? new List<Transaction<T>>();
             var content = new BlockContent<T>(
                 protocolVersion: protocolVersion,
                 index: 0,
@@ -443,7 +443,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
                 publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
                 previousHash: null,
-                txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
+                txHash: BlockContent<T>.DeriveTxHash(txs),
                 lastCommit: null,
                 transactions: txs);
             return content.Propose();

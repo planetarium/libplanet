@@ -108,10 +108,17 @@ namespace Libplanet.Blocks
         /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
         public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
-            : base(metadata)
+            : this(
+                protocolVersion: metadata.ProtocolVersion,
+                index: metadata.Index,
+                timestamp: metadata.Timestamp,
+                miner: metadata.Miner,
+                publicKey: metadata.PublicKey,
+                previousHash: metadata.PreviousHash,
+                txHash: metadata.TxHash,
+                lastCommit: metadata.LastCommit,
+                transactions: transactions)
         {
-            Transactions = transactions.ToImmutableArray();
-            ValidateTxHash();
         }
 
         /// <summary>
@@ -146,7 +153,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <remarks>
         /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
-        /// automatically derived.
+        /// automatically derived.  Also <paramref name="transactions"/> are automatically
+        /// sorted by <see cref="Transaction{T}.Id"/>.
         /// </remarks>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
         /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
@@ -189,7 +197,40 @@ namespace Libplanet.Blocks
         {
         }
 
-        // Constructor for manually assigning fields.
+        /// <summary>
+        /// Creates a <see cref="BlockContent{T}"/> by manually filling in the fields for
+        /// <see cref="IBlockContent{T}"/>.  All public constructors gets redirected to this one.
+        /// </summary>
+        /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
+        /// </param>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
+        /// <param name="miner">Goes to <see cref="IBlockMetadata.Miner"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
+        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="transactions">Goes to <see cref="IBlockContent{T}.Transactions"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="transactions"/> is
+        /// not ordered by <see cref="Transaction{T}.Id"/>.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
+        /// less than zero.</exception>
+        /// <exception cref="InvalidBlockPublicKeyException">Thrown when any of the following
+        /// conditions is not satisfied.
+        /// <list type="bullet">
+        ///   <item><description>If <paramref name="protocolVersion"/> >= 2,
+        ///   <paramref name="miner"/> should match the derived address of
+        ///   <paramref name="publicKey"/>.</description></item>
+        ///   <item><description>Otherwise, <paramref name="publicKey"/> must be
+        ///   <see langword="null"/>.</description></item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
+        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
+        /// </exception>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when <paramref name="txHash"/>
+        /// does not match the one derived from <paramref name="transactions"/>.</exception>
         internal BlockContent(
             int protocolVersion,
             long index,
@@ -210,7 +251,7 @@ namespace Libplanet.Blocks
                 txHash: txHash,
                 lastCommit: lastCommit)
         {
-            Transactions = transactions.ToImmutableArray();
+            Transactions = transactions.ToImmutableList();
             ValidateTxHash();
         }
 
@@ -233,14 +274,23 @@ namespace Libplanet.Blocks
             set
             {
                 value.ValidateTxNonces(Index);
+                TxId? prevId = null;
                 foreach (Transaction<T> tx in value)
                 {
                     // FIXME: Transaction<T> should disallow illegal states to be represented
                     // as its instances.  https://github.com/planetarium/libplanet/issues/1164
                     tx.Validate();
+                    if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
+                    {
+                        throw new ArgumentException(
+                            $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
+                            nameof(value));
+                    }
+
+                    prevId = tx.Id;
                 }
 
-                _transactions = value.OrderBy(tx => tx.Id).ToImmutableArray();
+                _transactions = value;
             }
         }
 

@@ -56,6 +56,7 @@ namespace Libplanet.Tests.Fixtures
                         ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
                     )
                 )
+                .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullBlockPolicy<Arithmetic>(
