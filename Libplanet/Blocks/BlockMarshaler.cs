@@ -194,7 +194,7 @@ namespace Libplanet.Blocks
                     ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
                     : (BlockCommit?)null);
 #pragma warning restore SA1118
-}
+        }
 
         public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
             new HashDigest<SHA256>(marshaled.GetValue<Binary>(PreEvaluationHashKey).ByteArray);

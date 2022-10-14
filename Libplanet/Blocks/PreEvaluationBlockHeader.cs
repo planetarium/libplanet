@@ -15,6 +15,9 @@ namespace Libplanet.Blocks
     {
         protected static readonly Codec Codec = new Codec();
 
+        private readonly BlockMetadata _metadata;
+        private readonly HashDigest<SHA256> _preEvaluationHash;
+
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/>  by copying the fields of another
         /// pre-evaluation block <paramref name="header"/>.
@@ -47,8 +50,8 @@ namespace Libplanet.Blocks
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
         /// arguments.</remarks>
-        public PreEvaluationBlockHeader(IBlockMetadata metadata)
-            : this(new BlockMetadata(metadata))
+        public PreEvaluationBlockHeader(BlockMetadata metadata)
+            : this(metadata, metadata.DerivePreEvaluationHash(default))
         {
         }
 
@@ -76,9 +79,8 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Unsafely creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, and a <paramref name="preEvaluationHash"/>
-        /// which is probably considered as to be valid.
+        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
+        /// <paramref name="metadata"/>, and a <paramref name="preEvaluationHash"/>.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
         /// <param name="preEvaluationHash">A valid proof-of-work bytearray which is probably
@@ -91,7 +93,6 @@ namespace Libplanet.Blocks
             BlockMetadata metadata,
             HashDigest<SHA256> preEvaluationHash)
         {
-            // FIXME: CheckPreEvaluationHash(metadata, preEvaluationHash) should fit in somewhere.
             if (metadata.Index == 0L && metadata.PreviousHash is { } ph)
             {
                 throw new InvalidBlockPreviousHashException(
@@ -168,14 +169,14 @@ namespace Libplanet.Blocks
                 }
             }
 
-            Metadata = metadata;
-            PreEvaluationHash = preEvaluationHash;
+            _metadata = metadata;
+            _preEvaluationHash = CheckPreEvaluationHash(metadata, preEvaluationHash);
         }
 
-        protected PreEvaluationBlockHeader(BlockMetadata metadata)
-            : this(metadata, metadata.DerivePreEvaluationHash(default))
-        {
-        }
+        /// <summary>
+        /// The internal block metadata.
+        /// </summary>
+        public BlockMetadata Metadata => _metadata;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => Metadata.ProtocolVersion;
@@ -198,15 +199,11 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public HashDigest<SHA256> PreEvaluationHash { get; }
-
-        /// <summary>
-        /// The internal block metadata.
-        /// </summary>
-        protected BlockMetadata Metadata { get; }
+        public HashDigest<SHA256> PreEvaluationHash => _preEvaluationHash;
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -332,9 +329,9 @@ namespace Libplanet.Blocks
         /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
-        private static ImmutableArray<byte> CheckPreEvaluationHash(
+        private static HashDigest<SHA256> CheckPreEvaluationHash(
             BlockMetadata metadata,
-            in ImmutableArray<byte> preEvaluationHash)
+            in HashDigest<SHA256> preEvaluationHash)
         {
             return preEvaluationHash;
         }

@@ -153,7 +153,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CopyConstructor()
         {
-            BlockMetadata metadata = _contents.GenesisContent.Copy();
+            BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
             var preEvalBlock = new PreEvaluationBlockHeader(metadata);
             var copy = new PreEvaluationBlockHeader(preEvalBlock);
             AssertPreEvaluationBlockHeadersEqual(preEvalBlock, copy);
@@ -244,7 +244,9 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal("privateKey", e.ParamName);
             Assert.Contains("does not match", e.Message);
 
-            var blockPv1 = new PreEvaluationBlockHeader(_contents.Block1ContentPv1);
+            var blockPv1 = new PreEvaluationBlockHeader(
+                _contents.Block1ContentPv1,
+                _contents.Block1ContentPv1.BlockMetadata.DerivePreEvaluationHash(default));
             InvalidOperationException e2 = Assert.Throws<InvalidOperationException>(
                 () => blockPv1.MakeSignature(key, arbitraryHash)
             );
@@ -280,7 +282,9 @@ namespace Libplanet.Tests.Blocks
                 )
             );
 
-            var blockPv1 = new PreEvaluationBlockHeader(_contents.Block1ContentPv1);
+            var blockPv1 = new PreEvaluationBlockHeader(
+                _contents.Block1ContentPv1,
+                _contents.Block1ContentPv1.BlockMetadata.DerivePreEvaluationHash(default));
             Assert.True(blockPv1.VerifySignature(null, arbitraryHash));
             Assert.False(blockPv1.VerifySignature(validSig, arbitraryHash));
         }

@@ -67,7 +67,7 @@ namespace Libplanet.Node.Tests
                 lastCommit: null,
                 transactions: _txs.OrderBy(tx => tx.Id));
             var nonce = default(Nonce);
-            byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
+            byte[] blockBytes = Codec.Encode(_content.BlockMetadata.MakeCandidateData(nonce));
             HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);
             _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(

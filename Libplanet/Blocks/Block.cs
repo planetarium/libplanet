@@ -61,7 +61,7 @@ namespace Libplanet.Blocks
                 // Skip hash check for PoW blocks due to change of the block structure.
                 // If verification is required, use older version of LibPlanet(<0.43).
                 Header = new BlockHeader(
-                    _preEvaluationBlock,
+                    _preEvaluationBlock.Header,
                     header.StateRootHash,
                     header.Signature,
                     header.Hash);
@@ -69,7 +69,7 @@ namespace Libplanet.Blocks
             else
             {
                 Header = new BlockHeader(
-                    _preEvaluationBlock,
+                    _preEvaluationBlock.Header,
                     header.StateRootHash,
                     header.Signature);
             }
@@ -93,7 +93,7 @@ namespace Libplanet.Blocks
         )
         {
             _preEvaluationBlock = preEvaluationBlock;
-            Header = new BlockHeader(preEvaluationBlock, stateRootHash, signature);
+            Header = new BlockHeader(preEvaluationBlock.Header, stateRootHash, signature);
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>

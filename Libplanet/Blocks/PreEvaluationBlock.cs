@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -23,9 +22,12 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader, IPreEvaluationBlock<T>
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>
         where T : IAction, new()
     {
+        private BlockContent<T> _content;
+        private PreEvaluationBlockHeader _header;
+
         /// <summary>
         /// Unsafely creates a <see cref="PreEvaluationBlock{T}"/> instance with its
         /// <paramref name="content"/> data, and a <paramref name="preEvaluationHash"/>
@@ -39,19 +41,48 @@ namespace Libplanet.Blocks
         /// hash is invalid.</exception>
         internal PreEvaluationBlock(
             BlockContent<T> content,
-            in HashDigest<SHA256> preEvaluationHash
-        )
-            : base(content, preEvaluationHash)
+            in HashDigest<SHA256> preEvaluationHash)
         {
+            _content = content;
+            _header = new PreEvaluationBlockHeader(content.BlockMetadata, preEvaluationHash);
         }
 
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
+        public PreEvaluationBlockHeader Header => _header;
+
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        public int ProtocolVersion => _header.ProtocolVersion;
+
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
+        public long Index => _header.Index;
+
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _header.Timestamp;
+
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
+        public Address Miner => _header.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _header.PublicKey;
+
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
+        public BlockHash? PreviousHash => _header.PreviousHash;
+
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        public HashDigest<SHA256>? TxHash => _header.TxHash;
+
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => _header.LastCommit;
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <summary>
         /// The internal block content.
         /// </summary>
-        private BlockContent<T> Content => (BlockContent<T>)Metadata;
+        public BlockContent<T> Content => _content;
+
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -141,7 +172,8 @@ namespace Libplanet.Blocks
         /// </remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {
-            ImmutableArray<byte> sig = MakeSignature(privateKey, stateRootHash);
+            ImmutableArray<byte> sig =
+                _header.MakeSignature(privateKey, stateRootHash);
             return new Block<T>(this, stateRootHash, sig);
         }
 
