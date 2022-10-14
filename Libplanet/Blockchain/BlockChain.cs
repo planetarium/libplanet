@@ -1478,6 +1478,13 @@ namespace Libplanet.Blockchain
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
+            if (block.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
+            }
+
             if (!block.PreviousHash.Equals(prevHash))
             {
                 if (prevHash is null)

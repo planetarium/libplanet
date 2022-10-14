@@ -574,7 +574,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 var content = new BlockContent<T>(
                     protocolVersion: protocolVersion,
                     index: 0,
-                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
+                    timestamp: timestamp ?? DateTimeOffset.MinValue,
                     miner: protocolVersion >= 2 ? (Address?)null : GenesisMiner.ToAddress(),
                     publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
                     previousHash: null,

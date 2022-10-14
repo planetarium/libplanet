@@ -96,7 +96,8 @@ namespace Libplanet.Tests.Blockchain
                 index: prev.Index + 2,
                 publicKey: _fx.Miner.PublicKey,
                 previousHash: prev.Hash,
-                lastCommit: null).Propose().Evaluate(_fx.Miner, _blockChain);
+                lastCommit: TestUtils.CreateLastCommit(prev.Hash, prev.Index + 1, 0))
+                    .Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
                 () => _blockChain.Append(blockWithIndexAfterNonexistentIndex)
             );

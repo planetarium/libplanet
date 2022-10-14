@@ -712,7 +712,7 @@ namespace Libplanet.Tests.Action
             var block = new BlockContent<ThrowException>(
                 index: 123,
                 publicKey: GenesisMiner.PublicKey,
-                previousHash: default(BlockHash),
+                previousHash: hash,
                 lastCommit: CreateLastCommit(hash, 122, 0),
                 transactions: ImmutableArray.Create(tx)).Propose();
             var nextStates = actionEvaluator.EvaluateTxResult(

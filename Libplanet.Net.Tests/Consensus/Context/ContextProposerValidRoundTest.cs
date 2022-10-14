@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tx;
 using Nito.AsyncEx;
 using Xunit;
 using Xunit.Abstractions;
@@ -101,10 +104,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 round: 2);
 
             var invalidBlock = new BlockContent<DumbAction>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: blockChain.Tip.Index + 1,
+                timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
+                miner: null,
                 publicKey: fx.Miner.PublicKey,
                 previousHash: blockChain.Tip.Hash,
-                lastCommit: null).Propose().Evaluate(fx.Miner, blockChain);
+                txHash: null,
+                lastCommit: null,
+                transactions: new List<Transaction<DumbAction>>())
+                    .Propose().Evaluate(fx.Miner, blockChain);
 
             void CheckVote(object? observer, ConsensusMessage? message)
             {
