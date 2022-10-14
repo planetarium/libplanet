@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blocks
@@ -118,6 +119,106 @@ namespace Libplanet.Blocks
         /// </summary>
         public BlockContent()
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BlockContent{T}"/> instance with no
+        /// <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
+        /// automatically derived.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        public BlockContent(
+            long index,
+            PublicKey publicKey,
+            BlockHash? previousHash,
+            BlockCommit? lastCommit)
+            : this(
+                index: index,
+                publicKey: publicKey,
+                previousHash: previousHash,
+                lastCommit: lastCommit,
+                transactions: new List<Transaction<T>>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BlockContent{T}"/> instance with given
+        /// <paramref name="transactions"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
+        /// automatically derived.
+        /// </remarks>
+        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
+        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
+        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
+        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <param name="transactions">Goes to <see cref="IBlockContent{T}.Transactions"/>.</param>
+        public BlockContent(
+            long index,
+            PublicKey publicKey,
+            BlockHash? previousHash,
+            BlockCommit? lastCommit,
+            IReadOnlyList<Transaction<T>> transactions)
+            : this(
+                index: index,
+                publicKey: publicKey,
+                previousHash: previousHash,
+                txHash: DeriveTxHash(transactions.OrderBy(tx => tx.Id).ToList()),
+                lastCommit: lastCommit,
+                transactions: transactions)
+        {
+        }
+
+        internal BlockContent(
+            long index,
+            PublicKey publicKey,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            BlockCommit? lastCommit,
+            IEnumerable<Transaction<T>> transactions)
+            : this(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: index,
+                timestamp: DateTimeOffset.UtcNow,
+                miner: null,
+                publicKey: publicKey,
+                previousHash: previousHash,
+                txHash: txHash,
+                lastCommit: lastCommit,
+                transactions: transactions)
+        {
+        }
+
+        // Constructor for manually assigning fields.
+        internal BlockContent(
+            int protocolVersion,
+            long index,
+            DateTimeOffset timestamp,
+            Address? miner,
+            PublicKey? publicKey,
+            BlockHash? previousHash,
+            HashDigest<SHA256>? txHash,
+            BlockCommit? lastCommit,
+            IEnumerable<Transaction<T>> transactions)
+            : base(
+                protocolVersion: protocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: miner,
+                publicKey: publicKey,
+                previousHash: previousHash,
+                txHash: txHash,
+                lastCommit: lastCommit)
+        {
+            Transactions = transactions.ToImmutableArray();
+            TxHash = txHash;
         }
 
         /// <summary>
