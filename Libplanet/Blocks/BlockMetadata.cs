@@ -58,14 +58,16 @@ namespace Libplanet.Blocks
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
         {
-            LastCommit = metadata.LastCommit;
             ProtocolVersion = metadata.ProtocolVersion;
             Index = metadata.Index;
             Timestamp = metadata.Timestamp;
             Miner = metadata.Miner;
             PublicKey = metadata.PublicKey;
             PreviousHash = metadata.PreviousHash;
+
+            // FIXME: This is to bypass setter check.
             _txHash = metadata.TxHash;
+            LastCommit = metadata.LastCommit;
         }
 
         /// <summary>
@@ -143,7 +145,8 @@ namespace Libplanet.Blocks
                 PreviousHash = previousHash;
             }
 
-            TxHash = txHash;
+            // FIXME: This is to bypass setter check.
+            _txHash = txHash;
             LastCommit = lastCommit;
         }
 
