@@ -147,7 +147,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void EnterNewRoundNil()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                startStep: Step.Propose);
+                startStep: Step.Propose,
+                contextTimeoutOptions: new ContextTimeoutOption(preCommitSecondBase: 1));
 
             var roundChangedToOne = new AsyncAutoResetEvent();
             context.StateChanged += (sender, state) =>

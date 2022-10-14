@@ -278,7 +278,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             // FIXME: Pretty lousy testing method.
             var (_, _, context) = TestUtils.CreateDummyContext(
-                startStep: Step.Default);
+                startStep: Step.Default,
+                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
 
             BlockHash? blockHash = null;
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
