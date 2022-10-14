@@ -42,9 +42,7 @@ namespace Libplanet.Node
                 ? h
                 : new BlockHeader(
                     new PreEvaluationBlockHeader(header),
-                    header.StateRootHash,
-                    header.Signature,
-                    header.Hash);
+                    (header.StateRootHash, header.Signature, header.Hash));
             UntypedTransactions = untypedTransactions.OrderBy(tx => tx.Id).ToImmutableList();
             UntypedTransactions.ValidateTxNonces(_header.Index);
             var expectedTxHash = DeriveTxHash(UntypedTransactions);

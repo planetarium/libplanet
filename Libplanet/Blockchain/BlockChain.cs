@@ -374,10 +374,12 @@ namespace Libplanet.Blockchain
             };
 
             BlockContent<T> content = new BlockContent<T>(
-                index: 0,
-                publicKey: privateKey.PublicKey,
-                previousHash: null,
-                lastCommit: null,
+                new BlockMetadata(
+                    index: 0L,
+                    publicKey: privateKey.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    lastCommit: null),
                 transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Propose();

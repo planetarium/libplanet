@@ -65,10 +65,12 @@ namespace Libplanet.Node
             IBlockPolicy<T> blockPolicy)
         {
             return new BlockContent<T>(
-                index: 0,
-                publicKey: privateKey.PublicKey,
-                previousHash: null,
-                lastCommit: null)
+                new BlockMetadata(
+                    index: 0,
+                    publicKey: privateKey.PublicKey,
+                    previousHash: null,
+                    txHash: null,
+                    lastCommit: null))
                 .Propose()
                 .Evaluate(
                     privateKey: privateKey,

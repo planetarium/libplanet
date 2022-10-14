@@ -10,14 +10,6 @@ namespace Libplanet.Tests.Blocks
     public class BlockMetadataExtensionsTest : BlockContentFixture
     {
         [Fact]
-        public void Copy()
-        {
-            AssertBlockMetadataEqual(GenesisMetadata, GenesisMetadata.Copy());
-            AssertBlockMetadataEqual(Block1Metadata, Block1Metadata.Copy());
-            AssertBlockMetadataEqual(GenesisMetadataPv0, GenesisMetadataPv0.Copy());
-        }
-
-        [Fact]
         public void ValidateTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;

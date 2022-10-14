@@ -21,17 +21,17 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         {
             var privateKey = new PrivateKey();
             var preEval = new BlockContent<NullAction>(
-                index: 1,
-                publicKey: privateKey.PublicKey,
-                previousHash: new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                lastCommit: null).Propose();
+                new BlockMetadata(
+                    index: 1,
+                    publicKey: privateKey.PublicKey,
+                    previousHash: new BlockHash(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                    txHash: null,
+                    lastCommit: null)).Propose();
             var stateRootHash =
                 new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size));
-            var block = new Block<NullAction>(
-                preEval,
-                stateRootHash,
-                preEval.Header.MakeSignature(privateKey, stateRootHash)
-            );
+            var signature = preEval.Header.MakeSignature(privateKey, stateRootHash);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, signature);
+            var block = new Block<NullAction>(preEval, (stateRootHash, signature, hash));
 
             // FIXME We need to test for `previousBlock` field too.
             var query =

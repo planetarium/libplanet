@@ -33,7 +33,7 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
-            _metadata = header.Copy();
+            _metadata = header.Header.Metadata;
             _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
             Signature = header.Signature;
@@ -101,6 +101,10 @@ namespace Libplanet.Store
         /// </summary>
         public ImmutableArray<byte>? Signature { get; }
 
+        /// <summary>
+        /// The <see cref="Transaction{T}.Id"/>s of <see cref="Transaction{T}"/>s in
+        /// a <see cref="Block{T}"/>.  This should be ordered by <see cref="Transaction{T}.Id"/>.
+        /// </summary>
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         /// <summary>
