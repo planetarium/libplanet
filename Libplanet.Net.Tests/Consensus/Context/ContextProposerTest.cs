@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Nito.AsyncEx;
 using Xunit;
 using Xunit.Abstractions;
@@ -275,14 +272,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = context.MessageConsumerTask(default);
             _ = context.MutationConsumerTask(default);
 
-            var invalidBlock = new BlockContent<DumbAction>
-            {
-                Index = blockChain.Tip.Index + 1,
-                PublicKey = fx.Miner.PublicKey,
-                PreviousHash = blockChain.Tip.Hash,
-                Timestamp = blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                Transactions = new List<Transaction<DumbAction>>(),
-            }.Propose().Evaluate(fx.Miner, blockChain);
+            var invalidBlock = new BlockContent<DumbAction>(
+                index: blockChain.Tip.Index + 1,
+                publicKey: fx.Miner.PublicKey,
+                previousHash: blockChain.Tip.Hash,
+                lastCommit: null).Propose().Evaluate(fx.Miner, blockChain);
 
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
