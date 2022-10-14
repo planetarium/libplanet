@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
@@ -22,12 +21,18 @@ namespace Libplanet.Blocks
         where T : IAction, new()
     {
         private BlockMetadata _blockMetadata;
-        private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;
+        private IReadOnlyList<Transaction<T>> _transactions;
 
         /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
-        /// <paramref name="metadata"/>'s contents and <paramref name="transactions"/>.
+        /// Creates a new <see cref="BlockContent{T}"/> instance filled with given
+        /// <paramref name="metadata"/> and <paramref name="transactions"/>.
         /// </summary>
+        /// <remarks>
+        /// This creates a new instance of <see cref="BlockMetadata"/> to check the validity
+        /// of <paramref name="metadata"/>, hence throws any <see cref="Exception"/>s that may
+        /// arise from a <see cref="BlockMetadata"/>'s constructor in addition to the ones
+        /// explicitly listed below.
+        /// </remarks>
         /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
         /// <param name="transactions">The transactions to include in the block.</param>
         /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
@@ -48,155 +53,87 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockTxHashException">Thrown when the given
         /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
         /// <paramref name="transactions"/>.</exception>
+        /// <seealso cref="BlockMetadata"/>
         public BlockContent(IBlockMetadata metadata, IEnumerable<Transaction<T>> transactions)
-            : this(
-                protocolVersion: metadata.ProtocolVersion,
-                index: metadata.Index,
-                timestamp: metadata.Timestamp,
-                miner: metadata.Miner,
-                publicKey: metadata.PublicKey,
-                previousHash: metadata.PreviousHash,
-                txHash: metadata.TxHash,
-                lastCommit: metadata.LastCommit,
-                transactions: transactions)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance with no
-        /// <see cref="Transaction{T}"/>s.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
-        /// automatically derived.
-        /// </remarks>
-        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
-        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
-        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
-        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
-        public BlockContent(
-            long index,
-            PublicKey publicKey,
-            BlockHash? previousHash,
-            BlockCommit? lastCommit)
-            : this(
-                index: index,
-                publicKey: publicKey,
-                previousHash: previousHash,
-                lastCommit: lastCommit,
-                transactions: new List<Transaction<T>>())
+            : this(new BlockMetadata(metadata), transactions)
         {
         }
 
         /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance with given
-        /// <paramref name="transactions"/>.
+        /// <paramref name="metadata"/> and without any <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <remarks>
-        /// <see cref="IBlockMetadata.TxHash"/> and <see cref="IBlockMetadata.Miner"/> are
-        /// automatically derived.  Also <paramref name="transactions"/> are automatically
-        /// sorted by <see cref="Transaction{T}.Id"/>.
-        /// </remarks>
-        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
-        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
-        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
-        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
-        /// <param name="transactions">Goes to <see cref="IBlockContent{T}.Transactions"/>.</param>
+        /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
+        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is not
+        /// <see lagnword="null"/>.</exception>
         public BlockContent(
-            long index,
-            PublicKey publicKey,
-            BlockHash? previousHash,
-            BlockCommit? lastCommit,
-            IReadOnlyList<Transaction<T>> transactions)
-            : this(
-                index: index,
-                publicKey: publicKey,
-                previousHash: previousHash,
-                txHash: DeriveTxHash(transactions.OrderBy(tx => tx.Id).ToList()),
-                lastCommit: lastCommit,
-                transactions: transactions)
-        {
-        }
-
-        internal BlockContent(
-            long index,
-            PublicKey publicKey,
-            BlockHash? previousHash,
-            HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit,
-            IEnumerable<Transaction<T>> transactions)
-            : this(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: index,
-                timestamp: DateTimeOffset.UtcNow,
-                miner: publicKey.ToAddress(),
-                publicKey: publicKey,
-                previousHash: previousHash,
-                txHash: txHash,
-                lastCommit: lastCommit,
-                transactions: transactions)
+            BlockMetadata metadata)
+            : this(metadata, new List<Transaction<T>>())
         {
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockContent{T}"/> by manually filling in the fields for
-        /// <see cref="IBlockContent{T}"/>.  All public constructors gets redirected to this one.
+        /// Creates a new <see cref="BlockContent{T}"/> instance with given
+        /// <paramref name="metadata"/> and <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
-        /// </param>
-        /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
-        /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
-        /// <param name="miner">Goes to <see cref="IBlockMetadata.Miner"/>.</param>
-        /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
-        /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
-        /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
-        /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
-        /// <param name="transactions">Goes to <see cref="IBlockContent{T}.Transactions"/>.</param>
+        /// <param name="metadata">The <see cref="BlockMetadata"/> to include in the block.</param>
+        /// <param name="transactions">The transactions to include in the block.</param>
+        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
+        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is inconsistent with
+        /// <paramref name="transactions"/>.</exception>
+        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid
+        /// or not signed by its signer.</exception>
+        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
+        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
+        /// Note that this validates only a block's intrinsic integrity between its transactions,
+        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
+        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
+        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
+        /// inconsistent genesis hashes.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="transactions"/> is
-        /// not ordered by <see cref="Transaction{T}.Id"/>.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
-        /// less than zero.</exception>
-        /// <exception cref="InvalidBlockPublicKeyException">Thrown when any of the following
-        /// conditions is not satisfied.
-        /// <list type="bullet">
-        ///   <item><description>If <paramref name="protocolVersion"/> >= 2,
-        ///   <paramref name="miner"/> should match the derived address of
-        ///   <paramref name="publicKey"/>.</description></item>
-        ///   <item><description>Otherwise, <paramref name="publicKey"/> must be
-        ///   <see langword="null"/>.</description></item>
-        /// </list>
-        /// </exception>
-        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
-        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
-        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
-        /// </exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when <paramref name="txHash"/>
-        /// does not match the one derived from <paramref name="transactions"/>.</exception>
-        internal BlockContent(
-            int protocolVersion,
-            long index,
-            DateTimeOffset timestamp,
-            Address miner,
-            PublicKey? publicKey,
-            BlockHash? previousHash,
-            HashDigest<SHA256>? txHash,
-            BlockCommit? lastCommit,
+        /// not ordered by <see cref="Transaction{T}.Id"/>s.</exception>
+        public BlockContent(
+            BlockMetadata metadata,
             IEnumerable<Transaction<T>> transactions)
         {
-            _blockMetadata = new BlockMetadata(
-                protocolVersion: protocolVersion,
-                index: index,
-                timestamp: timestamp,
-                miner: miner,
-                publicKey: publicKey,
-                previousHash: previousHash,
-                txHash: txHash,
-                lastCommit: lastCommit);
-            Transactions = transactions.ToImmutableList();
-            ValidateTxHash();
+            // Check if TxHash provided by metadata is valid.
+            HashDigest<SHA256>? derivedTxHash = DeriveTxHash(transactions);
+            if (!((metadata.TxHash is { } a && derivedTxHash is { } b && a.Equals(b)) ||
+                (metadata.TxHash is null && derivedTxHash is null)))
+            {
+                throw new InvalidBlockTxHashException(
+                    $"The block #{metadata.Index}'s {nameof(metadata.TxHash)} is invalid.",
+                    metadata.TxHash,
+                    derivedTxHash);
+            }
+
+            // Check if transactions are ordered with valid nonces.
+            transactions.ValidateTxNonces(metadata.Index);
+            TxId? prevId = null;
+            foreach (Transaction<T> tx in transactions)
+            {
+                // FIXME: Transaction<T> should disallow illegal states to be represented
+                // as its instances.  https://github.com/planetarium/libplanet/issues/1164
+                tx.Validate();
+                if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
+                {
+                    throw new ArgumentException(
+                        $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
+                        nameof(transactions));
+                }
+
+                prevId = tx.Id;
+            }
+
+            _blockMetadata = metadata;
+            _transactions = transactions.ToImmutableList();
         }
 
-        public BlockMetadata BlockMetadata => _blockMetadata;
+        /// <summary>
+        /// Internal <see cref="BlockMetadata"/>.
+        /// </summary>
+        public BlockMetadata Metadata => _blockMetadata;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _blockMetadata.ProtocolVersion;
@@ -226,67 +163,7 @@ namespace Libplanet.Blocks
         /// Transactions belonging to the block.
         /// </summary>
         /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        public IReadOnlyList<Transaction<T>> Transactions
-        {
-            get => _transactions;
-            private set
-            {
-                value.ValidateTxNonces(Index);
-                TxId? prevId = null;
-                foreach (Transaction<T> tx in value)
-                {
-                    // FIXME: Transaction<T> should disallow illegal states to be represented
-                    // as its instances.  https://github.com/planetarium/libplanet/issues/1164
-                    tx.Validate();
-                    if (prevId is { } prev && prev.CompareTo(tx.Id) > 0)
-                    {
-                        throw new ArgumentException(
-                            $"Transactions must be ordered by their {nameof(Transaction<T>.Id)}s.",
-                            nameof(value));
-                    }
-
-                    prevId = tx.Id;
-                }
-
-                _transactions = value;
-            }
-        }
-
-        /// <summary>
-        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>
-        /// for <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>
-        /// and returns a valid <see cref="PreEvaluationBlock{T}"/> instance.
-        /// </summary>
-        /// <param name="difficulty">The difficulty to target when mining
-        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
-        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
-        /// that this operation should be cancelled.</param>
-        /// <returns>A <see cref="PreEvaluationBlock{T}"/> instance with a valid proof-of-work.
-        /// </returns>
-        /// <exception cref="OperationCanceledException">Thrown when the specified
-        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
-        public PreEvaluationBlock<T> Mine(
-            long difficulty,
-            CancellationToken cancellationToken = default) =>
-                new PreEvaluationBlock<T>(
-                    this,
-                    _blockMetadata.MineNonce(difficulty, cancellationToken).PreEvaluationHash);
-
-        public PreEvaluationBlock<T> Propose()
-        {
-            return new PreEvaluationBlock<T>(
-                this,
-                _blockMetadata.DerivePreEvaluationHash(default));
-        }
+        public IReadOnlyList<Transaction<T>> Transactions => _transactions;
 
         /// <summary>
         /// Derives <see cref="IBlockMetadata.TxHash"/> from given <paramref name="transactions"/>.
@@ -297,7 +174,7 @@ namespace Libplanet.Blocks
         /// <returns>The derived <see cref="IBlockMetadata.TxHash"/>.</returns>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="transactions"/> are
         /// not ordered by their <see cref="Transaction{T}.Id"/>s.</exception>
-        internal static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction<T>> transactions)
+        public static HashDigest<SHA256>? DeriveTxHash(IEnumerable<Transaction<T>> transactions)
         {
             TxId? prevId = null;
             SHA256 hasher = SHA256.Create();
@@ -328,17 +205,31 @@ namespace Libplanet.Blocks
             return new HashDigest<SHA256>(hasher.Hash);
         }
 
-        private void ValidateTxHash()
+        /// <summary>
+        /// Mines the PoW (proof-of-work) nonce satisfying <paramref name="difficulty"/>
+        /// for <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>
+        /// and returns a valid <see cref="PreEvaluationBlock{T}"/> instance.
+        /// </summary>
+        /// <param name="difficulty">The difficulty to target when mining
+        /// <see cref="PreEvaluationBlockHeader.PreEvaluationHash"/>.</param>
+        /// <param name="cancellationToken">An optional cancellation token used to propagate signal
+        /// that this operation should be cancelled.</param>
+        /// <returns>A <see cref="PreEvaluationBlock{T}"/> instance with a valid proof-of-work.
+        /// </returns>
+        /// <exception cref="OperationCanceledException">Thrown when the specified
+        /// <paramref name="cancellationToken"/> received a cancellation request.</exception>
+        public PreEvaluationBlock<T> Mine(
+            long difficulty,
+            CancellationToken cancellationToken = default) =>
+                new PreEvaluationBlock<T>(
+                    this,
+                    _blockMetadata.MineNonce(difficulty, cancellationToken).PreEvaluationHash);
+
+        public PreEvaluationBlock<T> Propose()
         {
-            HashDigest<SHA256>? derivedTxHash = DeriveTxHash(Transactions);
-            if (!((TxHash is { } a && derivedTxHash is { } b && a.Equals(b)) ||
-                (TxHash is null && derivedTxHash is null)))
-            {
-                throw new InvalidBlockTxHashException(
-                    $"The block #{Index}'s {nameof(TxHash)} is invalid.",
-                    TxHash,
-                    derivedTxHash);
-            }
+            return new PreEvaluationBlock<T>(
+                this,
+                _blockMetadata.DerivePreEvaluationHash(default));
         }
     }
 }

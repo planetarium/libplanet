@@ -138,14 +138,15 @@ namespace Libplanet.Blockchain
             // Manual internal constructor is used purely for testing custom timestamps.
             var transactions = transactionsToPropose.OrderBy(tx => tx.Id).ToList();
             var blockContent = new BlockContent<T>(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: index,
-                timestamp: timestamp,
-                miner: proposer.ToAddress(),
-                publicKey: proposer.PublicKey,
-                previousHash: prevHash,
-                txHash: BlockContent<T>.DeriveTxHash(transactions),
-                lastCommit: lastCommit,
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: index,
+                    timestamp: timestamp,
+                    miner: proposer.ToAddress(),
+                    publicKey: proposer.PublicKey,
+                    previousHash: prevHash,
+                    txHash: BlockContent<T>.DeriveTxHash(transactions),
+                    lastCommit: lastCommit),
                 transactions: transactions);
             PreEvaluationBlock<T> preEval;
 

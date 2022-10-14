@@ -65,10 +65,12 @@ namespace Libplanet.Tests.Fixtures
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
             Genesis = new BlockContent<Arithmetic>(
-                index: 0,
-                publicKey: Miner.PublicKey,
-                previousHash: null,
-                lastCommit: null,
+                new BlockMetadata(
+                    index: 0,
+                    publicKey: Miner.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs),
+                    lastCommit: null),
                 transactions: Txs)
                 .Propose()
                 .Evaluate(

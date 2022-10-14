@@ -156,10 +156,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 consensusMessageSent: CheckCommit);
 
             var invalidBlock = new BlockContent<DumbAction>(
-                index: blockChain.Tip.Index + 1,
-                publicKey: fx.Miner.PublicKey,
-                previousHash: blockChain.Tip.Hash,
-                lastCommit: null).Propose().Evaluate(fx.Miner, blockChain);
+                new BlockMetadata(
+                    index: blockChain.Tip.Index + 1,
+                    publicKey: fx.Miner.PublicKey,
+                    previousHash: blockChain.Tip.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(fx.Miner, blockChain);
 
             context.StateChanged += (sender, state) =>
             {

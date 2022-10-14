@@ -126,10 +126,12 @@ namespace Libplanet.Net.Tests
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
             Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
-                index: 0,
-                publicKey: receiverKey.PublicKey,
-                previousHash: null,
-                lastCommit: null)
+                new BlockMetadata(
+                    index: 0,
+                    publicKey: receiverKey.PublicKey,
+                    previousHash: null,
+                    txHash: null,
+                    lastCommit: null))
                 .Propose()
                 .Evaluate(
                     privateKey: receiverKey,

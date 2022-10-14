@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using Bencodex;
+using Bencodex.Types;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -12,8 +13,8 @@ namespace Libplanet.Blocks
     /// <summary>
     /// A block metadata without transactions or any proofs like nonce or hash.  This represents
     /// metadata of a block that is not yet mined nor proven.
-    /// <para>To represent a block content including its metadata and transactions, use <see
-    /// cref="BlockContent{T}"/>, which is its subclass.</para>
+    /// <para>To represent a block content including its metadata and transactions, use
+    /// <see cref="BlockContent{T}"/>.</para>
     /// </summary>
     /// <seealso cref="BlockContent{T}"/>
     public class BlockMetadata : IBlockMetadata
@@ -31,23 +32,30 @@ namespace Libplanet.Blocks
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
 
-        private int _protocolVersion = CurrentProtocolVersion;
-        private long _index;
-        private DateTimeOffset _timestamp;
-
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
         /// <paramref name="metadata"/>.
         /// </summary>
-        /// <param name="metadata">This source of the block metadata to copy.  This hasn't be
-        /// a actual <see cref="BlockMetadata"/> instance, but can be any object which implements
-        /// <see cref="IBlockMetadata"/> instance.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
-        /// protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// As <paramref name="metadata"/> needn't be an actual <see cref="BlockMetadata"/>
+        /// instance, but simply any object implementing <see cref="IBlockMetadata"/> interface,
+        /// it can't be trusted to satisfy all the constraints for a valid
+        /// <see cref="BlockMetadata"/> instance.  As such, conditions are checked again whilst
+        /// creating a copy.  This is a relatively heavy operation, so must be used sparingly.
+        /// </para>
+        /// <para>
+        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>.  Refer to the
+        /// aforementioned constructor to see the full list of <see cref="Exception"/>s
+        /// that may be thrown.
+        /// </para>
+        /// </remarks>
+        /// <param name="metadata">The source block metadata to copy.  This needn't be
+        /// an actual <see cref="BlockMetadata"/> instance, but can be any object which
+        /// implements <see cref="IBlockMetadata"/>.</param>
+        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
         public BlockMetadata(IBlockMetadata metadata)
             : this(
                 protocolVersion: metadata.ProtocolVersion,
@@ -69,18 +77,18 @@ namespace Libplanet.Blocks
         /// <remarks>
         /// With this, <see cref="IBlockMetadata.Timestamp"/> is set as current time and
         /// <see cref="IBlockMetadata.Miner"/> is derived from <paramref name="publicKey"/>.
+        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>.  Refer to the
+        /// aforementioned constructor to see the full list of <see cref="Exception"/>s
+        /// that may be thrown.
         /// </remarks>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
         /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
-        /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
-        /// less than zero.</exception>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
-        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
-        /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
-        /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
-        /// </exception>
+        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
+        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>
         public BlockMetadata(
             long index,
             PublicKey publicKey,
@@ -101,8 +109,11 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by manually filling in the fields for
-        /// <see cref="BlockMetadata"/>.  All public constructors should be redirected to this one.
+        /// <see cref="BlockMetadata"/>.  All other public constructors are redirected to this one.
         /// </summary>
+        /// <remarks>
+        /// Except for debuggin and/or testing purposes, this shouldn't be called directly.
+        /// </remarks>
         /// <param name="protocolVersion">Goes to <see cref="IBlockMetadata.ProtocolVersion"/>.
         /// </param>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
@@ -112,10 +123,13 @@ namespace Libplanet.Blocks
         /// <param name="previousHash">Goes to <see cref="IBlockMetadata.PreviousHash"/>.</param>
         /// <param name="txHash">Goes to <see cref="IBlockMetadata.TxHash"/>.</param>
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
+        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
+        /// <paramref name="protocolVersion"/> is less than zero or greater than
+        /// <see cref="CurrentProtocolVersion"/>, the latest known protocol version.</exception>
         /// <exception cref="InvalidBlockIndexException">Thrown when <paramref name="index"/> is
         /// less than zero.</exception>
-        /// <exception cref="InvalidBlockPublicKeyException">Thrown when the following conditions
-        /// aren't met:
+        /// <exception cref="InvalidBlockPublicKeyException">Thrown when any of the following
+        /// conditions isn't satisfied:
         /// <list type="bullet">
         ///   <item><description>If <paramref name="protocolVersion"/> >= 2,
         ///   <paramref name="miner"/> should match the derived address of
@@ -128,7 +142,7 @@ namespace Libplanet.Blocks
         /// <paramref name="previousHash"/> is not null while <paramref name="index"/> is zero
         /// or <paramref name="previousHash"/> is null while <paramref name="index"/> is nonzero.
         /// </exception>
-        internal BlockMetadata(
+        public BlockMetadata(
             int protocolVersion,
             long index,
             DateTimeOffset timestamp,
@@ -138,9 +152,35 @@ namespace Libplanet.Blocks
             HashDigest<SHA256>? txHash,
             BlockCommit? lastCommit)
         {
-            ProtocolVersion = protocolVersion;
-            Index = index;
-            Timestamp = timestamp;
+            // Protocol version validity check.
+            if (protocolVersion < 0)
+            {
+                throw new InvalidBlockProtocolVersionException(
+                    $"A block's protocol version cannot be less than zero: {protocolVersion}.",
+                    protocolVersion);
+            }
+            else if (protocolVersion > CurrentProtocolVersion)
+            {
+                throw new InvalidBlockProtocolVersionException(
+                    "A block's protocol version cannot be greater than " +
+                    $"{CurrentProtocolVersion}: {protocolVersion}.",
+                    protocolVersion);
+            }
+            else
+            {
+                ProtocolVersion = protocolVersion;
+            }
+
+            // Index validity check.
+            Index = index < 0L
+                ? throw new InvalidBlockIndexException(
+                    $"A negative index is not allowed: {index}.")
+                : index;
+
+            // FIXME: Transaction timestamps do not convert to universal time.
+            Timestamp = timestamp.ToUniversalTime();
+
+            // Public key and miner validity checks.
             if (protocolVersion >= 2)
             {
                 PublicKey = publicKey is { } p
@@ -167,6 +207,7 @@ namespace Libplanet.Blocks
                 Miner = miner;
             }
 
+            // Previous hash validity checks.
             if ((index == 0 && previousHash is { }) ||
                 (index != 0 && previousHash is null))
             {
@@ -183,60 +224,22 @@ namespace Libplanet.Blocks
         }
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when the value to set is
-        /// less than 0, or greater than <see cref="CurrentProtocolVersion"/>, the latest known
-        /// protocol version.</exception>
-        public int ProtocolVersion
-        {
-            get => _protocolVersion;
-            private set
-            {
-                if (value < 0)
-                {
-                    throw new InvalidBlockProtocolVersionException(
-                        $"A block's protocol version cannot be less than zero: {value}.",
-                        value
-                    );
-                }
-                else if (value > CurrentProtocolVersion)
-                {
-                    throw new InvalidBlockProtocolVersionException(
-                        "A block's protocol version cannot be greater than " +
-                        $"{CurrentProtocolVersion}: {value}.",
-                        value);
-                }
-
-                _protocolVersion = value;
-            }
-        }
+        public int ProtocolVersion { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Index"/>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        public long Index
-        {
-            get => _index;
-            private set => _index = value >= 0L
-                ? value
-                : throw new InvalidBlockIndexException(
-                    $"A negative index is not allowed: {value}.");
-        }
+        public long Index { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
-        public DateTimeOffset Timestamp
-        {
-            get => _timestamp;
-            private set => _timestamp = value.ToUniversalTime();
-        }
+        public DateTimeOffset Timestamp { get; }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner { get; private set; }
+        public Address Miner { get; }
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
-        public PublicKey? PublicKey { get; private set; }
+        public PublicKey? PublicKey { get; }
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash { get; private set; }
+        public BlockHash? PreviousHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash { get; private set; }

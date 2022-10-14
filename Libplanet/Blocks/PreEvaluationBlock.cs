@@ -28,26 +28,39 @@ namespace Libplanet.Blocks
         private BlockContent<T> _content;
         private PreEvaluationBlockHeader _header;
 
+        public PreEvaluationBlock(
+            IPreEvaluationBlockHeader preEvaluationBlockHeader,
+            IEnumerable<Transaction<T>> transactions)
+            : this(
+                new BlockContent<T>(preEvaluationBlockHeader, transactions),
+                preEvaluationBlockHeader.PreEvaluationHash)
+        {
+        }
+
         /// <summary>
-        /// Unsafely creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data, and a <paramref name="preEvaluationHash"/>
-        /// which is probably considered as to be valid.
+        /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
+        /// <paramref name="content"/> data, a valid <paramref name="preEvaluationHash"/>.
         /// </summary>
         /// <param name="content">Block's content data.</param>
-        /// <param name="preEvaluationHash">A pre-evaluation hash nonce is probably considered
-        /// to satisfy the required difficulty, and the hash digest which is probably considered
-        /// to be derived from the block <paramref name="content"/> and the nonce.</param>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
-        /// hash is invalid.</exception>
+        /// <param name="preEvaluationHash">A valid hash derived from <paramref name="content"/>.
+        /// </param>
+        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
+        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         internal PreEvaluationBlock(
             BlockContent<T> content,
             in HashDigest<SHA256> preEvaluationHash)
         {
             _content = content;
-            _header = new PreEvaluationBlockHeader(content.BlockMetadata, preEvaluationHash);
+            _header = new PreEvaluationBlockHeader(content.Metadata, preEvaluationHash);
         }
 
+        /// <summary>
+        /// Internal <see cref="PreEvaluationBlockHeader"/>.
+        /// </summary>
         public PreEvaluationBlockHeader Header => _header;
+
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        public IReadOnlyList<Transaction<T>> Transactions => _content.Transactions;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
@@ -75,14 +88,6 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
         public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
-
-        /// <summary>
-        /// The internal block content.
-        /// </summary>
-        public BlockContent<T> Content => _content;
-
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -172,9 +177,9 @@ namespace Libplanet.Blocks
         /// </remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {
-            ImmutableArray<byte> sig =
-                _header.MakeSignature(privateKey, stateRootHash);
-            return new Block<T>(this, stateRootHash, sig);
+            ImmutableArray<byte> sig = Header.MakeSignature(privateKey, stateRootHash);
+            return new Block<T>(
+                this, (stateRootHash, sig, Header.DeriveBlockHash(stateRootHash, sig)));
         }
 
         /// <summary>
@@ -279,7 +284,7 @@ namespace Libplanet.Blocks
             CalculateStateRootHash(blockChain, stateCompleterSet, out statesDelta).StateRootHash;
 
         internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
-        EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
+            EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =
