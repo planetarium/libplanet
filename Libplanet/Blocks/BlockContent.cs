@@ -17,72 +17,12 @@ namespace Libplanet.Blocks
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
     /// <remarks>Unlike other model types like <see cref="Block{T}"/> or
-    /// <see cref="Transaction{T}"/>, this type is mutable.  To get a distinct instance with
-    /// partly changed fields, use <see cref="BlockContent{T}(IBlockContent{T})"/> constructor and
-    /// property setters on a copy instead.</remarks>
+    /// <see cref="Transaction{T}"/>, this type is mutable.</remarks>
     public sealed class BlockContent<T> : IBlockContent<T>
         where T : IAction, new()
     {
         private BlockMetadata _blockMetadata;
         private IReadOnlyList<Transaction<T>> _transactions = ImmutableArray<Transaction<T>>.Empty;
-
-        /// <summary>
-        /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
-        /// <paramref name="metadata"/>'s contents and zero transactions.
-        /// </summary>
-        /// <param name="metadata">The <see cref="IBlockMetadata"/> to copy.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given
-        /// <paramref name="metadata"/>'s <see cref="IBlockMetadata.TxHash"/> is not <c>null</c>.
-        /// </exception>
-        public BlockContent(IBlockMetadata metadata)
-            : this(metadata, Enumerable.Empty<Transaction<T>>())
-        {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="BlockContent{T}"/> by copying the fields of another block
-        /// <paramref name="content"/>.
-        /// </summary>
-        /// <param name="content">This source of the block content to copy.  This hasn't be
-        /// a actual <see cref="BlockContent{T}"/> instance, but can be any object which implements
-        /// <see cref="IBlockContent{T}"/> instance.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="content"/>'s <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the value to set is negative.
-        /// </exception>
-        /// <exception cref="InvalidTxSignatureException">Thrown when any tx signature is invalid or
-        /// not signed by its signer.</exception>
-        /// <exception cref="InvalidTxNonceException">Thrown when the same tx nonce is used by
-        /// a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
-        /// Note that this validates only a block's intrinsic integrity between its transactions,
-        /// but does not guarantee integrity between blocks.  Such validation needs to be conducted
-        /// by <see cref="Blockchain.BlockChain{T}"/>.</exception>
-        /// <exception cref="InvalidTxGenesisHashException">Thrown when transactions to set have
-        /// inconsistent genesis hashes.</exception>
-        /// <exception cref="InvalidBlockTxHashException">Thrown when the given block
-        /// <paramref name="content"/>'s <see cref="IBlockMetadata.TxHash"/> is not consistent with
-        /// its <see cref="IBlockContent{T}.Transactions"/>.</exception>
-        public BlockContent(IBlockContent<T> content)
-            : this(content, content.Transactions)
-        {
-        }
 
         /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance filled with the given
@@ -298,7 +238,7 @@ namespace Libplanet.Blocks
         public IReadOnlyList<Transaction<T>> Transactions
         {
             get => _transactions;
-            set
+            private set
             {
                 value.ValidateTxNonces(Index);
                 TxId? prevId = null;
