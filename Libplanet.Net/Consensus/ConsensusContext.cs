@@ -161,29 +161,27 @@ namespace Libplanet.Net.Consensus
             }
 
             BlockCommit? lastCommit = null;
-            if (_contexts.ContainsKey(Height))
+            if (_contexts.ContainsKey(height - 1))
             {
-                lastCommit = _contexts[Height].CommittedRound == -1
+                lastCommit = _contexts[height - 1].CommittedRound == -1
                     ? (BlockCommit?)null
                     : new BlockCommit(
-                        _contexts[Height].VoteSet(_contexts[Height].CommittedRound),
+                        _contexts[height - 1].VoteSet(_contexts[height - 1].CommittedRound),
                         _blockChain.Tip.Hash);
-
-                _contexts[Height].Dispose();
-                _contexts.Remove(Height);
             }
 
+            RemoveOldContexts(height);
             ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
             if (lastCommit != null)
             {
                 _logger.Debug(
-                    "Caching LastCommit of Height {Height}...", Height);
+                    "Caching LastCommit of Height {Height}...", height - 1);
                 _blockChain.Store.PutLastCommit(lastCommit.Value);
             }
             else
             {
-                BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(Height);
+                BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
                 if (storedCommit != null)
                 {
                     lastCommit = storedCommit;
@@ -318,6 +316,25 @@ namespace Libplanet.Net.Consensus
             foreach (var height in indices)
             {
                 _blockChain.Store.DeleteLastCommit(height);
+            }
+        }
+
+        /// <summary>
+        /// Discard and remove all contexts that has lower or equal height with
+        /// the given <paramref name="height"/>.
+        /// </summary>
+        /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
+        private void RemoveOldContexts(long height)
+        {
+            var values = _contexts.Values;
+            foreach (var ctx in values)
+            {
+                if (ctx.Height < height)
+                {
+                    _logger.Debug("Removing context for height {Height}", ctx.Height);
+                    ctx.Dispose();
+                    _contexts.Remove(ctx.Height);
+                }
             }
         }
     }
