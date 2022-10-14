@@ -30,21 +30,8 @@ namespace Libplanet.Tests.Blocks
             var b1 = new BlockContent<Arithmetic>(Block1Content);
             AssertBlockContentsEqual(Block1Content, b1);
 
-            Assert.Throws<InvalidBlockTxHashException>(() =>
-                new BlockContent<Arithmetic>(new BlockMetadata(Block1Content))
-            );
-
-            var gM = new BlockContent<Arithmetic>(new BlockMetadata(GenesisContent));
-            AssertBlockMetadataEqual(GenesisContent, gM);
-
-            var genesis = new BlockContent<Arithmetic>(GenesisMetadata);
-            AssertBlockContentsEqual(GenesisContent, genesis);
-
             var block1 = new BlockContent<Arithmetic>(Block1Metadata, Block1Content.Transactions);
             AssertBlockContentsEqual(Block1Content, block1);
-
-            var blockPv0 = new BlockContent<Arithmetic>(GenesisMetadataPv0);
-            AssertBlockContentsEqual(GenesisContentPv0, blockPv0);
 
             Assert.Throws<InvalidBlockTxHashException>(() =>
                 new BlockContent<Arithmetic>(Block1Metadata, Array.Empty<Transaction<Arithmetic>>())
@@ -73,7 +60,8 @@ namespace Libplanet.Tests.Blocks
                     "d022073bf8a48403cf46f5fa63f26f3e8ef4db8ef1d841684856da63d9b7eeb91759a"
                 )
             );
-            Block1Content.Transactions = new[] { tx2, Block1Tx0, Block1Tx1 };
+            Block1Content.Transactions = new[] { tx2, Block1Tx0, Block1Tx1 }
+                .OrderBy(tx => tx.Id).ToList();
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
                 Block1Content.Transactions.Select(tx => tx.Id).ToArray()
