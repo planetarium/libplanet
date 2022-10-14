@@ -54,12 +54,13 @@ namespace Libplanet.Tests.Blocks
                     "d022073bf8a48403cf46f5fa63f26f3e8ef4db8ef1d841684856da63d9b7eeb91759a"
                 )
             );
+            var txs = new[] { tx2, Block1Tx0, Block1Tx1 }.OrderBy(tx => tx.Id).ToImmutableList();
             var blockContent = new BlockContent<Arithmetic>(
                 index: Block1Content.Index,
                 publicKey: Block1Content.PublicKey,
                 previousHash: Block1Content.PreviousHash,
                 lastCommit: null,
-                transactions: new[] { tx2, Block1Tx0, Block1Tx1 });
+                transactions: txs);
             Assert.Equal(
                 new[] { Block1Tx1.Id, Block1Tx0.Id, tx2.Id },
                 blockContent.Transactions.Select(tx => tx.Id).ToArray());
