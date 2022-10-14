@@ -344,10 +344,25 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Mine the genesis block of the blockchain.
+        /// </summary>
+        /// <param name="actions">List of actions will be included in the genesis block.
+        /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="privateKey">A private key to sign the transaction and the genesis block.
+        /// If it's null, it will use new private key as default.</param>
+        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
+        /// </param>
+        /// <param name="nativeTokenPredicate">A predicate function to determine whether
+        /// the specified <see cref="Currency"/> is a native token defined by chain's
+        /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.
+        /// Treat no <see cref="Currency"/> as native token if the argument omitted.</param>
+        /// <returns>The genesis block mined with parameters.</returns>
         public static Block<T> ProposeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
-            DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
@@ -355,15 +370,15 @@ namespace Libplanet.Blockchain
             actions ??= ImmutableArray<T>.Empty;
             Transaction<T>[] transactions =
             {
-                Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
+                Transaction<T>.Create(0, privateKey, null, actions),
             };
 
-            BlockContent<T> content = new BlockContent<T>
-            {
-                PublicKey = privateKey.PublicKey,
-                Timestamp = timestamp ?? DateTimeOffset.UtcNow,
-                Transactions = transactions,
-            };
+            BlockContent<T> content = new BlockContent<T>(
+                index: 0,
+                publicKey: privateKey.PublicKey,
+                previousHash: null,
+                lastCommit: null,
+                transactions: transactions);
 
             PreEvaluationBlock<T> preEval = content.Propose();
             return preEval.Evaluate(
@@ -1462,6 +1477,13 @@ namespace Libplanet.Blockchain
             Block<T> lastBlock = index >= 1 ? this[index - 1] : null;
             BlockHash? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+
+            if (block.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"The expected index of block {block.Hash} is #{index}, " +
+                    $"but its index is #{block.Index}.");
+            }
 
             if (!block.PreviousHash.Equals(prevHash))
             {

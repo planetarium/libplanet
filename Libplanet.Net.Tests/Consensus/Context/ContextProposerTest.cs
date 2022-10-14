@@ -275,14 +275,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = context.MessageConsumerTask(default);
             _ = context.MutationConsumerTask(default);
 
-            var invalidBlock = new BlockContent<DumbAction>
-            {
-                Index = blockChain.Tip.Index + 1,
-                PublicKey = fx.Miner.PublicKey,
-                PreviousHash = blockChain.Tip.Hash,
-                Timestamp = blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                Transactions = new List<Transaction<DumbAction>>(),
-            }.Propose().Evaluate(fx.Miner, blockChain);
+            var invalidBlock = new BlockContent<DumbAction>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: blockChain.Tip.Index + 1,
+                timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
+                miner: null,
+                publicKey: fx.Miner.PublicKey,
+                previousHash: blockChain.Tip.Hash,
+                txHash: null,
+                lastCommit: null,
+                transactions: new List<Transaction<DumbAction>>())
+                    .Propose().Evaluate(fx.Miner, blockChain);
 
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(

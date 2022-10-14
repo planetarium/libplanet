@@ -70,14 +70,6 @@ namespace Libplanet.Blocks
             LastCommit = metadata.LastCommit;
         }
 
-        /// <summary>
-        /// Creates an empty <see cref="BlockMetadata"/> instance.  Its properties can be easily
-        /// filled with C# object initializers.
-        /// </summary>
-        public BlockMetadata()
-        {
-        }
-
         public BlockMetadata(
             long index,
             PublicKey publicKey,

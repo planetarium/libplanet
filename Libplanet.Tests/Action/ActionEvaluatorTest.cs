@@ -209,14 +209,12 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: genesis.Hash,
                 customActions: new[] { action });
-            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>
-            {
-                Index = 1,
-                PublicKey = new PrivateKey().PublicKey,
-                PreviousHash = genesis.Hash,
-                Timestamp = DateTimeOffset.UtcNow,
-                Transactions = ImmutableArray.Create(tx),
-            }.Propose();
+            PreEvaluationBlock<ThrowException> block = new BlockContent<ThrowException>(
+                index: 1L,
+                publicKey: new PrivateKey().PublicKey,
+                previousHash: genesis.Hash,
+                lastCommit: null,
+                transactions: ImmutableArray.Create(tx)).Propose();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 genesis.ProtocolVersion,
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -567,13 +565,12 @@ namespace Libplanet.Tests.Action
             };
             var tx =
                 Transaction<DumbAction>.Create(0, _txFx.PrivateKey1, null, actions);
-            var block = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                PublicKey = keys[0].PublicKey,
-                PreviousHash = default(BlockHash),
-                Transactions = ImmutableArray.Create(tx),
-            }.Propose();
+            var block = new BlockContent<DumbAction>(
+                index: 1L,
+                publicKey: keys[0].PublicKey,
+                previousHash: default(BlockHash),
+                lastCommit: null,
+                transactions: ImmutableArray.Create(tx)).Propose();
             var actionEvaluator = new ActionEvaluator<DumbAction>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<DumbAction>.Instance,
@@ -712,14 +709,12 @@ namespace Libplanet.Tests.Action
                 genesisHash: tx.GenesisHash,
                 nativeTokenPredicate: _ => true
             );
-            var block = new BlockContent<ThrowException>
-            {
-                Index = 123,
-                PublicKey = GenesisMiner.PublicKey,
-                PreviousHash = hash,
-                Transactions = ImmutableArray.Create(tx),
-                LastCommit = CreateLastCommit(hash, 122, 0),
-            }.Propose();
+            var block = new BlockContent<ThrowException>(
+                index: 123,
+                publicKey: GenesisMiner.PublicKey,
+                previousHash: hash,
+                lastCommit: CreateLastCommit(hash, 122, 0),
+                transactions: ImmutableArray.Create(tx)).Propose();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
                 tx: tx,
