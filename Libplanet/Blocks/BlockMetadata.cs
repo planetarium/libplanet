@@ -37,9 +37,7 @@ namespace Libplanet.Blocks
 
         private int _protocolVersion = CurrentProtocolVersion;
         private long _index;
-        private DateTimeOffset _timestamp = DateTimeOffset.UtcNow;
-        private Address _miner;
-        private PublicKey? _publicKey;
+        private DateTimeOffset _timestamp;
 
         /// <summary>
         /// Creates a <see cref="BlockMetadata"/> by copying the fields of another block
@@ -55,15 +53,16 @@ namespace Libplanet.Blocks
         /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
         /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
         public BlockMetadata(IBlockMetadata metadata)
+            : this(
+                protocolVersion: metadata.ProtocolVersion,
+                index: metadata.Index,
+                timestamp: metadata.Timestamp,
+                miner: metadata.Miner,
+                publicKey: metadata.PublicKey,
+                previousHash: metadata.PreviousHash,
+                txHash: metadata.TxHash,
+                lastCommit: metadata.LastCommit)
         {
-            ProtocolVersion = metadata.ProtocolVersion;
-            Index = metadata.Index;
-            Timestamp = metadata.Timestamp;
-            Miner = metadata.Miner;
-            PublicKey = metadata.PublicKey;
-            PreviousHash = metadata.PreviousHash;
-            LastCommit = metadata.LastCommit;
-            TxHash = metadata.TxHash;
         }
 
         public BlockMetadata(
@@ -76,7 +75,7 @@ namespace Libplanet.Blocks
                 protocolVersion: CurrentProtocolVersion,
                 index: index,
                 timestamp: DateTimeOffset.UtcNow,
-                miner: null,
+                miner: publicKey.ToAddress(),
                 publicKey: publicKey,
                 previousHash: previousHash,
                 txHash: txHash,
@@ -88,7 +87,7 @@ namespace Libplanet.Blocks
             int protocolVersion,
             long index,
             DateTimeOffset timestamp,
-            Address? miner,
+            Address miner,
             PublicKey? publicKey,
             BlockHash? previousHash,
             HashDigest<SHA256>? txHash,
@@ -105,28 +104,28 @@ namespace Libplanet.Blocks
                         $"Argument {nameof(publicKey)} cannot be null for " +
                         $"{nameof(protocolVersion)} >= 2.",
                         nameof(publicKey));
-                Miner = miner is { } m
-                    ? throw new ArgumentException(
-                        $"Argument {nameof(miner)} should be null for " +
-                        $"{nameof(protocolVersion)} >= 2.",
-                        nameof(miner))
-                    : new Address(p);
+                Miner = miner == p.ToAddress()
+                    ? miner
+                    : throw new ArgumentException(
+                        $"Argument {nameof(miner)} should match the derived address of " +
+                        $"{nameof(publicKey)} for {nameof(protocolVersion)} >= 2.",
+                        nameof(miner));
             }
             else
             {
-                PublicKey = null;
-                Miner = miner is { } m
-                    ? m
+                PublicKey = publicKey is null
+                    ? (PublicKey?)null
                     : throw new ArgumentException(
-                        $"Argument {nameof(miner)} cannot be null for " +
-                        $"{nameof(protocolVersion)} < 2.",
-                        nameof(miner));
+                        $"Argument {nameof(publicKey)} should be null for " +
+                        $"{nameof(protocolVersion)} < 2.");
+                Miner = miner;
             }
 
-            if (index != 0 && previousHash is null)
+            if ((index == 0 && previousHash is { }) ||
+                (index != 0 && previousHash is null))
             {
                 throw new InvalidBlockPreviousHashException(
-                    $"{nameof(previousHash)} cannot be null for {nameof(index)} > 0.");
+                    $"{nameof(previousHash)} can be null if and only if {nameof(index)} is 0.");
             }
             else
             {
@@ -144,7 +143,7 @@ namespace Libplanet.Blocks
         public int ProtocolVersion
         {
             get => _protocolVersion;
-            set
+            private set
             {
                 if (value < 0)
                 {
@@ -171,7 +170,7 @@ namespace Libplanet.Blocks
         public long Index
         {
             get => _index;
-            set => _index = value >= 0L
+            private set => _index = value >= 0L
                 ? value
                 : throw new InvalidBlockIndexException(
                     $"A negative index is not allowed: {value}.");
@@ -181,45 +180,17 @@ namespace Libplanet.Blocks
         public DateTimeOffset Timestamp
         {
             get => _timestamp;
-            set => _timestamp = value.ToUniversalTime();
+            private set => _timestamp = value.ToUniversalTime();
         }
 
         /// <inheritdoc cref="IBlockMetadata.Miner"/>
-        public Address Miner
-        {
-            get => _miner;
-            set
-            {
-                if (PublicKey is { } pubKey && !pubKey.ToAddress().Equals(value))
-                {
-                    throw new InvalidBlockPublicKeyException(
-                        $"The miner address {value} is not consistent" +
-                        $"with its public key {pubKey}.",
-                        pubKey
-                    );
-                }
-
-                _miner = value;
-            }
-        }
+        public Address Miner { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
-        /// <remarks>Its setter also updates the <see cref="Miner"/> property too.</remarks>
-        public PublicKey? PublicKey
-        {
-            get => _publicKey;
-            set
-            {
-                _publicKey = value;
-                if (value is { } pubKey)
-                {
-                    _miner = pubKey.ToAddress();
-                }
-            }
-        }
+        public PublicKey? PublicKey { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash { get; set; }
+        public BlockHash? PreviousHash { get; private set; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash { get; private set; }

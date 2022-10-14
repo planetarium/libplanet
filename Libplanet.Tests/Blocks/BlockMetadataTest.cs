@@ -35,23 +35,37 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ProtocolVersion()
         {
-            int v = Block1Metadata.ProtocolVersion;
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = -1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: -1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash,
+                    lastCommit: null));
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = Block<Arithmetic>.CurrentProtocolVersion + 1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash,
+                    lastCommit: null));
         }
 
         [Fact]
         public void Index()
         {
-            long idx = Block1Metadata.Index;
-            Assert.Throws<InvalidBlockIndexException>(() => Block1Metadata.Index = -1);
-            Assert.Equal(idx, Block1Metadata.Index);
+            Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
+                index: -1L,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null));
         }
 
         [Fact]
@@ -59,13 +73,37 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset kstTimestamp =
                 new DateTimeOffset(2021, 9, 7, 9, 30, 12, 345, TimeSpan.FromHours(9));
-            Block1Metadata.Timestamp = kstTimestamp;
-            Assert.Equal(TimeSpan.Zero, Block1Metadata.Timestamp.Offset);
+            BlockMetadata metadata = new BlockMetadata(
+                protocolVersion: Block1Metadata.ProtocolVersion,
+                index: Block1Metadata.Index,
+                timestamp: kstTimestamp,
+                miner: Block1Metadata.Miner,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null);
+            Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
                 new DateTime(2021, 9, 7, 0, 30, 12, 345),
-                Block1Metadata.Timestamp.DateTime
-            );
-            Assert.Equal(kstTimestamp, Block1Metadata.Timestamp);
+                metadata.Timestamp.DateTime);
+            Assert.Equal(kstTimestamp, metadata.Timestamp);
+        }
+
+        [Fact]
+        public void PreviousHash()
+        {
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: GenesisMetadata.Index,
+                publicKey: GenesisMetadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: GenesisMetadata.TxHash,
+                lastCommit: null));
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: null,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null));
         }
 
         [Fact]

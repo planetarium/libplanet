@@ -160,6 +160,18 @@ namespace Libplanet.Blocks
 
         public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
         {
+            Address miner;
+            PublicKey? publicKey = null;
+            if (marshaled.ContainsKey(PublicKeyKey))
+            {
+                publicKey = new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+                miner = publicKey.ToAddress();
+            }
+            else
+            {
+                miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+            }
+
 #pragma warning disable SA1118 // The parameter spans multiple lines
             return new BlockMetadata(
                 protocolVersion: marshaled.ContainsKey(ProtocolVersionKey)
@@ -170,12 +182,8 @@ namespace Libplanet.Blocks
                     marshaled.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
-                miner: marshaled.ContainsKey(MinerKey)
-                    ? new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray)
-                    : (Address?)null,
-                publicKey: marshaled.ContainsKey(PublicKeyKey)
-                    ? new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray)
-                    : (PublicKey?)null,
+                miner: miner,
+                publicKey: publicKey,
                 previousHash: marshaled.ContainsKey(PreviousHashKey)
                     ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
                     : (BlockHash?)null,
