@@ -418,9 +418,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 protocolVersion: protocolVersion,
                 index: 0,
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                miner: protocolVersion >= 2
-                    ? (Address?)null
-                    : (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
                 publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
                 previousHash: null,
                 txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
@@ -442,9 +440,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 protocolVersion: protocolVersion,
                 index: 0,
                 timestamp: timestamp ?? new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
-                miner: protocolVersion >= 2
-                    ? (Address?)null
-                    : (miner ?? GenesisMiner.PublicKey).ToAddress(),
+                miner: (miner ?? GenesisMiner.PublicKey).ToAddress(),
                 publicKey: protocolVersion >= 2 ? miner ?? GenesisMiner.PublicKey : null,
                 previousHash: null,
                 txHash: BlockContent<T>.DeriveTxHash(txs.OrderBy(tx => tx.Id).ToList()),
@@ -509,9 +505,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 protocolVersion: protocolVersion,
                 index: previousBlock.Index + 1,
                 timestamp: previousBlock.Timestamp.Add(blockInterval ?? TimeSpan.FromSeconds(15)),
-                miner: protocolVersion >= 2
-                    ? (Address?)null
-                    : miner?.ToAddress() ?? previousBlock.Miner,
+                miner: miner?.ToAddress() ?? previousBlock.Miner,
                 publicKey: protocolVersion >= 2 ? miner ?? previousBlock.PublicKey : null,
                 previousHash: previousBlock.Hash,
                 txHash: BlockContent<T>.DeriveTxHash(txs),
@@ -575,7 +569,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     protocolVersion: protocolVersion,
                     index: 0,
                     timestamp: timestamp ?? DateTimeOffset.MinValue,
-                    miner: protocolVersion >= 2 ? (Address?)null : GenesisMiner.ToAddress(),
+                    miner: GenesisMiner.PublicKey.ToAddress(),
                     publicKey: protocolVersion >= 2 ? GenesisMiner.PublicKey : null,
                     previousHash: null,
                     txHash: BlockContent<T>.DeriveTxHash(txs),

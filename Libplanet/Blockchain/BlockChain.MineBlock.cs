@@ -141,7 +141,7 @@ namespace Libplanet.Blockchain
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: index,
                 timestamp: timestamp,
-                miner: null,
+                miner: proposer.ToAddress(),
                 publicKey: proposer.PublicKey,
                 previousHash: prevHash,
                 txHash: BlockContent<T>.DeriveTxHash(transactions),

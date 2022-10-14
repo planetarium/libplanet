@@ -22,12 +22,13 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
             DateTimeOffset future = now + TimeSpan.FromSeconds(17);
+            PublicKey publicKey = new PrivateKey().PublicKey;
             IBlockMetadata metadata = new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 0,
                 timestamp: future,
-                miner: null,
-                publicKey: new PrivateKey().PublicKey,
+                miner: publicKey.ToAddress(),
+                publicKey: publicKey,
                 previousHash: null,
                 txHash: null,
                 lastCommit: null);
