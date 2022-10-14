@@ -267,8 +267,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     codec.Encode(blockHeightThree.MarshalBlock()),
                     -1));
 
-            // Commit ends.
-            await heightTwoStepChangedToEndCommit.WaitAsync();
             // New height started.
             await heightThreeStepChangedToPropose.WaitAsync();
             // Propose -> PreVote (message consumed)
