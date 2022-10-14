@@ -103,7 +103,8 @@ namespace Libplanet.Store
 
         /// <summary>
         /// The <see cref="Transaction{T}.Id"/>s of <see cref="Transaction{T}"/>s in
-        /// a <see cref="Block{T}"/>.  This should be ordered by <see cref="Transaction{T}.Id"/>.
+        /// a <see cref="Block{T}"/>.  This is <em>not</em> necessarily ordered by
+        /// <see cref="Transaction{T}.Id"/>.
         /// </summary>
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 

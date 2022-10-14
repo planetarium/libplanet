@@ -72,6 +72,7 @@ namespace Libplanet.Store
                 BlockHeader header = blockDigest.GetHeader();
                 (TxId TxId, Transaction<T> Tx)[] txs = blockDigest.TxIds
                     .Select(bytes => new TxId(bytes.ToArray()))
+                    .OrderBy(txid => txid)
                     .Select(txid => (txid, GetTransaction<T>(txid)))
                     .ToArray();
 
