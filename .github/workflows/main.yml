@@ -47,6 +47,7 @@ jobs:
       with:
         registry-url: 'https://registry.npmjs.org'
         scope: '@planetarium'
+        node-version: 18
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
@@ -60,6 +61,9 @@ jobs:
         mkdir -p /tmp/dist-bin/
         for project in "${projects[@]}"; do
           cp -r "$project/bin/$configuration"/* /tmp/dist-bin/
+        done
+        for npmpkg in "${npm_packages[@]}"; do
+          cp "$npmpkg"/*.tgz /tmp/dist-bin/
         done
     - uses: actions/upload-artifact@main
       with:
@@ -170,8 +174,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  test-npm:
-    name: test-npm
+  test-npm-cli:
+    name: "test-npm (@planetarium/cli)"
     strategy:
       matrix:
         os:
@@ -217,3 +221,28 @@ jobs:
           -Version $v
       env:
         LATEST_VERSION: ${{ steps.latest-tag.outputs.tag }}
+
+  test-npm:
+    name: test-npm
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - run: |
+        set -e
+        . .github/bin/constants.sh
+        for npmpkg in "${npm_packages[@]}"; do
+          pushd "$npmpkg"
+          npm install
+          popd
+        done
+    - run: |
+        set -e
+        . .github/bin/constants.sh
+        for npmpkg in "${npm_packages[@]}"; do
+          pushd "$npmpkg"
+          npm test --if-present
+          popd
+        done

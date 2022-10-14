@@ -63,6 +63,28 @@ namespace Libplanet.Action
         }
 
         /// <summary>
+        /// Creates a random seed.
+        /// </summary>
+        /// <param name="preEvaluationHashBytes">The previous evaluation hash turned into bytes.
+        /// </param>
+        /// <param name="hashedSignature">The hashed signature.</param>
+        /// <param name="signature">The signature.</param>
+        /// <param name="actionOffset">The offset of the action.</param>
+        /// <returns>An integer of the random seed.
+        /// </returns>
+        [Pure]
+        public static int GenerateRandomSeed(
+            byte[] preEvaluationHashBytes,
+            byte[] hashedSignature,
+            byte[] signature,
+            int actionOffset)
+        {
+            return (preEvaluationHashBytes.Length > 0
+                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
+                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - actionOffset;
+        }
+
+        /// <summary>
         /// The main entry point for evaluating a <see cref="Block{T}"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
@@ -300,10 +322,7 @@ namespace Libplanet.Action
             }
 
             byte[] preEvaluationHashBytes = preEvaluationHash.ToByteArray();
-            int seed =
-                (preEvaluationHashBytes.Length > 0
-                    ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
-                ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
+            int seed = GenerateRandomSeed(preEvaluationHashBytes, hashedSignature, signature, 0);
 
             IAccountStateDelta states = previousStates;
             foreach (IAction action in actions)
