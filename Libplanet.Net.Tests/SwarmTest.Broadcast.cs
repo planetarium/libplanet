@@ -125,11 +125,11 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
             var seedStateStore = new TrieStateStore(new MemoryKeyValueStore());
             IBlockPolicy<DumbAction> policy = receiverChain.Policy;
-            Block<DumbAction> mismatchedGenesis = new BlockContent<DumbAction>
-            {
-                PublicKey = receiverKey.PublicKey,
-                Timestamp = DateTimeOffset.MinValue,
-            }
+            Block<DumbAction> wrongGenesis = new BlockContent<DumbAction>(
+                index: 0,
+                publicKey: receiverKey.PublicKey,
+                previousHash: null,
+                lastCommit: null)
                 .Propose()
                 .Evaluate(
                     privateKey: receiverKey,
@@ -140,7 +140,7 @@ namespace Libplanet.Net.Tests
                 policy,
                 new MemoryStore(),
                 seedStateStore,
-                genesisBlock: mismatchedGenesis);
+                genesisBlock: wrongGenesis);
             var seedMiner = new PrivateKey();
             Swarm<DumbAction> seedSwarm = CreateSwarm(seedChain, seedMiner);
             try

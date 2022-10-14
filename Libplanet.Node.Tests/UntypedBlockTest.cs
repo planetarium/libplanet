@@ -56,14 +56,16 @@ namespace Libplanet.Node.Tests
                 0x94, 0xe6, 0x9f, 0xfd, 0xe0, 0x1d, 0x26, 0xae, 0x14, 0xb5, 0x56,
                 0x20, 0x4d, 0x3f, 0x6a, 0xb5, 0x8f, 0x61, 0xf7, 0x84, 0x18,
             });
-            _content = new BlockContent<NullAction>
-            {
-                Index = 0L,
-                Timestamp = new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
-                PublicKey = _minerKey.PublicKey,
-                PreviousHash = null,
-                Transactions = _txs,
-            };
+            _content = new BlockContent<NullAction>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 0L,
+                timestamp: new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
+                miner: null,
+                publicKey: _minerKey.PublicKey,
+                previousHash: null,
+                txHash: BlockContent<NullAction>.DeriveTxHash(_txs.OrderBy(tx => tx.Id).ToList()),
+                lastCommit: null,
+                transactions: _txs);
             var nonce = default(Nonce);
             byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
             HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);

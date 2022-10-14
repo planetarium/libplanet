@@ -547,7 +547,7 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block1 = TestUtils.ProposeNext(
                 genesis,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(privateKey, _blockChain);
 
@@ -567,8 +567,8 @@ namespace Libplanet.Tests.Blockchain
             Block<DumbAction> block2 = TestUtils.ProposeNext(
                 block1,
                 miner: privateKey.PublicKey,
-                txs: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 blockInterval: TimeSpan.FromSeconds(10),
+                transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 lastCommit: TestUtils.CreateLastCommit(block1.Hash, block1.Index, 0)
             ).Evaluate(privateKey, _blockChain);
 

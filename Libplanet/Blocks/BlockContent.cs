@@ -115,13 +115,6 @@ namespace Libplanet.Blocks
         }
 
         /// <summary>
-        /// Creates a new empty <see cref="BlockContent{T}"/> instance.
-        /// </summary>
-        public BlockContent()
-        {
-        }
-
-        /// <summary>
         /// Creates a new <see cref="BlockContent{T}"/> instance with no
         /// <see cref="Transaction{T}"/>s.
         /// </summary>

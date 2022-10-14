@@ -134,15 +134,19 @@ namespace Libplanet.Blockchain
                 index,
                 transactionsToPropose.Count);
 
-            var blockContent = new BlockContent<T>
-            {
-                Index = index,
-                PublicKey = proposer.PublicKey,
-                PreviousHash = prevHash,
-                Timestamp = timestamp,
-                Transactions = transactionsToPropose,
-                LastCommit = lastCommit,
-            };
+            // FIXME: Should use automated public constructor.
+            // Manual internal constructor is used purely for testing custom timestamps.
+            var transactions = transactionsToPropose.OrderBy(tx => tx.Id).ToList();
+            var blockContent = new BlockContent<T>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: index,
+                timestamp: timestamp,
+                miner: null,
+                publicKey: proposer.PublicKey,
+                previousHash: prevHash,
+                txHash: BlockContent<T>.DeriveTxHash(transactions),
+                lastCommit: lastCommit,
+                transactions: transactions);
             PreEvaluationBlock<T> preEval;
 
             preEval = blockContent.Propose();

@@ -161,13 +161,16 @@ public class TransactionQueryTest
             Store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var minerKey = new PrivateKey();
-            var genesisContent = new BlockContent<T> { PublicKey = minerKey.PublicKey };
+            var genesisContent = new BlockContent<T>(
+                index: 0L,
+                publicKey: minerKey.PublicKey,
+                previousHash: null,
+                lastCommit: null);
             Block<T> genesis = genesisContent.Propose().Evaluate(
                 minerKey,
                 null,
                 _ => true,
-                stateStore
-            );
+                stateStore);
             BlockChain = new BlockChain<T>(
                 new BlockPolicy<T>(getValidators: index => new[] { Validator.PublicKey }),
                 new VolatileStagePolicy<T>(),

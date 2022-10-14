@@ -90,14 +90,16 @@ namespace Libplanet.Tests.Blockchain
             _renderer.ResetRecords();
 
             _emptyTransaction = new List<Transaction<DumbAction>>();
-            _validNext = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _fx.GenesisBlock.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                Transactions = _emptyTransaction,
-            }.Propose().Evaluate(_fx.Miner, _blockChain);
+            _validNext = new BlockContent<DumbAction>(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 1,
+                timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
+                miner: null,
+                publicKey: _fx.Miner.PublicKey,
+                previousHash: _fx.GenesisBlock.Hash,
+                txHash: null,
+                lastCommit: null,
+                transactions: _emptyTransaction).Propose().Evaluate(_fx.Miner, _blockChain);
         }
 
         public void Dispose()
