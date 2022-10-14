@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Blocks
                         validatorC.PublicKey,
                         VoteFlag.Commit).Sign(validatorC),
                 }.ToImmutableArray());
-            var invalidHeightMetadata = new BlockMetadata(
+            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 2,
                 timestamp: timestamp,
@@ -93,11 +93,7 @@ namespace Libplanet.Tests.Blocks
                 publicKey: validatorA.PublicKey,
                 previousHash: blockHash,
                 txHash: null,
-                lastCommit: invalidHeightLastCommit);
-            Assert.Throws<InvalidBlockLastCommitException>(() =>
-                new PreEvaluationBlockHeader(
-                    invalidHeightMetadata,
-                    invalidHeightMetadata.DerivePreEvaluationHash(default)));
+                lastCommit: invalidHeightLastCommit));
 
             // BlockHash of the last commit is invalid.
             var invalidBlockHashLastCommit = new BlockCommit(
@@ -105,7 +101,7 @@ namespace Libplanet.Tests.Blocks
                 0,
                 invalidBlockHash,
                 new[] { voteA, voteB, voteC }.ToImmutableArray());
-            var invalidBlockHashMetadata = new BlockMetadata(
+            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 2,
                 timestamp: timestamp,
@@ -113,11 +109,7 @@ namespace Libplanet.Tests.Blocks
                 publicKey: validatorA.PublicKey,
                 previousHash: _contents.GenesisHash,
                 txHash: null,
-                lastCommit: invalidBlockHashLastCommit);
-            Assert.Throws<InvalidBlockLastCommitException>(() =>
-                new PreEvaluationBlockHeader(
-                    invalidBlockHashMetadata,
-                    invalidBlockHashMetadata.DerivePreEvaluationHash(default)));
+                lastCommit: invalidBlockHashLastCommit));
 
             // Signature can be null for null or unknown votes.
             var validLastCommit = new BlockCommit(
@@ -151,9 +143,6 @@ namespace Libplanet.Tests.Blocks
                 previousHash: blockHash,
                 txHash: null,
                 lastCommit: validLastCommit);
-            _ = new PreEvaluationBlockHeader(
-                validMetadata,
-                validMetadata.DerivePreEvaluationHash(default));
         }
 
         [Fact]

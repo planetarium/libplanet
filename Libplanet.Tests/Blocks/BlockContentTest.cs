@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blocks
                         txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
                         lastCommit: null),
                     transactions: txs));
-            Assert.Equal(dupTx1.Id, e.TxId);
+            Assert.Equal(Block1Tx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
             Assert.Equal(Block1Tx1.Nonce, e.ImproperNonce);
         }
