@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -312,6 +313,44 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightThreePreVote.WaitAsync();
             Assert.NotNull(blockChain.Store.GetLastCommit(blockChain.Tip.Index));
             Assert.Null(blockChain.Store.GetLastCommit(blockChain.Tip.Index - 1));
+        }
+
+        [Fact(Timeout = Timeout)]
+        public void RemoveOldContexts()
+        {
+            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                TestUtils.Validators,
+                lastCommitClearThreshold: 1);
+
+            // Create context of index 1.
+            consensusContext.NewHeight(1);
+            // Create context of index 2.
+            consensusContext.HandleMessage(
+                new ConsensusPropose(TestUtils.Validators[1], 2, 1, fx.Hash1, new byte[] { }, -1));
+
+            blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
+            blockChain.Append(
+                blockChain.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateLastCommit(
+                        blockChain.Tip.Hash,
+                        blockChain.Tip.Index,
+                        0)));
+            blockChain.Append(
+                blockChain.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateLastCommit(
+                        blockChain.Tip.Hash,
+                        blockChain.Tip.Index,
+                        0)));
+
+            // Create context of index 4, check if the context of 1 and 2 are removed correctly.
+            consensusContext.NewHeight(4);
+            Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
+            Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
         }
     }
 }
