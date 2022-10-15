@@ -9,8 +9,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// The complete block including all block contents and done proof-of-work and action
-    /// evaluation.
+    /// The complete block including all block contents and action evaluation.
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>

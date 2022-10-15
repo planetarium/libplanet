@@ -50,8 +50,8 @@ namespace Libplanet.Blocks
             BlockContent<T> content,
             in HashDigest<SHA256> preEvaluationHash)
         {
-            _content = content;
             _header = new PreEvaluationBlockHeader(content.Metadata, preEvaluationHash);
+            _content = content;
         }
 
         /// <summary>

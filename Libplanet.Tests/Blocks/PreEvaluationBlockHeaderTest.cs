@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Bencodex;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
@@ -25,127 +24,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Constructors()
-        {
-            var validatorA = new PrivateKey();
-            var validatorB = new PrivateKey();
-            var validatorC = new PrivateKey();
-            BlockHash blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
-            BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
-            DateTimeOffset timestamp = DateTimeOffset.UtcNow;
-
-            var voteA = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorA.PublicKey,
-                VoteFlag.Commit).Sign(validatorA);
-            var voteB = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorB.PublicKey,
-                VoteFlag.Commit).Sign(validatorB);
-            var voteC = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorC.PublicKey,
-                VoteFlag.Commit).Sign(validatorC);
-
-            // Height of the last commit is invalid.
-            var invalidHeightLastCommit = new BlockCommit(
-                2,
-                0,
-                blockHash,
-                new[]
-                {
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorA.PublicKey,
-                        VoteFlag.Commit).Sign(validatorA),
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorB.PublicKey,
-                        VoteFlag.Commit).Sign(validatorB),
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.Commit).Sign(validatorC),
-                }.ToImmutableArray());
-            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: 2,
-                timestamp: timestamp,
-                miner: validatorA.PublicKey.ToAddress(),
-                publicKey: validatorA.PublicKey,
-                previousHash: blockHash,
-                txHash: null,
-                lastCommit: invalidHeightLastCommit));
-
-            // BlockHash of the last commit is invalid.
-            var invalidBlockHashLastCommit = new BlockCommit(
-                1,
-                0,
-                invalidBlockHash,
-                new[] { voteA, voteB, voteC }.ToImmutableArray());
-            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: 2,
-                timestamp: timestamp,
-                miner: validatorA.PublicKey.ToAddress(),
-                publicKey: validatorA.PublicKey,
-                previousHash: _contents.GenesisHash,
-                txHash: null,
-                lastCommit: invalidBlockHashLastCommit));
-
-            // Signature can be null for null or unknown votes.
-            var validLastCommit = new BlockCommit(
-                1,
-                0,
-                blockHash,
-                new[]
-                {
-                    voteA,
-                    new VoteMetadata(
-                        1,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorB.PublicKey,
-                        VoteFlag.Null).Sign(null),
-                    new VoteMetadata(
-                        1,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.Unknown).Sign(null),
-                }.ToImmutableArray());
-            var validMetadata = new BlockMetadata(
-                protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                index: 2,
-                timestamp: timestamp,
-                miner: validatorA.PublicKey.ToAddress(),
-                publicKey: validatorA.PublicKey,
-                previousHash: blockHash,
-                txHash: null,
-                lastCommit: validLastCommit);
-        }
-
-        [Fact]
         public void CopyConstructor()
         {
             BlockMetadata metadata = new BlockMetadata(_contents.GenesisContent);
@@ -153,6 +31,24 @@ namespace Libplanet.Tests.Blocks
                 metadata, metadata.DerivePreEvaluationHash(default));
             var copy = new PreEvaluationBlockHeader(preEvalBlock);
             AssertPreEvaluationBlockHeadersEqual(preEvalBlock, copy);
+        }
+
+        [Fact]
+        public void ValidatePreEvaluationHash()
+        {
+            BlockMetadata metadataPv1 = new BlockMetadata(_contents.Block1ContentPv1);
+            Assert.True(metadataPv1.ProtocolVersion <= BlockMetadata.PoWProtocolVersion);
+
+            // Should be fine.
+            var preEvaluationBlockHeaderPv1 = new PreEvaluationBlockHeader(
+                metadataPv1,
+                metadataPv1.DerivePreEvaluationHash(new Nonce(TestUtils.GetRandomBytes(4))));
+
+            BlockMetadata metadata = new BlockMetadata(_contents.Block1Content);
+            Assert.False(metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion);
+            var preEvaluationBlockHeader = new PreEvaluationBlockHeader(
+                metadata,
+                metadata.DerivePreEvaluationHash(default));
         }
 
         [Fact]
