@@ -272,9 +272,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightThreeStartTimestamp = DateTime.UtcNow;
             // Propose -> PreVote (message consumed)
             await heightThreeStepChangedToPreVote.WaitAsync();
-            // Check new height delay.
+            // Check new height delay; slight margin of error is allowed as delay task
+            // is run asynchronously from context events.
             Assert.True(
-                heightThreeStartTimestamp - heightTwoEndTimestamp > newHeightDelay);
+                ((heightThreeStartTimestamp - heightTwoEndTimestamp) - newHeightDelay).Duration() <
+                    TimeSpan.FromMilliseconds(100));
             Assert.Equal(3, consensusContext.Height);
             Assert.Equal(Step.PreVote, consensusContext.Step);
         }
