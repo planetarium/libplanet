@@ -352,6 +352,8 @@ namespace Libplanet.Blockchain
         /// as default.</param>
         /// <param name="privateKey">A private key to sign the transaction and the genesis block.
         /// If it's null, it will use new private key as default.</param>
+        /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
+        /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
         /// <param name="blockAction">A block action to execute and be rendered for every block.
         /// It must match to <see cref="BlockPolicy{T}.BlockAction"/> of <see cref="Policy"/>.
         /// </param>
@@ -363,6 +365,7 @@ namespace Libplanet.Blockchain
         public static Block<T> ProposeGenesisBlock(
             IEnumerable<T> actions = null,
             PrivateKey privateKey = null,
+            DateTimeOffset? timestamp = null,
             IAction blockAction = null,
             Predicate<Currency> nativeTokenPredicate = null)
         {
@@ -370,13 +373,14 @@ namespace Libplanet.Blockchain
             actions ??= ImmutableArray<T>.Empty;
             Transaction<T>[] transactions =
             {
-                Transaction<T>.Create(0, privateKey, null, actions),
+                Transaction<T>.Create(
+                    0, privateKey, null, actions, timestamp: timestamp),
             };
 
             BlockContent<T> content = new BlockContent<T>(
                 new BlockMetadata(
                     index: 0L,
-                    timestamp: DateTimeOffset.UtcNow,
+                    timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
                     previousHash: null,
                     txHash: BlockContent<T>.DeriveTxHash(transactions),
