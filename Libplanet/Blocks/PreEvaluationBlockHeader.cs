@@ -224,7 +224,21 @@ namespace Libplanet.Blocks
             BlockMetadata metadata,
             in HashDigest<SHA256> preEvaluationHash)
         {
-            return preEvaluationHash;
+            if (metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                return preEvaluationHash;
+            }
+            else
+            {
+                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash(default);
+                return expected.Equals(preEvaluationHash)
+                    ? expected
+                    : throw new InvalidBlockPreEvaluationHashException(
+                        $"Given {nameof(preEvaluationHash)} {preEvaluationHash} does not match " +
+                        $"the expected value {expected}.",
+                        preEvaluationHash.ByteArray,
+                        expected.ByteArray);
+            }
         }
     }
 }

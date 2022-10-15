@@ -11,7 +11,7 @@ using Libplanet.Crypto;
 namespace Libplanet.Blocks
 {
     /// <summary>
-    /// A block metadata without transactions or any proofs like nonce or hash.  This represents
+    /// A block metadata without transactions or any proof hash.  This represents
     /// metadata of a block that is not yet mined nor proven.
     /// <para>To represent a block content including its metadata and transactions, use
     /// <see cref="BlockContent{T}"/>.</para>
@@ -25,7 +25,7 @@ namespace Libplanet.Blocks
         public const int CurrentProtocolVersion = 4;
 
         /// <summary>
-        /// The latest PoW protocol version.
+        /// The last PoW protocol version.
         /// </summary>
         public const int PoWProtocolVersion = 3;
 
@@ -74,14 +74,6 @@ namespace Libplanet.Blocks
         /// <see cref="BlockMetadata.CurrentProtocolVersion"/> as its
         /// <see cref="IBlockMetadata.ProtocolVersion"/>.
         /// </summary>
-        /// <remarks>
-        /// With this, <see cref="IBlockMetadata.Timestamp"/> is set as current time and
-        /// <see cref="IBlockMetadata.Miner"/> is derived from <paramref name="publicKey"/>.
-        /// This gets redirected to <see cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?)"/>.  Refer to the
-        /// aforementioned constructor to see the full list of <see cref="Exception"/>s
-        /// that may be thrown.
-        /// </remarks>
         /// <param name="index">Goes to <see cref="IBlockMetadata.Index"/>.</param>
         /// <param name="timestamp">Goes to <see cref="IBlockMetadata.Timestamp"/>.</param>
         /// <param name="publicKey">Goes to <see cref="IBlockMetadata.PublicKey"/>.</param>
@@ -210,8 +202,7 @@ namespace Libplanet.Blocks
             }
 
             // Previous hash validity checks.
-            if ((index == 0 && previousHash is { }) ||
-                (index != 0 && previousHash is null))
+            if (index == 0 ^ previousHash is null)
             {
                 throw new InvalidBlockPreviousHashException(
                     $"{nameof(previousHash)} can be null if and only if {nameof(index)} is 0.");
