@@ -152,6 +152,36 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             }
 
+            consensusContext.StateChanged += (sender, state) =>
+            {
+                if (state.Height == 2)
+                {
+                    if (state.Step == Step.PreVote)
+                    {
+                        heightTwoStepChangedToPreVote.Set();
+                    }
+                    else if (state.Step == Step.PreCommit)
+                    {
+                        heightTwoStepChangedToPreCommit.Set();
+                    }
+                    else if (state.Step == Step.EndCommit)
+                    {
+                        heightTwoStepChangedToEndCommit.Set();
+                    }
+                }
+                else if (state.Height == 3)
+                {
+                    if (state.Step == Step.Propose)
+                    {
+                        heightThreeStepChangedToPropose.Set();
+                    }
+                    else if (state.Step == Step.PreVote)
+                    {
+                        heightThreeStepChangedToPreVote.Set();
+                    }
+                }
+            };
+
             blockChain.Append(blockChain.ProposeBlock(TestUtils.Peer1Priv));
 
             blockChain.Store.PutLastCommit(TestUtils.CreateLastCommit(
@@ -168,25 +198,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 throw new NullException(propose);
             }
 
-            // FIXME: Waiting for PreVote is not triggered and block the whole test.
-            consensusContext.Contexts[2].StateChanged += (sender, state) =>
-            {
-                if (state.Step == Step.PreVote)
-                {
-                    heightTwoStepChangedToPreVote.Set();
-                }
-                else if (state.Step == Step.PreCommit)
-                {
-                    heightTwoStepChangedToPreCommit.Set();
-                }
-                else if (state.Step == Step.EndCommit)
-                {
-                    heightTwoStepChangedToEndCommit.Set();
-                }
-            };
-
             foreach ((PrivateKey privateKey, BoundPeer peer)
-                in TestUtils.PrivateKeys.Zip(TestUtils.Peers, (first, second) => (first, second)))
+                     in TestUtils.PrivateKeys.Zip(
+                         TestUtils.Peers,
+                         (first, second) => (first, second)))
             {
                 if (privateKey == TestUtils.Peer2Priv)
                 {
@@ -252,18 +267,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     codec.Encode(blockHeightThree.MarshalBlock()),
                     -1));
 
-            consensusContext.Contexts[3].StateChanged += (sender, state) =>
-            {
-                if (state.Step == Step.Propose)
-                {
-                    heightThreeStepChangedToPropose.Set();
-                }
-                else if (state.Step == Step.PreVote)
-                {
-                    heightThreeStepChangedToPreVote.Set();
-                }
-            };
-
             // Commit ends.
             await heightTwoStepChangedToEndCommit.WaitAsync();
             var heightTwoEndTimestamp = DateTime.UtcNow;
@@ -295,24 +298,33 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer2Priv);
 
-            // Do a consensus for height #1. (Genesis doesn't have last commit.)
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
+            consensusContext.StateChanged +=
                 (sender, tuple) =>
                 {
-                    if (tuple.Step == Step.EndCommit)
+                    if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
                     {
                         heightOneEnded.Set();
                     }
                 };
-            consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
+            consensusContext.MessageConsumed +=
                 (sender, message) =>
                 {
-                    if (message is ConsensusPropose propose)
+                    if (message.Height == 1 && message.Message is ConsensusPropose)
                     {
                         heightOneProposeSent.Set();
                     }
+
+                    if (message.Height == 2 &&
+                        message.Message is ConsensusPropose propose)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(propose!.Payload));
+                        heightTwoProposeSent.Set();
+                    }
                 };
+
+            // Do a consensus for height #1. (Genesis doesn't have last commit.)
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             consensusContext.HandleMessage(
@@ -345,16 +357,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Restart consensus from height #2
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
-                (sender, message) =>
-                {
-                    if (message is ConsensusPropose propose)
-                    {
-                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Payload));
-                        heightTwoProposeSent.Set();
-                    }
-                };
             await heightTwoProposeSent.WaitAsync();
 
             if (proposedBlock == null)

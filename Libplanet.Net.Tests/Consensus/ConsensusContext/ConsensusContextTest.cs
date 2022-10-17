@@ -56,14 +56,15 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Throws<InvalidHeightIncreasingException>(
                 () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
 
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged += (sender, state) =>
+            consensusContext.StateChanged += (sender, state) =>
             {
-                if (state.Step == Step.EndCommit)
+                if (state.Height == 1 && state.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
             };
+
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             // FIXME: StartAsync inside NewHeight makes it unreliable to try to await for
             // early events.
@@ -211,16 +212,38 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             }
 
-            // Do a consensus for height to #2 consecutively.
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
+            consensusContext.StateChanged +=
                 (sender, tuple) =>
                 {
-                    if (tuple.Step == Step.EndCommit)
+                    if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
                     {
                         heightOneEnded.Set();
                     }
+
+                    if (tuple.Height == 2 && tuple.Step == Step.EndCommit)
+                    {
+                        heightTwoEnded.Set();
+                    }
+
+                    if (tuple.Height == 3 && tuple.Step == Step.PreVote)
+                    {
+                        heightThreePreVote.Set();
+                    }
                 };
+
+            consensusContext.MessageConsumed +=
+                (sender, message) =>
+                {
+                    if (message.Height == 2 && message.Message is ConsensusPropose propose)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(propose!.Payload));
+                        heightTwoProposeSent.Set();
+                    }
+                };
+
+            // Do a consensus for height to #2 consecutively.
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             await heightOneProposeSent.WaitAsync();
 
@@ -248,18 +271,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Starts NewHeight manually.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
-                (sender, tuple) =>
-                {
-                    if (tuple.Step == Step.EndCommit)
-                    {
-                        heightTwoEnded.Set();
-                    }
-                };
             consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
-                (sender, message) =>
+                (sender, hm) =>
                 {
-                    if (message is ConsensusPropose propose)
+                    if (hm.Message is ConsensusPropose propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
                             (Dictionary)codec.Decode(propose!.Payload));
@@ -301,16 +316,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Starts round 3, Waits PreVote timeout
             // Checks previous LastCommit and see if it's available.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].StateChanged +=
-                (sender, tuple) =>
-                {
-                    if (tuple.Step == Step.PreVote)
-                    {
-                        heightThreePreVote.Set();
-                    }
-                };
-
             await heightThreePreVote.WaitAsync();
+
             Assert.NotNull(blockChain.Store.GetLastCommit(blockChain.Tip.Index));
             Assert.Null(blockChain.Store.GetLastCommit(blockChain.Tip.Index - 1));
         }

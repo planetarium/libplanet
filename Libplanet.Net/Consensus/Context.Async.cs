@@ -40,7 +40,7 @@ namespace Libplanet.Net.Consensus
                 catch (TaskCanceledException tce)
                 {
                     _logger.Debug(tce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, tce);
+                    ExceptionOccurred?.Invoke(this, (Height, tce));
                     throw;
                 }
                 catch (Exception e)
@@ -49,7 +49,7 @@ namespace Libplanet.Net.Consensus
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMessage));
-                    ExceptionOccurred?.Invoke(this, e);
+                    ExceptionOccurred?.Invoke(this, (Height, e));
                     throw;
                 }
             }
@@ -72,7 +72,7 @@ namespace Libplanet.Net.Consensus
                 catch (TaskCanceledException tce)
                 {
                     _logger.Debug(tce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, tce);
+                    ExceptionOccurred?.Invoke(this, (Height, tce));
                     throw;
                 }
                 catch (Exception e)
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Consensus
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMutation));
-                    ExceptionOccurred?.Invoke(this, e);
+                    ExceptionOccurred?.Invoke(this, (Height, e));
                     throw;
                 }
             }
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Consensus
                     ProcessHeightOrRoundUponRules(message);
                 }
             });
-            MessageConsumed?.Invoke(this, message);
+            MessageConsumed?.Invoke(this, (Height, message));
         }
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
@@ -142,12 +142,12 @@ namespace Libplanet.Net.Consensus
                     nextState.Round,
                     nextState.Step.ToString());
                 StateChanged?.Invoke(
-                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
+                    this, (Height, nextState.MessageLogSize, nextState.Round, nextState.Step));
 
                 ProduceMutation(() => ProcessGenericUponRules());
             }
 
-            MutationConsumed?.Invoke(this, mutation);
+            MutationConsumed?.Invoke(this, (Height, mutation));
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPropose has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.Propose, timeout));
+            TimeoutOccurred?.Invoke(this, (Height, round, Step.Propose, timeout));
             ProduceMutation(() => ProcessTimeoutPropose(round));
         }
 
@@ -180,7 +180,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPreVote has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.PreVote, timeout));
+            TimeoutOccurred?.Invoke(this, (Height, round, Step.PreVote, timeout));
             ProduceMutation(() => ProcessTimeoutPreVote(round));
         }
 
@@ -197,7 +197,7 @@ namespace Libplanet.Net.Consensus
                 "TimeoutPreCommit has occurred in {Timeout}. {Info}",
                 timeout,
                 ToString());
-            TimeoutOccurred?.Invoke(this, (Step.PreCommit, timeout));
+            TimeoutOccurred?.Invoke(this, (Height, round, Step.PreCommit, timeout));
             ProduceMutation(() => ProcessTimeoutPreCommit(round));
         }
     }
