@@ -58,9 +58,9 @@ namespace Libplanet.Explorer.GraphTypes
             );
         }
 
-        private record UpdatedState(Address Address, Bencodex.Types.IValue? State);
+        public record UpdatedState(Address Address, Bencodex.Types.IValue? State);
 
-        private class UpdatedStateType : ObjectGraphType<UpdatedState>
+        public class UpdatedStateType : ObjectGraphType<UpdatedState>
         {
             public UpdatedStateType()
             {
@@ -75,10 +75,10 @@ namespace Libplanet.Explorer.GraphTypes
             }
         }
 
-        private record FungibleAssetBalances(
+        public record FungibleAssetBalances(
             Address Address, IEnumerable<FungibleAssetValue> FungibleAssetValues);
 
-        private class FungibleAssetBalancesType : ObjectGraphType<FungibleAssetBalances>
+        public class FungibleAssetBalancesType : ObjectGraphType<FungibleAssetBalances>
         {
             public FungibleAssetBalancesType()
             {

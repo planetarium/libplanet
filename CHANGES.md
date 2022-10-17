@@ -21,6 +21,19 @@ To be released.
 ### CLI tools
 
 
+Version 0.43.1
+--------------
+
+Released on October 17, 2022.
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResultType.UpdatedStateType` and
+    `TxResultType.FungibleAssetBalancesType` GraphQL types.  [[#2405]]
+
+[#2405]: https://github.com/planetarium/libplanet/pull/2405
+
+
 Version 0.43.0
 --------------
 
