@@ -15,167 +15,62 @@ namespace Libplanet.Blocks
     {
         protected static readonly Codec Codec = new Codec();
 
+        private readonly BlockMetadata _metadata;
+        private readonly HashDigest<SHA256> _preEvaluationHash;
+
         /// <summary>
-        /// Creates a <see cref="PreEvaluationBlockHeader"/>  by copying the fields of another
+        /// Creates a <see cref="PreEvaluationBlockHeader"/> by copying the fields of another
         /// pre-evaluation block <paramref name="header"/>.
         /// </summary>
-        /// <param name="header">A pre-evaluation block header to copy.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="header"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="header"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// As <paramref name="header"/> needn't be an actual <see cref="PreEvaluationBlockHeader"/>
+        /// instance, but simply any object implementing <see cref="IPreEvaluationBlockHeader"/>
+        /// interface, it can't be trusted to satisfy all the constraints for a valid
+        /// <see cref="PreEvaluationBlockHeader"/> instance.  As such, conditions are checked again
+        /// whilst creating a copy.  This is a relatively heavy operation, so must be used
+        /// sparingly.
+        /// </para>
+        /// <para>
+        /// In particular, this creates a new instance of
+        /// <see cref="BlockMetadata"/> with data extracted from <paramref name="header"/>.
+        /// Thus any <see cref="Exception"/>s that can be thrown from a
+        /// <see cref="BlockMetadata"/>'s constructors may also be thrown in addition to the ones
+        /// explicitly listed below.
+        /// </para>
+        /// </remarks>
+        /// <param name="header">The pre-evaluation block header to copy.</param>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// pre-evaluation <paramref name="header"/>'s
-        /// <seealso cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
+        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> is invalid.</exception>
+        /// <seealso cref="BlockMetadata"/>
         public PreEvaluationBlockHeader(IPreEvaluationBlockHeader header)
-            : this(header, header.PreEvaluationHash)
+            : this(new BlockMetadata(header), header.PreEvaluationHash)
         {
         }
 
         /// <summary>
         /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>.
+        /// <paramref name="metadata"/> and a valid <paramref name="preEvaluationHash"/>.
+        /// All other public constructors should be redirected to this one.
         /// </summary>
         /// <param name="metadata">Block's metadata.</param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <remarks><see cref="PreEvaluationHash"/> is automatically derived from the given
-        /// arguments.</remarks>
-        public PreEvaluationBlockHeader(IBlockMetadata metadata)
-            : this(new BlockMetadata(metadata))
-        {
-        }
-
-        /// <summary>
-        /// Creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, a valid proof-of-work
-        /// a <paramref name="preEvaluationHash"/> digest.
-        /// </summary>
-        /// <param name="metadata">Block's metadata.</param>
-        /// <param name="preEvaluationHash">The hash digest derived from the given arguments.
+        /// <param name="preEvaluationHash">A valid hash derived from <paramref name="metadata"/>.
         /// </param>
-        /// <exception cref="InvalidBlockProtocolVersionException">Thrown when
-        /// the <paramref name="metadata"/>'s to set is <see cref="IBlockMetadata.ProtocolVersion"/>
-        /// is less than 0, or greater than <see cref="BlockMetadata.CurrentProtocolVersion"/>,
-        /// the latest known protocol version.</exception>
-        /// <exception cref="InvalidBlockIndexException">Thrown when the <paramref name="metadata"/>
-        /// has a negative <see cref="IBlockMetadata.Index"/>.</exception>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
+        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
         /// <paramref name="preEvaluationHash"/> is invalid.</exception>
         public PreEvaluationBlockHeader(
-            IBlockMetadata metadata,
-            HashDigest<SHA256> preEvaluationHash)
-                : this(new BlockMetadata(metadata), preEvaluationHash)
-        {
-        }
-
-        /// <summary>
-        /// Unsafely creates a <see cref="PreEvaluationBlockHeader"/> instance with its
-        /// <paramref name="metadata"/>, and a <paramref name="preEvaluationHash"/>
-        /// which is probably considered as to be valid.
-        /// </summary>
-        /// <param name="metadata">Block's metadata.</param>
-        /// <param name="preEvaluationHash">A valid proof-of-work bytearray which is probably
-        /// considered to satisfy the required difficulty, and the hash digest which is probably
-        /// considered to be derived from the block <paramref name="metadata"/> and the nonce.
-        /// </param>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
-        /// hash is invalid.</exception>
-        internal PreEvaluationBlockHeader(
             BlockMetadata metadata,
             HashDigest<SHA256> preEvaluationHash)
         {
-            // FIXME: CheckPreEvaluationHash(metadata, preEvaluationHash) should fit in somewhere.
-            if (metadata.Index == 0L && metadata.PreviousHash is { } ph)
-            {
-                throw new InvalidBlockPreviousHashException(
-                    $"Genesis block must not have {nameof(PreviousHash)}: {ph}."
-                );
-            }
-            else if (metadata.Index > 0L && metadata.PreviousHash is null)
-            {
-                throw new InvalidBlockPreviousHashException(
-                    $"Block #{metadata.Index} must have its {nameof(PreviousHash)} " +
-                    "(except for genesis)."
-                );
-            }
-            else if (metadata.ProtocolVersion >= 2 && metadata.PublicKey is null)
-            {
-                throw new InvalidBlockPublicKeyException(
-                    "Block's public key cannot be null unless its protocol version is less than 2.",
-                    metadata.PublicKey
-                );
-            }
-            else if (metadata.ProtocolVersion < 2 && metadata.PublicKey is { })
-            {
-                string msg =
-                    "As blocks became to have public keys since the protocol version 2, blocks " +
-                    $"with a protocol version {metadata.ProtocolVersion} cannot have public keys.";
-                throw new InvalidBlockPublicKeyException(msg, metadata.PublicKey);
-            }
-            else if (metadata.PublicKey is { } pubKey && !metadata.Miner.Equals(pubKey.ToAddress()))
-            {
-                string msg =
-                    $"The miner address {metadata.Miner} is not consistent with its public key " +
-                    $"{pubKey}.";
-                throw new InvalidBlockPublicKeyException(msg, pubKey);
-            }
-            else if (metadata.LastCommit is { } commit)
-            {
-                if (commit.Height != metadata.Index - 1)
-                {
-                    throw new InvalidBlockLastCommitException(
-                        $"The block #{metadata.Index}'s lastcommit's height " +
-                        $"({commit.Height}) does not match " +
-                        $"the previous block's index {metadata.Index - 1}.");
-                }
-
-                if (!commit.BlockHash.Equals(metadata.PreviousHash))
-                {
-                    throw new InvalidBlockLastCommitException(
-                        $"The block #{metadata.Index}'s lastcommit's previous hash " +
-                        $"({commit.BlockHash}) does not match " +
-                        $"the previous block's hash {metadata.PreviousHash}.");
-                }
-
-                if (!commit.HasVotesSameHeight())
-                {
-                    // The height of all votes are same with the lastcommit's height.
-                    throw new InvalidBlockLastCommitException(
-                        $"The block #{metadata.Index}'s lastcommit's votes' " +
-                        "height does not match the previous block's index " +
-                        $"{metadata.Index - 1}.");
-                }
-            }
-            else if (metadata.ProtocolVersion > BlockMetadata.PoWProtocolVersion)
-            {
-                if ((metadata.Index == 0 || metadata.Index == 1) && metadata.LastCommit is { })
-                {
-                    throw new InvalidBlockLastCommitException(
-                        "The genesis block and the next block should not have lastCommit");
-                }
-                else if (metadata.Index > 1 && !(metadata.LastCommit is { }))
-                {
-                    throw new InvalidBlockLastCommitException(
-                        $"In PBFT Protocol version, any block should have lastCommit except " +
-                        $"the genesis block and the right after block.");
-                }
-            }
-
-            Metadata = metadata;
-            PreEvaluationHash = preEvaluationHash;
+            _metadata = metadata;
+            _preEvaluationHash = CheckPreEvaluationHash(metadata, preEvaluationHash);
         }
 
-        protected PreEvaluationBlockHeader(BlockMetadata metadata)
-            : this(metadata, metadata.DerivePreEvaluationHash(default))
-        {
-        }
+        /// <summary>
+        /// Internal <see cref="BlockMetadata"/>.
+        /// </summary>
+        public BlockMetadata Metadata => _metadata;
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => Metadata.ProtocolVersion;
@@ -198,15 +93,11 @@ namespace Libplanet.Blocks
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => Metadata.TxHash;
 
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
         /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
-        public HashDigest<SHA256> PreEvaluationHash { get; }
-
-        /// <summary>
-        /// The internal block metadata.
-        /// </summary>
-        protected BlockMetadata Metadata { get; }
+        public HashDigest<SHA256> PreEvaluationHash => _preEvaluationHash;
 
         /// <summary>
         /// Serializes data of a possible candidate shifted from it into a Bencodex dictionary.
@@ -222,8 +113,7 @@ namespace Libplanet.Blocks
         /// <returns>The serialized block header in a Bencodex dictionary.</returns>
         public Bencodex.Types.Dictionary MakeCandidateData(
             HashDigest<SHA256> stateRootHash,
-            ImmutableArray<byte>? signature = null
-        )
+            ImmutableArray<byte>? signature = null)
         {
             Dictionary dict = Metadata.MakeCandidateData(default(Nonce))
                 .Add("state_root_hash", stateRootHash.ByteArray);
@@ -254,8 +144,7 @@ namespace Libplanet.Blocks
         /// </remarks>
         public ImmutableArray<byte> MakeSignature(
             PrivateKey privateKey,
-            HashDigest<SHA256> stateRootHash
-        )
+            HashDigest<SHA256> stateRootHash)
         {
             if (PublicKey is null)
             {
@@ -289,8 +178,7 @@ namespace Libplanet.Blocks
         /// <returns><c>true</c> if the signature is valid.  <c>false</c> otherwise.</returns>
         public bool VerifySignature(
             ImmutableArray<byte>? signature,
-            HashDigest<SHA256> stateRootHash
-        )
+            HashDigest<SHA256> stateRootHash)
         {
             if (PublicKey is { } pubKey && signature is { } sig)
             {
@@ -316,7 +204,7 @@ namespace Libplanet.Blocks
         /// <returns>A block hash.</returns>
         public BlockHash DeriveBlockHash(
             in HashDigest<SHA256> stateRootHash,
-            ImmutableArray<byte>? signature
+            in ImmutableArray<byte>? signature
         ) =>
             BlockHash.DeriveFrom(Codec.Encode(MakeCandidateData(stateRootHash, signature)));
 
@@ -332,11 +220,25 @@ namespace Libplanet.Blocks
         /// if the <paramref name="preEvaluationHash"/> is verified to be correct.</returns>
         /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given
         /// <paramref name="preEvaluationHash"/> is incorrect.</exception>
-        private static ImmutableArray<byte> CheckPreEvaluationHash(
+        private static HashDigest<SHA256> CheckPreEvaluationHash(
             BlockMetadata metadata,
-            in ImmutableArray<byte> preEvaluationHash)
+            in HashDigest<SHA256> preEvaluationHash)
         {
-            return preEvaluationHash;
+            if (metadata.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                return preEvaluationHash;
+            }
+            else
+            {
+                HashDigest<SHA256> expected = metadata.DerivePreEvaluationHash(default);
+                return expected.Equals(preEvaluationHash)
+                    ? expected
+                    : throw new InvalidBlockPreEvaluationHashException(
+                        $"Given {nameof(preEvaluationHash)} {preEvaluationHash} does not match " +
+                        $"the expected value {expected}.",
+                        preEvaluationHash.ByteArray,
+                        expected.ByteArray);
+            }
         }
     }
 }

@@ -66,13 +66,9 @@ namespace Libplanet.Tests.Action
                 miner: _keys[1].PublicKey,
                 protocolVersion: ProtocolVersion
             );
-            chain.Append(
-                new Block<DumbAction>(
-                    preEval,
-                    preEval.DetermineStateRootHash(chain),
-                    signature: null
-                )
-            );
+            var stateRootHash = preEval.DetermineStateRootHash(chain);
+            var hash = preEval.Header.DeriveBlockHash(stateRootHash, null);
+            chain.Append(new Block<DumbAction>(preEval, (stateRootHash, null, hash)));
             Assert.Equal(
                 DumbAction.DumbCurrency * 6,
                 chain.GetBalance(_addr[0], DumbAction.DumbCurrency)

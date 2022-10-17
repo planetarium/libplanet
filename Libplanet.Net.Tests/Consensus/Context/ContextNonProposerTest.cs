@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -157,14 +155,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 privateKey: TestUtils.Peer0Priv,
                 consensusMessageSent: CheckCommit);
 
-            var invalidBlock = new BlockContent<DumbAction>
-            {
-                Index = blockChain.Tip.Index + 1,
-                PublicKey = fx.Miner.PublicKey,
-                PreviousHash = blockChain.Tip.Hash,
-                Timestamp = blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                Transactions = new List<Transaction<DumbAction>>(),
-            }.Propose().Evaluate(fx.Miner, blockChain);
+            var invalidBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: blockChain.Tip.Index + 1,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: fx.Miner.PublicKey,
+                    previousHash: blockChain.Tip.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(fx.Miner, blockChain);
 
             context.StateChanged += (sender, state) =>
             {

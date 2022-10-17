@@ -49,23 +49,24 @@ namespace Libplanet.Node.Tests
                 },
                 timestamp: new DateTimeOffset(2022, 5, 24, 0, 0, 1, TimeSpan.Zero)
             );
-            _txs = new[] { txA, txB };
+            _txs = new[] { txA, txB }.OrderBy(tx => tx.Id).ToArray();
             _minerKey = new PrivateKey(new byte[]
             {
                 0x9b, 0xf4, 0x66, 0x4b, 0xa0, 0x9a, 0x89, 0xfa, 0xeb, 0x68, 0x4b,
                 0x94, 0xe6, 0x9f, 0xfd, 0xe0, 0x1d, 0x26, 0xae, 0x14, 0xb5, 0x56,
                 0x20, 0x4d, 0x3f, 0x6a, 0xb5, 0x8f, 0x61, 0xf7, 0x84, 0x18,
             });
-            _content = new BlockContent<NullAction>
-            {
-                Index = 0L,
-                Timestamp = new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
-                PublicKey = _minerKey.PublicKey,
-                PreviousHash = null,
-                Transactions = _txs,
-            };
+            _content = new BlockContent<NullAction>(
+                new BlockMetadata(
+                    index: 0L,
+                    timestamp: new DateTimeOffset(2022, 5, 24, 1, 2, 3, 456, TimeSpan.Zero),
+                    publicKey: _minerKey.PublicKey,
+                    previousHash: null,
+                    txHash: BlockContent<NullAction>.DeriveTxHash(_txs),
+                    lastCommit: null),
+                transactions: _txs);
             var nonce = default(Nonce);
-            byte[] blockBytes = Codec.Encode(_content.MakeCandidateData(nonce));
+            byte[] blockBytes = Codec.Encode(_content.Metadata.MakeCandidateData(nonce));
             HashDigest<SHA256> preEvalHash = HashDigest<SHA256>.DeriveFrom(blockBytes);
             _preEval = new PreEvaluationBlock<NullAction>(_content, preEvalHash);
             _block = _preEval.Evaluate(

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
@@ -23,35 +22,72 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
-    public sealed class PreEvaluationBlock<T> : PreEvaluationBlockHeader, IPreEvaluationBlock<T>
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>
         where T : IAction, new()
     {
-        /// <summary>
-        /// Unsafely creates a <see cref="PreEvaluationBlock{T}"/> instance with its
-        /// <paramref name="content"/> data, and a <paramref name="preEvaluationHash"/>
-        /// which is probably considered as to be valid.
-        /// </summary>
-        /// <param name="content">Block's content data.</param>
-        /// <param name="preEvaluationHash">A pre-evaluation hash nonce is probably considered
-        /// to satisfy the required difficulty, and the hash digest which is probably considered
-        /// to be derived from the block <paramref name="content"/> and the nonce.</param>
-        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when the given proof's
-        /// hash is invalid.</exception>
-        internal PreEvaluationBlock(
-            BlockContent<T> content,
-            in HashDigest<SHA256> preEvaluationHash
-        )
-            : base(content, preEvaluationHash)
+        private BlockContent<T> _content;
+        private PreEvaluationBlockHeader _header;
+
+        public PreEvaluationBlock(
+            IPreEvaluationBlockHeader preEvaluationBlockHeader,
+            IEnumerable<Transaction<T>> transactions)
+            : this(
+                new BlockContent<T>(preEvaluationBlockHeader, transactions),
+                preEvaluationBlockHeader.PreEvaluationHash)
         {
         }
 
-        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
-        public IReadOnlyList<Transaction<T>> Transactions => Content.Transactions;
+        /// <summary>
+        /// Creates a <see cref="PreEvaluationBlock{T}"/> instance with its
+        /// <paramref name="content"/> data, a valid <paramref name="preEvaluationHash"/>.
+        /// </summary>
+        /// <param name="content">Block's content data.</param>
+        /// <param name="preEvaluationHash">A valid hash derived from <paramref name="content"/>.
+        /// </param>
+        /// <exception cref="InvalidBlockPreEvaluationHashException">Thrown when
+        /// <paramref name="preEvaluationHash"/> is invalid.</exception>
+        internal PreEvaluationBlock(
+            BlockContent<T> content,
+            in HashDigest<SHA256> preEvaluationHash)
+        {
+            _header = new PreEvaluationBlockHeader(content.Metadata, preEvaluationHash);
+            _content = content;
+        }
 
         /// <summary>
-        /// The internal block content.
+        /// Internal <see cref="PreEvaluationBlockHeader"/>.
         /// </summary>
-        private BlockContent<T> Content => (BlockContent<T>)Metadata;
+        public PreEvaluationBlockHeader Header => _header;
+
+        /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
+        public IReadOnlyList<Transaction<T>> Transactions => _content.Transactions;
+
+        /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
+        public int ProtocolVersion => _header.ProtocolVersion;
+
+        /// <inheritdoc cref="IBlockMetadata.Index"/>
+        public long Index => _header.Index;
+
+        /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _header.Timestamp;
+
+        /// <inheritdoc cref="IBlockMetadata.Miner"/>
+        public Address Miner => _header.Miner;
+
+        /// <inheritdoc cref="IBlockMetadata.PublicKey"/>
+        public PublicKey? PublicKey => _header.PublicKey;
+
+        /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
+        public BlockHash? PreviousHash => _header.PreviousHash;
+
+        /// <inheritdoc cref="IBlockMetadata.TxHash"/>
+        public HashDigest<SHA256>? TxHash => _header.TxHash;
+
+        /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
+        public BlockCommit? LastCommit => _header.LastCommit;
+
+        /// <inheritdoc cref="IPreEvaluationBlockHeader.PreEvaluationHash"/>
+        public HashDigest<SHA256> PreEvaluationHash => _header.PreEvaluationHash;
 
         /// <summary>
         /// Evaluates all actions in the <see cref="Transactions"/> and
@@ -141,8 +177,9 @@ namespace Libplanet.Blocks
         /// </remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {
-            ImmutableArray<byte> sig = MakeSignature(privateKey, stateRootHash);
-            return new Block<T>(this, stateRootHash, sig);
+            ImmutableArray<byte> sig = Header.MakeSignature(privateKey, stateRootHash);
+            return new Block<T>(
+                this, (stateRootHash, sig, Header.DeriveBlockHash(stateRootHash, sig)));
         }
 
         /// <summary>
@@ -247,7 +284,7 @@ namespace Libplanet.Blocks
             CalculateStateRootHash(blockChain, stateCompleterSet, out statesDelta).StateRootHash;
 
         internal (Block<T> Block, IReadOnlyList<ActionEvaluation> ActionEvaluations)
-        EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
+            EvaluateActions(PrivateKey privateKey, BlockChain<T> blockChain)
         {
             // FIXME: Take narrower input instead of a whole BlockChain<T>.
             (HashDigest<SHA256> stateRootHash, IReadOnlyList<ActionEvaluation> evals) =

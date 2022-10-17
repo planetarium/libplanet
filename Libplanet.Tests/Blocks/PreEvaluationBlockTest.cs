@@ -59,9 +59,16 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesis.StateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1Content;
-                content1.PreviousHash = genesis.Hash;
-                content1.Transactions = new[] { _contents.Block1Tx0 };
+                var txs = new[] { _contents.Block1Tx0 };
+                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                    new BlockMetadata(
+                        index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
+                        publicKey: _contents.Block1Content.PublicKey,
+                        previousHash: genesis.Hash,
+                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        lastCommit: null),
+                    transactions: txs);
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 Block<Arithmetic> block1 = preEval1.Evaluate(_contents.Block1Key, blockChain);
@@ -115,9 +122,16 @@ namespace Libplanet.Tests.Blocks
                     preEvalGenesis.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(genesisStateRootHash, identicalGenesisStateRootHash);
 
-                BlockContent<Arithmetic> content1 = _contents.Block1Content;
-                content1.PreviousHash = genesis.Hash;
-                content1.Transactions = new[] { _contents.Block1Tx0 };
+                var txs = new[] { _contents.Block1Tx0 };
+                BlockContent<Arithmetic> content1 = new BlockContent<Arithmetic>(
+                    new BlockMetadata(
+                        index: _contents.Block1Content.Index,
+                        timestamp: DateTimeOffset.UtcNow,
+                        publicKey: _contents.Block1Content.PublicKey,
+                        previousHash: genesis.Hash,
+                        txHash: BlockContent<Arithmetic>.DeriveTxHash(txs),
+                        lastCommit: null),
+                    transactions: txs);
                 PreEvaluationBlock<Arithmetic> preEval1 = content1.Propose();
 
                 HashDigest<SHA256> b1StateRootHash = preEval1.DetermineStateRootHash(blockChain);

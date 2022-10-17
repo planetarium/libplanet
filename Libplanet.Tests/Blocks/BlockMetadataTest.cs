@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;
@@ -24,20 +26,6 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Constructor()
-        {
-            DateTimeOffset before = DateTimeOffset.UtcNow;
-            var m = new BlockMetadata();
-            DateTimeOffset after = DateTimeOffset.UtcNow;
-            Assert.Equal(BlockMetadata.CurrentProtocolVersion, m.ProtocolVersion);
-            Assert.Equal(0, m.Index);
-            Assert.InRange(m.Timestamp, before, after);
-            AssertBytesEqual(default(Address), m.Miner);
-            AssertBytesEqual(null, m.PreviousHash);
-            AssertBytesEqual(null, m.TxHash);
-        }
-
-        [Fact]
         public void CopyConstructor()
         {
             var g = new BlockMetadata(GenesisContent);
@@ -49,23 +37,38 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ProtocolVersion()
         {
-            int v = Block1Metadata.ProtocolVersion;
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = -1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: -1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash,
+                    lastCommit: null));
             Assert.Throws<InvalidBlockProtocolVersionException>(
-                () => Block1Metadata.ProtocolVersion = Block<Arithmetic>.CurrentProtocolVersion + 1
-            );
-            Assert.Equal(v, Block1Metadata.ProtocolVersion);
+                () => new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion + 1,
+                    index: Block1Metadata.Index,
+                    timestamp: Block1Metadata.Timestamp,
+                    miner: Block1Metadata.Miner,
+                    publicKey: null,
+                    previousHash: Block1Metadata.PreviousHash,
+                    txHash: Block1Metadata.TxHash,
+                    lastCommit: null));
         }
 
         [Fact]
         public void Index()
         {
-            long idx = Block1Metadata.Index;
-            Assert.Throws<InvalidBlockIndexException>(() => Block1Metadata.Index = -1);
-            Assert.Equal(idx, Block1Metadata.Index);
+            Assert.Throws<InvalidBlockIndexException>(() => new BlockMetadata(
+                index: -1L,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null));
         }
 
         [Fact]
@@ -73,13 +76,39 @@ namespace Libplanet.Tests.Blocks
         {
             DateTimeOffset kstTimestamp =
                 new DateTimeOffset(2021, 9, 7, 9, 30, 12, 345, TimeSpan.FromHours(9));
-            Block1Metadata.Timestamp = kstTimestamp;
-            Assert.Equal(TimeSpan.Zero, Block1Metadata.Timestamp.Offset);
+            BlockMetadata metadata = new BlockMetadata(
+                protocolVersion: Block1Metadata.ProtocolVersion,
+                index: Block1Metadata.Index,
+                timestamp: kstTimestamp,
+                miner: Block1Metadata.Miner,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null);
+            Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
                 new DateTime(2021, 9, 7, 0, 30, 12, 345),
-                Block1Metadata.Timestamp.DateTime
-            );
-            Assert.Equal(kstTimestamp, Block1Metadata.Timestamp);
+                metadata.Timestamp.DateTime);
+            Assert.Equal(kstTimestamp, metadata.Timestamp);
+        }
+
+        [Fact]
+        public void PreviousHash()
+        {
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: GenesisMetadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: GenesisMetadata.PublicKey,
+                previousHash: Block1Metadata.PreviousHash,
+                txHash: GenesisMetadata.TxHash,
+                lastCommit: null));
+            Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
+                index: Block1Metadata.Index,
+                timestamp: DateTimeOffset.UtcNow,
+                publicKey: Block1Metadata.PublicKey,
+                previousHash: null,
+                txHash: Block1Metadata.TxHash,
+                lastCommit: null));
         }
 
         [Fact]
@@ -218,6 +247,127 @@ namespace Libplanet.Tests.Blocks
             AssertBytesEqual(
                 FromHex("9ae70453c854c69c03e9841e117d269b97615dcf4f580fb99577d981d3f61ebf"),
                 hash.ByteArray);
+        }
+
+        [Fact]
+        public void ValidateLastCommit()
+        {
+            var validatorA = new PrivateKey();
+            var validatorB = new PrivateKey();
+            var validatorC = new PrivateKey();
+            BlockHash blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            DateTimeOffset timestamp = DateTimeOffset.UtcNow;
+
+            var voteA = new VoteMetadata(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorA.PublicKey,
+                VoteFlag.Commit).Sign(validatorA);
+            var voteB = new VoteMetadata(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorB.PublicKey,
+                VoteFlag.Commit).Sign(validatorB);
+            var voteC = new VoteMetadata(
+                1,
+                0,
+                blockHash,
+                timestamp,
+                validatorC.PublicKey,
+                VoteFlag.Commit).Sign(validatorC);
+
+            // Height of the last commit is invalid.
+            var invalidHeightLastCommit = new BlockCommit(
+                2,
+                0,
+                blockHash,
+                new[]
+                {
+                    new VoteMetadata(
+                        2,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorA.PublicKey,
+                        VoteFlag.Commit).Sign(validatorA),
+                    new VoteMetadata(
+                        2,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorB.PublicKey,
+                        VoteFlag.Commit).Sign(validatorB),
+                    new VoteMetadata(
+                        2,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorC.PublicKey,
+                        VoteFlag.Commit).Sign(validatorC),
+                }.ToImmutableArray());
+            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: validatorA.PublicKey.ToAddress(),
+                publicKey: validatorA.PublicKey,
+                previousHash: blockHash,
+                txHash: null,
+                lastCommit: invalidHeightLastCommit));
+
+            // BlockHash of the last commit is invalid.
+            var invalidBlockHashLastCommit = new BlockCommit(
+                1,
+                0,
+                invalidBlockHash,
+                new[] { voteA, voteB, voteC }.ToImmutableArray());
+            Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: validatorA.PublicKey.ToAddress(),
+                publicKey: validatorA.PublicKey,
+                previousHash: GenesisHash,
+                txHash: null,
+                lastCommit: invalidBlockHashLastCommit));
+
+            // Signature can be null for null or unknown votes.
+            var validLastCommit = new BlockCommit(
+                1,
+                0,
+                blockHash,
+                new[]
+                {
+                    voteA,
+                    new VoteMetadata(
+                        1,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorB.PublicKey,
+                        VoteFlag.Null).Sign(null),
+                    new VoteMetadata(
+                        1,
+                        0,
+                        blockHash,
+                        timestamp,
+                        validatorC.PublicKey,
+                        VoteFlag.Unknown).Sign(null),
+                }.ToImmutableArray());
+            var validMetadata = new BlockMetadata(
+                protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                index: 2,
+                timestamp: timestamp,
+                miner: validatorA.PublicKey.ToAddress(),
+                publicKey: validatorA.PublicKey,
+                previousHash: blockHash,
+                txHash: null,
+                lastCommit: validLastCommit);
         }
 
         [Fact]

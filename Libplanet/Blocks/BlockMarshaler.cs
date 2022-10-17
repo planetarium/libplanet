@@ -160,40 +160,40 @@ namespace Libplanet.Blocks
 
         public static BlockMetadata UnmarshalBlockMetadata(Dictionary marshaled)
         {
-            var metadata = new BlockMetadata
-            {
-                ProtocolVersion = marshaled.ContainsKey(ProtocolVersionKey)
-                    ? (int)marshaled.GetValue<Integer>(ProtocolVersionKey)
-                    : 0,
-                Index = UnmarshalBlockMetadataIndex(marshaled),
-                Timestamp = DateTimeOffset.ParseExact(
-                    marshaled.GetValue<Text>(TimestampKey),
-                    TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ),
-                PreviousHash = marshaled.ContainsKey(PreviousHashKey)
-                    ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
-                    : (BlockHash?)null,
-                TxHash = marshaled.ContainsKey(TxHashKey)
-                    ? new HashDigest<SHA256>(
-                        marshaled.GetValue<Binary>(TxHashKey).ByteArray)
-                    : (HashDigest<SHA256>?)null,
-                LastCommit = marshaled.ContainsKey(LastCommitKey)
-                ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
-                : (BlockCommit?)null,
-            };
-
+            Address miner;
+            PublicKey? publicKey = null;
             if (marshaled.ContainsKey(PublicKeyKey))
             {
-                metadata.PublicKey =
-                    new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+                publicKey = new PublicKey(marshaled.GetValue<Binary>(PublicKeyKey).ByteArray);
+                miner = publicKey.ToAddress();
             }
             else
             {
-                metadata.Miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
+                miner = new Address(marshaled.GetValue<Binary>(MinerKey).ByteArray);
             }
 
-            return metadata;
+#pragma warning disable SA1118 // The parameter spans multiple lines
+            return new BlockMetadata(
+                protocolVersion: marshaled.ContainsKey(ProtocolVersionKey)
+                    ? (int)marshaled.GetValue<Integer>(ProtocolVersionKey)
+                    : 0,
+                index: UnmarshalBlockMetadataIndex(marshaled),
+                timestamp: DateTimeOffset.ParseExact(
+                    marshaled.GetValue<Text>(TimestampKey),
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture),
+                miner: miner,
+                publicKey: publicKey,
+                previousHash: marshaled.ContainsKey(PreviousHashKey)
+                    ? new BlockHash(marshaled.GetValue<Binary>(PreviousHashKey).ByteArray)
+                    : (BlockHash?)null,
+                txHash: marshaled.ContainsKey(TxHashKey)
+                    ? new HashDigest<SHA256>(marshaled.GetValue<Binary>(TxHashKey).ByteArray)
+                    : (HashDigest<SHA256>?)null,
+                lastCommit: marshaled.ContainsKey(LastCommitKey)
+                    ? new BlockCommit(marshaled.GetValue<Binary>(LastCommitKey).ByteArray.ToArray())
+                    : (BlockCommit?)null);
+#pragma warning restore SA1118
         }
 
         public static HashDigest<SHA256> UnmarshalPreEvaluationHash(Dictionary marshaled) =>
@@ -230,7 +230,7 @@ namespace Libplanet.Blocks
             HashDigest<SHA256> stateRootHash = UnmarshalBlockHeaderStateRootHash(marshaled);
             ImmutableArray<byte>? sig = UnmarshalBlockHeaderSignature(marshaled);
             BlockHash hash = UnmarshalBlockHeaderHash(marshaled);
-            return new BlockHeader(preEvalHeader, stateRootHash, sig, hash);
+            return new BlockHeader(preEvalHeader, (stateRootHash, sig, hash));
         }
 
         public static IReadOnlyList<Transaction<T>> UnmarshalTransactions<T>(List marshaled)

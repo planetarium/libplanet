@@ -906,16 +906,22 @@ namespace Libplanet.Net.Tests
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
-            var genesisContent1 = new BlockContent<DumbAction>
-            {
-                PublicKey = key1.PublicKey,
-                Timestamp = DateTimeOffset.UtcNow,
-            };
-            var genesisContent2 = new BlockContent<DumbAction>
-            {
-                PublicKey = key2.PublicKey,
-                Timestamp = DateTimeOffset.UtcNow,
-            };
+            var genesisContent1 = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: key1.PublicKey,
+                    previousHash: null,
+                    txHash: null,
+                    lastCommit: null));
+            var genesisContent2 = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: key2.PublicKey,
+                    previousHash: null,
+                    txHash: null,
+                    lastCommit: null));
             var genesisBlock1 = genesisContent1.Propose();
             var genesisBlock2 = genesisContent2.Propose();
 
