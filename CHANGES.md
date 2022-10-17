@@ -6,6 +6,13 @@ Version 0.43.1
 
 To be released.
 
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResultType.UpdatedStateType` and
+    `TxResultType.FungibleAssetBalancesType` GraphQL types.  [[#2405]]
+
+[#2405]: https://github.com/planetarium/libplanet/pull/2405
+
 
 Version 0.43.0
 --------------
