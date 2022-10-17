@@ -96,17 +96,28 @@ To be released.
 ### CLI tools
 
 
+Version 0.43.1
+--------------
+
+Released on October 17, 2022.
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResultType.UpdatedStateType` and
+    `TxResultType.FungibleAssetBalancesType` GraphQL types.  [[#2405]]
+
+[#2405]: https://github.com/planetarium/libplanet/pull/2405
+
+
 Version 0.43.0
 --------------
 
-To be released.
+Released on October 14, 2022.
 
 Since 0.43.0, we officially provide *[@planetarium/tx]*, an npm package for
 creating unsigned transactions in JavaScript/TypeScript.  Although it is still
 in experimental stage, which can build only unsigned transactions with
 a system action, its features will be added more in the future.
-
-### Deprecated APIs
 
 ### Backward-incompatible API changes
 
@@ -141,18 +152,14 @@ a system action, its features will be added more in the future.
         (HashDigest<SHA256>, ImmutableArray<byte>, BlockHash))`.
  -  `BlockContent<T>` no longer inherits `BlockMetadata` and
     `PreEvaluationBlock<T>` no longer inherits `PreEvaluationBlockHeader`.
-    [[#2231]]
+    [[#2321]]
  -  Both `BlockMetadata` and `BlockContent<T>` are made immutable.  Their
-    properties can no longer be assigned to.  [[#2231]]
+    properties can no longer be assigned to.  [[#2321]]
  -  Copy extension methods for `BlockMetadata` and `BlockContent<T>` removed.
-    [[#2231]]
+    [[#2321]]
  -  (Libplanet.Extensions.Cocona) The return type of
     `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
     [[#2322]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -167,7 +174,7 @@ a system action, its features will be added more in the future.
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
  -  Each `BlockMetadata`, `PreEvaluationBlockHeader`, and `BlockHeader`
-    can be accessed from any "larger" type object through properties.  [[#2231]]
+    can be accessed from any "larger" type object through properties.  [[#2321]]
      -  `BlockMetadata` can be accessed through `BlockContent<T>.Metadata`
         or `PreEvaluationBlockHeader.Metadata`.
      -  `PreEvaluationBlockHeader` can be accessed through
@@ -205,11 +212,13 @@ a system action, its features will be added more in the future.
         of their `PlainValue` with `type_id` field.  [[#2294]]
  -  System actions' `GetHashCode()` and `Equals(object)` methods now check
     value equality (rather than reference equality).  [[#2294]]
+ -  A `ValidateAppProtocolVersion` became allow validation of different extra.
+    [[#2380]]
 
 ### Bug fixes
 
  -  Interface methods `IComparable.CompareTo()` and
-    `IComparable<T>.CompareTo()` for `Address` are now accessible.  [#2384]
+    `IComparable<T>.CompareTo()` for `Address` are now accessible.  [[#2384]]
 
 ### Dependencies
 
@@ -238,6 +247,7 @@ a system action, its features will be added more in the future.
 [#2353]: https://github.com/planetarium/libplanet/pull/2353
 [#2356]: https://github.com/planetarium/libplanet/issues/2356
 [#2366]: https://github.com/planetarium/libplanet/pull/2366
+[#2380]: https://github.com/planetarium/libplanet/pull/2380
 [#2384]: https://github.com/planetarium/libplanet/pull/2384
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
