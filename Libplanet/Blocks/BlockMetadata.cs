@@ -221,21 +221,11 @@ namespace Libplanet.Blocks
                         $"The lastcommit height {commit.Height} of block #{index} " +
                         $"should match the previous block's index {index - 1}.");
                 }
-
-                if (!commit.BlockHash.Equals(previousHash))
+                else if (!commit.BlockHash.Equals(previousHash))
                 {
                     throw new InvalidBlockLastCommitException(
                         $"The lastcommit blockhash {commit.BlockHash} of block #{index} " +
                         $"should match the previous block's hash {previousHash}.");
-                }
-
-                // FIXME: This should be checked by blockcommit instance
-                if (!commit.HasVotesSameHeight())
-                {
-                    // The height of all votes are same with the lastcommit's height.
-                    throw new InvalidBlockLastCommitException(
-                        $"All votes in the lastcommit of block #{index} " +
-                        $"should match the previous block's index {index - 1}.");
                 }
             }
 

@@ -114,6 +114,31 @@ namespace Libplanet.Tests.Blocks
          }
 
         [Fact]
+        public void AllVotesShouldHaveMatchingHash()
+        {
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var badHash = new BlockHash(TestUtils.GetRandomBytes(32));
+
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    2,
+                    0,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    TestUtils.ConsensusPeer0PrivateKey.PublicKey,
+                    VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey))
+                .Add(new VoteMetadata(
+                    2,
+                    0,
+                    badHash,
+                    DateTimeOffset.UtcNow,
+                    TestUtils.ConsensusPeer1PrivateKey.PublicKey,
+                    VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey));
+
+            Assert.Throws<ArgumentException>(() => new BlockCommit(2, 0, hash, votes));
+        }
+
+        [Fact]
         public void DecodeFailsNegativeHeight()
         {
             var fx = new MemoryStoreFixture();

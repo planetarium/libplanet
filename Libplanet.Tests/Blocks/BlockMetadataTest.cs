@@ -259,28 +259,6 @@ namespace Libplanet.Tests.Blocks
             BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
             DateTimeOffset timestamp = DateTimeOffset.UtcNow;
 
-            var voteA = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorA.PublicKey,
-                VoteFlag.Commit).Sign(validatorA);
-            var voteB = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorB.PublicKey,
-                VoteFlag.Commit).Sign(validatorB);
-            var voteC = new VoteMetadata(
-                1,
-                0,
-                blockHash,
-                timestamp,
-                validatorC.PublicKey,
-                VoteFlag.Commit).Sign(validatorC);
-
             // Height of the last commit is invalid.
             var invalidHeightLastCommit = new BlockCommit(
                 2,
@@ -288,27 +266,9 @@ namespace Libplanet.Tests.Blocks
                 blockHash,
                 new[]
                 {
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorA.PublicKey,
-                        VoteFlag.Commit).Sign(validatorA),
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorB.PublicKey,
-                        VoteFlag.Commit).Sign(validatorB),
-                    new VoteMetadata(
-                        2,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.Commit).Sign(validatorC),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
                 }.ToImmutableArray());
             Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
@@ -325,7 +285,12 @@ namespace Libplanet.Tests.Blocks
                 1,
                 0,
                 invalidBlockHash,
-                new[] { voteA, voteB, voteC }.ToImmutableArray());
+                new[]
+                {
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
+                }.ToImmutableArray());
             Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
                 index: 2,
@@ -343,7 +308,7 @@ namespace Libplanet.Tests.Blocks
                 blockHash,
                 new[]
                 {
-                    voteA,
+                    GenerateVote(blockHash, 1, 0, VoteFlag.Commit),
                     new VoteMetadata(
                         1,
                         0,
@@ -408,6 +373,16 @@ namespace Libplanet.Tests.Blocks
                 Assert.NotNull(exception);
                 Assert.IsAssignableFrom<OperationCanceledException>(exception);
             }
+        }
+
+        private static Vote GenerateVote(BlockHash? hash, long height, int round, VoteFlag flag)
+        {
+            var key = new PrivateKey();
+            var voteMetadata = new VoteMetadata(
+                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, flag);
+            return flag == VoteFlag.Absent || flag == VoteFlag.Commit
+                ? voteMetadata.Sign(key)
+                : voteMetadata.Sign(null);
         }
     }
 }

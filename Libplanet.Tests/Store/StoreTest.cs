@@ -1123,7 +1123,7 @@ namespace Libplanet.Tests.Store
                 var voteSetTwo = new VoteSet(
                     2,
                     0,
-                    fx.Block1.Hash,
+                    fx.Block2.Hash,
                     new List<PublicKey>() { fx.Miner.PublicKey });
 
                 BlockCommit[] blockCommits =
