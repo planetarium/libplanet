@@ -66,8 +66,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            // FIXME: StartAsync inside NewHeight makes it unreliable to try to await for
-            // early events.
             BlockHash blockHash;
             while (true)
             {
