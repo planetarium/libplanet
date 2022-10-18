@@ -21,6 +21,7 @@ namespace Libplanet.Net.Consensus
     public partial class ConsensusContext<T> : IDisposable
         where T : IAction, new()
     {
+        private readonly object _contextLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
         private readonly BlockChain<T> _blockChain;
@@ -84,6 +85,8 @@ namespace Libplanet.Net.Consensus
                 .ForContext("SubTag", "ConsensusContext")
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
+
+            _contextLock = new object();
         }
 
         /// <summary>
@@ -131,9 +134,12 @@ namespace Libplanet.Net.Consensus
         public void Dispose()
         {
             _newHeightCts?.Cancel();
-            foreach (Context<T> context in _contexts.Values)
+            lock (_contextLock)
             {
-                context.Dispose();
+                foreach (Context<T> context in _contexts.Values)
+                {
+                    context.Dispose();
+                }
             }
         }
 
@@ -197,18 +203,21 @@ namespace Libplanet.Net.Consensus
 
             _logger.Debug("Start consensus for height {Height}.", Height);
 
-            if (!_contexts.ContainsKey(height))
+            lock (_contextLock)
             {
-                _contexts[height] = new Context<T>(
-                    this,
-                    _blockChain,
-                    height,
-                    _privateKey,
-                    _getValidators(height).ToList(),
-                    Step.Default,
-                    contextTimeoutOptions: _contextTimeoutOption);
+                if (!_contexts.ContainsKey(height))
+                {
+                    _contexts[height] = new Context<T>(
+                        this,
+                        _blockChain,
+                        height,
+                        _privateKey,
+                        _getValidators(height).ToList(),
+                        Step.Default,
+                        contextTimeoutOptions: _contextTimeoutOption);
 
-                AttachEventHandlers(_contexts[height]);
+                    AttachEventHandlers(_contexts[height]);
+                }
             }
 
             _contexts[height].Start(lastCommit);
@@ -249,17 +258,20 @@ namespace Libplanet.Net.Consensus
                     consensusMessage);
             }
 
-            if (!_contexts.ContainsKey(height))
+            lock (_contextLock)
             {
-                _contexts[height] = new Context<T>(
-                    this,
-                    _blockChain,
-                    height,
-                    _privateKey,
-                    _getValidators(height).ToList(),
-                    _contextTimeoutOption);
+                if (!_contexts.ContainsKey(height))
+                {
+                    _contexts[height] = new Context<T>(
+                        this,
+                        _blockChain,
+                        height,
+                        _privateKey,
+                        _getValidators(height).ToList(),
+                        _contextTimeoutOption);
 
-                AttachEventHandlers(_contexts[height]);
+                    AttachEventHandlers(_contexts[height]);
+                }
             }
 
             _contexts[height].ProduceMessage(consensusMessage);
@@ -324,7 +336,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Discard and remove all contexts that has lower or equal height with
+        /// Discard and remove all contexts that has lower height with
         /// the given <paramref name="height"/>.
         /// </summary>
         /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
@@ -336,8 +348,11 @@ namespace Libplanet.Net.Consensus
                 if (ctx.Height < height)
                 {
                     _logger.Debug("Removing context for height {Height}", ctx.Height);
-                    ctx.Dispose();
-                    _contexts.Remove(ctx.Height);
+                    lock (_contextLock)
+                    {
+                        ctx.Dispose();
+                        _contexts.Remove(ctx.Height);
+                    }
                 }
             }
         }
