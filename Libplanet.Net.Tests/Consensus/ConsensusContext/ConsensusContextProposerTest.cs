@@ -16,7 +16,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextProposerTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)

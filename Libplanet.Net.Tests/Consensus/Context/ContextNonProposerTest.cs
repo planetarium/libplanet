@@ -22,14 +22,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public ContextNonProposerTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ContextTest>();
+                .ForContext<ContextNonProposerTest>();
 
-            _logger = Log.ForContext<ContextTest>();
+            _logger = Log.ForContext<ContextNonProposerTest>();
         }
 
         [Fact(Timeout = Timeout)]
