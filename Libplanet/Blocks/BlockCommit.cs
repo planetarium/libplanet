@@ -36,8 +36,16 @@ namespace Libplanet.Blocks
         /// </description></item>
         /// <item><description>
         ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has a different
-        ///     <see cref="Vote.Height"/> from <paramref name="height"/> or a different
+        ///     <see cref="Vote.Height"/> from <paramref name="height"/>.
+        /// </description></item>
+        /// <item><description>
+        ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has a different
         ///     <see cref="Vote.Round"/> from <paramref name="round"/>.
+        /// </description></item>
+        /// <item><description>
+        ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has a different
+        ///     <see cref="Vote.BlockHash"/> from <paramref name="round"/> that is not
+        ///     <see langword="null"/>.
         /// </description></item>
         /// </list>
         /// </exception>
@@ -63,10 +71,14 @@ namespace Libplanet.Blocks
             {
                 throw new ArgumentException("Empty set of votes is not allowed.", nameof(votes));
             }
-            else if (votes.Any(vote => vote.Height != height || vote.Round != round))
+            else if (votes.Any(vote =>
+                vote.Height != height ||
+                vote.Round != round ||
+                (vote.BlockHash is { } h && !h.Equals(hash))))
             {
                 throw new ArgumentException(
-                    $"All votes must have the same height as {height} and round as {round}",
+                    $"Every vote must have the same height as {height}, the same round " +
+                    $"as {round}, and either null hash or the same hash as {hash}.",
                     nameof(votes));
             }
 

@@ -328,44 +328,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ValidateNextBlockLastCommitDifferentBlockHash()
-        {
-            Block<DumbAction> block1 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 1L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: _fx.GenesisBlock.Hash,
-                    txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
-            _blockChain.Append(block1);
-
-            var voteSet = new VoteSet(
-                1,
-                0,
-                _fx.Hash1,
-                TestUtils.ConsensusValidators);
-
-            voteSet = TestUtils.AddVotesToVoteSet(
-                voteSet,
-                _fx.Hash1,
-                VoteFlag.Commit,
-                TestUtils.ConsensusPrivateKeys);
-
-            var blockCommit = new BlockCommit(voteSet, block1.Hash);
-
-            Block<DumbAction> block2 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 2,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: block1.Hash,
-                    txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
-            Assert.Throws<InvalidBlockLastCommitException>(() => _blockChain.Append(block2));
-        }
-
-        [Fact]
         public void ValidateNextBlockLastCommitFailsUnexpectedValidator()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(
