@@ -22,14 +22,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public ContextNonProposerTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ContextTest>();
+                .ForContext<ContextNonProposerTest>();
 
-            _logger = Log.ForContext<ContextTest>();
+            _logger = Log.ForContext<ContextNonProposerTest>();
         }
 
         [Fact(Timeout = Timeout)]
@@ -261,7 +261,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (_, _, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.Peer0Priv,
-                consensusMessageSent: CheckVote);
+                consensusMessageSent: CheckVote,
+                contextTimeoutOptions: new ContextTimeoutOption(proposeSecondBase: 1));
 
             context.StateChanged += (sender, state) =>
             {
@@ -289,7 +290,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task UponRulesCheckAfterTimeout()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.Peer0Priv,
+                contextTimeoutOptions: new ContextTimeoutOption(
+                    preVoteSecondBase: 1,
+                    preCommitSecondBase: 1));
 
             var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var block2 = blockChain.ProposeBlock(TestUtils.Peer2Priv);
@@ -360,7 +364,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task TimeoutPreVote()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.Peer0Priv,
+                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var timeoutProcessed = new AsyncAutoResetEvent();
@@ -406,7 +411,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task TimeoutPreCommit()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.Peer0Priv,
+                contextTimeoutOptions: new ContextTimeoutOption(preCommitSecondBase: 1));
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var timeoutProcessed = new AsyncAutoResetEvent();

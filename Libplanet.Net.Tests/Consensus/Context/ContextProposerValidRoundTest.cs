@@ -6,6 +6,7 @@ using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
+using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -14,9 +15,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
     public class ContextProposerValidRoundTest
     {
         private const int Timeout = 30000;
+        private readonly ILogger _logger;
 
         public ContextProposerValidRoundTest(ITestOutputHelper output)
         {
+            const string outputTemplate =
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
+                .CreateLogger()
+                .ForContext<ContextProposerValidRoundTest>();
+
+            _logger = Log.ForContext<ContextProposerValidRoundTest>();
         }
 
         [Fact(Timeout = Timeout)]

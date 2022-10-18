@@ -11,13 +11,13 @@ using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
+using xRetry;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 {
-    [Collection("NetMQConfiguration")]
     public class ConsensusContextNonProposerTest
     {
         private const int Timeout = 30000;
@@ -26,7 +26,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextNonProposerTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
@@ -267,19 +267,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     codec.Encode(blockHeightThree.MarshalBlock()),
                     -1));
 
-            // Commit ends.
-            await heightTwoStepChangedToEndCommit.WaitAsync();
-            var heightTwoEndTimestamp = DateTime.UtcNow;
             // New height started.
             await heightThreeStepChangedToPropose.WaitAsync();
-            var heightThreeStartTimestamp = DateTime.UtcNow;
             // Propose -> PreVote (message consumed)
             await heightThreeStepChangedToPreVote.WaitAsync();
-            // Check new height delay; slight margin of error is allowed as delay task
-            // is run asynchronously from context events.
-            Assert.True(
-                ((heightThreeStartTimestamp - heightTwoEndTimestamp) - newHeightDelay).Duration() <
-                    TimeSpan.FromMilliseconds(100));
             Assert.Equal(3, consensusContext.Height);
             Assert.Equal(Step.PreVote, consensusContext.Step);
         }
@@ -288,8 +279,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void UseLastCommitCacheIfHeightContextIsEmpty()
         {
             var codec = new Codec();
-            var heightOneEnded = new AsyncAutoResetEvent();
-            var heightOneProposeSent = new AsyncAutoResetEvent();
             var heightTwoProposeSent = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
 
@@ -298,22 +287,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer2Priv);
 
-            consensusContext.StateChanged +=
-                (sender, tuple) =>
-                {
-                    if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
-                    {
-                        heightOneEnded.Set();
-                    }
-                };
             consensusContext.MessageConsumed +=
                 (sender, message) =>
                 {
-                    if (message.Height == 1 && message.Message is ConsensusPropose)
-                    {
-                        heightOneProposeSent.Set();
-                    }
-
                     if (message.Height == 2 &&
                         message.Message is ConsensusPropose propose)
                     {
@@ -327,35 +303,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
-            consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+            blockChain.Append(block);
 
-            await heightOneProposeSent.WaitAsync();
+            // Creates a lastCommit of height 1 and put it to the store.
+            var createdLastCommit = TestUtils.CreateLastCommit(block.Hash, 1, 0);
+            blockChain.Store.PutLastCommit(createdLastCommit);
 
-            // Use PreCommit votes for skipping PreVote step.
-            TestUtils.HandleFourPeersPreCommitMessages(
-                consensusContext,
-                TestUtils.Peer2Priv,
-                block.Hash);
-
-            await heightOneEnded.WaitAsync();
-            // Gets a vote set of a current context.
-            var voteSet = consensusContext.Contexts[consensusContext.Height]
-                .VoteSet(consensusContext.Contexts[consensusContext.Height].CommittedRound);
-
-            // Forcefully dispose current context.
-            consensusContext.Contexts[consensusContext.Height].Dispose();
-
-            // Creates a cache of disposed context.
-            var blockCommit = new BlockCommit(voteSet, block.Hash);
-            blockChain.Store.PutLastCommit(blockCommit);
-
-            // Remove context for testing whether context is getting LastCommit from store. Used
-            // ConsensusContext.Height because it is in EndCommit, so the height does not changed
-            // yet.
-            consensusContext.Contexts.Remove(consensusContext.Height);
-
-            // Restart consensus from height #2
+            // Starts height 2. Node 2 is the proposer.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             await heightTwoProposeSent.WaitAsync();
 
@@ -364,7 +318,59 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 throw new NullException("An error has occurred in block proposal.");
             }
 
-            Assert.Equal(blockCommit, proposedBlock.LastCommit);
+            Assert.Equal(createdLastCommit, proposedBlock.LastCommit);
+        }
+
+        // Retry: This calculates delta time.
+        [RetryFact]
+        public async void NewHeightDelay()
+        {
+            var newHeightDelay = TimeSpan.FromSeconds(1);
+            // The maximum error margin. (macos-netcore-test)
+            var timeError = 500;
+            var heightOneEndCommit = new AsyncAutoResetEvent();
+            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                newHeightDelay,
+                TestUtils.Policy,
+                TestUtils.Peer2Priv,
+                consensusMessageSent: (sender, message) =>
+                {
+                    if (message is ConsensusPropose { Height: 2 })
+                    {
+                        heightTwoProposeSent.Set();
+                    }
+                });
+
+            consensusContext.StateChanged += (sender, state) =>
+            {
+                if (state.Height == 1 && state.Step == Step.EndCommit)
+                {
+                    heightOneEndCommit.Set();
+                }
+            };
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            consensusContext.HandleMessage(
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+
+            TestUtils.HandleFourPeersPreCommitMessages(
+                 consensusContext, TestUtils.Peer2Priv, block.Hash);
+
+            await heightOneEndCommit.WaitAsync();
+            var endCommitTime = DateTimeOffset.UtcNow;
+
+            await heightTwoProposeSent.WaitAsync();
+            var proposeTime = DateTimeOffset.UtcNow;
+            var difference = proposeTime - endCommitTime;
+
+            _logger.Debug("Difference: {Difference}", difference);
+            // Check new height delay; slight margin of error is allowed as delay task
+            // is run asynchronously from context events.
+            Assert.True(
+                ((proposeTime - endCommitTime) - newHeightDelay).Duration() <
+                    TimeSpan.FromMilliseconds(timeError));
         }
     }
 }

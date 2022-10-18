@@ -25,7 +25,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public ConsensusContextTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ} - {Message} {Exception}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
@@ -66,8 +66,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            // FIXME: StartAsync inside NewHeight makes it unreliable to try to await for
-            // early events.
             BlockHash blockHash;
             while (true)
             {
