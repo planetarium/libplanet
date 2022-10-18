@@ -587,8 +587,7 @@ namespace Libplanet.Tests.Blockchain
                         blockHash: vote.BlockHash,
                         timestamp: vote.Timestamp,
                         validator: vote.Validator,
-                        flag: vote.Flag
-                    ).Sign(keys[i]));
+                        flag: VoteFlag.PreCommit).Sign(keys[i]));
             }
 
             var blockCommit = new BlockCommit(voteSet, _blockChain.Tip.Hash);

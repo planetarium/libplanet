@@ -11,6 +11,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void MarshalVote()
         {
+            var key = new PrivateKey();
             var fx = new MemoryStoreFixture();
             var now = DateTimeOffset.UtcNow;
             var vote = new VoteMetadata(
@@ -18,8 +19,8 @@ namespace Libplanet.Tests.Consensus
                 2,
                 fx.Hash1,
                 now,
-                new PrivateKey().PublicKey,
-                VoteFlag.PreCommit).Sign(new PrivateKey());
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key);
             byte[] marshaled = vote.ByteArray;
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
