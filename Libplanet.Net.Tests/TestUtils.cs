@@ -167,7 +167,7 @@ namespace Libplanet.Net.Tests
                     blockHash,
                     DateTimeOffset.UtcNow,
                     privateKey.PublicKey,
-                    VoteFlag.Commit).Sign(privateKey));
+                    VoteFlag.PreCommit).Sign(privateKey));
             }
 
             return new BlockCommit(voteSet, blockHash);
@@ -194,7 +194,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Commit).Sign(privateKey))
+                            VoteFlag.PreCommit).Sign(privateKey))
                     {
                         Remote = peer,
                     });

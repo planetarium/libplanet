@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Blocks
                             Next.Hash,
                             Next.Timestamp,
                             Miner.PublicKey,
-                            VoteFlag.Commit).Sign(Miner),
+                            VoteFlag.PreCommit).Sign(Miner),
                     }.ToImmutableArray())
             );
         }

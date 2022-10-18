@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Consensus
                 fx.Hash1,
                 now,
                 new PrivateKey().PublicKey,
-                VoteFlag.Commit).Sign(new PrivateKey());
+                VoteFlag.PreCommit).Sign(new PrivateKey());
             byte[] marshaled = vote.ByteArray;
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Consensus
                 fx.Hash1,
                 DateTimeOffset.UtcNow,
                 privateKey.PublicKey,
-                VoteFlag.Commit);
+                VoteFlag.PreCommit);
             Vote vote = voteMetadata.Sign(privateKey);
             Assert.True(
                 privateKey.PublicKey.Verify(voteMetadata.ByteArray, vote.Signature));
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Consensus
         public void DefaultSignatureIsInvalid()
         {
             var voteMetadata = new VoteMetadata(
-                0, 0, null, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.Commit);
+                0, 0, null, DateTimeOffset.UtcNow, new PrivateKey().PublicKey, VoteFlag.PreCommit);
             Assert.Throws<ArgumentException>(() => new Vote(voteMetadata, default));
         }
     }

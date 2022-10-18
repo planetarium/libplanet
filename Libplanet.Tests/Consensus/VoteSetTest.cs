@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Consensus
                     targetBlockHash,
                     now,
                     validators[i].PublicKey,
-                    VoteFlag.Absent).Sign(validators[i]);
+                    VoteFlag.PreVote).Sign(validators[i]);
                 voteSet.Add(vote);
              }
 
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Consensus
                      targetBlockHash,
                      now,
                      validators[i].PublicKey,
-                     VoteFlag.Commit).Sign(validators[i]);
+                     VoteFlag.PreCommit).Sign(validators[i]);
                  voteSet.Add(vote);
              }
 
@@ -98,7 +98,7 @@ namespace Libplanet.Tests.Consensus
                      targetBlockHash,
                      now,
                      validators[i].PublicKey,
-                     VoteFlag.Absent).Sign(validators[i]);
+                     VoteFlag.PreVote).Sign(validators[i]);
                  voteSet.Add(vote);
              }
 

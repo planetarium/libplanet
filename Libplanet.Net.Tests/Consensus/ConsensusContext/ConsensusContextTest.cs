@@ -88,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.HandleMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peers[0],
                 });
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.HandleMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Commit))
+                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peers[0],
                 });
@@ -252,7 +252,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         1,
                         0,
                         proposedBlock!.Hash,
-                        VoteFlag.Absent))
+                        VoteFlag.PreVote))
             );
 
             consensusContext.HandleMessage(
@@ -262,7 +262,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         1,
                         0,
                         proposedBlock!.Hash,
-                        VoteFlag.Commit))
+                        VoteFlag.PreCommit))
                 );
 
             await heightOneEnded.WaitAsync();
@@ -296,7 +296,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         2,
                         0,
                         block.Hash,
-                        VoteFlag.Absent))
+                        VoteFlag.PreVote))
             );
 
             consensusContext.HandleMessage(
@@ -306,7 +306,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         2,
                         0,
                         block.Hash,
-                        VoteFlag.Commit))
+                        VoteFlag.PreCommit))
             );
 
             await heightTwoEnded.WaitAsync();

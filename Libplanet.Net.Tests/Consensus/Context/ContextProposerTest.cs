@@ -67,19 +67,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.Absent))
+                    TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.Absent))
+                    TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.Absent))
+                    TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
                 });
@@ -129,21 +129,21 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.Absent))
+                    TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
 
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.Absent))
+                    TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
 
             context.ProduceMessage(
                 new ConsensusVote(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.Absent))
+                    TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
                 });
@@ -177,7 +177,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.Commit))
+                        TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -185,7 +185,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.Commit))
+                        TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.Commit))
+                        TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer3,
                 });
@@ -230,7 +230,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.Commit))
+                        TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -238,7 +238,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.Commit))
+                        TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -246,7 +246,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.Commit))
+                        TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer3,
                 });

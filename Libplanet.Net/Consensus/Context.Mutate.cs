@@ -185,12 +185,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, block1.Hash, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, block1.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
                 }
             }
 
@@ -210,12 +210,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, block2.Hash, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, block2.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
+                        new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
                 }
             }
 
@@ -255,7 +255,7 @@ namespace Libplanet.Net.Consensus
                     _lockedValue = block3;
                     _lockedRound = Round;
                     BroadcastMessage(
-                        new ConsensusCommit(MakeVote(Round, block3.Hash, VoteFlag.Commit)));
+                        new ConsensusCommit(MakeVote(Round, block3.Hash, VoteFlag.PreCommit)));
                 }
 
                 _validValue = block3;
@@ -271,7 +271,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreCommit;
                 BroadcastMessage(
-                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.Commit)));
+                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.PreCommit)));
             }
 
             if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitTimeoutFlags.Contains(Round))
@@ -337,7 +337,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.Propose)
             {
                 BroadcastMessage(
-                    new ConsensusVote(MakeVote(Round, null, VoteFlag.Absent)));
+                    new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
                 Step = Step.PreVote;
                 TimeoutProcessed?.Invoke(this, (Height, round));
             }
@@ -354,7 +354,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.PreVote)
             {
                 BroadcastMessage(
-                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.Commit)));
+                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.PreCommit)));
                 Step = Step.PreCommit;
                 TimeoutProcessed?.Invoke(this, (Height, round));
             }

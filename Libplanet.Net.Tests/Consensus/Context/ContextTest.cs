@@ -194,7 +194,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent).Sign(TestUtils.Peer1Priv)));
+                        VoteFlag.PreVote).Sign(TestUtils.Peer1Priv)));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
 
@@ -209,7 +209,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         block.Hash,
                         DateTimeOffset.UtcNow,
                         TestUtils.Validators[0],
-                        VoteFlag.Absent).Sign(TestUtils.Peer1Priv)));
+                        VoteFlag.PreVote).Sign(TestUtils.Peer1Priv)));
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
         }
@@ -248,7 +248,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         2,
                         0,
                         block.Hash,
-                        VoteFlag.Absent))
+                        VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peers[2],
                 });
@@ -265,7 +265,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         2,
                         0,
                         block.Hash,
-                        VoteFlag.Absent))
+                        VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peers[2],
                 });
@@ -295,7 +295,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -303,7 +303,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusVote(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.Absent))
+                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -311,22 +311,22 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.Commit))
+                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer2,
                 });
 
             await stepChangedToPreCommit.WaitAsync();
-            // Wait for the vote to change from Absent to Commit to avoid flakiness.
+            // Wait for the vote to change from PreVote to PreCommit to avoid flakiness.
             await Libplanet.Tests.TestUtils.AssertThatEventually(
-                () => context.VoteSet(0).Votes[1].Flag == VoteFlag.Commit,
+                () => context.VoteSet(0).Votes[1].Flag == VoteFlag.PreCommit,
                 3_000);
             VoteSet roundVoteSet = context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
-            Assert.Equal(VoteFlag.Absent, roundVoteSet.Votes[0].Flag);
-            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[1].Flag);
-            Assert.Equal(VoteFlag.Commit, roundVoteSet.Votes[2].Flag);
+            Assert.Equal(VoteFlag.PreVote, roundVoteSet.Votes[0].Flag);
+            Assert.Equal(VoteFlag.PreCommit, roundVoteSet.Votes[1].Flag);
+            Assert.Equal(VoteFlag.PreCommit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);
         }
     }
