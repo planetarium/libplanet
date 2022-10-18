@@ -110,12 +110,12 @@ namespace Libplanet.Consensus
         /// Check if the validators who voted about PreVote state have more than +2/3 voting power.
         /// </summary>
         /// <returns><c>true</c> if +2/3 of the voting power in the <see cref="ValidatorSet"/>
-        /// voted about <see cref="VoteFlag.Absent"/>, <c>false</c> otherwise.</returns>
+        /// voted about <see cref="VoteFlag.PreVote"/>, <c>false</c> otherwise.</returns>
         public bool HasTwoThirdPrevote()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.Absent) > twoThird;
+                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.PreVote) > twoThird;
         }
 
         /// <summary>
@@ -123,12 +123,13 @@ namespace Libplanet.Consensus
         /// power.
         /// </summary>
         /// <returns><c>true</c> if +2/3 of the voting power in the <see cref="ValidatorSet"/> voted
-        /// about <see cref="VoteFlag.Commit"/>, <c>false</c> otherwise.</returns>
+        /// about <see cref="VoteFlag.PreCommit"/>, <c>false</c> otherwise.</returns>
         public bool HasTwoThirdCommit()
         {
             var twoThird = ValidatorSet.Length * 2.0 / 3.0;
             return _votes.Count(x =>
-                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.Commit) > twoThird;
+                !x.Value.Signature.IsDefaultOrEmpty && x.Value.Flag == VoteFlag.PreCommit) >
+                    twoThird;
         }
 
         private bool IsVoteValid(Vote vote)

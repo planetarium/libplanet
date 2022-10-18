@@ -9,20 +9,20 @@ namespace Libplanet.Blocks
     public static class BlockCommitExtensions
     {
         /// <summary>
-        /// Checks whether <see cref="BlockCommit"/> has +2/3 <see cref="VoteFlag.Commit"/> of
+        /// Checks whether <see cref="BlockCommit"/> has +2/3 <see cref="VoteFlag.PreCommit"/> of
         /// <see cref="BlockCommit.BlockHash"/> with given <paramref name="validators"/> count.
         /// </summary>
         /// <param name="commit">A <see cref="BlockCommit"/> to check.</param>
         /// <param name="validators">A <see cref="IEnumerable{T}"/> of validator public key. It is
         /// used for counting +2/3.</param>
         /// <returns>Returns <see langword="true"/> if <see cref="BlockCommit"/> has +2/3
-        /// <see cref="VoteFlag.Commit"/> of <see cref="BlockCommit.BlockHash"/>, otherwise returns
-        /// <see langword="false"/>.</returns>
+        /// <see cref="VoteFlag.PreCommit"/> of <see cref="BlockCommit.BlockHash"/>, otherwise
+        /// returns <see langword="false"/>.</returns>
         public static bool HasTwoThirdCommits(
             this BlockCommit commit,
             IEnumerable<PublicKey> validators) =>
             validators.Count() * 2 / 3 < commit.Votes.Count(vote =>
-                vote.Flag == VoteFlag.Commit && vote.BlockHash.Equals(commit.BlockHash));
+                vote.Flag == VoteFlag.PreCommit && vote.BlockHash.Equals(commit.BlockHash));
 
         /// <summary>
         /// Checks whether <see cref="BlockCommit"/> has same validator public key with given

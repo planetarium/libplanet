@@ -80,14 +80,14 @@ namespace Libplanet.Tests.Blocks
                             hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey),
+                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey),
                         new VoteMetadata(
                             1,
                             0,
                             hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey),
+                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey),
                     }.ToImmutableArray()));
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(
@@ -102,14 +102,14 @@ namespace Libplanet.Tests.Blocks
                             hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey),
+                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey),
                         new VoteMetadata(
                             2,
                             1,
                             hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                            VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey),
+                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey),
                     }.ToImmutableArray()));
          }
 
@@ -126,14 +126,14 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                    VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey))
+                    VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey))
                 .Add(new VoteMetadata(
                     2,
                     0,
                     badHash,
                     DateTimeOffset.UtcNow,
                     TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                    VoteFlag.Commit).Sign(TestUtils.ConsensusPeer1PrivateKey));
+                    VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey));
 
             Assert.Throws<ArgumentException>(() => new BlockCommit(2, 0, hash, votes));
         }

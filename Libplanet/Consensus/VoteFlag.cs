@@ -6,23 +6,24 @@ namespace Libplanet.Consensus
     public enum VoteFlag
     {
         /// <summary>
-        /// Error.
+        /// A flag for a <see cref="Vote"/> indicating that there was no response from a validator.
         /// </summary>
         Null = 0,
 
         /// <summary>
-        /// No response.
+        /// A flag for a <see cref="Vote"/> that is for a pre-vote phase.
         /// </summary>
-        Unknown = 1,
+        PreVote = 1,
 
         /// <summary>
-        /// Vote. but not commit.
+        /// A flag for a <see cref="Vote"/> that is for a pre-commit phase.
         /// </summary>
-        Absent = 2,
+        PreCommit = 2,
 
         /// <summary>
-        /// Vote and Commit.
+        /// A flag for a <see cref="Vote"/> that is currently unused.  Reserved only for
+        /// possible future use.
         /// </summary>
-        Commit = 3,
+        Unknown = 3,
     }
 }

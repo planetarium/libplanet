@@ -58,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         TestUtils.Peer2Priv,
                         1,
                         hash: null,
-                        flag: VoteFlag.Absent))
+                        flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -69,7 +69,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         TestUtils.Peer3Priv,
                         1,
                         hash: null,
-                        flag: VoteFlag.Absent))
+                        flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
                 });
@@ -82,7 +82,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         TestUtils.Peer2Priv,
                         1,
                         hash: null,
-                        flag: VoteFlag.Commit))
+                        flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -93,7 +93,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         TestUtils.Peer3Priv,
                         1,
                         hash: null,
-                        flag: VoteFlag.Commit))
+                        flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer3,
                 });

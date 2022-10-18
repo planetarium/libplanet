@@ -355,9 +355,9 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="round">Current context round.</param>
         /// <param name="hash">Current context locked <see cref="BlockHash"/>.</param>
-        /// <param name="flag"><see cref="VoteFlag"/> of Vote. Set <see cref="VoteFlag.Absent"/> if
+        /// <param name="flag"><see cref="VoteFlag"/> of Vote. Set <see cref="VoteFlag.PreVote"/> if
         /// message is <see cref="ConsensusVote"/>. If message is <see cref="ConsensusCommit"/>,
-        /// Set <see cref="VoteFlag.Commit"/>.
+        /// Set <see cref="VoteFlag.PreCommit"/>.
         /// </param>
         /// <returns>Returns a signed <see cref="Vote"/> with consensus private key.</returns>
         /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
@@ -367,7 +367,7 @@ namespace Libplanet.Net.Consensus
             if (flag == VoteFlag.Null || flag == VoteFlag.Unknown)
             {
                 throw new ArgumentException(
-                    $"{nameof(flag)} must be either {VoteFlag.Absent} or {VoteFlag.Commit}" +
+                    $"{nameof(flag)} must be either {VoteFlag.PreVote} or {VoteFlag.PreCommit}" +
                     $"to create a valid signed vote.");
             }
 

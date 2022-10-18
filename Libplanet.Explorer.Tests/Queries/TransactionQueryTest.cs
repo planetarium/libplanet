@@ -129,7 +129,7 @@ public class TransactionQueryTest
                 hash: block.Hash,
                 votes: ImmutableArray<Vote>.Empty
                     .Add(new VoteMetadata(1, 0, block.Hash, DateTimeOffset.UtcNow,
-                    _source.Validator.PublicKey, VoteFlag.Commit).Sign(_source.Validator)));
+                    _source.Validator.PublicKey, VoteFlag.PreCommit).Sign(_source.Validator)));
         block = _source.BlockChain.ProposeBlock(new PrivateKey(), lastCommit: lastCommit);
         _source.BlockChain.Append(block);
         await AssertNextNonce(1, key2.ToAddress());

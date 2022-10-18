@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
-                    VoteFlag.Absent).Sign(TestUtils.PrivateKeys[i]);
+                    VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusVote(expectedVotes[i])
                     {
@@ -103,7 +103,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     block1.Hash,
                     DateTimeOffset.UtcNow,
                     TestUtils.Validators[i],
-                    VoteFlag.Commit).Sign(TestUtils.PrivateKeys[i]);
+                    VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusCommit(expectedVotes[i])
                     {
@@ -118,9 +118,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Equal(
                 votes.Count(),
                 votes.Where(vote => vote.BlockHash.Equals(blockChain[1].Hash)).Count());
-            Assert.Equal(VoteFlag.Commit, votes[0].Flag);
-            Assert.Equal(VoteFlag.Commit, votes[1].Flag);
-            Assert.Equal(VoteFlag.Commit, votes[2].Flag);
+            Assert.Equal(VoteFlag.PreCommit, votes[0].Flag);
+            Assert.Equal(VoteFlag.PreCommit, votes[1].Flag);
+            Assert.Equal(VoteFlag.PreCommit, votes[2].Flag);
             Assert.Equal(VoteFlag.Null, votes[3].Flag);
         }
 
@@ -217,7 +217,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             propose!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Absent).Sign(privateKey))
+                            VoteFlag.PreVote).Sign(privateKey))
                     {
                         Remote = peer,
                     });
@@ -242,7 +242,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                             propose!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.Commit).Sign(privateKey))
+                            VoteFlag.PreCommit).Sign(privateKey))
                     {
                         Remote = peer,
                     });

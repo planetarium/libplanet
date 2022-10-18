@@ -266,9 +266,9 @@ namespace Libplanet.Tests.Blocks
                 blockHash,
                 new[]
                 {
-                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
-                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
-                    GenerateVote(blockHash, 2, 0, VoteFlag.Commit),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.PreCommit),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.PreCommit),
+                    GenerateVote(blockHash, 2, 0, VoteFlag.PreCommit),
                 }.ToImmutableArray());
             Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
@@ -287,9 +287,9 @@ namespace Libplanet.Tests.Blocks
                 invalidBlockHash,
                 new[]
                 {
-                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
-                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
-                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.Commit),
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.PreCommit),
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.PreCommit),
+                    GenerateVote(invalidBlockHash, 1, 0, VoteFlag.PreCommit),
                 }.ToImmutableArray());
             Assert.Throws<InvalidBlockLastCommitException>(() => new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,
@@ -308,7 +308,7 @@ namespace Libplanet.Tests.Blocks
                 blockHash,
                 new[]
                 {
-                    GenerateVote(blockHash, 1, 0, VoteFlag.Commit),
+                    GenerateVote(blockHash, 1, 0, VoteFlag.PreCommit),
                     new VoteMetadata(
                         1,
                         0,
@@ -380,7 +380,7 @@ namespace Libplanet.Tests.Blocks
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
                 height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, flag);
-            return flag == VoteFlag.Absent || flag == VoteFlag.Commit
+            return flag == VoteFlag.PreVote || flag == VoteFlag.PreCommit
                 ? voteMetadata.Sign(key)
                 : voteMetadata.Sign(null);
         }

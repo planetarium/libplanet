@@ -252,7 +252,7 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            var blockCommit = TestUtils.CreateLastCommit(block1.Hash, 1, 0, VoteFlag.Absent);
+            var blockCommit = TestUtils.CreateLastCommit(block1.Hash, 1, 0, VoteFlag.PreVote);
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,
@@ -283,7 +283,7 @@ namespace Libplanet.Tests.Blockchain
                 block1.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                VoteFlag.Commit).Sign(TestUtils.ConsensusPeer0PrivateKey);
+                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey);
 
             // Invalid Signature
             Vote voteB = new VoteMetadata(
@@ -292,7 +292,7 @@ namespace Libplanet.Tests.Blockchain
                 block1.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                VoteFlag.Commit).Sign(new PrivateKey());
+                VoteFlag.PreCommit).Sign(new PrivateKey());
 
             Vote voteC = new VoteMetadata(
                 1,
@@ -300,7 +300,7 @@ namespace Libplanet.Tests.Blockchain
                 block1.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.ConsensusPeer2PrivateKey.PublicKey,
-                VoteFlag.Commit).Sign(TestUtils.ConsensusPeer2PrivateKey);
+                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer2PrivateKey);
 
             Vote voteD = new VoteMetadata(
                 1,
@@ -308,7 +308,7 @@ namespace Libplanet.Tests.Blockchain
                 block1.Hash,
                 DateTimeOffset.UtcNow,
                 TestUtils.ConsensusPeer3PrivateKey.PublicKey,
-                VoteFlag.Commit).Sign(TestUtils.ConsensusPeer3PrivateKey);
+                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer3PrivateKey);
 
             var blockCommit = new BlockCommit(
                 1,
@@ -350,7 +350,7 @@ namespace Libplanet.Tests.Blockchain
             voteSet = TestUtils.AddVotesToVoteSet(
                 voteSet,
                 block1.Hash,
-                VoteFlag.Commit,
+                VoteFlag.PreCommit,
                 TestUtils.ConsensusPrivateKeys.Concat(new[] { invalidValidator }));
 
             var blockCommit = new BlockCommit(voteSet, block1.Hash);
@@ -392,7 +392,7 @@ namespace Libplanet.Tests.Blockchain
             TestUtils.AddVotesToVoteSet(
                 voteSet,
                 block1.Hash,
-                VoteFlag.Commit,
+                VoteFlag.PreCommit,
                 privateKeysExceptPeer0);
 
             var blockCommit = new BlockCommit(voteSet, block1.Hash);

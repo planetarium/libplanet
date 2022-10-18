@@ -25,19 +25,19 @@ namespace Libplanet.Tests.Blocks
             BlockCommit? allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
             Assert.True(allCommits?.HasTwoThirdCommits(TestUtils.ConsensusValidators));
 
-            BlockCommit? noCommits = TestUtils.CreateLastCommit(hash, 2, 0, VoteFlag.Absent);
+            BlockCommit? noCommits = TestUtils.CreateLastCommit(hash, 2, 0, VoteFlag.PreVote);
             Assert.False(noCommits?.HasTwoThirdCommits(TestUtils.ConsensusValidators));
 
             VoteSet voteSet = new VoteSet(2, 0, hash, TestUtils.ConsensusValidators);
             TestUtils.AddVotesToVoteSet(
                 voteSet,
                 hash,
-                VoteFlag.Commit,
+                VoteFlag.PreCommit,
                 TestUtils.ConsensusPrivateKeys.Take(2));
             TestUtils.AddVotesToVoteSet(
                 voteSet,
                 hash,
-                VoteFlag.Absent,
+                VoteFlag.PreVote,
                 TestUtils.ConsensusPrivateKeys.Skip(2).Take(2));
             BlockCommit halfCommits = new BlockCommit(voteSet, hash);
             Assert.False(halfCommits.HasTwoThirdCommits(TestUtils.ConsensusValidators));
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Blocks
             TestUtils.AddVotesToVoteSet(
                 threeVoteSet,
                 hash,
-                VoteFlag.Commit,
+                VoteFlag.PreCommit,
                 TestUtils.ConsensusPrivateKeys.Take(3));
             BlockCommit threeValidVotes = new BlockCommit(threeVoteSet, hash);
             Assert.True(threeValidVotes.HasValidVotes());
@@ -91,7 +91,7 @@ namespace Libplanet.Tests.Blocks
                         hash,
                         DateTimeOffset.UtcNow,
                         new PrivateKey().PublicKey,
-                        VoteFlag.Commit).Sign(invalidValidator),
+                        VoteFlag.PreCommit).Sign(invalidValidator),
                 }.ToImmutableArray());
             Assert.False(invalidSignatureCommit.HasValidVotes());
         }

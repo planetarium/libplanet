@@ -70,7 +70,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: block.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: block.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -92,7 +92,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: block.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
                 });
@@ -151,7 +151,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -162,7 +162,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -173,7 +173,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     1,
                     round: 1,
                     hash: invalidBlock.Hash,
-                    flag: VoteFlag.Absent))
+                    flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
                 });

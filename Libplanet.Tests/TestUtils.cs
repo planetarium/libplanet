@@ -352,7 +352,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             BlockHash blockHash,
             long height,
             int round,
-            VoteFlag voteFlag = VoteFlag.Commit)
+            VoteFlag voteFlag = VoteFlag.PreCommit)
         {
             // Index #1 block cannot have lastCommit: There was no consensus of genesis block.
             if (height == 0)
