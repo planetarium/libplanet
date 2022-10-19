@@ -334,14 +334,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreVote))
+                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer1,
                 });
             context.ProduceMessage(
                 new ConsensusCommit(
                     TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreVote))
+                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer1,
                 });

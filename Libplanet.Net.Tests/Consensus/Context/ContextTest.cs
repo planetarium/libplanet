@@ -212,7 +212,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             exceptionThrown = null;
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusVote(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
                         2,
