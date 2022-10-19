@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -120,6 +121,34 @@ namespace Libplanet.Net.Tests.Messages
                 new MessageId(ByteUtil.ParseHex(
                     "dae1eaa93fd023279c4d0eb73000d66fdbf196c1239a4cee3d1d84f28d49ece6")),
                 message.Id);
+        }
+
+        [Fact]
+        public void InvalidVoteFlagConsensus()
+        {
+            var blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+
+            var preVote = TestUtils.CreateVote(
+                TestUtils.Peer0Priv,
+                1,
+                0,
+                blockHash,
+                VoteFlag.PreVote);
+
+            var preCommit = TestUtils.CreateVote(
+                TestUtils.Peer0Priv,
+                1,
+                0,
+                blockHash,
+                VoteFlag.PreCommit);
+
+            // Valid message cases
+            _ = new ConsensusVote(preVote);
+            _ = new ConsensusCommit(preCommit);
+
+            // Invalid message cases
+            Assert.Throws<InvalidMessageException>(() => new ConsensusVote(preCommit));
+            Assert.Throws<InvalidMessageException>(() => new ConsensusCommit(preVote));
         }
     }
 }

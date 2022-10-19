@@ -18,6 +18,7 @@ using Libplanet.Store;
 using Libplanet.Store.Trie;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Random = System.Random;
 
 namespace Libplanet.Net.Tests
 {
@@ -92,6 +93,8 @@ namespace Libplanet.Net.Tests
             "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
             ".X8y4JpPIyccPYWGrsCXWA95sBfextucz3lOyAiBUoY5t8aYNPT0lwYwC0MSkK3HT7T" +
             ".lGJJW13dJi+06nw==");
+
+        private static readonly Random Random = new Random();
 
         public static Vote CreateVote(
             PrivateKey privateKey,
@@ -331,6 +334,14 @@ namespace Libplanet.Net.Tests
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
                 30,
                 contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
+        }
+
+        public static byte[] GetRandomBytes(int size)
+        {
+            var bytes = new byte[size];
+            Random.NextBytes(bytes);
+
+            return bytes;
         }
     }
 }
