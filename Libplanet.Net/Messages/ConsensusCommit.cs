@@ -17,6 +17,11 @@ namespace Libplanet.Net.Messages
         public ConsensusCommit(Vote vote)
             : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
+            if (vote.Flag != VoteFlag.PreCommit)
+            {
+                throw new InvalidMessageException("Vote flag must be PreCommit.", this);
+            }
+
             CommitVote = vote;
         }
 
