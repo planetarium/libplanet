@@ -168,53 +168,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task ThrowInvalidValidatorVote()
-        {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                startStep: Step.Default);
-
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
-            Exception? exceptionThrown = null;
-            var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, he) =>
-            {
-                exceptionThrown = he.Exception;
-                exceptionOccurred.Set();
-            };
-
-            _ = context.MessageConsumerTask(default);
-            _ = context.MutationConsumerTask(default);
-
-            // Vote's signature does not match with remote
-            context.ProduceMessage(
-                new ConsensusVote(
-                    new VoteMetadata(
-                        context.Height,
-                        context.Round,
-                        block.Hash,
-                        DateTimeOffset.UtcNow,
-                        TestUtils.Validators[0],
-                        VoteFlag.PreVote).Sign(TestUtils.Peer1Priv)));
-            await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
-
-            // Reset exception thrown.
-            exceptionThrown = null;
-
-            context.ProduceMessage(
-                new ConsensusVote(
-                    new VoteMetadata(
-                        context.Height,
-                        context.Round,
-                        block.Hash,
-                        DateTimeOffset.UtcNow,
-                        TestUtils.Validators[0],
-                        VoteFlag.PreVote).Sign(TestUtils.Peer1Priv)));
-            await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidValidatorVoteMessageException);
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task ThrowDifferentHeight()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(

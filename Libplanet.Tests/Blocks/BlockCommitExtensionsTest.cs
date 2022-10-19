@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Immutable;
 using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
@@ -60,40 +58,6 @@ namespace Libplanet.Tests.Blocks
                 Enumerable.Range(0, TestUtils.ConsensusValidators.Count)
                     .Select(x => new PrivateKey().PublicKey)
                     .ToArray()));
-        }
-
-        [Fact]
-        public void HasValidVotes()
-        {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            BlockCommit? allValidVotes = TestUtils.CreateLastCommit(hash, 2, 0);
-            Assert.True(allValidVotes?.HasValidVotes());
-
-            VoteSet threeVoteSet = new VoteSet(2, 0, hash, TestUtils.ConsensusValidators);
-            TestUtils.AddVotesToVoteSet(
-                threeVoteSet,
-                hash,
-                VoteFlag.PreCommit,
-                TestUtils.ConsensusPrivateKeys.Take(3));
-            BlockCommit threeValidVotes = new BlockCommit(threeVoteSet, hash);
-            Assert.True(threeValidVotes.HasValidVotes());
-
-            var invalidValidator = new PrivateKey();
-            var invalidSignatureCommit = new BlockCommit(
-                2,
-                0,
-                hash,
-                new[]
-                {
-                    new VoteMetadata(
-                        2,
-                        0,
-                        hash,
-                        DateTimeOffset.UtcNow,
-                        new PrivateKey().PublicKey,
-                        VoteFlag.PreCommit).Sign(invalidValidator),
-                }.ToImmutableArray());
-            Assert.False(invalidSignatureCommit.HasValidVotes());
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blocks
                     hash,
                     DateTimeOffset.UtcNow,
                     privateKey.PublicKey,
-                    VoteFlag.Null).Sign(privateKey));
+                    VoteFlag.Null).Sign(null));
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(1, 1, hash, ImmutableArray<Vote>.Empty));
             Assert.Throws<ArgumentOutOfRangeException>(() =>

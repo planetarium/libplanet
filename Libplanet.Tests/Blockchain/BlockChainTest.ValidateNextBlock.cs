@@ -265,69 +265,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ValidateNextBlockLastCommitInvalidSignature()
-        {
-            Block<DumbAction> block1 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 1L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: _fx.GenesisBlock.Hash,
-                    txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
-            _blockChain.Append(block1);
-
-            Vote voteA = new VoteMetadata(
-                1,
-                0,
-                block1.Hash,
-                DateTimeOffset.UtcNow,
-                TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey);
-
-            // Invalid Signature
-            Vote voteB = new VoteMetadata(
-                1,
-                0,
-                block1.Hash,
-                DateTimeOffset.UtcNow,
-                TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                VoteFlag.PreCommit).Sign(new PrivateKey());
-
-            Vote voteC = new VoteMetadata(
-                1,
-                0,
-                block1.Hash,
-                DateTimeOffset.UtcNow,
-                TestUtils.ConsensusPeer2PrivateKey.PublicKey,
-                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer2PrivateKey);
-
-            Vote voteD = new VoteMetadata(
-                1,
-                0,
-                block1.Hash,
-                DateTimeOffset.UtcNow,
-                TestUtils.ConsensusPeer3PrivateKey.PublicKey,
-                VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer3PrivateKey);
-
-            var blockCommit = new BlockCommit(
-                1,
-                0,
-                block1.Hash,
-                new[] { voteA, voteB, voteC, voteD }.ToImmutableArray());
-
-            Block<DumbAction> block2 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 2L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: block1.Hash,
-                    txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
-            Assert.Throws<InvalidBlockLastCommitException>(() => _blockChain.Append(block2));
-        }
-
-        [Fact]
         public void ValidateNextBlockLastCommitFailsUnexpectedValidator()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(

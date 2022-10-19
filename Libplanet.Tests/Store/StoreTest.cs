@@ -1164,7 +1164,7 @@ namespace Libplanet.Tests.Store
                                 null,
                                 DateTimeOffset.UtcNow,
                                 validatorPrivateKey.PublicKey,
-                                VoteFlag.Null).Sign(validatorPrivateKey)));
+                                VoteFlag.PreCommit).Sign(validatorPrivateKey)));
 
                 fx.Store.PutLastCommit(blockCommit);
                 Assert.NotNull(fx.Store.GetLastCommit(blockCommit.Height));
