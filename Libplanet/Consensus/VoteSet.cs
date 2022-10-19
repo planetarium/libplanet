@@ -29,7 +29,7 @@ namespace Libplanet.Consensus
         public VoteSet(
             long height,
             int round,
-            BlockHash? blockHash,
+            BlockHash blockHash,
             IEnumerable<PublicKey> validatorSet)
         {
             Height = height;

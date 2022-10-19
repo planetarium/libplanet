@@ -35,6 +35,18 @@ namespace Libplanet.Consensus
         /// <see cref="PublicKey"/> of the validator made the vote.
         /// </param>
         /// <param name="flag"><see cref="VoteFlag"/> for the vote's status.</param>
+        /// <exception cref="ArgumentException">Thrown for any of the following reasons:
+        /// <list type="bullet">
+        /// <item><description>
+        ///     Either <paramref name="height"/> or <paramref name="round"/> is negative.
+        /// </description></item>
+        /// <item><description>
+        ///     Given <paramref name="blockHash"/> is <see langword="null"/> when
+        ///     <paramref name="flag"/> is either <see cref="VoteFlag.Null"/>
+        ///     or <see cref="VoteFlag.Unknown"/>.
+        /// </description></item>
+        /// </list>
+        /// </exception>
         public VoteMetadata(
             long height,
             int round,
@@ -43,7 +55,23 @@ namespace Libplanet.Consensus
             PublicKey validator,
             VoteFlag flag)
         {
-            // TODO: Check arguments.
+            if (height < 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(height)} cannot be negative: {height}");
+            }
+            else if (round < 0)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(round)} cannot be negative: {round}");
+            }
+            else if (blockHash is null && (flag == VoteFlag.Null || flag == VoteFlag.Unknown))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(blockHash)} cannot be null if {nameof(flag)} " +
+                    $"is {VoteFlag.Null} or {VoteFlag.Unknown}");
+            }
+
             Height = height;
             Round = round;
             BlockHash = blockHash;
