@@ -96,7 +96,7 @@ namespace Libplanet.Blocks
             }
 #pragma warning disable S1940 // Use the opposite operator ('>=') instead.
             else if (!(
-                votes.Count() * (2 / 3) < votes.Count(vote => vote.Flag == VoteFlag.PreCommit)))
+                votes.Count() * 2 / 3 < votes.Count(vote => vote.Flag == VoteFlag.PreCommit)))
 #pragma warning restore S1940
             {
                 throw new ArgumentException(
