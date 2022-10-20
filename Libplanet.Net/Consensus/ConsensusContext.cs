@@ -43,9 +43,6 @@ namespace Libplanet.Net.Consensus
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
-        /// <param name="height">The current height of consensus. this value should be same as the
-        /// index of <see cref="BlockChain{T}.Tip"/> + 1.
-        /// </param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> for signing message and blocks.
         /// </param>
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
@@ -61,7 +58,6 @@ namespace Libplanet.Net.Consensus
         public ConsensusContext(
             DelegateBroadcastMessage broadcastMessage,
             BlockChain<T> blockChain,
-            long height,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             Func<long, IEnumerable<PublicKey>> getValidators,
@@ -71,7 +67,7 @@ namespace Libplanet.Net.Consensus
             BroadcastMessage = broadcastMessage;
             _blockChain = blockChain;
             _privateKey = privateKey;
-            Height = height;
+            Height = -1;
             _newHeightDelay = newHeightDelay;
             _getValidators = getValidators;
             LastCommitClearThreshold = lastCommitClearThreshold;
@@ -101,12 +97,12 @@ namespace Libplanet.Net.Consensus
         public DelegateBroadcastMessage BroadcastMessage { get; }
 
         /// <summary>
-        /// Index of the block that is now under consensus. After a consensus starts, the value
-        /// should be same as the index of <see cref="BlockChain{T}.Tip"/> + 1.
-        /// <seealso cref="NewHeight"/>
-        /// <remarks>The initial value is the index of <see cref="BlockChain{T}.Tip"/>.
-        /// </remarks>
+        /// The index of block that <see cref="ConsensusContext{T}"/> is watching. The value can be
+        /// changed by starting a consensus or appending a block.
         /// </summary>
+        /// <seealso cref="NewHeight"/>  <seealso cref="OnBlockChainTipChanged"/>
+        /// <returns>If <see cref="NewHeight"/> or <see cref="OnBlockChainTipChanged"/> is called
+        /// before, returns current working height, otherwise returns <c>-1</c>.</returns>
         public long Height { get; private set; }
 
         /// <summary>
