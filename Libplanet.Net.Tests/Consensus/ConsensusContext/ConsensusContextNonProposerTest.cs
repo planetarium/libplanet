@@ -185,7 +185,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 blockChain[1].Hash,
                 1,
                 0));
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
             await proposeSent.WaitAsync();
 
             Assert.Equal(2, consensusContext.Height);

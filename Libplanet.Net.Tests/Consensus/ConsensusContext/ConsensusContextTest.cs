@@ -57,8 +57,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
+            // The given height is equal to the consensus context's height.
             Assert.Throws<InvalidHeightIncreasingException>(
                 () => consensusContext.NewHeight(blockChain.Tip.Index));
+            // The given height is not the same tip's index + 1.
             Assert.Throws<InvalidHeightIncreasingException>(
                 () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
 
