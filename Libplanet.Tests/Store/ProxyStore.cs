@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Store
             Store.PruneOutdatedChains(noopWithoutCanon);
 
         /// <inheritdoc />
-        public BlockCommit? GetLastCommit(long height) =>
+        public BlockCommit GetLastCommit(long height) =>
             Store.GetLastCommit(height);
 
         /// <inheritdoc />

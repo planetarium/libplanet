@@ -284,7 +284,7 @@ namespace Libplanet.Store
             }
         }
 
-        public BlockCommit? GetLastCommit(long height)
+        public BlockCommit GetLastCommit(long height)
         {
             if (!_lastCommits.ContainsKey(height))
             {

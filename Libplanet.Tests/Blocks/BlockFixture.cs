@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blocks
                 lastCommit: new BlockCommit(
                     height: Next.Index,
                     round: 0,
-                    hash: Next.Hash,
+                    blockHash: Next.Hash,
                     votes: new[]
                     {
                         new VoteMetadata(

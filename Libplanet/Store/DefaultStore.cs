@@ -665,7 +665,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override BlockCommit? GetLastCommit(long height)
+        public override BlockCommit GetLastCommit(long height)
         {
             UPath path = LastCommitPath(height);
             if (!_lastCommits.FileExists(path))

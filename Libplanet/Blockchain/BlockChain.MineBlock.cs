@@ -50,7 +50,7 @@ namespace Libplanet.Blockchain
             int? maxTransactions = null,
             int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
-            BlockCommit? lastCommit = null) =>
+            BlockCommit lastCommit = null) =>
 #pragma warning disable SA1118
             ProposeBlock(
                 proposer: proposer,
@@ -93,7 +93,7 @@ namespace Libplanet.Blockchain
             int maxTransactions,
             int maxTransactionsPerSigner,
             IComparer<Transaction<T>> txPriority = null,
-            BlockCommit? lastCommit = null)
+            BlockCommit lastCommit = null)
         {
             long index = Count;
             long difficulty = 1L;

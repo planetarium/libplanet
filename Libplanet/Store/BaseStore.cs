@@ -183,7 +183,7 @@ namespace Libplanet.Store
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <inheritdoc/>
-        public abstract BlockCommit? GetLastCommit(long height);
+        public abstract BlockCommit GetLastCommit(long height);
 
         /// <inheritdoc/>
         public abstract void PutLastCommit(BlockCommit lastCommit);

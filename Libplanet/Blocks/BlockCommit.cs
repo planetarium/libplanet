@@ -8,7 +8,7 @@ using Libplanet.Consensus;
 
 namespace Libplanet.Blocks
 {
-    public readonly struct BlockCommit
+    public sealed class BlockCommit : IEquatable<BlockCommit>
     {
         internal const string HeightKey = "height";
         internal const string RoundKey = "round";
@@ -23,7 +23,7 @@ namespace Libplanet.Blocks
         /// <param name="height">The <see cref="Block{T}.Index"/> of the last committed
         /// <see cref="Block{T}"/>.</param>
         /// <param name="round">The round in which a consensus was reached.</param>
-        /// <param name="hash">The <see cref="Block{T}.Hash"/> of the last commited
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the last commited
         /// <see cref="Block{T}"/>.</param>
         /// <param name="votes">The set of <see cref="Vote"/>s as a proof for the commit
         /// of the last <see cref="Block{T}"/>.</param>
@@ -44,17 +44,22 @@ namespace Libplanet.Blocks
         /// </description></item>
         /// <item><description>
         ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has a different
-        ///     <see cref="Vote.BlockHash"/> from <paramref name="round"/> that is not
-        ///     <see langword="null"/>.
+        ///     <see cref="Vote.BlockHash"/> from <paramref name="blockHash"/>.
+        /// </description></item>
+        /// <item><description>
+        ///     Any one of <see cref="Vote"/> of <paramref name="votes"/> has
+        ///     <see cref="Vote.Flag"/> that is neither <see cref="VoteFlag.Null"/>
+        ///     nor <see cref="VoteFlag.PreCommit"/>.
         /// </description></item>
         /// </list>
         /// </exception>
         public BlockCommit(
             long height,
             int round,
-            BlockHash hash,
+            BlockHash blockHash,
             ImmutableArray<Vote> votes)
         {
+            // TODO: Implement separate exception for each case.
             if (height < 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -74,17 +79,19 @@ namespace Libplanet.Blocks
             else if (votes.Any(vote =>
                 vote.Height != height ||
                 vote.Round != round ||
-                (vote.BlockHash is { } h && !h.Equals(hash))))
+                !blockHash.Equals(vote.BlockHash) ||
+                (vote.Flag != VoteFlag.Null && vote.Flag != VoteFlag.PreCommit)))
             {
                 throw new ArgumentException(
                     $"Every vote must have the same height as {height}, the same round " +
-                    $"as {round}, and either null hash or the same hash as {hash}.",
+                    $"as {round}, the same hash as {blockHash}, and must have flag value of " +
+                    $"either {VoteFlag.Null} or {VoteFlag.PreCommit}.",
                     nameof(votes));
             }
 
             Height = height;
             Round = round;
-            BlockHash = hash;
+            BlockHash = blockHash;
             Votes = votes;
         }
 
@@ -145,15 +152,16 @@ namespace Libplanet.Blocks
             }
         }
 
-        public bool Equals(BlockCommit other)
+        public bool Equals(BlockCommit? other)
         {
-            return Height == other.Height &&
-                   Round == other.Round &&
-                   BlockHash.Equals(other.BlockHash) &&
-                   Votes.SequenceEqual(other.Votes);
+            return other is BlockCommit commit &&
+                Height == commit.Height &&
+                Round == commit.Round &&
+                BlockHash.Equals(commit.BlockHash) &&
+                Votes.SequenceEqual(commit.Votes);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             return obj is BlockCommit other && Equals(other);

@@ -20,10 +20,10 @@ namespace Libplanet.Tests.Blocks
         public void HasTwoThirdCommits()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            BlockCommit? allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
+            BlockCommit allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
             Assert.True(allCommits?.HasTwoThirdCommits(TestUtils.ConsensusValidators));
 
-            BlockCommit? noCommits = TestUtils.CreateLastCommit(hash, 2, 0, VoteFlag.PreVote);
+            BlockCommit noCommits = TestUtils.CreateLastCommit(hash, 2, 0, VoteFlag.PreVote);
             Assert.False(noCommits?.HasTwoThirdCommits(TestUtils.ConsensusValidators));
 
             VoteSet voteSet = new VoteSet(2, 0, hash, TestUtils.ConsensusValidators);
@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Blocks
         public void HasSameValidators()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            BlockCommit? allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
+            BlockCommit allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
             Assert.True(allCommits?.HasSameValidators(TestUtils.ConsensusValidators));
             Assert.False(
                 allCommits?.HasSameValidators(TestUtils.ConsensusValidators.Skip(1).Take(3)));

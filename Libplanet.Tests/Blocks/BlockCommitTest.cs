@@ -42,136 +42,134 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void ConstructorInvalidValues()
+        public void HeightAndRoundMustNotBeNegative()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
-            var votes = keys.Select(key =>
-                new VoteMetadata(
-                    0,
-                    0,
+            var key = new PrivateKey();
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    0, 0, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
+                        .Sign(key));
+
+            // Negative height is not allowed.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockCommit(-1, 0, hash, votes));
+
+            // Negative round is not allowed.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockCommit(0, -1, hash, votes));
+        }
+
+        [Fact]
+        public void VotesCannotBeEmpty()
+        {
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(0, 0, hash, default));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(0, 0, hash, ImmutableArray<Vote>.Empty));
+        }
+
+        [Fact]
+        public void EveryVoteMustHaveSameHeightAndRoundAsBlockCommit()
+        {
+            var height = 2;
+            var round = 3;
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var key = new PrivateKey();
+
+            // Vote with different height is not allowed.
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height + 1,
+                    round,
                     hash,
                     DateTimeOffset.UtcNow,
                     key.PublicKey,
-                    VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
+                    VoteFlag.PreCommit).Sign(key));
             Assert.Throws<ArgumentException>(() =>
-                new BlockCommit(1, 1, hash, ImmutableArray<Vote>.Empty));
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockCommit(-1, 0, hash, votes));
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockCommit(1, -1, hash, votes));
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockCommit(1, -1, default, votes));
-         }
+                new BlockCommit(height, round, hash, votes));
+
+            // Vote with different round is not allowed.
+            votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round + 1,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key));
+            Assert.Throws<ArgumentException>(() =>
+                new BlockCommit(height, round, hash, votes));
+        }
 
         [Fact]
-        public void EveryVoteMustHaveValidHeightAndRound()
+        public void EveryVoteMustHaveSameHashAsBlockCommit()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            Assert.Throws<ArgumentException>(() =>
-                new BlockCommit(
-                    2,
-                    0,
-                    hash,
-                    new[]
-                    {
-                        new VoteMetadata(
-                            2,
-                            0,
-                            hash,
-                            DateTimeOffset.UtcNow,
-                            TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey),
-                        new VoteMetadata(
-                            1,
-                            0,
-                            hash,
-                            DateTimeOffset.UtcNow,
-                            TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey),
-                    }.ToImmutableArray()));
-            Assert.Throws<ArgumentException>(() =>
-                new BlockCommit(
-                    2,
-                    0,
-                    hash,
-                    new[]
-                    {
-                        new VoteMetadata(
-                            2,
-                            0,
-                            hash,
-                            DateTimeOffset.UtcNow,
-                            TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey),
-                        new VoteMetadata(
-                            2,
-                            1,
-                            hash,
-                            DateTimeOffset.UtcNow,
-                            TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                            VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey),
-                    }.ToImmutableArray()));
-         }
-
-        [Fact]
-        public void AllVotesShouldHaveMatchingHash()
-        {
+            var height = 2;
+            var round = 3;
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
             var badHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var key = new PrivateKey();
 
             var votes = ImmutableArray<Vote>.Empty
                 .Add(new VoteMetadata(
-                    2,
-                    0,
-                    hash,
-                    DateTimeOffset.UtcNow,
-                    TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-                    VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer0PrivateKey))
-                .Add(new VoteMetadata(
-                    2,
-                    0,
+                    height,
+                    round,
                     badHash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.ConsensusPeer1PrivateKey.PublicKey,
-                    VoteFlag.PreCommit).Sign(TestUtils.ConsensusPeer1PrivateKey));
-
-            Assert.Throws<ArgumentException>(() => new BlockCommit(2, 0, hash, votes));
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key));
+            Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
         }
 
         [Fact]
-        public void DecodeFailsNegativeHeight()
+        public void EveryVoteFlagMustBeNullOrPreCommit()
         {
-            var fx = new MemoryStoreFixture();
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add(BlockCommit.HeightKey, -1)
-                .Add(BlockCommit.RoundKey, 0)
-                .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
+            var height = 2;
+            var round = 3;
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var key = new PrivateKey();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
-        }
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.Null).Sign(null));
+            _ = new BlockCommit(height, round, hash, votes);
 
-        [Fact]
-        public void DecodeFailsNegativeRound()
-        {
-            var fx = new MemoryStoreFixture();
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add(BlockCommit.HeightKey, 1)
-                .Add(BlockCommit.RoundKey, -1)
-                .Add(BlockCommit.BlockHashKey, fx.Hash1.ByteArray);
+            votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.Unknown).Sign(null));
+            Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new BlockCommit(dict));
-        }
+            votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.PreVote).Sign(key));
+            Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
 
-        [Fact]
-        public void DecodeFailsNullHash()
-        {
-            var dict = Bencodex.Types.Dictionary.Empty
-                .Add(BlockCommit.HeightKey, 1)
-                .Add(BlockCommit.RoundKey, 0)
-                .Add(BlockCommit.BlockHashKey, default(BlockHash).ByteArray);
-
-            Assert.Throws<ArgumentException>(() => new BlockCommit(dict));
+            votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key));
+            _ = new BlockCommit(height, round, hash, votes);
         }
     }
 }
