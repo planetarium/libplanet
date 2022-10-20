@@ -187,19 +187,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightOneProposeSent = new AsyncAutoResetEvent();
             var heightTwoProposeSent = new AsyncAutoResetEvent();
             var heightTwoEnded = new AsyncAutoResetEvent();
-            var heightThreePreVote = new AsyncAutoResetEvent();
+            var heightThreePropose = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
-
-            var validators = new List<PublicKey>()
-            {
-                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
-            };
 
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
-                validators,
                 consensusMessageSent: CatchPropose,
                 lastCommitClearThreshold: 1);
 
@@ -227,9 +221,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         heightTwoEnded.Set();
                     }
 
-                    if (tuple.Height == 3 && tuple.Step == Step.PreVote)
+                    if (tuple.Height == 3 && tuple.Step == Step.Propose)
                     {
-                        heightThreePreVote.Set();
+                        heightThreePropose.Set();
                     }
                 };
 
@@ -249,25 +243,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             await heightOneProposeSent.WaitAsync();
 
-            consensusContext.HandleMessage(
-                new ConsensusPreVoteMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer0Priv,
-                        1,
-                        0,
-                        proposedBlock!.Hash,
-                        VoteFlag.PreVote))
-            );
-
-            consensusContext.HandleMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer0Priv,
-                        1,
-                        0,
-                        proposedBlock!.Hash,
-                        VoteFlag.PreCommit))
-                );
+            TestUtils.HandleFourPeersPreCommitMessages(
+                consensusContext,
+                TestUtils.Peer1Priv,
+                proposedBlock!.Hash);
 
             await heightOneEnded.WaitAsync();
 
@@ -289,36 +268,21 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 lastCommit:
                 TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv, height: 2));
+                TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, height: 2));
 
             await heightTwoProposeSent.WaitAsync();
 
-            consensusContext.HandleMessage(
-                new ConsensusPreVoteMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer0Priv,
-                        2,
-                        0,
-                        block.Hash,
-                        VoteFlag.PreVote))
-            );
-
-            consensusContext.HandleMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer0Priv,
-                        2,
-                        0,
-                        block.Hash,
-                        VoteFlag.PreCommit))
-            );
+            TestUtils.HandleFourPeersPreCommitMessages(
+                consensusContext,
+                TestUtils.Peer1Priv,
+                block.Hash);
 
             await heightTwoEnded.WaitAsync();
 
-            // Starts round 3, Waits PreVote timeout
+            // Starts height 3, Waits PreVote timeout
             // Checks previous LastCommit and see if it's available.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            await heightThreePreVote.WaitAsync();
+            await heightThreePropose.WaitAsync();
 
             Assert.NotNull(blockChain.Store.GetLastCommit(blockChain.Tip.Index));
             Assert.Null(blockChain.Store.GetLastCommit(blockChain.Tip.Index - 1));
