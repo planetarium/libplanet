@@ -240,31 +240,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ValidateNextBlockLastCommitNullLacksCommits()
-        {
-            Block<DumbAction> block1 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 1L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: _fx.GenesisBlock.Hash,
-                    txHash: null,
-                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
-            _blockChain.Append(block1);
-
-            var blockCommit = TestUtils.CreateLastCommit(block1.Hash, 1, 0, VoteFlag.PreVote);
-            Block<DumbAction> block2 = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    index: 2L,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: _fx.Miner.PublicKey,
-                    previousHash: block1.Hash,
-                    txHash: null,
-                    lastCommit: blockCommit)).Propose().Evaluate(_fx.Miner, _blockChain);
-            Assert.Throws<InvalidBlockLastCommitException>(() => _blockChain.Append(block2));
-        }
-
-        [Fact]
         public void ValidateNextBlockLastCommitFailsUnexpectedValidator()
         {
             Block<DumbAction> block1 = new BlockContent<DumbAction>(

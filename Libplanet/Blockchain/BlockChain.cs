@@ -1541,13 +1541,6 @@ namespace Libplanet.Blockchain
                             "with known validator set in policy.");
                     }
 
-                    if (!commit.HasTwoThirdCommits(Policy.GetValidators(block.Index - 1)))
-                    {
-                        return new InvalidBlockLastCommitException(
-                            $"The lastcommit votes of block #{block.Index} " +
-                            $"does not meet the criteria of +2/3 committed vote.");
-                    }
-
                     if (!commit.HasValidVotes())
                     {
                         return new InvalidBlockLastCommitException(

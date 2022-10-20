@@ -308,6 +308,8 @@ namespace Libplanet.Tests.Blocks
                 new[]
                 {
                     GenerateVote(blockHash, 1, 0, VoteFlag.PreCommit),
+                    GenerateVote(blockHash, 1, 0, VoteFlag.PreCommit),
+                    GenerateVote(blockHash, 1, 0, VoteFlag.PreCommit),
                     new VoteMetadata(
                         1,
                         0,
@@ -315,13 +317,6 @@ namespace Libplanet.Tests.Blocks
                         timestamp,
                         validatorB.PublicKey,
                         VoteFlag.Null).Sign(null),
-                    new VoteMetadata(
-                        1,
-                        0,
-                        blockHash,
-                        timestamp,
-                        validatorC.PublicKey,
-                        VoteFlag.PreCommit).Sign(validatorC),
                 }.ToImmutableArray());
             var validMetadata = new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,

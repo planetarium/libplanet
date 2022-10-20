@@ -129,7 +129,10 @@ namespace Libplanet.Tests.Blocks
             var height = 2;
             var round = 3;
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            var key = new PrivateKey();
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var preCommitVotes = keys.Select(key => new VoteMetadata(
+                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
+                    .Sign(key)).ToList();
 
             var votes = ImmutableArray<Vote>.Empty
                 .Add(new VoteMetadata(
@@ -137,8 +140,9 @@ namespace Libplanet.Tests.Blocks
                     round,
                     hash,
                     DateTimeOffset.UtcNow,
-                    key.PublicKey,
-                    VoteFlag.Null).Sign(null));
+                    keys[0].PublicKey,
+                    VoteFlag.Null).Sign(null))
+                .AddRange(preCommitVotes.Skip(1));
             _ = new BlockCommit(height, round, hash, votes);
 
             votes = ImmutableArray<Vote>.Empty
@@ -147,8 +151,9 @@ namespace Libplanet.Tests.Blocks
                     round,
                     hash,
                     DateTimeOffset.UtcNow,
-                    key.PublicKey,
-                    VoteFlag.Unknown).Sign(null));
+                    keys[0].PublicKey,
+                    VoteFlag.Unknown).Sign(null))
+                .AddRange(preCommitVotes.Skip(1));
             Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
 
             votes = ImmutableArray<Vote>.Empty
@@ -157,8 +162,9 @@ namespace Libplanet.Tests.Blocks
                     round,
                     hash,
                     DateTimeOffset.UtcNow,
-                    key.PublicKey,
-                    VoteFlag.PreVote).Sign(key));
+                    keys[0].PublicKey,
+                    VoteFlag.PreVote).Sign(keys[0]))
+                .AddRange(preCommitVotes.Skip(1));
             Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
 
             votes = ImmutableArray<Vote>.Empty
@@ -167,9 +173,53 @@ namespace Libplanet.Tests.Blocks
                     round,
                     hash,
                     DateTimeOffset.UtcNow,
-                    key.PublicKey,
-                    VoteFlag.PreCommit).Sign(key));
+                    keys[0].PublicKey,
+                    VoteFlag.PreCommit).Sign(keys[0]))
+                .AddRange(preCommitVotes.Skip(1));
             _ = new BlockCommit(height, round, hash, votes);
+        }
+
+        [Fact]
+        public void InsufficientPreCommitsNotAllowed()
+        {
+            var height = 2;
+            var round = 3;
+            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var preCommitVotes = keys.Select(key => new VoteMetadata(
+                height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
+                    .Sign(key)).ToList();
+
+            // Over 2/3 PreCommits is okay.
+            var votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    keys[0].PublicKey,
+                    VoteFlag.Null).Sign(null))
+                .AddRange(preCommitVotes.Skip(1));
+            _ = new BlockCommit(height, round, hash, votes);
+
+            // Not enough PreCommits is not okay.
+            votes = ImmutableArray<Vote>.Empty
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    keys[0].PublicKey,
+                    VoteFlag.Null).Sign(null))
+                .Add(new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    keys[1].PublicKey,
+                    VoteFlag.Null).Sign(null))
+                .AddRange(preCommitVotes.Skip(2));
+            Assert.Throws<ArgumentException>(() => new BlockCommit(height, round, hash, votes));
         }
     }
 }
