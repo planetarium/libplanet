@@ -145,9 +145,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer1Priv,
                 validators);
 
-            Assert.Equal(0, consensusContext.Height);
+            Assert.Equal(-1, consensusContext.Height);
             blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
-            Assert.Equal(0, consensusContext.Height);
+            Assert.Equal(-1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
         }
@@ -160,13 +160,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
             };
 
-            var (fx, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
-                validators,
-                height: 1);
+                validators);
 
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
             Assert.Throws<InvalidHeightMessageException>(
                 () => consensusContext.HandleMessage(

@@ -75,7 +75,6 @@ namespace Libplanet.Net.Consensus
             _consensusContext = new ConsensusContext<T>(
                 AddMessage,
                 blockChain,
-                blockChain.Tip.Index,
                 privateKey,
                 newHeightDelay,
                 blockChain.Policy.GetValidators,
