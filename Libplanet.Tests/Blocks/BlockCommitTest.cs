@@ -215,7 +215,7 @@ namespace Libplanet.Tests.Blocks
                     height,
                     round,
                     hash,
-                    DateTimeOffset.UnixEpoch,
+                    DateTimeOffset.UtcNow,
                     keys[1].PublicKey,
                     VoteFlag.Null).Sign(null))
                 .AddRange(preCommitVotes.Skip(2));
