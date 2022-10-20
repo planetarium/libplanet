@@ -43,9 +43,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             targetHash = block.Hash;
-            void CheckVote(object? observer, ConsensusMessage? message)
+            void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusVote vote && vote.BlockHash.Equals(targetHash))
+                if (message is ConsensusPreVoteMsg vote && vote.BlockHash.Equals(targetHash))
                 {
                     voteSent.Set();
                 }
@@ -65,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 block, TestUtils.Peer3Priv, round: 2, validRound: 1));
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,
                     1,
                     round: 1,
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(new
-                ConsensusVote(TestUtils.CreateVote(
+                ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv,
                     1,
                     round: 1,
@@ -87,7 +87,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv,
                     1,
                     round: 1,
@@ -124,9 +124,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     lastCommit: null))
                 .Propose().Evaluate(fx.Miner, blockChain);
 
-            void CheckVote(object? observer, ConsensusMessage? message)
+            void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusVote vote && vote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.BlockHash is null)
                 {
                     voteSent.Set();
                 }
@@ -146,7 +146,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 invalidBlock, TestUtils.Peer3Priv, round: 2, validRound: 1));
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,
                     1,
                     round: 1,
@@ -157,7 +157,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(new
-                ConsensusVote(TestUtils.CreateVote(
+                ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv,
                     1,
                     round: 1,
@@ -168,7 +168,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv,
                     1,
                     round: 1,

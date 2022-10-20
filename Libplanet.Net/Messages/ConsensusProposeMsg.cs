@@ -9,10 +9,10 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="Libplanet.Net.Consensus.Step.Propose"/>.
     /// </summary>
-    public class ConsensusPropose : ConsensusMessage
+    public class ConsensusProposeMsg : ConsensusMsg
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusPropose"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusProposeMsg"/> class.
         /// </summary>
         /// <param name="validator">
         /// A <see cref="PublicKey"/> of the validator whe made this message.</param>
@@ -23,7 +23,7 @@ namespace Libplanet.Net.Messages
         /// <param name="validRound">A last successful
         /// <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
         /// </param>
-        public ConsensusPropose(
+        public ConsensusProposeMsg(
             PublicKey validator,
             long height,
             int round,
@@ -37,11 +37,11 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusPropose"/> class with marshalled
-        /// message.
+        /// Initializes a new instance of the <see cref="ConsensusProposeMsg"/> class
+        /// with marshalled message.
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
-        public ConsensusPropose(byte[][] dataframes)
+        public ConsensusProposeMsg(byte[][] dataframes)
         : base(dataframes)
         {
             Payload = dataframes[4];
@@ -58,7 +58,7 @@ namespace Libplanet.Net.Messages
         /// </summary>
         public int ValidRound { get; }
 
-        /// <inheritdoc cref="ConsensusMessage.DataFrames"/>
+        /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
         {
             get

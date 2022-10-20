@@ -13,7 +13,7 @@ namespace Libplanet.Net.Consensus
     public struct ConsensusReactorOption
     {
         /// <summary>
-        /// A port number that is used for exchanging <see cref="ConsensusMessage"/>.
+        /// A port number that is used for exchanging <see cref="ConsensusMsg"/>.
         /// </summary>
         public int ConsensusPort { get; set; }
 

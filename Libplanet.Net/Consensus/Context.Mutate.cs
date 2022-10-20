@@ -33,7 +33,7 @@ namespace Libplanet.Net.Consensus
                 Block<T> proposal = _validValue ?? GetValue();
 
                 BroadcastMessage(
-                    new ConsensusPropose(
+                    new ConsensusProposeMsg(
                         _privateKey.PublicKey,
                         Height,
                         Round,
@@ -54,10 +54,10 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Validates given <paramref name="message"/> and add it to the message log.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to be added.
+        /// <param name="message">A <see cref="ConsensusMsg"/> to be added.
         /// </param>
         /// <remarks>
-        /// If an invalid <see cref="ConsensusMessage"/> is given, this method throws
+        /// If an invalid <see cref="ConsensusMsg"/> is given, this method throws
         /// an <see cref="InvalidMessageException"/> and handles it <em>internally</em> while
         /// invoking <see cref="ExceptionOccurred"/> event.  Internally thrown and
         /// handled <see cref="InvalidMessageException"/>s are:
@@ -68,11 +68,11 @@ namespace Libplanet.Net.Consensus
         ///     </description></item>
         ///     <item><description>
         ///         <see cref="InvalidProposerProposeMessageException"/>: Thrown when
-        ///         <paramref name="message"/> is a <see cref="ConsensusPropose"/> and has
+        ///         <paramref name="message"/> is a <see cref="ConsensusProposeMsg"/> and has
         ///         a proposer that is not the proposer of the current round.
         ///     </description></item>
         ///         <see cref="InvalidBlockProposeMessageException"/>: Thrown when
-        ///         <paramref name="message"/> is a <see cref="ConsensusPropose"/> and
+        ///         <paramref name="message"/> is a <see cref="ConsensusProposeMsg"/> and
         ///         has an invalid blockHash (i.e., NIL).
         ///     <item><description>
         ///         <see cref="InvalidValidatorVoteMessageException"/>: Thrown when
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Consensus
         ///     </description></item>
         /// </list>
         /// </remarks>
-        private void AddMessage(ConsensusMessage message)
+        private void AddMessage(ConsensusMsg message)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace Libplanet.Net.Consensus
                         message);
                 }
 
-                if (message is ConsensusPropose propose)
+                if (message is ConsensusProposeMsg propose)
                 {
                     if (!propose.Validator.Equals(Proposer(message.Round)))
                     {
@@ -115,9 +115,9 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                if (message is ConsensusVote vote &&
-                    (!vote.Validator.Equals(vote.ProposeVote.Validator) ||
-                    !vote.ProposeVote.Verify() ||
+                if (message is ConsensusPreVoteMsg vote &&
+                    (!vote.Validator.Equals(vote.PreVote.Validator) ||
+                    !vote.PreVote.Verify() ||
                     !_validators.Contains(vote.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
@@ -125,9 +125,9 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
-                if (message is ConsensusCommit commit &&
-                    (!commit.Validator.Equals(commit.CommitVote.Validator) ||
-                    !commit.CommitVote.Verify() ||
+                if (message is ConsensusPreCommitMsg commit &&
+                    (!commit.Validator.Equals(commit.PreCommit.Validator) ||
+                    !commit.PreCommit.Verify() ||
                     !_validators.Contains(commit.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
@@ -185,12 +185,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, block1.Hash, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, block1.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, null, VoteFlag.PreVote)));
                 }
             }
 
@@ -210,12 +210,12 @@ namespace Libplanet.Net.Consensus
                 if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, block2.Hash, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, block2.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
                     BroadcastMessage(
-                        new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, null, VoteFlag.PreVote)));
                 }
             }
 
@@ -255,7 +255,8 @@ namespace Libplanet.Net.Consensus
                     _lockedValue = block3;
                     _lockedRound = Round;
                     BroadcastMessage(
-                        new ConsensusCommit(MakeVote(Round, block3.Hash, VoteFlag.PreCommit)));
+                        new ConsensusPreCommitMsg(
+                            MakeVote(Round, block3.Hash, VoteFlag.PreCommit)));
                 }
 
                 _validValue = block3;
@@ -271,7 +272,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreCommit;
                 BroadcastMessage(
-                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.PreCommit)));
+                    new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
             }
 
             if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitTimeoutFlags.Contains(Round))
@@ -290,12 +291,12 @@ namespace Libplanet.Net.Consensus
         /// Checks the current state to mutate <see cref="Round"/> or to terminate
         /// by setting <see cref="Step"/> to <see cref="Step.EndCommit"/>.
         /// </summary>
-        /// <param name="message">The <see cref="ConsensusMessage"/> to process.
+        /// <param name="message">The <see cref="ConsensusMsg"/> to process.
         /// Although this is not strictly needed, this is used for optimization.</param>
-        private void ProcessHeightOrRoundUponRules(ConsensusMessage message)
+        private void ProcessHeightOrRoundUponRules(ConsensusMsg message)
         {
             int round = message.Round;
-            if ((message is ConsensusPropose || message is ConsensusCommit) &&
+            if ((message is ConsensusProposeMsg || message is ConsensusPreCommitMsg) &&
                 GetPropose(round) is (Block<T> block4, _) &&
                 HasTwoThirdsPreCommit(round, block4.Hash) &&
                 Step != Step.EndCommit &&
@@ -328,7 +329,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A timeout mutation to run if no <see cref="ConsensusPropose"/> is received in
+        /// A timeout mutation to run if no <see cref="ConsensusProposeMsg"/> is received in
         /// <see cref="TimeoutPropose"/> and is still in <see cref="Step.Propose"/> step.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>
@@ -337,14 +338,14 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.Propose)
             {
                 BroadcastMessage(
-                    new ConsensusVote(MakeVote(Round, null, VoteFlag.PreVote)));
+                    new ConsensusPreVoteMsg(MakeVote(Round, null, VoteFlag.PreVote)));
                 Step = Step.PreVote;
                 TimeoutProcessed?.Invoke(this, (Height, round));
             }
         }
 
         /// <summary>
-        /// A timeout mutation to run if +2/3 <see cref="ConsensusVote"/>s were received but
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusPreVoteMsg"/>s were received but
         /// is still in <paramref name="round"/> round and <see cref="Step.PreVote"/> step
         /// after <see cref="TimeoutPreVote"/>.
         /// </summary>
@@ -354,14 +355,14 @@ namespace Libplanet.Net.Consensus
             if (round == Round && Step == Step.PreVote)
             {
                 BroadcastMessage(
-                    new ConsensusCommit(MakeVote(Round, null, VoteFlag.PreCommit)));
+                    new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
                 Step = Step.PreCommit;
                 TimeoutProcessed?.Invoke(this, (Height, round));
             }
         }
 
         /// <summary>
-        /// A timeout mutation to run if +2/3 <see cref="ConsensusCommit"/>s were received but
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusPreCommitMsg"/>s were received but
         /// is still in <paramref name="round"/> round and <see cref="Step.PreCommit"/> step
         /// after <see cref="TimeoutPreVote"/>.
         /// </summary>

@@ -6,15 +6,15 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="Libplanet.Net.Consensus.Step.PreVote"/>.
     /// </summary>
-    public class ConsensusVote : ConsensusMessage
+    public class ConsensusPreVoteMsg : ConsensusMsg
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusVote"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusPreVoteMsg"/> class.
         /// </summary>
-        /// <param name="vote">A <see cref="Libplanet.Net.Consensus.Step.PreVote"/>
-        /// <see cref="Vote"/> to attach.
+        /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreVote"/>
+        /// to attach.
         /// </param>
-        public ConsensusVote(Vote vote)
+        public ConsensusPreVoteMsg(Vote vote)
             : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
             if (vote.Flag != VoteFlag.PreVote)
@@ -22,33 +22,33 @@ namespace Libplanet.Net.Messages
                 throw new InvalidMessageException("Vote flag must be PreVote.", this);
             }
 
-            ProposeVote = vote;
+            PreVote = vote;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusVote"/> class with marshalled
-        /// message.
+        /// Initializes a new instance of the <see cref="ConsensusPreVoteMsg"/> class
+        /// with marshalled message.
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
-        public ConsensusVote(byte[][] dataframes)
+        public ConsensusPreVoteMsg(byte[][] dataframes)
             : this(new Vote(dataframes[0]))
         {
         }
 
         /// <summary>
-        /// A <see cref="Libplanet.Net.Consensus.Step.PreVote"/> <see cref="Vote"/> the message is
-        /// for.
+        /// A <see cref="Vote"/> for <see cref="Consensus.Step.PreVote"/>.  This will always
+        /// have its <see cref="Vote.Flag"/> set to <see cref="VoteFlag.PreVote"/>.
         /// </summary>
-        public Vote ProposeVote { get; }
+        public Vote PreVote { get; }
 
-        /// <inheritdoc cref="ConsensusMessage.DataFrames"/>
+        /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
         {
             get
             {
                 var frames = new List<byte[]>
                 {
-                    ProposeVote.ByteArray,
+                    PreVote.ByteArray,
                 };
                 return frames;
             }

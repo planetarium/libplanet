@@ -5,8 +5,8 @@ using Libplanet.Net.Messages;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// An exception thrown when a received <see cref="ConsensusVote"/> or
-    /// <see cref="ConsensusCommit"/> has invalid or unknown validator signature.
+    /// An exception thrown when a received <see cref="ConsensusPreVoteMsg"/> or
+    /// <see cref="ConsensusPreCommitMsg"/> has invalid or unknown validator signature.
     /// </summary>
     public class InvalidValidatorVoteMessageException : InvalidMessageException
     {

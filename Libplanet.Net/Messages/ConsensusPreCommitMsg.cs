@@ -4,17 +4,17 @@ using Libplanet.Consensus;
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>.
+    /// A message class for <see cref="Consensus.Step.PreCommit"/>.
     /// </summary>
-    public class ConsensusCommit : ConsensusMessage
+    public class ConsensusPreCommitMsg : ConsensusMsg
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusCommit"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusPreCommitMsg"/> class.
         /// </summary>
-        /// <param name="vote">A <see cref="Libplanet.Net.Consensus.Step.PreCommit"/>
-        /// <see cref="Vote"/> to attach.
+        /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreCommit"/>
+        /// to attach.
         /// </param>
-        public ConsensusCommit(Vote vote)
+        public ConsensusPreCommitMsg(Vote vote)
             : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
             if (vote.Flag != VoteFlag.PreCommit)
@@ -22,33 +22,33 @@ namespace Libplanet.Net.Messages
                 throw new InvalidMessageException("Vote flag must be PreCommit.", this);
             }
 
-            CommitVote = vote;
+            PreCommit = vote;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusCommit"/> class with marshalled
-        /// message.
+        /// Initializes a new instance of the <see cref="ConsensusPreCommitMsg"/> class
+        /// with marshalled message.
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
-        public ConsensusCommit(byte[][] dataframes)
+        public ConsensusPreCommitMsg(byte[][] dataframes)
             : this(new Vote(dataframes[0]))
         {
         }
 
         /// <summary>
-        /// A <see cref="Libplanet.Net.Consensus.Step.PreCommit"/> <see cref="Vote"/> the message is
-        /// for.
+        /// A <see cref="Vote"/> for <see cref="Consensus.Step.PreCommit"/>.  This will always
+        /// have its <see cref="Vote.Flag"/> set to <see cref="VoteFlag.PreCommit"/>.
         /// </summary>
-        public Vote CommitVote { get; }
+        public Vote PreCommit { get; }
 
-        /// <inheritdoc cref="ConsensusMessage.DataFrames"/>
+        /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
         {
             get
             {
                 var frames = new List<byte[]>
                 {
-                    CommitVote.ByteArray,
+                    PreCommit.ByteArray,
                 };
                 return frames;
             }

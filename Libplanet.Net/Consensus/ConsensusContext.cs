@@ -38,7 +38,7 @@ namespace Libplanet.Net.Consensus
         /// Initializes a new instance of the <see cref="ConsensusContext{T}"/> class.
         /// </summary>
         /// <param name="broadcastMessage">A delegate method that will broadcasting given
-        /// <see cref="ConsensusMessage"/> to validators.
+        /// <see cref="ConsensusMsg"/> to validators.
         /// </param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
@@ -92,11 +92,11 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A delegate method for using as broadcasting a <see cref="ConsensusMessage"/> to
+        /// A delegate method for using as broadcasting a <see cref="ConsensusMsg"/> to
         /// validators.
         /// </summary>
         /// <param name="message">A message to broadcast.</param>
-        public delegate void DelegateBroadcastMessage(ConsensusMessage message);
+        public delegate void DelegateBroadcastMessage(ConsensusMsg message);
 
         public DelegateBroadcastMessage BroadcastMessage { get; }
 
@@ -256,15 +256,15 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Handling the received <see cref="ConsensusMessage"/>.
+        /// Handling the received <see cref="ConsensusMsg"/>.
         /// </summary>
-        /// <param name="consensusMessage">a received <see cref="ConsensusMessage"/> from any
+        /// <param name="consensusMessage">a received <see cref="ConsensusMsg"/> from any
         /// bounding validator.
         /// </param>
         /// <exception cref="InvalidHeightMessageException"> Thrown if the given message is lower
         /// than current <see cref="Height"/>.
         /// </exception>
-        public void HandleMessage(ConsensusMessage consensusMessage)
+        public void HandleMessage(ConsensusMsg consensusMessage)
         {
             long height = consensusMessage.Height;
             if (height < Height)

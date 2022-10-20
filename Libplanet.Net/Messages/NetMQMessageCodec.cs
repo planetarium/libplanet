@@ -170,11 +170,11 @@ namespace Libplanet.Net.Messages
                 case Message.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
                 case Message.MessageType.ConsensusPropose:
-                    return new ConsensusPropose(dataframes);
+                    return new ConsensusProposeMsg(dataframes);
                 case Message.MessageType.ConsensusVote:
-                    return new ConsensusVote(dataframes);
+                    return new ConsensusPreVoteMsg(dataframes);
                 case Message.MessageType.ConsensusCommit:
-                    return new ConsensusCommit(dataframes);
+                    return new ConsensusPreCommitMsg(dataframes);
                 case Message.MessageType.HaveMessage:
                     return new HaveMessage(dataframes);
                 case Message.MessageType.WantMessage:

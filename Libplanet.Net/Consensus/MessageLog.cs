@@ -10,23 +10,23 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     internal class MessageLog
     {
-        private Dictionary<int, HashSet<ConsensusMessage>> _log;
+        private Dictionary<int, HashSet<ConsensusMsg>> _log;
         private object _lock;
 
         internal MessageLog()
         {
-            _log = new Dictionary<int, HashSet<ConsensusMessage>>();
+            _log = new Dictionary<int, HashSet<ConsensusMsg>>();
             _lock = new object();
         }
 
-        internal void Add(ConsensusMessage message)
+        internal void Add(ConsensusMsg message)
         {
             lock (_lock)
             {
                 int round = message.Round;
                 if (!_log.ContainsKey(round))
                 {
-                    _log.Add(round, new HashSet<ConsensusMessage>());
+                    _log.Add(round, new HashSet<ConsensusMsg>());
                 }
 
                 _log[round].Add(message);
@@ -34,57 +34,59 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the <see cref="ConsensusPropose"/> for given <paramref name="round"/>.
+        /// Gets the <see cref="ConsensusProposeMsg"/> for given <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>The <see cref="ConsensusPropose"/> corresponding to <paramref name="round"/>
+        /// <returns>The <see cref="ConsensusProposeMsg"/> corresponding to <paramref name="round"/>
         /// if found, otherwise <c>null</c>.</returns>
-        internal ConsensusPropose? GetPropose(int round)
+        internal ConsensusProposeMsg? GetPropose(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].OfType<ConsensusPropose>().FirstOrDefault()
+                    ? _log[round].OfType<ConsensusProposeMsg>().FirstOrDefault()
                     : null;
             }
         }
 
         /// <summary>
-        /// Gets all <see cref="ConsensusVote"/>s in given <paramref name="round"/>.
+        /// Gets all <see cref="ConsensusPreVoteMsg"/>s in given <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>All <see cref="ConsensusVote"/>s in <paramref name="round"/> given.</returns>
-        internal List<ConsensusVote> GetVotes(int round)
+        /// <returns>All <see cref="ConsensusPreVoteMsg"/>s in given <paramref name="round"/>.
+        /// </returns>
+        internal List<ConsensusPreVoteMsg> GetPreVotes(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].OfType<ConsensusVote>().ToList()
-                    : new List<ConsensusVote>();
+                    ? _log[round].OfType<ConsensusPreVoteMsg>().ToList()
+                    : new List<ConsensusPreVoteMsg>();
             }
         }
 
         /// <summary>
-        /// Gets all <see cref="ConsensusCommit"/>s in given <paramref name="round"/>.
+        /// Gets all <see cref="ConsensusPreCommitMsg"/>s in given <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>All <see cref="ConsensusCommit"/>s in <paramref name="round"/> given.</returns>
-        internal List<ConsensusCommit> GetCommits(int round)
+        /// <returns>All <see cref="ConsensusPreCommitMsg"/>s in given <paramref name="round"/>.
+        /// </returns>
+        internal List<ConsensusPreCommitMsg> GetPreCommits(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].OfType<ConsensusCommit>().ToList()
-                    : new List<ConsensusCommit>();
+                    ? _log[round].OfType<ConsensusPreCommitMsg>().ToList()
+                    : new List<ConsensusPreCommitMsg>();
             }
         }
 
         /// <summary>
-        /// Counts how many <see cref="ConsensusMessage"/>s are in a log for given
+        /// Counts how many <see cref="ConsensusMsg"/>s are in a log for given
         /// <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>The number of <see cref="ConsensusMessage"/>s in <paramref name="round"/>.
+        /// <returns>The number of <see cref="ConsensusMsg"/>s in <paramref name="round"/>.
         /// </returns>
         internal int GetCount(int round)
         {
@@ -97,9 +99,9 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Counts the total number of <see cref="ConsensusMessage"/>s in a log.
+        /// Counts the total number of <see cref="ConsensusMsg"/>s in a log.
         /// </summary>
-        /// <returns>The number of all <see cref="ConsensusMessage"/>s.</returns>
+        /// <returns>The number of all <see cref="ConsensusMsg"/>s.</returns>
         internal int GetTotalCount()
         {
             lock (_lock)

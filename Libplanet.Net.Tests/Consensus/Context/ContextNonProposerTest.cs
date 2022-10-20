@@ -58,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     block, TestUtils.Peer2Priv, round: 1));
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
@@ -93,9 +93,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMessage? message)
+            void CheckCommit(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusCommit commit)
+                if (message is ConsensusPreCommitMsg commit)
                 {
                     Assert.Equal(commit.BlockHash, blockHash);
                     commitSent.Set();
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer1Priv, 1, 0, hash: block.Hash, VoteFlag.PreVote))
                 {
@@ -115,7 +115,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: block.Hash, VoteFlag.PreVote))
                 {
@@ -123,7 +123,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: block.Hash, VoteFlag.PreVote))
                 {
@@ -171,9 +171,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMessage? message)
+            void CheckCommit(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusCommit commit)
+                if (message is ConsensusPreCommitMsg commit)
                 {
                     Assert.Null(commit.BlockHash);
                     commitSent.Set();
@@ -185,7 +185,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(invalidBlock, TestUtils.Peer1Priv));
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer1Priv, 1, 0, hash: null, VoteFlag.PreVote))
                 {
@@ -193,7 +193,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: null, VoteFlag.PreVote))
                 {
@@ -201,7 +201,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, VoteFlag.PreVote))
                 {
@@ -240,7 +240,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     block, TestUtils.Peer2Priv, round: 1));
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 1, hash: null, flag: VoteFlag.PreVote))
                 {
@@ -271,9 +271,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMessage? message)
+            void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusVote)
+                if (message is ConsensusPreVoteMsg)
                 {
                     voteSent.Set();
                 }
@@ -316,14 +316,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Two additional votes should be enough to trigger prevote timeout timer.
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer1,
                 });
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreVote))
                 {
@@ -332,14 +332,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Two additional votes should be enough to trigger precommit timeout timer.
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer1,
                 });
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {
@@ -377,7 +377,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     block, TestUtils.Peer1Priv, round: 0));
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer1Priv, 1, 0, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
@@ -385,7 +385,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreVote))
                 {
@@ -393,7 +393,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreVote))
                 {
@@ -424,7 +424,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     block, TestUtils.Peer1Priv, round: 0));
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer1Priv, 1, 0, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
@@ -432,7 +432,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {
@@ -440,7 +440,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit))
                 {

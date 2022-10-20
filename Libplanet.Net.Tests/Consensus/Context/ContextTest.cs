@@ -49,9 +49,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMessage? message)
+            void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusPropose)
+                if (message is ConsensusProposeMsg)
                 {
                     proposeSent.Set();
                 }
@@ -80,7 +80,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 consensusMessageSent: CatchPropose,
                 startStep: Step.Default);
 
-            ConsensusPropose? proposedMessage = null;
+            ConsensusProposeMsg? proposedMessage = null;
             context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
@@ -88,9 +88,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMessage? message)
+            void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusPropose propose)
+                if (message is ConsensusProposeMsg propose)
                 {
                     proposedMessage = propose;
                     proposeSent.Set();
@@ -195,7 +195,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             exceptionThrown = null;
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
                         2,
@@ -212,7 +212,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             exceptionThrown = null;
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
                         2,
@@ -246,7 +246,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.Start();
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
@@ -254,7 +254,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
@@ -262,7 +262,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
                 {

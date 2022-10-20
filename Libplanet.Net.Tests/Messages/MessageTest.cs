@@ -143,12 +143,12 @@ namespace Libplanet.Net.Tests.Messages
                 VoteFlag.PreCommit);
 
             // Valid message cases
-            _ = new ConsensusVote(preVote);
-            _ = new ConsensusCommit(preCommit);
+            _ = new ConsensusPreVoteMsg(preVote);
+            _ = new ConsensusPreCommitMsg(preCommit);
 
             // Invalid message cases
-            Assert.Throws<InvalidMessageException>(() => new ConsensusVote(preCommit));
-            Assert.Throws<InvalidMessageException>(() => new ConsensusCommit(preVote));
+            Assert.Throws<InvalidMessageException>(() => new ConsensusPreVoteMsg(preCommit));
+            Assert.Throws<InvalidMessageException>(() => new ConsensusPreCommitMsg(preVote));
         }
     }
 }
