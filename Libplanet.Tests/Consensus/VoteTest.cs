@@ -100,7 +100,7 @@ namespace Libplanet.Tests.Consensus
         }
 
         [Fact]
-        public void SignatureNotAllowedForNullAndUnknown()
+        public void NonEmptySignatureNotAllowedForNullAndUnknown()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
             var key = new PrivateKey();

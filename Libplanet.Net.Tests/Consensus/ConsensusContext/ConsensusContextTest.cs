@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
@@ -50,12 +49,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 validators);
 
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
-
-            Assert.Throws<InvalidHeightIncreasingException>(
-                () => consensusContext.NewHeight(blockChain.Tip.Index));
-            Assert.Throws<InvalidHeightIncreasingException>(
-                () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
-
             consensusContext.StateChanged += (sender, state) =>
             {
                 if (state.Height == 1 && state.Step == Step.EndCommit)
@@ -64,9 +57,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
+            Assert.Throws<InvalidHeightIncreasingException>(
+                () => consensusContext.NewHeight(blockChain.Tip.Index));
+            Assert.Throws<InvalidHeightIncreasingException>(
+                () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
+
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             BlockHash blockHash;
+
+            // FIXME: Pretty lousy way to catch the proposed block's hash.
             while (true)
             {
                 try
@@ -104,6 +104,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Waiting for commit.
             await stepChangedToEndCommit.WaitAsync();
             Assert.Equal(1, blockChain.Tip.Index);
+
             // Next NewHeight is not called yet.
             Assert.Equal(1, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);

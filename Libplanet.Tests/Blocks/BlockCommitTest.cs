@@ -23,14 +23,15 @@ namespace Libplanet.Tests.Blocks
         public void Marshalling()
         {
             var fx = new MemoryStoreFixture();
-            var votes = Enumerable.Range(0, 4)
-                .Select(x => new VoteMetadata(
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var votes = keys.Select(key =>
+                new VoteMetadata(
                     1,
                     0,
                     fx.Hash1,
                     DateTimeOffset.Now,
-                    new PrivateKey().PublicKey,
-                    VoteFlag.Null).Sign(null))
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key))
                 .ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
 
@@ -44,15 +45,15 @@ namespace Libplanet.Tests.Blocks
         public void ConstructorInvalidValues()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            var privateKey = new PrivateKey();
-            var votes = ImmutableArray<Vote>.Empty
-                .Add(new VoteMetadata(
+            var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
+            var votes = keys.Select(key =>
+                new VoteMetadata(
                     0,
                     0,
                     hash,
                     DateTimeOffset.UtcNow,
-                    privateKey.PublicKey,
-                    VoteFlag.Null).Sign(null));
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(1, 1, hash, ImmutableArray<Vote>.Empty));
             Assert.Throws<ArgumentOutOfRangeException>(() =>

@@ -115,9 +115,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             ImmutableArray<Vote> votes = proposedBlock!.LastCommit?.Votes is { } vs
                 ? vs
                 : throw new NullReferenceException();
-            Assert.Equal(
-                votes.Count(),
-                votes.Where(vote => vote.BlockHash.Equals(blockChain[1].Hash)).Count());
             Assert.Equal(VoteFlag.PreCommit, votes[0].Flag);
             Assert.Equal(VoteFlag.PreCommit, votes[1].Flag);
             Assert.Equal(VoteFlag.PreCommit, votes[2].Flag);
