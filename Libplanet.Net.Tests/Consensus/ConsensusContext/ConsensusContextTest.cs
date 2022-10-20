@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
