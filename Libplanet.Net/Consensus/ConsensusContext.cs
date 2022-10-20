@@ -99,8 +99,11 @@ namespace Libplanet.Net.Consensus
         public DelegateBroadcastMessage BroadcastMessage { get; }
 
         /// <summary>
-        /// Index of the block that is now under consensus. this value should be same as the index
-        /// of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// Index of the block that is now under consensus. After a consensus starts, the value
+        /// should be same as the index of <see cref="BlockChain{T}.Tip"/> + 1.
+        /// <seealso cref="NewHeight"/>
+        /// <remarks>The initial value is the index of <see cref="BlockChain{T}.Tip"/>.
+        /// </remarks>
         /// </summary>
         public long Height { get; private set; }
 
