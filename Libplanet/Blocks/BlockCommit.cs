@@ -65,6 +65,7 @@ namespace Libplanet.Blocks
             ImmutableArray<Vote> votes)
         {
             // TODO: Implement separate exception for each case.
+            // TODO: Optimize by using flags to allow single iterating through votes.
             if (height < 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -93,8 +94,10 @@ namespace Libplanet.Blocks
                     $"either {VoteFlag.Null} or {VoteFlag.PreCommit}.",
                     nameof(votes));
             }
+#pragma warning disable S1940 // Use the opposite operator ('>=') instead.
             else if (!(
                 votes.Count() * (2 / 3) < votes.Count(vote => vote.Flag == VoteFlag.PreCommit)))
+#pragma warning restore S1940
             {
                 throw new ArgumentException(
                     $"The number of votes with {VoteFlag.PreCommit} flag should exceed 2/3 of " +

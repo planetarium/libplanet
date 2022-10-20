@@ -1090,17 +1090,21 @@ namespace Libplanet.Tests.Store
             using (StoreFixture fx = FxConstructor())
             {
                 // Commits with votes
+                var height = 1;
+                var round = 0;
+                var hash = fx.Block2.Hash;
                 var validators = Enumerable.Range(0, 4)
                     .Select(x => new PrivateKey())
                     .ToArray();
-                var voteSet = new VoteSet(
-                    1,
-                    0,
-                    Fx.Block2.Hash,
-                    validators.Select(x => x.PublicKey).ToImmutableArray());
+                var votes = validators.Select(validator => new VoteMetadata(
+                    height,
+                    round,
+                    hash,
+                    DateTimeOffset.UtcNow,
+                    validator.PublicKey,
+                    VoteFlag.PreCommit).Sign(validator)).ToImmutableArray();
 
-                BlockCommit blockCommit = new BlockCommit(voteSet, fx.Block2.Hash);
-
+                BlockCommit blockCommit = new BlockCommit(height, round, hash, votes);
                 fx.Store.PutLastCommit(blockCommit);
                 BlockCommit storedCommitVotes =
                     fx.Store.GetLastCommit(blockCommit.Height);
@@ -1114,22 +1118,27 @@ namespace Libplanet.Tests.Store
         {
             using (StoreFixture fx = FxConstructor())
             {
-                var voteSetOne = new VoteSet(
-                    1,
-                    0,
-                    fx.Block1.Hash,
-                    new List<PublicKey>() { fx.Miner.PublicKey });
-
-                var voteSetTwo = new VoteSet(
-                    2,
-                    0,
-                    fx.Block2.Hash,
-                    new List<PublicKey>() { fx.Miner.PublicKey });
+                var votesOne = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        1,
+                        0,
+                        fx.Block1.Hash,
+                        DateTimeOffset.UtcNow,
+                        fx.Miner.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Miner));
+                var votesTwo = ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        2,
+                        0,
+                        fx.Block2.Hash,
+                        DateTimeOffset.UtcNow,
+                        fx.Miner.PublicKey,
+                        VoteFlag.PreCommit).Sign(fx.Miner));
 
                 BlockCommit[] blockCommits =
                 {
-                    new BlockCommit(voteSetOne, fx.Block1.Hash),
-                    new BlockCommit(voteSetTwo, fx.Block2.Hash),
+                    new BlockCommit(1, 0, fx.Block1.Hash, votesOne),
+                    new BlockCommit(2, 0, fx.Block2.Hash, votesTwo),
                 };
 
                 foreach (var blockCommit in blockCommits)
