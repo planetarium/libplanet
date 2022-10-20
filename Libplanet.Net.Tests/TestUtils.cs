@@ -216,7 +216,8 @@ namespace Libplanet.Net.Tests
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 EventHandler<ConsensusMessage>? consensusMessageSent = null,
                 long lastCommitClearThreshold = 30,
-                ContextTimeoutOption? contextTimeoutOptions = null)
+                ContextTimeoutOption? contextTimeoutOptions = null,
+                long height = 0)
         {
             policy ??= Policy;
             var fx = new MemoryStoreFixture(policy.BlockAction);
@@ -243,7 +244,7 @@ namespace Libplanet.Net.Tests
             consensusContext = new ConsensusContext<DumbAction>(
                 broadcastMessage,
                 blockChain,
-                blockChain.Tip.Index + 1,
+                height,
                 privateKey,
                 newHeightDelay,
                 _ => validators,
