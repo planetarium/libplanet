@@ -51,6 +51,11 @@ namespace Libplanet.Blocks
         ///     <see cref="Vote.Flag"/> that is neither <see cref="VoteFlag.Null"/>
         ///     nor <see cref="VoteFlag.PreCommit"/>.
         /// </description></item>
+        /// <item><description>
+        ///     The number of <see cref="Vote"/>s with <see cref="Vote.Flag"/> set as
+        ///     <see cref="VoteFlag.PreCommit"/> does not exceed 2/3 of the total number of
+        ///     <see cref="Vote"/>s in <paramref name="votes"/>
+        /// </description></item>
         /// </list>
         /// </exception>
         public BlockCommit(
@@ -86,6 +91,14 @@ namespace Libplanet.Blocks
                     $"Every vote must have the same height as {height}, the same round " +
                     $"as {round}, the same hash as {blockHash}, and must have flag value of " +
                     $"either {VoteFlag.Null} or {VoteFlag.PreCommit}.",
+                    nameof(votes));
+            }
+            else if (!(
+                votes.Count() * (2 / 3) < votes.Count(vote => vote.Flag == VoteFlag.PreCommit)))
+            {
+                throw new ArgumentException(
+                    $"The number of votes with {VoteFlag.PreCommit} flag should exceed 2/3 of " +
+                    $"the total number of votes.",
                     nameof(votes));
             }
 
