@@ -192,7 +192,6 @@ namespace Libplanet.Net.Consensus
                 }
 
                 RemoveOldContexts(height);
-                ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
                 if (lastCommit != null)
                 {
@@ -214,6 +213,8 @@ namespace Libplanet.Net.Consensus
                             lastCommit.Round);
                     }
                 }
+
+                ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
                 Height = height;
 
@@ -343,10 +344,10 @@ namespace Libplanet.Net.Consensus
             }
 
             _logger.Debug(
-                "Pruning old LastCommit caches at height {PreviousTip}...",
+                "Removing old LastCommit caches at height {PreviousTip}...",
                 _blockChain.Tip.Index);
 
-            foreach (var height in indices)
+            foreach (var height in indices.OrderBy(x => x).Take((int)(indices.Count() - maxSize)))
             {
                 _blockChain.Store.DeleteLastCommit(height);
             }
