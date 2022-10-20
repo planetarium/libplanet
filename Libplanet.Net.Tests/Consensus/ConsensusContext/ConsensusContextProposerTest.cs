@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Triggers timeout +2/3 with NIL and Block
             consensusContext.HandleMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
                         1,
@@ -64,7 +64,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 });
 
             consensusContext.HandleMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
                         1,
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await timeoutProcessed.WaitAsync();
 
             consensusContext.HandleMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv,
                         1,
@@ -88,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 });
 
             consensusContext.HandleMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     vote: TestUtils.CreateVote(
                         TestUtils.Peer3Priv,
                         1,

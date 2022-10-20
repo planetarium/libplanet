@@ -24,7 +24,7 @@ namespace Libplanet.Net.Consensus
             StateChanged;
 
         /// <inheritdoc cref="Context{T}.MessageConsumed"/>
-        internal event EventHandler<(long Height, ConsensusMessage Message)>?
+        internal event EventHandler<(long Height, ConsensusMsg Message)>?
             MessageConsumed;
 
         /// <inheritdoc cref="Context{T}.MutationConsumed"/>

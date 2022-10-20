@@ -88,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             }
 
             consensusContext.HandleMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
                 {
@@ -96,7 +96,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 });
 
             consensusContext.HandleMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
                 {
@@ -170,7 +170,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.True(consensusContext.Height == 1);
             Assert.Throws<InvalidHeightMessageException>(
                 () => consensusContext.HandleMessage(
-                    new ConsensusPropose(
+                    new ConsensusProposeMsg(
                         new PrivateKey().PublicKey,
                         0,
                         0,
@@ -203,9 +203,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 consensusMessageSent: CatchPropose,
                 lastCommitClearThreshold: 1);
 
-            void CatchPropose(object? sender, ConsensusMessage? message)
+            void CatchPropose(object? sender, ConsensusMsg? message)
             {
-                if (message is ConsensusPropose propose)
+                if (message is ConsensusProposeMsg propose)
                 {
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
@@ -236,7 +236,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.MessageConsumed +=
                 (sender, message) =>
                 {
-                    if (message.Height == 2 && message.Message is ConsensusPropose propose)
+                    if (message.Height == 2 && message.Message is ConsensusProposeMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
                             (Dictionary)codec.Decode(propose!.Payload));
@@ -250,7 +250,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightOneProposeSent.WaitAsync();
 
             consensusContext.HandleMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
                         1,
@@ -260,7 +260,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             );
 
             consensusContext.HandleMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
                         1,
@@ -276,7 +276,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
                 (sender, hm) =>
                 {
-                    if (hm.Message is ConsensusPropose propose)
+                    if (hm.Message is ConsensusProposeMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
                             (Dictionary)codec.Decode(propose!.Payload));
@@ -294,7 +294,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightTwoProposeSent.WaitAsync();
 
             consensusContext.HandleMessage(
-                new ConsensusVote(
+                new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
                         2,
@@ -304,7 +304,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             );
 
             consensusContext.HandleMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv,
                         2,
@@ -338,7 +338,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(1);
             // Create context of index 2.
             consensusContext.HandleMessage(
-                new ConsensusPropose(TestUtils.Validators[1], 2, 1, fx.Hash1, new byte[] { }, -1));
+                new ConsensusProposeMsg(
+                    TestUtils.Validators[1], 2, 1, fx.Hash1, new byte[] { }, -1));
 
             blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
             blockChain.Append(

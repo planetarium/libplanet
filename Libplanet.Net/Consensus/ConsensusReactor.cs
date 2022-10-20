@@ -32,7 +32,7 @@ namespace Libplanet.Net.Consensus
         /// Initializes a new instance of the <see cref="ConsensusReactor{T}"/> class.
         /// </summary>
         /// <param name="consensusTransport">An <see cref="ITransport"/> for sending the
-        /// <see cref="ConsensusMessage"/>s to validators.</param>
+        /// <see cref="ConsensusMsg"/>s to validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -142,10 +142,10 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Adds <see cref="ConsensusMessage"/> to gossip.
+        /// Adds <see cref="ConsensusMsg"/> to gossip.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to add.</param>
-        private void AddMessage(ConsensusMessage message) => _gossip.AddMessage(message);
+        /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
+        private void AddMessage(ConsensusMsg message) => _gossip.AddMessage(message);
 
         /// <summary>
         /// A handler for received <see cref="Message"/>s.
@@ -155,7 +155,7 @@ namespace Libplanet.Net.Consensus
         {
             switch (message)
             {
-                case ConsensusMessage consensusMessage:
+                case ConsensusMsg consensusMessage:
                     _consensusContext.HandleMessage(consensusMessage);
                     break;
             }

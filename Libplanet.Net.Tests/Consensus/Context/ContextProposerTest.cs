@@ -49,11 +49,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMessage? message)
+            void CheckCommit(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusCommit commit)
+                if (message is ConsensusPreCommitMsg commit)
                 {
-                    Assert.Null(commit.CommitVote.BlockHash);
+                    Assert.Null(commit.PreCommit.BlockHash);
                     commitSent.Set();
                 }
             }
@@ -66,19 +66,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
@@ -111,11 +111,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMessage? message)
+            void CheckCommit(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusCommit commit)
+                if (message is ConsensusPreCommitMsg commit)
                 {
-                    Assert.Equal(commit.CommitVote.BlockHash, targetHash);
+                    Assert.Equal(commit.PreCommit.BlockHash, targetHash);
                     commitSent.Set();
                 }
             }
@@ -128,21 +128,21 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
 
             context.ProduceMessage(
-                new ConsensusVote(TestUtils.CreateVote(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer3,
@@ -175,7 +175,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _ = context.MutationConsumerTask(default);
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
@@ -183,7 +183,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
@@ -191,7 +191,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreCommit))
                 {
@@ -228,7 +228,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer0Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
@@ -236,7 +236,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer2Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
@@ -244,7 +244,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 });
 
             context.ProduceMessage(
-                new ConsensusCommit(
+                new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
                         TestUtils.Peer3Priv, 1, hash: block.Hash, flag: VoteFlag.PreCommit))
                 {
@@ -273,9 +273,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMessage? message)
+            void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusVote vote && vote.ProposeVote.BlockHash is null)
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
                 {
                     voteSent.Set();
                 }
@@ -327,11 +327,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMessage? message)
+            void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusVote vote)
+                if (message is ConsensusPreVoteMsg vote)
                 {
-                    Assert.Equal(vote.ProposeVote.BlockHash, targetHash);
+                    Assert.Equal(vote.PreVote.BlockHash, targetHash);
                     voteSent.Set();
                 }
             }

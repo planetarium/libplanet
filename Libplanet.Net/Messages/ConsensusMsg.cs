@@ -9,19 +9,19 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A abstract base class message for consensus.
     /// </summary>
-    public abstract class ConsensusMessage : Message
+    public abstract class ConsensusMsg : Message
     {
         protected const byte Nil = 0x00;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusMessage"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusMsg"/> class.
         /// </summary>
         /// <param name="validator">
         /// A <see cref="PublicKey"/> of the validator who made this message.</param>
         /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
-        protected ConsensusMessage(
+        protected ConsensusMsg(
             PublicKey validator,
             long height,
             int round,
@@ -34,11 +34,11 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusMessage"/> class with marshalled
+        /// Initializes a new instance of the <see cref="ConsensusMsg"/> class with marshalled
         /// message.
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
-        protected ConsensusMessage(byte[][] dataframes)
+        protected ConsensusMsg(byte[][] dataframes)
         {
             Validator = new PublicKey(dataframes[0]);
             Height = BitConverter.ToInt64(dataframes[1], 0);

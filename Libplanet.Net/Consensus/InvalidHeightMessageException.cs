@@ -5,7 +5,7 @@ using Libplanet.Net.Messages;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// An exception thrown when a received <see cref="ConsensusMessage"/> is not same as the
+    /// An exception thrown when a received <see cref="ConsensusMsg"/> is not same as the
     /// current <see cref="ConsensusContext{T}.Height"/>.
     /// </summary>
     [Serializable]

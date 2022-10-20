@@ -136,7 +136,7 @@ namespace Libplanet.Net.Tests
             return blockChain;
         }
 
-        public static ConsensusPropose CreateConsensusPropose(
+        public static ConsensusProposeMsg CreateConsensusPropose(
             Block<DumbAction>? block,
             PrivateKey privateKey,
             long height = 1,
@@ -144,7 +144,7 @@ namespace Libplanet.Net.Tests
             int validRound = -1)
         {
             var codec = new Codec();
-            return new ConsensusPropose(
+            return new ConsensusProposeMsg(
                 privateKey.PublicKey,
                 height,
                 round,
@@ -190,7 +190,7 @@ namespace Libplanet.Net.Tests
                 }
 
                 consensusContext.HandleMessage(
-                    new ConsensusCommit(
+                    new ConsensusPreCommitMsg(
                         new VoteMetadata(
                             consensusContext.Height,
                             (int)consensusContext.Round,
@@ -214,7 +214,7 @@ namespace Libplanet.Net.Tests
                 PrivateKey? privateKey = null,
                 List<PublicKey>? validators = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
-                EventHandler<ConsensusMessage>? consensusMessageSent = null,
+                EventHandler<ConsensusMsg>? consensusMessageSent = null,
                 long lastCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null,
                 long height = 0)
@@ -227,7 +227,7 @@ namespace Libplanet.Net.Tests
             privateKey ??= Peer1Priv;
             validators ??= Validators;
 
-            void BroadcastMessage(ConsensusMessage message) =>
+            void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
                 {
                     // ReSharper disable once AccessToModifiedClosure
@@ -264,7 +264,7 @@ namespace Libplanet.Net.Tests
             IBlockPolicy<DumbAction>? policy = null,
             PrivateKey? privateKey = null,
             List<PublicKey>? validators = null,
-            EventHandler<ConsensusMessage>? consensusMessageSent = null,
+            EventHandler<ConsensusMsg>? consensusMessageSent = null,
             Step startStep = Step.Default,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
@@ -273,7 +273,7 @@ namespace Libplanet.Net.Tests
             policy ??= Policy;
             validators ??= Validators;
 
-            void BroadcastMessage(ConsensusMessage message) =>
+            void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
                 {
                     consensusMessageSent?.Invoke(context, message);

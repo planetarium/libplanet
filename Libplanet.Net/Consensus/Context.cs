@@ -83,7 +83,7 @@ namespace Libplanet.Net.Consensus
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
         private readonly List<PublicKey> _validators;
-        private readonly Channel<ConsensusMessage> _messageRequests;
+        private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
 
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Consensus
         /// Initializes a new instance of the <see cref="Context{T}"/> class.
         /// </summary>
         /// <param name="consensusContext">A command class for receiving
-        /// <see cref="ConsensusMessage"/> from or broadcasts to other validators.</param>
+        /// <see cref="ConsensusMsg"/> from or broadcasts to other validators.</param>
         /// <param name="blockChain">A blockchain that will be committed, which
         /// will be voted by consensus, and used for proposing a block.
         /// </param>
@@ -162,7 +162,7 @@ namespace Libplanet.Net.Consensus
             _validRound = -1;
             _blockChain = blockChain;
             _codec = new Codec();
-            _messageRequests = Channel.CreateUnbounded<ConsensusMessage>();
+            _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _messageLog = new MessageLog();
             _preVoteTimeoutFlags = new HashSet<int>();
@@ -203,7 +203,7 @@ namespace Libplanet.Net.Consensus
         public int CommittedRound { get; private set; } = -1;
 
         /// <summary>
-        /// A command class for receiving <see cref="ConsensusMessage"/> from or broadcasts to other
+        /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
         /// validators.
         /// </summary>
         private ConsensusContext<T> ConsensusContext { get; }
@@ -233,7 +233,7 @@ namespace Libplanet.Net.Consensus
                 ? new VoteSet(Height, round, b.Hash, _validators)
                 : throw new NullReferenceException(
                     $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
-            _messageLog.GetCommits(round).ForEach(commit => voteSet.Add(commit.CommitVote));
+            _messageLog.GetPreCommits(round).ForEach(commit => voteSet.Add(commit.PreCommit));
             return voteSet;
         }
 
@@ -322,12 +322,12 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Broadcasts <see cref="ConsensusMessage"/> to validators.
+        /// Broadcasts <see cref="ConsensusMsg"/> to validators.
         /// </summary>
-        /// <param name="message">A <see cref="ConsensusMessage"/> to broadcast.</param>
-        /// <remarks><see cref="ConsensusMessage"/> should be broadcasted to itself. See
+        /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
+        /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself. See
         /// <see cref="ConsensusContext{T}.BroadcastMessage"/>.</remarks>
-        private void BroadcastMessage(ConsensusMessage message) =>
+        private void BroadcastMessage(ConsensusMsg message) =>
             ConsensusContext.BroadcastMessage(message);
 
         /// <summary>
@@ -352,15 +352,15 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusVote"/> or
-        /// a <see cref="ConsensusCommit"/>.
+        /// Creates a signed <see cref="Vote"/> for a <see cref="ConsensusPreVoteMsg"/> or
+        /// a <see cref="ConsensusPreCommitMsg"/>.
         /// </summary>
         /// <param name="round">Current context round.</param>
         /// <param name="hash">Current context locked <see cref="BlockHash"/>.</param>
-        /// <param name="flag"><see cref="VoteFlag"/> of Vote. Set <see cref="VoteFlag.PreVote"/> if
-        /// message is <see cref="ConsensusVote"/>. If message is <see cref="ConsensusCommit"/>,
-        /// Set <see cref="VoteFlag.PreCommit"/>.
-        /// </param>
+        /// <param name="flag"><see cref="VoteFlag"/> of <see cref="Vote"/> to create.
+        /// Set to <see cref="VoteFlag.PreVote"/> if message is <see cref="ConsensusPreVoteMsg"/>.
+        /// If message is <see cref="ConsensusPreCommitMsg"/>, Set to
+        /// <see cref="VoteFlag.PreCommit"/>.</param>
         /// <returns>Returns a signed <see cref="Vote"/> with consensus private key.</returns>
         /// <exception cref="ArgumentException">If <paramref name="flag"/> is either
         /// <see cref="VoteFlag.Null"/> or <see cref="VoteFlag.Unknown"/>.</exception>
@@ -391,7 +391,7 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private (Block<T>?, int?) GetPropose(int round)
         {
-            if (_messageLog.GetPropose(round) is ConsensusPropose propose)
+            if (_messageLog.GetPropose(round) is ConsensusProposeMsg propose)
             {
                 var block = BlockMarshaler.UnmarshalBlock<T>(
                     (Dictionary)_codec.Decode(propose.Payload));
@@ -402,39 +402,41 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusVote"/> for the
+        /// Checks whether the round has +2/3 <see cref="ConsensusPreVoteMsg"/> for the
         /// <see cref="Block{T}"/> of <paramref name="hash"/>.
         /// </summary>
         /// <param name="round">A round to check.</param>
         /// <param name="hash">A <see cref="BlockHash"/> of proposed block.</param>
-        /// <param name="any">If <c>true</c>, check for all <see cref="ConsensusVote"/> in round
-        /// (i.e., includes NIL and Block), else check for only Block.
-        /// </param>
+        /// <param name="any">Whether to check for every <see cref="ConsensusPreVoteMsg"/> in
+        /// <paramref name="round"/>.  If <see langword="true"/>, count everything regardless
+        /// of <see cref="Vote.BlockHash"/>, otherwise, count only those with
+        /// <see cref="Vote.BlockHash"/> that equals <paramref name="hash"/>.</param>
         /// <returns>Returns <c>true</c> if the block is voted +2/3, or otherwise returns
         /// <c>false</c>.
         /// </returns>
         private bool HasTwoThirdsPreVote(int round, BlockHash? hash, bool any = false)
         {
-            int count = _messageLog.GetVotes(round)
+            int count = _messageLog.GetPreVotes(round)
                 .Count(vote => (any || vote.BlockHash.Equals(hash)));
             return count > TotalValidators * 2 / 3;
         }
 
         /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusCommit"/> for the
+        /// Checks whether the round has +2/3 <see cref="ConsensusPreCommitMsg"/> for the
         /// <see cref="Block{T}"/> of <paramref name="hash"/>.
         /// </summary>
         /// <param name="round">A round to check.</param>
         /// <param name="hash">A <see cref="BlockHash"/> of proposed block.</param>
-        /// <param name="any">If <c>true</c>, check for all <see cref="ConsensusCommit"/> in round
-        /// (i.e., includes NIL and Block), else check for only Block.
-        /// </param>
+        /// <param name="any">Whether to check for every <see cref="ConsensusPreCommitMsg"/> in
+        /// <paramref name="round"/>.  If <see langword="true"/>, count everything regardless
+        /// of <see cref="Vote.BlockHash"/>, otherwise, count only those with
+        /// <see cref="Vote.BlockHash"/> that equals <paramref name="hash"/>.</param>
         /// <returns>Returns <c>true</c> if the block is voted +2/3, or otherwise returns
         /// <c>false</c>.
         /// </returns>
         private bool HasTwoThirdsPreCommit(int round, BlockHash? hash, bool any = false)
         {
-            int count = _messageLog.GetCommits(round)
+            int count = _messageLog.GetPreCommits(round)
                 .Count(commit => (any || commit.BlockHash.Equals(hash)));
             return count > TotalValidators * 2 / 3;
         }

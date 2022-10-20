@@ -49,7 +49,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip1 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusPropose)
+                    if (message is ConsensusProposeMsg)
                     {
                         received1 = true;
                     }
@@ -60,7 +60,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip2 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusPropose)
+                    if (message is ConsensusProposeMsg)
                     {
                         received2 = true;
                         receivedEvent.Set();
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Tests.Consensus
                 await gossip1.WaitForRunningAsync();
                 await gossip2.WaitForRunningAsync();
                 gossip1.AddMessage(
-                    new ConsensusPropose(
+                    new ConsensusProposeMsg(
                         new PrivateKey().PublicKey,
                         0,
                         0,
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip1 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusPropose)
+                    if (message is ConsensusProposeMsg)
                     {
                         received1++;
                     }
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip2 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusPropose)
+                    if (message is ConsensusProposeMsg)
                     {
                         received2++;
                     }
@@ -141,10 +141,10 @@ namespace Libplanet.Net.Tests.Consensus
                 gossip1.AddMessages(
                     new[]
                     {
-                        new ConsensusPropose(key, 0, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusPropose(key, 1, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusPropose(key, 2, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusPropose(key, 3, 0, TestUtils.BlockHash0, new byte[] { }, 0),
+                        new ConsensusProposeMsg(key, 0, 0, TestUtils.BlockHash0, new byte[] { }, 0),
+                        new ConsensusProposeMsg(key, 1, 0, TestUtils.BlockHash0, new byte[] { }, 0),
+                        new ConsensusProposeMsg(key, 2, 0, TestUtils.BlockHash0, new byte[] { }, 0),
+                        new ConsensusProposeMsg(key, 3, 0, TestUtils.BlockHash0, new byte[] { }, 0),
                     });
 
                 await receivedEvent.WaitAsync();
