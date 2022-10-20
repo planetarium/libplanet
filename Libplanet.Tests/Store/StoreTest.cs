@@ -1102,7 +1102,7 @@ namespace Libplanet.Tests.Store
                 BlockCommit blockCommit = new BlockCommit(voteSet, fx.Block2.Hash);
 
                 fx.Store.PutLastCommit(blockCommit);
-                BlockCommit? storedCommitVotes =
+                BlockCommit storedCommitVotes =
                     fx.Store.GetLastCommit(blockCommit.Height);
 
                 Assert.Equal(blockCommit, storedCommitVotes);
@@ -1161,7 +1161,7 @@ namespace Libplanet.Tests.Store
                             .Add(new VoteMetadata(
                                 0,
                                 0,
-                                null,
+                                Fx.GenesisBlock.Hash,
                                 DateTimeOffset.UtcNow,
                                 validatorPrivateKey.PublicKey,
                                 VoteFlag.PreCommit).Sign(validatorPrivateKey)));

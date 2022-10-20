@@ -1221,7 +1221,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
-        public override BlockCommit? GetLastCommit(long height)
+        public override BlockCommit GetLastCommit(long height)
         {
             _rwLastCommitLock.EnterReadLock();
 

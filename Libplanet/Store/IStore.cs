@@ -353,7 +353,7 @@ namespace Libplanet.Store
         /// <param name="height">A height to get.</param>
         /// <returns>Returns <see cref="BlockCommit"/> if given height is stored and available,
         /// otherwise returns <see langword="null"/>.</returns>
-        BlockCommit? GetLastCommit(long height);
+        BlockCommit GetLastCommit(long height);
 
         /// <summary>
         /// Puts a <see cref="BlockCommit"/> to the store.

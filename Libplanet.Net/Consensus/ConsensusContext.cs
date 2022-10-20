@@ -199,7 +199,7 @@ namespace Libplanet.Net.Consensus
                     _logger.Debug(
                         "Caching LastCommit of Height {Height}...",
                         height - 1);
-                    _blockChain.Store.PutLastCommit(lastCommit.Value);
+                    _blockChain.Store.PutLastCommit(lastCommit);
                 }
                 else
                 {
@@ -210,8 +210,8 @@ namespace Libplanet.Net.Consensus
                         _logger.Debug(
                             "Found cached LastCommit of Height #{Height} " +
                             "and Round #{Round}",
-                            lastCommit.Value.Height,
-                            lastCommit.Value.Round);
+                            lastCommit.Height,
+                            lastCommit.Round);
                     }
                 }
 

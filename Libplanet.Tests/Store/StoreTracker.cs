@@ -216,7 +216,7 @@ namespace Libplanet.Tests.Store
             _store.PruneOutdatedChains();
         }
 
-        public BlockCommit? GetLastCommit(long height)
+        public BlockCommit GetLastCommit(long height)
         {
             Log(nameof(GetLastCommit), height);
             return _store.GetLastCommit(height);

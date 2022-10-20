@@ -348,7 +348,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static BlockCommit? CreateLastCommit(
+        public static BlockCommit CreateLastCommit(
             BlockHash blockHash,
             long height,
             int round,
@@ -497,7 +497,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             PublicKey miner = null,
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
-            BlockCommit? lastCommit = null
+            BlockCommit lastCommit = null
         )
             where T : IAction, new()
         {
@@ -529,7 +529,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block<T>.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
-            BlockCommit? lastCommit = null
+            BlockCommit lastCommit = null
         )
             where T : IAction, new()
         {

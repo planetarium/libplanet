@@ -191,7 +191,7 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc />
-        public BlockCommit? GetLastCommit(long height)
+        public BlockCommit GetLastCommit(long height)
         {
             return _store.GetLastCommit(height);
         }

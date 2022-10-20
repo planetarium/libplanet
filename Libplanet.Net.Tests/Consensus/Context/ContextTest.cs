@@ -277,7 +277,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             VoteSet roundVoteSet = context.VoteSet(0);
             Assert.Equal(1, roundVoteSet.Height);
             Assert.Equal(0, roundVoteSet.Round);
-            Assert.Equal(VoteFlag.PreVote, roundVoteSet.Votes[0].Flag);
+            Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[0].Flag);
             Assert.Equal(VoteFlag.PreCommit, roundVoteSet.Votes[1].Flag);
             Assert.Equal(VoteFlag.PreCommit, roundVoteSet.Votes[2].Flag);
             Assert.Equal(VoteFlag.Null, roundVoteSet.Votes[3].Flag);

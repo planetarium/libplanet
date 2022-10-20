@@ -301,7 +301,6 @@ namespace Libplanet.Tests.Blocks
                 txHash: null,
                 lastCommit: invalidBlockHashLastCommit));
 
-            // Signature can be null for null or unknown votes.
             var validLastCommit = new BlockCommit(
                 1,
                 0,
@@ -322,7 +321,7 @@ namespace Libplanet.Tests.Blocks
                         blockHash,
                         timestamp,
                         validatorC.PublicKey,
-                        VoteFlag.Unknown).Sign(null),
+                        VoteFlag.PreCommit).Sign(validatorC),
                 }.ToImmutableArray());
             var validMetadata = new BlockMetadata(
                 protocolVersion: BlockMetadata.CurrentProtocolVersion,

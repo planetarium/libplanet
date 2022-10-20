@@ -126,7 +126,7 @@ public class TransactionQueryTest
         var lastCommit = new BlockCommit(
                 height: 1,
                 round: 0,
-                hash: block.Hash,
+                blockHash: block.Hash,
                 votes: ImmutableArray<Vote>.Empty
                     .Add(new VoteMetadata(1, 0, block.Hash, DateTimeOffset.UtcNow,
                     _source.Validator.PublicKey, VoteFlag.PreCommit).Sign(_source.Validator)));

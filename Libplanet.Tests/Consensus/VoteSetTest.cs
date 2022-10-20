@@ -27,8 +27,6 @@ namespace Libplanet.Tests.Consensus
 
              var now = DateTimeOffset.UtcNow;
 
-             Assert.False(voteSet.HasTwoThirdAny());
-             Assert.False(voteSet.HasTwoThirdPrevote());
              Assert.False(voteSet.HasTwoThirdCommit());
 
              for (int i = 0; i < 3; i++)
@@ -43,8 +41,6 @@ namespace Libplanet.Tests.Consensus
                 voteSet.Add(vote);
              }
 
-             Assert.True(voteSet.HasTwoThirdAny());
-             Assert.True(voteSet.HasTwoThirdPrevote());
              Assert.False(voteSet.HasTwoThirdCommit());
 
              voteSet = new VoteSet(
@@ -65,8 +61,6 @@ namespace Libplanet.Tests.Consensus
                  voteSet.Add(vote);
              }
 
-             Assert.True(voteSet.HasTwoThirdAny());
-             Assert.False(voteSet.HasTwoThirdPrevote());
              Assert.True(voteSet.HasTwoThirdCommit());
          }
 
@@ -86,8 +80,6 @@ namespace Libplanet.Tests.Consensus
 
              var now = DateTimeOffset.UtcNow;
 
-             Assert.False(voteSet.HasTwoThirdAny());
-             Assert.False(voteSet.HasTwoThirdPrevote());
              Assert.False(voteSet.HasTwoThirdCommit());
 
              for (int i = 0; i < 3; i++)
@@ -102,8 +94,6 @@ namespace Libplanet.Tests.Consensus
                  voteSet.Add(vote);
              }
 
-             Assert.False(voteSet.HasTwoThirdAny());
-             Assert.False(voteSet.HasTwoThirdPrevote());
              Assert.False(voteSet.HasTwoThirdCommit());
          }
     }

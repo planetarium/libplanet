@@ -63,14 +63,5 @@ namespace Libplanet.Blocks
             commit.Votes.All(
                 vote => vote.Flag == VoteFlag.Null || vote.Flag == VoteFlag.Unknown ||
                         vote.Verify());
-
-        /// <summary>
-        /// Checks whether <see cref="BlockCommit"/> has same height for every votes.
-        /// </summary>
-        /// <param name="commit">A <see cref="BlockCommit"/> to check.</param>
-        /// <returns>Returns <see langword="true"/> if <see cref="BlockCommit.Votes"/> have same
-        /// height, otherwise returns <see langword="false"/>.</returns>
-        public static bool HasVotesSameHeight(this BlockCommit commit) =>
-            commit.Votes.All(vote => vote.Height == commit.Height);
     }
 }
