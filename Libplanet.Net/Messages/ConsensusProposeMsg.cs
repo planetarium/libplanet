@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -7,7 +8,7 @@ using Libplanet.Net.Consensus;
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Libplanet.Net.Consensus.Step.Propose"/>.
+    /// A message class for <see cref="Consensus.Step.Propose"/>.
     /// </summary>
     public class ConsensusProposeMsg : ConsensusMsg
     {
@@ -78,5 +79,22 @@ namespace Libplanet.Net.Messages
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusPropose;
+
+        public override bool Equals(ConsensusMsg? other)
+        {
+            return other is ConsensusProposeMsg message &&
+                ValidRound.Equals(message.ValidRound) &&
+                Payload.SequenceEqual(message.Payload);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ConsensusMsg other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, ByteUtil.CalculateHashCode(Payload));
+        }
     }
 }

@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Libplanet.Consensus;
 
 namespace Libplanet.Net.Messages
 {
     /// <summary>
-    /// A message class for <see cref="Libplanet.Net.Consensus.Step.PreVote"/>.
+    /// A message class for <see cref="Consensus.Step.PreVote"/>.
     /// </summary>
     public class ConsensusPreVoteMsg : ConsensusMsg
     {
@@ -46,15 +47,28 @@ namespace Libplanet.Net.Messages
         {
             get
             {
-                var frames = new List<byte[]>
-                {
-                    PreVote.ByteArray,
-                };
+                var frames = new List<byte[]> { PreVote.ByteArray };
                 return frames;
             }
         }
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusVote;
+
+        public override bool Equals(ConsensusMsg? other)
+        {
+            return other is ConsensusPreVoteMsg message &&
+                PreVote.Equals(message.PreVote);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ConsensusMsg other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, PreVote);
+        }
     }
 }

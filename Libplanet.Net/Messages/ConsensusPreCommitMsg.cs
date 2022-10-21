@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Libplanet.Consensus;
 
@@ -46,15 +47,28 @@ namespace Libplanet.Net.Messages
         {
             get
             {
-                var frames = new List<byte[]>
-                {
-                    PreCommit.ByteArray,
-                };
+                var frames = new List<byte[]> { PreCommit.ByteArray };
                 return frames;
             }
         }
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusCommit;
+
+        public override bool Equals(ConsensusMsg? other)
+        {
+            return other is ConsensusPreCommitMsg message &&
+                PreCommit.Equals(message.PreCommit);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ConsensusMsg other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, PreCommit);
+        }
     }
 }
