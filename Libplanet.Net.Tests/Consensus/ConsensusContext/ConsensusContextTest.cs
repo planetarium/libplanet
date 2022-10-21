@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
@@ -8,6 +9,7 @@ using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Tests;
 using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
@@ -361,6 +363,76 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(4);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[1]);
             Assert.Throws<KeyNotFoundException>(() => consensusContext.Contexts[2]);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void VoteSetGetOnlyProposeCommitHash()
+        {
+            Block<DumbAction>? proposedBlock = null;
+            var codec = new Codec();
+            var heightOneProposeSent = new AsyncAutoResetEvent();
+            var heightOneEndCommit = new AsyncAutoResetEvent();
+            var votes = new List<Vote>();
+
+            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+                TimeSpan.FromSeconds(1),
+                TestUtils.Policy,
+                TestUtils.Peer1Priv,
+                consensusMessageSent: (sender, msg) =>
+                {
+                    if (msg is ConsensusProposeMsg proposeMsg)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(proposeMsg.Payload));
+                        heightOneProposeSent.Set();
+                    }
+                });
+
+            consensusContext.StateChanged += (sender, tuple) =>
+            {
+                if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
+                {
+                    heightOneEndCommit.Set();
+                }
+            };
+
+            consensusContext.NewHeight(blockChain.Tip.Index + 1);
+
+            await heightOneProposeSent.WaitAsync();
+
+            votes.Add(TestUtils.CreateVote(
+                TestUtils.Peer0Priv,
+                1,
+                0,
+                fx.Block1.Hash,
+                VoteFlag.PreCommit));
+
+            votes.AddRange(Enumerable.Range(1, 3).Select(x => TestUtils.CreateVote(
+                TestUtils.PrivateKeys[x],
+                1,
+                0,
+                proposedBlock!.Hash,
+                VoteFlag.PreCommit)));
+
+            foreach (var vote in votes)
+            {
+                consensusContext.HandleMessage(new ConsensusPreCommitMsg(vote));
+            }
+
+            await heightOneEndCommit.WaitAsync();
+
+            var voteSet = consensusContext.Contexts[1].VoteSet(0);
+            Assert.NotEqual(votes[0], voteSet.Votes.First(x =>
+                x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+
+            var actualVotesWithoutInvalid =
+                HashSetExtensions.ToHashSet(voteSet.Votes.Where(x =>
+                    !x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+
+            var expectedVotes = HashSetExtensions.ToHashSet(votes.Where(x =>
+                !x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+
+            Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
         }
     }
 }
