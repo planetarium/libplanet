@@ -1520,7 +1520,9 @@ namespace Libplanet.Blockchain
                     $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
-            if (block.ProtocolVersion > BlockMetadata.PoWProtocolVersion)
+            // Since the version cannot be downgraded,
+            // the target block is PBFT based block if the last block is PBFT based block.
+            if (lastBlock?.ProtocolVersion > BlockMetadata.PoWProtocolVersion)
             {
                 if (block.Index <= 1 && block.LastCommit is { })
                 {
