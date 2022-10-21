@@ -1356,8 +1356,8 @@ namespace Libplanet.RocksDBStore
 
         private IEnumerable<BlockHash> IterateIndexes(
             Guid chainId,
-            int offset,
-            int? limit,
+            long offset,
+            long? limit,
             bool includeDeleted
         )
         {
@@ -1389,7 +1389,7 @@ namespace Libplanet.RocksDBStore
             // Adjust offset if it skipped some previous chains.
             (offset, previousChainTipIndex) =
                 GetPreviousChainInfo(chainInfos.Peek().Item1) is { } cinfo
-                    ? (Math.Max(0, (int)(offset - cinfo.Item2 - 1)), (int)cinfo.Item2)
+                    ? (Math.Max(0, offset - cinfo.Item2 - 1), cinfo.Item2)
                     : (offset, 0);
 
             while (chainInfos.Count > 0)
@@ -1401,8 +1401,14 @@ namespace Libplanet.RocksDBStore
                 long expectedCount = chainTipIndex - previousChainTipIndex +
                                      (GetPreviousChainInfo(cid) is null ? 1 : 0);
 
-                foreach (BlockHash hash in IterateIndexesInner(cid, expectedCount).Skip(offset))
+                foreach (BlockHash hash in IterateIndexesInner(cid, expectedCount))
                 {
+                    if (offset > 0)
+                    {
+                        offset -= 1;
+                        continue;
+                    }
+
                     if (count >= limit)
                     {
                         yield break;
@@ -1412,7 +1418,6 @@ namespace Libplanet.RocksDBStore
                     count += 1;
                 }
 
-                offset = Math.Max(0, (int)(offset - expectedCount));
                 previousChainTipIndex = chainTipIndex;
             }
         }
