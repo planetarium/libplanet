@@ -38,12 +38,12 @@ namespace Libplanet.Assets
     /// do not have the said limit. To define a <see cref="Currency"/> you may call either of the
     /// following.
     /// <list type="bullet">
-    /// <item><see
+    /// <item><description><see
     /// cref="Capped(string,byte,ValueTuple{BigInteger, BigInteger},IImmutableSet{Address}?)"/>
-    /// </item>
-    /// <item><see cref="Capped(string,byte,ValueTuple{BigInteger, BigInteger},Address)"/></item>
-    /// <item><see cref="Uncapped(string,byte,IImmutableSet{Address}?)"/></item>
-    /// <item><see cref="Uncapped(string,byte,Address)"/></item>
+    /// </description></item>
+    /// <item><description><see cref="Capped(string,byte,ValueTuple{BigInteger, BigInteger},Address)"/></description></item>
+    /// <item><description><see cref="Uncapped(string,byte,IImmutableSet{Address}?)"/></description></item>
+    /// <item><description><see cref="Uncapped(string,byte,Address)"/></description></item>
     /// </list>
     /// </remarks>
     /// <seealso cref="FungibleAssetValue"/>
