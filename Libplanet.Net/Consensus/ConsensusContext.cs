@@ -188,7 +188,6 @@ namespace Libplanet.Net.Consensus
                 }
 
                 RemoveOldContexts(height);
-                ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
                 if (lastCommit != null)
                 {
@@ -210,6 +209,8 @@ namespace Libplanet.Net.Consensus
                             lastCommit.Round);
                     }
                 }
+
+                ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
                 Height = height;
 
@@ -329,6 +330,12 @@ namespace Libplanet.Net.Consensus
                 _newHeightCts.Token);
         }
 
+        /// <summary>
+        /// Removes old last commit (<see cref="BlockCommit"/>) cache in store, if the cache count
+        /// is over <paramref name="maxSize"/>. The removal starts from lowest height cache and
+        /// keep the last commit cache count in <paramref name="maxSize"/>.
+        /// </summary>
+        /// <param name="maxSize">A maximum count value of <see cref="BlockCommit"/> cache.</param>
         private void ClearOldLastCommitCache(long maxSize = 30)
         {
             IEnumerable<long> indices = _blockChain.Store.GetLastCommitIndices().ToArray();
@@ -339,10 +346,10 @@ namespace Libplanet.Net.Consensus
             }
 
             _logger.Debug(
-                "Pruning old LastCommit caches at height {PreviousTip}...",
+                "Removing old LastCommit caches at height {PreviousTip}...",
                 _blockChain.Tip.Index);
 
-            foreach (var height in indices)
+            foreach (var height in indices.OrderBy(x => x).Take((int)(indices.Count() - maxSize)))
             {
                 _blockChain.Store.DeleteLastCommit(height);
             }
