@@ -334,6 +334,12 @@ namespace Libplanet.Net.Consensus
                 _newHeightCts.Token);
         }
 
+        /// <summary>
+        /// Removes old last commit (<see cref="BlockCommit"/>) cache in store, if the cache count
+        /// is over <paramref name="maxSize"/>. The removal starts from lowest height cache and
+        /// keep the last commit cache count in <paramref name="maxSize"/>.
+        /// </summary>
+        /// <param name="maxSize">A maximum count value of <see cref="BlockCommit"/> cache.</param>
         private void ClearOldLastCommitCache(long maxSize = 30)
         {
             IEnumerable<long> indices = _blockChain.Store.GetLastCommitIndices().ToArray();
