@@ -146,7 +146,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="left">A block.</param>
         /// <param name="right">Another block.</param>
-        /// <returns><c>true</c> if two blocks are equal.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two blocks are equal.  Otherwise <see langword="false"/>.</returns>
         public static bool operator ==(Block<T>? left, Block<T>? right) =>
             Equals(left, right);
 
@@ -155,7 +155,7 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="left">A block.</param>
         /// <param name="right">Another block.</param>
-        /// <returns><c>true</c> if two blocks are different.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two blocks are different.  Otherwise <see langword="false"/>.</returns>
         public static bool operator !=(Block<T>? left, Block<T>? right) =>
             !Equals(left, right);
 

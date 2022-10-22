@@ -10,7 +10,7 @@ namespace Libplanet.Node
     {
         /// <summary>
         /// Determines whether to call renderers during the preloading phase.
-        /// Set to <c>false</c> by default.
+        /// Set to <see langword="false"/> by default.
         /// </summary>
         public bool Render { get; set; } = false;
 

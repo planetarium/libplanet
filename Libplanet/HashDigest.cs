@@ -69,11 +69,11 @@ namespace Libplanet
         /// <see cref="HashDigest{T}"/>.
         /// </summary>
         /// <param name="hashDigest">A <see cref="byte"/> array that encodes
-        /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>,
+        /// a <see cref="HashDigest{T}"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hashDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hashDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hashDigest"/>'s <see cref="Array.Length"/> is not
         /// the same to the <see cref="Size"/> the hash algorithm
@@ -88,7 +88,7 @@ namespace Libplanet
         /// Converts an immutable <see cref="byte"/> array into a <see cref="HashDigest{T}"/>.
         /// </summary>
         /// <param name="hashDigest">An immutable <see cref="byte"/> array that encodes
-        /// a <see cref="HashDigest{T}"/>.  It must not be <c>null</c>, and its
+        /// a <see cref="HashDigest{T}"/>.  It must not be <see langword="null"/>, and its
         /// <see cref="Array.Length"/> must be the same to <see cref="Size"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hashDigest"/>'s <see cref="ImmutableArray{T}.Length"/> is not
@@ -137,7 +137,7 @@ namespace Libplanet
         /// <returns>A corresponding <see cref="HashDigest{T}"/> value.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hexDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hexDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hexDigest"/>'s length is not the double of
         /// the <see cref="Size"/>, the hash algorithm
@@ -313,7 +313,7 @@ namespace Libplanet
         /// <returns>A corresponding <see cref="HashDigest{T}"/> value.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hexDigest"/> is <c>null</c>.</exception>
+        /// <paramref name="hexDigest"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="hexDigest"/>'s length is not the double of
         /// the <see cref="HashDigest{T}.Size"/>, the hash algorithm

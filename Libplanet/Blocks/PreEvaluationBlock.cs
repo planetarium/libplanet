@@ -135,7 +135,7 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/> signatures.
         /// </remarks>
         public Block<T> Evaluate(
             PrivateKey privateKey,
@@ -166,7 +166,7 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/> signatures.
         /// </remarks>
         // FIXME: Take narrower input instead of a whole BlockChain<T>.
         public Block<T> Evaluate(PrivateKey privateKey, BlockChain<T> blockChain) =>
@@ -189,7 +189,7 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/> signatures.
         /// </remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {

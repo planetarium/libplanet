@@ -61,11 +61,11 @@ namespace Libplanet.Store
     ///         and <c><![CDATA[ImmutableList<int?>]]></c>are not allowed.
     ///     </description></item>
     ///     <item><description>
-    ///         Reference types are not allowed to be assigned <c>null</c>.  This will result
+    ///         Reference types are not allowed to be assigned <see langword="null"/>.  This will result
     ///         in an <see cref="Exception"/> when <see cref="Encode"/> is called.
     ///     </description></item>
     ///     <item><description>
-    ///         Trying to assign <c>null</c> to any property or to a part of a collection will
+    ///         Trying to assign <see langword="null"/> to any property or to a part of a collection will
     ///         result in an <see cref="Exception"/> when
     ///         <see cref="DataModel(BTypes.Dictionary)"/> is called.
     ///     </description></item>
@@ -183,12 +183,12 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="encoded">The <see cref="BTypes.Dictionary"/> instance to decode.</param>
         /// <returns>A decoded instance from <paramref name="encoded"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown when <c>null</c> value is encountered
+        /// <exception cref="NotSupportedException">Thrown when <see langword="null"/> value is encountered
         /// while decoding.</exception>
         /// <exception cref="ArgumentException">Thrown when invalid encoded type is encountered.
         /// </exception>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="encoded"/> is
-        /// <c>null</c> or <c>null</c> reference is returned by inner instantiation.</exception>
+        /// <see langword="null"/> or <see langword="null"/> reference is returned by inner instantiation.</exception>
         protected DataModel(BTypes.Dictionary encoded)
         {
             if (encoded is BTypes.Dictionary e)
@@ -232,7 +232,7 @@ namespace Libplanet.Store
         /// </summary>
         /// <returns>An encoded <see cref="BTypes.Dictionary"/> instance.</returns>
         /// <exception cref="NotSupportedException">Thrown when <c>nullable</c> value type property
-        /// or <c>null</c> value inside a reference type is encountered.</exception>
+        /// or <see langword="null"/> value inside a reference type is encountered.</exception>
         /// <exception cref="ArgumentException">Thrown when an unknown invalid property type is
         /// encountered.</exception>
         [Pure]

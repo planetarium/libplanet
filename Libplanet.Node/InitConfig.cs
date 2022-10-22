@@ -45,7 +45,7 @@ namespace Libplanet.Node
         public string? Host { get; set; } = "localhost";
 
         /// <summary>
-        /// Determines the <em>incoming</em> port.  Set to <c>null</c> by default.
+        /// Determines the <em>incoming</em> port.  Set to <see langword="null"/> by default.
         /// </summary>
         public int? Port { get; set; } = null;
 

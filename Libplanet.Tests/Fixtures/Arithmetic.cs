@@ -7,7 +7,7 @@ namespace Libplanet.Tests.Fixtures
 {
     /// <summary>
     /// A simple arithmetic action.  This assumes that every address has an integer state or
-    /// a <c>null</c> state (not <see cref="Bencodex.Types.Null"/>, but <c>null</c> reference).
+    /// a <see langword="null"/> state (not <see cref="Bencodex.Types.Null"/>, but <see langword="null"/> reference).
     /// </summary>
     public sealed class Arithmetic : IAction, IEquatable<Arithmetic>
     {

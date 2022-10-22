@@ -37,7 +37,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="key">A key to add.</param>
         /// <returns>The id of the added <paramref name="key"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> is passed to
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
         /// <paramref name="key"/>.</exception>
         public Guid Add(ProtectedPrivateKey key);
 

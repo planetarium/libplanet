@@ -18,13 +18,13 @@ namespace Libplanet
         /// </summary>
         /// <param name="hex">A <see cref="string"/> which encodes
         /// <see cref="byte"/>s in hexadecimal.  Its length must be zero or
-        /// an even number.  It must not be <c>null</c>.</param>
+        /// an even number.  It must not be <see langword="null"/>.</param>
         /// <returns>A <see cref="byte"/> array that the given
         /// <paramref name="hex"/> string represented in hexadecimal.
         /// It lengthens the half of the given <paramref name="hex"/> string.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="hex"/> string is <c>null</c>.
+        /// <paramref name="hex"/> string is <see langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length
         /// of the given <paramref name="hex"/> string is an odd number.
@@ -61,12 +61,12 @@ namespace Libplanet
         /// Renders a hexadecimal string from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
-        /// the corresponding hexadecimal string.  It must not be <c>null</c>.
+        /// the corresponding hexadecimal string.  It must not be <see langword="null"/>.
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="bytes"/> is <c>null</c>.</exception>
+        /// <paramref name="bytes"/> is <see langword="null"/>.</exception>
         [Pure]
         public static string Hex(byte[] bytes)
         {
@@ -83,7 +83,7 @@ namespace Libplanet
         /// Renders a hexadecimal string from a <see cref="byte"/> array.
         /// </summary>
         /// <param name="bytes">A <see cref="byte"/> array to renders
-        /// the corresponding hexadecimal string.  It must not be <c>null</c>.
+        /// the corresponding hexadecimal string.  It must not be <see langword="null"/>.
         /// </param>
         /// <returns>A hexadecimal string which encodes the given
         /// <paramref name="bytes"/>.</returns>
@@ -100,10 +100,10 @@ namespace Libplanet
         /// determines (or encodes) an object, to calculate a hash code.</param>
         /// <returns>A hash code determined from the given
         /// <paramref name="bytes"/>.  For equivalent <paramref name="bytes"/>,
-        /// the same hash code is returned.  It must not be <c>null</c>.
+        /// the same hash code is returned.  It must not be <see langword="null"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="bytes"/> is <c>null</c>.</exception>
+        /// <paramref name="bytes"/> is <see langword="null"/>.</exception>
         [Pure]
         public static int CalculateHashCode(byte[] bytes)
         {
@@ -122,7 +122,7 @@ namespace Libplanet
         /// the timing dependent on the length of the shorter one.</remarks>
         /// <param name="left">A byte array.</param>
         /// <param name="right">Another byte array.</param>
-        /// <returns><c>true</c> iff two byte arrays have the exactly same contents.</returns>
+        /// <returns><see langword="true"/> iff two byte arrays have the exactly same contents.</returns>
         [Pure]
         public static bool TimingSafelyCompare(IReadOnlyList<byte> left, IReadOnlyList<byte> right)
         {
@@ -141,9 +141,9 @@ namespace Libplanet
         /// </summary>
         /// <param name="hashDigest">A hash digest to test.</param>
         /// <param name="difficulty">The difficulty to compute target number.</param>
-        /// <returns><c>true</c> only if a digest is less than the target computed for the given
+        /// <returns><see langword="true"/> only if a digest is less than the target computed for the given
         /// <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c> it always
-        /// returns <c>true</c>.</returns>
+        /// returns <see langword="true"/>.</returns>
         [Pure]
         public static bool Satisfies(IReadOnlyList<byte> hashDigest, long difficulty)
         {

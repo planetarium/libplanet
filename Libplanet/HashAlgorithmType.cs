@@ -60,7 +60,7 @@ namespace Libplanet
         /// </summary>
         /// <param name="left">An instance.</param>
         /// <param name="right">Another instance.</param>
-        /// <returns><c>true</c> iff two operands refers to the same <see cref="HashAlgorithm"/>
+        /// <returns><see langword="true"/> iff two operands refers to the same <see cref="HashAlgorithm"/>
         /// class.</returns>
         [Pure]
         public static bool operator ==(HashAlgorithmType left, HashAlgorithmType right) =>
@@ -72,7 +72,7 @@ namespace Libplanet
         /// </summary>
         /// <param name="left">An instance.</param>
         /// <param name="right">Another instance.</param>
-        /// <returns><c>false</c> iff two operands refers to the same <see cref="HashAlgorithm"/>
+        /// <returns><see langword="false"/> iff two operands refers to the same <see cref="HashAlgorithm"/>
         /// class.</returns>
         public static bool operator !=(HashAlgorithmType left, HashAlgorithmType right) =>
             !(left == right);

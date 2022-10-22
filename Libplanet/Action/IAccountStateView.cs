@@ -21,7 +21,7 @@ namespace Libplanet.Action
     /// </item>
     /// <item>
     /// <description>filling an <see cref="Address"/> with
-    /// <c>null</c> state cannot be distinguished from
+    /// <see langword="null"/> state cannot be distinguished from
     /// the <see cref="Address"/> having never been set to
     /// any state.</description>
     /// </item>
@@ -35,7 +35,7 @@ namespace Libplanet.Action
         /// <param name="address">The <see cref="Address"/> referring
         /// the account to get its state.</param>
         /// <returns>The account state of the given <paramref name="address"/>.
-        /// If it has never been set to any state it returns <c>null</c>
+        /// If it has never been set to any state it returns <see langword="null"/>
         /// instead.</returns>
         [Pure]
         IValue? GetState(Address address);

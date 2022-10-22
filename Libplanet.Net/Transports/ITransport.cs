@@ -46,8 +46,8 @@ namespace Libplanet.Net.Transports
         /// Whether this <see cref="ITransport"/> instance is running.
         /// </para>
         /// <para>
-        /// When the value is <c>true</c>, the <see cref="ITransport"/> can recieve outside
-        /// requests.  When the value is <c>false</c>, the <see cref="ITransport"/> stops recieving
+        /// When the value is <see langword="true"/>, the <see cref="ITransport"/> can recieve outside
+        /// requests.  When the value is <see langword="false"/>, the <see cref="ITransport"/> stops recieving
         /// outside requests.
         /// </para>
         /// </summary>
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Transports
         /// Waits until this <see cref="ITransport"/> instance gets started to run.
         /// </summary>
         /// <returns>A <see cref="Task"/> completed when <see cref="ITransport.Running"/>
-        /// property becomes <c>true</c>.</returns>
+        /// property becomes <see langword="true"/>.</returns>
         Task WaitForRunningAsync();
 
         /// <summary>

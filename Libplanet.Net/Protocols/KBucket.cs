@@ -36,13 +36,13 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// The <see cref="PeerState"/> used most recently. If the bucket is empty,
-        /// this is <c>null</c>.
+        /// this is <see langword="null"/>.
         /// </summary>
         public PeerState? Head => _peerStates.Head;
 
         /// <summary>
         /// The <see cref="PeerState"/> used longest time ago. If the bucket is empty,
-        /// this is <c>null</c>.
+        /// this is <see langword="null"/>.
         /// </summary>
         public PeerState? Tail => _peerStates.Tail;
 
@@ -66,8 +66,8 @@ namespace Libplanet.Net.Protocols
         /// Checks whether the bucket contains given <paramref name="peer"/>.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
-        /// <returns><c>true</c> if the bucket contains <paramref name="peer"/>,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if the bucket contains <paramref name="peer"/>,
+        /// <see langword="false"/> otherwise.</returns>
         public bool Contains(BoundPeer peer)
         {
             return _peerStates.Contains(peer.Address);
@@ -86,7 +86,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to remove.</param>
         /// <returns>
-        /// <c>true</c> if <paramref name="peer"/> was removed, <c>false</c> otherwise.
+        /// <see langword="true"/> if <paramref name="peer"/> was removed, <see langword="false"/> otherwise.
         /// </returns>
         public bool RemovePeer(BoundPeer peer)
         {
@@ -110,7 +110,7 @@ namespace Libplanet.Net.Protocols
         /// <returns>
         /// A randomly selected <see cref="BoundPeer"/> in the bucket excluding
         /// <paramref name="except"/>. If no <see cref="BoundPeer"/> can be selected,
-        /// <c>null</c> is returned.
+        /// <see langword="null"/> is returned.
         /// </returns>
         public BoundPeer? GetRandomPeer(Address? except = null)
         {

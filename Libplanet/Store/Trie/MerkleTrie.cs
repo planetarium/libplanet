@@ -59,7 +59,7 @@ namespace Libplanet.Store.Trie
         /// </summary>
         /// <param name="keyValueStore">The <see cref="IKeyValueStore"/> storage to store
         /// nodes.</param>
-        /// <param name="root">The root node of <see cref="MerkleTrie"/>. If it is <c>null</c>,
+        /// <param name="root">The root node of <see cref="MerkleTrie"/>. If it is <see langword="null"/>,
         /// it will be treated like empty trie.</param>
         /// <param name="secure">Whether to use <see cref="MerkleTrie"/> in secure
         /// mode. If it is true, <see cref="MerkleTrie"/> will stores the value with the hashed

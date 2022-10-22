@@ -83,9 +83,9 @@ namespace Libplanet
         /// cref="byte"/> array (i.e., <paramref name="address"/>).
         /// </summary>
         /// <param name="address">An array of 20 <see cref="byte"/>s which
-        /// represents an <see cref="Address"/>.  This must not be <c>null</c>.
+        /// represents an <see cref="Address"/>.  This must not be <see langword="null"/>.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> was
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
         /// passed to <paramref name="address"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="address"/> array did not lengthen 20 bytes.</exception>
@@ -118,7 +118,7 @@ namespace Libplanet
         /// Derives the corresponding <see cref="Address"/> from a hexadecimal
         /// address string.
         /// </summary>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> was
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> was
         /// passed to <paramref name="hex"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="hex"/> did not lengthen 40 characters except 0x prefix.</exception>

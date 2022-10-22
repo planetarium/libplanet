@@ -40,7 +40,7 @@ namespace Libplanet.Net.Messages
 
         /// <summary>
         /// The block index of the first hash in <see cref="Hashes"/>.
-        /// It is <c>null</c> iff <see cref="Hashes"/> are empty.
+        /// It is <see langword="null"/> iff <see cref="Hashes"/> are empty.
         /// </summary>
         public long? StartIndex { get; }
 

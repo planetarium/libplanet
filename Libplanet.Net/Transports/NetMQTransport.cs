@@ -69,7 +69,7 @@ namespace Libplanet.Net.Transports
         /// version of the transport layer.</param>
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <c>null</c>.</param>
+        /// <see langword="null"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -81,16 +81,16 @@ namespace Libplanet.Net.Transports
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
-        /// If <c>null</c>, any timestamp is accepted.</param>
+        /// If <see langword="null"/>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
+        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         private NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
@@ -203,7 +203,7 @@ namespace Libplanet.Net.Transports
         /// version of the transport layer.</param>
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
-        /// <c>null</c>.</param>
+        /// <see langword="null"/>.</param>
         /// <param name="workers">The number of background workers (i.e., threads).</param>
         /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
         /// they connect to this node.  Note that this is not a hostname to listen to;
@@ -215,16 +215,16 @@ namespace Libplanet.Net.Transports
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <c>false</c>, an encountered peer is ignored.  If this callback
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.  If this callback
         /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
         /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
         /// the current time of a local node.  Every <see cref="Message"/> with its timestamp
         /// differing greater than <paramref name="messageTimestampBuffer"/> will be ignored.
-        /// If <c>null</c>, any timestamp is accepted.</param>
+        /// If <see langword="null"/>, any timestamp is accepted.</param>
         /// <exception cref="ArgumentException">Thrown when both <paramref name="host"/> and
-        /// <paramref name="iceServers"/> are <c>null</c>.</exception>
+        /// <paramref name="iceServers"/> are <see langword="null"/>.</exception>
         /// <returns>
         /// An awaitable <see cref="Task"/> returning a <see cref="NetMQTransport"/>
         /// when awaited that is ready to send request <see cref="Message"/>s and

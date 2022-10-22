@@ -114,7 +114,7 @@ namespace Libplanet.Blockchain.Renderers
 
         /// <summary>
         /// The <em>recognized</em> topmost block.  If not enough blocks are discovered yet,
-        /// this property can be <c>null</c>.
+        /// this property can be <see langword="null"/>.
         /// </summary>
         public Block<T>? Tip
         {
@@ -220,7 +220,7 @@ namespace Libplanet.Blockchain.Renderers
         /// <param name="oldTip">The previously recognized topmost block.</param>
         /// <param name="newTip">The topmost block recognized this time.</param>
         /// <param name="branchpoint">A branchpoint between <paramref name="oldTip"/> and
-        /// <paramref name="newTip"/> if the tip change is a reorg.  Otherwise <c>null</c>.</param>
+        /// <paramref name="newTip"/> if the tip change is a reorg.  Otherwise <see langword="null"/>.</param>
         protected virtual void OnTipChanged(Block<T> oldTip, Block<T> newTip, Block<T>? branchpoint)
         {
             if (branchpoint is Block<T>)

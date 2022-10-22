@@ -31,7 +31,7 @@ namespace Libplanet.Store
         /// <summary>
         /// Gets the ID of the current canonical chain.
         /// </summary>
-        /// <returns>The ID of the current canonical chain.  Maybe <c>null</c>.</returns>
+        /// <returns>The ID of the current canonical chain.  Maybe <see langword="null"/>.</returns>
         /// <seealso cref="SetCanonicalChainId(Guid)"/>
         Guid? GetCanonicalChainId();
 
@@ -71,7 +71,7 @@ namespace Libplanet.Store
         /// <param name="index">The index of the block to query its hash.  Negative indices mean
         /// the offset from the end.  For example, -1 means the topmost block.</param>
         /// <returns>The block hash of the index in the chain.  If there is no such index,
-        /// it returns <c>null</c>.</returns>
+        /// it returns <see langword="null"/>.</returns>
         BlockHash? IndexBlockHash(Guid chainId, long index);
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
-        /// <returns>A found block, or <c>null</c> if no block having such
+        /// <returns>A found block, or <see langword="null"/> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
         /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
@@ -138,7 +138,7 @@ namespace Libplanet.Store
         /// It provides only limited information, but can be called without any type parameter
         /// unlike <see cref="GetBlock{T}"/>.
         /// </remarks>
-        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <c>null</c> if no block having
+        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <see langword="null"/> if no block having
         /// such <paramref name="blockHash"/> is stored.</returns>
         long? GetBlockIndex(BlockHash blockHash);
 
@@ -147,7 +147,7 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
-        /// <returns>A found <see cref="BlockDigest"/>, or <c>null</c> if no block having such
+        /// <returns>A found <see cref="BlockDigest"/>, or <see langword="null"/> if no block having such
         /// <paramref name="blockHash"/> is stored.</returns>
         BlockDigest? GetBlockDigest(BlockHash blockHash);
 
@@ -166,7 +166,7 @@ namespace Libplanet.Store
         /// Removes a block from the store.
         /// </summary>
         /// <param name="blockHash">The hash of a block to remove.</param>
-        /// <returns><c>false</c> if such block does not exist. Otherwise <c>true</c>.</returns>
+        /// <returns><see langword="false"/> if such block does not exist. Otherwise <see langword="true"/>.</returns>
         bool DeleteBlock(BlockHash blockHash);
 
         /// <summary>
@@ -176,8 +176,8 @@ namespace Libplanet.Store
         /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
         /// check if it is in the <see cref="IStore"/>.</param>
         /// <returns>
-        /// <c>true</c> if the <see cref="IStore"/> contains <see cref="Block{T}"/> with
-        /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Block{T}"/> with
+        /// the specified <paramref name="blockHash"/>; otherwise, <see langword="false"/>.
         /// </returns>
         bool ContainsBlock(BlockHash blockHash);
 
@@ -187,9 +187,9 @@ namespace Libplanet.Store
         /// <remarks>If there is already the record for the same <see cref="TxExecution.BlockHash"/>
         /// and <see cref="TxExecution.TxId"/>, the record is silently overwritten.</remarks>
         /// <param name="txSuccess">The successful transaction execution summary to record.
-        /// Must not be <c>null</c>.</param>
+        /// Must not be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txSuccess"/> is
-        /// <c>null</c>.</exception>
+        /// <see langword="null"/>.</exception>
         /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
         /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
         void PutTxExecution(TxSuccess txSuccess);
@@ -200,9 +200,9 @@ namespace Libplanet.Store
         /// <remarks>If there is already the record for the same <see cref="TxExecution.BlockHash"/>
         /// and <see cref="TxExecution.TxId"/>, the record is silently overwritten.</remarks>
         /// <param name="txFailure">The failed transaction execution summary to record.
-        /// Must not be <c>null</c>.</param>
+        /// Must not be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="txFailure"/> is
-        /// <c>null</c>.</exception>
+        /// <see langword="null"/>.</exception>
         /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
         /// <seealso cref="GetTxExecution(BlockHash, TxId)"/>
         void PutTxExecution(TxFailure txFailure);
@@ -215,7 +215,7 @@ namespace Libplanet.Store
         /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the recorded transaction
         /// execution to retrieve.</param>
         /// <returns>The recorded transaction execution summary.  If it has been never recorded
-        /// <c>null</c> is returned instead.</returns>
+        /// <see langword="null"/> is returned instead.</returns>
         /// <seealso cref="PutTxExecution(Libplanet.Tx.TxFailure)"/>
         /// <seealso cref="PutTxExecution(Libplanet.Tx.TxSuccess)"/>
         TxExecution GetTxExecution(BlockHash blockHash, TxId txid);
@@ -234,7 +234,7 @@ namespace Libplanet.Store
         /// Retrieves the <see cref="BlockHash"/> indexed by the <paramref name="txId"/>.
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
-        /// <returns><see cref="BlockHash"/> if the index exists. Otherwise <c>null</c>.</returns>
+        /// <returns><see cref="BlockHash"/> if the index exists. Otherwise <see langword="null"/>.</returns>
         BlockHash? GetFirstTxIdBlockHashIndex(TxId txId);
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Libplanet.Store
         /// Queries the perceived time of a block, if it has been recorded.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.</param>
-        /// <returns>The perceived time of a block, if it exists.  Otherwise, <c>null</c>.</returns>
+        /// <returns>The perceived time of a block, if it exists.  Otherwise, <see langword="null"/>.</returns>
         DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
 
         /// <summary>
@@ -312,8 +312,8 @@ namespace Libplanet.Store
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>
         /// to check if it is in the <see cref="IStore"/>.</param>
         /// <returns>
-        /// <c>true</c> if the <see cref="IStore"/> contains <see cref="Transaction{T}"/>
-        /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the <see cref="IStore"/> contains <see cref="Transaction{T}"/>
+        /// with the specified <paramref name="txId"/>; otherwise, <see langword="false"/>.
         /// </returns>
         bool ContainsTransaction(TxId txId);
 
@@ -335,8 +335,8 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="noopWithoutCanon">
         /// Flag to determine whether the function throws exception
-        /// when the canonical chain is not assigned.  <c>false</c> by default.
-        /// If it set to <c>true</c>, does not throw exception when
+        /// when the canonical chain is not assigned.  <see langword="false"/> by default.
+        /// If it set to <see langword="true"/>, does not throw exception when
         /// there is no canonical chain.
         /// Otherwise, throws <see cref="InvalidOperationException"/> when
         /// there is no canonical chain.
