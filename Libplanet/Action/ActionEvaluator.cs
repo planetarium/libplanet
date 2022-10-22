@@ -5,8 +5,10 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Action.Sys;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -61,6 +63,13 @@ namespace Libplanet.Action
             _genesisHash = genesisHash;
             _nativeTokenPredicate = nativeTokenPredicate;
         }
+
+        public IActionTypeLoader ActionTypeLoader { get; set; } =
+            new StaticActionTypeLoader(
+                (Assembly.GetEntryAssembly() is Assembly entryAssembly)
+                ? new[] { typeof(T).Assembly, entryAssembly }
+                : new[] { typeof(T).Assembly }
+            );
 
         /// <summary>
         /// Creates a random seed.
@@ -738,15 +747,44 @@ namespace Libplanet.Action
             ITransaction tx
         )
         {
-            // FIXME
-            return ((Transaction<T>)tx).CustomActions?.Cast<IAction>() ??
-                ImmutableList<IAction>.Empty;
+            if (tx.CustomActions is { } customActions)
+            {
+                IDictionary<string, Type> types = ActionTypeLoader.Load(blockHeader);
+
+                foreach (IValue rawAction in customActions)
+                {
+                    IAction action;
+
+                    // it means that, we will bypass PolymorphicAction....
+                    if (rawAction is Dictionary pv &&
+                        pv.TryGetValue((Text)"type_id", out IValue rawTypeId) &&
+                        rawTypeId is Text typeId &&
+                        types.TryGetValue(typeId, out Type? actionType))
+                    {
+                        action = (IAction)Activator.CreateInstance(actionType)!;
+                        action.LoadPlainValue(pv["values"]);
+                    }
+                    else
+                    {
+                        // FIXME: Just fallback, do we really need non-polymorphic action?
+                        //        is it possible?
+                        action = new T();
+                        action.LoadPlainValue(rawAction);
+                    }
+
+                    yield return action;
+                }
+            }
         }
 
         private IAction? CreateSystemAction(ITransaction tx)
         {
-            // FIXME
-            return ((Transaction<T>)tx).SystemAction;
+            if (tx.SystemAction is Dictionary sa)
+            {
+                return Registry.Deserialize(sa);
+            }
+
+            return null;
         }
     }
 }
