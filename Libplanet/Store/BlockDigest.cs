@@ -24,7 +24,7 @@ namespace Libplanet.Store
 
         private readonly BlockMetadata _metadata;
         private readonly Nonce _nonce;
-        private readonly ImmutableArray<byte>? _preEvaluationHash;
+        private readonly ImmutableArray<byte> _preEvaluationHash;
 
         /// <summary>
         /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
@@ -35,7 +35,7 @@ namespace Libplanet.Store
         /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
-            _metadata = header.Copy();
+            _metadata = new BlockMetadata(header);
             _nonce = header.Nonce;
             _preEvaluationHash = header.PreEvaluationHash;
             StateRootHash = header.StateRootHash;
@@ -108,6 +108,11 @@ namespace Libplanet.Store
         /// </summary>
         public ImmutableArray<byte>? Signature { get; }
 
+        /// <summary>
+        /// The <see cref="Transaction{T}.Id"/>s of <see cref="Transaction{T}"/>s in
+        /// a <see cref="Block{T}"/>.  This is <em>not</em> necessarily ordered by
+        /// <see cref="Transaction{T}.Id"/>.
+        /// </summary>
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         /// <summary>
@@ -170,10 +175,9 @@ namespace Libplanet.Store
         /// <returns>The block header.</returns>
         public BlockHeader GetHeader()
         {
-            var preEvalHeader = _preEvaluationHash is { } preEvalHash
-                ? new PreEvaluationBlockHeader(_metadata, _nonce, preEvalHash)
-                : new PreEvaluationBlockHeader(_metadata, _nonce);
-            return new BlockHeader(preEvalHeader, StateRootHash, Signature, Hash);
+            var preEvalHeader = new PreEvaluationBlockHeader(
+                _metadata, (_nonce, _preEvaluationHash));
+            return new BlockHeader(preEvalHeader, (StateRootHash, Signature, Hash));
         }
 
         /// <summary>
@@ -187,8 +191,7 @@ namespace Libplanet.Store
             var preEvalHeaderDict = BlockMarshaler.MarshalPreEvaluationBlockHeader(
                 BlockMarshaler.MarshalBlockMetadata(_metadata),
                 _nonce,
-                _preEvaluationHash ?? ImmutableArray<byte>.Empty
-            );
+                _preEvaluationHash);
             Dictionary headerDict = BlockMarshaler.MarshalBlockHeader(
                 preEvalHeaderDict,
                 StateRootHash,

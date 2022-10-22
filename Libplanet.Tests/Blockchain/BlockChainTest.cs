@@ -40,7 +40,7 @@ namespace Libplanet.Tests.Blockchain
         private BlockChain<DumbAction> _blockChainMinTx;
         private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
-        private List<Transaction<DumbAction>> _emptyTransaction;
+        private List<Transaction<DumbAction>> _emptyTransactions;
         private IStagePolicy<DumbAction> _stagePolicy;
 
         public BlockChainTest(ITestOutputHelper output)
@@ -88,17 +88,20 @@ namespace Libplanet.Tests.Blockchain
             _renderer.BlockChain = _blockChain;
             _renderer.ResetRecords();
 
-            _emptyTransaction = new List<Transaction<DumbAction>>();
-            _validNext = new BlockContent<DumbAction>
-            {
-                Index = 1,
-                Difficulty = 1024L,
-                TotalDifficulty = _fx.GenesisBlock.TotalDifficulty + 1024,
-                PublicKey = _fx.Miner.PublicKey,
-                PreviousHash = _fx.GenesisBlock.Hash,
-                Timestamp = _fx.GenesisBlock.Timestamp.AddSeconds(1),
-                Transactions = _emptyTransaction,
-            }.Mine().Evaluate(_fx.Miner, _blockChain);
+            _emptyTransactions = new List<Transaction<DumbAction>>();
+            _validNext = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: 1,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddSeconds(1),
+                    miner: _fx.Miner.PublicKey.ToAddress(),
+                    publicKey: _fx.Miner.PublicKey,
+                    difficulty: 1024L,
+                    totalDifficulty: _fx.GenesisBlock.TotalDifficulty + 1024L,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null),
+                transactions: _emptyTransactions)
+                .Mine().Evaluate(_fx.Miner, _blockChain);
         }
 
         public void Dispose()

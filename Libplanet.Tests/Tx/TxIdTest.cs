@@ -221,12 +221,8 @@ namespace Libplanet.Tests.Tx
                 );
             }
 
-            Assert.Throws<ArgumentNullException>(() =>
-                txIds[0].CompareTo(null)
-            );
-            Assert.Throws<ArgumentException>(() =>
-                txIds[0].CompareTo("invalid")
-            );
+            Assert.Throws<ArgumentException>(() => txIds[0].CompareTo(null));
+            Assert.Throws<ArgumentException>(() => txIds[0].CompareTo("invalid"));
         }
 
         [SkippableFact]

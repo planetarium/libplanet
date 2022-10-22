@@ -58,22 +58,29 @@ namespace Libplanet.Tests.Fixtures
                         ImmutableHashSet<Address>.Empty.Add(pair.Key.ToAddress())
                     )
                 )
+                .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullBlockPolicy<Arithmetic>();
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
-            Genesis = new BlockContent<Arithmetic>
-            {
-                PublicKey = Miner.PublicKey,
-                Timestamp = DateTimeOffset.UtcNow,
-                Transactions = Txs,
-            }.Mine().Evaluate(
-                privateKey: Miner,
-                blockAction: policy.BlockAction,
-                nativeTokenPredicate: policy.NativeTokens.Contains,
-                stateStore: StateStore
+            Genesis = new BlockContent<Arithmetic>(
+                new BlockMetadata(
+                    index: 0,
+                    timestamp: DateTimeOffset.UtcNow,
+                    publicKey: Miner.PublicKey,
+                    difficulty: 0,
+                    totalDifficulty: 0,
+                    previousHash: null,
+                    txHash: BlockContent<Arithmetic>.DeriveTxHash(Txs)),
+                transactions: Txs)
+                .Mine()
+                .Evaluate(
+                    privateKey: Miner,
+                    blockAction: policy.BlockAction,
+                    nativeTokenPredicate: policy.NativeTokens.Contains,
+                    stateStore: StateStore
             );
             Chain = new BlockChain<Arithmetic>(
                 policy,

@@ -1,27 +1,94 @@
 Libplanet changelog
 ===================
 
-Version 0.43.0
+Version 0.44.0
 --------------
 
 To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+ -  Added builds for Apple Silicon to releases.  [[#2365]]
+
+[#2365]: https://github.com/planetarium/libplanet/pull/2365
+
+
+Version 0.43.1
+--------------
+
+Released on October 17, 2022.
+
+### Added APIs
+
+ -  (Libplanet.Explorer) Added `TxResultType.UpdatedStateType` and
+    `TxResultType.FungibleAssetBalancesType` GraphQL types.  [[#2405]]
+
+[#2405]: https://github.com/planetarium/libplanet/pull/2405
+
+
+Version 0.43.0
+--------------
+
+Released on October 14, 2022.
 
 Since 0.43.0, we officially provide *[@planetarium/tx]*, an npm package for
 creating unsigned transactions in JavaScript/TypeScript.  Although it is still
 in experimental stage, which can build only unsigned transactions with
 a system action, its features will be added more in the future.
 
-### Deprecated APIs
-
 ### Backward-incompatible API changes
 
+ -  Removed `DateTimeOffset?` type parameter that allowed a creation of
+    a genesis `Block<T>` with specific timestamp from
+    `BlockChain<T>.MakeGenesisBlock()`.  [[#2321]]
+ -  Overhauled constructors for `BlockMetadata`, `BlockContent<T>`,
+    `PreEvaluationBlockHeader`, `PreEvaluationBlock<T>`, `BlockHeader`,
+    and `Block<T>`.  [[#2321]]
+     -  All unsafe constructors have been removed in order to prevent
+        instantiation of invalid block related objects.
+     -  `BlockMetadata` has constructors `BlockMetadata(IBlockMetadata)`
+        and `BlockMetadata(long, DateTimeOffset, PublicKey, long, BigInteger,
+        BlockHash?, HashDigest<SHA256>)`.
+     -  `BlockContent` has constructors `BlockContent<T>(IBlockMetadata,
+        IEnumerable<Transaction<T>> transactions)`,
+        `BlockContent<T>(BlockMetadata)` and `BlockContent<T>(BlockMetadata,
+        IEnumerable<Trnasaction<T>> transactions)`.
+     -  `PreEvaluationBlockHeader` has constructors
+        `PreEvaluationBlockHeader(IPreEvaluationBlockHeader)` and
+        `PreEvaluationBlockHeader(BlockMetadata, (Nonce,
+        ImmutableArray<byte>))`.
+     -  `PreEvaluationBlock<T>` has constructors
+        `PreEvaluationBlock<T>(IPreEvaluationBlockHeader,
+        IEnumerable<Transaction<T>>)` and
+        `PreEvaluatoinBlock<T>(BlockContent<T>, (Nonce, ImmutableArray<byte>))`.
+     -  `BlockHeader` has constructors `BlockHeader(IBlockHeader)` and
+        `BlockHeader(PreEvaluationBlockHeader, (HashDigest<SHA256>,
+        ImmutableArray<byte>?, BlockHash))`.
+     -  `Block<T>` has constructors `Block<T>(IBlockHeader,
+        IEnumerable<Transaction<T>>)` and `Block<T>(PreEvaluationBlock<T>,
+        (HashDigest<SHA256>, ImmutableArray<byte>, BlockHash))`.
+ -  `BlockContent<T>` no longer inherits `BlockMetadata` and
+    `PreEvaluationBlock<T>` no longer inherits `PreEvaluationBlockHeader`.
+    [[#2321]]
+ -  Both `BlockMetadata` and `BlockContent<T>` are made immutable.  Their
+    properties can no longer be assigned to.  [[#2321]]
+ -  Copy extension methods for `BlockMetadata` and `BlockContent<T>` removed.
+    [[#2321]]
  -  (Libplanet.Extensions.Cocona) The return type of
     `Utils.DeserializeHumanReadable<T>()` static method became `T?` (was `T`).
     [[#2322]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -35,6 +102,18 @@ a system action, its features will be added more in the future.
     [[#2046], [#2229]]
  -  Added `ActionEvaluator<T>.GenerateRandomSeed()` static method.
     [[#2131], [#2236]]
+ -  Each `BlockMetadata`, `PreEvaluationBlockHeader`, and `BlockHeader`
+    can be accessed from any "larger" type object through properties.  [[#2321]]
+     -  `BlockMetadata` can be accessed through `BlockContent<T>.Metadata`
+        or `PreEvaluationBlockHeader.Metadata`.
+     -  `PreEvaluationBlockHeader` can be accessed through
+        `PreEvaluationBlock<T>.Header` or `BlockHeader.Header`.
+     -  `BlockHeader` can be accessed thorugh `Block<T>.Header` (this has not
+        changed, but only listed here for completeness in narrative).
+ -  (Libplanet.Explorer) Added `updatedStates`, `updatedFungibleAssets`,
+    `fungibleAssetsDelta` GraphQL fields to `TxResultType`.  [[#2353]]
+ -  (Libplanet.Explorer) Added `nextNonce` query in `TransactionQuery<T>`.
+    [[#2356], [#2366]]
 
 ### Behavioral changes
 
@@ -42,7 +121,6 @@ a system action, its features will be added more in the future.
     [`System.Text.Json.JsonSerializer`] as they now have their own
     [custom converters].  Note that these serializations are unavailable
     on Unity due to its incomplete reflection support.  [[#2294], [#2322]]
-
      -  An `Address` became represented as a single hexadecimal string in JSON.
         [[#2322]]
      -  A `BlockHash` became represented as a single hexadecimal string in JSON.
@@ -61,11 +139,15 @@ a system action, its features will be added more in the future.
         [[#2322]]
      -  System actions became represented as a [Bencodex JSON Representation]
         of their `PlainValue` with `type_id` field.  [[#2294]]
-
  -  System actions' `GetHashCode()` and `Equals(object)` methods now check
     value equality (rather than reference equality).  [[#2294]]
+ -  A `ValidateAppProtocolVersion` became allow validation of different extra.
+    [[#2380]]
 
 ### Bug fixes
+
+ -  Interface methods `IComparable.CompareTo()` and
+    `IComparable<T>.CompareTo()` for `Address` are now accessible.  [[#2384]]
 
 ### Dependencies
 
@@ -83,15 +165,19 @@ a system action, its features will be added more in the future.
  -  Added `planet tx` subcommand group.  [[#2294]]
      -  Added `planet tx analyze` subcommand.
      -  Added `planet tx help` subcommand.
- -  Added builds for Apple Silicon to releases.  [[#2365]]
 
 [#2046]: https://github.com/planetarium/libplanet/issues/2046
 [#2131]: https://github.com/planetarium/libplanet/issues/2131
 [#2229]: https://github.com/planetarium/libplanet/pull/2229
 [#2236]: https://github.com/planetarium/libplanet/pull/2236
 [#2294]: https://github.com/planetarium/libplanet/pull/2294
+[#2321]: https://github.com/planetarium/libplanet/pull/2321
 [#2322]: https://github.com/planetarium/libplanet/pull/2322
-[#2365]: https://github.com/planetarium/libplanet/pull/2365
+[#2353]: https://github.com/planetarium/libplanet/pull/2353
+[#2356]: https://github.com/planetarium/libplanet/issues/2356
+[#2366]: https://github.com/planetarium/libplanet/pull/2366
+[#2380]: https://github.com/planetarium/libplanet/pull/2380
+[#2384]: https://github.com/planetarium/libplanet/pull/2384
 [`System.Text.Json.JsonSerializer`]: https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializer
 [custom converters]: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to
 [@planetarium/tx]: https://www.npmjs.com/package/@planetarium/tx
