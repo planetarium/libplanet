@@ -30,12 +30,14 @@ namespace Libplanet.Tests.Fixtures
 
         public BigInteger Operand { get; private set; }
 
-        public IValue PlainValue => Bencodex.Types.Dictionary.Empty
-            .Add(
-                "op",
-                Operator is OperatorType op ? new Text(op.ToString()) : (IValue)Null.Value
-            )
-            .Add("operand", Operand);
+        public IValue PlainValue => (Error is null)
+            ? (IValue)Bencodex.Types.Dictionary.Empty
+                .Add(
+                    "op",
+                    Operator is OperatorType op ? new Text(op.ToString()) : (IValue)Null.Value
+                )
+                .Add("operand", Operand)
+            : (Text)Error;
 
         public static Arithmetic Add(BigInteger operand) =>
             new Arithmetic(OperatorType.Add, operand);
@@ -54,6 +56,12 @@ namespace Libplanet.Tests.Fixtures
 
         public void LoadPlainValue(IValue plainValue)
         {
+            if (plainValue is Text t)
+            {
+                Error = t;
+                return;
+            }
+
             if (!(plainValue is Dictionary d))
             {
                 Error =
