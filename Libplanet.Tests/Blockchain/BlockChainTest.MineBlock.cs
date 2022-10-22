@@ -656,7 +656,6 @@ namespace Libplanet.Tests.Blockchain
         public async Task IgnoreLowerNonceTxsAndMine()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
             var txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))

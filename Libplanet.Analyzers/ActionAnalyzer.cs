@@ -224,8 +224,5 @@ namespace Libplanet.Analyzers
                 }
             }
         }
-
-        private static Diagnostic Debug(string message) =>
-            Diagnostic.Create(Rules[$"{IdPrefix}9999"], null, message);
     }
 }

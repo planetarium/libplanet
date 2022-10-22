@@ -1995,34 +1995,36 @@ namespace Libplanet.Tests.Blockchain
             var stagePolicy = new VolatileStagePolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock();
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock();
+            var existingGenesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
+            var newGenesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
 
-            var blockChain = new BlockChain<DumbAction>(
+            // FIXME we should consider about relationship between chainId and store.
+            new BlockChain<DumbAction>(
                 policy,
                 stagePolicy,
                 store,
                 stateStore,
-                genesisBlockA
+                existingGenesisBlock
             );
 
-            Assert.Throws<InvalidGenesisBlockException>(() =>
-            {
-                var blockchain = new BlockChain<DumbAction>(
-                    policy,
-                    stagePolicy,
-                    store,
-                    stateStore,
-                    genesisBlockB
-                );
-            });
+            // newGenesis block will be rejected due to existing chain with existingGenesisBlock."
+            Assert.Throws<InvalidGenesisBlockException>(
+                () =>
+                {
+                     new BlockChain<DumbAction>(
+                        policy,
+                        stagePolicy,
+                        store,
+                        stateStore,
+                        newGenesisBlock
+                    );
+                });
         }
 
         [Fact]
         private async Task FilterLowerNonceTxAfterStaging()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.ToAddress();
             var txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
@@ -2086,7 +2088,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 try
                 {
-                    var chain = new BlockChain<DumbAction>(
+                    new BlockChain<DumbAction>(
                         policy,
                         new VolatileStagePolicy<DumbAction>(),
                         store,

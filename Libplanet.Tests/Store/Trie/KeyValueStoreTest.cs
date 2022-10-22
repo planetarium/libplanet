@@ -67,7 +67,9 @@ namespace Libplanet.Tests.Store.Trie
         public void SetMany()
         {
             var values = new Dictionary<KeyBytes, byte[]>();
-            foreach (int i in Enumerable.Range(0, 10))
+#pragma warning disable SA1312
+            foreach (var _ in Enumerable.Range(0, 10))
+#pragma warning restore SA1312
             {
                 values[new KeyBytes(Random.NextBytes(PreStoredDataKeySize))] =
                     Random.NextBytes(PreStoredDataValueSize);

@@ -96,10 +96,6 @@ namespace Libplanet.Tests.Store
 
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var stateRootHashes = new Dictionary<BlockHash, HashDigest<SHA256>>();
-            Func<BlockHash?, HashDigest<SHA256>?> rootHashGetter = bh =>
-                bh is BlockHash h && stateRootHashes.TryGetValue(h, out HashDigest<SHA256> rh)
-                    ? rh
-                    : (HashDigest<SHA256>?)null;
             Miner = TestUtils.GenesisMiner;
             GenesisBlock = TestUtils.MineGenesis<DumbAction>(
                 Miner.PublicKey

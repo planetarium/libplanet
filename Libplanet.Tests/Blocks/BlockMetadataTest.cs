@@ -350,15 +350,6 @@ namespace Libplanet.Tests.Blocks
         {
             using (CancellationTokenSource source = new CancellationTokenSource())
             {
-                BlockMetadata metadata = new BlockMetadata(
-                    index: Block1Metadata.Index,
-                    timestamp: DateTimeOffset.UtcNow,
-                    publicKey: Block1Metadata.PublicKey,
-                    difficulty: long.MaxValue,
-                    totalDifficulty: Block1Metadata.TotalDifficulty + long.MaxValue,
-                    previousHash: Block1Metadata.PreviousHash,
-                    txHash: Block1Metadata.TxHash);
-
                 Exception exception = null;
                 Task task = Task.Run(() =>
                 {

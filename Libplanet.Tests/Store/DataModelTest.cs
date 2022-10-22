@@ -276,14 +276,12 @@ namespace Libplanet.Tests.Store
         public void DecodeFromBadIValues()
         {
             System.Random random = new System.Random();
-            bool randBool = random.NextDouble() < 0.5;
             int randInt = random.Next();
             string randStr = Guid.NewGuid().ToString();
             byte[] buffer = new byte[10];
             random.NextBytes(buffer);
             ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
             Guid randGuid = Guid.NewGuid();
-            Address randAddress = new PrivateKey().ToAddress();
 
             BTypes.Dictionary encoded;
 
@@ -404,7 +402,6 @@ namespace Libplanet.Tests.Store
             System.Random random = new System.Random();
             bool randBool = random.NextDouble() < 0.5;
             int randInt = random.Next();
-            string randStr = Guid.NewGuid().ToString();
             byte[] buffer = new byte[10];
             random.NextBytes(buffer);
             ImmutableArray<byte> randBytes = buffer.ToImmutableArray();
@@ -986,22 +983,6 @@ namespace Libplanet.Tests.Store
             }
 
             public int Value { get; private set; }
-        }
-
-        private class BytesWrapper : DataModel
-        {
-            public BytesWrapper(ImmutableArray<byte> value)
-                : base()
-            {
-                Value = value;
-            }
-
-            public BytesWrapper(BTypes.Dictionary encoded)
-                : base(encoded)
-            {
-            }
-
-            public ImmutableArray<byte> Value { get; private set; }
         }
 
         private class GuidWrapper : DataModel

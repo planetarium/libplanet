@@ -692,7 +692,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
 
             var key = new PrivateKey();
 
-            var tx1 = chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#1") });
+            chain.MakeTransaction(key, new[] { new DumbAction(fx.Address2, "#1") });
             await chain.MineBlock(key);
 
             Assert.Null(delayedRenderer.Tip);
