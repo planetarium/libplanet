@@ -1286,7 +1286,9 @@ namespace Libplanet.Tests.Blockchain
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
+
+            // Assert there is no exception thrown even state on `chain[6]` does not exist.
+            chain.GetState(
                 addresses[4],
                 chain[6].Hash,
                 StateCompleters<DumbAction>.Recalculate);
@@ -1304,10 +1306,6 @@ namespace Libplanet.Tests.Blockchain
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
-                addresses[4],
-                chain[6].Hash,
-                StateCompleters<DumbAction>.ComplementAll);
             Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
             Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
@@ -1322,10 +1320,6 @@ namespace Libplanet.Tests.Blockchain
             IStateStore stateStore = chain.StateStore;
 
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
-            IValue value = chain.GetState(
-                addresses[4],
-                chain[6].Hash,
-                StateCompleters<DumbAction>.ComplementLatest);
             Assert.False(stateStore.ContainsStateRoot(chain[2].StateRootHash));
             Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
