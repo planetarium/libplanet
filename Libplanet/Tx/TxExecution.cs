@@ -18,10 +18,12 @@ namespace Libplanet.Tx
     {
         protected static readonly Codec Codec = new Codec();
 
+        #pragma warning disable 0169, 0414
         protected TxExecution(SerializationInfo info, StreamingContext context)
             : this(info.GetValue<BlockHash>(nameof(BlockHash)), info.GetValue<TxId>(nameof(TxId)))
         {
         }
+        #pragma warning restore 0169, 0414
 
         private protected TxExecution(BlockHash blockHash, TxId txId)
         {

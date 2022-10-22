@@ -266,11 +266,6 @@ namespace Libplanet.Action
                 types = new Dictionary<string, Type>();
                 foreach (Assembly a in Assemblies)
                 {
-                    if (!(a is { } asm))
-                    {
-                        continue;
-                    }
-
                     foreach (Type t in a.GetTypes())
                     {
                         if (!(baseType.IsAssignableFrom(t) &&

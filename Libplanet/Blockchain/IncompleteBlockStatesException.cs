@@ -33,6 +33,6 @@ namespace Libplanet.Blockchain
         /// The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
         /// a <see cref="BlockChain{T}"/> lacks the states.
         /// </summary>
-        public BlockHash BlockHash { get; }
+        public BlockHash BlockHash { get; private set; }
     }
 }

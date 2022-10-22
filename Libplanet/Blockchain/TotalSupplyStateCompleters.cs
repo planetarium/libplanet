@@ -51,7 +51,11 @@ namespace Libplanet.Blockchain
         /// </summary>
         public static readonly TotalSupplyStateCompleter<T> Reject =
             (chain, blockHash, currency) =>
-                throw new IncompleteBlockStatesException(blockHash);
+            {
+                var incompleteBlockStatesException = new IncompleteBlockStatesException(blockHash);
+                Console.WriteLine(incompleteBlockStatesException.BlockHash);
+                throw incompleteBlockStatesException;
+            };
 
         internal static Func<BlockChain<T>, BlockHash, IValue> ToRawStateCompleter(
             TotalSupplyStateCompleter<T> stateCompleter,

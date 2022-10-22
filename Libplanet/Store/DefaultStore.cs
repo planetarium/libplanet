@@ -87,7 +87,6 @@ namespace Libplanet.Store
     public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
-        private const string TxIdBlockIndexPrefix = "txblockindex_";
         private const string TxNonceIdPrefix = "nonce_";
         private const string StatesKvPathDefault = "states";
 

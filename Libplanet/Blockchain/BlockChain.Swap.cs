@@ -62,7 +62,11 @@ namespace Libplanet.Blockchain
                     const string msg =
                         "A chain cannot be reorged into a heterogeneous chain with a " +
                         "different genesis.";
-                    throw new InvalidGenesisBlockException(msg, Genesis.Hash, other.Genesis.Hash);
+                    var invalidGenesisBlockException = new InvalidGenesisBlockException(
+                        msg, Genesis.Hash, other.Genesis.Hash);
+                    Console.WriteLine(invalidGenesisBlockException.NetworkExpected);
+                    Console.WriteLine(invalidGenesisBlockException.Stored);
+                    throw invalidGenesisBlockException;
                 }
 
                 _logger.Debug(
@@ -77,9 +81,6 @@ namespace Libplanet.Blockchain
                     GetRewindPath(this, branchpoint.Hash);
                 ImmutableList<Block<T>> fastForwardPath =
                     GetFastForwardPath(other, branchpoint.Hash);
-
-                // If there is no rewind, it is not considered as a reorg.
-                bool reorg = rewindPath.Count > 0;
 
                 _rwlock.EnterWriteLock();
                 try

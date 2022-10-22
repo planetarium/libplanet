@@ -299,17 +299,6 @@ namespace Libplanet.Blockchain
 
                 if (storedNonces[tx.Signer] <= tx.Nonce && tx.Nonce == nextNonces[tx.Signer])
                 {
-                    if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
-                    {
-                        _logger.Debug(
-                            "Ignoring tx {Iter}/{Total} {TxId} as it does not follow policy.",
-                            i,
-                            stagedTransactions.Count,
-                            tx.Id);
-                        StagePolicy.Ignore(this, tx.Id);
-                        continue;
-                    }
-
                     List txAddedEncoding = estimatedEncoding.Add(
                         BlockMarshaler.MarshalTransaction(tx));
                     if (txAddedEncoding.EncodingLength > maxTransactionsBytes)

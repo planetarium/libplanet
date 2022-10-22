@@ -29,8 +29,6 @@ namespace Libplanet.Tx
     public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITxExcerpt
         where T : IAction, new()
     {
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         // If a tx is longer than 50 KiB don't cache its bytes representation to _bytes.
         private const int BytesCacheThreshold = 50 * 1024;
 
@@ -102,9 +100,6 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
         /// of this transaction.  This goes to the
         /// <see cref="Transaction{T}.Nonce"/> property.</param>
-        /// <param name="signer">Ignored.  Left only for backward compatibility.  It will be
-        /// completely gone in the future.  See also <paramref name="publicKey"/> parameter's
-        /// description.</param>
         /// <param name="publicKey">A <see cref="PublicKey"/> used for signing this transaction.
         /// This cannot be <see langword="null"/>.  This goes to the <see cref="PublicKey"/>
         /// property, and <see cref="Signer"/> property is also derived from this value.</param>
@@ -134,7 +129,6 @@ namespace Libplanet.Tx
         [Obsolete("Use constructors taking ITxMetadata or static factory methods instead.")]
         public Transaction(
             long nonce,
-            Address signer,
             PublicKey publicKey,
             BlockHash? genesisHash,
             IImmutableSet<Address> updatedAddresses,
@@ -235,12 +229,6 @@ namespace Libplanet.Tx
                 var sig = new byte[_signature.Length];
                 Array.Copy(_signature, sig, _signature.Length);
                 return sig;
-            }
-
-            private set
-            {
-                _signature = new byte[value.Length];
-                Array.Copy(value, _signature, value.Length);
             }
         }
 
@@ -366,10 +354,6 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(long, Address, PublicKey, BlockHash?,
-        /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
-        /// constructor, it automatically fills the following values from:
         /// <list type="table">
         /// <listheader>
         /// <term>Property</term>
@@ -521,7 +505,6 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(long, Address, PublicKey, BlockHash?,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
         /// constructor, it automatically fills the following values from:
         /// <list type="table">
