@@ -1304,8 +1304,11 @@ namespace Libplanet.Tests.Blockchain
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
             IStateStore stateStore = chain.StateStore;
-
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
+            chain.GetState(
+                addresses[4],
+                chain[6].Hash,
+                StateCompleters<DumbAction>.ComplementAll);
             Assert.True(stateStore.ContainsStateRoot(chain[2].StateRootHash));
             Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
@@ -1318,8 +1321,11 @@ namespace Libplanet.Tests.Blockchain
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
             IStateStore stateStore = chain.StateStore;
-
             Assert.False(stateStore.ContainsStateRoot(chain[6].StateRootHash));
+            chain.GetState(
+                addresses[4],
+                chain[6].Hash,
+                StateCompleters<DumbAction>.ComplementLatest);
             Assert.False(stateStore.ContainsStateRoot(chain[2].StateRootHash));
             Assert.True(stateStore.ContainsStateRoot(chain[6].StateRootHash));
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));

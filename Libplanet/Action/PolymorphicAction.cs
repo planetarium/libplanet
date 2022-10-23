@@ -266,6 +266,13 @@ namespace Libplanet.Action
                 types = new Dictionary<string, Type>();
                 foreach (Assembly a in Assemblies)
                 {
+#pragma warning disable SA1312
+                    if (!(a is { } asm))
+#pragma warning restore SA1312
+                    {
+                        continue;
+                    }
+
                     foreach (Type t in a.GetTypes())
                     {
                         if (!(baseType.IsAssignableFrom(t) &&
