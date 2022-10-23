@@ -94,8 +94,9 @@ namespace Libplanet.Tests.Store
             Assert.True(_set.Remove(_fx.Block1.Hash));
             Assert.Throws<KeyNotFoundException>(() =>
             {
-                var val = _set[_fx.Block1.Hash];
-                Console.Write(val);
+#pragma warning disable SA1312
+                var _ = _set[_fx.Block1.Hash];
+#pragma warning restore SA1312
             });
         }
 

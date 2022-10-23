@@ -21,11 +21,13 @@ namespace Libplanet.Blocks
         /// <param name="networkExpected">The genesis block that the network expects.</param>
         /// <param name="stored">The genesis block that a local <see cref="IStore"/> contains.
         /// </param>
+#pragma warning disable SA1312
         public InvalidGenesisBlockException(
             string message,
             BlockHash networkExpected,
             BlockHash stored
         )
+#pragma warning restore SA1312
             : base(message)
         {
             NetworkExpected = networkExpected;
