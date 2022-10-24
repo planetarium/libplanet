@@ -56,7 +56,7 @@ namespace Libplanet.Blocks
         /// <param name="blockHash">A <see cref="byte"/> array that encodes
         /// a <see cref="BlockHash"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="blockHash"/> is <c>null</c>.</exception>
+        /// <paramref name="blockHash"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="blockHash"/>'s <see cref="ImmutableArray{T}.Length"/> is not 32.
         /// </exception>
@@ -88,7 +88,7 @@ namespace Libplanet.Blocks
         /// <param name="hex">A hexadecimal representation of a <see cref="BlockHash"/>.</param>
         /// <returns>A corresponding <see cref="BlockHash"/> value.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/> is
-        /// <c>null</c>.</exception>
+        /// <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
         /// <paramref name="hex"/> string is an odd number.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string

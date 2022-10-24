@@ -33,9 +33,9 @@ namespace Libplanet.Crypto
         /// <param name="signature">A signature that was created from the
         /// <paramref name="messageHash"/>.</param>
         /// <param name="publicKey"><see cref="PublicKey"/> used for verification.</param>
-        /// <returns><c>true</c> if the <paramref name="signature"/> was created
+        /// <returns><see langword="true"/> if the <paramref name="signature"/> was created
         /// from the <paramref name="messageHash"/> with the corresponding
-        /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
+        /// <see cref="PrivateKey"/>. Otherwise <see langword="false"/>.</returns>
         /// <exception cref="Exception">If any exception is thrown, the given
         /// <paramref name="signature"/> is considered as invalid.</exception>
         bool Verify(

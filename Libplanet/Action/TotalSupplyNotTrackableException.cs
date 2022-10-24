@@ -8,7 +8,7 @@ namespace Libplanet.Action
     /// <summary>
     /// The exception thrown when <see cref="IAccountStateView.GetTotalSupply"/> was called on a
     /// legacy untracked currency with <see cref="Assets.Currency.TotalSupplyTrackable"/> set to
-    /// <c>false</c>.
+    /// <see langword="false"/>.
     /// </summary>
     /// <seealso cref="IAccountStateView.GetTotalSupply"/>
     [Serializable]

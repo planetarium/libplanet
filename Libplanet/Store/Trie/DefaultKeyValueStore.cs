@@ -25,7 +25,7 @@ namespace Libplanet.Store.Trie
     /// <list type="table">
     /// <item>
     /// <term><c>journal</c></term>
-    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>journal</c>
     /// parameter.</description>
     /// </item>
@@ -46,13 +46,13 @@ namespace Libplanet.Store.Trie
     /// </item>
     /// <item>
     /// <term><c>flush</c></term>
-    /// <description><c>true</c> (default) or <c>false</c>.  Corresponds to
+    /// <description><see langword="true"/> (default) or <see langword="false"/>.  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>flush</c>
     /// parameter.</description>
     /// </item>
     /// <item>
     /// <term><c>readonly</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="DefaultStore(string, bool, int, int, int, bool, bool)"/>'s <c>readOnly</c>
     /// parameter.</description>
     /// </item>
@@ -63,7 +63,7 @@ namespace Libplanet.Store.Trie
     /// </item>
     /// <item>
     /// <term><c>secure</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="TrieStateStore(IKeyValueStore, bool)"/>'s <c>secure</c> parameter.</description>
     /// </item>
     /// </list>
@@ -76,7 +76,7 @@ namespace Libplanet.Store.Trie
         /// Creates a new <see cref="DefaultKeyValueStore"/>.
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
-        /// If the path is <c>null</c>, the database is created in memory.</param>
+        /// If the path is <see langword="null"/>, the database is created in memory.</param>
         public DefaultKeyValueStore(string? path)
         {
             if (path is null)

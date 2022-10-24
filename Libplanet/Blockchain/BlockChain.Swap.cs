@@ -276,7 +276,7 @@ namespace Libplanet.Blockchain
         /// Render actions of the given <paramref name="block"/>.
         /// </summary>
         /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
-        /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
+        /// <see langword="null"/>, evaluate actions of the <paramref name="block"/> again.</param>
         /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.</param>
@@ -456,7 +456,7 @@ namespace Libplanet.Blockchain
         /// <returns>
         /// The top most common <see cref="Block{T}"/> between chains <paramref name="c1"/>
         /// and <paramref name="c2"/>. If there is no such <see cref="Block{T}"/>,
-        /// returns <c>null</c> instead.
+        /// returns <see langword="null"/> instead.
         /// </returns>
         private static Block<T> FindTopCommon(BlockChain<T> c1, BlockChain<T> c2)
         {

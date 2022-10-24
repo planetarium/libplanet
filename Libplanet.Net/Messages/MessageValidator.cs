@@ -58,13 +58,13 @@ namespace Libplanet.Net.Messages
         /// from <see cref="Apv"/>, depends on this value:
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <c>null</c>, the <see cref="AppProtocolVersion"/> in question is trusted
-        ///         regardless of its signer.
+        ///         If <see langword="null"/>, the <see cref="AppProtocolVersion"/> in question
+        ///         is trusted regardless of its signer.
         ///     </description></item>
         ///     <item><description>
-        ///         If not <c>null</c>, an <see cref="AppProtocolVersion"/> is trusted if it is
-        ///         signed by one of the signers in the set.  In particular, if the set is empty,
-        ///         no <see cref="AppProtocolVersion"/> is trusted.
+        ///         If not <see langword="null"/>, an <see cref="AppProtocolVersion"/> is trusted
+        ///         if it is signed by one of the signers in the set.  In particular, if the set
+        ///         is empty, no <see cref="AppProtocolVersion"/> is trusted.
         ///     </description></item>
         /// </list>
         /// </para>
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Messages
         /// by a <em>trusted</em> signer that is different from <see cref="Apv"/> is encountered.
         /// </summary>
         /// <remarks>
-        /// If <c>null</c>, no action is taken.
+        /// If <see langword="null"/>, no action is taken.
         /// </remarks>
         public DifferentAppProtocolVersionEncountered? DifferentApvEncountered { get; }
 
@@ -88,11 +88,11 @@ namespace Libplanet.Net.Messages
         /// Whether a decoded <see cref="Message"/> is valid or not depends on this value:
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <c>null</c>, there is no restriction on <see cref="Message.Timestamp"/>
-        ///         for received <see cref="Message"/>s.
+        ///         If <see langword="null"/>, there is no restriction
+        ///         on <see cref="Message.Timestamp"/> for received <see cref="Message"/>s.
         ///     </description></item>
         ///     <item><description>
-        ///         If not <c>null</c>, the absolute difference between the timestamp of
+        ///         If not <see langword="null"/>, the absolute difference between the timestamp of
         ///         a received <see cref="Message"/> and current time should be less than
         ///         this value.
         ///     </description></item>
@@ -113,7 +113,7 @@ namespace Libplanet.Net.Messages
         /// is signed by a trusted signer, then <see cref="DifferentApvEncountered"/> is called.
         /// </remarks>
         /// <exception cref="NullReferenceException">Thrown when <see cref="Message.Remote"/> is
-        /// <c>null</c> for <paramref name="message"/>.</exception>
+        /// <see langword="null"/> for <paramref name="message"/>.</exception>
         /// <exception cref="DifferentAppProtocolVersionException">Thrown when
         /// local version does not match with given <paramref name="message"/>'s
         /// <see cref="Message.Version"/>.</exception>

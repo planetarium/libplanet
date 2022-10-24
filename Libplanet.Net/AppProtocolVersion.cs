@@ -119,7 +119,7 @@ namespace Libplanet.Net
         /// <param name="extra">Extra data to claim.</param>
         /// <returns>A signed version claim.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="signer"/> is
-        /// <c>null</c>.</exception>
+        /// <see langword="null"/>.</exception>
         public static AppProtocolVersion Sign(PrivateKey signer, int version, IValue extra = null)
         {
             if (signer is null)
@@ -140,7 +140,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="token">A <see cref="Token"/> string.</param>
         /// <returns>A deserialized <see cref="AppProtocolVersion"/> object.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> is passed to
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
         /// <paramref name="token"/>.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="token"/>'s
         /// format is invalid.  The detailed reason is in the message.</exception>
@@ -226,7 +226,7 @@ namespace Libplanet.Net
         /// Verifies whether the claim is certainly signed by the <see cref="Signer"/>.
         /// </summary>
         /// <param name="publicKey">A public key of the <see cref="Signer"/>.</param>
-        /// <returns><c>true</c> if and only if the given <paramref name="publicKey"/> is
+        /// <returns><see langword="true"/> if and only if the given <paramref name="publicKey"/> is
         /// <see cref="Signer"/>'s and the <see cref="Signature"/> is certainly signed by
         /// the <see cref="Signer"/>.</returns>
         [Pure]
