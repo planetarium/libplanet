@@ -14,6 +14,9 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
+    [[#2418]]
+
 ### Behavioral changes
 
 ### Bug fixes
@@ -23,6 +26,7 @@ To be released.
  -  Added builds for Apple Silicon to releases.  [[#2365]]
 
 [#2365]: https://github.com/planetarium/libplanet/pull/2365
+[#2418]: https://github.com/planetarium/libplanet/pull/2418
 
 
 Version 0.43.1
