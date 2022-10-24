@@ -148,7 +148,9 @@ namespace Libplanet.Consensus
         [Pure]
         public override int GetHashCode()
         {
-            return HashCode.Combine(_metadata.GetHashCode(), Signature);
+            return HashCode.Combine(
+                _metadata.GetHashCode(),
+                ByteUtil.CalculateHashCode(Signature.ToArray()));
         }
     }
 }

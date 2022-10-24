@@ -9,7 +9,7 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A abstract base class message for consensus.
     /// </summary>
-    public abstract class ConsensusMsg : Message
+    public abstract class ConsensusMsg : Message, IEquatable<ConsensusMsg>
     {
         protected const byte Nil = 0x00;
 
@@ -39,18 +39,16 @@ namespace Libplanet.Net.Messages
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
         protected ConsensusMsg(byte[][] dataframes)
+#pragma warning disable SA1118 // The parameter spans multiple lines
+            : this(
+                validator: new PublicKey(dataframes[0]),
+                height: BitConverter.ToInt64(dataframes[1], 0),
+                round: BitConverter.ToInt32(dataframes[2], 0),
+                blockHash: (dataframes[3].Length == 1 && dataframes[3][0] == Nil)
+                    ? (BlockHash?)null
+                    : new BlockHash(dataframes[3]))
+#pragma warning restore SA1118
         {
-            Validator = new PublicKey(dataframes[0]);
-            Height = BitConverter.ToInt64(dataframes[1], 0);
-            Round = BitConverter.ToInt32(dataframes[2], 0);
-            if (dataframes[3].Length == 1 && dataframes[3][0] == Nil)
-            {
-                BlockHash = null;
-            }
-            else
-            {
-                BlockHash = new BlockHash(dataframes[3]);
-            }
         }
 
         /// <summary>
@@ -83,5 +81,11 @@ namespace Libplanet.Net.Messages
             BitConverter.GetBytes(Round),
             BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },
         };
+
+        public abstract bool Equals(ConsensusMsg? other);
+
+        public abstract override bool Equals(object? obj);
+
+        public abstract override int GetHashCode();
     }
 }
