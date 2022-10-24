@@ -229,13 +229,26 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void VoteSet()
         {
+            var proposeSent = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
+
+            Block<DumbAction>? proposedBlock = null;
+            var codec = new Codec();
+
             // FIXME: Pretty lousy testing method.
             var (_, _, context) = TestUtils.CreateDummyContext(
                 startStep: Step.Default,
-                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
+                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1),
+                consensusMessageSent: (sender, msg) =>
+                {
+                    if (msg is ConsensusProposeMsg proposeMsg)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(proposeMsg.Payload));
+                        proposeSent.Set();
+                    }
+                });
 
-            BlockHash? blockHash = null;
-            var stepChangedToPreCommit = new AsyncAutoResetEvent();
             context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreCommit)
@@ -245,10 +258,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             context.Start();
+            await proposeSent.WaitAsync();
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
+                        TestUtils.Peer0Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer0,
                 });
@@ -256,7 +273,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
+                        TestUtils.Peer2Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreVote))
                 {
                     Remote = TestUtils.Peer2,
                 });
@@ -264,7 +284,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
+                        TestUtils.Peer2Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreCommit))
                 {
                     Remote = TestUtils.Peer2,
                 });

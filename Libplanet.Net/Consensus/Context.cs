@@ -233,7 +233,14 @@ namespace Libplanet.Net.Consensus
                 ? new VoteSet(Height, round, b.Hash, _validators)
                 : throw new NullReferenceException(
                     $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
-            _messageLog.GetPreCommits(round).ForEach(commit => voteSet.Add(commit.PreCommit));
+            _messageLog.GetPreCommits(round)
+                .ForEach(commit =>
+                {
+                    if (commit.PreCommit.BlockHash.Equals(block.Hash))
+                    {
+                        voteSet.Add(commit.PreCommit);
+                    }
+                });
             return voteSet;
         }
 
