@@ -24,8 +24,9 @@ namespace Libplanet.Blocks
         /// contents).  This is made by the <see cref="IBlockMetadata.Miner"/>'s
         /// <see cref="PrivateKey"/>.
         /// <para>As the block signature is introduced since the protocol version 2, it is
-        /// <see langword="null"/> for blocks with earlier protocol versions than 2.  Although the property
-        /// is type-wise, the block signature is mandatory since the protocol version 2.</para>
+        /// <see langword="null"/> for blocks with earlier protocol versions than 2.  Although
+        /// the property is type-wise, the block signature is mandatory since the protocol
+        /// version 2.</para>
         /// </summary>
         ImmutableArray<byte>? Signature { get; }
     }

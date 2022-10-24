@@ -60,8 +60,8 @@ namespace Libplanet
         /// </summary>
         /// <param name="left">An instance.</param>
         /// <param name="right">Another instance.</param>
-        /// <returns><see langword="true"/> iff two operands refers to the same <see cref="HashAlgorithm"/>
-        /// class.</returns>
+        /// <returns><see langword="true"/> iff two operands refers to the same
+        /// <see cref="HashAlgorithm"/> class.</returns>
         [Pure]
         public static bool operator ==(HashAlgorithmType left, HashAlgorithmType right) =>
             left is IEquatable<HashAlgorithmType> l && l.Equals(right);
@@ -72,8 +72,8 @@ namespace Libplanet
         /// </summary>
         /// <param name="left">An instance.</param>
         /// <param name="right">Another instance.</param>
-        /// <returns><see langword="false"/> iff two operands refers to the same <see cref="HashAlgorithm"/>
-        /// class.</returns>
+        /// <returns><see langword="false"/> iff two operands refers to the same
+        /// <see cref="HashAlgorithm"/> class.</returns>
         public static bool operator !=(HashAlgorithmType left, HashAlgorithmType right) =>
             !(left == right);
 

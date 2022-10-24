@@ -122,7 +122,8 @@ namespace Libplanet
         /// the timing dependent on the length of the shorter one.</remarks>
         /// <param name="left">A byte array.</param>
         /// <param name="right">Another byte array.</param>
-        /// <returns><see langword="true"/> iff two byte arrays have the exactly same contents.</returns>
+        /// <returns><see langword="true"/> iff two byte arrays have the exactly same contents.
+        /// </returns>
         [Pure]
         public static bool TimingSafelyCompare(IReadOnlyList<byte> left, IReadOnlyList<byte> right)
         {
@@ -141,9 +142,9 @@ namespace Libplanet
         /// </summary>
         /// <param name="hashDigest">A hash digest to test.</param>
         /// <param name="difficulty">The difficulty to compute target number.</param>
-        /// <returns><see langword="true"/> only if a digest is less than the target computed for the given
-        /// <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c> it always
-        /// returns <see langword="true"/>.</returns>
+        /// <returns><see langword="true"/> only if a digest is less than the target computed for
+        /// the given <paramref name="difficulty"/>).  If <paramref name="difficulty"/> is <c>0</c>
+        /// it always returns <see langword="true"/>.</returns>
         [Pure]
         public static bool Satisfies(IReadOnlyList<byte> hashDigest, long difficulty)
         {

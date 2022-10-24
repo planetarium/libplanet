@@ -69,8 +69,8 @@ namespace Libplanet.Crypto
         /// <para>To get an immutable one, use <see cref="ToImmutableArray(bool)"/> method
         /// instead.</para>
         /// </summary>
-        /// <param name="compress">Returns a short length representation if it is <see langword="true"/>.
-        /// This option does not lose any information.</param>
+        /// <param name="compress">Returns a short length representation if it is
+        /// <see langword="true"/>.  This option does not lose any information.</param>
         /// <returns>An encoded mutable <see cref="byte"/> array representation.  It can be
         /// recovered to a <see cref="PublicKey"/> instance again using
         /// <see cref="PublicKey(IReadOnlyList{byte})"/> constructor whether it is compressed
@@ -85,8 +85,8 @@ namespace Libplanet.Crypto
         /// Encodes this public key into a immutable <see cref="byte"/> array representation.
         /// <para>To get an mutable one, use <see cref="Format(bool)"/> method instead.</para>
         /// </summary>
-        /// <param name="compress">Returns a short length representation if it is <see langword="true"/>.
-        /// This option does not lose any information.</param>
+        /// <param name="compress">Returns a short length representation if it is
+        /// <see langword="true"/>.  This option does not lose any information.</param>
         /// <returns>An encoded immutable <see cref="byte"/> array representation.  It can be
         /// recovered to a <see cref="PublicKey"/> instance again using
         /// <see cref="PublicKey(IReadOnlyList{byte})"/> constructor whether it is compressed
@@ -148,8 +148,8 @@ namespace Libplanet.Crypto
         /// <param name="signature">A signature which tries to authenticity of
         /// <paramref name="message"/>.  I.e., a data that <see cref="PrivateKey.Sign(byte[])"/> or
         /// <see cref="PrivateKey.Sign(ImmutableArray{byte})"/> methods returned.</param>
-        /// <returns><see langword="true"/> if the <paramref name="signature"/> proves authenticity of
-        /// the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
+        /// <returns><see langword="true"/> if the <paramref name="signature"/> proves authenticity
+        /// of the <paramref name="message"/> with the corresponding <see cref="PrivateKey"/>.
         /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public bool Verify(IReadOnlyList<byte> message, IReadOnlyList<byte> signature)

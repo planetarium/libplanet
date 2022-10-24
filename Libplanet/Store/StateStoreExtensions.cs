@@ -98,8 +98,8 @@ namespace Libplanet.Store
         /// recorded in it.</param>
         /// <param name="stateRootHash">The hash of the state root to check if it is recorded.
         /// </param>
-        /// <returns><see langword="true"/> if the state root exists in the <paramref name="stateStore"/>;
-        /// otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the state root exists in the
+        /// <paramref name="stateStore"/>; otherwise, <see langword="false"/>.</returns>
         public static bool ContainsStateRoot(
             this IStateStore stateStore,
             HashDigest<SHA256> stateRootHash

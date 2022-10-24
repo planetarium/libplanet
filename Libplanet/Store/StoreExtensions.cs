@@ -58,8 +58,8 @@ namespace Libplanet.Store
         /// <param name="store">The store that blocks are stored.</param>
         /// <param name="blockHash">The hash of the block to get the state root hash of.
         /// If <see langword="null"/> is present, <see langword="null"/> is returned.</param>
-        /// <returns>The state root hash of the block, or <see langword="null"/> if the block is not found or
-        /// <paramref name="blockHash"/> is <see langword="null"/>.</returns>
+        /// <returns>The state root hash of the block, or <see langword="null"/> if the block is
+        /// not found or <paramref name="blockHash"/> is <see langword="null"/>.</returns>
         public static HashDigest<SHA256>? GetStateRootHash(
             this IStore store,
             BlockHash? blockHash

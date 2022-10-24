@@ -87,8 +87,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// The <see cref="PeerState"/> updated most recently. <see langword="null"/> if the dictionary
-        /// is empty.
+        /// The <see cref="PeerState"/> updated most recently. <see langword="null"/>
+        /// if the dictionary is empty.
         /// </summary>
         public PeerState? Head
         {
@@ -104,8 +104,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// The <see cref="PeerState"/> updated least recently. <see langword="null"/> if the dictionary
-        /// is empty.
+        /// The <see cref="PeerState"/> updated least recently. <see langword="null"/>
+        /// if the dictionary is empty.
         /// </summary>
         public PeerState? Tail
         {
@@ -158,8 +158,8 @@ namespace Libplanet.Net.Protocols
         /// as a key.
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to check.</param>
-        /// <returns><see langword="true"/> if the <paramref name="peer"/>'s <see cref="Address"/> exists,
-        /// <see langword="false"/> otherwise.</returns>
+        /// <returns><see langword="true"/> if the <paramref name="peer"/>'s
+        /// <see cref="Address"/> exists, <see langword="false"/> otherwise.</returns>
         public bool Contains(BoundPeer peer)
         {
             return Contains(peer.Address);
@@ -221,9 +221,9 @@ namespace Libplanet.Net.Protocols
         ///         a key/value pair.
         ///     </description></item>
         ///     <item><description>
-        ///         Else, if the dictionary is full and replace option is set to <see langword="true"/>,
-        ///         replace the oldest <see cref="PeerState"/>, i.e. <see cref="Tail"/>,
-        ///         with <paramref name="peerState"/>.
+        ///         Else, if the dictionary is full and replace option is set to
+        ///         <see langword="true"/>, replace the oldest <see cref="PeerState"/>, i.e.
+        ///         <see cref="Tail"/>, with <paramref name="peerState"/>.
         ///     </description></item>
         ///     <item><description>
         ///         Else, ignore.

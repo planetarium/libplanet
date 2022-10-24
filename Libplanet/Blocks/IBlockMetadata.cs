@@ -62,8 +62,8 @@ namespace Libplanet.Blocks
         BlockHash? PreviousHash { get; }
 
         /// <summary>
-        /// The hash of all transactions in the block.  This is <see langword="null"/> if the block has no
-        /// transactions.
+        /// The hash of all transactions in the block.  This is <see langword="null"/> if the block
+        /// has no transactions.
         /// </summary>
         HashDigest<SHA256>? TxHash { get; }
     }

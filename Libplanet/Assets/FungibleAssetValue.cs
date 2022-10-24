@@ -272,7 +272,8 @@ namespace Libplanet.Assets
         /// <param name="other">The right operand to compare.</param>
         /// <returns><see langword="true"/>
         /// if the left operand (<paramref name="obj"/>) is less than or equal
-        /// to the right operand (<paramref name="other"/>).  Otherwise <see langword="false"/>.</returns>
+        /// to the right operand (<paramref name="other"/>).  Otherwise <see langword="false"/>.
+        /// </returns>
         [Pure]
         public static bool operator <=(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.CompareTo(other) <= 0;

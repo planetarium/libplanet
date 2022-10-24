@@ -22,9 +22,10 @@ namespace Libplanet.Blockchain
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
         /// </para>
         /// <para>
-        /// All unprovided and/or <see langword="null"/> arguments are reassigned accordingly and redirected
-        /// to a overloaded method with non-nullable parameters.  By default, a policy adhering
-        /// block is produced with current timestamp and appended immediately to the chain.
+        /// All unprovided and/or <see langword="null"/> arguments are reassigned accordingly
+        /// and redirected to a overloaded method with non-nullable parameters.  By default,
+        /// a policy adhering block is produced with current timestamp and appended immediately
+        /// to the chain.
         /// </para>
         /// </summary>
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>

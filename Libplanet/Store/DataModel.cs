@@ -61,12 +61,12 @@ namespace Libplanet.Store
     ///         and <c><![CDATA[ImmutableList<int?>]]></c>are not allowed.
     ///     </description></item>
     ///     <item><description>
-    ///         Reference types are not allowed to be assigned <see langword="null"/>.  This will result
-    ///         in an <see cref="Exception"/> when <see cref="Encode"/> is called.
+    ///         Reference types are not allowed to be assigned <see langword="null"/>.  This will
+    ///         result in an <see cref="Exception"/> when <see cref="Encode"/> is called.
     ///     </description></item>
     ///     <item><description>
-    ///         Trying to assign <see langword="null"/> to any property or to a part of a collection will
-    ///         result in an <see cref="Exception"/> when
+    ///         Trying to assign <see langword="null"/> to any property or to a part of
+    ///         a collection will result in an <see cref="Exception"/> when
     ///         <see cref="DataModel(BTypes.Dictionary)"/> is called.
     ///     </description></item>
     /// </list>
@@ -183,12 +183,13 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="encoded">The <see cref="BTypes.Dictionary"/> instance to decode.</param>
         /// <returns>A decoded instance from <paramref name="encoded"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown when <see langword="null"/> value is encountered
-        /// while decoding.</exception>
+        /// <exception cref="NotSupportedException">Thrown when <see langword="null"/> value is
+        /// encountered while decoding.</exception>
         /// <exception cref="ArgumentException">Thrown when invalid encoded type is encountered.
         /// </exception>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="encoded"/> is
-        /// <see langword="null"/> or <see langword="null"/> reference is returned by inner instantiation.</exception>
+        /// <see langword="null"/> or <see langword="null"/> reference is returned by inner
+        /// instantiation.</exception>
         protected DataModel(BTypes.Dictionary encoded)
         {
             if (encoded is BTypes.Dictionary e)

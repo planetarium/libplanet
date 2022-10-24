@@ -35,9 +35,8 @@ namespace Libplanet.Net.Protocols
         /// to be the reference point.</param>
         /// <param name="findConcurrency">The number of concurrency in peer discovery.</param>
         /// <param name="requestTimeout">
-        /// A timeout of waiting for the reply of messages.
-        /// If it's omitted or <see langword="null"/> is given, will automatically be set to 5 seconds.
-        /// </param>
+        /// A timeout of waiting for the reply of messages.  If it's omitted
+        /// or <see langword="null"/> is given, will automatically be set to 5 seconds.</param>
         public KademliaProtocol(
             RoutingTable table,
             ITransport transport,

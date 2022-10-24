@@ -138,8 +138,8 @@ namespace Libplanet.Store
         /// It provides only limited information, but can be called without any type parameter
         /// unlike <see cref="GetBlock{T}"/>.
         /// </remarks>
-        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <see langword="null"/> if no block having
-        /// such <paramref name="blockHash"/> is stored.</returns>
+        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <see langword="null"/> if
+        /// no block having such <paramref name="blockHash"/> is stored.</returns>
         long? GetBlockIndex(BlockHash blockHash);
 
         /// <summary>
@@ -147,8 +147,8 @@ namespace Libplanet.Store
         /// <paramref name="blockHash"/>.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
-        /// <returns>A found <see cref="BlockDigest"/>, or <see langword="null"/> if no block having such
-        /// <paramref name="blockHash"/> is stored.</returns>
+        /// <returns>A found <see cref="BlockDigest"/>, or <see langword="null"/> if no block
+        /// having such <paramref name="blockHash"/> is stored.</returns>
         BlockDigest? GetBlockDigest(BlockHash blockHash);
 
         /// <summary>
@@ -166,7 +166,8 @@ namespace Libplanet.Store
         /// Removes a block from the store.
         /// </summary>
         /// <param name="blockHash">The hash of a block to remove.</param>
-        /// <returns><see langword="false"/> if such block does not exist. Otherwise <see langword="true"/>.</returns>
+        /// <returns><see langword="false"/> if such block does not exist. Otherwise
+        /// <see langword="true"/>.</returns>
         bool DeleteBlock(BlockHash blockHash);
 
         /// <summary>
@@ -234,7 +235,8 @@ namespace Libplanet.Store
         /// Retrieves the <see cref="BlockHash"/> indexed by the <paramref name="txId"/>.
         /// </summary>
         /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>.</param>
-        /// <returns><see cref="BlockHash"/> if the index exists. Otherwise <see langword="null"/>.</returns>
+        /// <returns><see cref="BlockHash"/> if the index exists. Otherwise
+        /// <see langword="null"/>.</returns>
         BlockHash? GetFirstTxIdBlockHashIndex(TxId txId);
 
         /// <summary>
@@ -264,7 +266,8 @@ namespace Libplanet.Store
         /// Queries the perceived time of a block, if it has been recorded.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.</param>
-        /// <returns>The perceived time of a block, if it exists.  Otherwise, <see langword="null"/>.</returns>
+        /// <returns>The perceived time of a block, if it exists.  Otherwise,
+        /// <see langword="null"/>.</returns>
         DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash);
 
         /// <summary>

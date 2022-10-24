@@ -81,8 +81,9 @@ namespace Libplanet.Net.Transports
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.  If this callback
-        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
+        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
+        /// are ignored.
         /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from
@@ -215,8 +216,9 @@ namespace Libplanet.Net.Transports
         /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
         /// with one different from <paramref name="appProtocolVersion"/>, and their version is
         /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
-        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.  If this callback
-        /// is omitted, all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// If this callback returns <see langword="false"/>, an encountered peer is ignored.
+        /// If this callback is omitted, all peers with different <see cref="AppProtocolVersion"/>s
+        /// are ignored.
         /// </param>
         /// <param name="messageTimestampBuffer">The amount in <see cref="TimeSpan"/>
         /// that is allowed for the timestamp of a <see cref="Message"/> to differ from

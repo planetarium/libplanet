@@ -58,13 +58,13 @@ namespace Libplanet.Net.Messages
         /// from <see cref="Apv"/>, depends on this value:
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <see langword="null"/>, the <see cref="AppProtocolVersion"/> in question is trusted
-        ///         regardless of its signer.
+        ///         If <see langword="null"/>, the <see cref="AppProtocolVersion"/> in question
+        ///         is trusted regardless of its signer.
         ///     </description></item>
         ///     <item><description>
-        ///         If not <see langword="null"/>, an <see cref="AppProtocolVersion"/> is trusted if it is
-        ///         signed by one of the signers in the set.  In particular, if the set is empty,
-        ///         no <see cref="AppProtocolVersion"/> is trusted.
+        ///         If not <see langword="null"/>, an <see cref="AppProtocolVersion"/> is trusted
+        ///         if it is signed by one of the signers in the set.  In particular, if the set
+        ///         is empty, no <see cref="AppProtocolVersion"/> is trusted.
         ///     </description></item>
         /// </list>
         /// </para>
@@ -88,8 +88,8 @@ namespace Libplanet.Net.Messages
         /// Whether a decoded <see cref="Message"/> is valid or not depends on this value:
         /// <list type="bullet">
         ///     <item><description>
-        ///         If <see langword="null"/>, there is no restriction on <see cref="Message.Timestamp"/>
-        ///         for received <see cref="Message"/>s.
+        ///         If <see langword="null"/>, there is no restriction
+        ///         on <see cref="Message.Timestamp"/> for received <see cref="Message"/>s.
         ///     </description></item>
         ///     <item><description>
         ///         If not <see langword="null"/>, the absolute difference between the timestamp of

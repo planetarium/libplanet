@@ -46,9 +46,9 @@ namespace Libplanet.Net.Transports
         /// Whether this <see cref="ITransport"/> instance is running.
         /// </para>
         /// <para>
-        /// When the value is <see langword="true"/>, the <see cref="ITransport"/> can recieve outside
-        /// requests.  When the value is <see langword="false"/>, the <see cref="ITransport"/> stops recieving
-        /// outside requests.
+        /// When the value is <see langword="true"/>, the <see cref="ITransport"/> can recieve
+        /// outside requests.  When the value is <see langword="false"/>,
+        /// the <see cref="ITransport"/> stops recieving outside requests.
         /// </para>
         /// </summary>
         /// <value>The value indicating whether the instance is running.</value>

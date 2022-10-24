@@ -86,8 +86,8 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="peer">The <see cref="BoundPeer"/> to remove.</param>
         /// <returns>
-        /// <see langword="true"/> if <paramref name="peer"/> was removed, <see langword="false"/> otherwise.
-        /// </returns>
+        /// <see langword="true"/> if <paramref name="peer"/> was removed,
+        /// <see langword="false"/> otherwise.</returns>
         public bool RemovePeer(BoundPeer peer)
         {
             if (_peerStates.Remove(peer.Address))

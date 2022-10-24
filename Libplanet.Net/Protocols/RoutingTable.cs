@@ -167,8 +167,8 @@ namespace Libplanet.Net.Protocols
 
         /// <summary>
         /// Returns at most 2 * <paramref name="k"/> (2 * <paramref name="k"/> + 1 if
-        /// <paramref name="includeTarget"/> is <see langword="true"/>) nearest peers to given parameter peer
-        /// from routing table. Return value is sorted with respect to target.
+        /// <paramref name="includeTarget"/> is <see langword="true"/>) nearest peers to given
+        /// parameter peer from routing table. Return value is sorted with respect to target.
         /// <seealso cref="Kademlia.SortByDistance(IEnumerable{BoundPeer}, Address)"/>
         /// </summary>
         /// <param name="target"><see cref="Address"/> to look up.</param>

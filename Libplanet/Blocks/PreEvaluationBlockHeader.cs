@@ -138,8 +138,8 @@ namespace Libplanet.Blocks
         /// the resulting states after evaluating transactions and
         /// a <see cref="Blockchain.Policies.IBlockPolicy{T}.BlockAction"/> (if exists).</param>
         /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
-        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/> for
-        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/>
+        /// for blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <returns>The serialized block header in a Bencodex dictionary.</returns>
         public Bencodex.Types.Dictionary MakeCandidateData(
             HashDigest<SHA256> stateRootHash,
@@ -201,11 +201,12 @@ namespace Libplanet.Blocks
         /// content and the specified <paramref name="stateRootHash"/>.
         /// </summary>
         /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
-        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/> for
-        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/>
+        /// for blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <param name="stateRootHash">The state root hash included in the original message
         /// of the signature.</param>
-        /// <returns><see langword="true"/> if the signature is valid.  <see langword="false"/> otherwise.</returns>
+        /// <returns><see langword="true"/> if the signature is valid.  <see langword="false"/>
+        /// otherwise.</returns>
         public bool VerifySignature(
             ImmutableArray<byte>? signature,
             HashDigest<SHA256> stateRootHash)
@@ -229,8 +230,8 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="stateRootHash">The state root hash.</param>
         /// <param name="signature">The block signature created using <see cref="MakeSignature"/>
-        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/> for
-        /// blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
+        /// method with the <paramref name="stateRootHash"/>.  This must be <see langword="null"/>
+        /// for blocks with earlier <seealso cref="ProtocolVersion"/>s than 2.</param>
         /// <returns>A block hash.</returns>
         public BlockHash DeriveBlockHash(
             in HashDigest<SHA256> stateRootHash,
