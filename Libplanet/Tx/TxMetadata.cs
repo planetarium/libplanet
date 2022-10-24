@@ -5,7 +5,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 
@@ -60,7 +59,7 @@ namespace Libplanet.Tx
         /// Creates a <see cref="TxMetadata"/> from a Bencodex <paramref name="dictionary"/>.
         /// </summary>
         /// <param name="dictionary">A Bencodex dictionary made using
-        /// <see cref="ToBencodex(IEnumerable{IValue})"/> method.</param>
+        /// <see cref="ToBencodex()"/> method.</param>
         /// <exception cref="KeyNotFoundException">Thrown when the given
         /// <paramref name="dictionary"/> lacks some fields.</exception>
         /// <exception cref="InvalidCastException">Thrown when the given
@@ -102,26 +101,6 @@ namespace Libplanet.Tx
 
         /// <inheritdoc cref="ITxMetadata.GenesisHash"/>
         public BlockHash? GenesisHash { get; set; }
-
-        /// <summary>
-        /// Builds a Bencodex dictionary used for signing and calculating <see cref="TxId"/>.
-        /// </summary>
-        /// <param name="systemAction"><see cref="IAction.PlainValue"/> of a system built-in action
-        /// to include.</param>
-        /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
-        [Pure]
-        public Bencodex.Types.Dictionary ToBencodex(IValue systemAction) =>
-            ToBencodex().Add(SystemActionKey, systemAction);
-
-        /// <summary>
-        /// Builds a Bencodex dictionary used for signing and calculating <see cref="TxId"/>.
-        /// </summary>
-        /// <param name="customActions"><see cref="IAction.PlainValue"/>s of user-defined custom
-        /// actions to include.</param>
-        /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
-        [Pure]
-        public Bencodex.Types.Dictionary ToBencodex(IEnumerable<IValue> customActions) =>
-            ToBencodex().Add(CustomActionsKey, new List(customActions));
 
         [Pure]
         public Bencodex.Types.Dictionary ToBencodex()

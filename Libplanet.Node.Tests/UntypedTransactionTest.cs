@@ -45,7 +45,8 @@ namespace Libplanet.Node.Tests
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
             };
             _actionValues = new IValue[] { new Integer(123), new Integer(456) };
-            Bencodex.Types.Dictionary unsignedDict = _meta.ToBencodex(_actionValues);
+            Bencodex.Types.Dictionary unsignedDict = _meta.ToBencodex()
+                .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues));
             var codec = new Codec();
             _sig = ImmutableArray.Create(_key2.Sign(codec.Encode(unsignedDict)));
         }
@@ -85,7 +86,8 @@ namespace Libplanet.Node.Tests
         public void Deserialize()
         {
             Bencodex.Types.Dictionary signedDict = _meta
-                .ToBencodex(_actionValues)
+                .ToBencodex()
+                .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues))
                 .Add(TxMetadata.SignatureKey, _sig);
             var untyped = new UntypedTransaction(signedDict);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
@@ -123,7 +125,11 @@ namespace Libplanet.Node.Tests
         {
             Bencodex.Types.Dictionary dict =
                 new UntypedTransaction(_meta, null, _actionValues, _sig).ToBencodex();
-            Assert.Equal(_meta.ToBencodex(_actionValues).Add(TxMetadata.SignatureKey, _sig), dict);
+            Assert.Equal(
+                _meta.ToBencodex()
+                    .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues))
+                    .Add(TxMetadata.SignatureKey, _sig),
+                dict);
 
             var deserialized = new UntypedTransaction(dict);
             Assert.Equal(_meta.Nonce, deserialized.Nonce);
