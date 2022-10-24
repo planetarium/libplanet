@@ -14,11 +14,16 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
+    [[#2418]]
+
 ### Behavioral changes
 
 ### Bug fixes
 
 ### CLI tools
+
+[#2418]: https://github.com/planetarium/libplanet/pull/2418
 
 
 Version 0.43.1
