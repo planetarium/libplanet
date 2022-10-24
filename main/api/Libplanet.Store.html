@@ -125,11 +125,11 @@ and <code>string</code>.
     a generic type parameter.  That is, types such as <code>bool?</code>, <code>Address?</code>,
     and <code>ImmutableList&lt;int?></code>are not allowed.
 </li><li>
-    Reference types are not allowed to be assigned <code>null</code>.  This will result
-    in an <see cref="!:Exception"></see> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
+    Reference types are not allowed to be assigned <span class="xref">null</span>.  This will
+    result in an <see cref="!:Exception"></see> when <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel_Encode">Encode()</a> is called.
 </li><li>
-    Trying to assign <code>null</code> to any property or to a part of a collection will
-    result in an <see cref="!:Exception"></see> when
+    Trying to assign <span class="xref">null</span> to any property or to a part of
+    a collection will result in an <see cref="!:Exception"></see> when
 <a class="xref" href="Libplanet.Store.DataModel.html#Libplanet_Store_DataModel__ctor_Bencodex_Types_Dictionary_">DataModel(Bencodex.Types.Dictionary)</a> is called.
 </li></ul>
 </p>
@@ -144,17 +144,17 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li><li><code>default+file:///var/data/planet/?secure=true</code>
 (trie keys are hashed)</li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
 parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
 <code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
 <code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:DefaultKeyValueStore(string)"></see>&apos;s <code>path</code>
-parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
 <a class="xref" href="Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_">TrieStateStore(IKeyValueStore, Boolean)</a>&apos;s <code>secure</code> parameter.</td></tr></tbody></table>
 </section>
       <h4><a class="xref" href="Libplanet.Store.MemoryStore.html">MemoryStore</a></h4>

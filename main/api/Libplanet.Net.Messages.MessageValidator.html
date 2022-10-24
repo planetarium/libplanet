@@ -166,7 +166,7 @@ by a <em>trusted</em> signer that is different from <a class="xref" href="Libpla
     </tbody>
   </table>
   <h5 id="Libplanet_Net_Messages_MessageValidator_DifferentApvEncountered_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If <code>null</code>, no action is taken.</p>
+  <div class="markdown level1 remarks"><p>If <span class="xref">null</span>, no action is taken.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -183,10 +183,10 @@ The <see cref="!:TimeSpan"></see> to use as a buffer when decoding <a class="xre
 <p>
 Whether a decoded <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> is valid or not depends on this value:
 <ul><li>
-        If <code>null</code>, there is no restriction on <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp">Timestamp</a>
-        for received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.
+        If <span class="xref">null</span>, there is no restriction
+        on <a class="xref" href="Libplanet.Net.Messages.Message.html#Libplanet_Net_Messages_Message_Timestamp">Timestamp</a> for received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.
 </li><li>
-    If not <code>null</code>, the absolute difference between the timestamp of
+    If not <span class="xref">null</span>, the absolute difference between the timestamp of
     a received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a> and current time should be less than
     this value.
 </li></ul>
@@ -230,12 +230,12 @@ Whether to trust an unknown <a class="xref" href="Libplanet.Net.AppProtocolVersi
 an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> that is different
 from <a class="xref" href="Libplanet.Net.Messages.MessageValidator.html#Libplanet_Net_Messages_MessageValidator_Apv">Apv</a>, depends on this value:
 <ul><li>
-        If <code>null</code>, the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> in question is trusted
-        regardless of its signer.
+        If <span class="xref">null</span>, the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> in question
+        is trusted regardless of its signer.
 </li><li>
-    If not <code>null</code>, an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted if it is
-    signed by one of the signers in the set.  In particular, if the set is empty,
-    no <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted.
+    If not <span class="xref">null</span>, an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted
+    if it is signed by one of the signers in the set.  In particular, if the set
+    is empty, no <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> is trusted.
 </li></ul>
 </p>
 </div>

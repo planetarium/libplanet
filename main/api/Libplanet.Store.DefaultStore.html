@@ -82,17 +82,17 @@ using <a class="xref" href="Libplanet.Store.StoreLoaderAttribute.html#Libplanet_
 <ul><li><code>default+file:///var/data/planet/</code></li><li><code>default+file:///c:/Users/john/AppData/Local/planet/</code></li><li><code>default+file:///var/data/planet/?secure=true</code>
 (trie keys are hashed)</li></ul>
 <p>The following query string parameters are supported:</p>
-<table><tbody><tr><td><code>journal</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<table><tbody><tr><td><code>journal</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>journal</code>
 parameter.</td></tr><tr><td><code>index-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
 <code>indexCacheSize</code> parameter.  50000 by default.</td></tr><tr><td><code>block-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
 <code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s
-<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><code>true</code> (default) or <code>false</code>.  Corresponds to
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>flush</code></td><td><span class="xref">true</span> (default) or <span class="xref">false</span>.  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>flush</code>
-parameter.</td></tr><tr><td><code>readonly</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+parameter.</td></tr><tr><td><code>readonly</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
 <a class="xref" href="Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_">DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)</a>&apos;s <code>readOnly</code>
 parameter.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:DefaultKeyValueStore(string)"></see>&apos;s <code>path</code>
-parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><code>true</code> or <code>false</code> (default).  Corresponds to
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr><tr><td><code>secure</code></td><td><span class="xref">true</span> or <span class="xref">false</span> (default).  Corresponds to
 <a class="xref" href="Libplanet.Store.TrieStateStore.html#Libplanet_Store_TrieStateStore__ctor_Libplanet_Store_Trie_IKeyValueStore_System_Boolean_">TrieStateStore(IKeyValueStore, Boolean)</a>&apos;s <code>secure</code> parameter.</td></tr></tbody></table>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -169,7 +169,7 @@ parameter.  It is relative to the URI path, and defaults to <code>states</code>.
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
         <td><p>The path of the directory where the storage files will be saved.
-If the path is <code>null</code>, the database is created in memory.</p>
+If the path is <span class="xref">null</span>, the database is created in memory.</p>
 </td>
       </tr>
       <tr>
@@ -318,8 +318,8 @@ check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore<
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with
-the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>; otherwise, <code>false</code>.</p>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>; otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -373,8 +373,8 @@ to check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">ISto
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
-with the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>; otherwise, <code>false</code>.</p>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+with the specified <code data-dev-comment-type="paramref" class="paramref">txId</code>; otherwise, <span class="xref">false</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -507,7 +507,8 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>false</code> if such block does not exist. Otherwise <code>true</code>.</p>
+        <td><p><span class="xref">false</span> if such block does not exist. Otherwise
+<span class="xref">true</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -766,8 +767,8 @@ block indexes.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>&gt;</td>
-        <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <code>null</code> if no block having such
-<code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
+        <td><p>A found <a class="xref" href="Libplanet.Store.BlockDigest.html">BlockDigest</a>, or <span class="xref">null</span> if no block
+having such <code data-dev-comment-type="paramref" class="paramref">blockHash</code> is stored.</p>
 </td>
       </tr>
     </tbody>
@@ -819,7 +820,8 @@ block indexes.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
-        <td><p>The perceived time of a block, if it exists.  Otherwise, <code>null</code>.</p>
+        <td><p>The perceived time of a block, if it exists.  Otherwise,
+<span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -853,7 +855,7 @@ block indexes.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Guid</span>&gt;</td>
-        <td><p>The ID of the current canonical chain.  Maybe <code>null</code>.</p>
+        <td><p>The ID of the current canonical chain.  Maybe <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -983,7 +985,7 @@ execution to retrieve.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxExecution.html">TxExecution</a></td>
         <td><p>The recorded transaction execution summary.  If it has been never recorded
-<code>null</code> is returned instead.</p>
+<span class="xref">null</span> is returned instead.</p>
 </td>
       </tr>
     </tbody>
@@ -1168,7 +1170,7 @@ the offset from the end.  For example, -1 means the topmost block.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
         <td><p>The block hash of the index in the chain.  If there is no such index,
-it returns <code>null</code>.</p>
+it returns <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -1447,8 +1449,8 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">noopWithoutCanon</span></td>
         <td><p>Flag to determine whether the function throws exception
-when the canonical chain is not assigned.  <code>false</code> by default.
-If it set to <code>true</code>, does not throw exception when
+when the canonical chain is not assigned.  <span class="xref">false</span> by default.
+If it set to <span class="xref">true</span>, does not throw exception when
 there is no canonical chain.
 Otherwise, throws <see cref="!:InvalidOperationException"></see> when
 there is no canonical chain.</p>
@@ -1593,7 +1595,7 @@ If the same block already exists in the store it does nothing.</p>
         <td><a class="xref" href="Libplanet.Tx.TxFailure.html">TxFailure</a></td>
         <td><span class="parametername">txFailure</span></td>
         <td><p>The failed transaction execution summary to record.
-Must not be <code>null</code>.</p>
+Must not be <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -1639,7 +1641,7 @@ and <a class="xref" href="Libplanet.Tx.TxExecution.html#Libplanet_Tx_TxExecution
         <td><a class="xref" href="Libplanet.Tx.TxSuccess.html">TxSuccess</a></td>
         <td><span class="parametername">txSuccess</span></td>
         <td><p>The successful transaction execution summary to record.
-Must not be <code>null</code>.</p>
+Must not be <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
