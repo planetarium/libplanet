@@ -53,7 +53,7 @@ namespace Libplanet.Node.Tests
         [Fact]
         public void Constructor()
         {
-            var untyped = new UntypedTransaction(_meta, _actionValues, _sig);
+            var untyped = new UntypedTransaction(_meta, null, _actionValues, _sig);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
             Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
@@ -65,7 +65,7 @@ namespace Libplanet.Node.Tests
 
             InvalidTxSignatureException e;
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, _actionValues, default)
+                () => new UntypedTransaction(_meta, null, _actionValues, default)
             );
             Assert.Equal(
                 TxId.FromHex("ea601351c27c3c6291c4352ec060f06650b81c02ded4a4d22858da756098fd4e"),
@@ -73,7 +73,7 @@ namespace Libplanet.Node.Tests
             );
 
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, Enumerable.Empty<IValue>(), _sig)
+                () => new UntypedTransaction(_meta, null, Enumerable.Empty<IValue>(), _sig)
             );
             Assert.Equal(
                 TxId.FromHex("f91abd37cad6962cb206a9c29faffddede8bce47751f3e5e4b0e1c8f714a4a82"),
@@ -122,7 +122,7 @@ namespace Libplanet.Node.Tests
         public void ToBencodex()
         {
             Bencodex.Types.Dictionary dict =
-                new UntypedTransaction(_meta, _actionValues, _sig).ToBencodex();
+                new UntypedTransaction(_meta, null, _actionValues, _sig).ToBencodex();
             Assert.Equal(_meta.ToBencodex(_actionValues).Add(TxMetadata.SignatureKey, _sig), dict);
 
             var deserialized = new UntypedTransaction(dict);

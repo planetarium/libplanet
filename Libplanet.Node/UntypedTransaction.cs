@@ -26,29 +26,50 @@ namespace Libplanet.Node
         /// Creates an <see cref="UntypedTransaction"/> instance.
         /// </summary>
         /// <param name="metadata">A transaction metadata without actions and signature.</param>
+        /// <param name="systemActionValue">The <see cref="IAction.PlainValue"/> representing
+        /// a <see cref="Transaction{T}.SystemAction"/>.</param>
         /// <param name="actionValues">A list of <see cref="IAction.PlainValue"/>s.</param>
         /// <param name="signature">A signature made by transaction's signer.</param>
         /// <exception cref="InvalidTxSignatureException">Thrown when
         /// the <paramref name="signature"/> is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when
+        /// <paramref name="systemActionValue"/> and <paramref name="actionValues"/> are
+        /// both <see langword="null"/> or are both not <see langword="null"/>.</exception>
         public UntypedTransaction(
             ITxMetadata metadata,
-            IEnumerable<IValue> actionValues,
+            IValue? systemActionValue,
+            IEnumerable<IValue>? actionValues,
             ImmutableArray<byte> signature
         )
         {
+            if (!(systemActionValue is null ^ actionValues is null))
+            {
+                throw new ArgumentException(
+                    $"Exactly one of {nameof(systemActionValue)} and {nameof(actionValues)} " +
+                    "must be null.");
+            }
+
             _metadata = new TxMetadata(metadata);
-            ActionValues = actionValues is IImmutableList<IValue> im
-                ? im
-                : actionValues.ToImmutableList();
+            SystemActionValue = systemActionValue;
+            ActionValues = actionValues;
             Signature = signature;
 
-            byte[] encoded = Codec.Encode(_metadata.ToBencodex(ActionValues));
+            Dictionary dict = _metadata.ToBencodex();
+            if (SystemActionValue is { } sav)
+            {
+                dict = dict.Add(TxMetadata.SystemActionKey, sav);
+            }
+            else
+            {
+                dict = dict.Add(TxMetadata.CustomActionsKey, new List(ActionValues!));
+            }
+
+            byte[] encoded = Codec.Encode(dict);
+
             if (!_metadata.PublicKey.Verify(encoded, Signature))
             {
                 throw new InvalidTxSignatureException(
-                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.",
-                    Id
-                );
+                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.", Id);
             }
         }
 
@@ -69,6 +90,7 @@ namespace Libplanet.Node
         public UntypedTransaction(Bencodex.Types.Dictionary dictionary)
             : this(
                 new TxMetadata(dictionary),
+                dictionary.GetValue<IValue>(TxMetadata.SystemActionKey),
                 dictionary.GetValue<List>(TxMetadata.CustomActionsKey),
                 dictionary.GetValue<Binary>(TxMetadata.SignatureKey).ByteArray)
         {
@@ -112,9 +134,15 @@ namespace Libplanet.Node
         public BlockHash? GenesisHash => _metadata.GenesisHash;
 
         /// <summary>
+        /// <see cref="IAction.PlainValue"/> of <see cref="Transaction{T}.SystemAction"/>.
+        /// </summary>
+        /// <seealso cref="Transaction{T}.SystemAction"/>.
+        public IValue? SystemActionValue { get; }
+
+        /// <summary>
         /// A list of <see cref="IAction.PlainValue"/>s.
         /// </summary>
-        public IReadOnlyList<IValue> ActionValues { get; }
+        public IEnumerable<IValue>? ActionValues { get; }
 
         /// <summary>
         /// A <see cref="Signer"/>'s signature on this transaction.
@@ -133,6 +161,12 @@ namespace Libplanet.Node
         /// <seealso cref="Transaction{T}(Bencodex.Types.Dictionary)"/>
         [Pure]
         public Bencodex.Types.Dictionary ToBencodex() =>
-            _metadata.ToBencodex(ActionValues).Add(TxMetadata.SignatureKey, Signature);
+            SystemActionValue is { } sav
+                ? _metadata.ToBencodex()
+                    .Add(TxMetadata.SystemActionKey, sav)
+                    .Add(TxMetadata.SignatureKey, Signature)
+                : _metadata.ToBencodex()
+                    .Add(TxMetadata.CustomActionsKey, new List(ActionValues!))
+                    .Add(TxMetadata.SignatureKey, Signature);
     }
 }

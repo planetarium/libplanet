@@ -111,6 +111,7 @@ namespace Libplanet.Node.Tests
             var untypedTxs = _txs.Select(tx =>
                 new UntypedTransaction(
                     tx,
+                    null,
                     tx.CustomActions.Select(a => a.PlainValue),
                     tx.Signature.ToImmutableArray()));
             var untyped = new UntypedBlock(_block, untypedTxs);
