@@ -112,7 +112,16 @@ namespace Libplanet
                 throw new ArgumentNullException(nameof(bytes));
             }
 
-            return bytes.Aggregate(0, (current, b) => unchecked(current * 397) ^ b);
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in bytes)
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
         }
 
         /// <summary>
