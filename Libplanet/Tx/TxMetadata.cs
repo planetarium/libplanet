@@ -60,7 +60,7 @@ namespace Libplanet.Tx
         /// Creates a <see cref="TxMetadata"/> from a Bencodex <paramref name="dictionary"/>.
         /// </summary>
         /// <param name="dictionary">A Bencodex dictionary made using
-        /// <see cref="ToBencodex(IEnumerable{IValue}, ImmutableArray{byte}?)"/> method.</param>
+        /// <see cref="ToBencodex(IEnumerable{IValue})"/> method.</param>
         /// <exception cref="KeyNotFoundException">Thrown when the given
         /// <paramref name="dictionary"/> lacks some fields.</exception>
         /// <exception cref="InvalidCastException">Thrown when the given
@@ -108,32 +108,20 @@ namespace Libplanet.Tx
         /// </summary>
         /// <param name="systemAction"><see cref="IAction.PlainValue"/> of a system built-in action
         /// to include.</param>
-        /// <param name="signature">Optionally specifies the transaction signature.  It should be
-        /// <see langword="null"/> (which is the default) when you make a signature, and should be
-        /// present when you make a <see cref="TxId"/>.</param>
         /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
         [Pure]
-        public Bencodex.Types.Dictionary ToBencodex(
-            IValue systemAction,
-            ImmutableArray<byte>? signature = null
-        ) =>
-            ToBencodex(signature).Add(SystemActionKey, systemAction);
+        public Bencodex.Types.Dictionary ToBencodex(IValue systemAction) =>
+            ToBencodex().Add(SystemActionKey, systemAction);
 
         /// <summary>
         /// Builds a Bencodex dictionary used for signing and calculating <see cref="TxId"/>.
         /// </summary>
         /// <param name="customActions"><see cref="IAction.PlainValue"/>s of user-defined custom
         /// actions to include.</param>
-        /// <param name="signature">Optionally specifies the transaction signature.  It should be
-        /// <see langword="null"/> (which is the default) when you make a signature, and should be
-        /// present when you make a <see cref="TxId"/>.</param>
         /// <returns>A Bencodex dictionary that the transaction turns into.</returns>
         [Pure]
-        public Bencodex.Types.Dictionary ToBencodex(
-            IEnumerable<IValue> customActions,
-            ImmutableArray<byte>? signature = null
-        ) =>
-            ToBencodex(signature).Add(CustomActionsKey, new List(customActions));
+        public Bencodex.Types.Dictionary ToBencodex(IEnumerable<IValue> customActions) =>
+            ToBencodex().Add(CustomActionsKey, new List(customActions));
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
@@ -153,9 +141,7 @@ namespace Libplanet.Tx
         }
 
         [Pure]
-        private Bencodex.Types.Dictionary ToBencodex(
-            ImmutableArray<byte>? signature = null
-        )
+        private Bencodex.Types.Dictionary ToBencodex()
         {
             List updatedAddresses = new List(
                 UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray)));
@@ -171,11 +157,6 @@ namespace Libplanet.Tx
             if (GenesisHash is { } genesisHash)
             {
                 dict = dict.Add(GenesisHashKey, genesisHash.ByteArray);
-            }
-
-            if (signature is { } sig)
-            {
-                dict = dict.Add(SignatureKey, sig);
             }
 
             return dict;

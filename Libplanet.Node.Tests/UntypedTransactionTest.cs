@@ -84,7 +84,9 @@ namespace Libplanet.Node.Tests
         [Fact]
         public void Deserialize()
         {
-            Bencodex.Types.Dictionary signedDict = _meta.ToBencodex(_actionValues, _sig);
+            Bencodex.Types.Dictionary signedDict = _meta
+                .ToBencodex(_actionValues)
+                .Add(TxMetadata.SignatureKey, _sig);
             var untyped = new UntypedTransaction(signedDict);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
@@ -121,7 +123,7 @@ namespace Libplanet.Node.Tests
         {
             Bencodex.Types.Dictionary dict =
                 new UntypedTransaction(_meta, _actionValues, _sig).ToBencodex();
-            Assert.Equal(_meta.ToBencodex(_actionValues, _sig), dict);
+            Assert.Equal(_meta.ToBencodex(_actionValues).Add(TxMetadata.SignatureKey, _sig), dict);
 
             var deserialized = new UntypedTransaction(dict);
             Assert.Equal(_meta.Nonce, deserialized.Nonce);

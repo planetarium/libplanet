@@ -133,6 +133,6 @@ namespace Libplanet.Node
         /// <seealso cref="Transaction{T}(Bencodex.Types.Dictionary)"/>
         [Pure]
         public Bencodex.Types.Dictionary ToBencodex() =>
-            _metadata.ToBencodex(ActionValues, Signature);
+            _metadata.ToBencodex(ActionValues).Add(TxMetadata.SignatureKey, Signature);
     }
 }

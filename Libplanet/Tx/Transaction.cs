@@ -686,12 +686,12 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex(bool sign)
         {
-            ImmutableArray<byte>? sig = sign
-                ? ImmutableArray.Create(_signature)
-                : (ImmutableArray<byte>?)null;
-            return SystemAction is { } sa
-                ? _metadata.ToBencodex(Registry.Serialize(sa), sig)
-                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue), sig);
+            Dictionary metadataDict = SystemAction is { } sa
+                ? _metadata.ToBencodex(Registry.Serialize(sa))
+                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue));
+            return sign
+                ? metadataDict.Add(TxMetadata.SignatureKey, ImmutableArray.Create(_signature))
+                : metadataDict;
         }
 
         /// <summary>
