@@ -8,6 +8,17 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed all `TxMetadata.ToBencodex()` overload methods with parameters.
+    Use newly introduced parameterless `TxMetadata.ToBencodex()` instead.
+    [[#2457]]
+ -  (Libplanet.Node) Changed `UntypedTransaction(ITxMetadata,
+    IEnumerable<IValue>, ImmutableArray<byte>)` to `UntypedTransaction(
+    ITxMetadata, IValue?, IValue?, ImmutableArray<byte>`) to support
+    `Transaction<T>.SystemAction`.  [[#2456], [#2457]]
+ -  (Libplanet.Node) Renamed `UntypedTransaction.ActionValues` to
+    `UntypedTransaction.CustomActionsValue` and changed its type from
+    `IReadOnlyList<IValue>` to `IValue?`.  [[#2456], [#2457]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -16,6 +27,8 @@ To be released.
 
  -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
     [[#2418]]
+ -  (Libplanet.Node) Added `IValue? SystemActionValue` property to
+    `UntypedTransaction`.  [[#2456], [#2457]]
 
 ### Behavioral changes
 
@@ -36,6 +49,8 @@ To be released.
 [#2418]: https://github.com/planetarium/libplanet/pull/2418
 [#2437]: https://github.com/planetarium/libplanet/issues/2437
 [#2459]: https://github.com/planetarium/libplanet/pull/2459
+[#2456]: https://github.com/planetarium/libplanet/issues/2456
+[#2457]: https://github.com/planetarium/libplanet/pull/2457
 
 
 Version 0.43.1

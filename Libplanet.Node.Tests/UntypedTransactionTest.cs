@@ -60,7 +60,8 @@ namespace Libplanet.Node.Tests
         [Fact]
         public void Constructor()
         {
-            var untyped = new UntypedTransaction(_meta, _systemActionValue, null, _withCustomActionsSignature);
+            var untyped = new UntypedTransaction(
+                _meta, _systemActionValue, null, _withSystemActionSignature);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
             Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
@@ -71,7 +72,8 @@ namespace Libplanet.Node.Tests
             Assert.Null(untyped.CustomActionsValue);
             Assert.Equal(_withSystemActionSignature, untyped.Signature);
 
-            untyped = new UntypedTransaction(_meta, null, _customActionsValue, _withCustomActionsSignature);
+            untyped = new UntypedTransaction(
+                _meta, null, _customActionsValue, _withCustomActionsSignature);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
             Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
