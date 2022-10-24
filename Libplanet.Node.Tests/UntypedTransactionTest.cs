@@ -14,8 +14,11 @@ namespace Libplanet.Node.Tests
         private readonly PrivateKey _key1;
         private readonly PrivateKey _key2;
         private readonly TxMetadata _meta;
+        private readonly IValue _systemActionValue;
         private readonly IValue _customActionsValue;
-        private readonly ImmutableArray<byte> _sig;
+
+        private readonly ImmutableArray<byte> _withSystemActionSignature;
+        private readonly ImmutableArray<byte> _withCustomActionsSignature;
 
         public UntypedTransactionTest()
         {
@@ -43,43 +46,59 @@ namespace Libplanet.Node.Tests
                 GenesisHash = BlockHash.FromString(
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
             };
+
+            var codec = new Codec();
+            _systemActionValue = new Integer(123);
+            _withSystemActionSignature = ImmutableArray.Create(_key2.Sign(codec.Encode(
+                _meta.ToBencodex().Add(TxMetadata.SystemActionKey, _systemActionValue))));
             _customActionsValue = new Bencodex.Types.List(
                 new Integer[] { new Integer(123), new Integer(456) });
-            Bencodex.Types.Dictionary unsignedDict = _meta.ToBencodex()
-                .Add(TxMetadata.CustomActionsKey, _customActionsValue);
-            var codec = new Codec();
-            _sig = ImmutableArray.Create(_key2.Sign(codec.Encode(unsignedDict)));
+            _withCustomActionsSignature = ImmutableArray.Create(_key2.Sign(codec.Encode(
+                _meta.ToBencodex().Add(TxMetadata.CustomActionsKey, _customActionsValue))));
         }
 
         [Fact]
         public void Constructor()
         {
-            var untyped = new UntypedTransaction(_meta, null, _customActionsValue, _sig);
+            var untyped = new UntypedTransaction(_meta, _systemActionValue, null, _withCustomActionsSignature);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
             Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
             Assert.Equal(_meta.Timestamp, untyped.Timestamp);
             Assert.Equal(_meta.PublicKey, untyped.PublicKey);
             Assert.Equal(_meta.GenesisHash, untyped.GenesisHash);
+            Assert.Equal(_systemActionValue, untyped.SystemActionValue);
+            Assert.Null(untyped.CustomActionsValue);
+            Assert.Equal(_withSystemActionSignature, untyped.Signature);
+
+            untyped = new UntypedTransaction(_meta, null, _customActionsValue, _withCustomActionsSignature);
+            Assert.Equal(_meta.Nonce, untyped.Nonce);
+            Assert.Equal(_meta.Signer, untyped.Signer);
+            Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
+            Assert.Equal(_meta.Timestamp, untyped.Timestamp);
+            Assert.Equal(_meta.PublicKey, untyped.PublicKey);
+            Assert.Equal(_meta.GenesisHash, untyped.GenesisHash);
+            Assert.Null(untyped.SystemActionValue);
             Assert.Equal(_customActionsValue, untyped.CustomActionsValue);
-            Assert.Equal(_sig, untyped.Signature);
+            Assert.Equal(_withCustomActionsSignature, untyped.Signature);
+
+            Assert.Throws<ArgumentException>(
+                () => new UntypedTransaction(
+                    _meta, _systemActionValue, _customActionsValue, default));
 
             InvalidTxSignatureException e;
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, null, _customActionsValue, default)
-            );
+                () => new UntypedTransaction(_meta, null, _customActionsValue, default));
             Assert.Equal(
                 TxId.FromHex("ea601351c27c3c6291c4352ec060f06650b81c02ded4a4d22858da756098fd4e"),
-                e.TxId
-            );
+                e.TxId);
 
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, null, Bencodex.Types.List.Empty, _sig)
-            );
+                () => new UntypedTransaction(
+                    _meta, null, Bencodex.Types.List.Empty, _withCustomActionsSignature));
             Assert.Equal(
                 TxId.FromHex("f91abd37cad6962cb206a9c29faffddede8bce47751f3e5e4b0e1c8f714a4a82"),
-                e.TxId
-            );
+                e.TxId);
         }
 
         [Fact]
@@ -88,7 +107,7 @@ namespace Libplanet.Node.Tests
             Bencodex.Types.Dictionary signedDict = _meta
                 .ToBencodex()
                 .Add(TxMetadata.CustomActionsKey, _customActionsValue)
-                .Add(TxMetadata.SignatureKey, _sig);
+                .Add(TxMetadata.SignatureKey, _withCustomActionsSignature);
             var untyped = new UntypedTransaction(signedDict);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
@@ -97,38 +116,39 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_meta.PublicKey, untyped.PublicKey);
             Assert.Equal(_meta.GenesisHash, untyped.GenesisHash);
             Assert.Equal(_customActionsValue, untyped.CustomActionsValue);
-            Assert.Equal(_sig, untyped.Signature);
+            Assert.Equal(_withCustomActionsSignature, untyped.Signature);
+
+            var invalidActionsDict = signedDict.SetItem(
+                TxMetadata.SystemActionKey, _systemActionValue);
+            Assert.Throws<ArgumentException>(() => new UntypedTransaction(invalidActionsDict));
 
             InvalidTxSignatureException e;
             var invalidSigDict = signedDict.SetItem(TxMetadata.SignatureKey, Array.Empty<byte>());
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(invalidSigDict)
-            );
+                () => new UntypedTransaction(invalidSigDict));
             Assert.Equal(
                 TxId.FromHex("ea601351c27c3c6291c4352ec060f06650b81c02ded4a4d22858da756098fd4e"),
-                e.TxId
-            );
+                e.TxId);
 
-            var invalidActionsDict =
+            invalidSigDict =
                 signedDict.SetItem(TxMetadata.CustomActionsKey, new List());
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(invalidActionsDict)
-            );
+                () => new UntypedTransaction(invalidSigDict));
             Assert.Equal(
                 TxId.FromHex("f91abd37cad6962cb206a9c29faffddede8bce47751f3e5e4b0e1c8f714a4a82"),
-                e.TxId
-            );
+                e.TxId);
         }
 
         [Fact]
         public void ToBencodex()
         {
             Bencodex.Types.Dictionary dict =
-                new UntypedTransaction(_meta, null, _customActionsValue, _sig).ToBencodex();
+                new UntypedTransaction(
+                    _meta, null, _customActionsValue, _withCustomActionsSignature).ToBencodex();
             Assert.Equal(
                 _meta.ToBencodex()
                     .Add(TxMetadata.CustomActionsKey, _customActionsValue)
-                    .Add(TxMetadata.SignatureKey, _sig),
+                    .Add(TxMetadata.SignatureKey, _withCustomActionsSignature),
                 dict);
 
             var deserialized = new UntypedTransaction(dict);
@@ -139,7 +159,7 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_meta.PublicKey, deserialized.PublicKey);
             Assert.Equal(_meta.GenesisHash, deserialized.GenesisHash);
             Assert.Equal(_customActionsValue, deserialized.CustomActionsValue);
-            Assert.Equal(_sig, deserialized.Signature);
+            Assert.Equal(_withCustomActionsSignature, deserialized.Signature);
         }
     }
 }
