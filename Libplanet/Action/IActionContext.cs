@@ -27,7 +27,8 @@ namespace Libplanet.Action
 
         /// <summary>
         /// <see cref="Transaction{T}.Id"/> of a transaction that an executed <see cref="IAction"/>
-        /// belongs to.  This is <see langword="null"/> iff <see cref="BlockAction"/> is <see langword="true"/>.
+        /// belongs to.  This is <see langword="null"/>
+        /// iff <see cref="BlockAction"/> is <see langword="true"/>.
         /// </summary>
         [Pure]
         TxId? TxId { get; }

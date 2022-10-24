@@ -617,11 +617,13 @@ namespace Libplanet.Assets
             Legacy(ticker, decimalPlaces, ImmutableHashSet.Create(minter));
 
         /// <summary>
-        /// Returns <see langword="true"/> if and only if the given <paramref name="address"/> is allowed
+        /// Returns <see langword="true"/> if and only if
+        /// the given <paramref name="address"/> is allowed
         /// to mint or burn assets of this currency.
         /// </summary>
         /// <param name="address">The account address to test.</param>
-        /// <returns><see langword="true"/> if and only if the given <paramref name="address"/> is allowed to
+        /// <returns><see langword="true"/> if and only if
+        /// the given <paramref name="address"/> is allowed to
         /// mint or burn assets of this currency.</returns>
         [Pure]
         public bool AllowsToMint(Address address) => Minters is null || Minters.Contains(address);
