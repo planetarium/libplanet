@@ -20,6 +20,7 @@ To be released.
 ### Behavioral changes
 
 ### Bug fixes
+ - Optimize ByteUtil.CalculateHash() function
 
 ### CLI tools
 
