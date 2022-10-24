@@ -687,8 +687,12 @@ namespace Libplanet.Tx
         public Bencodex.Types.Dictionary ToBencodex(bool sign)
         {
             Dictionary metadataDict = SystemAction is { } sa
-                ? _metadata.ToBencodex(Registry.Serialize(sa))
-                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue));
+                ? _metadata.ToBencodex().Add(
+                    TxMetadata.SystemActionKey,
+                    Registry.Serialize(sa))
+                : _metadata.ToBencodex().Add(
+                    TxMetadata.CustomActionsKey,
+                    new List(CustomActions!.Select(a => a.PlainValue)));
             return sign
                 ? metadataDict.Add(TxMetadata.SignatureKey, ImmutableArray.Create(_signature))
                 : metadataDict;

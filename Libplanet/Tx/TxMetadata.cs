@@ -123,25 +123,8 @@ namespace Libplanet.Tx
         public Bencodex.Types.Dictionary ToBencodex(IEnumerable<IValue> customActions) =>
             ToBencodex().Add(CustomActionsKey, new List(customActions));
 
-        /// <inheritdoc cref="object.ToString()"/>
         [Pure]
-        public override string ToString()
-        {
-            return nameof(TxMetadata) + " {\n" +
-                $"  {nameof(Nonce)} = {Nonce},\n" +
-                $"  {nameof(Signer)} = {Signer},\n" +
-                $"  {nameof(UpdatedAddresses)} = ({UpdatedAddresses.Count})" +
-                (UpdatedAddresses.Any()
-                    ? $"\n    {string.Join("\n    ", UpdatedAddresses)};\n"
-                    : ";\n") +
-                $"  {nameof(PublicKey)} = {PublicKey},\n" +
-                $"  {nameof(Timestamp)} = {Timestamp},\n" +
-                $"  {nameof(GenesisHash)} = {GenesisHash?.ToString() ?? "(null)"},\n" +
-                "}";
-        }
-
-        [Pure]
-        private Bencodex.Types.Dictionary ToBencodex()
+        public Bencodex.Types.Dictionary ToBencodex()
         {
             List updatedAddresses = new List(
                 UpdatedAddresses.Select<Address, IValue>(addr => new Binary(addr.ByteArray)));
@@ -160,6 +143,23 @@ namespace Libplanet.Tx
             }
 
             return dict;
+        }
+
+        /// <inheritdoc cref="object.ToString()"/>
+        [Pure]
+        public override string ToString()
+        {
+            return nameof(TxMetadata) + " {\n" +
+                $"  {nameof(Nonce)} = {Nonce},\n" +
+                $"  {nameof(Signer)} = {Signer},\n" +
+                $"  {nameof(UpdatedAddresses)} = ({UpdatedAddresses.Count})" +
+                (UpdatedAddresses.Any()
+                    ? $"\n    {string.Join("\n    ", UpdatedAddresses)};\n"
+                    : ";\n") +
+                $"  {nameof(PublicKey)} = {PublicKey},\n" +
+                $"  {nameof(Timestamp)} = {Timestamp},\n" +
+                $"  {nameof(GenesisHash)} = {GenesisHash?.ToString() ?? "(null)"},\n" +
+                "}";
         }
     }
 }
