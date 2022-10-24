@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -15,7 +14,7 @@ namespace Libplanet.Node.Tests
         private readonly PrivateKey _key1;
         private readonly PrivateKey _key2;
         private readonly TxMetadata _meta;
-        private readonly IValue[] _actionValues;
+        private readonly IValue _customActionsValue;
         private readonly ImmutableArray<byte> _sig;
 
         public UntypedTransactionTest()
@@ -44,9 +43,10 @@ namespace Libplanet.Node.Tests
                 GenesisHash = BlockHash.FromString(
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
             };
-            _actionValues = new IValue[] { new Integer(123), new Integer(456) };
+            _customActionsValue = new Bencodex.Types.List(
+                new Integer[] { new Integer(123), new Integer(456) });
             Bencodex.Types.Dictionary unsignedDict = _meta.ToBencodex()
-                .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues));
+                .Add(TxMetadata.CustomActionsKey, _customActionsValue);
             var codec = new Codec();
             _sig = ImmutableArray.Create(_key2.Sign(codec.Encode(unsignedDict)));
         }
@@ -54,19 +54,19 @@ namespace Libplanet.Node.Tests
         [Fact]
         public void Constructor()
         {
-            var untyped = new UntypedTransaction(_meta, null, _actionValues, _sig);
+            var untyped = new UntypedTransaction(_meta, null, _customActionsValue, _sig);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
             Assert.Equal(_meta.Signer, untyped.Signer);
             Assert.Equal(_meta.UpdatedAddresses, untyped.UpdatedAddresses);
             Assert.Equal(_meta.Timestamp, untyped.Timestamp);
             Assert.Equal(_meta.PublicKey, untyped.PublicKey);
             Assert.Equal(_meta.GenesisHash, untyped.GenesisHash);
-            Assert.Equal(_actionValues, untyped.ActionValues);
+            Assert.Equal(_customActionsValue, untyped.CustomActionsValue);
             Assert.Equal(_sig, untyped.Signature);
 
             InvalidTxSignatureException e;
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, null, _actionValues, default)
+                () => new UntypedTransaction(_meta, null, _customActionsValue, default)
             );
             Assert.Equal(
                 TxId.FromHex("ea601351c27c3c6291c4352ec060f06650b81c02ded4a4d22858da756098fd4e"),
@@ -74,7 +74,7 @@ namespace Libplanet.Node.Tests
             );
 
             e = Assert.Throws<InvalidTxSignatureException>(
-                () => new UntypedTransaction(_meta, null, Enumerable.Empty<IValue>(), _sig)
+                () => new UntypedTransaction(_meta, null, Bencodex.Types.List.Empty, _sig)
             );
             Assert.Equal(
                 TxId.FromHex("f91abd37cad6962cb206a9c29faffddede8bce47751f3e5e4b0e1c8f714a4a82"),
@@ -87,7 +87,7 @@ namespace Libplanet.Node.Tests
         {
             Bencodex.Types.Dictionary signedDict = _meta
                 .ToBencodex()
-                .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues))
+                .Add(TxMetadata.CustomActionsKey, _customActionsValue)
                 .Add(TxMetadata.SignatureKey, _sig);
             var untyped = new UntypedTransaction(signedDict);
             Assert.Equal(_meta.Nonce, untyped.Nonce);
@@ -96,7 +96,7 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_meta.Timestamp, untyped.Timestamp);
             Assert.Equal(_meta.PublicKey, untyped.PublicKey);
             Assert.Equal(_meta.GenesisHash, untyped.GenesisHash);
-            Assert.Equal(_actionValues, untyped.ActionValues);
+            Assert.Equal(_customActionsValue, untyped.CustomActionsValue);
             Assert.Equal(_sig, untyped.Signature);
 
             InvalidTxSignatureException e;
@@ -124,10 +124,10 @@ namespace Libplanet.Node.Tests
         public void ToBencodex()
         {
             Bencodex.Types.Dictionary dict =
-                new UntypedTransaction(_meta, null, _actionValues, _sig).ToBencodex();
+                new UntypedTransaction(_meta, null, _customActionsValue, _sig).ToBencodex();
             Assert.Equal(
                 _meta.ToBencodex()
-                    .Add(TxMetadata.CustomActionsKey, new Bencodex.Types.List(_actionValues))
+                    .Add(TxMetadata.CustomActionsKey, _customActionsValue)
                     .Add(TxMetadata.SignatureKey, _sig),
                 dict);
 
@@ -138,7 +138,7 @@ namespace Libplanet.Node.Tests
             Assert.Equal(_meta.Timestamp, deserialized.Timestamp);
             Assert.Equal(_meta.PublicKey, deserialized.PublicKey);
             Assert.Equal(_meta.GenesisHash, deserialized.GenesisHash);
-            Assert.Equal(_actionValues, deserialized.ActionValues);
+            Assert.Equal(_customActionsValue, deserialized.CustomActionsValue);
             Assert.Equal(_sig, deserialized.Signature);
         }
     }
