@@ -9,7 +9,7 @@
     <Authors>Planetarium</Authors>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <NoWarn>NU1701;SA1118</NoWarn>
+    <NoWarn>NU1701;NU5104;SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
@@ -58,6 +58,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <PackageReference Include="Bencodex.Json" Version="0.7.0-dev.20220923062845" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>

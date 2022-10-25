@@ -18,7 +18,7 @@ namespace Libplanet.Net.Protocols
         /// to bootstrap.</param>
         /// <param name="dialTimeout">The timeout used when waiting a reply for either
         /// <see cref="PingMsg"/> or <see cref="FindNeighborsMsg"/>.
-        /// If <c>null</c> is given, the task never halts by itself
+        /// If <see langword="null"/> is given, the task never halts by itself
         /// even no any response was given from the the target seed.</param>
         /// <param name="depth">Recursive operation depth to search peers from network.</param>
         /// <param name="cancellationToken">
@@ -38,7 +38,7 @@ namespace Libplanet.Net.Protocols
         /// <param name="peers">The peers to add.</param>
         /// <param name="timeout">A timeout of waiting for the reply of <see cref="PingMsg"/>
         /// message sent to <paramref name="peers"/>.
-        /// If <c>null</c> is given, task never halts by itself
+        /// If <see langword="null"/> is given, task never halts by itself
         /// even the target peer gives no any response.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this

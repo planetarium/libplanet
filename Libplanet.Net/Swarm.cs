@@ -215,7 +215,7 @@ namespace Libplanet.Net
 
         /// <summary>
         /// The last time when any message was arrived.
-        /// It can be <c>null</c> if no message has been arrived yet.
+        /// It can be <see langword="null"/> if no message has been arrived yet.
         /// </summary>
         public DateTimeOffset? LastMessageTimestamp =>
             Running ? Transport.LastMessageTimestamp : (DateTimeOffset?)null;
@@ -270,7 +270,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <seealso cref="ITransport.WaitForRunningAsync()"/>
         /// <returns>A <see cref="Task"/> completed when <see cref="ITransport.Running"/>
-        /// property becomes <c>true</c>.</returns>
+        /// property becomes <see langword="true"/>.</returns>
         public Task WaitForRunningAsync() => Transport?.WaitForRunningAsync();
 
         public void Dispose()
@@ -349,7 +349,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
-        /// If <c>null</c> is given it never gives up dial-ups.
+        /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
         /// <param name="broadcastBlockInterval">Time interval between each broadcast of
         /// chain tip.</param>
@@ -519,7 +519,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
-        /// If <c>null</c> is given it never gives up dial-ups.
+        /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -578,7 +578,7 @@ namespace Libplanet.Net
         /// <param name="dialTimeout">
         /// When the <see cref="Swarm{T}"/> tries to dial each peer in <see cref="Peers"/>,
         /// the dial-up is cancelled after this timeout, and it tries another peer.
-        /// If <c>null</c> is given it never gives up dial-ups.
+        /// If <see langword="null"/> is given it never gives up dial-ups.
         /// </param>
         /// <param name="tipDeltaThreshold">The threshold of the difference between the topmost tip
         /// among peers and the local tip.  If the local tip is still behind the topmost tip among
@@ -700,13 +700,13 @@ namespace Libplanet.Net
         /// <paramref name="target"/> is found.</param>
         /// <param name="timeout">
         /// <see cref="TimeSpan"/> for waiting reply of <see cref="FindNeighborsMsg"/>.
-        /// If <c>null</c> is given, <see cref="TimeoutException"/> will not be thrown.
+        /// If <see langword="null"/> is given, <see cref="TimeoutException"/> will not be thrown.
         /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>
         /// A <see cref="BoundPeer"/> with <see cref="Address"/> of <paramref name="target"/>.
-        /// Returns <c>null</c> if the peer with address does not exist.
+        /// Returns <see langword="null"/> if the peer with address does not exist.
         /// </returns>
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
@@ -725,8 +725,9 @@ namespace Libplanet.Net
         /// <summary>
         /// Validates all <see cref="BoundPeer"/>s in the routing table by sending a simple message.
         /// </summary>
-        /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
-        /// wait infinitely until the requested operation is finished.</param>
+        /// <param name="timeout">Timeout for this operation. If it is set to
+        /// <see langword="null"/>, wait infinitely until the requested operation is finished.
+        /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -746,8 +747,9 @@ namespace Libplanet.Net
         /// Adds <paramref name="peers"/> to routing table by sending a simple message.
         /// </summary>
         /// <param name="peers">A list of peers to add.</param>
-        /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
-        /// wait infinitely until the requested operation is finished.</param>
+        /// <param name="timeout">Timeout for this operation. If it is set to
+        /// <see langword="null"/>, wait infinitely until the requested operation is finished.
+        /// </param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -1174,7 +1176,7 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
-        /// is equivalent to setting this value to <c>null</c>.</param>
+        /// is equivalent to setting this value to <see langword="null"/>.</param>
         /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
@@ -1205,13 +1207,13 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="dialTimeout">Timeout for each dialing operation to
         /// a <see cref="BoundPeer"/> in <see cref="Peers"/>.  Not having a timeout limit
-        /// is equivalent to setting this value to <c>null</c>.</param>
+        /// is equivalent to setting this value to <see langword="null"/>.</param>
         /// <param name="maxPeersToDial">Maximum number of <see cref="BoundPeer"/>s to dial.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with an <see cref="Array"/> of tuples
         /// of <see cref="BoundPeer"/> and <see cref="ChainStatusMsg"/> where
-        /// <see cref="ChainStatusMsg"/> can be <c>null</c> if dialing fails for
+        /// <see cref="ChainStatusMsg"/> can be <see langword="null"/> if dialing fails for
         /// a selected <see cref="BoundPeer"/>.</returns>
         private Task<(BoundPeer, ChainStatusMsg)[]> DialExistingPeers(
             TimeSpan? dialTimeout,
@@ -1366,8 +1368,8 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="target">The <see cref="IBlockExcerpt"/> to compare to the current
         /// <see cref="BlockChain{T}.Tip"/> of <see cref="BlockChain"/>.</param>
-        /// <returns><c>true</c> if the corresponding <see cref="Block{T}"/> to
-        /// <paramref name="target"/> is needed, otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the corresponding <see cref="Block{T}"/> to
+        /// <paramref name="target"/> is needed, otherwise, <see langword="false"/>.</returns>
         private bool IsBlockNeeded(IBlockExcerpt target)
         {
             return target.Index > BlockChain.Tip.Index;

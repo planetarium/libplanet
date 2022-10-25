@@ -12,7 +12,7 @@ namespace Libplanet.Action
     /// maintaining the set of <see cref="UpdatedAddresses"/>.
     /// <para>It is like a map which is virtually initialized such
     /// that every possible <see cref="Address"/> exists and
-    /// is mapped to <c>null</c>.  That means that:</para>
+    /// is mapped to <see langword="null"/>.  That means that:</para>
     /// <list type="bullet">
     /// <item>
     /// <description>it does not have length,</description>
@@ -20,11 +20,11 @@ namespace Libplanet.Action
     /// <item>
     /// <description>its index getter never throws
     /// <see cref="KeyNotFoundException"/>,
-    /// but returns <c>null</c> instead, and</description>
+    /// but returns <see langword="null"/> instead, and</description>
     /// </item>
     /// <item>
     /// <description>filling an <see cref="Address"/> with
-    /// <c>null</c> state cannot be distinguished from
+    /// <see langword="null"/> state cannot be distinguished from
     /// the <see cref="Address"/> having never been set to
     /// any state.</description>
     /// </item>

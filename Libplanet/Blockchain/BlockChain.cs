@@ -73,9 +73,9 @@ namespace Libplanet.Blockchain
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
         /// <param name="renderers">Listens state changes on the created chain.  Listens nothing
-        /// by default or if it is <c>null</c>.  Note that action renderers receive events made
-        /// by unsuccessful transactions too; see also <see cref="AtomicActionRenderer{T}"/> for
-        /// workaround.</param>
+        /// by default or if it is <see langword="null"/>.  Note that action renderers receive
+        /// events made by unsuccessful transactions too; see also
+        /// <see cref="AtomicActionRenderer{T}"/> for workaround.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
@@ -403,8 +403,9 @@ namespace Libplanet.Blockchain
         /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
         /// check if it is in the <see cref="BlockChain{T}"/>.</param>
         /// <returns>
-        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/> with
-        /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the <see cref="BlockChain{T}"/> contains
+        /// <see cref="Block{T}"/> with the specified <paramref name="blockHash"/>; otherwise,
+        /// <see langword="false"/>.
         /// </returns>
         public bool ContainsBlock(BlockHash blockHash)
         {
@@ -461,8 +462,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="address">An <see cref="Address"/> to get the states of.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to start finding
-        /// the state.  It will be The tip of the <see cref="BlockChain{T}"/> if it is <c>null</c>.
-        /// </param>
+        /// the state.  It will be The tip of the <see cref="BlockChain{T}"/> if it is
+        /// <see langword="null"/>.</param>
         /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
         /// contain states dirty of the block which lastly updated states of a requested address,
         /// this delegate is called and its return value is used instead.
@@ -471,8 +472,8 @@ namespace Libplanet.Blockchain
         /// <para><see cref="StateCompleters{T}.Reject"/> (which is default) makes the incomplete
         /// states (if needed) to cause <see cref="IncompleteBlockStatesException"/> instead.</para>
         /// </param>
-        /// <returns>The current state of given <paramref name="address"/>.  This can be <c>null</c>
-        /// if <paramref name="address"/> has no value.</returns>
+        /// <returns>The current state of given <paramref name="address"/>.  This can be
+        /// <see langword="null"/> if <paramref name="address"/> has no value.</returns>
         public IValue GetState(
             Address address,
             BlockHash? offset = null,
@@ -546,7 +547,7 @@ namespace Libplanet.Blockchain
         /// <param name="currency">The currency type to query.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be the tip of the
-        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <see cref="BlockChain{T}"/> if it is <see langword="null"/>.</param>
         /// <param name="stateCompleter">When the <see cref="BlockChain{T}"/> instance does not
         /// contain states dirty of the block which lastly updated states of a requested address,
         /// this delegate is called and its return value is used instead.
@@ -667,7 +668,7 @@ namespace Libplanet.Blockchain
         /// <param name="txid">The executed <see cref="Transaction{T}"/>'s
         /// <see cref="Transaction{T}.Id"/>.</param>
         /// <returns>The recorded <see cref="TxExecution"/>.  If the transaction has never been
-        /// executed within the block, it returns <c>null</c> instead.</returns>
+        /// executed within the block, it returns <see langword="null"/> instead.</returns>
         public TxExecution GetTxExecution(BlockHash blockHash, TxId txid) =>
             Store.GetTxExecution(blockHash, txid);
 
@@ -714,7 +715,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="transaction"><see cref="Transaction{T}"/> to add to the pending list.
         /// </param>
-        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if staging was successful,
+        /// <see langword="false"/> otherwise.</returns>
         /// <exception cref="InvalidTxGenesisHashException">Thrown when given
         /// <paramref name="transaction"/> has invalid <see cref="Transaction{T}.GenesisHash"/>.
         /// </exception>
@@ -739,7 +741,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="transaction">A <see cref="Transaction{T}"/>
         /// to remove from the pending list.</param>
-        /// <returns><c>true</c> if unstaging was successful, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if unstaging was successful,
+        /// <see langword="false"/> otherwise.</returns>
         /// <seealso cref="StageTransaction"/>
         public bool UnstageTransaction(Transaction<T> transaction) =>
             StagePolicy.Unstage(this, transaction.Id);
@@ -1322,7 +1325,7 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="locator">A block locator that contains candidate common ancestors.</param>
         /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything
-        /// returns <c>null</c>.</returns>
+        /// returns <see langword="null"/>.</returns>
         internal BlockHash? FindBranchpoint(BlockLocator locator)
         {
             try

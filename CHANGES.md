@@ -2,9 +2,7 @@ Libplanet changelog
 ===================
 
 Version PBFT
---------------
-
-To be released.
+------------
 
 ### Deprecated APIs
 
@@ -94,6 +92,35 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+
+Version 0.44.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+ -  (Libplanet.Explorer) Added `json` field to `ActionType` GraphQL type.
+    [[#2418]]
+
+[#2418]: https://github.com/planetarium/libplanet/pull/2418
 
 
 Version 0.43.1

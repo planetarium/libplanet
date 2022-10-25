@@ -66,10 +66,10 @@ namespace Libplanet.Assets
 
         /// <summary>
         /// The <see cref="Address"/>es who can mint the currency.
-        /// If this is <c>null</c> <em>anyone</em> can mint the currency.
+        /// If this is <see langword="null"/> <em>anyone</em> can mint the currency.
         /// </summary>
         /// <remarks>
-        /// Unlike <c>null</c>, an empty set means <em>no one</em> can mint the currency.
+        /// Unlike <see langword="null"/>, an empty set means <em>no one</em> can mint the currency.
         /// </remarks>
         /// <seealso cref="IAccountStateDelta.MintAsset"/>
         [JsonInclude]
@@ -428,7 +428,7 @@ namespace Libplanet.Assets
 
         /// <summary>
         /// The uppermost quantity of currency allowed to exist.
-        /// <c>null</c> means unlimited supply.
+        /// <see langword="null"/> means unlimited supply.
         /// </summary>
         [JsonConverter(typeof(MaximumSupplyJsonConverter))]
         public FungibleAssetValue? MaximumSupply =>
@@ -617,11 +617,13 @@ namespace Libplanet.Assets
             Legacy(ticker, decimalPlaces, ImmutableHashSet.Create(minter));
 
         /// <summary>
-        /// Returns <c>true</c> if and only if the given <paramref name="address"/> is allowed
+        /// Returns <see langword="true"/> if and only if
+        /// the given <paramref name="address"/> is allowed
         /// to mint or burn assets of this currency.
         /// </summary>
         /// <param name="address">The account address to test.</param>
-        /// <returns><c>true</c> if and only if the given <paramref name="address"/> is allowed to
+        /// <returns><see langword="true"/> if and only if
+        /// the given <paramref name="address"/> is allowed to
         /// mint or burn assets of this currency.</returns>
         [Pure]
         public bool AllowsToMint(Address address) => Minters is null || Minters.Contains(address);

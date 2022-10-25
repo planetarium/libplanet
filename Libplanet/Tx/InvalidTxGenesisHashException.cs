@@ -24,7 +24,7 @@ namespace Libplanet.Tx
         /// <param name="expectedGenesisHash">The <see cref="HashDigest{SHA256}"/>
         /// value of <see cref="BlockChain{T}.Genesis"/>.</param>
         /// <param name="improperGenesisHash">The actual
-        /// <see cref="Transaction{T}.GenesisHash"/>.  This can be <c>null</c>.</param>
+        /// <see cref="Transaction{T}.GenesisHash"/>.  This can be <see langword="null"/>.</param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",

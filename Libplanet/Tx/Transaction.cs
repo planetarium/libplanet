@@ -110,7 +110,7 @@ namespace Libplanet.Tx
         /// property, and <see cref="Signer"/> property is also derived from this value.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
@@ -221,7 +221,7 @@ namespace Libplanet.Tx
         /// A digital signature of the content of this
         /// <see cref="Transaction{T}"/>.  This is signed by the account
         /// who corresponds to <see cref="PublicKey"/>.
-        /// This cannot be <c>null</c>.
+        /// This cannot be <see langword="null"/>.
         /// </summary>
         /// <returns>A new <see cref="byte"/> array of this transaction's
         /// signature.  Changing a returned array does not affect the internal
@@ -246,7 +246,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
-        /// This can be empty, but cannot be <c>null</c>.
+        /// This can be empty, but cannot be <see langword="null"/>.
         /// </summary>
         /// <remarks>This property is deprecated.  Use <see cref="CustomActions"/> or
         /// <see cref="SystemAction"/> instead.</remarks>
@@ -415,7 +415,7 @@ namespace Libplanet.Tx
         /// runtime exceptions could be thrown from this factory method.
         /// The best solution to that is not to oversimplify things,
         /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
+        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
@@ -429,7 +429,7 @@ namespace Libplanet.Tx
         /// included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="customActions">A list of user-defined custom actions to include.  This can
@@ -445,11 +445,11 @@ namespace Libplanet.Tx
         /// <paramref name="customActions"/>.  See also <em>Remarks</em> section.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
-        /// property.  If <c>null</c> (which is default) is passed this will
+        /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="privateKey"/> or <paramref name="customActions"/>.
         /// </exception>
         public static Transaction<T> Create(
@@ -567,7 +567,7 @@ namespace Libplanet.Tx
         /// runtime exceptions could be thrown from this factory method.
         /// The best solution to that is not to oversimplify things,
         /// there is an option to check <see cref="IActionContext"/>'s
-        /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
+        /// <see cref="IActionContext.Rehearsal"/> is <see langword="true"/> and
         /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="nonce">The number of previous
@@ -580,7 +580,7 @@ namespace Libplanet.Tx
         /// but this in itself is not included in the transaction.</param>
         /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
         /// of the genesis which this <see cref="Transaction{T}"/> is made from.
-        /// This can be <c>null</c> iff the transaction is contained
+        /// This can be <see langword="null"/> iff the transaction is contained
         /// in the genesis block.
         /// </param>
         /// <param name="customActions">A list of user-defined custom actions to include.  This can
@@ -597,10 +597,10 @@ namespace Libplanet.Tx
         /// </param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created.  This goes to the <see cref="Timestamp"/>
-        /// property.  If <c>null</c> (which is default) is passed this will
+        /// property.  If <see langword="null"/> (which is default) is passed this will
         /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> unsigned.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
         /// is passed to <paramref name="customActions"/>.</exception>
         public static Transaction<T> CreateUnsigned(
             long nonce,

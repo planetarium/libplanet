@@ -242,7 +242,7 @@ namespace Libplanet.Action
         /// that <paramref name="actions"/> belong to.</param>
         /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
         /// <see cref="Transaction{T}"/> that <paramref name="actions"/> belong to.
-        /// This can be <c>null</c> on rehearsal mode or if an <see cref="IAction"/> is a
+        /// This can be <see langword="null"/> on rehearsal mode or if an <see cref="IAction"/> is a
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
@@ -254,12 +254,12 @@ namespace Libplanet.Action
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
         /// the specified <see cref="Currency"/> is a native token defined by chain's
         /// <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/> or not.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
-        /// <param name="blockAction">Pass <c>true</c> if it is
+        /// <param name="blockAction">Pass <see langword="true"/> if it is
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
@@ -576,9 +576,9 @@ namespace Libplanet.Action
         /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
         /// <param name="previousStates">The states immediately before
         /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s for each
@@ -628,9 +628,9 @@ namespace Libplanet.Action
         /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
         /// <param name="previousStates">The states immediately before evaluating
         /// <paramref name="tx"/>.</param>
-        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
         /// to be a dry-run (i.e., the returned result will be never used).
-        /// The default value is <c>false</c>.</param>
+        /// The default value is <see langword="false"/>.</param>
         /// <returns>The resulting states of evaluating the <see cref="IAction"/>s in
         /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
