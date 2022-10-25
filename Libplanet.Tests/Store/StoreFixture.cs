@@ -127,9 +127,9 @@ namespace Libplanet.Tests.Store
                 miner: Miner,
                 lastCommit: TestUtils.CreateLastCommit(Block2.Hash, Block2.Index, 0));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
-            Block4 = TestUtils.MineNextBlock(Block3, miner: Miner);
+            Block4 = TestUtils.ProposeNextBlock(Block3, miner: Miner);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;
-            Block5 = TestUtils.MineNextBlock(Block4, miner: Miner);
+            Block5 = TestUtils.ProposeNextBlock(Block4, miner: Miner);
             stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
