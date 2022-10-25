@@ -19,12 +19,15 @@ To be released.
 
 ### Behavioral changes
 
+ - Optimized `ByteUtil.CalculateHash()` method.  [[#2437], [#2459]]
+
 ### Bug fixes
- - Optimize ByteUtil.CalculateHash() function
 
 ### CLI tools
 
 [#2418]: https://github.com/planetarium/libplanet/pull/2418
+[#2437]: https://github.com/planetarium/libplanet/issues/2437
+[#2459]: https://github.com/planetarium/libplanet/pull/2459
 
 
 Version 0.43.1
