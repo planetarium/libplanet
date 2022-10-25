@@ -257,14 +257,12 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> BlockChain,
             Context<DumbAction> Context)
             CreateDummyContext(
-            long height = 1,
-            int round = 0,
-            IBlockPolicy<DumbAction>? policy = null,
-            PrivateKey? privateKey = null,
-            List<PublicKey>? validators = null,
-            EventHandler<ConsensusMsg>? consensusMessageSent = null,
-            Step startStep = Step.Default,
-            ContextTimeoutOption? contextTimeoutOptions = null)
+                long height = 1,
+                IBlockPolicy<DumbAction>? policy = null,
+                PrivateKey? privateKey = null,
+                List<PublicKey>? validators = null,
+                EventHandler<ConsensusMsg>? consensusMessageSent = null,
+                ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= Peer1Priv;
@@ -295,8 +293,6 @@ namespace Libplanet.Net.Tests
                 height,
                 privateKey,
                 validators,
-                startStep,
-                round,
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, context);

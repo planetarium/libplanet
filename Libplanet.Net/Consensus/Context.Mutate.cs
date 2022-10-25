@@ -27,7 +27,7 @@ namespace Libplanet.Net.Consensus
             if (Proposer(Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
-                    "Starting round {NewRound} and is a proposer. (context: {Context})",
+                    "Starting round {NewRound} and is a proposer.",
                     round,
                     ToString());
                 if ((_validValue ?? GetValue()) is Block<T> proposal)

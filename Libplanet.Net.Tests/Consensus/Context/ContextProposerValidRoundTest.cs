@@ -15,6 +15,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
     public class ContextProposerValidRoundTest
     {
         private const int Timeout = 30000;
+        private static Bencodex.Codec _codec = new Bencodex.Codec();
         private readonly ILogger _logger;
 
         public ContextProposerValidRoundTest(ITestOutputHelper output)
@@ -33,90 +34,138 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterValidRoundPreVoteBlock()
         {
-            var voteSent = new AsyncAutoResetEvent();
-            BlockHash? targetHash = null;
+            Block<DumbAction>? proposedBlock = null;
+            var proposeSent = new AsyncAutoResetEvent();
+            var roundTwoVoteSent = new AsyncAutoResetEvent();
+            var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
+            bool timeoutProcessed = false;
 
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CheckVote,
-                startStep: Step.Propose,
-                round: 2);
-
-            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
-            targetHash = block.Hash;
-            void CheckVote(object? observer, ConsensusMsg? message)
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                consensusMessageSent: CatchMessage);
+            context.StateChanged += (sender, state) =>
             {
-                if (message is ConsensusPreVoteMsg vote && vote.BlockHash.Equals(targetHash))
+                if (state.Round == 2 && state.Step == Step.Propose)
                 {
-                    voteSent.Set();
+                    stateChangedToRoundTwoPropose.Set();
+                }
+            };
+            context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
+
+            void CatchMessage(object? observer, ConsensusMsg? message)
+            {
+                if (message is ConsensusProposeMsg propose)
+                {
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Payload));
+                    proposeSent.Set();
+                }
+                else if (message is ConsensusPreVoteMsg prevote &&
+                    prevote.BlockHash is { } hash &&
+                    hash.Equals(proposedBlock?.Hash) &&
+                    prevote.Round == 2)
+                {
+                    roundTwoVoteSent.Set();
                 }
             }
 
-            // Bypass StartAsync() to avoid StartRound(0).
-            _ = context.MessageConsumerTask(default);
-            _ = context.MutationConsumerTask(default);
+            context.Start();
+            await proposeSent.WaitAsync();
+            Assert.NotNull(proposedBlock);
 
+            // Force round change.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.Peer1Priv, round: 0, validRound: -1));
-
-            context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.Peer2Priv, round: 1, validRound: 0));
-
-            context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                block, TestUtils.Peer3Priv, round: 2, validRound: 1));
+                proposedBlock, TestUtils.Peer3Priv, round: 2, validRound: 1));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    TestUtils.Peer0Priv,
+                    height: 1,
+                    round: 2,
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
+            await stateChangedToRoundTwoPropose.WaitAsync();
+            Assert.Equal(2, context.Round);
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,
                     1,
                     round: 1,
-                    hash: block.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer0,
-                });
-
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
             context.ProduceMessage(new
                 ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv,
                     1,
                     round: 1,
-                    hash: block.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer2,
-                });
-
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv,
                     1,
                     round: 1,
-                    hash: block.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer3,
-                });
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
 
-            await voteSent.WaitAsync();
+            await roundTwoVoteSent.WaitAsync();
+            Assert.False(timeoutProcessed); // Assert no transition is due to timeout.
             Assert.Equal(Step.PreVote, context.Step);
-            Assert.Equal(1, context.Height);
-            Assert.Equal(2, context.Round);
         }
 
         [Fact(Timeout = Timeout)]
         public async void EnterValidRoundPreVoteNil()
         {
-            var voteSent = new AsyncAutoResetEvent();
+            var proposeSent = new AsyncAutoResetEvent();
+            Block<DumbAction>? proposedBlock = null;
+            var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
+            var stateChangedToRoundTwoPreVote = new AsyncAutoResetEvent();
+            var stateChangedToRoundTwoPreCommit = new AsyncAutoResetEvent();
+            var stateChangedToRoundThreePropose = new AsyncAutoResetEvent();
+            var roundThreeNilPreVoteSent = new AsyncAutoResetEvent();
+            bool timeoutProcessed = false;
             var (fx, blockChain, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CheckVote,
-                startStep: Step.Propose,
-                round: 2);
+                consensusMessageSent: CatchMessage);
+            context.StateChanged += (sender, state) =>
+            {
+                if (state.Round == 2 && state.Step == Step.Propose)
+                {
+                    stateChangedToRoundTwoPropose.Set();
+                }
+                else if (state.Round == 2 && state.Step == Step.PreVote)
+                {
+                    stateChangedToRoundTwoPreVote.Set();
+                }
+                else if (state.Round == 2 && state.Step == Step.PreCommit)
+                {
+                    stateChangedToRoundTwoPreCommit.Set();
+                }
+                else if (state.Round == 3 && state.Step == Step.Propose)
+                {
+                    stateChangedToRoundThreePropose.Set();
+                }
+            };
+            context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
+            void CatchMessage(object? observer, ConsensusMsg? message)
+            {
+                if (message is ConsensusProposeMsg propose)
+                {
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Payload));
+                    proposeSent.Set();
+                }
+                else if (message is ConsensusPreVoteMsg prevote &&
+                    prevote.Round == 3 &&
+                    prevote.BlockHash is null)
+                {
+                    roundThreeNilPreVoteSent.Set();
+                }
+            }
 
-            var invalidBlock = new BlockContent<DumbAction>(
+            var differentBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: blockChain.Tip.Index + 1,
-                    timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
+                    timestamp: blockChain.Tip.Timestamp.Add(TimeSpan.FromSeconds(1)),
                     miner: fx.Miner.PublicKey.ToAddress(),
                     publicKey: fx.Miner.PublicKey,
                     previousHash: blockChain.Tip.Hash,
@@ -124,64 +173,78 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     lastCommit: null))
                 .Propose().Evaluate(fx.Miner, blockChain);
 
-            void CheckVote(object? observer, ConsensusMsg? message)
-            {
-                if (message is ConsensusPreVoteMsg vote && vote.BlockHash is null)
-                {
-                    voteSent.Set();
-                }
-            }
+            context.Start();
+            await proposeSent.WaitAsync();
+            Assert.NotNull(proposedBlock);
 
-            // Bypass StartAsync() to avoid StartRound(0).
-            _ = context.MessageConsumerTask(default);
-            _ = context.MutationConsumerTask(default);
-
+            // Force round change to 2.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.Peer1Priv, round: 0, validRound: -1));
+                proposedBlock, TestUtils.Peer3Priv, round: 2, validRound: -1));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    TestUtils.Peer0Priv,
+                    height: 1,
+                    round: 2,
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
+            await stateChangedToRoundTwoPropose.WaitAsync();
+            Assert.Equal(2, context.Round);
+            Assert.False(timeoutProcessed); // Assert no transition is due to timeout.
 
-            context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.Peer2Priv, round: 1, validRound: 0));
+            // Updated locked round and valid round to 2.
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    TestUtils.Peer2Priv,
+                    height: 1,
+                    round: 2,
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    TestUtils.Peer3Priv,
+                    height: 1,
+                    round: 2,
+                    hash: proposedBlock!.Hash,
+                    flag: VoteFlag.PreVote)));
+            await stateChangedToRoundTwoPreCommit.WaitAsync();
 
+            // Force round change to 3.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                invalidBlock, TestUtils.Peer3Priv, round: 2, validRound: 1));
+                differentBlock, TestUtils.Peer0Priv, round: 3, validRound: 0));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    TestUtils.Peer3Priv,
+                    height: 1,
+                    round: 3,
+                    hash: differentBlock.Hash,
+                    flag: VoteFlag.PreVote)));
+            await stateChangedToRoundThreePropose.WaitAsync();
+            Assert.Equal(3, context.Round);
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,
-                    1,
-                    round: 1,
-                    hash: invalidBlock.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer0,
-                });
-
-            context.ProduceMessage(new
-                ConsensusPreVoteMsg(TestUtils.CreateVote(
+                    height: 1,
+                    round: 0,
+                    hash: differentBlock.Hash,
+                    flag: VoteFlag.PreVote)));
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer2Priv,
-                    1,
-                    round: 1,
-                    hash: invalidBlock.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer2,
-                });
-
+                    height: 1,
+                    round: 0,
+                    hash: differentBlock.Hash,
+                    flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv,
-                    1,
-                    round: 1,
-                    hash: invalidBlock.Hash,
-                    flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer3,
-                });
+                    height: 1,
+                    round: 0,
+                    hash: differentBlock.Hash,
+                    flag: VoteFlag.PreVote)));
 
-            await voteSent.WaitAsync();
-            Assert.Equal(Step.PreVote, context.Step);
-            Assert.Equal(1, context.Height);
-            Assert.Equal(2, context.Round);
+            await roundThreeNilPreVoteSent.WaitAsync();
+            Assert.False(timeoutProcessed);
         }
     }
 }

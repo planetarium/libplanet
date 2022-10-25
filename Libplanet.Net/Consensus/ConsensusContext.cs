@@ -226,7 +226,6 @@ namespace Libplanet.Net.Consensus
                             height,
                             _privateKey,
                             _getValidators(height).ToList(),
-                            Step.Default,
                             contextTimeoutOptions: _contextTimeoutOption);
 
                         AttachEventHandlers(_contexts[height]);
