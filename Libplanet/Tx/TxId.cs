@@ -37,11 +37,11 @@ namespace Libplanet.Tx
         /// Converts a <see cref="byte"/> array into a <see cref="TxId"/>.
         /// </summary>
         /// <param name="txid">A <see cref="byte"/> array that encodes
-        /// a <see cref="TxId"/>.  It must not be <c>null</c>,
+        /// a <see cref="TxId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="txid"/> is <c>null</c>.</exception>
+        /// <paramref name="txid"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
         /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
         /// the same to the required <see cref="Size"/>.</exception>

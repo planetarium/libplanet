@@ -82,7 +82,7 @@ namespace Libplanet.RocksDBStore
     /// </item>
     /// <item>
     /// <term><c>secure</c></term>
-    /// <description><c>true</c> or <c>false</c> (default).  Corresponds to
+    /// <description><see langword="true"/> or <see langword="false"/> (default).  Corresponds to
     /// <see cref="TrieStateStore(Libplanet.Store.Trie.IKeyValueStore, bool)"/>'s <c>secure</c>
     /// parameter.</description>
     /// </item>

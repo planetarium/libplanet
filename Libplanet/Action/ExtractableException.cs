@@ -15,7 +15,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="exception">An exception to extract its metadata from.</param>
         /// <returns>Extracted metadata.  If there is not its metadata at all, or it does not
-        /// support metadata extraction, it can return <c>null</c> instead.</returns>
+        /// support metadata extraction, it can return <see langword="null"/> instead.</returns>
         [Pure]
         public static IValue? ExtractMetadata(this Exception exception) =>
             exception switch

@@ -44,7 +44,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="path">A path of the directory to store key files.  A new directory is
         /// created if not exists.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> is passed to
+        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
         /// <paramref name="path"/>.</exception>
         /// <seealso cref="DefaultKeyStore"/>
         public Web3KeyStore(string path)

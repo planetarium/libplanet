@@ -20,9 +20,9 @@ namespace Libplanet
         /// <see cref="ToByteArray()"/> method.</para>
         /// </summary>
         /// <param name="nonce">A <see cref="byte"/> array to convert to
-        /// a <see cref="Nonce"/> object.  It must not be <c>null</c>.</param>
+        /// a <see cref="Nonce"/> object.  It must not be <see langword="null"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given
-        /// <paramref name="nonce"/> is a <c>null</c>.</exception>
+        /// <paramref name="nonce"/> is a <see langword="null"/>.</exception>
         /// <seealso cref="ToByteArray()"/>
         public Nonce(byte[] nonce)
             : this(nonce?.ToImmutableArray() ?? throw new ArgumentNullException(nameof(nonce)))
