@@ -56,14 +56,9 @@ namespace Libplanet.Node
             Signature = signature;
 
             Dictionary dict = _metadata.ToBencodex();
-            if (SystemActionValue is { } sav)
-            {
-                dict = dict.Add(TxMetadata.SystemActionKey, sav);
-            }
-            else
-            {
-                dict = dict.Add(TxMetadata.CustomActionsKey, CustomActionsValue!);
-            }
+            dict = SystemActionValue is { } sav
+                ? dict.Add(TxMetadata.SystemActionKey, sav)
+                : dict.Add(TxMetadata.CustomActionsKey, CustomActionsValue!);
 
             byte[] encoded = Codec.Encode(dict);
 
