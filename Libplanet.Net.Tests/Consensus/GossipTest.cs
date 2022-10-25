@@ -6,6 +6,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
+using Libplanet.Tests.Store;
 using NetMQ;
 using Nito.AsyncEx;
 using Serilog;
@@ -41,6 +42,7 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact(Timeout = Timeout)]
         public async void AddMessage()
         {
+            MemoryStoreFixture fx = new MemoryStoreFixture();
             bool received1 = false;
             bool received2 = false;
             var key1 = new PrivateKey();
@@ -76,13 +78,7 @@ namespace Libplanet.Net.Tests.Consensus
                 await gossip1.WaitForRunningAsync();
                 await gossip2.WaitForRunningAsync();
                 gossip1.AddMessage(
-                    new ConsensusProposeMsg(
-                        new PrivateKey().PublicKey,
-                        0,
-                        0,
-                        TestUtils.BlockHash0,
-                        new byte[] { },
-                        0));
+                    TestUtils.CreateConsensusPropose(fx.Block1, new PrivateKey(), 0));
                 await receivedEvent.WaitAsync();
                 Assert.True(received1);
                 Assert.True(received2);
@@ -99,6 +95,7 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact(Timeout = Timeout)]
         public async void AddMessages()
         {
+            MemoryStoreFixture fx = new MemoryStoreFixture();
             int received1 = 0;
             int received2 = 0;
             var key1 = new PrivateKey();
@@ -137,14 +134,14 @@ namespace Libplanet.Net.Tests.Consensus
                 _ = gossip2.StartAsync(default);
                 await gossip1.WaitForRunningAsync();
                 await gossip2.WaitForRunningAsync();
-                PublicKey key = new PrivateKey().PublicKey;
+                PrivateKey key = new PrivateKey();
                 gossip1.AddMessages(
                     new[]
                     {
-                        new ConsensusProposeMsg(key, 0, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusProposeMsg(key, 1, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusProposeMsg(key, 2, 0, TestUtils.BlockHash0, new byte[] { }, 0),
-                        new ConsensusProposeMsg(key, 3, 0, TestUtils.BlockHash0, new byte[] { }, 0),
+                        TestUtils.CreateConsensusPropose(fx.Block1, key, 0),
+                        TestUtils.CreateConsensusPropose(fx.Block1, key, 1),
+                        TestUtils.CreateConsensusPropose(fx.Block1, key, 2),
+                        TestUtils.CreateConsensusPropose(fx.Block1, key, 3),
                     });
 
                 await receivedEvent.WaitAsync();

@@ -58,7 +58,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 if (message is ConsensusProposeMsg propose && message.Height == 2)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Dictionary)codec.Decode(propose!.Payload));
+                        (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
                     heightTwoProposeSent.Set();
                 }
             }
@@ -66,13 +66,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(1);
             var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             consensusContext.HandleMessage(
-                new ConsensusProposeMsg(
-                    TestUtils.Peer1.PublicKey,
-                    1,
-                    0,
-                    block1.Hash,
-                    codec.Encode(block1.MarshalBlock()),
-                    -1));
+                TestUtils.CreateConsensusPropose(block1, TestUtils.Peer1Priv));
             var expectedVotes = new Vote[4];
 
             // Peer2 sends a ConsensusVote via background process.
@@ -248,20 +242,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var blockHeightTwo =
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    (Dictionary)codec.Decode(propose.Payload));
+                    (Dictionary)codec.Decode(propose.Proposal.BlockMarshaled));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.Peer3Priv,
                 lastCommit: TestUtils.CreateLastCommit(blockHeightTwo.Hash, 2, 0));
 
             // Message from higher height
             consensusContext.HandleMessage(
-                new ConsensusProposeMsg(
-                    TestUtils.Peer3.PublicKey,
-                    3,
-                    0,
-                    blockHeightThree.Hash,
-                    codec.Encode(blockHeightThree.MarshalBlock()),
-                    -1));
+                TestUtils.CreateConsensusPropose(blockHeightThree, TestUtils.Peer3Priv, 3));
 
             // New height started.
             await heightThreeStepChangedToPropose.WaitAsync();
@@ -290,7 +278,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         message.Message is ConsensusProposeMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Payload));
+                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
                         heightTwoProposeSent.Set();
                     }
                 };

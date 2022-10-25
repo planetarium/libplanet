@@ -137,7 +137,7 @@ namespace Libplanet.Net.Tests
         }
 
         public static ConsensusProposeMsg CreateConsensusPropose(
-            Block<DumbAction>? block,
+            Block<DumbAction> block,
             PrivateKey privateKey,
             long height = 1,
             int round = 0,
@@ -148,9 +148,14 @@ namespace Libplanet.Net.Tests
                 privateKey.PublicKey,
                 height,
                 round,
-                block?.Hash ?? default,
-                block is null ? Array.Empty<byte>() : codec.Encode(block.MarshalBlock()),
-                validRound)
+                block.Hash,
+                new ProposalMetaData(
+                    height,
+                    round,
+                    codec.Encode(block.MarshalBlock()),
+                    block.Timestamp,
+                    privateKey.PublicKey,
+                    validRound).Sign(privateKey))
             {
                 Remote = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234)),
             };
