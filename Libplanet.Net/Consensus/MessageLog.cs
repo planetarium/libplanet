@@ -1,12 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
+using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
+    /// <para>
     /// An exception free concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper
     /// to be used for <see cref="Context{T}"/> with well-defined default behaviors.
+    /// </para>
+    /// <para>
+    /// This presumably only contains <see cref="ConsensusMsg"/>s from valid validators for
+    /// a certain <see cref="BlockCommit.Height"/>.  It is the responsibility of the
+    /// <see cref="Context{T}"/> that owns the instance of <see cref="MessageLog"/> to
+    /// conform to these requirements, i.e. <see cref="MessageLog"/> class is not responsible
+    /// for checking validators nor <see cref="ConsensusMsg.Height"/>.
+    /// </para>
+    /// <para>
+    /// Note that it is possible for <see cref="MessageLog"/> to contain multiple
+    /// <see cref="ConsensusMsg"/>s for the same <see cref="Context{T}.Round"/> and
+    /// the same validator.
+    /// </para>
     /// </summary>
     internal class MessageLog
     {
@@ -34,18 +49,22 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the <see cref="ConsensusProposeMsg"/> for given <paramref name="round"/>.
+        /// Gets all <see cref="ConsensusProposeMsg"/>s in given <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>The <see cref="ConsensusProposeMsg"/> corresponding to <paramref name="round"/>
-        /// if found, otherwise <c>null</c>.</returns>
-        internal ConsensusProposeMsg? GetPropose(int round)
+        /// <returns>All <see cref="ConsensusProposeMsg"/>'s in given <paramref name="round"/>.
+        /// </returns>
+        /// <remarks>
+        /// There can be multiple <see cref="ConsensusProposeMsg"/>s in given
+        /// <paramref name="round"/>.
+        /// </remarks>
+        internal List<ConsensusProposeMsg> GetProposes(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].OfType<ConsensusProposeMsg>().FirstOrDefault()
-                    : null;
+                    ? _log[round].OfType<ConsensusProposeMsg>().ToList()
+                    : new List<ConsensusProposeMsg>();
             }
         }
 
@@ -55,6 +74,9 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round to search.</param>
         /// <returns>All <see cref="ConsensusPreVoteMsg"/>s in given <paramref name="round"/>.
         /// </returns>
+        /// <remarks>
+        /// There can be multiple <see cref="ConsensusPreVoteMsg"/>s from the same validator.
+        /// </remarks>
         internal List<ConsensusPreVoteMsg> GetPreVotes(int round)
         {
             lock (_lock)
@@ -71,6 +93,9 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round to search.</param>
         /// <returns>All <see cref="ConsensusPreCommitMsg"/>s in given <paramref name="round"/>.
         /// </returns>
+        /// <remarks>
+        /// There can be multiple <see cref="ConsensusPreCommitMsg"/>s from the same validator.
+        /// </remarks>
         internal List<ConsensusPreCommitMsg> GetPreCommits(int round)
         {
             lock (_lock)
@@ -82,18 +107,22 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Counts how many <see cref="ConsensusMsg"/>s are in a log for given
+        /// Counts distinct validators for <see cref="ConsensusMsg"/>s in given
         /// <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>The number of <see cref="ConsensusMsg"/>s in <paramref name="round"/>.
+        /// <returns>The number of distinct validators for <see cref="ConsensusMsg"/>s
+        /// in given <paramref name="round"/>.
         /// </returns>
-        internal int GetCount(int round)
+        internal int GetValidatorsCount(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].Count
+                    ? _log[round]
+                        .Select(message => message.Validator)
+                        .Distinct()
+                        .Count()
                     : 0;
             }
         }

@@ -318,12 +318,11 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            // FIXME: _messagesInRound should not contain any duplicated messages for this.
             if (round > Round &&
-                _messageLog.GetCount(round) > TotalValidators / 3)
+                _messageLog.GetValidatorsCount(round) > TotalValidators / 3)
             {
                 _logger.Debug(
-                    "1/3+ messages from the round {Round} > current round {CurrentRound}. " +
+                    "1/3+ validators from round {Round} > current round {CurrentRound}. " +
                     "(context: {Context})",
                     round,
                     Round,

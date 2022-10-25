@@ -406,8 +406,11 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private (Block<T>?, int?) GetPropose(int round)
         {
-            if (_messageLog.GetPropose(round) is ConsensusProposeMsg propose)
+            List<ConsensusProposeMsg> proposes = _messageLog.GetProposes(round);
+            if (proposes.Count > 0)
             {
+                // FIXME: Probably should not blindly pick the first one.
+                ConsensusProposeMsg propose = proposes[0];
                 var block = BlockMarshaler.UnmarshalBlock<T>(
                     (Dictionary)_codec.Decode(propose.Payload));
                 return (block, propose.ValidRound);
