@@ -45,7 +45,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="transaction">The <see cref="Transaction{T}"/> to consider.</param>
         /// <returns>A <see cref="TxPolicyViolationException"/> with a description
         /// as to why given <paramref name="transaction"/> is <em>invalid</em>,
-        /// or <c>null</c> if <paramref name="transaction"/> is <em>valid</em>.</returns>
+        /// or <see langword="null"/> if <paramref name="transaction"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// This is used in two different cases:
         /// <list type="bullet">
@@ -74,7 +74,7 @@ namespace Libplanet.Blockchain.Policies
         /// <paramref name="blockChain"/>.</param>
         /// <returns>A <see cref="BlockPolicyViolationException"/> with a description
         /// as to why given <paramref name="nextBlock"/> is <em>invalid</em>,
-        /// or <c>null</c> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
+        /// or <see langword="null"/> if <paramref name="nextBlock"/> is <em>valid</em>.</returns>
         /// <remarks>
         /// Note that <see cref="ValidateNextBlockTx"/> will be called separately from
         /// a <see cref="BlockChain{T}"/> when appending a <see cref="Block{T}"/>.

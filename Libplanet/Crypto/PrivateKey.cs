@@ -84,7 +84,7 @@ namespace Libplanet.Crypto
         /// <param name="hex">A hexadecimal string of a private key's
         /// <see cref="ByteArray"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
-        /// string is <c>null</c>.</exception>
+        /// string is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
         /// <paramref name="hex"/> string is too short or too long.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
@@ -166,7 +166,7 @@ namespace Libplanet.Crypto
         /// <see cref="ByteArray"/>.</param>
         /// <returns>A created <see cref="PrivateKey"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the given <paramref name="hex"/>
-        /// string is <c>null</c>.</exception>
+        /// string is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the length of the given
         /// <paramref name="hex"/> string is too short or too long.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is

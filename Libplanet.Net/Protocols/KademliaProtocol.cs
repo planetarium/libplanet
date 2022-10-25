@@ -35,9 +35,8 @@ namespace Libplanet.Net.Protocols
         /// to be the reference point.</param>
         /// <param name="findConcurrency">The number of concurrency in peer discovery.</param>
         /// <param name="requestTimeout">
-        /// A timeout of waiting for the reply of messages.
-        /// If it's omitted or <c>null</c> is given, will automatically be set to 5 seconds.
-        /// </param>
+        /// A timeout of waiting for the reply of messages.  If it's omitted
+        /// or <see langword="null"/> is given, will automatically be set to 5 seconds.</param>
         public KademliaProtocol(
             RoutingTable table,
             ITransport transport,
@@ -189,7 +188,7 @@ namespace Libplanet.Net.Protocols
         /// Refreshes all peers in routing table.
         /// </summary>
         /// <param name="timeout">A timeout of waiting for the reply of messages.
-        /// If <c>null</c> is given, the task never halts by itself
+        /// If <see langword="null"/> is given, the task never halts by itself
         /// even no any response was given from the the target peer.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -288,7 +287,7 @@ namespace Libplanet.Net.Protocols
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>A <see cref="BoundPeer"/> with <paramref name="target"/> as its
-        /// <see cref="Address"/> if found.  Otherwise, <c>null</c>.</returns>
+        /// <see cref="Address"/> if found.  Otherwise, <see langword="null"/>.</returns>
         public async Task<BoundPeer?> FindSpecificPeerAsync(
             Address target,
             int depth,

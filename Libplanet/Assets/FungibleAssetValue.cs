@@ -233,7 +233,8 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">A value.</param>
         /// <param name="other">Another value.</param>
-        /// <returns><c>true</c> if two values are equal.  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if two values are equal.
+        /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public static bool operator ==(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.Equals(other);
@@ -243,7 +244,8 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">A value.</param>
         /// <param name="other">Another value.</param>
-        /// <returns><c>false</c> if two values are equal.  Otherwise <c>true</c>.</returns>
+        /// <returns><see langword="false"/> if two values are equal.
+        /// Otherwise <see langword="true"/>.</returns>
         [Pure]
         public static bool operator !=(FungibleAssetValue obj, FungibleAssetValue other) =>
             !(obj == other);
@@ -254,9 +256,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is less than the right
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than the right
         /// operand (<paramref name="other"/>).  Otherwise (even if two operands are equal)
-        /// <c>false</c>.</returns>
+        /// <see langword="false"/>.</returns>
         [Pure]
         public static bool operator <(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.CompareTo(other) < 0;
@@ -267,8 +270,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is less than or equal
-        /// to the right operand (<paramref name="other"/>).  Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is less than or equal
+        /// to the right operand (<paramref name="other"/>).  Otherwise <see langword="false"/>.
+        /// </returns>
         [Pure]
         public static bool operator <=(FungibleAssetValue obj, FungibleAssetValue other) =>
             obj.CompareTo(other) <= 0;
@@ -279,9 +284,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is greater than
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than
         /// the right operand (<paramref name="other"/>).  Otherwise (even if two operands are
-        /// equal) <c>false</c>.</returns>
+        /// equal) <see langword="false"/>.</returns>
         [Pure]
         public static bool operator >(FungibleAssetValue obj, FungibleAssetValue other) =>
             other < obj;
@@ -292,8 +298,10 @@ namespace Libplanet.Assets
         /// </summary>
         /// <param name="obj">The left operand to compare.</param>
         /// <param name="other">The right operand to compare.</param>
-        /// <returns><c>true</c> if the left operand (<paramref name="obj"/>) is greater than or
-        /// equal to the right operand (<paramref name="other"/>). Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/>
+        /// if the left operand (<paramref name="obj"/>) is greater than or
+        /// equal to the right operand (<paramref name="other"/>).
+        /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public static bool operator >=(FungibleAssetValue obj, FungibleAssetValue other) =>
             other <= obj;

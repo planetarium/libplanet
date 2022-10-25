@@ -1,7 +1,11 @@
 #nullable disable
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using GraphQL;
@@ -51,6 +55,19 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "Inspection",
                 description: "A readable representation for debugging.",
                 resolve: ctx => ctx.Source.PlainValue.Inspect(loadAll: true)
+            );
+
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "json",
+                description: "A JSON representaion of action data",
+                resolve: ctx =>
+                {
+                    var converter = new Bencodex.Json.BencodexJsonConverter();
+                    var buffer = new MemoryStream();
+                    var writer = new Utf8JsonWriter(buffer);
+                    converter.Write(writer, ctx.Source.PlainValue, new JsonSerializerOptions());
+                    return Encoding.UTF8.GetString(buffer.ToArray());
+                }
             );
 
             Name = "Action";

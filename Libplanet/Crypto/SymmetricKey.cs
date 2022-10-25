@@ -101,7 +101,7 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="message">A binary data to be encrypted.</param>
         /// <param name="nonSecret">An extra data not to be encrypted, but
-        /// to be just transmitted as is.  The default value is <c>null</c>,
+        /// to be just transmitted as is.  The default value is <see langword="null"/>,
         /// which means empty.</param>
         /// <returns>
         /// A ciphertext that was encrypted from the <paramref name="message"/>
@@ -150,7 +150,7 @@ namespace Libplanet.Crypto
         /// (See also <see cref="Encrypt(byte[], byte[])"/> method's the second
         /// parameter, which is optional.)  <c>0</c> by default.</param>
         /// <returns>The plain data the <paramref name="ciphertext"/> encrypted.
-        /// It returns <c>null</c> if the <paramref name="ciphertext"/> is
+        /// It returns <see langword="null"/> if the <paramref name="ciphertext"/> is
         /// invalid (this behavior will be eventually changed in the future to
         /// throw an exception instead).</returns>
         /// <remarks>

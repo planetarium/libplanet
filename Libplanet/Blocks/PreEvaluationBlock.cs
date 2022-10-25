@@ -119,8 +119,8 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
-        /// </remarks>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/>
+        /// signatures.</remarks>
         public Block<T> Evaluate(
             PrivateKey privateKey,
             IAction? blockAction,
@@ -150,8 +150,8 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
-        /// </remarks>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with
+        /// <see langword="null"/> signatures.</remarks>
         // FIXME: Take narrower input instead of a whole BlockChain<T>.
         public Block<T> Evaluate(PrivateKey privateKey, BlockChain<T> blockChain) =>
             EvaluateActions(privateKey, blockChain).Block;
@@ -173,8 +173,8 @@ namespace Libplanet.Blocks
         /// cref="PreEvaluationBlockHeader.ProtocolVersion"/> 2, it is not usable with blocks of
         /// the earlier <see cref="PreEvaluationBlockHeader.ProtocolVersion"/>s than 2.
         /// To create a <see cref="Block{T}"/> instance with <see cref="Block{T}.ProtocolVersion"/>
-        /// less than 2, use <see cref="Block{T}"/>'s constructors with <c>null</c> signatures.
-        /// </remarks>
+        /// less than 2, use <see cref="Block{T}"/>'s constructors with <see langword="null"/>
+        /// signatures.</remarks>
         public Block<T> Sign(PrivateKey privateKey, HashDigest<SHA256> stateRootHash)
         {
             ImmutableArray<byte> sig = Header.MakeSignature(privateKey, stateRootHash);

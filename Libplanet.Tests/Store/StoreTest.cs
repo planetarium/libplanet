@@ -893,6 +893,7 @@ namespace Libplanet.Tests.Store
             store.AppendIndex(chainA, Fx.Block1.Hash);
             store.ForkBlockIndexes(chainA, chainB, Fx.Block1.Hash);
             store.AppendIndex(chainB, Fx.Block2.Hash);
+            store.AppendIndex(chainB, Fx.Block3.Hash);
 
             Assert.Equal(
                 new[]
@@ -908,12 +909,14 @@ namespace Libplanet.Tests.Store
                     Fx.GenesisBlock.Hash,
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
+                    Fx.Block3.Hash,
                 },
                 store.IterateIndexes(chainB)
             );
 
-            store.ForkBlockIndexes(chainB, chainC, Fx.Block2.Hash);
-            store.AppendIndex(chainC, Fx.Block3.Hash);
+            store.ForkBlockIndexes(chainB, chainC, Fx.Block3.Hash);
+            store.AppendIndex(chainC, Fx.Block4.Hash);
+            store.AppendIndex(chainC, Fx.Block5.Hash);
 
             Assert.Equal(
                 new[]
@@ -929,6 +932,7 @@ namespace Libplanet.Tests.Store
                     Fx.GenesisBlock.Hash,
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
+                    Fx.Block3.Hash,
                 },
                 store.IterateIndexes(chainB)
             );
@@ -939,8 +943,65 @@ namespace Libplanet.Tests.Store
                     Fx.Block1.Hash,
                     Fx.Block2.Hash,
                     Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
                 },
                 store.IterateIndexes(chainC)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block1.Hash,
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 1)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block2.Hash,
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 2)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block3.Hash,
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 3)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block4.Hash,
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 4)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Fx.Block5.Hash,
+                },
+                store.IterateIndexes(chainC, offset: 5)
+            );
+
+            Assert.Equal(
+                Array.Empty<BlockHash>(),
+                store.IterateIndexes(chainC, offset: 6)
             );
 
             Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainA, 1));
@@ -948,7 +1009,10 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block1.Hash, store.IndexBlockHash(chainC, 1));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainB, 2));
             Assert.Equal(Fx.Block2.Hash, store.IndexBlockHash(chainC, 2));
+            Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainB, 3));
             Assert.Equal(Fx.Block3.Hash, store.IndexBlockHash(chainC, 3));
+            Assert.Equal(Fx.Block4.Hash, store.IndexBlockHash(chainC, 4));
+            Assert.Equal(Fx.Block5.Hash, store.IndexBlockHash(chainC, 5));
         }
 
         [SkippableFact]

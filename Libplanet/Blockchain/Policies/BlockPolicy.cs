@@ -43,7 +43,7 @@ namespace Libplanet.Blockchain.Policies
         /// </para>
         /// </summary>
         /// <param name="blockAction">A <see cref="IAction"/> to executed for
-        /// every <see cref="Block{T}"/>.  Set to <c>null</c> by default, which results
+        /// every <see cref="Block{T}"/>.  Set to <see langword="null"/> by default, which results
         /// in no additional execution other than those included in <see cref="Transaction{T}"/>s.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
@@ -51,7 +51,7 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="validateNextBlockTx">The predicate that determines if
         /// a <see cref="Transaction{T}"/> follows the policy.  Set to a constant function of
-        /// <c>null</c> by default.</param>
+        /// <see langword="null"/> by default.</param>
         /// <param name="validateNextBlock">The predicate that determines if
         /// a <see cref="Block{T}"/> follows the policy.  Set to a default implementation
         /// where block's hash algorithm type, bytes count, and transactions count are validated.

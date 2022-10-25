@@ -22,7 +22,8 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="transaction">The <seealso cref="Transaction{T}"/> to be staged.</param>
-        /// <returns><c>true</c> if staging was successful, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if staging was successful,
+        /// <see langword="false"/> otherwise.</returns>
         /// <remarks>
         /// <para>
         /// This does not throw any exception regardless of whether <paramref name="transaction"/>
@@ -41,7 +42,8 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="id">The <seealso cref="Transaction{T}.Id"/> to unstage.</param>
-        /// <returns><c>true</c> if unstaging was successful, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if unstaging was successful,
+        /// <see langword="false"/> otherwise.</returns>
         /// <remarks>
         /// This does not throw any exception regardless of whether <paramref name="id"/> was
         /// successfully unstaged or not.
@@ -66,8 +68,8 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to check.</param>
-        /// <returns><c>true</c> if <paramref name="id"/> is marked as ignored,
-        /// <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="id"/> is marked as ignored,
+        /// <see langword="false"/> otherwise.</returns>
         public bool Ignores(BlockChain<T> blockChain, TxId id);
 
         /// <summary>
@@ -77,9 +79,9 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         /// <param name="id">The <see cref="Transaction{T}.Id"/> to get.</param>
         /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
-        /// or not.  Set to <c>true</c> by default.</param>
+        /// or not.  Set to <see langword="true"/> by default.</param>
         /// <returns>The staged <see cref="Transaction{T}"/> associated with <paramref name="id"/>
-        /// if found,  <c>null</c> otherwise.</returns>
+        /// if found,  <see langword="null"/> otherwise.</returns>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true);
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockChain">The <see cref="BlockChain{T}"/> that the stage belongs to.
         /// </param>
         /// <param name="filtered">Whether to filter masked staged <see cref="Transaction{T}"/>s
-        /// or not.  Set to <c>true</c> by default.</param>
+        /// or not.  Set to <see langword="true"/> by default.</param>
         /// <returns>All staged transactions.  No ordering is guaranteed.</returns>
         public IEnumerable<Transaction<T>> Iterate(BlockChain<T> blockChain, bool filtered = true);
 

@@ -346,7 +346,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="writer">A JSON writer which has not begun object nor array.</param>
         /// <param name="id">A unique identifier, which goes to the <c>id</c> field in the key JSON
-        /// file.  If <c>null</c> (which is default) it is random-generated.</param>
+        /// file.  If <see langword="null"/> (which is default) it is random-generated.</param>
         public void WriteJson(Utf8JsonWriter writer, [Pure] in Guid? id = null)
         {
             writer.WriteStartObject();
@@ -376,7 +376,7 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="stream">The destination for writing JSON text.</param>
         /// <param name="id">A unique identifier, which goes to the <c>id</c> field in the key JSON
-        /// file.  If <c>null</c> (which is default) it is random-generated.</param>
+        /// file.  If <see langword="null"/> (which is default) it is random-generated.</param>
         public void WriteJson(Stream stream, [Pure] in Guid? id = null)
         {
             using var writer = new Utf8JsonWriter(stream);

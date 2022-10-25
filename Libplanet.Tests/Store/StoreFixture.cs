@@ -127,6 +127,10 @@ namespace Libplanet.Tests.Store
                 miner: Miner,
                 lastCommit: TestUtils.CreateLastCommit(Block2.Hash, Block2.Index, 0));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
+            Block4 = TestUtils.MineNextBlock(Block3, miner: Miner);
+            stateRootHashes[Block4.Hash] = Block4.StateRootHash;
+            Block5 = TestUtils.MineNextBlock(Block4, miner: Miner);
+            stateRootHashes[Block5.Hash] = Block5.StateRootHash;
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
@@ -170,6 +174,10 @@ namespace Libplanet.Tests.Store
         public Block<DumbAction> Block2 { get; }
 
         public Block<DumbAction> Block3 { get; }
+
+        public Block<DumbAction> Block4 { get; }
+
+        public Block<DumbAction> Block5 { get; }
 
         public Transaction<DumbAction> Transaction1 { get; }
 

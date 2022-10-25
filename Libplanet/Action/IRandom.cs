@@ -73,7 +73,7 @@ namespace Libplanet.Action
         /// <param name="buffer">A <see cref="byte"/> array to contain random
         /// numbers.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref
-        /// name="buffer"/> is <c>null</c>.</exception>
+        /// name="buffer"/> is <see langword="null"/>.</exception>
         /// <seealso cref="System.Random.NextBytes(byte[])"/>
         void NextBytes(byte[] buffer);
     }
