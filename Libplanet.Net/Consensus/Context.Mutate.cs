@@ -117,7 +117,6 @@ namespace Libplanet.Net.Consensus
 
                 if (message is ConsensusPreVoteMsg vote &&
                     (!vote.Validator.Equals(vote.PreVote.Validator) ||
-                    !vote.PreVote.Verify() ||
                     !_validators.Contains(vote.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
@@ -127,7 +126,6 @@ namespace Libplanet.Net.Consensus
 
                 if (message is ConsensusPreCommitMsg commit &&
                     (!commit.Validator.Equals(commit.PreCommit.Validator) ||
-                    !commit.PreCommit.Verify() ||
                     !_validators.Contains(commit.Validator)))
                 {
                     throw new InvalidValidatorVoteMessageException(
