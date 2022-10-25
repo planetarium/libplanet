@@ -45,6 +45,12 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <!-- Workaround for the build env with Mono. -->
+  <!-- After considering about we really need the Mono as build env, it may be needed to delete. -->
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)' == 'Mono' ">
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
     <None Include="README.md" Pack="true" PackagePath="README.md" />
