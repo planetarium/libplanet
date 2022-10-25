@@ -28,6 +28,9 @@ To be released.
 
 ### CLI tools
 
+ -  Added builds for Apple Silicon to releases.  [[#2365]]
+
+[#2365]: https://github.com/planetarium/libplanet/pull/2365
 [#2418]: https://github.com/planetarium/libplanet/pull/2418
 
 
