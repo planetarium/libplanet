@@ -21,6 +21,11 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Explorer) `Libplanet.Explorer.Executable` became to work again.
+    [[#2420]]
+
+[#2420]: https://github.com/planetarium/libplanet/pull/2420
+
 ### CLI tools
 
  -  Added builds for Apple Silicon to releases.  [[#2365]]
