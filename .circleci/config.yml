@@ -369,7 +369,7 @@ commands:
             fi
           done
           "$xur_path" "${args[@]}"
-        no_output_timeout: 65s
+        no_output_timeout: 180s
     - run:
         name: Transform xUnit.net report XML to JUnit report XML
         shell: bash
