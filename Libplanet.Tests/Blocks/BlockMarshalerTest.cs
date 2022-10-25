@@ -157,6 +157,22 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void UnmarshalBlockHash()
+        {
+            Assert.Equal(
+                _fx.Genesis.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.Genesis.MarshalBlock()));
+
+            Assert.Equal(
+                _fx.Next.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.Next.MarshalBlock()));
+
+            Assert.Equal(
+                _fx.HasTx.Hash,
+                BlockMarshaler.UnmarshalBlockHash(_fx.HasTx.MarshalBlock()));
+        }
+
+        [Fact]
         public void UnmarshalBlock()
         {
             Assert.Equal(
