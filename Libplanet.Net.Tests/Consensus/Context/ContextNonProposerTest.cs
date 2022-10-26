@@ -215,6 +215,61 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task EnterPreVoteNilOnInvalidBlock()
+        {
+            var voteSent = new AsyncAutoResetEvent();
+            var timeoutOccurred = false;
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.Peer0Priv,
+                consensusMessageSent: CheckVote);
+
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+
+            var invalidBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
+                    index: blockChain.Tip.Index + 1,
+                    timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
+                    miner: TestUtils.Peer1Priv.PublicKey.ToAddress(),
+                    publicKey: TestUtils.Peer1Priv.PublicKey,
+                    previousHash: blockChain.Tip.Hash,
+                    txHash: null,
+                    lastCommit: null))
+                .Propose().Evaluate(TestUtils.Peer1Priv, blockChain);
+
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            context.StateChanged += (sender, stage) =>
+            {
+                if (stage.Step == Step.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+            };
+            context.TimeoutOccurred += (sender, stage) =>
+            {
+                timeoutOccurred = true;
+            };
+            void CheckVote(object? observer, ConsensusMsg? message)
+            {
+                if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
+                {
+                    voteSent.Set();
+                }
+            }
+
+            context.Start();
+            context.ProduceMessage(
+                TestUtils.CreateConsensusPropose(
+                    invalidBlock, TestUtils.Peer1Priv));
+
+            await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            Assert.False(timeoutOccurred); // Check step transition isn't by timeout.
+            Assert.Equal(Step.PreVote, context.Step);
+            Assert.Equal(1, context.Height);
+            Assert.Equal(0, context.Round);
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task EnterPreVoteNilOneThird()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
