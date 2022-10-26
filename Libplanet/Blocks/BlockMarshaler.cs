@@ -207,6 +207,12 @@ namespace Libplanet.Blocks
                     preEvaluationHash: UnmarshalPreEvaluationHash(marshaled));
         }
 
+        public static BlockHash UnmarshalBlockHash(Dictionary marshaledBlock)
+        {
+            Dictionary blockHeader = marshaledBlock.GetValue<Dictionary>(HeaderKey);
+            return UnmarshalBlockHeaderHash(blockHeader);
+        }
+
         public static BlockHash UnmarshalBlockHeaderHash(Dictionary marshaledBlockHeader) =>
             new BlockHash(marshaledBlockHeader.GetValue<Binary>(HashKey).ByteArray);
 
