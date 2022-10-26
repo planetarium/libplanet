@@ -65,12 +65,24 @@
 <h2 id="version-0440">Version 0.44.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed all <code>TxMetadata.ToBencodex()</code> overload methods with parameters.
+Use newly introduced parameterless <code>TxMetadata.ToBencodex()</code> instead.
+[<a href="https://github.com/planetarium/libplanet/pull/2457">#2457</a>]</li>
+<li>(Libplanet.Node) Changed <code>UntypedTransaction(ITxMetadata, IEnumerable&lt;IValue&gt;, ImmutableArray&lt;byte&gt;)</code> to <code>UntypedTransaction( ITxMetadata, IValue?, IValue?, ImmutableArray&lt;byte&gt;</code>) to support
+<code>Transaction&lt;T&gt;.SystemAction</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2456">#2456</a>, <a href="https://github.com/planetarium/libplanet/pull/2457">#2457</a>]</li>
+<li>(Libplanet.Node) Renamed <code>UntypedTransaction.ActionValues</code> to
+<code>UntypedTransaction.CustomActionsValue</code> and changed its type from
+<code>IReadOnlyList&lt;IValue&gt;</code> to <code>IValue?</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2456">#2456</a>, <a href="https://github.com/planetarium/libplanet/pull/2457">#2457</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>(Libplanet.Explorer) Added <code>json</code> field to <code>ActionType</code> GraphQL type.
 [<a href="https://github.com/planetarium/libplanet/pull/2418">#2418</a>]</li>
+<li>(Libplanet.Node) Added <code>IValue? SystemActionValue</code> property to
+<code>UntypedTransaction</code>.  [<a href="https://github.com/planetarium/libplanet/issues/2456">#2456</a>, <a href="https://github.com/planetarium/libplanet/pull/2457">#2457</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

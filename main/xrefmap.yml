@@ -20134,15 +20134,15 @@ references:
   commentId: M:Libplanet.Node.UntypedTransaction.#ctor(Bencodex.Types.Dictionary)
   fullName: Libplanet.Node.UntypedTransaction.UntypedTransaction(Bencodex.Types.Dictionary)
   nameWithType: UntypedTransaction.UntypedTransaction(Bencodex.Types.Dictionary)
-- uid: Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,IEnumerable{IValue},ImmutableArray{System.Byte})
-  name: UntypedTransaction(ITxMetadata, IEnumerable<IValue>, ImmutableArray<Byte>)
-  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_IEnumerable_IValue__ImmutableArray_System_Byte__
-  commentId: M:Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,IEnumerable{IValue},ImmutableArray{System.Byte})
-  name.vb: UntypedTransaction(ITxMetadata, IEnumerable(Of IValue), ImmutableArray(Of Byte))
-  fullName: Libplanet.Node.UntypedTransaction.UntypedTransaction(Libplanet.Tx.ITxMetadata, IEnumerable<IValue>, ImmutableArray<System.Byte>)
-  fullName.vb: Libplanet.Node.UntypedTransaction.UntypedTransaction(Libplanet.Tx.ITxMetadata, IEnumerable(Of IValue), ImmutableArray(Of System.Byte))
-  nameWithType: UntypedTransaction.UntypedTransaction(ITxMetadata, IEnumerable<IValue>, ImmutableArray<Byte>)
-  nameWithType.vb: UntypedTransaction.UntypedTransaction(ITxMetadata, IEnumerable(Of IValue), ImmutableArray(Of Byte))
+- uid: Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,System.Nullable{IValue},System.Nullable{IValue},ImmutableArray{System.Byte})
+  name: UntypedTransaction(ITxMetadata, Nullable<IValue>, Nullable<IValue>, ImmutableArray<Byte>)
+  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_Libplanet_Tx_ITxMetadata_System_Nullable_IValue__System_Nullable_IValue__ImmutableArray_System_Byte__
+  commentId: M:Libplanet.Node.UntypedTransaction.#ctor(Libplanet.Tx.ITxMetadata,System.Nullable{IValue},System.Nullable{IValue},ImmutableArray{System.Byte})
+  name.vb: UntypedTransaction(ITxMetadata, Nullable(Of IValue), Nullable(Of IValue), ImmutableArray(Of Byte))
+  fullName: Libplanet.Node.UntypedTransaction.UntypedTransaction(Libplanet.Tx.ITxMetadata, System.Nullable<IValue>, System.Nullable<IValue>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.Node.UntypedTransaction.UntypedTransaction(Libplanet.Tx.ITxMetadata, System.Nullable(Of IValue), System.Nullable(Of IValue), ImmutableArray(Of System.Byte))
+  nameWithType: UntypedTransaction.UntypedTransaction(ITxMetadata, Nullable<IValue>, Nullable<IValue>, ImmutableArray<Byte>)
+  nameWithType.vb: UntypedTransaction.UntypedTransaction(ITxMetadata, Nullable(Of IValue), Nullable(Of IValue), ImmutableArray(Of Byte))
 - uid: Libplanet.Node.UntypedTransaction.#ctor*
   name: UntypedTransaction
   href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction__ctor_
@@ -20150,19 +20150,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Node.UntypedTransaction.UntypedTransaction
   nameWithType: UntypedTransaction.UntypedTransaction
-- uid: Libplanet.Node.UntypedTransaction.ActionValues
-  name: ActionValues
-  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_ActionValues
-  commentId: P:Libplanet.Node.UntypedTransaction.ActionValues
-  fullName: Libplanet.Node.UntypedTransaction.ActionValues
-  nameWithType: UntypedTransaction.ActionValues
-- uid: Libplanet.Node.UntypedTransaction.ActionValues*
-  name: ActionValues
-  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_ActionValues_
-  commentId: Overload:Libplanet.Node.UntypedTransaction.ActionValues
+- uid: Libplanet.Node.UntypedTransaction.CustomActionsValue
+  name: CustomActionsValue
+  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_CustomActionsValue
+  commentId: P:Libplanet.Node.UntypedTransaction.CustomActionsValue
+  fullName: Libplanet.Node.UntypedTransaction.CustomActionsValue
+  nameWithType: UntypedTransaction.CustomActionsValue
+- uid: Libplanet.Node.UntypedTransaction.CustomActionsValue*
+  name: CustomActionsValue
+  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_CustomActionsValue_
+  commentId: Overload:Libplanet.Node.UntypedTransaction.CustomActionsValue
   isSpec: "True"
-  fullName: Libplanet.Node.UntypedTransaction.ActionValues
-  nameWithType: UntypedTransaction.ActionValues
+  fullName: Libplanet.Node.UntypedTransaction.CustomActionsValue
+  nameWithType: UntypedTransaction.CustomActionsValue
 - uid: Libplanet.Node.UntypedTransaction.GenesisHash
   name: GenesisHash
   href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_GenesisHash
@@ -20241,6 +20241,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Node.UntypedTransaction.Signer
   nameWithType: UntypedTransaction.Signer
+- uid: Libplanet.Node.UntypedTransaction.SystemActionValue
+  name: SystemActionValue
+  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_SystemActionValue
+  commentId: P:Libplanet.Node.UntypedTransaction.SystemActionValue
+  fullName: Libplanet.Node.UntypedTransaction.SystemActionValue
+  nameWithType: UntypedTransaction.SystemActionValue
+- uid: Libplanet.Node.UntypedTransaction.SystemActionValue*
+  name: SystemActionValue
+  href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_SystemActionValue_
+  commentId: Overload:Libplanet.Node.UntypedTransaction.SystemActionValue
+  isSpec: "True"
+  fullName: Libplanet.Node.UntypedTransaction.SystemActionValue
+  nameWithType: UntypedTransaction.SystemActionValue
 - uid: Libplanet.Node.UntypedTransaction.Timestamp
   name: Timestamp
   href: api/Libplanet.Node.UntypedTransaction.html#Libplanet_Node_UntypedTransaction_Timestamp
@@ -28631,24 +28644,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxMetadata.Timestamp
   nameWithType: TxMetadata.Timestamp
-- uid: Libplanet.Tx.TxMetadata.ToBencodex(IEnumerable{IValue},System.Nullable{ImmutableArray{System.Byte}})
-  name: ToBencodex(IEnumerable<IValue>, Nullable<ImmutableArray<Byte>>)
-  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex_IEnumerable_IValue__System_Nullable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Tx.TxMetadata.ToBencodex(IEnumerable{IValue},System.Nullable{ImmutableArray{System.Byte}})
-  name.vb: ToBencodex(IEnumerable(Of IValue), Nullable(Of ImmutableArray(Of Byte)))
-  fullName: Libplanet.Tx.TxMetadata.ToBencodex(IEnumerable<IValue>, System.Nullable<ImmutableArray<System.Byte>>)
-  fullName.vb: Libplanet.Tx.TxMetadata.ToBencodex(IEnumerable(Of IValue), System.Nullable(Of ImmutableArray(Of System.Byte)))
-  nameWithType: TxMetadata.ToBencodex(IEnumerable<IValue>, Nullable<ImmutableArray<Byte>>)
-  nameWithType.vb: TxMetadata.ToBencodex(IEnumerable(Of IValue), Nullable(Of ImmutableArray(Of Byte)))
-- uid: Libplanet.Tx.TxMetadata.ToBencodex(IValue,System.Nullable{ImmutableArray{System.Byte}})
-  name: ToBencodex(IValue, Nullable<ImmutableArray<Byte>>)
-  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex_IValue_System_Nullable_ImmutableArray_System_Byte___
-  commentId: M:Libplanet.Tx.TxMetadata.ToBencodex(IValue,System.Nullable{ImmutableArray{System.Byte}})
-  name.vb: ToBencodex(IValue, Nullable(Of ImmutableArray(Of Byte)))
-  fullName: Libplanet.Tx.TxMetadata.ToBencodex(IValue, System.Nullable<ImmutableArray<System.Byte>>)
-  fullName.vb: Libplanet.Tx.TxMetadata.ToBencodex(IValue, System.Nullable(Of ImmutableArray(Of System.Byte)))
-  nameWithType: TxMetadata.ToBencodex(IValue, Nullable<ImmutableArray<Byte>>)
-  nameWithType.vb: TxMetadata.ToBencodex(IValue, Nullable(Of ImmutableArray(Of Byte)))
+- uid: Libplanet.Tx.TxMetadata.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex
+  commentId: M:Libplanet.Tx.TxMetadata.ToBencodex
+  fullName: Libplanet.Tx.TxMetadata.ToBencodex()
+  nameWithType: TxMetadata.ToBencodex()
 - uid: Libplanet.Tx.TxMetadata.ToBencodex*
   name: ToBencodex
   href: api/Libplanet.Tx.TxMetadata.html#Libplanet_Tx_TxMetadata_ToBencodex_
