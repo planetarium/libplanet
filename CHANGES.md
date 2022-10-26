@@ -53,6 +53,8 @@ Released on November 2, 2022.
 ### Behavioral changes
 
  - Optimized `ByteUtil.CalculateHash()` method.  [[#2437], [#2459]]
+ - (Libplanet.RocksDBStore) `GetBlockDigest`, `GetTranaction` methods open
+   RocksDB in read-only mode when opening past epochs.  [[#2443]]
 
 ### Bug fixes
 
