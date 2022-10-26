@@ -204,6 +204,90 @@ namespace Libplanet.Net.Tests
             }
         }
 
+        public static void HandleFourPeersPreCommitMessages(
+            Context<DumbAction> context,
+            PrivateKey nodePrivateKey,
+            BlockHash roundBlockHash)
+        {
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            {
+                if (privateKey == nodePrivateKey)
+                {
+                    continue;
+                }
+
+                context.ProduceMessage(
+                    new ConsensusPreCommitMsg(
+                        new VoteMetadata(
+                            context.Height,
+                            context.Round,
+                            roundBlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreCommit).Sign(privateKey))
+                    {
+                        Remote = peer,
+                    });
+            }
+        }
+
+        public static void HandleFourPeersPreVoteMessages(
+            Context<DumbAction> context,
+            PrivateKey nodePrivateKey,
+            BlockHash roundBlockHash)
+        {
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            {
+                if (privateKey == nodePrivateKey)
+                {
+                    continue;
+                }
+
+                context.ProduceMessage(
+                    new ConsensusPreVoteMsg(
+                        new VoteMetadata(
+                            context.Height,
+                            context.Round,
+                            roundBlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreVote).Sign(privateKey))
+                    {
+                        Remote = peer,
+                    });
+            }
+        }
+
+        public static void HandleFourPeersPreVoteMessages(
+            ConsensusContext<DumbAction> consensusContext,
+            PrivateKey nodePrivateKey,
+            BlockHash roundBlockHash)
+        {
+            foreach ((PrivateKey privateKey, BoundPeer peer)
+                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            {
+                if (privateKey == nodePrivateKey)
+                {
+                    continue;
+                }
+
+                consensusContext.HandleMessage(
+                    new ConsensusPreVoteMsg(
+                        new VoteMetadata(
+                            consensusContext.Height,
+                            (int)consensusContext.Round,
+                            roundBlockHash,
+                            DateTimeOffset.UtcNow,
+                            privateKey.PublicKey,
+                            VoteFlag.PreVote).Sign(privateKey))
+                    {
+                        Remote = peer,
+                    });
+            }
+        }
+
         public static (
             StoreFixture Fx,
             BlockChain<DumbAction> BlockChain,
