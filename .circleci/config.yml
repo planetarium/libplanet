@@ -190,13 +190,13 @@ commands:
           cat .current_tests.txt
           first=1
           while read test; do
-            write=1
+            to_write=1
             for excl in "${excluded_tests[@]}"; do
               if [[ "$test" == "$excl"* ]]; then
-                write=0
+                to_write=0
               fi
             done
-            if [[ "$write" == "1" ]]; then
+            if [[ "$to_write" == "1" ]]; then
               if [[ "$first" = "1" ]]; then
                 echo "FullyQualifiedName=$test"
                 first=0
@@ -392,7 +392,7 @@ commands:
             fi
           done
           "$xur_path" "${args[@]}"
-        no_output_timeout: 120s
+        no_output_timeout: 65s
     - run:
         name: Transform xUnit.net report XML to JUnit report XML
         shell: bash
