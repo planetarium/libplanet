@@ -633,16 +633,25 @@ namespace Libplanet.RocksDBStore
                 return null;
             }
 
-            string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
             _rwTxLock.EnterReadLock();
             try
             {
+                var latestEpoch = DateTimeOffset.Now.ToUnixTimeSeconds() / _blockEpochUnitSeconds;
+                string txDbName = RocksDBStoreBitConverter.GetString(txDbNameBytes);
+                int epoch = int.TryParse(
+                    txDbName.Replace("epoch", string.Empty),
+                    out var ep
+                ) ? ep : int.MaxValue;
                 RocksDb txDb;
                 lock (_txDbCache)
                 {
                     if (!_txDbCache.TryGetValue(txDbName, out txDb))
                     {
-                        txDb = RocksDBUtils.OpenRocksDb(_options, TxDbPath(txDbName));
+                        txDb = RocksDBUtils.OpenRocksDb(
+                            _options,
+                            TxDbPath(txDbName),
+                            readOnly: epoch < latestEpoch
+                        );
                         _txDbCache.AddOrUpdate(txDbName, txDb);
                     }
                 }
@@ -760,13 +769,23 @@ namespace Libplanet.RocksDBStore
             _rwBlockLock.EnterReadLock();
             try
             {
+                var latestEpoch = DateTimeOffset.Now.ToUnixTimeSeconds() / _blockEpochUnitSeconds;
                 string blockDbName = RocksDBStoreBitConverter.GetString(blockDbNameBytes);
+                int epoch = int.TryParse(
+                    blockDbName.Replace("epoch", string.Empty),
+                    out var ep
+                ) ? ep : int.MaxValue;
+
                 RocksDb blockDb;
                 lock (_blockDbCache)
                 {
                     if (!_blockDbCache.TryGetValue(blockDbName, out blockDb))
                     {
-                        blockDb = RocksDBUtils.OpenRocksDb(_options, BlockDbPath(blockDbName));
+                        blockDb = RocksDBUtils.OpenRocksDb(
+                            _options,
+                            BlockDbPath(blockDbName),
+                            readOnly: epoch < latestEpoch
+                        );
                         _blockDbCache.AddOrUpdate(blockDbName, blockDb);
                     }
                 }
