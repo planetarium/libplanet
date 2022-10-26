@@ -111,7 +111,8 @@ namespace Libplanet.Node.Tests
             var untypedTxs = _txs.Select(tx =>
                 new UntypedTransaction(
                     tx,
-                    tx.CustomActions.Select(a => a.PlainValue),
+                    null,
+                    new Bencodex.Types.List(tx.CustomActions.Select(a => a.PlainValue)),
                     tx.Signature.ToImmutableArray()));
             var untyped = new UntypedBlock(_block, untypedTxs);
             Assert.Equal(_block.MarshalBlock(), untyped.ToBencodex());

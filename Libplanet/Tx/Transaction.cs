@@ -52,14 +52,11 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
         /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
-        /// <paramref name="signature"/> or <paramref name="systemAction"/>.</exception>
         public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            SystemAction = systemAction ?? throw new ArgumentNullException(nameof(systemAction));
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            SystemAction = systemAction;
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
 
@@ -75,15 +72,11 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}"/>.  This has to be signed by <paramref name="metadata"/>'s
         /// <see cref="ITxMetadata.PublicKey"/>. This is copied and then assigned to
         /// the <see cref="Signature"/> property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/> is passed to
-        /// <paramref name="signature"/> or <paramref name="customActions"/>.</exception>
         public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            CustomActions = customActions?.ToImmutableList()
-                ?? throw new ArgumentNullException(nameof(customActions));
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            CustomActions = customActions.ToImmutableList();
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
 
@@ -128,9 +121,6 @@ namespace Libplanet.Tx
         /// or it will throw <see cref="InvalidTxSignatureException"/>.
         /// This is copied and then assigned to the <see cref="Signature"/>
         /// property.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <see langword="null"/>
-        /// is passed to <paramref name="signature"/> or <paramref name="customActions"/>.
-        /// </exception>
         [Obsolete("Use constructors taking ITxMetadata or static factory methods instead.")]
         public Transaction(
             long nonce,
@@ -144,21 +134,17 @@ namespace Libplanet.Tx
         {
             // TODO: Remove parameter signer in the future.  Apparently no more used.
             // FIXME: This constructor should be removed.
-            _metadata = new TxMetadata(publicKey
-                ?? throw new ArgumentNullException(nameof(publicKey)))
+            _metadata = new TxMetadata(publicKey)
             {
                 Nonce = nonce,
                 GenesisHash = genesisHash,
-                UpdatedAddresses = updatedAddresses
-                    ?? throw new ArgumentNullException(nameof(updatedAddresses)),
+                UpdatedAddresses = updatedAddresses,
                 Timestamp = timestamp,
             };
 
-            _signature =
-                new byte[(signature ?? throw new ArgumentNullException(nameof(signature))).Length];
+            _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
-            CustomActions = customActions?.ToImmutableList()
-                ?? throw new ArgumentNullException(nameof(customActions));
+            CustomActions = customActions.ToImmutableList();
         }
 
         /// <summary>
@@ -686,12 +672,16 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex(bool sign)
         {
-            ImmutableArray<byte>? sig = sign
-                ? ImmutableArray.Create(_signature)
-                : (ImmutableArray<byte>?)null;
-            return SystemAction is { } sa
-                ? _metadata.ToBencodex(Registry.Serialize(sa), sig)
-                : _metadata.ToBencodex(CustomActions!.Select(a => a.PlainValue), sig);
+            Dictionary metadataDict = SystemAction is { } sa
+                ? _metadata.ToBencodex().Add(
+                    TxMetadata.SystemActionKey,
+                    Registry.Serialize(sa))
+                : _metadata.ToBencodex().Add(
+                    TxMetadata.CustomActionsKey,
+                    new List(CustomActions!.Select(a => a.PlainValue)));
+            return sign
+                ? metadataDict.Add(TxMetadata.SignatureKey, ImmutableArray.Create(_signature))
+                : metadataDict;
         }
 
         /// <summary>

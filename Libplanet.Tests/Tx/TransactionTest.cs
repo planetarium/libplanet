@@ -316,32 +316,6 @@ namespace Libplanet.Tests.Tx
                 0x09, 0xf4, 0x50, 0x9f, 0xb1, 0xb1, 0x1e, 0xab, 0x11, 0x4b,
                 0x3f,
             };
-
-            // The customActions parameter cannot be null.
-            Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<DumbAction>(
-                    metadata: new TxMetadata(privateKey.PublicKey)
-                    {
-                        Nonce = 0L,
-                        Timestamp = timestamp,
-                    },
-                    customActions: null,
-                    signature: signature
-                )
-            );
-
-            // The signature parameter cannot be null.
-            Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<DumbAction>(
-                    metadata: new TxMetadata(privateKey.PublicKey)
-                    {
-                        Nonce = 0L,
-                        Timestamp = timestamp,
-                    },
-                    customActions: new DumbAction[0],
-                    signature: null
-                )
-            );
         }
 
         [Fact]
