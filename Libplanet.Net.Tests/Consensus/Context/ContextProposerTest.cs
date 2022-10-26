@@ -1,10 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
-using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -263,8 +261,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var voteSent = new AsyncAutoResetEvent();
             var (fx, blockChain, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CheckVote,
-                startStep: Step.Propose);
+                height: 5, // Peer1 should be a proposer
+                consensusMessageSent: CheckVote);
 
             context.StateChanged += (sender, state) =>
             {
@@ -281,29 +279,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             }
 
-            // Bypass StartAsync() to avoid StartRound(0).
-            _ = context.MessageConsumerTask(default);
-            _ = context.MutationConsumerTask(default);
-
-            var invalidBlock = new BlockContent<DumbAction>(
-                new BlockMetadata(
-                    protocolVersion: BlockMetadata.CurrentProtocolVersion,
-                    index: blockChain.Tip.Index + 1,
-                    timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                    miner: fx.Miner.PublicKey.ToAddress(),
-                    publicKey: fx.Miner.PublicKey,
-                    previousHash: blockChain.Tip.Hash,
-                    txHash: null,
-                    lastCommit: null))
-                .Propose().Evaluate(fx.Miner, blockChain);
-
-            context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(
-                    invalidBlock, TestUtils.Peer1Priv));
-
+            context.Start();
             await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.Equal(Step.PreVote, context.Step);
-            Assert.Equal(1, context.Height);
+            Assert.Equal(5, context.Height);
             Assert.Equal(0, context.Round);
         }
 

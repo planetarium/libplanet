@@ -307,12 +307,20 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Creates a new <see cref="Block{T}"/> to propose.
         /// </summary>
-        /// <returns>A new <see cref="Block{T}"/>.</returns>
-        private Block<T> GetValue()
+        /// <returns>A new <see cref="Block{T}"/> if successfully proposed,
+        /// otherwise <see langword="null"/>.</returns>
+        private Block<T>? GetValue()
         {
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            _blockChain.Store.PutBlock(block);
-            return block;
+            if (block.Index == Height)
+            {
+                _blockChain.Store.PutBlock(block);
+                return block;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
