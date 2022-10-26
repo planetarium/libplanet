@@ -10,6 +10,12 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Net.Consensus
 {
+    /// <summary>
+    /// A class for a proposal information for used in <see cref="Context{T}"/>. It contains an
+    /// essential information <see cref="ProposalMetaData"/> to propose a block for a consensus
+    /// in a height and a round, and its signature to verify. The signature is verified in
+    /// constructor, so the instance of <see cref="Proposal"/> should be valid.
+    /// </summary>
     public class Proposal : IEquatable<Proposal>
     {
         internal const string SignatureKey = "signature";
@@ -17,6 +23,17 @@ namespace Libplanet.Net.Consensus
 
         private readonly ProposalMetaData _proposalMetaData;
 
+        /// <summary>
+        /// Instantiates a <see cref="Proposal"/> with given <paramref name="proposalMetaData"/>
+        /// and its <paramref name="signature"/>.
+        /// </summary>
+        /// <param name="proposalMetaData">A <see cref="ProposalMetaData"/> to propose.</param>
+        /// <param name="signature">A signature signed with <paramref name="proposalMetaData"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">Thrown if given <paramref name="signature"/> is
+        /// empty.</exception>
+        /// <exception cref="ArgumentException">Thrown if given <paramref name="signature"/> is
+        /// invalid and cannot be verified with <paramref name="proposalMetaData"/>.</exception>
         public Proposal(ProposalMetaData proposalMetaData, ImmutableArray<byte> signature)
         {
             _proposalMetaData = proposalMetaData;
@@ -50,20 +67,32 @@ namespace Libplanet.Net.Consensus
         }
 #pragma warning restore SA1118
 
+        /// <inheritdoc cref="ProposalMetaData.Height"/>
         public long Height => _proposalMetaData.Height;
 
+        /// <inheritdoc cref="ProposalMetaData.Round"/>
         public int Round => _proposalMetaData.Round;
 
+        /// <inheritdoc cref="ProposalMetaData.BlockMarshaled"/>
         public byte[] BlockMarshaled => _proposalMetaData.BlockMarshaled;
 
+        /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
         public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
 
+        /// <inheritdoc cref="ProposalMetaData.Validator"/>
         public PublicKey Validator => _proposalMetaData.Validator;
 
+        /// <inheritdoc cref="ProposalMetaData.ValidRound"/>
         public int ValidRound => _proposalMetaData.ValidRound;
 
+        /// <summary>
+        /// A signature that signed with <see cref="ProposalMetaData"/>.
+        /// </summary>
         public ImmutableArray<byte> Signature { get; }
 
+        /// <summary>
+        /// A Bencodex-encoded value of <see cref="Proposal"/>.
+        /// </summary>
         [JsonIgnore]
         public Dictionary Encoded =>
             !Signature.IsEmpty
@@ -71,13 +100,13 @@ namespace Libplanet.Net.Consensus
                 : _proposalMetaData.Encoded;
 
         /// <summary>
-        /// <see cref="byte"/> encoded <see cref="Vote"/> data.
+        /// <see cref="byte"/> encoded <see cref="Proposal"/> data.
         /// </summary>
         [JsonIgnore]
         public byte[] ByteArray => _codec.Encode(Encoded);
 
         /// <summary>
-        /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
+        /// Verifies whether the <see cref="ProposalMetaData"/> is properly signed by
         /// <see cref="Validator"/>.
         /// </summary>
         /// <returns><c>true</c> if the <see cref="Signature"/> is not empty

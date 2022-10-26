@@ -8,6 +8,11 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Net.Consensus
 {
+    /// <summary>
+    /// A class for constructing <see cref="Proposal"/>. This class contains proposal information
+    /// in consensus of a height and a round. Use <see cref="Sign"/> to create a
+    /// <see cref="Proposal"/>.
+    /// </summary>
     public class ProposalMetaData
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -20,6 +25,29 @@ namespace Libplanet.Net.Consensus
 
         private static Codec _codec = new Codec();
 
+        /// <summary>
+        /// Instantiates <see cref="ProposalMetaData"/> with given parameters.
+        /// </summary>
+        /// <param name="height">a height of given proposal values.</param>
+        /// <param name="round">a round of given proposal values.</param>
+        /// <param name="blockMarshaled">a marshaled bencodex-encoded <see cref="byte"/> array of
+        /// block.</param>
+        /// <param name="timestamp">the proposed time of given block.</param>
+        /// <param name="validator">a <see cref="PublicKey"/> of proposing validator.</param>
+        /// <param name="validRound">a latest valid round at the moment of given proposal.</param>
+        /// <exception cref="ArgumentOutOfRangeException">This can be thrown in following reasons:
+        /// <list type="bullet">
+        /// <item><description>
+        ///     Given <paramref name="height"/> is less than 0.
+        /// </description></item>
+        /// <item><description>
+        ///     Given <paramref name="round"/> is less than 0.
+        /// </description></item>
+        /// <item><description>
+        ///     Given <paramref name="validRound"/> is less than -1.
+        /// </description></item>
+        /// </list>
+        /// </exception>
         public ProposalMetaData(
             long height,
             int round,
@@ -72,18 +100,39 @@ namespace Libplanet.Net.Consensus
         }
 #pragma warning restore SA1118
 
+        /// <summary>
+        /// A height of given proposal values.
+        /// </summary>
         public long Height { get; }
 
+        /// <summary>
+        /// A round of given proposal values.
+        /// </summary>
         public int Round { get; }
 
+        /// <summary>
+        /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
+        /// </summary>
         public byte[] BlockMarshaled { get; }
 
+        /// <summary>
+        /// The proposed time of given block.
+        /// </summary>
         public DateTimeOffset Timestamp { get; }
 
+        /// <summary>
+        /// A <see cref="PublicKey"/> of proposing validator.
+        /// </summary>
         public PublicKey Validator { get; }
 
+        /// <summary>
+        /// a latest valid round at the moment of given proposal.
+        /// </summary>
         public int ValidRound { get; }
 
+        /// <summary>
+        /// A Bencodex-encoded value of <see cref="ProposalMetaData"/>.
+        /// </summary>
         [JsonIgnore]
         public Dictionary Encoded
         {
@@ -106,13 +155,15 @@ namespace Libplanet.Net.Consensus
         [JsonIgnore]
         public byte[] ByteArray => _codec.Encode(Encoded);
 
-        public Proposal Sign(PrivateKey signer)
-        {
-            return signer is PrivateKey key
-                ? new Proposal(this, key.Sign(ByteArray).ToImmutableArray())
-                : new Proposal(this, ImmutableArray<byte>.Empty);
-        }
+        /// <summary>
+        /// Signs given <see cref="ProposalMetaData"/> with given <paramref name="signer"/>.
+        /// </summary>
+        /// <param name="signer">A <see cref="PrivateKey"/> to sign.</param>
+        /// <returns>Returns a signed <see cref="Proposal"/>.</returns>
+        public Proposal Sign(PrivateKey signer) =>
+            new Proposal(this, signer.Sign(ByteArray).ToImmutableArray());
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(
