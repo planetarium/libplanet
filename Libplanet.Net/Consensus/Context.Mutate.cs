@@ -30,23 +30,30 @@ namespace Libplanet.Net.Consensus
                     "Starting round {NewRound} and is a proposer. (context: {Context})",
                     round,
                     ToString());
-                Block<T> proposal = _validValue ?? GetValue();
-
-                BroadcastMessage(
-                    new ConsensusProposeMsg(
-                        _privateKey.PublicKey,
-                        Height,
-                        Round,
-                        proposal.Hash,
-                        _codec.Encode(proposal.MarshalBlock()),
-                        _validRound));
+                if ((_validValue ?? GetValue()) is Block<T> proposal)
+                {
+                    BroadcastMessage(
+                        new ConsensusProposeMsg(
+                            _privateKey.PublicKey,
+                            Height,
+                            Round,
+                            proposal.Hash,
+                            _codec.Encode(proposal.MarshalBlock()),
+                            _validRound));
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Failed to propose a block for round {Round}.",
+                        round);
+                    _ = OnTimeoutPropose(Round);
+                }
             }
             else
             {
                 _logger.Debug(
-                    "Starting round {NewRound} and is not a proposer. (context: {Context})",
-                    round,
-                    ToString());
+                    "Starting round {NewRound} and is not a proposer.",
+                    round);
                 _ = OnTimeoutPropose(Round);
             }
         }
