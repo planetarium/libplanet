@@ -216,6 +216,18 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
+            // Save the current height LastCommit before disposing if there was any locked value was
+            // exists.
+            if (_lockedValue is { } lockedValue)
+            {
+                var currentLastCommit = new BlockCommit(VoteSet(Round), lockedValue.Hash);
+                _blockChain.Store.PutLastCommit(currentLastCommit);
+                _logger.Debug(
+                    "Saving current height #{Height} and round {Round} LastCommit...",
+                    currentLastCommit.Height,
+                    currentLastCommit.Round);
+            }
+
             _cancellationTokenSource.Cancel();
             _messageRequests.Writer.TryComplete();
             _mutationRequests.Writer.TryComplete();

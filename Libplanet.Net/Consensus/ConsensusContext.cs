@@ -189,14 +189,7 @@ namespace Libplanet.Net.Consensus
 
                 RemoveOldContexts(height);
 
-                if (lastCommit != null)
-                {
-                    _logger.Debug(
-                        "Caching LastCommit of Height {Height}...",
-                        height - 1);
-                    _blockChain.Store.PutLastCommit(lastCommit);
-                }
-                else
+                if (lastCommit == null)
                 {
                     BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
                     if (storedCommit != null)
