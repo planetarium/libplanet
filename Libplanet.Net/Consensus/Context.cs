@@ -135,7 +135,7 @@ namespace Libplanet.Net.Consensus
                 privateKey,
                 validators,
                 Step.Default,
-                0,
+                -1,
                 128,
                 contextTimeoutOptions)
         {
@@ -148,7 +148,7 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             List<PublicKey> validators,
             Step step,
-            int round = 0,
+            int round = -1,
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
@@ -240,20 +240,25 @@ namespace Libplanet.Net.Consensus
         /// <returns>A <see cref="Libplanet.Consensus.VoteSet"/> of given round.</returns>
         public VoteSet VoteSet(int round)
         {
-            (Block<T>? block, int? _) = GetPropose(round);
-            VoteSet voteSet = block is { } b
-                ? new VoteSet(Height, round, b.Hash, _validators)
-                : throw new NullReferenceException(
-                    $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
-            _messageLog.GetPreCommits(round)
-                .ForEach(commit =>
-                {
-                    if (commit.PreCommit.BlockHash.Equals(block.Hash))
+            (Block<T> Block, int _)? propose = GetPropose(round);
+            if (propose is { } p)
+            {
+                VoteSet voteSet = new VoteSet(Height, round, p.Block.Hash, _validators);
+                _messageLog.GetPreCommits(round)
+                    .ForEach(commit =>
                     {
-                        voteSet.Add(commit.PreCommit);
-                    }
-                });
-            return voteSet;
+                        if (commit.PreCommit.BlockHash.Equals(p.Block.Hash))
+                        {
+                            voteSet.Add(commit.PreCommit);
+                        }
+                    });
+                return voteSet;
+            }
+            else
+            {
+                throw new NullReferenceException(
+                    $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
+            }
         }
 
         /// <summary>
@@ -413,19 +418,22 @@ namespace Libplanet.Net.Consensus
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
         /// <param name="round">A round to get.</param>
-        /// <returns>Returns a tuple of proposer and valid round. If proposal for the round does not
-        /// exist returns a tuple of <c>null</c> and <c>null</c>.
+        /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
+        /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block<T>?, int?) GetPropose(int round)
+        private (Block<T>, int)? GetPropose(int round)
         {
-            if (_messageLog.GetPropose(round) is ConsensusProposeMsg propose)
+            List<ConsensusProposeMsg> proposes = _messageLog.GetProposes(round);
+            if (proposes.Count > 0)
             {
+                // FIXME: Probably should not blindly pick the first one.
+                ConsensusProposeMsg propose = proposes[0];
                 var block = BlockMarshaler.UnmarshalBlock<T>(
                     (Dictionary)_codec.Decode(propose.Payload));
                 return (block, propose.ValidRound);
             }
 
-            return (null, null);
+            return null;
         }
 
         /// <summary>

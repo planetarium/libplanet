@@ -177,8 +177,9 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            if (GetPropose(Round) is (Block<T> block1, int validRound1) &&
-                validRound1 == -1 &&
+            (Block<T> Block, int ValidRound)? propose = GetPropose(Round);
+            if (propose is { } p1 &&
+                p1.ValidRound == -1 &&
                 Step == Step.Propose)
             {
                 _logger.Debug(
@@ -187,10 +188,10 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 Step = Step.PreVote;
 
-                if (IsValid(block1) && (_lockedRound == -1 || _lockedValue == block1))
+                if (IsValid(p1.Block) && (_lockedRound == -1 || _lockedValue == p1.Block))
                 {
                     BroadcastMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, block1.Hash, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, p1.Block.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
@@ -199,23 +200,24 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (GetPropose(Round) is (Block<T> block2, int validRound2) &&
-                validRound2 >= 0 &&
-                validRound2 < Round &&
-                HasTwoThirdsPreVote(validRound2, block2.Hash) &&
+            if (propose is { } p2 &&
+                p2.ValidRound >= 0 &&
+                p2.ValidRound < Round &&
+                HasTwoThirdsPreVote(p2.ValidRound, p2.Block.Hash) &&
                 Step == Step.Propose)
             {
                 _logger.Debug(
                     "Entering PreVote step due to proposal message and have collected " +
                     "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
-                    validRound2,
+                    p2.ValidRound,
                     ToString());
                 Step = Step.PreVote;
 
-                if (IsValid(block2) && (_lockedRound <= validRound2 || _lockedValue == block2))
+                if (IsValid(p2.Block) &&
+                    (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
                 {
                     BroadcastMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, block2.Hash, VoteFlag.PreVote)));
+                        new ConsensusPreVoteMsg(MakeVote(Round, p2.Block.Hash, VoteFlag.PreVote)));
                 }
                 else
                 {
@@ -237,9 +239,9 @@ namespace Libplanet.Net.Consensus
                 _ = OnTimeoutPreVote(Round);
             }
 
-            if (GetPropose(Round) is (Block<T> block3, _) &&
-                HasTwoThirdsPreVote(Round, block3.Hash) &&
-                IsValid(block3) &&
+            if (propose is { } p3 &&
+                HasTwoThirdsPreVote(Round, p3.Block.Hash) &&
+                IsValid(p3.Block) &&
                 Step >= Step.PreVote &&
                 !_hasTwoThirdsPreVoteFlags.Contains(Round))
             {
@@ -257,14 +259,14 @@ namespace Libplanet.Net.Consensus
                         Round,
                         ToString());
                     Step = Step.PreCommit;
-                    _lockedValue = block3;
+                    _lockedValue = p3.Block;
                     _lockedRound = Round;
                     BroadcastMessage(
                         new ConsensusPreCommitMsg(
-                            MakeVote(Round, block3.Hash, VoteFlag.PreCommit)));
+                            MakeVote(Round, p3.Block.Hash, VoteFlag.PreCommit)));
                 }
 
-                _validValue = block3;
+                _validValue = p3.Block;
                 _validRound = Round;
             }
 
@@ -318,12 +320,11 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            // FIXME: _messagesInRound should not contain any duplicated messages for this.
             if (round > Round &&
-                _messageLog.GetCount(round) > TotalValidators / 3)
+                _messageLog.GetValidatorsCount(round) > TotalValidators / 3)
             {
                 _logger.Debug(
-                    "1/3+ messages from the round {Round} > current round {CurrentRound}. " +
+                    "1/3+ validators from round {Round} > current round {CurrentRound}. " +
                     "(context: {Context})",
                     round,
                     Round,

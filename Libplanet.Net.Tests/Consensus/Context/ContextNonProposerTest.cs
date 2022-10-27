@@ -55,7 +55,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 1, hash: block.Hash, flag: VoteFlag.PreVote)));
+                        TestUtils.Peer3Priv, 1, 1, hash: block.Hash, flag: VoteFlag.PreVote)));
 
             // Wait for round 1 prevote step.
             await stateChangedToRoundOnePreVote.WaitAsync();
@@ -264,7 +264,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 1, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.Peer3Priv, 1, 1, hash: null, flag: VoteFlag.PreVote)));
 
             await stepChangedToRoundOnePreVote.WaitAsync();
             Assert.Equal(Step.PreVote, context.Step);
