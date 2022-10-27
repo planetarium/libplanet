@@ -177,20 +177,15 @@ namespace Libplanet.Net.Consensus
                         $"(expected: {_blockChain.Tip.Index + 1}, actual: {height})");
                 }
 
-                BlockCommit? lastCommit = null;
-                if (_contexts.ContainsKey(height - 1))
-                {
-                    lastCommit = _contexts[height - 1].CommittedRound == -1
-                        ? (BlockCommit?)null
-                        : new BlockCommit(
-                            _contexts[height - 1].VoteSet(_contexts[height - 1].CommittedRound),
-                            _blockChain.Tip.Hash);
-                }
+                BlockCommit? lastCommit = _contexts.ContainsKey(height - 1)
+                    ? _contexts[height - 1].GetBlockCommit()
+                    : null;
 
                 RemoveOldContexts(height);
 
                 if (lastCommit == null)
                 {
+                    // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
                     BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
                     if (storedCommit != null)
                     {
