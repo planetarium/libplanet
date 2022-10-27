@@ -184,8 +184,6 @@ commands:
             head -n $part .head_tests.txt > .current_tests.txt
           fi
           excluded_tests=(
-            "Libplanet.Net.Tests.Transports.NetMQTransportTest.AsPeer"
-            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           cat .current_tests.txt
           first=1

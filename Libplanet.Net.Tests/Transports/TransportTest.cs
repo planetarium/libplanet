@@ -124,14 +124,12 @@ namespace Libplanet.Net.Tests.Transports
         {
             var privateKey = new PrivateKey();
             string host = IPAddress.Loopback.ToString();
-            const int listenPort = 50000;
-            ITransport transport = CreateTransport(privateKey: privateKey, listenPort: listenPort);
+            ITransport transport = CreateTransport(privateKey: privateKey);
 
             try
             {
                 var peer = transport.AsPeer;
                 Assert.Equal(privateKey.ToAddress(), peer.Address);
-                Assert.Equal(listenPort, peer.EndPoint.Port);
                 Assert.Equal(host, peer.EndPoint.Host);
             }
             finally
