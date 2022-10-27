@@ -141,7 +141,7 @@ namespace Libplanet.Net.Consensus
         {
         }
 
-        internal Context(
+        private Context(
             ConsensusContext<T> consensusContext,
             BlockChain<T> blockChain,
             long height,
