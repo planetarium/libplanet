@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using GraphQL;
 using GraphQL.Types;
@@ -54,6 +55,14 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "Actions",
                 description: "A list of actions in this transaction."
             );
+            Field<NonNullGraphType<StringGraphType>>(
+                name: "SignedTx",
+                description: "A signed tx in base64 string.",
+                resolve: x =>
+                {
+                    byte[] bytes = x.Source.Serialize(true);
+                    return Convert.ToBase64String(bytes);
+                });
 
             // The block including the transaction. - Only RichStore supports.
             Field<ListGraphType<NonNullGraphType<BlockType<T>>>>(
