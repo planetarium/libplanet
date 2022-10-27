@@ -15,6 +15,10 @@ namespace Libplanet.Net.Consensus
         /// </param>
         public void Start(BlockCommit? lastCommit = null)
         {
+            _logger.Debug(
+                "Starting context for height #{Height}, LastCommit: {@LastCommit}",
+                Height,
+                lastCommit);
             _lastCommit = lastCommit;
             ProduceMutation(() => StartRound(0));
 

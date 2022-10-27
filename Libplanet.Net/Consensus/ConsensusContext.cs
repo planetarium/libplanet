@@ -183,18 +183,27 @@ namespace Libplanet.Net.Consensus
             {
                 _newHeightCts?.Cancel();
 
+                _logger.Debug(
+                    "Invoke {FName}() for height #{Height} (was {WHeight}).",
+                    nameof(NewHeight),
+                    height,
+                    Height);
+
                 if (height == Height)
                 {
-                    throw new InvalidHeightIncreasingException(
-                        $"{nameof(NewHeight)}: Context of height {height} is already running.");
+                    var msg =
+                        $"{nameof(NewHeight)}: Context of height #{height} is already running.";
+                    _logger.Error(msg);
+                    throw new InvalidHeightIncreasingException(msg);
                 }
 
                 if (height != _blockChain.Tip.Index + 1)
                 {
-                    throw new InvalidHeightIncreasingException(
-                        $"{nameof(NewHeight)}: Given new height is not increasing " +
-                        $"monotonically by 1. " +
-                        $"(expected: {_blockChain.Tip.Index + 1}, actual: {height})");
+                    var msg = $"{nameof(NewHeight)}: Given new height is not increasing " +
+                              "monotonically by 1. " +
+                              $"(expected: {_blockChain.Tip.Index + 1}, actual: {height})";
+                    _logger.Error(msg);
+                    throw new InvalidHeightIncreasingException(msg);
                 }
 
                 BlockCommit? lastCommit = null;
@@ -204,6 +213,10 @@ namespace Libplanet.Net.Consensus
                     lastCommit = _contexts.ContainsKey(height - 1)
                         ? _contexts[height - 1].GetBlockCommit()
                         : null;
+                    _logger.Debug(
+                        "LastCommit of height #{Height} is: {@LastCommit}",
+                        Height,
+                        lastCommit);
 
                     if (lastCommit == null)
                     {
@@ -226,7 +239,7 @@ namespace Libplanet.Net.Consensus
 
                 Height = height;
 
-                _logger.Debug("Start consensus for height {Height}.", Height);
+                _logger.Debug("Start consensus for height #{Height}.", Height);
 
                 lock (_contextLock)
                 {
@@ -341,7 +354,26 @@ namespace Libplanet.Net.Consensus
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
                     if (!_newHeightCts.IsCancellationRequested)
                     {
-                        NewHeight(e.NewTip.Index + 1);
+                        try
+                        {
+                            NewHeight(e.NewTip.Index + 1);
+                        }
+                        catch (Exception exc)
+                        {
+                            _logger.Error(
+                                exc,
+                                "Unexpected exception occurred during {FName}(): {E}",
+                                nameof(NewHeight),
+                                exc);
+                        }
+                    }
+                    else
+                    {
+                        _logger.Error(
+                            "Did not invoke {FName}() for height " +
+                            "#{Height} because cancellation is requested.",
+                            nameof(NewHeight),
+                            e.NewTip.Index + 1);
                     }
                 },
                 _newHeightCts.Token);
