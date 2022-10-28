@@ -1,13 +1,14 @@
 using System;
 using Bencodex;
 using Libplanet.Blocks;
-using Libplanet.Net.Consensus;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Store;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Net.Tests.Consensus
+namespace Libplanet.Tests.Consensus
 {
     public class ProposalMetaDataTest
     {
@@ -37,7 +38,7 @@ namespace Libplanet.Net.Tests.Consensus
                     0,
                     codec.Encode(fx.Block1.MarshalBlock()),
                     fx.Block1.Timestamp,
-                    TestUtils.Peer1Priv.PublicKey,
+                    new PrivateKey().PublicKey,
                     -1));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
@@ -45,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus
                 -1,
                 codec.Encode(fx.Block1.MarshalBlock()),
                 fx.Block1.Timestamp,
-                TestUtils.Peer1Priv.PublicKey,
+                new PrivateKey().PublicKey,
                 -1));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
@@ -53,7 +54,7 @@ namespace Libplanet.Net.Tests.Consensus
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
                 fx.Block1.Timestamp,
-                TestUtils.Peer1Priv.PublicKey,
+                new PrivateKey().PublicKey,
                 -2));
         }
     }

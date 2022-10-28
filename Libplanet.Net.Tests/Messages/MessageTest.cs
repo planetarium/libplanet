@@ -6,7 +6,6 @@ using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;

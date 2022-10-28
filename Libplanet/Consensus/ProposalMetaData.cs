@@ -6,7 +6,7 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Consensus
 {
     /// <summary>
     /// A class for constructing <see cref="Proposal"/>. This class contains proposal information
@@ -30,7 +30,7 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="height">a height of given proposal values.</param>
         /// <param name="round">a round of given proposal values.</param>
-        /// <param name="blockMarshaled">a marshaled bencodex-encoded <see cref="byte"/> array of
+        /// <param name="marshaledBlock">a marshaled bencodex-encoded <see cref="byte"/> array of
         /// block.</param>
         /// <param name="timestamp">the proposed time of given block.</param>
         /// <param name="validator">a <see cref="PublicKey"/> of proposing validator.</param>
@@ -51,11 +51,10 @@ namespace Libplanet.Net.Consensus
         public ProposalMetaData(
             long height,
             int round,
-            byte[] blockMarshaled,
+            byte[] marshaledBlock,
             DateTimeOffset timestamp,
             PublicKey validator,
-            int validRound
-        )
+            int validRound)
         {
             if (height < 0)
             {
@@ -78,7 +77,7 @@ namespace Libplanet.Net.Consensus
 
             Height = height;
             Round = round;
-            BlockMarshaled = blockMarshaled;
+            MarshaledBlock = marshaledBlock;
             Timestamp = timestamp;
             Validator = validator;
             ValidRound = validRound;
@@ -89,7 +88,7 @@ namespace Libplanet.Net.Consensus
             : this(
                 height: encoded.GetValue<Integer>(HeightKey),
                 round: encoded.GetValue<Integer>(RoundKey),
-                blockMarshaled: encoded.GetValue<Binary>(BlockKey),
+                marshaledBlock: encoded.GetValue<Binary>(BlockKey),
                 timestamp: DateTimeOffset.ParseExact(
                     encoded.GetValue<Text>(TimestampKey),
                     TimestampFormat,
@@ -113,7 +112,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
         /// </summary>
-        public byte[] BlockMarshaled { get; }
+        public byte[] MarshaledBlock { get; }
 
         /// <summary>
         /// The proposed time of given block.
@@ -141,7 +140,7 @@ namespace Libplanet.Net.Consensus
                 Dictionary encoded = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
                     .Add(RoundKey, Round)
-                    .Add(BlockKey, BlockMarshaled)
+                    .Add(BlockKey, MarshaledBlock)
                     .Add(
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
@@ -169,7 +168,7 @@ namespace Libplanet.Net.Consensus
             return HashCode.Combine(
                 Height,
                 Round,
-                BlockMarshaled,
+                MarshaledBlock,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 Validator);
         }

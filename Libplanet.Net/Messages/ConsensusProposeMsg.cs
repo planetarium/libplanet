@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 

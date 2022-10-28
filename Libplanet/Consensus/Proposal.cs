@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Consensus
 {
     /// <summary>
-    /// A class for a proposal information for used in <see cref="Context{T}"/>. It contains an
+    /// Represents a <see cref="Proposal"/> from a validator for consensus.  It contains an
     /// essential information <see cref="ProposalMetaData"/> to propose a block for a consensus
     /// in a height and a round, and its signature to verify. The signature is verified in
     /// constructor, so the instance of <see cref="Proposal"/> should be valid.
@@ -73,8 +72,8 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="ProposalMetaData.Round"/>
         public int Round => _proposalMetaData.Round;
 
-        /// <inheritdoc cref="ProposalMetaData.BlockMarshaled"/>
-        public byte[] BlockMarshaled => _proposalMetaData.BlockMarshaled;
+        /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
+        public byte[] BlockMarshaled => _proposalMetaData.MarshaledBlock;
 
         /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
         public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
@@ -131,7 +130,7 @@ namespace Libplanet.Net.Consensus
         [Pure]
         public override bool Equals(object? obj)
         {
-            return obj is Vote other && Equals(other);
+            return obj is Proposal other && Equals(other);
         }
 
         /// <inheritdoc/>
