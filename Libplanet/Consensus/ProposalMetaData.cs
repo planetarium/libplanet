@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
@@ -17,8 +18,9 @@ namespace Libplanet.Consensus
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private const string HeightKey = "height";
         private const string RoundKey = "round";
-        private const string BlockKey = "block";
+        private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
+        private const string BlockKey = "block";
         private const string ValidRoundKey = "validRound";
 
         private static Codec _codec = new Codec();
@@ -28,10 +30,11 @@ namespace Libplanet.Consensus
         /// </summary>
         /// <param name="height">a height of given proposal values.</param>
         /// <param name="round">a round of given proposal values.</param>
-        /// <param name="marshaledBlock">a marshaled bencodex-encoded <see cref="byte"/> array of
-        /// block.</param>
+        /// <param name="timestamp">The time at which the proposal took place.</param>
         /// <param name="validator">a <see cref="PublicKey"/> of proposing validator.</param>
         /// <param name="validRound">a latest valid round at the moment of given proposal.</param>
+        /// <param name="marshaledBlock">a marshaled bencodex-encoded <see cref="byte"/> array of
+        /// block.</param>
         /// <exception cref="ArgumentOutOfRangeException">This can be thrown in following reasons:
         /// <list type="bullet">
         /// <item><description>
@@ -48,8 +51,9 @@ namespace Libplanet.Consensus
         public ProposalMetaData(
             long height,
             int round,
-            byte[] marshaledBlock,
+            DateTimeOffset timestamp,
             PublicKey validator,
+            byte[] marshaledBlock,
             int validRound)
         {
             if (height < 0)
@@ -73,8 +77,9 @@ namespace Libplanet.Consensus
 
             Height = height;
             Round = round;
-            MarshaledBlock = marshaledBlock;
+            Timestamp = timestamp;
             Validator = validator;
+            MarshaledBlock = marshaledBlock;
             ValidRound = validRound;
         }
 
@@ -83,8 +88,12 @@ namespace Libplanet.Consensus
             : this(
                 height: encoded.GetValue<Integer>(HeightKey),
                 round: encoded.GetValue<Integer>(RoundKey),
-                marshaledBlock: encoded.GetValue<Binary>(BlockKey),
+                timestamp: DateTimeOffset.ParseExact(
+                    encoded.GetValue<Text>(TimestampKey),
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture),
                 validator: new PublicKey(encoded.GetValue<Binary>(ValidatorKey).ByteArray),
+                marshaledBlock: encoded.GetValue<Binary>(BlockKey),
                 validRound: encoded.GetValue<Integer>(ValidRoundKey))
         {
         }
@@ -101,14 +110,19 @@ namespace Libplanet.Consensus
         public int Round { get; }
 
         /// <summary>
-        /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
+        /// The time at which the proposal took place.
         /// </summary>
-        public byte[] MarshaledBlock { get; }
+        public DateTimeOffset Timestamp { get; }
 
         /// <summary>
         /// A <see cref="PublicKey"/> of proposing validator.
         /// </summary>
         public PublicKey Validator { get; }
+
+        /// <summary>
+        /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
+        /// </summary>
+        public byte[] MarshaledBlock { get; }
 
         /// <summary>
         /// a latest valid round at the moment of given proposal.
@@ -126,8 +140,11 @@ namespace Libplanet.Consensus
                 Dictionary encoded = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
                     .Add(RoundKey, Round)
-                    .Add(BlockKey, MarshaledBlock)
+                    .Add(
+                        TimestampKey,
+                        Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
                     .Add(ValidatorKey, Validator.Format(compress: true))
+                    .Add(BlockKey, MarshaledBlock)
                     .Add(ValidRoundKey, ValidRound);
 
                 return encoded;

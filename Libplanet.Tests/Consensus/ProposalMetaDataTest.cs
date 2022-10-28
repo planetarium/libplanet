@@ -36,22 +36,25 @@ namespace Libplanet.Tests.Consensus
             Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
                     -1,
                     0,
-                    codec.Encode(fx.Block1.MarshalBlock()),
+                    DateTimeOffset.UtcNow,
                     new PrivateKey().PublicKey,
+                    codec.Encode(fx.Block1.MarshalBlock()),
                     -1));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
                 1,
                 -1,
-                codec.Encode(fx.Block1.MarshalBlock()),
+                DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
+                codec.Encode(fx.Block1.MarshalBlock()),
                 -1));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
                 1,
                 0,
-                codec.Encode(fx.Block1.MarshalBlock()),
+                DateTimeOffset.UtcNow,
                 new PrivateKey().PublicKey,
+                codec.Encode(fx.Block1.MarshalBlock()),
                 -2));
         }
     }

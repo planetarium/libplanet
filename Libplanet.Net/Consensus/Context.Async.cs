@@ -37,10 +37,10 @@ namespace Libplanet.Net.Consensus
                 {
                     await ConsumeMessage(cancellationToken);
                 }
-                catch (TaskCanceledException tce)
+                catch (OperationCanceledException oce)
                 {
-                    _logger.Debug(tce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, (Height, tce));
+                    _logger.Debug(oce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, (Height, oce));
                     throw;
                 }
                 catch (Exception e)
@@ -69,10 +69,10 @@ namespace Libplanet.Net.Consensus
                 {
                     await ConsumeMutation(cancellationToken);
                 }
-                catch (TaskCanceledException tce)
+                catch (OperationCanceledException oce)
                 {
-                    _logger.Debug(tce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, (Height, tce));
+                    _logger.Debug(oce, "Cancellation was requested");
+                    ExceptionOccurred?.Invoke(this, (Height, oce));
                     throw;
                 }
                 catch (Exception e)
