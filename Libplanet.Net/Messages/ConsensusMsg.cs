@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -70,17 +69,6 @@ namespace Libplanet.Net.Messages
         /// A <see cref="BlockHash"/> the message is written for.
         /// </summary>
         public BlockHash? BlockHash { get; }
-
-        /// <summary>
-        /// Gets the marshalled message in <see cref="byte"/> array.
-        /// </summary>
-        public override IEnumerable<byte[]> DataFrames => new[]
-        {
-            Validator.Format(true),
-            BitConverter.GetBytes(Height),
-            BitConverter.GetBytes(Round),
-            BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },
-        };
 
         public abstract bool Equals(ConsensusMsg? other);
 

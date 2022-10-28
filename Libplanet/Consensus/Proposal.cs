@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
@@ -72,11 +73,17 @@ namespace Libplanet.Consensus
         /// <inheritdoc cref="ProposalMetaData.Round"/>
         public int Round => _proposalMetaData.Round;
 
-        /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
-        public byte[] MarshaledBlock => _proposalMetaData.MarshaledBlock;
+        /// <inheritdoc cref="ProposalMetaData.BlockHash"/>
+        public BlockHash BlockHash => _proposalMetaData.BlockHash;
+
+        /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
+        public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
 
         /// <inheritdoc cref="ProposalMetaData.Validator"/>
         public PublicKey Validator => _proposalMetaData.Validator;
+
+        /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
+        public byte[] MarshaledBlock => _proposalMetaData.MarshaledBlock;
 
         /// <inheritdoc cref="ProposalMetaData.ValidRound"/>
         public int ValidRound => _proposalMetaData.ValidRound;

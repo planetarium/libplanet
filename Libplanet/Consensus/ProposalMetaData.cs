@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
@@ -13,7 +14,7 @@ namespace Libplanet.Consensus
     /// in consensus of a height and a round. Use <see cref="Sign"/> to create a
     /// <see cref="Proposal"/>.
     /// </summary>
-    public class ProposalMetaData
+    public class ProposalMetaData : IEquatable<ProposalMetaData>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private const string HeightKey = "height";
@@ -21,7 +22,7 @@ namespace Libplanet.Consensus
         private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
         private const string BlockKey = "block";
-        private const string ValidRoundKey = "validRound";
+        private const string ValidRoundKey = "valid_round";
 
         private static Codec _codec = new Codec();
 
@@ -77,8 +78,11 @@ namespace Libplanet.Consensus
 
             Height = height;
             Round = round;
+            BlockHash = BlockMarshaler.UnmarshalBlockHash(
+                (Dictionary)_codec.Decode(marshaledBlock));
             Timestamp = timestamp;
             Validator = validator;
+
             MarshaledBlock = marshaledBlock;
             ValidRound = validRound;
         }
@@ -108,6 +112,12 @@ namespace Libplanet.Consensus
         /// A round of given proposal values.
         /// </summary>
         public int Round { get; }
+
+        /// <summary>
+        /// The <see cref="Libplanet.Blocks.BlockHash"/> of <see cref="MarshaledBlock"/>.
+        /// This is automatically derived from <see cref="MarshaledBlock"/>.
+        /// </summary>
+        public BlockHash BlockHash { get; }
 
         /// <summary>
         /// The time at which the proposal took place.
@@ -163,12 +173,33 @@ namespace Libplanet.Consensus
             new Proposal(this, signer.Sign(ByteArray).ToImmutableArray());
 
         /// <inheritdoc/>
+        public bool Equals(ProposalMetaData? other)
+        {
+            return other is ProposalMetaData metadata &&
+                Height == metadata.Height &&
+                Round == metadata.Round &&
+                BlockHash.Equals(metadata.BlockHash) &&
+                Timestamp
+                    .ToString(TimestampFormat, CultureInfo.InvariantCulture).Equals(
+                        metadata.Timestamp.ToString(
+                            TimestampFormat,
+                            CultureInfo.InvariantCulture)) &&
+                Validator.Equals(metadata.Validator) &&
+                ValidRound == metadata.ValidRound;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj) =>
+            obj is ProposalMetaData other && Equals(other);
+
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(
                 Height,
                 Round,
-                ByteUtil.CalculateHashCode(MarshaledBlock),
+                BlockHash,
+                Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 Validator,
                 ValidRound);
         }

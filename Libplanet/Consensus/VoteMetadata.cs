@@ -161,6 +161,7 @@ namespace Libplanet.Consensus
                 : new Vote(this, ImmutableArray<byte>.Empty);
         }
 
+        /// <inheritdoc/>
         public bool Equals(VoteMetadata? other)
         {
             return other is VoteMetadata metadata &&
@@ -188,7 +189,8 @@ namespace Libplanet.Consensus
                 Round,
                 BlockHash,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                Validator);
+                Validator,
+                Flag);
         }
     }
 }
