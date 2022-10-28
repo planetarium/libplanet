@@ -216,11 +216,15 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
-            // Save the current height LastCommit before disposing if there was any locked value was
-            // exists.
-            if (_lockedValue is { } lockedValue)
+            // Save the current height LastCommit before disposing.
+            // XXX: The reasons why it is seperated from ConsensusContext.NewHeight() is
+            // that prevents the lost LastCommit while in termination of program. This is the
+            // attempt of saving LastCommit as much as possible.
+            // https://github.com/planetarium/libplanet/pull/2472
+            var currentLastCommit = GetBlockCommit();
+
+            if (currentLastCommit is { })
             {
-                var currentLastCommit = new BlockCommit(VoteSet(Round), lockedValue.Hash);
                 _blockChain.Store.PutLastCommit(currentLastCommit);
                 _logger.Debug(
                     "Saving current height #{Height} and round {Round} LastCommit...",
@@ -260,6 +264,20 @@ namespace Libplanet.Net.Consensus
                     $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
             }
         }
+
+        /// <summary>
+        /// Returns a <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed.
+        /// </summary>
+        /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed
+        /// otherwise returns <see langword="null"/>.
+        /// </returns>
+        /// <remarks>If the <see cref="CommittedRound"/> exists, then the Context guarantees to have
+        /// a valid <see cref="BlockCommit"/> (+2/3 commits.)
+        /// </remarks>
+        public BlockCommit? GetBlockCommit()
+            => CommittedRound == -1
+                ? (BlockCommit?)null
+                : new BlockCommit(VoteSet(CommittedRound), _blockChain.Tip.Hash);
 
         /// <summary>
         /// Returns the summary of context in JSON-formatted string.
