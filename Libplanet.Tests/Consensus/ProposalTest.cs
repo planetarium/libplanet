@@ -1,13 +1,14 @@
 using System;
 using Bencodex;
 using Libplanet.Blocks;
-using Libplanet.Net.Consensus;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Tests.Store;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Libplanet.Net.Tests.Consensus
+namespace Libplanet.Tests.Consensus
 {
     public class ProposalTest
     {
@@ -36,8 +37,7 @@ namespace Libplanet.Net.Tests.Consensus
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
-                TestUtils.Peer1Priv.PublicKey,
+                new PrivateKey().PublicKey,
                 -1);
 
             // Empty Signature
@@ -47,7 +47,7 @@ namespace Libplanet.Net.Tests.Consensus
             // Invalid Signature
             var invSigBencodex = metaData.Encoded.Add(
                 Proposal.SignatureKey,
-                TestUtils.Peer1Priv.Sign(codec.Encode(fx.Block2.MarshalBlock())));
+                new PrivateKey().Sign(codec.Encode(fx.Block2.MarshalBlock())));
             Assert.Throws<ArgumentException>(() => new Proposal(invSigBencodex));
         }
 
@@ -56,20 +56,18 @@ namespace Libplanet.Net.Tests.Consensus
         {
             MemoryStoreFixture fx = new MemoryStoreFixture();
             var codec = new Codec();
+            var key = new PrivateKey();
 
             ProposalMetaData metaData = new ProposalMetaData(
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
-                TestUtils.Peer1Priv.PublicKey,
+                key.PublicKey,
                 -1);
+            Proposal proposal = metaData.Sign(key);
 
-            Proposal proposal = metaData.Sign(TestUtils.Peer1Priv);
-
-            Assert.Equal(proposal.Signature, TestUtils.Peer1Priv.Sign(metaData.ByteArray));
-            Assert.True(
-                TestUtils.Peer1Priv.PublicKey.Verify(metaData.ByteArray, proposal.Signature));
+            Assert.Equal(proposal.Signature, key.Sign(metaData.ByteArray));
+            Assert.True(key.PublicKey.Verify(metaData.ByteArray, proposal.Signature));
         }
     }
 }

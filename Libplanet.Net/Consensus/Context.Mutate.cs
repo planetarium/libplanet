@@ -36,7 +36,6 @@ namespace Libplanet.Net.Consensus
                         Height,
                         Round,
                         _codec.Encode(proposalValue.MarshalBlock()),
-                        proposalValue.Timestamp,
                         _privateKey.PublicKey,
                         _validRound
                     ).Sign(_privateKey);

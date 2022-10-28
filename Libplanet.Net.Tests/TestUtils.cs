@@ -153,7 +153,6 @@ namespace Libplanet.Net.Tests
                     height,
                     round,
                     codec.Encode(block.MarshalBlock()),
-                    block.Timestamp,
                     privateKey.PublicKey,
                     validRound).Sign(privateKey))
             {

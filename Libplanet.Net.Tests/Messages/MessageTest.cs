@@ -6,7 +6,6 @@ using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
-using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
@@ -165,7 +164,6 @@ namespace Libplanet.Net.Tests.Messages
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
                 key.PublicKey,
                 -1).Sign(key);
 

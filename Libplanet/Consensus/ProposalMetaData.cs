@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
 
-namespace Libplanet.Net.Consensus
+namespace Libplanet.Consensus
 {
     /// <summary>
     /// A class for constructing <see cref="Proposal"/>. This class contains proposal information
@@ -19,7 +18,6 @@ namespace Libplanet.Net.Consensus
         private const string HeightKey = "height";
         private const string RoundKey = "round";
         private const string BlockKey = "block";
-        private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
         private const string ValidRoundKey = "validRound";
 
@@ -30,9 +28,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         /// <param name="height">a height of given proposal values.</param>
         /// <param name="round">a round of given proposal values.</param>
-        /// <param name="blockMarshaled">a marshaled bencodex-encoded <see cref="byte"/> array of
+        /// <param name="marshaledBlock">a marshaled bencodex-encoded <see cref="byte"/> array of
         /// block.</param>
-        /// <param name="timestamp">the proposed time of given block.</param>
         /// <param name="validator">a <see cref="PublicKey"/> of proposing validator.</param>
         /// <param name="validRound">a latest valid round at the moment of given proposal.</param>
         /// <exception cref="ArgumentOutOfRangeException">This can be thrown in following reasons:
@@ -51,11 +48,9 @@ namespace Libplanet.Net.Consensus
         public ProposalMetaData(
             long height,
             int round,
-            byte[] blockMarshaled,
-            DateTimeOffset timestamp,
+            byte[] marshaledBlock,
             PublicKey validator,
-            int validRound
-        )
+            int validRound)
         {
             if (height < 0)
             {
@@ -78,8 +73,7 @@ namespace Libplanet.Net.Consensus
 
             Height = height;
             Round = round;
-            BlockMarshaled = blockMarshaled;
-            Timestamp = timestamp;
+            MarshaledBlock = marshaledBlock;
             Validator = validator;
             ValidRound = validRound;
         }
@@ -89,11 +83,7 @@ namespace Libplanet.Net.Consensus
             : this(
                 height: encoded.GetValue<Integer>(HeightKey),
                 round: encoded.GetValue<Integer>(RoundKey),
-                blockMarshaled: encoded.GetValue<Binary>(BlockKey),
-                timestamp: DateTimeOffset.ParseExact(
-                    encoded.GetValue<Text>(TimestampKey),
-                    TimestampFormat,
-                    CultureInfo.InvariantCulture),
+                marshaledBlock: encoded.GetValue<Binary>(BlockKey),
                 validator: new PublicKey(encoded.GetValue<Binary>(ValidatorKey).ByteArray),
                 validRound: encoded.GetValue<Integer>(ValidRoundKey))
         {
@@ -113,12 +103,7 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
         /// </summary>
-        public byte[] BlockMarshaled { get; }
-
-        /// <summary>
-        /// The proposed time of given block.
-        /// </summary>
-        public DateTimeOffset Timestamp { get; }
+        public byte[] MarshaledBlock { get; }
 
         /// <summary>
         /// A <see cref="PublicKey"/> of proposing validator.
@@ -141,10 +126,7 @@ namespace Libplanet.Net.Consensus
                 Dictionary encoded = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
                     .Add(RoundKey, Round)
-                    .Add(BlockKey, BlockMarshaled)
-                    .Add(
-                        TimestampKey,
-                        Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
+                    .Add(BlockKey, MarshaledBlock)
                     .Add(ValidatorKey, Validator.Format(compress: true))
                     .Add(ValidRoundKey, ValidRound);
 
@@ -169,9 +151,9 @@ namespace Libplanet.Net.Consensus
             return HashCode.Combine(
                 Height,
                 Round,
-                BlockMarshaled,
-                Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                Validator);
+                ByteUtil.CalculateHashCode(MarshaledBlock),
+                Validator,
+                ValidRound);
         }
     }
 }
