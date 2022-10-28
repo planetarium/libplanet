@@ -77,7 +77,7 @@ namespace Libplanet.Consensus
         public BlockHash BlockHash => _proposalMetaData.BlockHash;
 
         /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
-        public DateTimeOffset Timestamp { get; }
+        public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
 
         /// <inheritdoc cref="ProposalMetaData.Validator"/>
         public PublicKey Validator => _proposalMetaData.Validator;

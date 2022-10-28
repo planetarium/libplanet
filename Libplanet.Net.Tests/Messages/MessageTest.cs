@@ -2,14 +2,12 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using Bencodex;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tests.Store;
 using NetMQ;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -151,29 +149,6 @@ namespace Libplanet.Net.Tests.Messages
             // Invalid message cases
             Assert.Throws<ArgumentException>(() => new ConsensusPreVoteMsg(preCommit));
             Assert.Throws<ArgumentException>(() => new ConsensusPreCommitMsg(preVote));
-        }
-
-        [Fact]
-        public void DifferentBlockHashProposal()
-        {
-            var codec = new Codec();
-            var fx = new MemoryStoreFixture();
-            var key = new PrivateKey();
-
-            var baseProposal = new ProposalMetaData(
-                1,
-                0,
-                DateTimeOffset.UtcNow,
-                key.PublicKey,
-                codec.Encode(fx.Block1.MarshalBlock()),
-                -1).Sign(key);
-
-            // Valid message case
-            _ = new ConsensusProposalMsg(key.PublicKey, 1, 0, fx.Block1.Hash, baseProposal);
-
-            // Invalid message case
-            Assert.Throws<ArgumentException>(() =>
-                new ConsensusProposalMsg(key.PublicKey, 1, 0, fx.Block2.Hash, baseProposal));
         }
     }
 }

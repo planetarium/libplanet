@@ -153,10 +153,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             context.ProduceMessage(
                 new ConsensusProposalMsg(
-                    TestUtils.Peer1Priv.PublicKey,
-                    1,
-                    0,
-                    default,
                     new ProposalMetaData(
                         1,
                         0,

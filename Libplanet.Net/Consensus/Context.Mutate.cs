@@ -41,13 +41,7 @@ namespace Libplanet.Net.Consensus
                         _codec.Encode(proposalValue.MarshalBlock()),
                         _validRound).Sign(_privateKey);
 
-                    BroadcastMessage(
-                        new ConsensusProposalMsg(
-                            _privateKey.PublicKey,
-                            Height,
-                            Round,
-                            proposalValue.Hash,
-                            proposal));
+                    BroadcastMessage(new ConsensusProposalMsg(proposal));
                 }
                 else
                 {

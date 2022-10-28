@@ -145,10 +145,6 @@ namespace Libplanet.Net.Tests
         {
             var codec = new Codec();
             return new ConsensusProposalMsg(
-                privateKey.PublicKey,
-                height,
-                round,
-                block.Hash,
                 new ProposalMetaData(
                     height,
                     round,
