@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, context.Step);
             Assert.NotNull(proposedMessage);
             Block<DumbAction> proposed = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                (Dictionary)new Codec().Decode(proposedMessage!.Payload));
+                (Dictionary)new Codec().Decode(proposedMessage!.Proposal.BlockMarshaled));
             Assert.NotNull(proposed.LastCommit);
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
@@ -134,7 +134,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void ThrowNilPropose()
         {
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var codec = new Codec();
+            var (fx, _, context) = TestUtils.CreateDummyContext();
+            Binary blockHash = default(BlockHash).ByteArray;
+
+            // FIXME: for null-hashed block, the mocked bencodex is used for testing.
+            Dictionary mockBlockHeader = Dictionary.Empty.Add(new byte[] { 0x68 }, blockHash);
+            var mockBlock = Dictionary.Empty.Add(new byte[] { 0x48 }, mockBlockHeader);
 
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
@@ -146,7 +152,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(default, TestUtils.Peer1Priv));
+                new ConsensusProposeMsg(
+                    TestUtils.Peer1Priv.PublicKey,
+                    1,
+                    0,
+                    default,
+                    new ProposalMetaData(
+                        1,
+                        0,
+                        codec.Encode(mockBlock),
+                        fx.Block1.Timestamp,
+                        TestUtils.Peer1Priv.PublicKey,
+                        -1).Sign(TestUtils.Peer1Priv)));
+
             await exceptionOccurred.WaitAsync();
             Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
         }
@@ -218,7 +236,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     if (msg is ConsensusProposeMsg proposeMsg)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Payload));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
                         proposeSent.Set();
                     }
                 });
@@ -302,7 +320,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 {
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Payload));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
                     proposeSent.Set();
                 }
             }

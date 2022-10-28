@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Store;
 using Xunit;
 
 namespace Libplanet.Net.Tests.Consensus
@@ -43,11 +44,12 @@ namespace Libplanet.Net.Tests.Consensus
         [Fact]
         public void GetGossipIds_Shift()
         {
+            MemoryStoreFixture fx = new MemoryStoreFixture();
             var cache = new MessageCache(2, 1);
-            var key = new PrivateKey().PublicKey;
-            var msg0 = new ConsensusProposeMsg(key, 0, 0, TestUtils.BlockHash0, new byte[] { }, -1);
-            var msg1 = new ConsensusProposeMsg(key, 0, 1, TestUtils.BlockHash0, new byte[] { }, -1);
-            var msg2 = new ConsensusProposeMsg(key, 0, 2, TestUtils.BlockHash0, new byte[] { }, -1);
+            var key = new PrivateKey();
+            var msg0 = TestUtils.CreateConsensusPropose(fx.Block1, key, 0, 0);
+            var msg1 = TestUtils.CreateConsensusPropose(fx.Block1, key, 0, 1);
+            var msg2 = TestUtils.CreateConsensusPropose(fx.Block1, key, 0, 2);
             cache.Put(msg0);
             cache.Put(msg1);
             var ids = cache.GetGossipIds();

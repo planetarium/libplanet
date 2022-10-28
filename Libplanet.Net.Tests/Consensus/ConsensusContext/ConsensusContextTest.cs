@@ -172,13 +172,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.True(consensusContext.Height == 1);
             Assert.Throws<InvalidHeightMessageException>(
                 () => consensusContext.HandleMessage(
-                    new ConsensusProposeMsg(
-                        new PrivateKey().PublicKey,
-                        0,
-                        0,
-                        fx.Block1.Hash,
-                        new byte[] { },
-                        -1)));
+                    TestUtils.CreateConsensusPropose(
+                        blockChain.ProposeBlock(TestUtils.Peer0Priv),
+                        TestUtils.Peer0Priv,
+                        0)));
         }
 
         [Fact(Timeout = Timeout)]
@@ -207,7 +204,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 {
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose.Payload));
+                            (Dictionary)codec.Decode(propose.Proposal.BlockMarshaled));
                     heightOneProposeSent.Set();
                 }
             }
@@ -247,7 +244,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     if (message.Height == 2 && message.Message is ConsensusProposeMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Payload));
+                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
                         heightTwoProposeSent.Set();
                     }
                 };
@@ -279,7 +276,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     if (hm.Message is ConsensusProposeMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Payload));
+                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
                         heightTwoProposeSent.Set();
                     }
                 };
@@ -330,8 +327,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(1);
             // Create context of index 2.
             consensusContext.HandleMessage(
-                new ConsensusProposeMsg(
-                    TestUtils.Validators[1], 2, 1, fx.Hash1, new byte[] { }, -1));
+                TestUtils.CreateConsensusPropose(
+                    blockChain.ProposeBlock(TestUtils.Peer2Priv),
+                    TestUtils.Peer2Priv,
+                    2,
+                    1));
 
             blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
             blockChain.Append(
@@ -373,7 +373,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     if (msg is ConsensusProposeMsg proposeMsg)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Payload));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
                         heightOneProposeSent.Set();
                     }
                 });

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -12,29 +13,51 @@ namespace Libplanet.Net.Messages
     /// </summary>
     public class ConsensusProposeMsg : ConsensusMsg
     {
+        private static Codec _codec = new Codec();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusProposeMsg"/> class.
         /// </summary>
         /// <param name="validator">
-        /// A <see cref="PublicKey"/> of the validator whe made this message.</param>
+        /// A <see cref="PublicKey"/> of the validator who made this message.</param>
         /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
-        /// <param name="payload">A marshalled <see cref="Block{T}"/>.</param>
-        /// <param name="validRound">A last successful
-        /// <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
-        /// </param>
+        /// <param name="proposal">A <see cref="Proposal"/> of given height and round.</param>
         public ConsensusProposeMsg(
             PublicKey validator,
             long height,
             int round,
             BlockHash blockHash,
-            byte[] payload,
-            int validRound)
+            Proposal proposal)
         : base(validator, height, round, blockHash)
         {
-            Payload = payload;
-            ValidRound = validRound;
+            if (height != proposal.Height)
+            {
+                throw new ArgumentException("The height of the proposal is different.");
+            }
+            else if (round != proposal.Round)
+            {
+                throw new ArgumentException("The round of the proposal is different.");
+            }
+            else if (!validator.Equals(proposal.Validator))
+            {
+                throw new ArgumentException("The validator of the proposal is different.");
+            }
+
+            // Note that there can be a block that have same blockHash with it, but invalid block
+            // (i.e., Hash value in block is manipulated.) So the block should be checked by
+            // unmarshaling lazy somewhere.
+            var headerHash =
+                BlockMarshaler.UnmarshalBlockHash(
+                    (Dictionary)_codec.Decode(proposal.BlockMarshaled));
+
+            if (!headerHash.Equals(blockHash))
+            {
+                throw new ArgumentException("The block hash of the proposal is different.");
+            }
+
+            Proposal = proposal;
         }
 
         /// <summary>
@@ -45,19 +68,13 @@ namespace Libplanet.Net.Messages
         public ConsensusProposeMsg(byte[][] dataframes)
         : base(dataframes)
         {
-            Payload = dataframes[4];
-            ValidRound = BitConverter.ToInt32(dataframes[5], 0);
+            Proposal = new Proposal(dataframes[4]);
         }
 
         /// <summary>
         /// A marshalled <see cref="Block{T}"/>.
         /// </summary>
-        public byte[] Payload { get; }
-
-        /// <summary>
-        /// A last successful <see cref="Libplanet.Net.Consensus.Step.PreVote"/> round.
-        /// </summary>
-        public int ValidRound { get; }
+        public Proposal Proposal { get; }
 
         /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
@@ -70,8 +87,7 @@ namespace Libplanet.Net.Messages
                     BitConverter.GetBytes(Height),
                     BitConverter.GetBytes(Round),
                     BlockHash is { } blockHash ? blockHash.ToByteArray() : new[] { Nil },
-                    Payload,
-                    BitConverter.GetBytes(ValidRound),
+                    Proposal.ByteArray,
                 };
                 return frames;
             }
@@ -83,8 +99,7 @@ namespace Libplanet.Net.Messages
         public override bool Equals(ConsensusMsg? other)
         {
             return other is ConsensusProposeMsg message &&
-                ValidRound.Equals(message.ValidRound) &&
-                Payload.SequenceEqual(message.Payload);
+                   message.Proposal.Equals(Proposal);
         }
 
         public override bool Equals(object? obj)
@@ -94,7 +109,7 @@ namespace Libplanet.Net.Messages
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, ByteUtil.CalculateHashCode(Payload));
+            return HashCode.Combine(Type, ByteUtil.CalculateHashCode(Proposal.ByteArray));
         }
     }
 }

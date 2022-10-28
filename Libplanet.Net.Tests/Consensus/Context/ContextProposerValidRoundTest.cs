@@ -56,7 +56,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 if (message is ConsensusProposeMsg propose)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Payload));
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.BlockMarshaled));
                     proposeSent.Set();
                 }
                 else if (message is ConsensusPreVoteMsg prevote &&
@@ -74,7 +74,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Force round change.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                proposedBlock, TestUtils.Peer3Priv, round: 2, validRound: 1));
+                proposedBlock!, TestUtils.Peer3Priv, round: 2, validRound: 1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 if (message is ConsensusProposeMsg propose)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Payload));
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.BlockMarshaled));
                     proposeSent.Set();
                 }
                 else if (message is ConsensusPreVoteMsg prevote &&
@@ -179,7 +179,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Force round change to 2.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                proposedBlock, TestUtils.Peer3Priv, round: 2, validRound: -1));
+                proposedBlock!, TestUtils.Peer3Priv, round: 2, validRound: -1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer0Priv,

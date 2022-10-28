@@ -81,6 +81,8 @@ Version PBFT
     `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Message.Id` property.  [[#PBFT]]
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
+ -  (Libplaent.Net) Added `ProposalMetaData` class.  [[#PBFT]]
 
 ### Behavioral changes
 

@@ -429,8 +429,8 @@ namespace Libplanet.Net.Consensus
                 // FIXME: Probably should not blindly pick the first one.
                 ConsensusProposeMsg propose = proposes[0];
                 var block = BlockMarshaler.UnmarshalBlock<T>(
-                    (Dictionary)_codec.Decode(propose.Payload));
-                return (block, propose.ValidRound);
+                    (Dictionary)_codec.Decode(propose.Proposal.BlockMarshaled));
+                return (block, propose.Proposal.ValidRound);
             }
 
             return null;
