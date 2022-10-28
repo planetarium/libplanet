@@ -67,23 +67,23 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <remarks>
         /// If an invalid <see cref="ConsensusMsg"/> is given, this method throws
-        /// an <see cref="InvalidMessageException"/> and handles it <em>internally</em> while
-        /// invoking <see cref="ExceptionOccurred"/> event.  Internally thrown and
-        /// handled <see cref="InvalidMessageException"/>s are:
+        /// an <see cref="InvalidConsensusMessageException"/> and handles it <em>internally</em>
+        /// while invoking <see cref="ExceptionOccurred"/> event.
+        /// An <see cref="InvalidConsensusMessageException"/> can be thrown and handled internally
+        /// for the following reasons:
         /// <list type="bullet">
         /// <item><description>
-        ///     <see cref="InvalidHeightMessageException"/>: Thrown when the Height of
-        ///     <paramref name="message"/> and the context height does not match.
+        ///     Thrown when the Height of <paramref name="message"/> and the context's height
+        ///     does not match.
         /// </description></item>
         /// <item><description>
-        ///     <see cref="InvalidProposerProposeMessageException"/>: Thrown when
-        ///     <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/> and has
-        ///     a proposer that is not the proposer of the current round.
+        ///     Thrown when <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/>
+        ///     and has a proposer that is not the proposer of the current round.
         /// </description></item>
         /// <item><description>
-        ///     <see cref="InvalidValidatorVoteMessageException"/>: Thrown when
-        ///     <paramref name="message"/> is a vote and its signature is invalid or
-        ///     is not signed by a proper validator for the context.
+        ///     Thrown when <paramref name="message"/> is either a <see cref="ConsensusPreVoteMsg"/>
+        ///     or a <see cref="ConsensusPreCommitMsg"/> and has a validator that is not
+        ///     one of the validators for the context.
         /// </description></item>
         /// </list>
         /// </remarks>
@@ -93,7 +93,7 @@ namespace Libplanet.Net.Consensus
             {
                 if (message.Height != Height)
                 {
-                    throw new InvalidHeightMessageException(
+                    throw new InvalidConsensusMessageException(
                         "Height of message differs with working height.  " +
                         $"(expected: {Height}, actual: {message.Height})",
                         message);
@@ -102,7 +102,7 @@ namespace Libplanet.Net.Consensus
                 if (message is ConsensusProposalMsg propose &&
                     !propose.Validator.Equals(Proposer(message.Round)))
                 {
-                    throw new InvalidProposerProposeMessageException(
+                    throw new InvalidConsensusMessageException(
                         $"Given {nameof(message)}'s proposer {propose.Validator} for height " +
                         $"{message.Height} and round {message.Round} is different from " +
                         $"the expected proposer, {Proposer(message.Round)}.",
@@ -112,7 +112,7 @@ namespace Libplanet.Net.Consensus
                 if (message is ConsensusPreVoteMsg vote &&
                     !_validators.Contains(vote.Validator))
                 {
-                    throw new InvalidValidatorVoteMessageException(
+                    throw new InvalidConsensusMessageException(
                         "Received ConsensusVote message is made by invalid validator.",
                         vote);
                 }
@@ -120,7 +120,7 @@ namespace Libplanet.Net.Consensus
                 if (message is ConsensusPreCommitMsg commit &&
                     !_validators.Contains(commit.Validator))
                 {
-                    throw new InvalidValidatorVoteMessageException(
+                    throw new InvalidConsensusMessageException(
                         "Received ConsensusCommit message is made by invalid validator.",
                         commit);
                 }
@@ -141,13 +141,13 @@ namespace Libplanet.Net.Consensus
                     _messageLog.GetTotalCount(),
                     ToString());
             }
-            catch (InvalidMessageException ime)
+            catch (InvalidConsensusMessageException icme)
             {
                 _logger.Debug(
-                    ime,
+                    icme,
                     "Failed to add invalid message {Message}.",
                     message);
-                ExceptionOccurred?.Invoke(this, (Height, ime));
+                ExceptionOccurred?.Invoke(this, (Height, icme));
             }
         }
 
