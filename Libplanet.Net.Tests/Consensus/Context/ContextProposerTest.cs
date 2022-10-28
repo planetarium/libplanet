@@ -88,7 +88,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CatchMessage(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     hash = propose.BlockHash;
                     proposeSent.Set();
@@ -174,7 +174,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CatchMessage(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     hash = propose.BlockHash;
                     proposeSent.Set();
@@ -260,7 +260,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CheckVote(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     hash = propose.BlockHash;
                     proposeSent.Set();

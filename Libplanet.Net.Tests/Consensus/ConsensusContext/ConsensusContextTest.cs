@@ -200,11 +200,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             void CatchPropose(object? sender, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(propose.Proposal.MarshaledBlock));
                     heightOneProposeSent.Set();
                 }
             }
@@ -241,10 +241,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.MessageConsumed +=
                 (sender, message) =>
                 {
-                    if (message.Height == 2 && message.Message is ConsensusProposeMsg propose)
+                    if (message.Height == 2 && message.Message is ConsensusProposalMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
                         heightTwoProposeSent.Set();
                     }
                 };
@@ -273,10 +273,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
                 (sender, hm) =>
                 {
-                    if (hm.Message is ConsensusProposeMsg propose)
+                    if (hm.Message is ConsensusProposalMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
                         heightTwoProposeSent.Set();
                     }
                 };
@@ -370,10 +370,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer1Priv,
                 consensusMessageSent: (sender, msg) =>
                 {
-                    if (msg is ConsensusProposeMsg proposeMsg)
+                    if (msg is ConsensusProposalMsg proposeMsg)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.MarshaledBlock));
                         heightOneProposeSent.Set();
                     }
                 });

@@ -136,7 +136,7 @@ namespace Libplanet.Net.Tests
             return blockChain;
         }
 
-        public static ConsensusProposeMsg CreateConsensusPropose(
+        public static ConsensusProposalMsg CreateConsensusPropose(
             Block<DumbAction> block,
             PrivateKey privateKey,
             long height = 1,
@@ -144,7 +144,7 @@ namespace Libplanet.Net.Tests
             int validRound = -1)
         {
             var codec = new Codec();
-            return new ConsensusProposeMsg(
+            return new ConsensusProposalMsg(
                 privateKey.PublicKey,
                 height,
                 round,

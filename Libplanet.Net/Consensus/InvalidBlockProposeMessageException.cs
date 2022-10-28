@@ -6,7 +6,7 @@ using Libplanet.Net.Messages;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// An exception thrown when a <see cref="ConsensusProposeMsg"/> has invalid
+    /// An exception thrown when a <see cref="ConsensusProposalMsg"/> has invalid
     /// <see cref="BlockHash"/> (i.e., NIL).
     /// </summary>
     [Serializable]

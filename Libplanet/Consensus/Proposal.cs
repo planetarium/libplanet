@@ -73,7 +73,7 @@ namespace Libplanet.Consensus
         public int Round => _proposalMetaData.Round;
 
         /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
-        public byte[] BlockMarshaled => _proposalMetaData.MarshaledBlock;
+        public byte[] MarshaledBlock => _proposalMetaData.MarshaledBlock;
 
         /// <inheritdoc cref="ProposalMetaData.Validator"/>
         public PublicKey Validator => _proposalMetaData.Validator;

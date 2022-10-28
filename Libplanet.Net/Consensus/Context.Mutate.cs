@@ -41,7 +41,7 @@ namespace Libplanet.Net.Consensus
                     ).Sign(_privateKey);
 
                     BroadcastMessage(
-                        new ConsensusProposeMsg(
+                        new ConsensusProposalMsg(
                             _privateKey.PublicKey,
                             Height,
                             Round,
@@ -82,11 +82,11 @@ namespace Libplanet.Net.Consensus
         ///     </description></item>
         ///     <item><description>
         ///         <see cref="InvalidProposerProposeMessageException"/>: Thrown when
-        ///         <paramref name="message"/> is a <see cref="ConsensusProposeMsg"/> and has
+        ///         <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/> and has
         ///         a proposer that is not the proposer of the current round.
         ///     </description></item>
         ///         <see cref="InvalidBlockProposeMessageException"/>: Thrown when
-        ///         <paramref name="message"/> is a <see cref="ConsensusProposeMsg"/> and
+        ///         <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/> and
         ///         has an invalid blockHash (i.e., NIL).
         ///     <item><description>
         ///         <see cref="InvalidValidatorVoteMessageException"/>: Thrown when
@@ -107,7 +107,7 @@ namespace Libplanet.Net.Consensus
                         message);
                 }
 
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     if (!propose.Validator.Equals(Proposer(message.Round)))
                     {
@@ -310,7 +310,7 @@ namespace Libplanet.Net.Consensus
         private void ProcessHeightOrRoundUponRules(ConsensusMsg message)
         {
             int round = message.Round;
-            if ((message is ConsensusProposeMsg || message is ConsensusPreCommitMsg) &&
+            if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
                 GetPropose(round) is (Block<T> block4, _) &&
                 HasTwoThirdsPreCommit(round, block4.Hash) &&
                 Step != Step.EndCommit &&
@@ -342,7 +342,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A timeout mutation to run if no <see cref="ConsensusProposeMsg"/> is received in
+        /// A timeout mutation to run if no <see cref="ConsensusProposalMsg"/> is received in
         /// <see cref="TimeoutPropose"/> and is still in <see cref="Step.Propose"/> step.
         /// </summary>
         /// <param name="round">A round that the timeout task is scheduled for.</param>

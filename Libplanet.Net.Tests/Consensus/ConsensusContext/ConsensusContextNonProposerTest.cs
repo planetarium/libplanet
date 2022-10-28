@@ -55,10 +55,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             };
             void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose && message.Height == 2)
+                if (message is ConsensusProposalMsg propose && message.Height == 2)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
+                        (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
                     heightTwoProposeSent.Set();
                 }
             }
@@ -119,7 +119,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void HandleMessageFromHigherHeight()
         {
             var codec = new Codec();
-            ConsensusProposeMsg? propose = null;
+            ConsensusProposalMsg? propose = null;
             var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
             var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
@@ -136,7 +136,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg proposeMessage)
+                if (message is ConsensusProposalMsg proposeMessage)
                 {
                     propose = proposeMessage;
                     proposeSent.Set();
@@ -242,7 +242,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var blockHeightTwo =
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    (Dictionary)codec.Decode(propose.Proposal.BlockMarshaled));
+                    (Dictionary)codec.Decode(propose.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.Peer3Priv,
                 lastCommit: TestUtils.CreateLastCommit(blockHeightTwo.Hash, 2, 0));
@@ -275,10 +275,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 (sender, message) =>
                 {
                     if (message.Height == 2 &&
-                        message.Message is ConsensusProposeMsg propose)
+                        message.Message is ConsensusProposalMsg propose)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
                         heightTwoProposeSent.Set();
                     }
                 };
@@ -320,7 +320,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer2Priv,
                 consensusMessageSent: (sender, message) =>
                 {
-                    if (message is ConsensusProposeMsg { Height: 2 })
+                    if (message is ConsensusProposalMsg { Height: 2 })
                     {
                         heightTwoProposeSent.Set();
                     }
