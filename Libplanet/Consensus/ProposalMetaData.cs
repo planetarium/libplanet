@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
@@ -20,8 +21,9 @@ namespace Libplanet.Consensus
         private const string RoundKey = "round";
         private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
+        private const string BlockHashKey = "block_hash";
         private const string BlockKey = "block";
-        private const string ValidRoundKey = "validRound";
+        private const string ValidRoundKey = "valid_round";
 
         private static Codec _codec = new Codec();
 
@@ -77,8 +79,11 @@ namespace Libplanet.Consensus
 
             Height = height;
             Round = round;
+            BlockHash = BlockMarshaler.UnmarshalBlockHash(
+                (Dictionary)_codec.Decode(marshaledBlock));
             Timestamp = timestamp;
             Validator = validator;
+
             MarshaledBlock = marshaledBlock;
             ValidRound = validRound;
         }
@@ -108,6 +113,12 @@ namespace Libplanet.Consensus
         /// A round of given proposal values.
         /// </summary>
         public int Round { get; }
+
+        /// <summary>
+        /// The <see cref="Libplanet.Blocks.BlockHash"/> of <see cref="MarshaledBlock"/>.
+        /// This is automatically derived from <see cref="MarshaledBlock"/>.
+        /// </summary>
+        public BlockHash BlockHash { get; }
 
         /// <summary>
         /// The time at which the proposal took place.
@@ -147,6 +158,11 @@ namespace Libplanet.Consensus
                     .Add(BlockKey, MarshaledBlock)
                     .Add(ValidRoundKey, ValidRound);
 
+                if (BlockHash is { } blockHash)
+                {
+                    encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
+                }
+
                 return encoded;
             }
         }
@@ -168,7 +184,8 @@ namespace Libplanet.Consensus
             return HashCode.Combine(
                 Height,
                 Round,
-                ByteUtil.CalculateHashCode(MarshaledBlock),
+                BlockHash,
+                Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 Validator,
                 ValidRound);
         }
