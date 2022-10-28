@@ -161,7 +161,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         1,
                         0,
                         codec.Encode(mockBlock),
-                        fx.Block1.Timestamp,
                         TestUtils.Peer1Priv.PublicKey,
                         -1).Sign(TestUtils.Peer1Priv)));
 

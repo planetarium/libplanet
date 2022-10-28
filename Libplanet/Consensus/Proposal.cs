@@ -75,9 +75,6 @@ namespace Libplanet.Consensus
         /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
         public byte[] BlockMarshaled => _proposalMetaData.MarshaledBlock;
 
-        /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
-        public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
-
         /// <inheritdoc cref="ProposalMetaData.Validator"/>
         public PublicKey Validator => _proposalMetaData.Validator;
 
@@ -137,7 +134,9 @@ namespace Libplanet.Consensus
         [Pure]
         public override int GetHashCode()
         {
-            return HashCode.Combine(_proposalMetaData.GetHashCode(), Signature);
+            return HashCode.Combine(
+                _proposalMetaData.GetHashCode(),
+                ByteUtil.CalculateHashCode(Signature.ToArray()));
         }
     }
 }

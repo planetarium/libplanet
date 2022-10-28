@@ -37,7 +37,6 @@ namespace Libplanet.Tests.Consensus
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
                 new PrivateKey().PublicKey,
                 -1);
 
@@ -63,7 +62,6 @@ namespace Libplanet.Tests.Consensus
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
                 key.PublicKey,
                 -1);
             Proposal proposal = metaData.Sign(key);

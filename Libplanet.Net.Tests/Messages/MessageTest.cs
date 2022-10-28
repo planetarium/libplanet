@@ -164,7 +164,6 @@ namespace Libplanet.Net.Tests.Messages
                 1,
                 0,
                 codec.Encode(fx.Block1.MarshalBlock()),
-                fx.Block1.Timestamp,
                 key.PublicKey,
                 -1).Sign(key);
 
