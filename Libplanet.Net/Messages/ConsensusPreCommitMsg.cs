@@ -45,15 +45,8 @@ namespace Libplanet.Net.Messages
         /// </summary>
         public Vote PreCommit { get; }
 
-        /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
-        public override IEnumerable<byte[]> DataFrames
-        {
-            get
-            {
-                var frames = new List<byte[]> { PreCommit.ByteArray };
-                return frames;
-            }
-        }
+        /// <inheritdoc cref="Message.DataFrames"/>
+        public override IEnumerable<byte[]> DataFrames => new List<byte[]> { PreCommit.ByteArray };
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusCommit;

@@ -29,7 +29,7 @@ namespace Libplanet.Net.Messages
             PublicKey validator,
             long height,
             int round,
-            BlockHash blockHash,
+            BlockHash? blockHash,
             Proposal proposal)
             : base(validator, height, round, blockHash)
         {
@@ -44,6 +44,11 @@ namespace Libplanet.Net.Messages
             else if (!validator.Equals(proposal.Validator))
             {
                 throw new ArgumentException("The validator of the proposal is different.");
+            }
+            else if (blockHash is null)
+            {
+                throw new ArgumentNullException(
+                    nameof(blockHash), $"Given {nameof(blockHash)} cannot be null.");
             }
 
             // Note that there can be a block that have same blockHash with it, but invalid block
@@ -67,9 +72,17 @@ namespace Libplanet.Net.Messages
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
         public ConsensusProposalMsg(byte[][] dataframes)
-            : base(dataframes)
+#pragma warning disable SA1118 // The parameter spans multiple lines
+            : this(
+                validator: new PublicKey(dataframes[0]),
+                height: BitConverter.ToInt64(dataframes[1], 0),
+                round: BitConverter.ToInt32(dataframes[2], 0),
+                blockHash: (dataframes[3].Length == 1 && dataframes[3][0] == Nil)
+                    ? (BlockHash?)null
+                    : new BlockHash(dataframes[3]),
+                proposal: new Proposal(dataframes[4]))
+#pragma warning restore SA1118
         {
-            Proposal = new Proposal(dataframes[4]);
         }
 
         /// <summary>
@@ -77,7 +90,7 @@ namespace Libplanet.Net.Messages
         /// </summary>
         public Proposal Proposal { get; }
 
-        /// <inheritdoc cref="ConsensusMsg.DataFrames"/>
+        /// <inheritdoc cref="Message.DataFrames"/>
         public override IEnumerable<byte[]> DataFrames
         {
             get
