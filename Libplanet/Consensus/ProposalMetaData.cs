@@ -158,11 +158,6 @@ namespace Libplanet.Consensus
                     .Add(BlockKey, MarshaledBlock)
                     .Add(ValidRoundKey, ValidRound);
 
-                if (BlockHash is { } blockHash)
-                {
-                    encoded = encoded.Add(BlockHashKey, blockHash.ByteArray);
-                }
-
                 return encoded;
             }
         }
