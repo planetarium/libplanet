@@ -128,7 +128,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv));
             await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidProposerProposeMessageException);
+            Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
         }
 
         [Fact(Timeout = Timeout)]
@@ -150,7 +150,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, 2, 2));
             await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidHeightMessageException);
+            Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
 
             // Reset exception thrown.
             exceptionThrown = null;
@@ -164,21 +164,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                         block.Hash,
                         VoteFlag.PreVote)));
             await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidHeightMessageException);
-
-            // Reset exception thrown.
-            exceptionThrown = null;
-
-            context.ProduceMessage(
-                new ConsensusPreVoteMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer2Priv,
-                        2,
-                        0,
-                        block.Hash,
-                        VoteFlag.PreVote)));
-            await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidHeightMessageException);
+            Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
         }
 
         [Fact(Timeout = Timeout)]

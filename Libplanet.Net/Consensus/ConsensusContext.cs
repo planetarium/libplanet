@@ -253,7 +253,7 @@ namespace Libplanet.Net.Consensus
             long height = consensusMessage.Height;
             if (height < Height)
             {
-                throw new InvalidHeightMessageException(
+                throw new InvalidConsensusMessageException(
                     $"Received message's height {height} is lower than " +
                     $"current context's height {Height}.",
                     consensusMessage);

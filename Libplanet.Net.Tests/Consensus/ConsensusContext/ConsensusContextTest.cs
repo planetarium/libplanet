@@ -170,7 +170,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
-            Assert.Throws<InvalidHeightMessageException>(
+            Assert.Throws<InvalidConsensusMessageException>(
                 () => consensusContext.HandleMessage(
                     TestUtils.CreateConsensusPropose(
                         blockChain.ProposeBlock(TestUtils.Peer0Priv),
