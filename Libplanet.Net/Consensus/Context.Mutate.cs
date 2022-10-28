@@ -180,7 +180,7 @@ namespace Libplanet.Net.Consensus
         {
             if (Step == Step.Default || Step == Step.EndCommit)
             {
-                _logger.Debug("Operation will not run in {State} state.", Step.ToString());
+                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
                 return;
             }
 
@@ -249,7 +249,7 @@ namespace Libplanet.Net.Consensus
             if (propose is { } p3 &&
                 HasTwoThirdsPreVote(Round, p3.Block.Hash) &&
                 IsValid(p3.Block) &&
-                Step >= Step.PreVote &&
+                (Step == Step.PreVote || Step == Step.PreCommit) &&
                 !_hasTwoThirdsPreVoteFlags.Contains(Round))
             {
                 _logger.Debug(
@@ -309,11 +309,16 @@ namespace Libplanet.Net.Consensus
         /// Although this is not strictly needed, this is used for optimization.</param>
         private void ProcessHeightOrRoundUponRules(ConsensusMsg message)
         {
+            if (Step == Step.Default || Step == Step.EndCommit)
+            {
+                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                return;
+            }
+
             int round = message.Round;
             if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
                 GetPropose(round) is (Block<T> block4, _) &&
                 HasTwoThirdsPreCommit(round, block4.Hash) &&
-                Step != Step.EndCommit &&
                 IsValid(block4))
             {
                 Step = Step.EndCommit;
@@ -382,7 +387,13 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private void ProcessTimeoutPreCommit(int round)
         {
-            if (round == Round && Step < Step.EndCommit)
+            if (Step == Step.Default || Step == Step.EndCommit)
+            {
+                _logger.Debug("Operation will not run in {Step} step.", Step.ToString());
+                return;
+            }
+
+            if (round == Round)
             {
                 StartRound(Round + 1);
                 TimeoutProcessed?.Invoke(this, (Height, round));
