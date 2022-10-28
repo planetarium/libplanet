@@ -14,7 +14,7 @@ namespace Libplanet.Consensus
     /// in consensus of a height and a round. Use <see cref="Sign"/> to create a
     /// <see cref="Proposal"/>.
     /// </summary>
-    public class ProposalMetaData
+    public class ProposalMetaData : IEquatable<ProposalMetaData>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private const string HeightKey = "height";
