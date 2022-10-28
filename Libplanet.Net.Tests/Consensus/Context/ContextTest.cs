@@ -290,6 +290,88 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
+        public async void BlockCommit()
+        {
+            var proposeSent = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
+
+            Block<DumbAction>? proposedBlock = null;
+            var codec = new Codec();
+
+            // FIXME: Pretty lousy testing method.
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1),
+                consensusMessageSent: (sender, msg) =>
+                {
+                    if (msg is ConsensusProposalMsg proposeMsg)
+                    {
+                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.MarshaledBlock));
+                        proposeSent.Set();
+                    }
+                });
+
+            Assert.Null(context.BlockCommit());
+
+            context.StateChanged += (sender, state) =>
+            {
+                if (state.Step == Step.PreCommit)
+                {
+                    stepChangedToPreCommit.Set();
+                }
+            };
+
+            context.Start();
+            await proposeSent.WaitAsync();
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreVote)));
+
+            context.ProduceMessage(
+                new ConsensusPreVoteMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer2Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreVote)));
+
+            context.ProduceMessage(
+                new ConsensusPreCommitMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer0Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreCommit)));
+
+            context.ProduceMessage(
+                new ConsensusPreCommitMsg(
+                    TestUtils.CreateVote(
+                        TestUtils.Peer2Priv,
+                        1,
+                        hash: proposedBlock!.Hash,
+                        flag: VoteFlag.PreCommit)));
+
+            await stepChangedToPreCommit.WaitAsync();
+
+            // Wait for the vote to change from PreVote to PreCommit to avoid flakiness.
+            await Libplanet.Tests.TestUtils.AssertThatEventually(
+                () => context.VoteSet(0).Votes[1].Flag == VoteFlag.PreCommit,
+                3_000);
+            var lastCommit = context.BlockCommit();
+            Assert.NotNull(lastCommit);
+            Assert.Equal(1, lastCommit?.Height);
+            Assert.Equal(0, lastCommit?.Round);
+            Assert.Equal(VoteFlag.PreCommit, lastCommit?.Votes[0].Flag);
+            Assert.Equal(VoteFlag.PreCommit, lastCommit?.Votes[1].Flag);
+            Assert.Equal(VoteFlag.PreCommit, lastCommit?.Votes[2].Flag);
+            Assert.Equal(VoteFlag.Null, lastCommit?.Votes[3].Flag);
+        }
+
+        [Fact(Timeout = Timeout)]
         public async void PutLastCommitWhenDispose()
         {
             var codec = new Codec();
