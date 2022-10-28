@@ -149,8 +149,8 @@ namespace Libplanet.Net.Tests.Messages
             _ = new ConsensusPreCommitMsg(preCommit);
 
             // Invalid message cases
-            Assert.Throws<InvalidMessageException>(() => new ConsensusPreVoteMsg(preCommit));
-            Assert.Throws<InvalidMessageException>(() => new ConsensusPreCommitMsg(preVote));
+            Assert.Throws<ArgumentException>(() => new ConsensusPreVoteMsg(preCommit));
+            Assert.Throws<ArgumentException>(() => new ConsensusPreCommitMsg(preVote));
         }
 
         [Fact]

@@ -15,12 +15,15 @@ namespace Libplanet.Net.Messages
         /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreCommit"/>
         /// to attach.
         /// </param>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="vote"/>'s
+        /// <see cref="Vote.Flag"/> is not <see cref="VoteFlag.PreCommit"/>.</exception>
         public ConsensusPreCommitMsg(Vote vote)
             : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
             if (vote.Flag != VoteFlag.PreCommit)
             {
-                throw new InvalidMessageException("Vote flag must be PreCommit.", this);
+                throw new ArgumentException(
+                    $"Given {nameof(vote)}'s flag must be {VoteFlag.PreCommit}.", nameof(vote));
             }
 
             PreCommit = vote;

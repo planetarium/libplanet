@@ -15,12 +15,15 @@ namespace Libplanet.Net.Messages
         /// <param name="vote">The <see cref="Vote"/> for <see cref="Consensus.Step.PreVote"/>
         /// to attach.
         /// </param>
+        /// <exception cref="ArgumentException">Thrown when given <paramref name="vote"/>'s
+        /// <see cref="Vote.Flag"/> is not <see cref="VoteFlag.PreVote"/>.</exception>
         public ConsensusPreVoteMsg(Vote vote)
             : base(vote.Validator, vote.Height, vote.Round, vote.BlockHash)
         {
             if (vote.Flag != VoteFlag.PreVote)
             {
-                throw new InvalidMessageException("Vote flag must be PreVote.", this);
+                throw new ArgumentException(
+                    $"Given {nameof(vote)}'s flag must be {VoteFlag.PreVote}.", nameof(vote));
             }
 
             PreVote = vote;
