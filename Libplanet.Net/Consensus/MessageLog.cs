@@ -49,22 +49,22 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets all <see cref="ConsensusProposeMsg"/>s in given <paramref name="round"/>.
+        /// Gets all <see cref="ConsensusProposalMsg"/>s in given <paramref name="round"/>.
         /// </summary>
         /// <param name="round">The round to search.</param>
-        /// <returns>All <see cref="ConsensusProposeMsg"/>'s in given <paramref name="round"/>.
+        /// <returns>All <see cref="ConsensusProposalMsg"/>'s in given <paramref name="round"/>.
         /// </returns>
         /// <remarks>
-        /// There can be multiple <see cref="ConsensusProposeMsg"/>s in given
+        /// There can be multiple <see cref="ConsensusProposalMsg"/>s in given
         /// <paramref name="round"/>.
         /// </remarks>
-        internal List<ConsensusProposeMsg> GetProposes(int round)
+        internal List<ConsensusProposalMsg> GetProposes(int round)
         {
             lock (_lock)
             {
                 return _log.ContainsKey(round)
-                    ? _log[round].OfType<ConsensusProposeMsg>().ToList()
-                    : new List<ConsensusProposeMsg>();
+                    ? _log[round].OfType<ConsensusProposalMsg>().ToList()
+                    : new List<ConsensusProposalMsg>();
             }
         }
 

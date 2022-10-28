@@ -12,12 +12,12 @@ namespace Libplanet.Net.Messages
     /// <summary>
     /// A message class for <see cref="Consensus.Step.Propose"/>.
     /// </summary>
-    public class ConsensusProposeMsg : ConsensusMsg
+    public class ConsensusProposalMsg : ConsensusMsg
     {
         private static Codec _codec = new Codec();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusProposeMsg"/> class.
+        /// Initializes a new instance of the <see cref="ConsensusProposalMsg"/> class.
         /// </summary>
         /// <param name="validator">
         /// A <see cref="PublicKey"/> of the validator who made this message.</param>
@@ -25,13 +25,13 @@ namespace Libplanet.Net.Messages
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
         /// <param name="proposal">A <see cref="Proposal"/> of given height and round.</param>
-        public ConsensusProposeMsg(
+        public ConsensusProposalMsg(
             PublicKey validator,
             long height,
             int round,
             BlockHash blockHash,
             Proposal proposal)
-        : base(validator, height, round, blockHash)
+            : base(validator, height, round, blockHash)
         {
             if (height != proposal.Height)
             {
@@ -51,7 +51,7 @@ namespace Libplanet.Net.Messages
             // unmarshaling lazy somewhere.
             var headerHash =
                 BlockMarshaler.UnmarshalBlockHash(
-                    (Dictionary)_codec.Decode(proposal.BlockMarshaled));
+                    (Dictionary)_codec.Decode(proposal.MarshaledBlock));
 
             if (!headerHash.Equals(blockHash))
             {
@@ -62,12 +62,12 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusProposeMsg"/> class
+        /// Initializes a new instance of the <see cref="ConsensusProposalMsg"/> class
         /// with marshalled message.
         /// </summary>
         /// <param name="dataframes">A marshalled message.</param>
-        public ConsensusProposeMsg(byte[][] dataframes)
-        : base(dataframes)
+        public ConsensusProposalMsg(byte[][] dataframes)
+            : base(dataframes)
         {
             Proposal = new Proposal(dataframes[4]);
         }
@@ -99,7 +99,7 @@ namespace Libplanet.Net.Messages
 
         public override bool Equals(ConsensusMsg? other)
         {
-            return other is ConsensusProposeMsg message &&
+            return other is ConsensusProposalMsg message &&
                    message.Proposal.Equals(Proposal);
         }
 

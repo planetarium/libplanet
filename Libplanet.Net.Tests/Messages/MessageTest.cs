@@ -168,11 +168,11 @@ namespace Libplanet.Net.Tests.Messages
                 -1).Sign(key);
 
             // Valid message case
-            _ = new ConsensusProposeMsg(key.PublicKey, 1, 0, fx.Block1.Hash, baseProposal);
+            _ = new ConsensusProposalMsg(key.PublicKey, 1, 0, fx.Block1.Hash, baseProposal);
 
             // Invalid message case
             Assert.Throws<ArgumentException>(() =>
-                new ConsensusProposeMsg(key.PublicKey, 1, 0, fx.Block2.Hash, baseProposal));
+                new ConsensusProposalMsg(key.PublicKey, 1, 0, fx.Block2.Hash, baseProposal));
         }
     }
 }

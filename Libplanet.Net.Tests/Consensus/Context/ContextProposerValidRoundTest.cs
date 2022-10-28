@@ -53,10 +53,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             void CatchMessage(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.BlockMarshaled));
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.MarshaledBlock));
                     proposeSent.Set();
                 }
                 else if (message is ConsensusPreVoteMsg prevote &&
@@ -147,10 +147,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
             void CatchMessage(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.BlockMarshaled));
+                        (Bencodex.Types.Dictionary)_codec.Decode(propose.Proposal.MarshaledBlock));
                     proposeSent.Set();
                 }
                 else if (message is ConsensusPreVoteMsg prevote &&

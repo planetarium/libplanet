@@ -50,7 +50,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg)
+                if (message is ConsensusProposalMsg)
                 {
                     proposeSent.Set();
                 }
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 privateKey: TestUtils.Peer2Priv,
                 consensusMessageSent: CatchPropose);
 
-            ConsensusProposeMsg? proposedMessage = null;
+            ConsensusProposalMsg? proposedMessage = null;
             context.StateChanged += (sender, state) =>
             {
                 if (state.Step == Step.PreVote)
@@ -87,7 +87,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg propose)
+                if (message is ConsensusProposalMsg propose)
                 {
                     proposedMessage = propose;
                 }
@@ -105,7 +105,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(Step.PreVote, context.Step);
             Assert.NotNull(proposedMessage);
             Block<DumbAction> proposed = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                (Dictionary)new Codec().Decode(proposedMessage!.Proposal.BlockMarshaled));
+                (Dictionary)new Codec().Decode(proposedMessage!.Proposal.MarshaledBlock));
             Assert.NotNull(proposed.LastCommit);
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
@@ -152,7 +152,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.Start();
             context.ProduceMessage(
-                new ConsensusProposeMsg(
+                new ConsensusProposalMsg(
                     TestUtils.Peer1Priv.PublicKey,
                     1,
                     0,
@@ -232,10 +232,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1),
                 consensusMessageSent: (sender, msg) =>
                 {
-                    if (msg is ConsensusProposeMsg proposeMsg)
+                    if (msg is ConsensusProposalMsg proposeMsg)
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.MarshaledBlock));
                         proposeSent.Set();
                     }
                 });
@@ -315,11 +315,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             void CatchPropose(object? observer, ConsensusMsg? message)
             {
-                if (message is ConsensusProposeMsg proposeMsg)
+                if (message is ConsensusProposalMsg proposeMsg)
                 {
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Proposal.BlockMarshaled));
+                            (Dictionary)codec.Decode(proposeMsg.Proposal.MarshaledBlock));
                     proposeSent.Set();
                 }
             }

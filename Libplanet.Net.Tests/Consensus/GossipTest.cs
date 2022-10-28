@@ -51,7 +51,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip1 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusProposeMsg)
+                    if (message is ConsensusProposalMsg)
                     {
                         received1 = true;
                     }
@@ -62,7 +62,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip2 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusProposeMsg)
+                    if (message is ConsensusProposalMsg)
                     {
                         received2 = true;
                         receivedEvent.Set();
@@ -104,7 +104,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip1 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusProposeMsg)
+                    if (message is ConsensusProposalMsg)
                     {
                         received1++;
                     }
@@ -115,7 +115,7 @@ namespace Libplanet.Net.Tests.Consensus
             var gossip2 = CreateGossip(
                 message =>
                 {
-                    if (message is ConsensusProposeMsg)
+                    if (message is ConsensusProposalMsg)
                     {
                         received2++;
                     }
