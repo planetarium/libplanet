@@ -72,13 +72,8 @@ Version PBFT
      -  Added `ConsensusVote` of value `0x41`.
      -  Added `ConsensusCommit` of value `0x42`.
  -  (Libplanet.Net) Added `ConsensusReactorOption` struct.  [[#PBFT]]
- -  (Libplanet.Net) Added
-    `InvalidBlockProposedMessageException` class.  [[#PBFT]]
+ -  (Libplanet.Net) Added `InvalidConsensusMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `InvalidHeightIncreasingException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added
-    `InvalidProposerProposeMessageException` class.  [[#PBFT]]
- -  (Libplanet.Net) Added
-    `InvalidValidatorVoteMessageException` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Message.Id` property.  [[#PBFT]]
  -  (Libplanet.Net) Added `Gossip` class.  [[#PBFT]]
  -  (Libplanet.Net) Added `Proposal` class.  [[#PBFT]]
