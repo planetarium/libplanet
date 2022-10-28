@@ -245,8 +245,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="consensusMessage">a received <see cref="ConsensusMsg"/> from any
         /// bounding validator.
         /// </param>
-        /// <exception cref="InvalidHeightMessageException"> Thrown if the given message is lower
-        /// than current <see cref="Height"/>.
+        /// <exception cref="InvalidConsensusMessageException"> Thrown if the given message is
+        /// lower than the current <see cref="Height"/>.
         /// </exception>
         public void HandleMessage(ConsensusMsg consensusMessage)
         {
