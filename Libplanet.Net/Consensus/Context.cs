@@ -262,6 +262,35 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Returns a <see cref="Libplanet.Blocks.BlockCommit"/> of the context.
+        /// </summary>
+        /// <returns>A <see cref="Libplanet.Blocks.BlockCommit"/> of given round if its
+        /// <see cref="CommittedRound"/> is not -1.</returns>
+        public BlockCommit? BlockCommit()
+        {
+            try
+            {
+                return CommittedRound == -1
+                    ? null
+                    : new BlockCommit(VoteSet(CommittedRound), _blockChain.Tip.Hash);
+            }
+            catch (Exception e)
+            {
+                VoteSet? voteSet = null;
+                if (CommittedRound != -1)
+                {
+                    voteSet = VoteSet(CommittedRound);
+                }
+
+                const string msg = "Unexpected exception during {FName}() of context " +
+                                   "Height #{Height}, CommittedRound: {CommittedRound}, " +
+                                   "VoteSet: {@VoteSet}: {@E}";
+                _logger.Error(e, msg, nameof(BlockCommit), Height, CommittedRound, voteSet, e);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Returns the summary of context in JSON-formatted string.
         /// </summary>
         /// <returns>Returns a JSON-formatted string of context state.</returns>

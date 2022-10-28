@@ -180,11 +180,7 @@ namespace Libplanet.Net.Consensus
                 BlockCommit? lastCommit = null;
                 if (_contexts.ContainsKey(height - 1))
                 {
-                    lastCommit = _contexts[height - 1].CommittedRound == -1
-                        ? (BlockCommit?)null
-                        : new BlockCommit(
-                            _contexts[height - 1].VoteSet(_contexts[height - 1].CommittedRound),
-                            _blockChain.Tip.Hash);
+                    lastCommit = _contexts[height - 1].BlockCommit();
                 }
 
                 RemoveOldContexts(height);
