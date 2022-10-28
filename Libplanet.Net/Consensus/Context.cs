@@ -266,6 +266,20 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Returns a <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed.
+        /// </summary>
+        /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed
+        /// otherwise returns <see langword="null"/>.
+        /// </returns>
+        /// <remarks>If the <see cref="CommittedRound"/> exists, then the Context guarantees to have
+        /// a valid <see cref="BlockCommit"/> (+2/3 commits.)
+        /// </remarks>
+        public BlockCommit? GetBlockCommit()
+            => CommittedRound == -1
+                ? (BlockCommit?)null
+                : new BlockCommit(VoteSet(CommittedRound), _blockChain.Tip.Hash);
+
+        /// <summary>
         /// Returns the summary of context in JSON-formatted string.
         /// </summary>
         /// <returns>Returns a JSON-formatted string of context state.</returns>
