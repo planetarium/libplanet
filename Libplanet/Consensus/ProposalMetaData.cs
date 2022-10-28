@@ -174,6 +174,26 @@ namespace Libplanet.Consensus
             new Proposal(this, signer.Sign(ByteArray).ToImmutableArray());
 
         /// <inheritdoc/>
+        public bool Equals(ProposalMetaData? other)
+        {
+            return other is ProposalMetaData metadata &&
+                Height == metadata.Height &&
+                Round == metadata.Round &&
+                BlockHash.Equals(metadata.BlockHash) &&
+                Timestamp
+                    .ToString(TimestampFormat, CultureInfo.InvariantCulture).Equals(
+                        metadata.Timestamp.ToString(
+                            TimestampFormat,
+                            CultureInfo.InvariantCulture)) &&
+                Validator.Equals(metadata.Validator) &&
+                ValidRound == metadata.ValidRound;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj) =>
+            obj is ProposalMetaData other && Equals(other);
+
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return HashCode.Combine(
