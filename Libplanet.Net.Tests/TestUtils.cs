@@ -152,8 +152,9 @@ namespace Libplanet.Net.Tests
                 new ProposalMetaData(
                     height,
                     round,
-                    codec.Encode(block.MarshalBlock()),
+                    DateTimeOffset.UtcNow,
                     privateKey.PublicKey,
+                    codec.Encode(block.MarshalBlock()),
                     validRound).Sign(privateKey))
             {
                 Remote = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234)),

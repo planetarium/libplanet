@@ -1,3 +1,4 @@
+using System;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Messages;
@@ -35,10 +36,10 @@ namespace Libplanet.Net.Consensus
                     Proposal proposal = new ProposalMetaData(
                         Height,
                         Round,
-                        _codec.Encode(proposalValue.MarshalBlock()),
+                        DateTimeOffset.UtcNow,
                         _privateKey.PublicKey,
-                        _validRound
-                    ).Sign(_privateKey);
+                        _codec.Encode(proposalValue.MarshalBlock()),
+                        _validRound).Sign(_privateKey);
 
                     BroadcastMessage(
                         new ConsensusProposalMsg(

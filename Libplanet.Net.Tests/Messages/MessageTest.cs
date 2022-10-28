@@ -163,8 +163,9 @@ namespace Libplanet.Net.Tests.Messages
             var baseProposal = new ProposalMetaData(
                 1,
                 0,
-                codec.Encode(fx.Block1.MarshalBlock()),
+                DateTimeOffset.UtcNow,
                 key.PublicKey,
+                codec.Encode(fx.Block1.MarshalBlock()),
                 -1).Sign(key);
 
             // Valid message case

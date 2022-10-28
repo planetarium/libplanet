@@ -160,8 +160,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     new ProposalMetaData(
                         1,
                         0,
-                        codec.Encode(mockBlock),
+                        DateTimeOffset.UtcNow,
                         TestUtils.Peer1Priv.PublicKey,
+                        codec.Encode(mockBlock),
                         -1).Sign(TestUtils.Peer1Priv)));
 
             await exceptionOccurred.WaitAsync();
