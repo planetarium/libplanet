@@ -21,7 +21,6 @@ namespace Libplanet.Consensus
         private const string RoundKey = "round";
         private const string TimestampKey = "timestamp";
         private const string ValidatorKey = "validator";
-        private const string BlockHashKey = "block_hash";
         private const string BlockKey = "block";
         private const string ValidRoundKey = "valid_round";
 
