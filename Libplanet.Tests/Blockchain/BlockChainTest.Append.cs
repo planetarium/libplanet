@@ -419,7 +419,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(renderer.ActionSuccessRecords);
             Assert.Single(renderer.ActionErrorRecords);
             RenderRecord<ThrowException>.ActionError errorRecord = renderer.ActionErrorRecords[0];
-            Assert.Same(action, errorRecord.Action);
+            Assert.Equal(action.PlainValue, errorRecord.Action.PlainValue);
             Assert.IsType<UnexpectedlyTerminatedActionException>(errorRecord.Exception);
             Assert.IsType<ThrowException.SomeException>(errorRecord.Exception.InnerException);
         }
