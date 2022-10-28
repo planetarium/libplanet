@@ -33,24 +33,6 @@ namespace Libplanet.Net.Messages
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConsensusMsg"/> class with marshalled
-        /// message.
-        /// </summary>
-        /// <param name="dataframes">A marshalled message.</param>
-        protected ConsensusMsg(byte[][] dataframes)
-#pragma warning disable SA1118 // The parameter spans multiple lines
-            : this(
-                validator: new PublicKey(dataframes[0]),
-                height: BitConverter.ToInt64(dataframes[1], 0),
-                round: BitConverter.ToInt32(dataframes[2], 0),
-                blockHash: (dataframes[3].Length == 1 && dataframes[3][0] == Nil)
-                    ? (BlockHash?)null
-                    : new BlockHash(dataframes[3]))
-#pragma warning restore SA1118
-        {
-        }
-
-        /// <summary>
         /// A <see cref="PublicKey"/> of the validator who made this message.
         /// </summary>
         public PublicKey Validator { get; }

@@ -132,40 +132,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ThrowNilPropose()
-        {
-            var codec = new Codec();
-            var (fx, _, context) = TestUtils.CreateDummyContext();
-            Binary blockHash = default(BlockHash).ByteArray;
-
-            // FIXME: for null-hashed block, the mocked bencodex is used for testing.
-            Dictionary mockBlockHeader = Dictionary.Empty.Add(new byte[] { 0x68 }, blockHash);
-            var mockBlock = Dictionary.Empty.Add(new byte[] { 0x48 }, mockBlockHeader);
-
-            Exception? exceptionThrown = null;
-            var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, he) =>
-            {
-                exceptionThrown = he.Exception;
-                exceptionOccurred.Set();
-            };
-
-            context.Start();
-            context.ProduceMessage(
-                new ConsensusProposalMsg(
-                    new ProposalMetaData(
-                        1,
-                        0,
-                        DateTimeOffset.UtcNow,
-                        TestUtils.Peer1Priv.PublicKey,
-                        codec.Encode(mockBlock),
-                        -1).Sign(TestUtils.Peer1Priv)));
-
-            await exceptionOccurred.WaitAsync();
-            Assert.True(exceptionThrown is InvalidBlockProposeMessageException);
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task ThrowDifferentHeight()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext();
