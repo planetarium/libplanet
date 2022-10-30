@@ -18,6 +18,7 @@ namespace Libplanet.Net.Consensus
     {
         private const int MinimumPeerCount = 4;
         private const int DLazy = 6;
+        private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
@@ -28,7 +29,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object?> _runningEvent;
-        private CancellationTokenSource? _heartbeatCts;
+        private CancellationTokenSource? _cancellationTokenSource;
         private IEnumerable<BoundPeer> _table;
 
         /// <summary>
@@ -106,14 +107,17 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         public async Task StartAsync(CancellationToken ctx)
         {
-            _heartbeatCts =
-                CancellationTokenSource.CreateLinkedTokenSource(ctx);
+            _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(ctx);
             Task transportTask = _transport.StartAsync(ctx);
             await _transport.WaitForRunningAsync();
-            _transport.ProcessMessageHandler.Register(HandleMessageAsync(_heartbeatCts.Token));
+            _transport.ProcessMessageHandler.Register(
+                HandleMessageAsync(_cancellationTokenSource.Token));
             _logger.Debug("All peers are alive. Starting gossip...");
             Running = true;
-            await Task.WhenAny(transportTask, HeartbeatTask(_heartbeatCts.Token));
+            await Task.WhenAny(
+                transportTask,
+                RefreshTableAsync(_cancellationTokenSource.Token),
+                HeartbeatTask(_cancellationTokenSource.Token));
         }
 
         /// <summary>
@@ -126,15 +130,15 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         public async Task StopAsync(TimeSpan waitFor, CancellationToken ctx)
         {
-            _heartbeatCts?.Cancel();
+            _cancellationTokenSource?.Cancel();
             await _transport.StopAsync(waitFor, ctx);
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            _heartbeatCts?.Cancel();
-            _heartbeatCts?.Dispose();
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
             _seen.Dispose();
             _transport.Dispose();
         }
@@ -390,6 +394,31 @@ namespace Libplanet.Net.Consensus
             IEnumerable<Task> tasks = messages.Select(m => _transport.ReplyMessageAsync(m, ctx));
             await Task.WhenAll(tasks);
             _logger.Debug("Finished replying WantMessage.");
+        }
+
+        /// <summary>
+        /// A lifecycle task which will run in every <see cref="_refreshTableInterval"/> for
+        /// refreshing peer table from seed peer.
+        /// </summary>
+        /// <param name="ctx">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task RefreshTableAsync(CancellationToken ctx)
+        {
+            _logger.Debug(
+                "{FName}: Updating the peer table from seed for every {Time} milliseconds...",
+                nameof(RefreshTableAsync),
+                _refreshTableInterval.TotalMilliseconds);
+
+            while (!ctx.IsCancellationRequested)
+            {
+                _logger.Debug(
+                    "{FName}: Updating peer table from seed(s) {Seeds}...",
+                    nameof(RefreshTableAsync),
+                    _seeds.Select(s => s.Address.ToHex()));
+                await UpdateTable(ctx);
+                await Task.Delay(_refreshTableInterval, ctx);
+            }
         }
 
         private async Task UpdateTable(CancellationToken ctx)
