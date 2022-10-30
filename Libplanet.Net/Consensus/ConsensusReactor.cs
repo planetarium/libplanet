@@ -110,8 +110,10 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns the <see cref="ITransport.StartAsync"/>.</returns>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            Task task = _gossip.StartAsync(cancellationToken);
+            await _gossip.CheckValidatorsLiveness(cancellationToken);
             _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
-            await _gossip.StartAsync(cancellationToken);
+            await task;
         }
 
         /// <summary>
