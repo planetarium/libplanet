@@ -306,7 +306,6 @@ namespace Libplanet.Net.Consensus
             while (!ctx.IsCancellationRequested)
             {
                 MessageId[] ids = _cache.GetGossipIds();
-                await UpdateTable(ctx);
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
