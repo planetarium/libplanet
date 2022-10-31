@@ -91,14 +91,6 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                if (message.Height != Height)
-                {
-                    throw new InvalidConsensusMessageException(
-                        "Height of message differs with working height.  " +
-                        $"(expected: {Height}, actual: {message.Height})",
-                        message);
-                }
-
                 if (message is ConsensusProposalMsg propose &&
                     !propose.Validator.Equals(Proposer(message.Round)))
                 {
@@ -109,37 +101,30 @@ namespace Libplanet.Net.Consensus
                         message);
                 }
 
-                if (message is ConsensusPreVoteMsg vote &&
-                    !_validators.Contains(vote.Validator))
+                try
+                {
+                    _messageLog.Add(message);
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                        "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
+                        "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
+                        nameof(AddMessage),
+                        message,
+                        message.Height,
+                        message.Round,
+                        message.Validator.ToAddress(),
+                        message.Remote?.Address,
+                        message.BlockHash,
+                        _messageLog.GetTotalCount(),
+                        ToString());
+                }
+                catch (ArgumentException ae)
                 {
                     throw new InvalidConsensusMessageException(
-                        "Received ConsensusVote message is made by invalid validator.",
-                        vote);
+                        $"Given {nameof(message)} could not be added to {nameof(MessageLog)}.",
+                        message,
+                        ae);
                 }
-
-                if (message is ConsensusPreCommitMsg commit &&
-                    !_validators.Contains(commit.Validator))
-                {
-                    throw new InvalidConsensusMessageException(
-                        "Received ConsensusCommit message is made by invalid validator.",
-                        commit);
-                }
-
-                // TODO: Prevent duplicated messages adding.
-                _messageLog.Add(message);
-                _logger.Debug(
-                    "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
-                    "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
-                    "Hash: {BlockHash}, MessageCount: {Count}. (context: {Context})",
-                    nameof(AddMessage),
-                    message,
-                    message.Height,
-                    message.Round,
-                    message.Validator.ToAddress(),
-                    message.Remote?.Address,
-                    message.BlockHash,
-                    _messageLog.GetTotalCount(),
-                    ToString());
             }
             catch (InvalidConsensusMessageException icme)
             {
