@@ -164,7 +164,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
-            _messageLog = new MessageLog();
+            _messageLog = new MessageLog(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
@@ -441,14 +441,12 @@ namespace Libplanet.Net.Consensus
         /// </returns>
         private (Block<T>, int)? GetPropose(int round)
         {
-            List<ConsensusProposalMsg> proposes = _messageLog.GetProposes(round);
-            if (proposes.Count > 0)
+            ConsensusProposalMsg? proposal = _messageLog.GetProposal(round);
+            if (proposal is { } p)
             {
-                // FIXME: Probably should not blindly pick the first one.
-                ConsensusProposalMsg propose = proposes[0];
                 var block = BlockMarshaler.UnmarshalBlock<T>(
-                    (Dictionary)_codec.Decode(propose.Proposal.MarshaledBlock));
-                return (block, propose.Proposal.ValidRound);
+                    (Dictionary)_codec.Decode(p.Proposal.MarshaledBlock));
+                return (block, p.Proposal.ValidRound);
             }
 
             return null;
