@@ -116,7 +116,12 @@ namespace Libplanet.Tests.Action
             var address = privateKey.ToAddress();
             long blockIndex = 1;
 
-            var action = new EvaluateTestAction();
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
 
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -192,7 +197,7 @@ namespace Libplanet.Tests.Action
             {
                 ThrowOnRehearsal = false,
                 ThrowOnExecution = true,
-                ExceptionTypeToThrow = typeof(OutOfMemoryException),
+                Deterministic = false,
             };
 
             var store = new MemoryStore();
@@ -1095,7 +1100,13 @@ namespace Libplanet.Tests.Action
                     store: _storeFx.Store,
                     stateStore: _storeFx.StateStore);
             var privateKey = new PrivateKey();
-            var action = new EvaluateTestAction();
+            var action = new EvaluateTestAction()
+            {
+                BlockIndexKey = new PrivateKey().ToAddress(),
+                MinerKey = new PrivateKey().ToAddress(),
+                SignerKey = new PrivateKey().ToAddress(),
+            };
+
             var tx = Transaction<EvaluateTestAction>.Create(
                 nonce: 0,
                 privateKey: privateKey,
@@ -1191,14 +1202,24 @@ namespace Libplanet.Tests.Action
 
         private sealed class EvaluateTestAction : IAction
         {
-            public readonly Address SignerKey = new PrivateKey().ToAddress();
-            public readonly Address MinerKey = new PrivateKey().ToAddress();
-            public readonly Address BlockIndexKey = new PrivateKey().ToAddress();
+            public Address SignerKey { get; set; }
 
-            public IValue PlainValue => Dictionary.Empty;
+            public Address MinerKey { get; set; }
+
+            public Address BlockIndexKey { get; set; }
+
+            public IValue PlainValue => new List(
+                (Binary)SignerKey.ByteArray,
+                (Binary)MinerKey.ByteArray,
+                (Binary)BlockIndexKey.ByteArray
+            );
 
             public void LoadPlainValue(IValue plainValue)
             {
+                 var asList = (List)plainValue;
+                 SignerKey = new Address((Binary)asList[0]);
+                 MinerKey = new Address((Binary)asList[1]);
+                 BlockIndexKey = new Address((Binary)asList[2]);
             }
 
             public IAccountStateDelta Execute(IActionContext context) =>

@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Action.Sys
             Assert.Equal(FOO * 500, exc2.Balance);
         }
 
-        [Fact]
+        [SkippableFact]
         public void JsonSerialization()
         {
             FungibleAssetValue amount = FOO * 125;
