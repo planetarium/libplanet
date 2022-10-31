@@ -26,29 +26,46 @@ namespace Libplanet.Node
         /// Creates an <see cref="UntypedTransaction"/> instance.
         /// </summary>
         /// <param name="metadata">A transaction metadata without actions and signature.</param>
-        /// <param name="actionValues">A list of <see cref="IAction.PlainValue"/>s.</param>
+        /// <param name="systemActionValue">The <see cref="IAction.PlainValue"/> representing
+        /// a <see cref="Transaction{T}.SystemAction"/>.</param>
+        /// <param name="customActionsValue">The <see cref="Bencodex.Types.List"/> representation
+        /// of a <see cref="Transaction{T}.CustomActions"/>.</param>
         /// <param name="signature">A signature made by transaction's signer.</param>
         /// <exception cref="InvalidTxSignatureException">Thrown when
         /// the <paramref name="signature"/> is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when
+        /// <paramref name="systemActionValue"/> and <paramref name="customActionsValue"/> are
+        /// both <see langword="null"/> or are both not <see langword="null"/>.</exception>
         public UntypedTransaction(
             ITxMetadata metadata,
-            IEnumerable<IValue> actionValues,
+            IValue? systemActionValue,
+            IValue? customActionsValue,
             ImmutableArray<byte> signature
         )
         {
+            if (!(systemActionValue is null ^ customActionsValue is null))
+            {
+                throw new ArgumentException(
+                    $"Exactly one of {nameof(systemActionValue)} and " +
+                    $"{nameof(customActionsValue)} must be null.");
+            }
+
             _metadata = new TxMetadata(metadata);
-            ActionValues = actionValues is IImmutableList<IValue> im
-                ? im
-                : actionValues.ToImmutableList();
+            SystemActionValue = systemActionValue;
+            CustomActionsValue = customActionsValue;
             Signature = signature;
 
-            byte[] encoded = Codec.Encode(_metadata.ToBencodex(ActionValues));
+            Dictionary dict = _metadata.ToBencodex();
+            dict = SystemActionValue is { } sav
+                ? dict.Add(TxMetadata.SystemActionKey, sav)
+                : dict.Add(TxMetadata.CustomActionsKey, CustomActionsValue!);
+
+            byte[] encoded = Codec.Encode(dict);
+
             if (!_metadata.PublicKey.Verify(encoded, Signature))
             {
                 throw new InvalidTxSignatureException(
-                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.",
-                    Id
-                );
+                    $"Failed to verify the signature: {ByteUtil.Hex(Signature)}.", Id);
             }
         }
 
@@ -67,10 +84,17 @@ namespace Libplanet.Node
         /// <seealso cref="ToBencodex()"/>
         /// <seealso cref="Transaction{T}.ToBencodex(bool)"/>
         public UntypedTransaction(Bencodex.Types.Dictionary dictionary)
+#pragma warning disable SA1118 // The parameter spans multiple lines
             : this(
                 new TxMetadata(dictionary),
-                dictionary.GetValue<List>(TxMetadata.CustomActionsKey),
+                dictionary.TryGetValue(new Binary(TxMetadata.SystemActionKey), out IValue? sav)
+                    ? sav
+                    : null,
+                dictionary.TryGetValue(new Binary(TxMetadata.CustomActionsKey), out IValue? cav)
+                    ? cav
+                    : null,
                 dictionary.GetValue<Binary>(TxMetadata.SignatureKey).ByteArray)
+#pragma warning restore SA1118
         {
         }
 
@@ -112,9 +136,16 @@ namespace Libplanet.Node
         public BlockHash? GenesisHash => _metadata.GenesisHash;
 
         /// <summary>
-        /// A list of <see cref="IAction.PlainValue"/>s.
+        /// The <see cref="IAction.PlainValue"/> of <see cref="Transaction{T}.SystemAction"/>.
         /// </summary>
-        public IReadOnlyList<IValue> ActionValues { get; }
+        /// <seealso cref="Transaction{T}.SystemAction"/>.
+        public IValue? SystemActionValue { get; }
+
+        /// <summary>
+        /// The <see cref="Bencodex.Types.List"/> representation of
+        /// <see cref="Transaction{T}.CustomActions"/>.
+        /// </summary>
+        public IValue? CustomActionsValue { get; }
 
         /// <summary>
         /// A <see cref="Signer"/>'s signature on this transaction.
@@ -133,6 +164,12 @@ namespace Libplanet.Node
         /// <seealso cref="Transaction{T}(Bencodex.Types.Dictionary)"/>
         [Pure]
         public Bencodex.Types.Dictionary ToBencodex() =>
-            _metadata.ToBencodex(ActionValues, Signature);
+            SystemActionValue is { } sav
+                ? _metadata.ToBencodex()
+                    .Add(TxMetadata.SystemActionKey, sav)
+                    .Add(TxMetadata.SignatureKey, Signature)
+                : _metadata.ToBencodex()
+                    .Add(TxMetadata.CustomActionsKey, CustomActionsValue!)
+                    .Add(TxMetadata.SignatureKey, Signature);
     }
 }
