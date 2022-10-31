@@ -154,6 +154,12 @@ namespace Libplanet.Net.Consensus
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
+            _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "Context")
+                .ForContext<Context<T>>()
+                .ForContext("Source", nameof(Context<T>));
+
             _privateKey = privateKey;
             Height = height;
             Round = round;
@@ -178,12 +184,6 @@ namespace Libplanet.Net.Consensus
             _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
-
-            _logger = Log
-                .ForContext("Tag", "Consensus")
-                .ForContext("SubTag", "Context")
-                .ForContext<Context<T>>()
-                .ForContext("Source", nameof(Context<T>));
         }
 
         /// <summary>
@@ -449,42 +449,30 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreVoteMsg"/> for the
-        /// <see cref="Block{T}"/> of <paramref name="hash"/>.
+        /// Checks whether the round has +2/3 <see cref="ConsensusPreVoteMsg"/> for
+        /// <paramref name="round"/> and <paramref name="predicate"/>.
         /// </summary>
-        /// <param name="round">A round to check.</param>
-        /// <param name="hash">A <see cref="BlockHash"/> of proposed block.</param>
-        /// <param name="any">Whether to check for every <see cref="ConsensusPreVoteMsg"/> in
-        /// <paramref name="round"/>.  If <see langword="true"/>, count everything regardless
-        /// of <see cref="Vote.BlockHash"/>, otherwise, count only those with
-        /// <see cref="Vote.BlockHash"/> that equals <paramref name="hash"/>.</param>
-        /// <returns>Returns <c>true</c> if the block is voted +2/3, or otherwise returns
-        /// <c>false</c>.
-        /// </returns>
-        private bool HasTwoThirdsPreVote(int round, BlockHash? hash, bool any = false)
+        /// <param name="round">The round to check.</param>
+        /// <param name="predicate">An additional predicate for counting votes.</param>
+        /// <returns>Returns <see langword="true"/> if the count is +2/3,
+        /// otherwise <see langword="false"/>.</returns>
+        private bool HasTwoThirdsPreVote(int round, Func<ConsensusPreVoteMsg, bool> predicate)
         {
-            int count = _messageLog.GetPreVotes(round)
-                .Count(preVote => (any || preVote.BlockHash.Equals(hash)));
+            int count = _messageLog.GetPreVotes(round).Count(preVote => predicate(preVote));
             return count > TotalValidators * 2 / 3;
         }
 
         /// <summary>
-        /// Checks whether the round has +2/3 <see cref="ConsensusPreCommitMsg"/> for the
-        /// <see cref="Block{T}"/> of <paramref name="hash"/>.
+        /// Checks whether the round has +2/3 <see cref="ConsensusPreCommitMsg"/> for
+        /// <paramref name="round"/> and <paramref name="predicate"/>.
         /// </summary>
-        /// <param name="round">A round to check.</param>
-        /// <param name="hash">A <see cref="BlockHash"/> of proposed block.</param>
-        /// <param name="any">Whether to check for every <see cref="ConsensusPreCommitMsg"/> in
-        /// <paramref name="round"/>.  If <see langword="true"/>, count everything regardless
-        /// of <see cref="Vote.BlockHash"/>, otherwise, count only those with
-        /// <see cref="Vote.BlockHash"/> that equals <paramref name="hash"/>.</param>
-        /// <returns>Returns <c>true</c> if the block is voted +2/3, or otherwise returns
-        /// <c>false</c>.
-        /// </returns>
-        private bool HasTwoThirdsPreCommit(int round, BlockHash? hash, bool any = false)
+        /// <param name="round">The round to check.</param>
+        /// <param name="predicate">An additional predicate for counting votes.</param>
+        /// <returns>Returns <see langword="true"/> if the count is +2/3,
+        /// otherwise <see langword="false"/>.</returns>
+        private bool HasTwoThirdsPreCommit(int round, Func<ConsensusPreCommitMsg, bool> predicate)
         {
-            int count = _messageLog.GetPreCommits(round)
-                .Count(preCommit => (any || preCommit.BlockHash.Equals(hash)));
+            int count = _messageLog.GetPreCommits(round).Count(preCommit => predicate(preCommit));
             return count > TotalValidators * 2 / 3;
         }
     }

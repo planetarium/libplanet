@@ -173,7 +173,8 @@ namespace Libplanet.Net.Consensus
             if (propose is { } p2 &&
                 p2.ValidRound >= 0 &&
                 p2.ValidRound < Round &&
-                HasTwoThirdsPreVote(p2.ValidRound, p2.Block.Hash) &&
+                HasTwoThirdsPreVote(
+                    p2.ValidRound, preVote => p2.Block.Hash.Equals(preVote.BlockHash)) &&
                 Step == Step.Propose)
             {
                 _logger.Debug(
@@ -196,7 +197,7 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (HasTwoThirdsPreVote(Round, null, true) &&
+            if (HasTwoThirdsPreVote(Round, _ => true) &&
                 Step == Step.PreVote &&
                 !_preVoteTimeoutFlags.Contains(Round))
             {
@@ -210,7 +211,8 @@ namespace Libplanet.Net.Consensus
             }
 
             if (propose is { } p3 &&
-                HasTwoThirdsPreVote(Round, p3.Block.Hash) &&
+                HasTwoThirdsPreVote(
+                    Round, preVote => p3.Block.Hash.Equals(preVote.BlockHash)) &&
                 IsValid(p3.Block) &&
                 (Step == Step.PreVote || Step == Step.PreCommit) &&
                 !_hasTwoThirdsPreVoteFlags.Contains(Round))
@@ -240,7 +242,8 @@ namespace Libplanet.Net.Consensus
                 _validRound = Round;
             }
 
-            if (HasTwoThirdsPreVote(Round, null) && Step == Step.PreVote)
+            if (HasTwoThirdsPreVote(Round, preVote => preVote.BlockHash is null) &&
+                Step == Step.PreVote)
             {
                 _logger.Debug(
                     "PreCommit nil for the round {Round} because 2/3+ PreVotes were collected. " +
@@ -252,7 +255,8 @@ namespace Libplanet.Net.Consensus
                     new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
             }
 
-            if (HasTwoThirdsPreCommit(Round, null, true) && !_preCommitTimeoutFlags.Contains(Round))
+            if (HasTwoThirdsPreCommit(Round, preCommit => true) &&
+                !_preCommitTimeoutFlags.Contains(Round))
             {
                 _logger.Debug(
                     "PreCommit step in round {Round} is scheduled to be timed out because " +
@@ -281,7 +285,8 @@ namespace Libplanet.Net.Consensus
             int round = message.Round;
             if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
                 GetProposal(round) is (Block<T> block4, _) &&
-                HasTwoThirdsPreCommit(round, block4.Hash) &&
+                HasTwoThirdsPreCommit(
+                    round, preCommit => block4.Hash.Equals(preCommit.BlockHash)) &&
                 IsValid(block4))
             {
                 Step = Step.EndCommit;

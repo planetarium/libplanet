@@ -8,8 +8,8 @@ namespace Libplanet.Net.Consensus
 {
     /// <summary>
     /// <para>
-    /// An exception free concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper
-    /// to be used for <see cref="Context{T}"/> with well-defined default behaviors.
+    /// A concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper to be used
+    /// for <see cref="Context{T}"/> with well-defined default behaviors.
     /// </para>
     /// <para>
     /// Note that <see cref="MessageLog"/> prevents adding multiple
