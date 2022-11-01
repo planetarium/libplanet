@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -32,25 +31,25 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EnterPreCommitNil()
         {
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var commitSent = new AsyncAutoResetEvent();
+            ConsensusPreCommitMsg? preCommit = null;
+            var preCommitSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CheckCommit);
-            context.StateChanged += (sender, eventArgs) =>
+            var (_, _, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusPreCommitMsg commit)
+                if (message is ConsensusPreCommitMsg preCommitMsg)
                 {
-                    Assert.Null(commit.PreCommit.BlockHash);
-                    commitSent.Set();
+                    preCommit = preCommitMsg;
+                    preCommitSent.Set();
                 }
-            }
+            };
 
             context.Start();
             context.ProduceMessage(
@@ -63,7 +62,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
                     TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreVote)));
 
-            await Task.WhenAll(commitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
+            await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
+            Assert.Null(preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.PreCommit, context.Step);
@@ -72,51 +72,52 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreCommitBlock()
         {
-            var proposeSent = new AsyncAutoResetEvent();
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var commitSent = new AsyncAutoResetEvent();
-            BlockHash? hash = null;
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
+            ConsensusPreCommitMsg? preCommit = null;
+            var preCommitSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, eventArgs) =>
+            var (_, _, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CatchMessage(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusProposalMsg propose)
+                if (message is ConsensusProposalMsg proposalMsg)
                 {
-                    hash = propose.BlockHash;
-                    proposeSent.Set();
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
-                else if (message is ConsensusPreCommitMsg commit)
+                else if (message is ConsensusPreCommitMsg preCommitMsg)
                 {
-                    Assert.Equal(commit.PreCommit.BlockHash, hash);
-                    commitSent.Set();
+                    preCommit = preCommitMsg;
+                    preCommitSent.Set();
                 }
-            }
+            };
 
             context.Start();
 
             // Wait for propose to process.
-            await proposeSent.WaitAsync();
-            Assert.NotNull(hash);
+            await proposalSent.WaitAsync();
+            Assert.NotNull(proposal?.BlockHash);
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: hash, flag: VoteFlag.PreVote)));
+                    TestUtils.Peer0Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, hash: hash, flag: VoteFlag.PreVote)));
+                    TestUtils.Peer2Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, hash: hash, flag: VoteFlag.PreVote)));
+                    TestUtils.Peer3Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
 
-            await Task.WhenAll(commitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
+            await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
+            Assert.Equal(proposal?.BlockHash, preCommit?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.PreCommit, context.Step);
@@ -128,7 +129,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var roundChangedToOne = new AsyncAutoResetEvent();
 
             var (_, _, context) = TestUtils.CreateDummyContext();
-            context.StateChanged += (sender, eventArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Round == 1)
                 {
@@ -159,52 +160,45 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EndCommitBlock()
         {
-            BlockHash? hash = null;
-            var proposeSent = new AsyncAutoResetEvent();
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, eventArgs) =>
+            var (_, _, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchMessage(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusProposalMsg propose)
+                if (message is ConsensusProposalMsg proposalMsg)
                 {
-                    hash = propose.BlockHash;
-                    proposeSent.Set();
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
-                else if (message is ConsensusPreCommitMsg commit)
-                {
-                    Assert.Equal(commit.PreCommit.BlockHash, hash);
-                }
-            }
+            };
 
             context.Start();
 
             // Wait for propose to process.
-            await proposeSent.WaitAsync();
-            Assert.NotNull(hash);
+            await proposalSent.WaitAsync();
+            Assert.NotNull(proposal?.BlockHash);
 
-            context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: hash, flag: VoteFlag.PreCommit)));
-            context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: hash, flag: VoteFlag.PreCommit)));
-            context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, hash: hash, flag: VoteFlag.PreCommit)));
+            context.ProduceMessage(new ConsensusPreCommitMsg(
+                TestUtils.CreateVote(
+                    TestUtils.Peer0Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            context.ProduceMessage(new ConsensusPreCommitMsg(
+                TestUtils.CreateVote(
+                    TestUtils.Peer2Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            context.ProduceMessage(new ConsensusPreCommitMsg(
+                TestUtils.CreateVote(
+                    TestUtils.Peer3Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
             await stepChangedToEndCommit.WaitAsync();
+            Assert.Equal(proposal?.BlockHash, context.GetBlockCommit()?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.EndCommit, context.Step);
@@ -215,24 +209,23 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var nilPreVoteSent = new AsyncAutoResetEvent();
-            var (fx, blockChain, context) = TestUtils.CreateDummyContext(
-                height: 5, // Peer1 should be a proposer
-                consensusMessageSent: CheckVote);
+            var (_, _, context) = TestUtils.CreateDummyContext(
+                height: 5); // Peer1 should be a proposer
 
-            context.StateChanged += (sender, eventArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
                 {
                     nilPreVoteSent.Set();
                 }
-            }
+            };
 
             context.Start();
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
@@ -243,40 +236,41 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void EnterPreVoteBlock()
         {
-            var proposeSent = new AsyncAutoResetEvent();
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var voteSent = new AsyncAutoResetEvent();
-            BlockHash? hash = null;
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
+            ConsensusPreVoteMsg? preVote = null;
+            var preVoteSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CheckVote);
+            var (_, _, context) = TestUtils.CreateDummyContext();
 
-            context.StateChanged += (sender, eventArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusProposalMsg propose)
+                if (message is ConsensusProposalMsg proposalMsg)
                 {
-                    hash = propose.BlockHash;
-                    proposeSent.Set();
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
-                else if (message is ConsensusPreVoteMsg preVote)
+                else if (message is ConsensusPreVoteMsg preVoteMsg)
                 {
-                    Assert.Equal(preVote.PreVote.BlockHash, hash);
-                    voteSent.Set();
+                    preVote = preVoteMsg;
+                    preVoteSent.Set();
                 }
-            }
+            };
 
             context.Start();
-            await proposeSent.WaitAsync();
-            Assert.NotNull(hash);
+            await proposalSent.WaitAsync();
+            Assert.NotNull(proposal?.BlockHash);
 
-            await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            await Task.WhenAll(preVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            Assert.Equal(proposal?.BlockHash, preVote?.BlockHash);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.PreVote, context.Step);
