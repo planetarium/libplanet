@@ -18,9 +18,14 @@ namespace Libplanet.Tests.Blockchain
 {
     public partial class BlockChainTest
     {
-        [Fact]
+        [SkippableFact]
         public void ListStagedTransactions()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "This test causes timeout"
+            );
+
             Transaction<DumbAction> MkTx(PrivateKey key, long nonce, DateTimeOffset? ts = null) =>
                 Transaction<DumbAction>.Create(
                     nonce,

@@ -421,6 +421,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             PreEvaluationBlock<T> preEval = MineNext(
                 previousBlock,
                 txs,
@@ -574,7 +579,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             where T : IEquatable<T>
         {
             Skip.IfNot(
-                Type.GetType("Mono.Runtime") is null,
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
                 "System.Text.Json 6.0.0+ does not work well with Unity/Mono."
             );
 

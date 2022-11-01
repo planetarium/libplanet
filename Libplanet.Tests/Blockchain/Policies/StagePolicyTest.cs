@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 StagePolicy.Iterate(_chain));
         }
 
-        [Fact]
+        [SkippableFact]
         public void Unstage()
         {
             void AssertTxSetEqual(
@@ -117,7 +117,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             AssertTxSetEqual(new[] { _txs[1], _txs[3] }, StagePolicy.Iterate(_chain));
         }
 
-        [Fact]
+        [SkippableFact]
         public void Ignore()
         {
             // Ignore prevents staging.
@@ -136,7 +136,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(StagePolicy.Get(_chain, _txs[1].Id));
         }
 
-        [Fact]
+        [SkippableFact]
         public void Ignores()
         {
             // By default, nothing is ignored.
@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.True(StagePolicy.Ignores(_chain, _txs[2].Id));
         }
 
-        [Fact]
+        [SkippableFact]
         public void Get()
         {
             foreach (Transaction<DumbAction> tx in _txs)
