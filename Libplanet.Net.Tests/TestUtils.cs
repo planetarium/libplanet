@@ -159,22 +159,16 @@ namespace Libplanet.Net.Tests
 
         public static BlockCommit CreateLastCommit(BlockHash blockHash, long height, int round)
         {
-            var voteSet = new VoteSet(height, round, blockHash, Validators);
+            var votes = PrivateKeys.Select(key => new VoteMetadata(
+                height,
+                round,
+                blockHash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
-            var privateKeys = PrivateKeys;
-
-            foreach (var privateKey in privateKeys)
-            {
-                voteSet.Add(new VoteMetadata(
-                    height,
-                    round,
-                    blockHash,
-                    DateTimeOffset.UtcNow,
-                    privateKey.PublicKey,
-                    VoteFlag.PreCommit).Sign(privateKey));
-            }
-
-            return new BlockCommit(voteSet, blockHash);
+            return new BlockCommit(
+                height, round, blockHash, votes);
         }
 
         public static void HandleFourPeersPreCommitMessages(

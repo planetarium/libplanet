@@ -39,16 +39,18 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightIncreasing()
         {
-            var validators = new List<PublicKey>()
+            var validators = new List<PublicKey>
             {
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
             };
-
+            var proposalMessageSent = new AsyncAutoResetEvent();
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
-                validators);
+                validators,
+                consensusMessageSent: CatchProposal);
+            BlockHash? proposedHash = null;
 
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
             consensusContext.StateChanged += (sender, state) =>
@@ -58,6 +60,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     stepChangedToEndCommit.Set();
                 }
             };
+            void CatchProposal(object? observer, ConsensusMsg? message)
+            {
+                if (message is ConsensusProposalMsg proposal)
+                {
+                    proposedHash = proposal.Proposal.BlockHash;
+                    proposalMessageSent.Set();
+                }
+            }
 
             // The given height is equal to the consensus context's height.
             Assert.Throws<InvalidHeightIncreasingException>(
@@ -67,43 +77,17 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 () => consensusContext.NewHeight(blockChain.Tip.Index + 2));
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-
-            BlockHash blockHash;
-
-            // FIXME: Pretty lousy way to catch the proposed block's hash.
-            while (true)
-            {
-                try
-                {
-                    var voteSet = consensusContext.Contexts[blockChain.Tip.Index + 1].VoteSet(0);
-                    if (voteSet.Votes[0].BlockHash is BlockHash hash)
-                    {
-                        blockHash = hash;
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
-                }
-
-                await Task.Delay(100);
-            }
+            await proposalMessageSent.WaitAsync();
+            Assert.NotNull(proposedHash);
 
             consensusContext.HandleMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peers[0],
-                });
-
+                        TestUtils.Peer0Priv, 1, hash: proposedHash, flag: VoteFlag.PreVote)));
             consensusContext.HandleMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: blockHash, flag: VoteFlag.PreCommit))
-                {
-                    Remote = TestUtils.Peers[0],
-                });
+                        TestUtils.Peer0Priv, 1, hash: proposedHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await stepChangedToEndCommit.WaitAsync();
@@ -394,7 +378,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 0,
                 fx.Block1.Hash,
                 VoteFlag.PreCommit));
-
             votes.AddRange(Enumerable.Range(1, 3).Select(x => TestUtils.CreateVote(
                 TestUtils.PrivateKeys[x],
                 1,
@@ -409,12 +392,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             await heightOneEndCommit.WaitAsync();
 
-            var voteSet = consensusContext.Contexts[1].VoteSet(0);
-            Assert.NotEqual(votes[0], voteSet.Votes.First(x =>
+            var blockCommit = consensusContext.Contexts[1].GetBlockCommit();
+            Assert.NotNull(blockCommit);
+            Assert.NotEqual(votes[0], blockCommit!.Votes.First(x =>
                 x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
 
             var actualVotesWithoutInvalid =
-                HashSetExtensions.ToHashSet(voteSet.Votes.Where(x =>
+                HashSetExtensions.ToHashSet(blockCommit.Votes.Where(x =>
                     !x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
 
             var expectedVotes = HashSetExtensions.ToHashSet(votes.Where(x =>

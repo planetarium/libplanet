@@ -153,5 +153,68 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(0, _messageLog.GetValidatorsCount(1));
             Assert.Equal(5, _messageLog.GetTotalCount());
         }
+
+        [Fact]
+        public void GetBlockCommit()
+        {
+            var block = _blockChain.ProposeBlock(
+                TestUtils.Peer0Priv,
+                DateTimeOffset.UtcNow,
+                int.MaxValue,
+                0,
+                0,
+                lastCommit: _lastCommit);
+            var proposal = new ConsensusProposalMsg(new ProposalMetadata(
+                2,
+                0,
+                DateTimeOffset.UtcNow,
+                TestUtils.Peer0Priv.PublicKey,
+                _codec.Encode(block.MarshalBlock()),
+                -1).Sign(TestUtils.Peer0Priv));
+
+            // Last vote has a different hash.
+            var invalidHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            var preCommits = TestUtils.PrivateKeys.Take(3).Select(key => new ConsensusPreCommitMsg(
+                new VoteMetadata(
+                    2,
+                    0,
+                    proposal.BlockHash,
+                    DateTimeOffset.UtcNow,
+                    key.PublicKey,
+                    VoteFlag.PreCommit).Sign(key))).ToList();
+            preCommits = preCommits.Concat(TestUtils.PrivateKeys.Skip(3).Select(key =>
+                new ConsensusPreCommitMsg(
+                    new VoteMetadata(
+                        2,
+                        0,
+                        invalidHash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        VoteFlag.PreCommit).Sign(key)))).ToList();
+            var randomHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+
+            // Insufficient pre-commits.
+            _messageLog.Add(proposal);
+            foreach (var preCommit in preCommits.Take(2))
+            {
+                _messageLog.Add(preCommit);
+            }
+
+            Assert.Null(_messageLog.GetBlockCommit(0, randomHash));
+            Assert.Null(_messageLog.GetBlockCommit(0, proposal.Proposal.BlockHash));
+
+            // Add the rest.
+            foreach (var preCommit in preCommits.Skip(2))
+            {
+                _messageLog.Add(preCommit);
+            }
+
+            Assert.Null(_messageLog.GetBlockCommit(0, randomHash));
+            Assert.Null(_messageLog.GetBlockCommit(1, proposal.Proposal.BlockHash));
+            var blockCommit = _messageLog.GetBlockCommit(0, proposal.Proposal.BlockHash);
+            Assert.NotNull(blockCommit);
+            Assert.Equal(
+                3, blockCommit!.Votes.Where(vote => vote.Flag == VoteFlag.PreCommit).Count());
+        }
     }
 }
