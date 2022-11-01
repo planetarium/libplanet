@@ -42,7 +42,6 @@ Version PBFT
 
 ### Added APIs
 
- -  Added `VoteSet` class.  [[#PBFT]]
  -  Added `VoteFlag` enum.  [[#PBFT]]
  -  Added `IVoteMetadata` interface.  [[#PBFT]]
  -  Added `VoteMetadata` class.  [[#PBFT]]
