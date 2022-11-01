@@ -286,7 +286,6 @@ namespace Libplanet.Net.Tests
                 PrivateKey? privateKey = null,
                 List<PublicKey>? validators = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
-                EventHandler<ConsensusMsg>? consensusMessageSent = null,
                 long lastCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
@@ -302,7 +301,6 @@ namespace Libplanet.Net.Tests
                 Task.Run(() =>
                 {
                     // ReSharper disable once AccessToModifiedClosure
-                    consensusMessageSent?.Invoke(consensusContext, message);
                     message.Remote = new BoundPeer(
                         privateKey.PublicKey,
                         new DnsEndPoint("1.2.3.4", 1234));
@@ -333,7 +331,6 @@ namespace Libplanet.Net.Tests
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
                 List<PublicKey>? validators = null,
-                EventHandler<ConsensusMsg>? consensusMessageSent = null,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
@@ -344,7 +341,6 @@ namespace Libplanet.Net.Tests
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
                 {
-                    consensusMessageSent?.Invoke(null, message);
                     message.Remote = new BoundPeer(
                         privateKey!.PublicKey,
                         new DnsEndPoint("1.2.3.4", 1234));
@@ -356,8 +352,7 @@ namespace Libplanet.Net.Tests
                 policy,
                 Peer1Priv,
                 validators,
-                broadcastMessage: BroadcastMessage,
-                consensusMessageSent: consensusMessageSent);
+                broadcastMessage: BroadcastMessage);
 
             context = new Context<DumbAction>(
                 consensusContext,
