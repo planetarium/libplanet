@@ -273,7 +273,7 @@ namespace Libplanet.Net.Consensus
         public BlockCommit? GetBlockCommit()
             => _decision is null
                 ? (BlockCommit?)null
-                : new BlockCommit(VoteSet(_committedRound), _decision.Hash);
+                : _messageLog.GetBlockCommit(_committedRound, _decision.Hash);
 
         /// <summary>
         /// Returns the summary of context in JSON-formatted string.

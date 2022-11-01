@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 
@@ -231,6 +234,43 @@ namespace Libplanet.Net.Consensus
                 return _proposes.Count +
                     _preVotes.Sum(pair => pair.Value.Count) +
                     _preCommits.Sum(pair => pair.Value.Count);
+            }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> for given <paramref name="round"/>
+        /// and <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="round">The round to match.</param>
+        /// <param name="hash">The <see cref="BlockHash"/> to match.</param>
+        /// <returns>A <see cref="BlockCommit"/> created on the fly if
+        /// conditions are met (i.e. there are 2/3+ <see cref="Vote"/>s with
+        /// <see cref="VoteFlag.PreCommit"/> flag), otherwise <see langword="null"/>.</returns>
+        internal BlockCommit? GetBlockCommit(int round, BlockHash hash)
+        {
+            lock (_lock)
+            {
+                ImmutableArray<Vote> votes = _validators.Select(validator =>
+                    _preCommits.ContainsKey(round) &&
+                    _preCommits[round].ContainsKey(validator) &&
+                    hash.Equals(_preCommits[round][validator].BlockHash)
+                        ? _preCommits[round][validator].PreCommit
+                        : new VoteMetadata(
+                            _height,
+                            round,
+                            hash,
+                            DateTimeOffset.UtcNow,
+                            validator,
+                            VoteFlag.Null).Sign(null)).ToImmutableArray();
+
+                try
+                {
+                    return new BlockCommit(_height, round, hash, votes);
+                }
+                catch (ArgumentException)
+                {
+                    return null;
+                }
             }
         }
     }
