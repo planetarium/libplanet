@@ -60,7 +60,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchProposal(object? observer, ConsensusMsg? message)
+            void CatchProposal(object? sender, ConsensusMsg? message)
             {
                 if (message is ConsensusProposalMsg proposal)
                 {

@@ -36,14 +36,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var timeoutProcessed = new AsyncAutoResetEvent();
 
-            consensusContext.TimeoutProcessed +=
-                (sender, tuple) =>
+            consensusContext.TimeoutProcessed += (sender, evnetArgs) =>
+            {
+                if (evnetArgs.Height == 1)
                 {
-                    if (tuple.Height == 1)
-                    {
-                        timeoutProcessed.Set();
-                    }
-                };
+                    timeoutProcessed.Set();
+                }
+            };
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 

@@ -36,14 +36,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (_, _, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CheckCommit);
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreCommit)
+                if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMsg? message)
+            void CheckCommit(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreCommitMsg commit)
                 {
@@ -79,14 +79,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (_, _, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreCommit)
+                if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -128,9 +128,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var roundChangedToOne = new AsyncAutoResetEvent();
 
             var (_, _, context) = TestUtils.CreateDummyContext();
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Round == 1)
+                if (eventArgs.Round == 1)
                 {
                     roundChangedToOne.Set();
                 }
@@ -165,14 +165,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (_, _, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.EndCommit)
+                if (eventArgs.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -219,14 +219,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 height: 5, // Peer1 should be a proposer
                 consensusMessageSent: CheckVote);
 
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreVote)
+                if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMsg? message)
+            void CheckVote(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
                 {
@@ -251,14 +251,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var (_, _, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CheckVote);
 
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreVote)
+                if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMsg? message)
+            void CheckVote(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
