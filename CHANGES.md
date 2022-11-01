@@ -4,7 +4,14 @@ Libplanet changelog
 Version 0.43.2
 --------------
 
-To be released.
+Released on November 1, 2022.
+
+ -  (Libplanet.RocksDBStore) `RocksDBStore` no more crashes with stack overflow
+    during iterating block indices even if a chain is deeply nested (due to
+    forks).  [[#2338], [#2379]]
+
+[#2338]: https://github.com/planetarium/libplanet/issues/2338
+[#2379]: https://github.com/planetarium/libplanet/pull/2379
 
 
 Version 0.43.1
