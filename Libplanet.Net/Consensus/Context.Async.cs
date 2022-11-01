@@ -40,7 +40,7 @@ namespace Libplanet.Net.Consensus
                 catch (OperationCanceledException oce)
                 {
                     _logger.Debug(oce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, (Height, oce));
+                    ExceptionOccurred?.Invoke(this, oce);
                     throw;
                 }
                 catch (Exception e)
@@ -49,7 +49,7 @@ namespace Libplanet.Net.Consensus
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMessage));
-                    ExceptionOccurred?.Invoke(this, (Height, e));
+                    ExceptionOccurred?.Invoke(this, e);
                     throw;
                 }
             }
@@ -72,7 +72,7 @@ namespace Libplanet.Net.Consensus
                 catch (OperationCanceledException oce)
                 {
                     _logger.Debug(oce, "Cancellation was requested");
-                    ExceptionOccurred?.Invoke(this, (Height, oce));
+                    ExceptionOccurred?.Invoke(this, oce);
                     throw;
                 }
                 catch (Exception e)
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Consensus
                         e,
                         "Unexpected exception occurred during {FName}",
                         nameof(ConsumeMutation));
-                    ExceptionOccurred?.Invoke(this, (Height, e));
+                    ExceptionOccurred?.Invoke(this, e);
                     throw;
                 }
             }
@@ -118,7 +118,7 @@ namespace Libplanet.Net.Consensus
                     ProcessHeightOrRoundUponRules(message);
                 }
             });
-            MessageConsumed?.Invoke(this, (Height, message));
+            MessageConsumed?.Invoke(this, message);
         }
 
         private async Task ConsumeMutation(CancellationToken cancellationToken)
@@ -142,12 +142,12 @@ namespace Libplanet.Net.Consensus
                     nextState.Round,
                     nextState.Step.ToString());
                 StateChanged?.Invoke(
-                    this, (Height, nextState.MessageLogSize, nextState.Round, nextState.Step));
+                    this, (nextState.MessageLogSize, nextState.Round, nextState.Step));
 
                 ProduceMutation(() => ProcessGenericUponRules());
             }
 
-            MutationConsumed?.Invoke(this, (Height, mutation));
+            MutationConsumed?.Invoke(this, mutation);
         }
 
         /// <summary>

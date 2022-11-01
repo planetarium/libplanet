@@ -132,7 +132,7 @@ namespace Libplanet.Net.Consensus
                     icme,
                     "Failed to add invalid message {Message}.",
                     message);
-                ExceptionOccurred?.Invoke(this, (Height, icme));
+                ExceptionOccurred?.Invoke(this, icme);
             }
         }
 
@@ -327,7 +327,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusPreVoteMsg(MakeVote(Round, null, VoteFlag.PreVote)));
                 Step = Step.PreVote;
-                TimeoutProcessed?.Invoke(this, (Height, round));
+                TimeoutProcessed?.Invoke(this, (round, Step.Propose));
             }
         }
 
@@ -344,7 +344,7 @@ namespace Libplanet.Net.Consensus
                 BroadcastMessage(
                     new ConsensusPreCommitMsg(MakeVote(Round, null, VoteFlag.PreCommit)));
                 Step = Step.PreCommit;
-                TimeoutProcessed?.Invoke(this, (Height, round));
+                TimeoutProcessed?.Invoke(this, (round, Step.PreVote));
             }
         }
 
@@ -365,7 +365,7 @@ namespace Libplanet.Net.Consensus
             if (round == Round)
             {
                 StartRound(Round + 1);
-                TimeoutProcessed?.Invoke(this, (Height, round));
+                TimeoutProcessed?.Invoke(this, (round, Step.PreCommit));
             }
         }
     }

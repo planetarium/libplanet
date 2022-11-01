@@ -11,16 +11,17 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<(long Height, Exception)>? ExceptionOccurred;
 
         /// <inheritdoc cref="Context{T}.TimeoutProcessed"/>
-        internal event EventHandler<(long Height, int Round)>? TimeoutProcessed;
+        internal event EventHandler<(long Height, int Round, Step Step)>? TimeoutProcessed;
 
         /// <inheritdoc cref="Context{T}.StateChanged"/>
-        internal event EventHandler<
-                (long Height, int MessageLogSize, int Round, Step Step)>?
+        internal event EventHandler<(long Height, int MessageLogSize, int Round, Step Step)>?
             StateChanged;
 
+        /// <inheritdoc cref="Context{T}.MessageBroadcasted"/>
+        internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageBroadcasted;
+
         /// <inheritdoc cref="Context{T}.MessageConsumed"/>
-        internal event EventHandler<(long Height, ConsensusMsg Message)>?
-            MessageConsumed;
+        internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageConsumed;
 
         /// <inheritdoc cref="Context{T}.MutationConsumed"/>
         internal event EventHandler<(long Height, System.Action)>? MutationConsumed;
@@ -28,19 +29,19 @@ namespace Libplanet.Net.Consensus
         private void AttachEventHandlers(Context<T> context)
         {
             context.ExceptionOccurred += (sender, exception) =>
-                ExceptionOccurred?.Invoke(this, exception);
-
-            context.TimeoutProcessed += (sender, timeoutStart) =>
-                TimeoutProcessed?.Invoke(this, timeoutStart);
-
-            context.StateChanged += (sender, state) =>
-                StateChanged?.Invoke(this, state);
-
+                ExceptionOccurred?.Invoke(this, (context.Height, exception));
+            context.TimeoutProcessed += (sender, eventArgs) =>
+                TimeoutProcessed?.Invoke(this, (context.Height, eventArgs.Round, eventArgs.Step));
+            context.StateChanged += (sender, eventArgs) =>
+                StateChanged?.Invoke(
+                    this,
+                    (context.Height, eventArgs.MessageLogSize, eventArgs.Round, eventArgs.Step));
+            context.MessageBroadcasted += (sender, message) =>
+                MessageBroadcasted?.Invoke(this, (context.Height, message));
             context.MessageConsumed += (sender, message) =>
-                MessageConsumed?.Invoke(this, message);
-
+                MessageConsumed?.Invoke(this, (context.Height, message));
             context.MutationConsumed += (sender, action) =>
-                MutationConsumed?.Invoke(this, action);
+                MutationConsumed?.Invoke(this, (context.Height, action));
         }
     }
 }

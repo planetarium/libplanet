@@ -118,9 +118,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, he) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
-                exceptionThrown = he.Exception;
+                exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 
@@ -140,9 +140,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, he) =>
+            context.ExceptionOccurred += (sender, e) =>
             {
-                exceptionThrown = he.Exception;
+                exceptionThrown = e;
                 exceptionOccurred.Set();
             };
 

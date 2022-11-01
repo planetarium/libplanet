@@ -348,7 +348,7 @@ namespace Libplanet.Net.Consensus
         private void BroadcastMessage(ConsensusMsg message)
         {
             ConsensusContext.BroadcastMessage(message);
-            MessageBroadcasted?.Invoke(this, (Height, message));
+            MessageBroadcasted?.Invoke(this, message);
         }
 
         /// <summary>

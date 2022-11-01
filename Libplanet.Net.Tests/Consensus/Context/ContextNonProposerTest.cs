@@ -207,14 +207,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 .Propose().Evaluate(TestUtils.Peer1Priv, blockChain);
 
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, stage) =>
+            context.StateChanged += (sender, evnetArgs) =>
             {
-                if (stage.Step == Step.PreVote)
+                if (evnetArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            context.TimeoutProcessed += (sender, stage) =>
+            context.TimeoutProcessed += (sender, _) =>
             {
                 timeoutProcessed = true;
             };
@@ -376,7 +376,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var timeoutProcessed = new AsyncAutoResetEvent();
-            context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
+            context.TimeoutProcessed += (sender, _) => timeoutProcessed.Set();
             context.Start();
 
             context.ProduceMessage(
@@ -412,7 +412,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var timeoutProcessed = new AsyncAutoResetEvent();
-            context.TimeoutProcessed += (sender, message) => timeoutProcessed.Set();
+            context.TimeoutProcessed += (sender, _) => timeoutProcessed.Set();
             context.Start();
 
             context.ProduceMessage(
