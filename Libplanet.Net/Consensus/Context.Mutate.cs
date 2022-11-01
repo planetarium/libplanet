@@ -285,7 +285,8 @@ namespace Libplanet.Net.Consensus
                 IsValid(block4))
             {
                 Step = Step.EndCommit;
-                CommittedRound = round;
+                _decision = block4;
+                _committedRound = round;
                 _logger.Debug(
                     "Committed block in round {Round}. (context: {Context})",
                     Round,
