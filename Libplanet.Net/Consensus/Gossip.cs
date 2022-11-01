@@ -16,7 +16,9 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     public class Gossip : IDisposable
     {
+        private const int MinimumPeerCount = 4;
         private const int DLazy = 6;
+        private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
@@ -27,7 +29,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object?> _runningEvent;
-        private CancellationTokenSource? _heartbeatCts;
+        private CancellationTokenSource? _cancellationTokenSource;
         private IEnumerable<BoundPeer> _table;
 
         /// <summary>
@@ -105,16 +107,17 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         public async Task StartAsync(CancellationToken ctx)
         {
-            _heartbeatCts =
-                CancellationTokenSource.CreateLinkedTokenSource(ctx);
+            _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(ctx);
             Task transportTask = _transport.StartAsync(ctx);
             await _transport.WaitForRunningAsync();
-            await UpdateTable(ctx);
-            _transport.ProcessMessageHandler.Register(HandleMessageAsync(_heartbeatCts.Token));
-            await CheckValidatorsLiveness(ctx);
+            _transport.ProcessMessageHandler.Register(
+                HandleMessageAsync(_cancellationTokenSource.Token));
             _logger.Debug("All peers are alive. Starting gossip...");
             Running = true;
-            await Task.WhenAny(transportTask, HeartbeatTask(_heartbeatCts.Token));
+            await Task.WhenAny(
+                transportTask,
+                RefreshTableAsync(_cancellationTokenSource.Token),
+                HeartbeatTask(_cancellationTokenSource.Token));
         }
 
         /// <summary>
@@ -127,15 +130,15 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         public async Task StopAsync(TimeSpan waitFor, CancellationToken ctx)
         {
-            _heartbeatCts?.Cancel();
+            _cancellationTokenSource?.Cancel();
             await _transport.StopAsync(waitFor, ctx);
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            _heartbeatCts?.Cancel();
-            _heartbeatCts?.Dispose();
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
             _seen.Dispose();
             _transport.Dispose();
         }
@@ -194,6 +197,61 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// A task for checking how many validators are alive.
+        /// </summary>
+        /// <param name="ctx">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        internal async Task CheckValidatorsLiveness(CancellationToken ctx)
+        {
+            while (!ctx.IsCancellationRequested)
+            {
+                var sendMessage = new Func<BoundPeer, Task<bool>>(async peer =>
+                {
+                    try
+                    {
+                        Message? pong = await _transport.SendMessageAsync(
+                            peer,
+                            new PingMsg(),
+                            TimeSpan.FromSeconds(1),
+                            ctx);
+                        return pong is PongMsg;
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Debug(
+                            "{FName}: Failed. Exception => {Exception}",
+                            nameof(_transport.SendMessageAsync),
+                            e.Message);
+                        return false;
+                    }
+                });
+
+                List<Task<bool>> tasks = _table
+                    .Select(peer => sendMessage(peer))
+                    .ToList();
+                int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
+
+                _logger.Debug(
+                    "{FName}: count of pong => {Pong}, minimum count of pong => {Minimum}",
+                    nameof(CheckValidatorsLiveness),
+                    countOfPong,
+                    MinimumPeerCount);
+
+                if (countOfPong >= MinimumPeerCount)
+                {
+                    break;
+                }
+
+                _logger.Debug(
+                    "{FName}: Not enough peers in the table. Updating the table...",
+                    nameof(CheckValidatorsLiveness));
+                await UpdateTable(ctx);
+                await Task.Delay(TimeSpan.FromSeconds(1), ctx);
+            }
+        }
+
+        /// <summary>
         /// Selects <paramref name="count"/> <see cref="BoundPeer"/>s from <paramref name="peers"/>.
         /// </summary>
         /// <param name="peers">A <see cref="BoundPeer"/> pool.</param>
@@ -248,7 +306,6 @@ namespace Libplanet.Net.Consensus
             while (!ctx.IsCancellationRequested)
             {
                 MessageId[] ids = _cache.GetGossipIds();
-                await UpdateTable(ctx);
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
@@ -338,6 +395,31 @@ namespace Libplanet.Net.Consensus
             _logger.Debug("Finished replying WantMessage.");
         }
 
+        /// <summary>
+        /// A lifecycle task which will run in every <see cref="_refreshTableInterval"/> for
+        /// refreshing peer table from seed peer.
+        /// </summary>
+        /// <param name="ctx">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task RefreshTableAsync(CancellationToken ctx)
+        {
+            _logger.Debug(
+                "{FName}: Updating the peer table from seed for every {Time} milliseconds...",
+                nameof(RefreshTableAsync),
+                _refreshTableInterval.TotalMilliseconds);
+
+            while (!ctx.IsCancellationRequested)
+            {
+                _logger.Debug(
+                    "{FName}: Updating peer table from seed(s) {Seeds}...",
+                    nameof(RefreshTableAsync),
+                    _seeds.Select(s => s.Address.ToHex()));
+                await UpdateTable(ctx);
+                await Task.Delay(_refreshTableInterval, ctx);
+            }
+        }
+
         private async Task UpdateTable(CancellationToken ctx)
         {
             if (!_seeds.Any())
@@ -388,57 +470,6 @@ namespace Libplanet.Net.Consensus
             if (!(table is null))
             {
                 _table = table;
-            }
-        }
-
-        /// <summary>
-        /// A task for checking how many validators are alive.
-        /// </summary>
-        /// <param name="ctx">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        private async Task CheckValidatorsLiveness(CancellationToken ctx)
-        {
-            while (!ctx.IsCancellationRequested)
-            {
-                var sendMessage = new Func<BoundPeer, Task<bool>>(async peer =>
-                {
-                    try
-                    {
-                        Message? pong = await _transport.SendMessageAsync(
-                            peer,
-                            new PingMsg(),
-                            TimeSpan.FromSeconds(1),
-                            ctx);
-                        return pong is PongMsg;
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Debug(
-                            "{FName}: Failed. Exception => {Exception}",
-                            nameof(_transport.SendMessageAsync),
-                            e.Message);
-                        return false;
-                    }
-                });
-
-                List<Task<bool>> tasks = _table
-                    .Select(peer => sendMessage(peer))
-                    .ToList();
-                int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
-
-                var twoThird = _table.Count() * 2.0 / 3.0;
-                _logger.Debug(
-                    "{FName}: count of pong => {Pong}, twoThird => {TwoThirds}",
-                    nameof(CheckValidatorsLiveness),
-                    countOfPong,
-                    twoThird);
-                if (countOfPong > twoThird)
-                {
-                    break;
-                }
-
-                await Task.Delay(TimeSpan.FromMilliseconds(10), ctx);
             }
         }
 

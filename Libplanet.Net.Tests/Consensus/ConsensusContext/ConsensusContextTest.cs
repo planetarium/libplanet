@@ -183,10 +183,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var codec = new Codec();
             var heightOnePreVote = new AsyncAutoResetEvent();
+            var heightOnePreCommit = new AsyncAutoResetEvent();
             var heightOneEnded = new AsyncAutoResetEvent();
-            var heightOneProposeSent = new AsyncAutoResetEvent();
-            var heightTwoProposeSent = new AsyncAutoResetEvent();
             var heightTwoPreVote = new AsyncAutoResetEvent();
+            var heightTwoPreCommit = new AsyncAutoResetEvent();
             var heightTwoEnded = new AsyncAutoResetEvent();
             var heightThreePropose = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
@@ -205,7 +205,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     proposedBlock =
                         BlockMarshaler.UnmarshalBlock<DumbAction>(
                             (Dictionary)codec.Decode(propose.Proposal.MarshaledBlock));
-                    heightOneProposeSent.Set();
                 }
             }
 
@@ -217,6 +216,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         heightOnePreVote.Set();
                     }
 
+                    if (tuple.Height == 1 && tuple.Step == Step.PreCommit)
+                    {
+                        heightOnePreCommit.Set();
+                    }
+
                     if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
                     {
                         heightOneEnded.Set();
@@ -225,6 +229,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     if (tuple.Height == 2 && tuple.Step == Step.PreVote)
                     {
                         heightTwoPreVote.Set();
+                    }
+
+                    if (tuple.Height == 2 && tuple.Step == Step.PreCommit)
+                    {
+                        heightTwoPreCommit.Set();
                     }
 
                     if (tuple.Height == 2 && tuple.Step == Step.EndCommit)
@@ -245,21 +254,20 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     {
                         proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
                             (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                        heightTwoProposeSent.Set();
                     }
                 };
 
             // Do a consensus for height to #2 consecutively.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            await heightOneProposeSent.WaitAsync();
+            await heightOnePreVote.WaitAsync();
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 consensusContext,
                 TestUtils.Peer1Priv,
                 proposedBlock!.Hash);
 
-            await heightOnePreVote.WaitAsync();
+            await heightOnePreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 consensusContext,
@@ -270,16 +278,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Starts NewHeight manually.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            consensusContext.Contexts[blockChain.Tip.Index + 1].MessageConsumed +=
-                (sender, hm) =>
-                {
-                    if (hm.Message is ConsensusProposalMsg propose)
-                    {
-                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                        heightTwoProposeSent.Set();
-                    }
-                };
 
             var block = blockChain.ProposeBlock(
                 TestUtils.Peer0Priv,
@@ -288,14 +286,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, height: 2));
 
-            await heightTwoProposeSent.WaitAsync();
+            await heightTwoPreVote.WaitAsync();
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 consensusContext,
                 TestUtils.Peer1Priv,
                 proposedBlock!.Hash);
 
-            await heightTwoPreVote.WaitAsync();
+            await heightTwoPreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 consensusContext,
