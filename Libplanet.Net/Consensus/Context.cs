@@ -101,6 +101,8 @@ namespace Libplanet.Net.Consensus
         private int _lockedRound;
         private Block<T>? _validValue;
         private int _validRound;
+        private Block<T>? _decision;
+        private int _committedRound;
         private BlockCommit? _lastCommit;
 
         /// <summary>
@@ -160,6 +162,8 @@ namespace Libplanet.Net.Consensus
             _lockedRound = -1;
             _validValue = null;
             _validRound = -1;
+            _decision = null;
+            _committedRound = -1;
             _blockChain = blockChain;
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
@@ -196,11 +200,6 @@ namespace Libplanet.Net.Consensus
         /// A step represents of this consensus state. See <see cref="Context{T}"/> for more detail.
         /// </summary>
         public Step Step { get; private set; }
-
-        /// <summary>
-        /// A round where block is successfully committed.
-        /// </summary>
-        public int CommittedRound { get; private set; } = -1;
 
         /// <summary>
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
@@ -271,13 +270,10 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed
         /// otherwise returns <see langword="null"/>.
         /// </returns>
-        /// <remarks>If the <see cref="CommittedRound"/> exists, then the Context guarantees to have
-        /// a valid <see cref="BlockCommit"/> (+2/3 commits.)
-        /// </remarks>
         public BlockCommit? GetBlockCommit()
-            => CommittedRound == -1
+            => _decision is null
                 ? (BlockCommit?)null
-                : new BlockCommit(VoteSet(CommittedRound), _blockChain.Tip.Hash);
+                : new BlockCommit(VoteSet(_committedRound), _decision.Hash);
 
         /// <summary>
         /// Returns the summary of context in JSON-formatted string.
