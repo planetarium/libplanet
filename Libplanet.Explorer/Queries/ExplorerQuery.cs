@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -51,43 +52,49 @@ namespace Libplanet.Explorer.Queries
         {
             Block<T> tip = Chain.Tip;
             long tipIndex = tip.Index;
+            IStore store = ChainContext.Store;
 
-            if (offset < 0)
+            if (desc)
             {
-                offset = tipIndex + offset + 1;
+                if (offset < 0)
+                {
+                    offset = tipIndex + offset + 1;
+                }
+                else
+                {
+                    offset = tipIndex - offset + 1 - (limit ?? 0);
+                }
+            }
+            else
+            {
+                if (offset < 0)
+                {
+                    offset = tipIndex + offset + 1;
+                }
             }
 
-            if (tipIndex < offset || offset < 0)
+            var indexList = store.IterateIndexes(
+                    Chain.Id,
+                    (int)offset,
+                    limit == null ? null : (int)limit)
+                .Select((value, i) => new { i, value } );
+
+            if (desc)
             {
-                yield break;
+                indexList = indexList.Reverse();
             }
 
-            Block<T> block = desc ? Chain[tipIndex] : Chain[0];
-
-            while (limit is null || limit > 0)
+            foreach (var index in indexList)
             {
+                var block = store.GetBlock<T>(index.value);
                 bool isMinerValid = miner is null || miner == block.Miner;
                 bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
-
-                if (isMinerValid && isTxValid)
+                if (!isMinerValid || !isTxValid)
                 {
-                    if (offset > 0)
-                    {
-                        offset--;
-                    }
-                    else
-                    {
-                        limit--;
-                        yield return block;
-                    }
+                    continue;
                 }
 
-                block = GetNextBlock(block, desc);
-
-                if (block is null)
-                {
-                    break;
-                }
+                yield return block;
             }
         }
 
