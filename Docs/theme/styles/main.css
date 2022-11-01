@@ -323,7 +323,7 @@ article h4 {
 }
 
 /* CODE HIGHLIGHT */
-code, a.xref{
+code, a.xref, span.xref {
     font-family: var(--code-fonts);
 }
 
@@ -342,7 +342,7 @@ pre {
     box-shadow: var(--card-box-shadow);
 }
 
-article :is(a, em, h1, h2, h3, h4, h5, h6, li, p, strong) > code {
+article :is(a, em, h1, h2, h3, h4, h5, h6, li, p, strong) > :is(code, span.xref) {
     background-color: #007a8f22;
     color: #003847;
     padding: 0 0.2rem;
@@ -404,4 +404,3 @@ article .hljs-strong {
     box-shadow: var(--card-box-shadow);
     max-width: 700px;
 }
-
