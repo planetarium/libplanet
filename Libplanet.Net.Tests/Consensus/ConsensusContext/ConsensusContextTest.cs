@@ -53,9 +53,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             BlockHash? proposedHash = null;
 
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
-            consensusContext.StateChanged += (sender, state) =>
+            consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (state.Height == 1 && state.Step == Step.EndCommit)
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
@@ -192,54 +192,51 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             }
 
-            consensusContext.StateChanged +=
-                (sender, tuple) =>
+            consensusContext.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.PreVote)
                 {
-                    if (tuple.Height == 1 && tuple.Step == Step.PreVote)
-                    {
-                        heightOnePreVote.Set();
-                    }
+                    heightOnePreVote.Set();
+                }
 
-                    if (tuple.Height == 1 && tuple.Step == Step.PreCommit)
-                    {
-                        heightOnePreCommit.Set();
-                    }
-
-                    if (tuple.Height == 1 && tuple.Step == Step.EndCommit)
-                    {
-                        heightOneEnded.Set();
-                    }
-
-                    if (tuple.Height == 2 && tuple.Step == Step.PreVote)
-                    {
-                        heightTwoPreVote.Set();
-                    }
-
-                    if (tuple.Height == 2 && tuple.Step == Step.PreCommit)
-                    {
-                        heightTwoPreCommit.Set();
-                    }
-
-                    if (tuple.Height == 2 && tuple.Step == Step.EndCommit)
-                    {
-                        heightTwoEnded.Set();
-                    }
-
-                    if (tuple.Height == 3 && tuple.Step == Step.Propose)
-                    {
-                        heightThreePropose.Set();
-                    }
-                };
-
-            consensusContext.MessageConsumed +=
-                (sender, message) =>
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.PreCommit)
                 {
-                    if (message.Height == 2 && message.Message is ConsensusProposalMsg propose)
-                    {
-                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                    }
-                };
+                    heightOnePreCommit.Set();
+                }
+
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
+                {
+                    heightOneEnded.Set();
+                }
+
+                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreVote)
+                {
+                    heightTwoPreVote.Set();
+                }
+
+                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreCommit)
+                {
+                    heightTwoPreCommit.Set();
+                }
+
+                if (eventArgs.Height == 2 && eventArgs.Step == Step.EndCommit)
+                {
+                    heightTwoEnded.Set();
+                }
+
+                if (eventArgs.Height == 3 && eventArgs.Step == Step.Propose)
+                {
+                    heightThreePropose.Set();
+                }
+            };
+            consensusContext.MessageConsumed += (_, message) =>
+            {
+                if (message.Height == 2 && message.Message is ConsensusProposalMsg propose)
+                {
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
+                }
+            };
 
             // Do a consensus for height to #2 consecutively.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
@@ -298,7 +295,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void RemoveOldContexts()
         {
-            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,

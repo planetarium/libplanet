@@ -49,10 +49,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer2Priv,
                 consensusMessageSent: CatchPropose);
 
-            blockChain.TipChanged += (sender, tuple) =>
-            {
-                tipChanged.Set();
-            };
+            blockChain.TipChanged += (_, __) => tipChanged.Set();
             void CatchPropose(object? sender, ConsensusMsg? message)
             {
                 if (message is ConsensusProposalMsg propose && message.Height == 2)
@@ -143,30 +140,30 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             }
 
-            consensusContext.StateChanged += (sender, state) =>
+            consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (state.Height == 2)
+                if (eventArgs.Height == 2)
                 {
-                    if (state.Step == Step.PreVote)
+                    if (eventArgs.Step == Step.PreVote)
                     {
                         heightTwoStepChangedToPreVote.Set();
                     }
-                    else if (state.Step == Step.PreCommit)
+                    else if (eventArgs.Step == Step.PreCommit)
                     {
                         heightTwoStepChangedToPreCommit.Set();
                     }
-                    else if (state.Step == Step.EndCommit)
+                    else if (eventArgs.Step == Step.EndCommit)
                     {
                         heightTwoStepChangedToEndCommit.Set();
                     }
                 }
-                else if (state.Height == 3)
+                else if (eventArgs.Height == 3)
                 {
-                    if (state.Step == Step.Propose)
+                    if (eventArgs.Step == Step.Propose)
                     {
                         heightThreeStepChangedToPropose.Set();
                     }
-                    else if (state.Step == Step.PreVote)
+                    else if (eventArgs.Step == Step.PreVote)
                     {
                         heightThreeStepChangedToPreVote.Set();
                     }
@@ -271,17 +268,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer2Priv);
 
-            consensusContext.MessageConsumed +=
-                (sender, message) =>
+            consensusContext.MessageConsumed += (_, message) =>
+            {
+                if (message.Height == 2 &&
+                    message.Message is ConsensusProposalMsg propose)
                 {
-                    if (message.Height == 2 &&
-                        message.Message is ConsensusProposalMsg propose)
-                    {
-                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                        heightTwoProposeSent.Set();
-                    }
-                };
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
+                    heightTwoProposeSent.Set();
+                }
+            };
 
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
@@ -326,9 +322,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     }
                 });
 
-            consensusContext.StateChanged += (sender, state) =>
+            consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (state.Height == 1 && state.Step == Step.EndCommit)
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
                 {
                     heightOneEndCommit.Set();
                 }
