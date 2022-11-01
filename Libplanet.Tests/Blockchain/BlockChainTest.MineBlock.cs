@@ -571,27 +571,15 @@ namespace Libplanet.Tests.Blockchain
         public void ProposeBlockWithLastCommit()
         {
             var keys = Enumerable.Range(0, 3).Select(_ => new PrivateKey()).ToList();
-
-            var voteSet = new VoteSet(
+            var votes = keys.Select(key => new VoteMetadata(
                 _blockChain.Tip.Index,
                 0,
                 _blockChain.Tip.Hash,
-                keys.Select(key => key.PublicKey));
-            for (int i = 0; i < 3; i++)
-            {
-                var vote = voteSet.Votes[i];
-                voteSet.Add(
-                    new VoteMetadata(
-                        height: vote.Height,
-                        round: vote.Round,
-                        blockHash: vote.BlockHash,
-                        timestamp: vote.Timestamp,
-                        validator: vote.Validator,
-                        flag: VoteFlag.PreCommit).Sign(keys[i]));
-            }
-
-            var blockCommit = new BlockCommit(voteSet, _blockChain.Tip.Hash);
-
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
+            var blockCommit = new BlockCommit(
+                _blockChain.Tip.Index, 0, _blockChain.Tip.Hash, votes);
             Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 lastCommit: blockCommit);

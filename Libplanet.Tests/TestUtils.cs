@@ -360,8 +360,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 return null;
             }
 
-            var voteSet = new VoteSet(height, round, blockHash, ConsensusValidators);
-
             var privateKeys = new List<PrivateKey>()
             {
                 ConsensusPeer0PrivateKey,
@@ -369,40 +367,16 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 ConsensusPeer2PrivateKey,
                 ConsensusPeer3PrivateKey,
             };
+            var votes = privateKeys.Select(key => new VoteMetadata(
+                height,
+                round,
+                blockHash,
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
-            foreach (var privateKey in privateKeys)
-            {
-                voteSet.Add(new VoteMetadata(
-                    height,
-                    round,
-                    blockHash,
-                    DateTimeOffset.UtcNow,
-                    privateKey.PublicKey,
-                    voteFlag).Sign(privateKey));
-            }
-
-            return new BlockCommit(voteSet, blockHash);
-        }
-
-        public static VoteSet AddVotesToVoteSet(
-            VoteSet voteSet,
-            BlockHash blockHash,
-            VoteFlag voteFlag,
-            IEnumerable<PrivateKey> validatorPrivateKeys)
-        {
-            foreach (var privateKey in validatorPrivateKeys)
-            {
-                voteSet.Add(
-                    new VoteMetadata(
-                        voteSet.Height,
-                        voteSet.Round,
-                        blockHash,
-                        DateTimeOffset.UtcNow,
-                        privateKey.PublicKey,
-                        voteFlag).Sign(privateKey));
-            }
-
-            return voteSet;
+            return new BlockCommit(
+                height, round, blockHash, votes);
         }
 
         public static PreEvaluationBlock<T> MineGenesis<T>(

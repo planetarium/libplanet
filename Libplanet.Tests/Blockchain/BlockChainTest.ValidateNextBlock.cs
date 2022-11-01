@@ -253,19 +253,15 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block1);
 
             var invalidValidator = new PrivateKey();
-            var voteSet = new VoteSet(
+            var validators = TestUtils.ConsensusPrivateKeys.Append(invalidValidator).ToList();
+            var votes = validators.Select(key => new VoteMetadata(
                 1,
                 0,
                 block1.Hash,
-                TestUtils.ConsensusValidators.Concat(new[] { invalidValidator.PublicKey }));
-
-            voteSet = TestUtils.AddVotesToVoteSet(
-                voteSet,
-                block1.Hash,
-                VoteFlag.PreCommit,
-                TestUtils.ConsensusPrivateKeys.Concat(new[] { invalidValidator }));
-
-            var blockCommit = new BlockCommit(voteSet, block1.Hash);
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
+            var blockCommit = new BlockCommit(1, 0, block1.Hash, votes);
 
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
@@ -291,23 +287,16 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            var validatorsExceptPeer0 = TestUtils.ConsensusValidators.Except(new[]
-            {
-                TestUtils.ConsensusPeer0PrivateKey.PublicKey,
-            }).ToArray();
-            var privateKeysExceptPeer0 = TestUtils.ConsensusPrivateKeys.Except(new[]
-            {
-                TestUtils.ConsensusPeer0PrivateKey,
-            });
-
-            var voteSet = new VoteSet(1, 0, block1.Hash, validatorsExceptPeer0);
-            TestUtils.AddVotesToVoteSet(
-                voteSet,
+            var keysExceptPeer0 = TestUtils.ConsensusPrivateKeys.Where(
+                key => key != TestUtils.ConsensusPeer0PrivateKey).ToList();
+            var votes = keysExceptPeer0.Select(key => new VoteMetadata(
+                1,
+                0,
                 block1.Hash,
-                VoteFlag.PreCommit,
-                privateKeysExceptPeer0);
-
-            var blockCommit = new BlockCommit(voteSet, block1.Hash);
+                DateTimeOffset.UtcNow,
+                key.PublicKey,
+                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
+            var blockCommit = new BlockCommit(1, 0, block1.Hash, votes);
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2,

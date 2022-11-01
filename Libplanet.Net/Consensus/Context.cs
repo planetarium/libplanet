@@ -237,34 +237,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Returns a <see cref="Libplanet.Consensus.VoteSet"/> of the given round.
-        /// </summary>
-        /// <param name="round">A round to retrieve votes.</param>
-        /// <returns>A <see cref="Libplanet.Consensus.VoteSet"/> of given round.</returns>
-        public VoteSet VoteSet(int round)
-        {
-            (Block<T> Block, int _)? proposal = GetProposal(round);
-            if (proposal is { } p)
-            {
-                VoteSet voteSet = new VoteSet(Height, round, p.Block.Hash, _validators);
-                _messageLog.GetPreCommits(round)
-                    .ForEach(preCommit =>
-                    {
-                        if (preCommit.PreCommit.BlockHash.Equals(p.Block.Hash))
-                        {
-                            voteSet.Add(preCommit.PreCommit);
-                        }
-                    });
-                return voteSet;
-            }
-            else
-            {
-                throw new NullReferenceException(
-                    $"Cannot create a {nameof(Libplanet.Consensus.VoteSet)} for a null block");
-            }
-        }
-
-        /// <summary>
         /// Returns a <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed.
         /// </summary>
         /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed

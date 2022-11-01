@@ -111,11 +111,6 @@ namespace Libplanet.Blocks
             Votes = votes;
         }
 
-        public BlockCommit(VoteSet set, BlockHash hash)
-            : this(set.Height, set.Round, hash, set.Votes)
-        {
-        }
-
         public BlockCommit(byte[] marshaled)
             : this((Dictionary)_codec.Decode(marshaled))
         {
