@@ -352,7 +352,7 @@ namespace Libplanet.Net.Consensus
         /// Validates the given block.
         /// </summary>
         /// <param name="block">A <see cref="Block{T}"/> to validate.</param>
-        /// <returns>Returns <c>true</c> if block is valid, or otherwise returns <c>false</c>.
+        /// <returns><see langword="true"/> if block is valid, otherwise <see langword="false"/>.
         /// </returns>
         private bool IsValid(Block<T> block)
         {

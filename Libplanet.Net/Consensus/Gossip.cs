@@ -147,7 +147,7 @@ namespace Libplanet.Net.Consensus
         /// Waits until this <see cref="Gossip"/> instance gets started to run.
         /// </summary>
         /// <returns>A <see cref="Task"/> completed when <see cref="Gossip.Running"/>
-        /// property becomes <c>true</c>.</returns>
+        /// property becomes <see langword="true"/>.</returns>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
         /// <summary>

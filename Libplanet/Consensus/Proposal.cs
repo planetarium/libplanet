@@ -112,7 +112,7 @@ namespace Libplanet.Consensus
         /// Verifies whether the <see cref="ProposalMetadata"/> is properly signed by
         /// <see cref="Validator"/>.
         /// </summary>
-        /// <returns><c>true</c> if the <see cref="Signature"/> is not empty
+        /// <returns><see langword="true"/> if the <see cref="Signature"/> is not empty
         /// and is a valid signature signed by <see cref="Validator"/>.</returns>
         [Pure]
         public bool Verify() =>
