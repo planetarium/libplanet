@@ -76,10 +76,8 @@ namespace Libplanet.Net.Tests.Consensus
 
             try
             {
-                foreach (var reactor in consensusReactors)
-                {
-                    _ = reactor.StartAsync(cancellationTokenSource.Token);
-                }
+                consensusReactors.AsParallel().ForAll(
+                    reactor => _ = reactor.StartAsync(cancellationTokenSource.Token));
 
                 Dictionary<string, JsonElement> json;
 
