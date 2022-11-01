@@ -53,7 +53,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             {
                 tipChanged.Set();
             };
-            void CatchPropose(object? observer, ConsensusMsg? message)
+            void CatchPropose(object? sender, ConsensusMsg? message)
             {
                 if (message is ConsensusProposalMsg propose && message.Height == 2)
                 {
@@ -134,7 +134,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Peer2Priv,
                 consensusMessageSent: CatchPropose);
 
-            void CatchPropose(object? observer, ConsensusMsg? message)
+            void CatchPropose(object? sender, ConsensusMsg? message)
             {
                 if (message is ConsensusProposalMsg proposeMessage)
                 {

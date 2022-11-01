@@ -42,16 +42,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var (_, _, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Round == 2 && state.Step == Step.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
             };
             context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
 
-            void CatchMessage(object? observer, ConsensusMsg message)
+            void CatchMessage(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -125,27 +125,27 @@ namespace Libplanet.Net.Tests.Consensus.Context
             bool timeoutProcessed = false;
             var (fx, blockChain, context) = TestUtils.CreateDummyContext(
                 consensusMessageSent: CatchMessage);
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Round == 2 && state.Step == Step.Propose)
+                if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
                 {
                     stateChangedToRoundTwoPropose.Set();
                 }
-                else if (state.Round == 2 && state.Step == Step.PreVote)
+                else if (eventArgs.Round == 2 && eventArgs.Step == Step.PreVote)
                 {
                     stateChangedToRoundTwoPreVote.Set();
                 }
-                else if (state.Round == 2 && state.Step == Step.PreCommit)
+                else if (eventArgs.Round == 2 && eventArgs.Step == Step.PreCommit)
                 {
                     stateChangedToRoundTwoPreCommit.Set();
                 }
-                else if (state.Round == 3 && state.Step == Step.Propose)
+                else if (eventArgs.Round == 3 && eventArgs.Step == Step.Propose)
                 {
                     stateChangedToRoundThreePropose.Set();
                 }
             };
             context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
-            void CatchMessage(object? observer, ConsensusMsg message)
+            void CatchMessage(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {

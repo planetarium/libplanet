@@ -351,7 +351,7 @@ namespace Libplanet.Net.Tests
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
                 {
-                    consensusMessageSent?.Invoke(context, message);
+                    consensusMessageSent?.Invoke(null, message);
                     message.Remote = new BoundPeer(
                         privateKey!.PublicKey,
                         new DnsEndPoint("1.2.3.4", 1234));

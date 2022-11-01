@@ -41,14 +41,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 consensusMessageSent: CatchPropose);
 
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreVote)
+                if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg message)
+            void CatchPropose(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg)
                 {
@@ -78,14 +78,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 consensusMessageSent: CatchPropose);
 
             ConsensusProposalMsg? proposedMessage = null;
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreVote)
+                if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg message)
+            void CatchPropose(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -179,19 +179,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreCommit)
+                if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
 
-                if (state.Step == Step.EndCommit)
+                if (eventArgs.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg message)
+            void CatchPropose(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg proposeMsg)
                 {

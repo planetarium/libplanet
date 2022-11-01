@@ -40,9 +40,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Round == 1 && state.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
                 {
                     stateChangedToRoundOnePreVote.Set();
                 }
@@ -78,14 +78,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             blockHash = block.Hash;
 
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreCommit)
+                if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMsg message)
+            void CheckCommit(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreCommitMsg commit)
                 {
@@ -145,14 +145,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     txHash: null,
                     lastCommit: null)).Propose().Evaluate(fx.Miner, blockChain);
 
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreCommit)
+                if (eventArgs.Step == Step.PreCommit)
                 {
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMsg message)
+            void CheckCommit(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreCommitMsg commit)
                 {
@@ -218,7 +218,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             {
                 timeoutOccurred = true;
             };
-            void CheckVote(object? observer, ConsensusMsg message)
+            void CheckVote(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
                 {
@@ -283,14 +283,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 consensusMessageSent: CheckVote,
                 contextTimeoutOptions: new ContextTimeoutOption(proposeSecondBase: 1));
 
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Step == Step.PreVote)
+                if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMsg message)
+            void CheckVote(object? sender, ConsensusMsg message)
             {
                 if (message is ConsensusPreVoteMsg)
                 {
@@ -317,9 +317,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             var block2 = blockChain.ProposeBlock(TestUtils.Peer2Priv);
             var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, state) =>
+            context.StateChanged += (sender, eventArgs) =>
             {
-                if (state.Round == 1 && state.Step == Step.PreVote)
+                if (eventArgs.Round == 1 && eventArgs.Step == Step.PreVote)
                 {
                     roundOneStepChangedToPreVote.Set();
                 }
