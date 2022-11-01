@@ -244,16 +244,16 @@ namespace Libplanet.Net.Consensus
         /// <returns>A <see cref="Libplanet.Consensus.VoteSet"/> of given round.</returns>
         public VoteSet VoteSet(int round)
         {
-            (Block<T> Block, int _)? propose = GetPropose(round);
-            if (propose is { } p)
+            (Block<T> Block, int _)? proposal = GetProposal(round);
+            if (proposal is { } p)
             {
                 VoteSet voteSet = new VoteSet(Height, round, p.Block.Hash, _validators);
                 _messageLog.GetPreCommits(round)
-                    .ForEach(commit =>
+                    .ForEach(preCommit =>
                     {
-                        if (commit.PreCommit.BlockHash.Equals(p.Block.Hash))
+                        if (preCommit.PreCommit.BlockHash.Equals(p.Block.Hash))
                         {
-                            voteSet.Add(commit.PreCommit);
+                            voteSet.Add(preCommit.PreCommit);
                         }
                     });
                 return voteSet;
@@ -439,7 +439,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block<T>, int)? GetPropose(int round)
+        private (Block<T>, int)? GetProposal(int round)
         {
             ConsensusProposalMsg? proposal = _messageLog.GetProposal(round);
             if (proposal is { } p)
@@ -468,7 +468,7 @@ namespace Libplanet.Net.Consensus
         private bool HasTwoThirdsPreVote(int round, BlockHash? hash, bool any = false)
         {
             int count = _messageLog.GetPreVotes(round)
-                .Count(vote => (any || vote.BlockHash.Equals(hash)));
+                .Count(preVote => (any || preVote.BlockHash.Equals(hash)));
             return count > TotalValidators * 2 / 3;
         }
 
@@ -488,7 +488,7 @@ namespace Libplanet.Net.Consensus
         private bool HasTwoThirdsPreCommit(int round, BlockHash? hash, bool any = false)
         {
             int count = _messageLog.GetPreCommits(round)
-                .Count(commit => (any || commit.BlockHash.Equals(hash)));
+                .Count(preCommit => (any || preCommit.BlockHash.Equals(hash)));
             return count > TotalValidators * 2 / 3;
         }
     }
