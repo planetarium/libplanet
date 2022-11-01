@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Blocks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -11,11 +10,8 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Starts round #0 of consensus for <see cref="Height"/>.
         /// </summary>
-        /// <param name="lastCommit">A <see cref="Block{T}.LastCommit"/> from previous block.
-        /// </param>
-        public void Start(BlockCommit? lastCommit = null)
+        public void Start()
         {
-            _lastCommit = lastCommit;
             ProduceMutation(() => StartRound(0));
 
             // FIXME: Exceptions inside tasks should be handled properly.

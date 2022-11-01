@@ -185,7 +185,7 @@ namespace Libplanet.Net.Consensus
                 }
 
                 BlockCommit? lastCommit = _contexts.ContainsKey(height - 1)
-                    ? _contexts[height - 1].GetBlockCommit()
+                    ? _contexts[height - 1].GetCurrentBlockCommit()
                     : null;
 
                 RemoveOldContexts(height);
@@ -227,7 +227,7 @@ namespace Libplanet.Net.Consensus
                     }
                 }
 
-                _contexts[height].Start(lastCommit);
+                _contexts[height].Start();
             }
         }
 
@@ -294,6 +294,14 @@ namespace Libplanet.Net.Consensus
         public override string ToString() => _contexts.ContainsKey(Height)
             ? _contexts[Height].ToString()
             : "No context";
+
+        public BlockCommit? GetLastCommit(long height)
+        {
+            BlockCommit? blockCommit = _contexts.ContainsKey(height)
+                ? _contexts[height].GetCurrentBlockCommit()
+                : null;
+            return blockCommit ?? _blockChain.Store.GetLastCommit(height);
+        }
 
         /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls the

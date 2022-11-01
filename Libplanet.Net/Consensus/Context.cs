@@ -103,7 +103,6 @@ namespace Libplanet.Net.Consensus
         private int _validRound;
         private Block<T>? _decision;
         private int _committedRound;
-        private BlockCommit? _lastCommit;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context{T}"/> class.
@@ -201,6 +200,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public Step Step { get; private set; }
 
+        public BlockCommit? LastCommit => ConsensusContext.GetLastCommit(Height - 1);
+
         /// <summary>
         /// A command class for receiving <see cref="ConsensusMsg"/> from or broadcasts to other
         /// validators.
@@ -220,9 +221,7 @@ namespace Libplanet.Net.Consensus
             // that prevents the lost LastCommit while in termination of program. This is the
             // attempt of saving LastCommit as much as possible.
             // https://github.com/planetarium/libplanet/pull/2472
-            var currentLastCommit = GetBlockCommit();
-
-            if (currentLastCommit is { })
+            if (GetCurrentBlockCommit() is { } currentLastCommit)
             {
                 _blockChain.Store.PutLastCommit(currentLastCommit);
                 _logger.Debug(
@@ -270,7 +269,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns <see cref="Libplanet.Blocks.BlockCommit"/> if the context is committed
         /// otherwise returns <see langword="null"/>.
         /// </returns>
-        public BlockCommit? GetBlockCommit()
+        public BlockCommit? GetCurrentBlockCommit()
             => _decision is null
                 ? (BlockCommit?)null
                 : new BlockCommit(VoteSet(_committedRound), _decision.Hash);
@@ -342,7 +341,7 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="null"/>.</returns>
         private Block<T>? GetValue()
         {
-            Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
+            Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: LastCommit);
             if (block.Index == Height)
             {
                 _blockChain.Store.PutBlock(block);
