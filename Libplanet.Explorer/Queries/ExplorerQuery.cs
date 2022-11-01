@@ -54,17 +54,23 @@ namespace Libplanet.Explorer.Queries
             long tipIndex = tip.Index;
             IStore store = ChainContext.Store;
 
-            if (offset < 0)
+            if (desc)
             {
-                offset = tipIndex + offset + 1;
+                if (offset < 0)
+                {
+                    offset = tipIndex + offset + 1;
+                }
+                else
+                {
+                    offset = tipIndex - offset + 1 - (limit ?? 0);
+                }
             }
-            else if (desc && offset == 0)
+            else
             {
-                offset = tipIndex + 1 - (limit ?? 0);
-            }
-            else if (desc && offset > 0)
-            {
-                offset = offset + 1 - (limit ?? 0);
+                if (offset < 0)
+                {
+                    offset = tipIndex + offset + 1;
+                }
             }
 
             var indexList = store.IterateIndexes(
