@@ -49,6 +49,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="lastCommitClearThreshold">A cache of <see cref="BlockCommit"/> cleanup
         /// threshold. See <see cref="ConsensusContext{T}.LastCommitClearThreshold"/>.
         /// The value must bigger than <c>0</c>.</param>
+        /// <param name="contextWindow">A maximum size of leaving <see cref="Context{T}"/> alive.
+        /// The value must bigger than <c>1</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusReactor(
@@ -59,6 +61,7 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay,
             long lastCommitClearThreshold,
+            long contextWindow,
             ContextTimeoutOption contextTimeoutOption)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -79,6 +82,7 @@ namespace Libplanet.Net.Consensus
                 newHeightDelay,
                 blockChain.Policy.GetValidators,
                 lastCommitClearThreshold,
+                contextWindow,
                 contextTimeoutOption);
 
             _logger = Log

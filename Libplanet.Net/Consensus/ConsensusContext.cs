@@ -53,6 +53,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="lastCommitClearThreshold">A maximum size of cached
         /// <see cref="BlockCommit"/>. See <see cref="LastCommitClearThreshold"/>.
         /// The value must bigger than <c>0</c>.</param>
+        /// <param name="contextWindow">A maximum size of leaving <see cref="Context{T}"/> alive.
+        /// The value must bigger than <c>1</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
@@ -62,6 +64,7 @@ namespace Libplanet.Net.Consensus
             TimeSpan newHeightDelay,
             Func<long, IEnumerable<PublicKey>> getValidators,
             long lastCommitClearThreshold,
+            long contextWindow,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
@@ -71,6 +74,7 @@ namespace Libplanet.Net.Consensus
             _newHeightDelay = newHeightDelay;
             _getValidators = getValidators;
             LastCommitClearThreshold = lastCommitClearThreshold;
+            ContextWindow = contextWindow;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -130,6 +134,9 @@ namespace Libplanet.Net.Consensus
 
         /// <inheritdoc cref="ConsensusReactorOption.LastCommitClearThreshold"/>
         private long LastCommitClearThreshold { get; }
+
+        /// <inheritdoc cref="ConsensusReactorOption.ContextWindow"/>
+        private long ContextWindow { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -343,16 +350,23 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Discard and remove all contexts that has lower height with
-        /// the given <paramref name="height"/>.
+        /// Discard and remove contexts that has lower height with the given
+        /// <paramref name="height"/> - <see cref="ContextWindow"/>.
         /// </summary>
         /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
         private void RemoveOldContexts(long height)
         {
+            long upperBound = height - ContextWindow;
+
+            if (upperBound < 0)
+            {
+                return;
+            }
+
             var values = _contexts.Values;
             foreach (var ctx in values)
             {
-                if (ctx.Height < height)
+                if (ctx.Height < upperBound)
                 {
                     _logger.Debug("Removing context for height {Height}", ctx.Height);
                     lock (_contextLock)

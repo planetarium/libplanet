@@ -52,6 +52,11 @@ namespace Libplanet.Net.Consensus
         public long? LastCommitClearThreshold { get; set; }
 
         /// <summary>
+        /// The maximum count of letting <see cref="Context{T}"/>s alive.
+        /// </summary>
+        public long? ContextWindow { get; set; }
+
+        /// <summary>
         /// A timeout second and multiplier value for used in <see cref="Context{T}"/>.
         /// </summary>
         public ContextTimeoutOption ContextTimeoutOptions { get; set; }

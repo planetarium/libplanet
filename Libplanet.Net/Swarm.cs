@@ -134,6 +134,12 @@ namespace Libplanet.Net
                     consensusReactorOption.LastCommitClearThreshold = 1;
                 }
 
+                if (consensusReactorOption.ContextWindow is { } ||
+                    consensusReactorOption.ContextWindow <= 0)
+                {
+                    consensusReactorOption.ContextWindow = 1;
+                }
+
                 NetMQTransport consensusTransport = NetMQTransport.Create(
                     privateKey: _privateKey,
                     appProtocolVersion: _appProtocolVersion,
@@ -153,6 +159,7 @@ namespace Libplanet.Net
                     consensusReactorOption.SeedPeers,
                     consensusReactorOption.TargetBlockInterval,
                     consensusReactorOption.LastCommitClearThreshold ?? 30,
+                    consensusReactorOption.ContextWindow ?? 10,
                     consensusReactorOption.ContextTimeoutOptions);
             }
         }
