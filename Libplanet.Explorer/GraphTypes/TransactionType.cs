@@ -56,8 +56,8 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "A list of actions in this transaction."
             );
             Field<NonNullGraphType<StringGraphType>>(
-                name: "SignedTx",
-                description: "A signed tx in base64 string.",
+                name: "SerializedPayload",
+                description: "A serialized tx payload in base64 string.",
                 resolve: x =>
                 {
                     byte[] bytes = x.Source.Serialize(true);
