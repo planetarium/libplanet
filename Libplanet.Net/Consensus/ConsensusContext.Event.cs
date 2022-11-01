@@ -10,11 +10,6 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="Context{T}.ExceptionOccurred"/>
         internal event EventHandler<(long Height, Exception)>? ExceptionOccurred;
 
-        /// <inheritdoc cref="Context{T}.TimeoutOccurred"/>
-        internal event EventHandler<
-                (long Height, int Round, Step Step, TimeSpan TimeSpan)>?
-            TimeoutOccurred;
-
         /// <inheritdoc cref="Context{T}.TimeoutProcessed"/>
         internal event EventHandler<(long Height, int Round)>? TimeoutProcessed;
 
@@ -34,9 +29,6 @@ namespace Libplanet.Net.Consensus
         {
             context.ExceptionOccurred += (sender, exception) =>
                 ExceptionOccurred?.Invoke(this, exception);
-
-            context.TimeoutOccurred += (sender, timeoutWait) =>
-                TimeoutOccurred?.Invoke(this, timeoutWait);
 
             context.TimeoutProcessed += (sender, timeoutStart) =>
                 TimeoutProcessed?.Invoke(this, timeoutStart);

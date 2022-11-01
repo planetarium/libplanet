@@ -187,7 +187,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EnterPreVoteNilOnInvalidBlock()
         {
             var voteSent = new AsyncAutoResetEvent();
-            var timeoutOccurred = false;
+            var timeoutProcessed = false;
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.Peer0Priv,
                 consensusMessageSent: CheckVote);
@@ -214,9 +214,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            context.TimeoutOccurred += (sender, stage) =>
+            context.TimeoutProcessed += (sender, stage) =>
             {
-                timeoutOccurred = true;
+                timeoutProcessed = true;
             };
             void CheckVote(object? sender, ConsensusMsg message)
             {
@@ -232,7 +232,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     invalidBlock, TestUtils.Peer1Priv));
 
             await Task.WhenAll(voteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
-            Assert.False(timeoutOccurred); // Check step transition isn't by timeout.
+            Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
             Assert.Equal(Step.PreVote, context.Step);
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);

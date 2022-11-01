@@ -11,15 +11,9 @@ namespace Libplanet.Net.Consensus
         internal event EventHandler<(long Height, Exception Exception)>? ExceptionOccurred;
 
         /// <summary>
-        /// An event that invoked when any timeout occurs.
-        /// </summary>
-        internal event EventHandler<(long Height, int Round, Step Step, TimeSpan TimeSpan)>?
-            TimeoutOccurred;
-
-        /// <summary>
         /// An event that invoked when any timeout triggered mutation is processed.
-        /// This is conditionally triggered, i.e. when certain conditions are met
-        /// after <see cref="TimeoutOccurred"/> is triggered.
+        /// This is conditionally triggered when internal countdown timer has reached zero,
+        /// i.e. when certain conditions are met.
         /// </summary>
         internal event EventHandler<(long Height, int Round)>? TimeoutProcessed;
 
