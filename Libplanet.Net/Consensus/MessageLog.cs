@@ -245,7 +245,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="hash">The <see cref="BlockHash"/> to match.</param>
         /// <returns>A <see cref="BlockCommit"/> created on the fly if
         /// conditions are met (i.e. there are 2/3+ <see cref="Vote"/>s with
-        /// <see cref="VoteFlag.PreCommit"/> flag), otherwise <see langword="null"/>.</returns>
+        /// <see cref="VoteFlag.PreCommit"/> flag for given <paramref name="round"/>
+        /// and <paramref name="hash"/>), otherwise <see langword="null"/>.</returns>
         internal BlockCommit? GetBlockCommit(int round, BlockHash hash)
         {
             lock (_lock)
