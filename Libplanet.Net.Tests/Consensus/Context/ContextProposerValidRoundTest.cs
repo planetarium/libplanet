@@ -51,7 +51,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
             context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
 
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -145,7 +145,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
             context.TimeoutProcessed += (sender, _) => timeoutProcessed = true;
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {

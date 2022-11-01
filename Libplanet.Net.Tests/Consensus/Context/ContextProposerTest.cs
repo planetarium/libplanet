@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CheckCommit(object? observer, ConsensusMsg? message)
+            void CheckCommit(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusPreCommitMsg commit)
                 {
@@ -86,7 +86,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreCommit.Set();
                 }
             };
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -172,7 +172,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchMessage(object? observer, ConsensusMsg? message)
+            void CatchMessage(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -226,7 +226,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMsg? message)
+            void CheckVote(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusPreVoteMsg vote && vote.PreVote.BlockHash is null)
                 {
@@ -258,7 +258,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CheckVote(object? observer, ConsensusMsg? message)
+            void CheckVote(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {

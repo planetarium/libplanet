@@ -48,7 +48,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg? message)
+            void CatchPropose(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg)
                 {
@@ -85,7 +85,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg? message)
+            void CatchPropose(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg propose)
                 {
@@ -191,7 +191,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchPropose(object? observer, ConsensusMsg? message)
+            void CatchPropose(object? observer, ConsensusMsg message)
             {
                 if (message is ConsensusProposalMsg proposeMsg)
                 {
