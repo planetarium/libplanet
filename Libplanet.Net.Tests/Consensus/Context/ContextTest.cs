@@ -35,29 +35,26 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async void StartAsProposer()
         {
-            var proposeSent = new AsyncAutoResetEvent();
-
-            var (_, _, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CatchPropose);
-
+            var proposalSent = new AsyncAutoResetEvent();
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, eventArgs) =>
+            var (_, _, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
                 if (message is ConsensusProposalMsg)
                 {
-                    proposeSent.Set();
+                    proposalSent.Set();
                 }
-            }
+            };
 
             context.Start();
-            await Task.WhenAll(proposeSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
+            await Task.WhenAll(proposalSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, context.Step);
             Assert.Equal(1, context.Height);
@@ -68,30 +65,31 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void StartAsProposerWithLastCommit()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
 
             // Assumed that height 1 is already committed.  It will catch a propose to check
             // whether the lastCommit of height 1 is used for propose.  Note that Peer2
             // is the proposer for height 2.
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
-                privateKey: TestUtils.Peer2Priv,
-                consensusMessageSent: CatchPropose);
+                privateKey: TestUtils.Peer2Priv);
 
-            ConsensusProposalMsg? proposedMessage = null;
-            context.StateChanged += (sender, eventArgs) =>
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreVote)
                 {
                     stepChangedToPreVote.Set();
                 }
             };
-            void CatchPropose(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusProposalMsg propose)
+                if (message is ConsensusProposalMsg proposalMsg)
                 {
-                    proposedMessage = propose;
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
-            }
+            };
 
             // It needs a lastCommit to use, so we assume that index #1 block is already committed.
             var heightOneBlock = blockChain.ProposeBlock(TestUtils.Peer1Priv);
@@ -100,12 +98,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.CreateLastCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
 
             context.Start(lastCommit);
-            await Task.WhenAll(stepChangedToPreVote.WaitAsync());
+            await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
 
             Assert.Equal(Step.PreVote, context.Step);
-            Assert.NotNull(proposedMessage);
+            Assert.NotNull(proposal);
             Block<DumbAction> proposed = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                (Dictionary)new Codec().Decode(proposedMessage!.Proposal.MarshaledBlock));
+                (Dictionary)new Codec().Decode(proposal!.Proposal.MarshaledBlock));
             Assert.NotNull(proposed.LastCommit);
             Assert.Equal(lastCommit, proposed.LastCommit);
         }
@@ -113,16 +111,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task ThrowInvalidProposer()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext();
-
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, e) =>
+
+            var (_, blockChain, context) = TestUtils.CreateDummyContext();
+            context.ExceptionOccurred += (_, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
+            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
 
             context.Start();
             context.ProduceMessage(
@@ -132,19 +130,18 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task ThrowDifferentHeight()
+        public async Task ThrowOnDifferentHeightMessage()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext();
-
-            var block = blockChain.ProposeBlock(TestUtils.Peer2Priv);
-
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
-            context.ExceptionOccurred += (sender, e) =>
+
+            var (_, blockChain, context) = TestUtils.CreateDummyContext();
+            context.ExceptionOccurred += (_, e) =>
             {
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
+            var block = blockChain.ProposeBlock(TestUtils.Peer2Priv);
 
             context.Start();
             context.ProduceMessage(
@@ -154,7 +151,6 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Reset exception thrown.
             exceptionThrown = null;
-
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -171,15 +167,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async void PutLastCommitWhenDispose()
         {
             var codec = new Codec();
-            var proposeSent = new AsyncAutoResetEvent();
-            Block<DumbAction>? proposedBlock = null;
-
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                consensusMessageSent: CatchPropose);
-
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
-            context.StateChanged += (sender, eventArgs) =>
+            ConsensusProposalMsg? proposal = null;
+            var proposalSent = new AsyncAutoResetEvent();
+
+            var (_, blockChain, context) = TestUtils.CreateDummyContext();
+            context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
                 {
@@ -191,35 +185,34 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     stepChangedToEndCommit.Set();
                 }
             };
-            void CatchPropose(object? sender, ConsensusMsg message)
+            context.MessageBroadcasted += (_, message) =>
             {
-                if (message is ConsensusProposalMsg proposeMsg)
+                if (message is ConsensusProposalMsg proposalMsg)
                 {
-                    proposedBlock =
-                        BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(proposeMsg.Proposal.MarshaledBlock));
-                    proposeSent.Set();
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
-            }
+            };
 
             context.Start();
-            await proposeSent.WaitAsync();
+            await proposalSent.WaitAsync();
+            Assert.NotNull(proposal);
+            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                (Dictionary)codec.Decode(proposal!.Proposal.MarshaledBlock));
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 context,
                 TestUtils.Peer1Priv,
                 proposedBlock!.Hash);
-
             await stepChangedToPreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 context,
                 TestUtils.Peer1Priv,
                 proposedBlock!.Hash);
-
             await stepChangedToEndCommit.WaitAsync();
-            context.Dispose();
 
+            context.Dispose();
             Assert.NotNull(blockChain.Store.GetLastCommit(1));
         }
     }

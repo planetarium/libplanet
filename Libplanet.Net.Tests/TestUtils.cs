@@ -151,10 +151,7 @@ namespace Libplanet.Net.Tests
                     DateTimeOffset.UtcNow,
                     privateKey.PublicKey,
                     codec.Encode(block.MarshalBlock()),
-                    validRound).Sign(privateKey))
-            {
-                Remote = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 1234)),
-            };
+                    validRound).Sign(privateKey));
         }
 
         public static BlockCommit CreateLastCommit(BlockHash blockHash, long height, int round)
@@ -260,8 +257,7 @@ namespace Libplanet.Net.Tests
             PrivateKey nodePrivateKey,
             BlockHash roundBlockHash)
         {
-            foreach ((PrivateKey privateKey, BoundPeer peer)
-                     in PrivateKeys.Zip(Peers, (first, second) => (first, second)))
+            foreach (PrivateKey privateKey in PrivateKeys)
             {
                 if (privateKey == nodePrivateKey)
                 {
@@ -276,10 +272,7 @@ namespace Libplanet.Net.Tests
                             roundBlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
-                            VoteFlag.PreVote).Sign(privateKey))
-                    {
-                        Remote = peer,
-                    });
+                            VoteFlag.PreVote).Sign(privateKey)));
             }
         }
 
