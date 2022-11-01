@@ -107,9 +107,14 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(Block1Tx1.Nonce, e.ImproperNonce);
         }
 
-        [Fact]
+        [SkippableFact]
         public void TransactionsWithMissingNonce()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Tx.InvalidTxSignatureException"
+            );
+
             var dupTx1 = new Transaction<Arithmetic>(
                 metadata: new TxMetadata(Block1Tx1.PublicKey)
                 {

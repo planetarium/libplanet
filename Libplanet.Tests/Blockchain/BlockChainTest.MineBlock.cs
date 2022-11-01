@@ -217,7 +217,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task MineBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
@@ -257,7 +257,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task MineBlockWithReverseNonces()
         {
             var key = new PrivateKey();
@@ -324,7 +324,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Single(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
@@ -366,7 +366,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"baz", state2);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task MineBlockWithTxPriority()
         {
             var keyA = new PrivateKey();
@@ -503,7 +503,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task IgnoreLowerNonceTxsAndMine()
         {
             var privateKey = new PrivateKey();
@@ -535,7 +535,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains(txsB[3], b2.Transactions);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task IgnoreDuplicatedNonceTxs()
         {
             var privateKey = new PrivateKey();

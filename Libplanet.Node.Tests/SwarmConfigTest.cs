@@ -47,7 +47,7 @@ namespace Libplanet.Node.Tests
             },
         };
 
-        [Theory]
+        [SkippableTheory]
         [MemberData(nameof(SerializationData))]
         public void Serialization(
             string host,
@@ -57,6 +57,11 @@ namespace Libplanet.Node.Tests
             bool render,
             IEnumerable<BoundPeer> staticPeers)
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "System.Text.Json 6.0.0+ does not work well with Unity/Mono."
+            );
+
             SwarmConfig original = new SwarmConfig()
             {
                 InitConfig = new InitConfig()
