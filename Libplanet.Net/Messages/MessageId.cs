@@ -32,7 +32,7 @@ namespace Libplanet.Net.Messages
         /// Converts a <see cref="byte"/> array into a <see cref="MessageId"/>.
         /// </summary>
         /// <param name="messageId">A <see cref="byte"/> array that encodes
-        /// a <see cref="MessageId"/>.  It must not be <c>null</c>,
+        /// a <see cref="MessageId"/>.  It must not be <see langword="null"/>,
         /// and its <see cref="Array.Length"/> must be the same to
         /// <see cref="Size"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the given

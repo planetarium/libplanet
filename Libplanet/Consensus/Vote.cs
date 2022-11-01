@@ -121,8 +121,9 @@ namespace Libplanet.Consensus
         /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
         /// <see cref="Validator"/>.
         /// </summary>
-        /// <returns><c>true</c> if the <see cref="Signature"/> is not empty
-        /// and is a valid signature signed by <see cref="Validator"/>.</returns>
+        /// <returns><see langword="true"/> if the <see cref="Signature"/> is not empty
+        /// and is a valid signature signed by <see cref="Validator"/>,
+        /// <see langword="false"/> otherwise.</returns>
         [Pure]
         public bool Verify() =>
             !Signature.IsEmpty &&
