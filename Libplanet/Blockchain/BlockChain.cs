@@ -1149,10 +1149,7 @@ namespace Libplanet.Blockchain
 
                 if (!(ibe is null))
                 {
-                    _logger.Error(
-                        ibe,
-                        "Append failed. The block `{BlockHash}` is invalid",
-                        block.Hash);
+                    _logger.Error(ibe, "Failed to append invalid block {BlockHash}", block.Hash);
                     throw ibe;
                 }
 
@@ -1175,9 +1172,7 @@ namespace Libplanet.Blockchain
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
-                        _logger.Debug(
-                            "Append failed. The tx `{TxId}` is invalid",
-                            tx1.Id);
+                        _logger.Debug("Failed to append invalid tx {TxId}", tx1.Id);
                         throw new InvalidTxNonceException(
                             "Transaction nonce is invalid.",
                             tx1.Id,

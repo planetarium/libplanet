@@ -81,8 +81,8 @@ namespace Libplanet.Store
                 if (missingTxIds.Any())
                 {
                     throw new InvalidOperationException(
-                        $"Failed to find {missingTxIds.Length} tx(s) (out of {txs.Length})" +
-                        $" at the block `{blockHash}`:\n" + string.Join("\n  ", missingTxIds));
+                        $"Failed to find {missingTxIds.Length} tx(s) (out of {txs.Length}) " +
+                        $"at block {blockHash}:\n" + string.Join("\n  ", missingTxIds));
                 }
 
                 return new Block<T>(header, txs.Select(pair => pair.Tx));
