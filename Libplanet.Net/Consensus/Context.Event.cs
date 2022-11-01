@@ -31,6 +31,11 @@ namespace Libplanet.Net.Consensus
             StateChanged;
 
         /// <summary>
+        /// An event that is invoked when a <see cref="ConsensusMsg"/> is broadcasted.
+        /// </summary>
+        internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageBroadcasted;
+
+        /// <summary>
         /// An event that is invoked when a queued <see cref="ConsensusMsg"/> is consumed.
         /// </summary>
         internal event EventHandler<(long Height, ConsensusMsg Message)>? MessageConsumed;

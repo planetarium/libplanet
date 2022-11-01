@@ -345,8 +345,11 @@ namespace Libplanet.Net.Consensus
         /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>
         /// <remarks><see cref="ConsensusMsg"/> should be broadcasted to itself. See
         /// <see cref="ConsensusContext{T}.BroadcastMessage"/>.</remarks>
-        private void BroadcastMessage(ConsensusMsg message) =>
+        private void BroadcastMessage(ConsensusMsg message)
+        {
             ConsensusContext.BroadcastMessage(message);
+            MessageBroadcasted?.Invoke(this, (Height, message));
+        }
 
         /// <summary>
         /// Validates the given block.
