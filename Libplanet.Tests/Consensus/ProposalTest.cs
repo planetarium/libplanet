@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Consensus
             MemoryStoreFixture fx = new MemoryStoreFixture();
             var codec = new Codec();
 
-            ProposalMetaData metaData = new ProposalMetaData(
+            ProposalMetadata metadata = new ProposalMetadata(
                 1,
                 0,
                 DateTimeOffset.UtcNow,
@@ -42,11 +42,11 @@ namespace Libplanet.Tests.Consensus
                 -1);
 
             // Empty Signature
-            var emptySigBencodex = metaData.Encoded.Add(Proposal.SignatureKey, Array.Empty<byte>());
+            var emptySigBencodex = metadata.Encoded.Add(Proposal.SignatureKey, Array.Empty<byte>());
             Assert.Throws<ArgumentNullException>(() => new Proposal(emptySigBencodex));
 
             // Invalid Signature
-            var invSigBencodex = metaData.Encoded.Add(
+            var invSigBencodex = metadata.Encoded.Add(
                 Proposal.SignatureKey,
                 new PrivateKey().Sign(codec.Encode(fx.Block2.MarshalBlock())));
             Assert.Throws<ArgumentException>(() => new Proposal(invSigBencodex));
@@ -59,17 +59,17 @@ namespace Libplanet.Tests.Consensus
             var codec = new Codec();
             var key = new PrivateKey();
 
-            ProposalMetaData metaData = new ProposalMetaData(
+            ProposalMetadata metadata = new ProposalMetadata(
                 1,
                 0,
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
                 codec.Encode(fx.Block1.MarshalBlock()),
                 -1);
-            Proposal proposal = metaData.Sign(key);
+            Proposal proposal = metadata.Sign(key);
 
-            Assert.Equal(proposal.Signature, key.Sign(metaData.ByteArray));
-            Assert.True(key.PublicKey.Verify(metaData.ByteArray, proposal.Signature));
+            Assert.Equal(proposal.Signature, key.Sign(metadata.ByteArray));
+            Assert.True(key.PublicKey.Verify(metadata.ByteArray, proposal.Signature));
         }
     }
 }

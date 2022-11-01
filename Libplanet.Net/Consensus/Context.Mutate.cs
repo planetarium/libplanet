@@ -33,7 +33,7 @@ namespace Libplanet.Net.Consensus
                     ToString());
                 if ((_validValue ?? GetValue()) is Block<T> proposalValue)
                 {
-                    Proposal proposal = new ProposalMetaData(
+                    Proposal proposal = new ProposalMetadata(
                         Height,
                         Round,
                         DateTimeOffset.UtcNow,
@@ -147,7 +147,7 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
-            (Block<T> Block, int ValidRound)? propose = GetPropose(Round);
+            (Block<T> Block, int ValidRound)? propose = GetProposal(Round);
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
                 Step == Step.Propose)
@@ -280,7 +280,7 @@ namespace Libplanet.Net.Consensus
 
             int round = message.Round;
             if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
-                GetPropose(round) is (Block<T> block4, _) &&
+                GetProposal(round) is (Block<T> block4, _) &&
                 HasTwoThirdsPreCommit(round, block4.Hash) &&
                 IsValid(block4))
             {

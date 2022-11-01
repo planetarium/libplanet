@@ -14,7 +14,7 @@ namespace Libplanet.Consensus
     /// in consensus of a height and a round. Use <see cref="Sign"/> to create a
     /// <see cref="Proposal"/>.
     /// </summary>
-    public class ProposalMetaData : IEquatable<ProposalMetaData>
+    public class ProposalMetadata : IEquatable<ProposalMetadata>
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private const string HeightKey = "height";
@@ -27,7 +27,7 @@ namespace Libplanet.Consensus
         private static Codec _codec = new Codec();
 
         /// <summary>
-        /// Instantiates <see cref="ProposalMetaData"/> with given parameters.
+        /// Instantiates <see cref="ProposalMetadata"/> with given parameters.
         /// </summary>
         /// <param name="height">a height of given proposal values.</param>
         /// <param name="round">a round of given proposal values.</param>
@@ -49,7 +49,7 @@ namespace Libplanet.Consensus
         /// </description></item>
         /// </list>
         /// </exception>
-        public ProposalMetaData(
+        public ProposalMetadata(
             long height,
             int round,
             DateTimeOffset timestamp,
@@ -88,7 +88,7 @@ namespace Libplanet.Consensus
         }
 
 #pragma warning disable SA1118 // The parameter spans multiple lines
-        public ProposalMetaData(Dictionary encoded)
+        public ProposalMetadata(Dictionary encoded)
             : this(
                 height: encoded.GetValue<Integer>(HeightKey),
                 round: encoded.GetValue<Integer>(RoundKey),
@@ -140,7 +140,7 @@ namespace Libplanet.Consensus
         public int ValidRound { get; }
 
         /// <summary>
-        /// A Bencodex-encoded value of <see cref="ProposalMetaData"/>.
+        /// A Bencodex-encoded value of <see cref="ProposalMetadata"/>.
         /// </summary>
         [JsonIgnore]
         public Dictionary Encoded
@@ -165,7 +165,7 @@ namespace Libplanet.Consensus
         public byte[] ByteArray => _codec.Encode(Encoded);
 
         /// <summary>
-        /// Signs given <see cref="ProposalMetaData"/> with given <paramref name="signer"/>.
+        /// Signs given <see cref="ProposalMetadata"/> with given <paramref name="signer"/>.
         /// </summary>
         /// <param name="signer">A <see cref="PrivateKey"/> to sign.</param>
         /// <returns>Returns a signed <see cref="Proposal"/>.</returns>
@@ -173,9 +173,9 @@ namespace Libplanet.Consensus
             new Proposal(this, signer.Sign(ByteArray).ToImmutableArray());
 
         /// <inheritdoc/>
-        public bool Equals(ProposalMetaData? other)
+        public bool Equals(ProposalMetadata? other)
         {
-            return other is ProposalMetaData metadata &&
+            return other is ProposalMetadata metadata &&
                 Height == metadata.Height &&
                 Round == metadata.Round &&
                 BlockHash.Equals(metadata.BlockHash) &&
@@ -190,7 +190,7 @@ namespace Libplanet.Consensus
 
         /// <inheritdoc/>
         public override bool Equals(object? obj) =>
-            obj is ProposalMetaData other && Equals(other);
+            obj is ProposalMetadata other && Equals(other);
 
         /// <inheritdoc/>
         public override int GetHashCode()

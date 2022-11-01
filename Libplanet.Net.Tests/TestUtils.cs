@@ -145,7 +145,7 @@ namespace Libplanet.Net.Tests
         {
             var codec = new Codec();
             return new ConsensusProposalMsg(
-                new ProposalMetaData(
+                new ProposalMetadata(
                     height,
                     round,
                     DateTimeOffset.UtcNow,

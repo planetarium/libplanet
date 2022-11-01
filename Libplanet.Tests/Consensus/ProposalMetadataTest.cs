@@ -10,11 +10,11 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Consensus
 {
-    public class ProposalMetaDataTest
+    public class ProposalMetadataTest
     {
         private ILogger _logger;
 
-        public ProposalMetaDataTest(ITestOutputHelper output)
+        public ProposalMetadataTest(ITestOutputHelper output)
         {
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss:ffffffZ} - {Message}";
@@ -22,9 +22,9 @@ namespace Libplanet.Tests.Consensus
                 .MinimumLevel.Verbose()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
-                .ForContext<ProposalMetaDataTest>();
+                .ForContext<ProposalMetadataTest>();
 
-            _logger = Log.ForContext<ProposalMetaDataTest>();
+            _logger = Log.ForContext<ProposalMetadataTest>();
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Consensus
             MemoryStoreFixture fx = new MemoryStoreFixture();
             var codec = new Codec();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetadata(
                     -1,
                     0,
                     DateTimeOffset.UtcNow,
@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Consensus
                     codec.Encode(fx.Block1.MarshalBlock()),
                     -1));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetadata(
                 1,
                 -1,
                 DateTimeOffset.UtcNow,
@@ -49,7 +49,7 @@ namespace Libplanet.Tests.Consensus
                 codec.Encode(fx.Block1.MarshalBlock()),
                 -1));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetaData(
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ProposalMetadata(
                 1,
                 0,
                 DateTimeOffset.UtcNow,

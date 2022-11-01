@@ -67,14 +67,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 0,
                 0,
                 lastCommit: _lastCommit);
-            var proposal0 = new ConsensusProposalMsg(new ProposalMetaData(
+            var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
                 DateTimeOffset.UtcNow,
                 TestUtils.Peer0Priv.PublicKey,
                 _codec.Encode(block.MarshalBlock()),
                 -1).Sign(TestUtils.Peer0Priv));
-            var proposal1 = new ConsensusProposalMsg(new ProposalMetaData(
+            var proposal1 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
                 DateTimeOffset.UtcNow,
@@ -131,7 +131,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 0,
                 0,
                 lastCommit: _lastCommit);
-            var proposal = new ConsensusProposalMsg(new ProposalMetaData(
+            var proposal = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
                 DateTimeOffset.UtcNow,

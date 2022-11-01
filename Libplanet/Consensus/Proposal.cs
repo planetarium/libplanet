@@ -12,7 +12,7 @@ namespace Libplanet.Consensus
 {
     /// <summary>
     /// Represents a <see cref="Proposal"/> from a validator for consensus.  It contains an
-    /// essential information <see cref="ProposalMetaData"/> to propose a block for a consensus
+    /// essential information <see cref="ProposalMetadata"/> to propose a block for a consensus
     /// in a height and a round, and its signature to verify. The signature is verified in
     /// constructor, so the instance of <see cref="Proposal"/> should be valid.
     /// </summary>
@@ -21,22 +21,22 @@ namespace Libplanet.Consensus
         internal const string SignatureKey = "signature";
         private static Codec _codec = new Codec();
 
-        private readonly ProposalMetaData _proposalMetaData;
+        private readonly ProposalMetadata _proposalMetadata;
 
         /// <summary>
-        /// Instantiates a <see cref="Proposal"/> with given <paramref name="proposalMetaData"/>
+        /// Instantiates a <see cref="Proposal"/> with given <paramref name="proposalMetadata"/>
         /// and its <paramref name="signature"/>.
         /// </summary>
-        /// <param name="proposalMetaData">A <see cref="ProposalMetaData"/> to propose.</param>
-        /// <param name="signature">A signature signed with <paramref name="proposalMetaData"/>.
+        /// <param name="proposalMetadata">A <see cref="ProposalMetadata"/> to propose.</param>
+        /// <param name="signature">A signature signed with <paramref name="proposalMetadata"/>.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown if given <paramref name="signature"/> is
         /// empty.</exception>
         /// <exception cref="ArgumentException">Thrown if given <paramref name="signature"/> is
-        /// invalid and cannot be verified with <paramref name="proposalMetaData"/>.</exception>
-        public Proposal(ProposalMetaData proposalMetaData, ImmutableArray<byte> signature)
+        /// invalid and cannot be verified with <paramref name="proposalMetadata"/>.</exception>
+        public Proposal(ProposalMetadata proposalMetadata, ImmutableArray<byte> signature)
         {
-            _proposalMetaData = proposalMetaData;
+            _proposalMetadata = proposalMetadata;
             Signature = signature;
 
             if (signature.IsDefaultOrEmpty)
@@ -59,7 +59,7 @@ namespace Libplanet.Consensus
 #pragma warning disable SA1118 // The parameter spans multiple lines
         public Proposal(Dictionary encoded)
             : this(
-                new ProposalMetaData(encoded),
+                new ProposalMetadata(encoded),
                 encoded.ContainsKey(SignatureKey)
                     ? encoded.GetValue<Binary>(SignatureKey).ToImmutableArray()
                     : ImmutableArray<byte>.Empty)
@@ -67,29 +67,29 @@ namespace Libplanet.Consensus
         }
 #pragma warning restore SA1118
 
-        /// <inheritdoc cref="ProposalMetaData.Height"/>
-        public long Height => _proposalMetaData.Height;
+        /// <inheritdoc cref="ProposalMetadata.Height"/>
+        public long Height => _proposalMetadata.Height;
 
-        /// <inheritdoc cref="ProposalMetaData.Round"/>
-        public int Round => _proposalMetaData.Round;
+        /// <inheritdoc cref="ProposalMetadata.Round"/>
+        public int Round => _proposalMetadata.Round;
 
-        /// <inheritdoc cref="ProposalMetaData.BlockHash"/>
-        public BlockHash BlockHash => _proposalMetaData.BlockHash;
+        /// <inheritdoc cref="ProposalMetadata.BlockHash"/>
+        public BlockHash BlockHash => _proposalMetadata.BlockHash;
 
-        /// <inheritdoc cref="ProposalMetaData.Timestamp"/>
-        public DateTimeOffset Timestamp => _proposalMetaData.Timestamp;
+        /// <inheritdoc cref="ProposalMetadata.Timestamp"/>
+        public DateTimeOffset Timestamp => _proposalMetadata.Timestamp;
 
-        /// <inheritdoc cref="ProposalMetaData.Validator"/>
-        public PublicKey Validator => _proposalMetaData.Validator;
+        /// <inheritdoc cref="ProposalMetadata.Validator"/>
+        public PublicKey Validator => _proposalMetadata.Validator;
 
-        /// <inheritdoc cref="ProposalMetaData.MarshaledBlock"/>
-        public byte[] MarshaledBlock => _proposalMetaData.MarshaledBlock;
+        /// <inheritdoc cref="ProposalMetadata.MarshaledBlock"/>
+        public byte[] MarshaledBlock => _proposalMetadata.MarshaledBlock;
 
-        /// <inheritdoc cref="ProposalMetaData.ValidRound"/>
-        public int ValidRound => _proposalMetaData.ValidRound;
+        /// <inheritdoc cref="ProposalMetadata.ValidRound"/>
+        public int ValidRound => _proposalMetadata.ValidRound;
 
         /// <summary>
-        /// A signature that signed with <see cref="ProposalMetaData"/>.
+        /// A signature that signed with <see cref="ProposalMetadata"/>.
         /// </summary>
         public ImmutableArray<byte> Signature { get; }
 
@@ -99,8 +99,8 @@ namespace Libplanet.Consensus
         [JsonIgnore]
         public Dictionary Encoded =>
             !Signature.IsEmpty
-                ? _proposalMetaData.Encoded.Add(SignatureKey, Signature)
-                : _proposalMetaData.Encoded;
+                ? _proposalMetadata.Encoded.Add(SignatureKey, Signature)
+                : _proposalMetadata.Encoded;
 
         /// <summary>
         /// <see cref="byte"/> encoded <see cref="Proposal"/> data.
@@ -109,7 +109,7 @@ namespace Libplanet.Consensus
         public byte[] ByteArray => _codec.Encode(Encoded);
 
         /// <summary>
-        /// Verifies whether the <see cref="ProposalMetaData"/> is properly signed by
+        /// Verifies whether the <see cref="ProposalMetadata"/> is properly signed by
         /// <see cref="Validator"/>.
         /// </summary>
         /// <returns><c>true</c> if the <see cref="Signature"/> is not empty
@@ -118,7 +118,7 @@ namespace Libplanet.Consensus
         public bool Verify() =>
             !Signature.IsDefaultOrEmpty &&
             Validator.Verify(
-                _proposalMetaData.ByteArray.ToImmutableArray(),
+                _proposalMetadata.ByteArray.ToImmutableArray(),
                 Signature);
 
         /// <inheritdoc/>
@@ -126,7 +126,7 @@ namespace Libplanet.Consensus
         public bool Equals(Proposal? other)
         {
             return other is Proposal proposal &&
-                   _proposalMetaData.Equals(proposal._proposalMetaData) &&
+                   _proposalMetadata.Equals(proposal._proposalMetadata) &&
                    Signature.SequenceEqual(proposal.Signature);
         }
 
@@ -142,7 +142,7 @@ namespace Libplanet.Consensus
         public override int GetHashCode()
         {
             return HashCode.Combine(
-                _proposalMetaData.GetHashCode(),
+                _proposalMetadata.GetHashCode(),
                 ByteUtil.CalculateHashCode(Signature.ToArray()));
         }
     }
