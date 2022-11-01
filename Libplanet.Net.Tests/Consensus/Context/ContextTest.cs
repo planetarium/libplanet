@@ -65,7 +65,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         }
 
         [Fact(Timeout = Timeout)]
-        public async void StartAsProposerWithLastCommit()
+        public async void StartAsProposerWithLastCommitFromStore()
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
 
@@ -98,8 +98,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             blockChain.Append(heightOneBlock);
             var lastCommit =
                 TestUtils.CreateLastCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
+            blockChain.Store.PutLastCommit(lastCommit);
 
-            context.Start(lastCommit);
+            context.Start();
             await Task.WhenAll(stepChangedToPreVote.WaitAsync());
 
             Assert.Equal(Step.PreVote, context.Step);

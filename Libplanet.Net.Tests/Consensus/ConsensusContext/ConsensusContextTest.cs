@@ -196,7 +196,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
                 consensusMessageSent: CatchPropose,
-                lastCommitClearThreshold: 1);
+                lastCommitClearThreshold: 1,
+                contextWindow: 1);
 
             void CatchPropose(object? sender, ConsensusMsg? message)
             {
@@ -302,6 +303,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             await heightTwoEnded.WaitAsync();
 
+            // Dispose Context forcefully.
+            consensusContext.Contexts[2].Dispose();
+
             // Starts height 3, Waits PreVote timeout
             // Checks previous LastCommit and see if it's available.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
@@ -319,7 +323,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
                 TestUtils.Validators,
-                lastCommitClearThreshold: 1);
+                lastCommitClearThreshold: 1,
+                contextWindow: 1);
 
             // Create context of index 1.
             consensusContext.NewHeight(1);

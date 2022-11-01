@@ -301,6 +301,7 @@ namespace Libplanet.Net.Tests
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 EventHandler<ConsensusMsg>? consensusMessageSent = null,
                 long lastCommitClearThreshold = 30,
+                long contextWindow = 10,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
@@ -332,6 +333,7 @@ namespace Libplanet.Net.Tests
                 newHeightDelay,
                 _ => validators,
                 lastCommitClearThreshold,
+                contextWindow,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, consensusContext);
@@ -413,6 +415,7 @@ namespace Libplanet.Net.Tests
                 new List<BoundPeer>().ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
                 30,
+                10,
                 contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
         }
 
