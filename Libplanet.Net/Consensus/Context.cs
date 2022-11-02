@@ -327,19 +327,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Gets the proposer of the given round.
-        /// </summary>
-        /// <param name="round">A round to get proposer.</param>
-        /// <returns>Returns designated proposer's <see cref="PublicKey"/> for the
-        /// <paramref name="round"/>.
-        /// </returns>
-        private PublicKey GetProposer(int round)
-        {
-            // return designated proposer for the height round pair.
-            return _validators[(int)((Height + round) % TotalValidators)];
-        }
-
-        /// <summary>
         /// Broadcasts <see cref="ConsensusMsg"/> to validators.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to broadcast.</param>

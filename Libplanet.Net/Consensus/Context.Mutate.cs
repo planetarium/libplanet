@@ -25,7 +25,7 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             Step = Step.Propose;
-            if (GetProposer(Round) == _privateKey.PublicKey)
+            if (ProposerSelector.GetProposer(_validators, Height, Round) == _privateKey.PublicKey)
             {
                 _logger.Debug(
                     "Starting round {NewRound} and is a proposer.",
@@ -91,13 +91,15 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
+                var expectedProposer = ProposerSelector.GetProposer(
+                    _validators, Height, message.Round);
                 if (message is ConsensusProposalMsg propose &&
-                    !propose.Validator.Equals(GetProposer(message.Round)))
+                    !propose.Validator.Equals(expectedProposer))
                 {
                     throw new InvalidConsensusMessageException(
                         $"Given {nameof(message)}'s proposer {propose.Validator} for height " +
                         $"{message.Height} and round {message.Round} is different from " +
-                        $"the expected proposer, {GetProposer(message.Round)}.",
+                        $"the expected proposer, {expectedProposer}.",
                         message);
                 }
 
