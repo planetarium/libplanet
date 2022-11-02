@@ -44,7 +44,36 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 3, 0, null, DateTimeOffset.UtcNow, TestUtils.Peer0Priv.PublicKey, VoteFlag.PreVote)
                     .Sign(TestUtils.Peer0Priv));
 
-            Assert.Throws<ArgumentException>(() => _messageLog.Add(preVote));
+            Assert.False(_messageLog.Add(preVote));
+        }
+
+        [Fact]
+        public void CannotAddInvalidProposer()
+        {
+            var block = _blockChain.ProposeBlock(
+                TestUtils.Peer0Priv,
+                DateTimeOffset.UtcNow,
+                int.MaxValue,
+                0,
+                0,
+                lastCommit: _lastCommit);
+            var proposal0 = new ConsensusProposalMsg(new ProposalMetadata(
+                2,
+                0,
+                DateTimeOffset.UtcNow,
+                TestUtils.Peer0Priv.PublicKey,
+                _codec.Encode(block.MarshalBlock()),
+                -1).Sign(TestUtils.Peer0Priv));
+            var proposal2 = new ConsensusProposalMsg(new ProposalMetadata(
+                2,
+                0,
+                DateTimeOffset.UtcNow,
+                TestUtils.Peer2Priv.PublicKey,
+                _codec.Encode(block.MarshalBlock()),
+                -1).Sign(TestUtils.Peer2Priv));
+
+            Assert.False(_messageLog.Add(proposal0));
+            Assert.True(_messageLog.Add(proposal2));
         }
 
         [Fact]
@@ -54,7 +83,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var preVote = new ConsensusPreVoteMsg(new VoteMetadata(
                 2, 0, null, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote).Sign(key));
 
-            Assert.Throws<ArgumentException>(() => _messageLog.Add(preVote));
+            Assert.False(_messageLog.Add(preVote));
         }
 
         [Fact]
@@ -71,19 +100,19 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
+                TestUtils.Peer2Priv.PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer0Priv));
+                -1).Sign(TestUtils.Peer2Priv));
             var proposal1 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
-                DateTimeOffset.UtcNow,
-                TestUtils.Peer1Priv.PublicKey,
+                DateTimeOffset.UtcNow + TimeSpan.FromSeconds(1),
+                TestUtils.Peer2Priv.PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer1Priv));
+                -1).Sign(TestUtils.Peer2Priv));
 
-            _messageLog.Add(proposal0);
-            Assert.Throws<ArgumentException>(() => _messageLog.Add(proposal1));
+            Assert.True(_messageLog.Add(proposal0));
+            Assert.False(_messageLog.Add(proposal1));
         }
 
         [Fact]
@@ -115,10 +144,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 TestUtils.Peer0Priv.PublicKey,
                 VoteFlag.PreCommit).Sign(TestUtils.Peer0Priv));
 
-            _messageLog.Add(preVote0);
-            Assert.Throws<ArgumentException>(() => _messageLog.Add(preVote1));
-            _messageLog.Add(preCommit0);
-            Assert.Throws<ArgumentException>(() => _messageLog.Add(preCommit1));
+            Assert.True(_messageLog.Add(preVote0));
+            Assert.False(_messageLog.Add(preVote1));
+            Assert.True(_messageLog.Add(preCommit0));
+            Assert.False(_messageLog.Add(preCommit1));
         }
 
         [Fact]
@@ -135,9 +164,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
+                TestUtils.Peer2Priv.PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer0Priv));
+                -1).Sign(TestUtils.Peer2Priv));
             var preVotes = TestUtils.PrivateKeys.Select(key => new ConsensusPreVoteMsg(
                 new VoteMetadata(
                     2, 0, null, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote)

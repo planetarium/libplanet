@@ -69,43 +69,17 @@ namespace Libplanet.Net.Consensus
         /// If an invalid <see cref="ConsensusMsg"/> is given, this method throws
         /// an <see cref="InvalidConsensusMessageException"/> and handles it <em>internally</em>
         /// while invoking <see cref="ExceptionOccurred"/> event.
-        /// An <see cref="InvalidConsensusMessageException"/> can be thrown and handled internally
-        /// for the following reasons:
-        /// <list type="bullet">
-        /// <item><description>
-        ///     Thrown when the Height of <paramref name="message"/> and the context's height
-        ///     does not match.
-        /// </description></item>
-        /// <item><description>
-        ///     Thrown when <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/>
-        ///     and has a proposer that is not the proposer of the current round.
-        /// </description></item>
-        /// <item><description>
-        ///     Thrown when <paramref name="message"/> is either a <see cref="ConsensusPreVoteMsg"/>
-        ///     or a <see cref="ConsensusPreCommitMsg"/> and has a validator that is not
-        ///     one of the validators for the context.
-        /// </description></item>
-        /// </list>
+        /// An <see cref="InvalidConsensusMessageException"/> can be thrown when
+        /// the internal <see cref="MessageLog"/> does not accept it, i.e.
+        /// <see cref="MessageLog.Add"/> returns <see langword="false"/>.
         /// </remarks>
+        /// <seealso cref="MessageLog.Add"/>
         private void AddMessage(ConsensusMsg message)
         {
             try
             {
-                var expectedProposer = ProposerSelector.GetProposer(
-                    _validators, Height, message.Round);
-                if (message is ConsensusProposalMsg propose &&
-                    !propose.Validator.Equals(expectedProposer))
+                if (_messageLog.Add(message))
                 {
-                    throw new InvalidConsensusMessageException(
-                        $"Given {nameof(message)}'s proposer {propose.Validator} for height " +
-                        $"{message.Height} and round {message.Round} is different from " +
-                        $"the expected proposer, {expectedProposer}.",
-                        message);
-                }
-
-                try
-                {
-                    _messageLog.Add(message);
                     _logger.Debug(
                         "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
                         "Validator Address: {VAddress}, Remote Address: {RAddress}, " +
@@ -120,12 +94,11 @@ namespace Libplanet.Net.Consensus
                         _messageLog.GetTotalCount(),
                         ToString());
                 }
-                catch (ArgumentException ae)
+                else
                 {
                     throw new InvalidConsensusMessageException(
                         $"Given {nameof(message)} could not be added to {nameof(MessageLog)}.",
-                        message,
-                        ae);
+                        message);
                 }
             }
             catch (InvalidConsensusMessageException icme)
