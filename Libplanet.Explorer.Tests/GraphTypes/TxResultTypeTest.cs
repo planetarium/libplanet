@@ -75,7 +75,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         null,
                         ImmutableDictionary<Address, Bencodex.Types.IValue>.Empty,
                         ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty,
-                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty
+                        ImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>.Empty,
+                        ImmutableList<ImmutableList<string>>.Empty
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
@@ -108,7 +109,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                                 address,
                                 ImmutableDictionary<Currency, FungibleAssetValue>.Empty
                                     .Add(KRW, KRW * 20000)
-                            )
+                            ),
+                        ImmutableList<ImmutableList<string>>.Empty
                     ),
                     new Dictionary<string, object> {
                         ["txStatus"] = "SUCCESS",
