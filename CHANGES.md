@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.44.0
 --------------
 
-To be released.
+Released on November 2, 2022.
 
 ### Backward-incompatible API changes
 
@@ -18,10 +18,6 @@ To be released.
  -  (Libplanet.Node) Renamed `UntypedTransaction.ActionValues` to
     `UntypedTransaction.CustomActionsValue` and changed its type from
     `IReadOnlyList<IValue>` to `IValue?`.  [[#2456], [#2457]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
