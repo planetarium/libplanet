@@ -41,27 +41,21 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var codec = new Codec();
             var tipChanged = new AsyncAutoResetEvent();
-            Block<DumbAction>? proposedBlock = null;
-            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            ConsensusProposalMsg? proposal = null;
+            var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer2Priv,
-                consensusMessageSent: CatchPropose);
-
-            blockChain.TipChanged += (sender, tuple) =>
+                TestUtils.Peer2Priv);
+            blockChain.TipChanged += (_, __) => tipChanged.Set();
+            consensusContext.MessageBroadcasted += (_, eventArgs) =>
             {
-                tipChanged.Set();
-            };
-            void CatchPropose(object? sender, ConsensusMsg? message)
-            {
-                if (message is ConsensusProposalMsg propose && message.Height == 2)
+                if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg proposalMsg)
                 {
-                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                        (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                    heightTwoProposeSent.Set();
+                    proposal = proposalMsg;
+                    heightTwoProposalSent.Set();
                 }
-            }
+            };
 
             consensusContext.NewHeight(1);
             var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
@@ -105,8 +99,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     });
             }
 
-            await heightTwoProposeSent.WaitAsync();
-            ImmutableArray<Vote> votes = proposedBlock!.LastCommit?.Votes is { } vs
+            await heightTwoProposalSent.WaitAsync();
+            Assert.NotNull(proposal);
+
+            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                (Dictionary)codec.Decode(proposal!.Proposal.MarshaledBlock));
+            ImmutableArray<Vote> votes = proposedBlock.LastCommit?.Votes is { } vs
                 ? vs
                 : throw new NullReferenceException();
             Assert.Equal(VoteFlag.PreCommit, votes[0].Flag);
@@ -119,57 +117,55 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void HandleMessageFromHigherHeight()
         {
             var codec = new Codec();
-            ConsensusProposalMsg? propose = null;
+            ConsensusProposalMsg? proposal = null;
             var heightTwoStepChangedToPreVote = new AsyncAutoResetEvent();
             var heightTwoStepChangedToPreCommit = new AsyncAutoResetEvent();
             var heightTwoStepChangedToEndCommit = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPropose = new AsyncAutoResetEvent();
             var heightThreeStepChangedToPreVote = new AsyncAutoResetEvent();
-            var proposeSent = new AsyncAutoResetEvent();
+            var proposalSent = new AsyncAutoResetEvent();
             var newHeightDelay = TimeSpan.FromSeconds(1);
 
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.Peer2Priv,
-                consensusMessageSent: CatchPropose);
+                TestUtils.Peer2Priv);
 
-            void CatchPropose(object? sender, ConsensusMsg? message)
+            consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (message is ConsensusProposalMsg proposeMessage)
+                if (eventArgs.Height == 2)
                 {
-                    propose = proposeMessage;
-                    proposeSent.Set();
-                }
-            }
-
-            consensusContext.StateChanged += (sender, state) =>
-            {
-                if (state.Height == 2)
-                {
-                    if (state.Step == Step.PreVote)
+                    if (eventArgs.Step == Step.PreVote)
                     {
                         heightTwoStepChangedToPreVote.Set();
                     }
-                    else if (state.Step == Step.PreCommit)
+                    else if (eventArgs.Step == Step.PreCommit)
                     {
                         heightTwoStepChangedToPreCommit.Set();
                     }
-                    else if (state.Step == Step.EndCommit)
+                    else if (eventArgs.Step == Step.EndCommit)
                     {
                         heightTwoStepChangedToEndCommit.Set();
                     }
                 }
-                else if (state.Height == 3)
+                else if (eventArgs.Height == 3)
                 {
-                    if (state.Step == Step.Propose)
+                    if (eventArgs.Step == Step.Propose)
                     {
                         heightThreeStepChangedToPropose.Set();
                     }
-                    else if (state.Step == Step.PreVote)
+                    else if (eventArgs.Step == Step.PreVote)
                     {
                         heightThreeStepChangedToPreVote.Set();
                     }
+                }
+            };
+            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            {
+                if (eventArgs.Message is ConsensusProposalMsg proposalMsg)
+                {
+                    proposal = proposalMsg;
+                    proposalSent.Set();
                 }
             };
 
@@ -179,13 +175,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 blockChain[1].Hash,
                 1,
                 0));
-            await proposeSent.WaitAsync();
+            await proposalSent.WaitAsync();
 
             Assert.Equal(2, consensusContext.Height);
 
-            if (propose is null)
+            if (proposal is null)
             {
-                throw new NullException(propose);
+                throw new NullException(proposal);
             }
 
             foreach ((PrivateKey privateKey, BoundPeer peer)
@@ -204,7 +200,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         new VoteMetadata(
                             2,
                             0,
-                            propose!.BlockHash,
+                            proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
                             VoteFlag.PreVote).Sign(privateKey))
@@ -229,7 +225,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                         new VoteMetadata(
                             2,
                             0,
-                            propose!.BlockHash,
+                            proposal!.BlockHash,
                             DateTimeOffset.UtcNow,
                             privateKey.PublicKey,
                             VoteFlag.PreCommit).Sign(privateKey))
@@ -242,7 +238,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var blockHeightTwo =
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
-                    (Dictionary)codec.Decode(propose.Proposal.MarshaledBlock));
+                    (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.Peer3Priv,
                 lastCommit: TestUtils.CreateLastCommit(blockHeightTwo.Hash, 2, 0));
@@ -263,7 +259,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void UseLastCommitCacheIfHeightContextIsEmpty()
         {
             var codec = new Codec();
-            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            var heightTwoProposalSent = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
 
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
@@ -271,17 +267,16 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.Policy,
                 TestUtils.Peer2Priv);
 
-            consensusContext.MessageConsumed +=
-                (sender, message) =>
+            consensusContext.MessageConsumed += (_, eventArgs) =>
+            {
+                if (eventArgs.Height == 2 &&
+                    eventArgs.Message is ConsensusProposalMsg propose)
                 {
-                    if (message.Height == 2 &&
-                        message.Message is ConsensusProposalMsg propose)
-                    {
-                        proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                            (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
-                        heightTwoProposeSent.Set();
-                    }
-                };
+                    proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
+                        (Dictionary)codec.Decode(propose!.Proposal.MarshaledBlock));
+                    heightTwoProposalSent.Set();
+                }
+            };
 
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
@@ -295,14 +290,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Starts height 2. Node 2 is the proposer.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            await heightTwoProposeSent.WaitAsync();
-
-            if (proposedBlock == null)
-            {
-                throw new NullException("An error has occurred in block proposal.");
-            }
-
-            Assert.Equal(createdLastCommit, proposedBlock.LastCommit);
+            await heightTwoProposalSent.WaitAsync();
+            Assert.NotNull(proposedBlock);
+            Assert.Equal(createdLastCommit, proposedBlock!.LastCommit);
         }
 
         // Retry: This calculates delta time.
@@ -313,26 +303,26 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // The maximum error margin. (macos-netcore-test)
             var timeError = 500;
             var heightOneEndCommit = new AsyncAutoResetEvent();
-            var heightTwoProposeSent = new AsyncAutoResetEvent();
+            var heightTwoProposalSent = new AsyncAutoResetEvent();
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.Peer2Priv,
-                consensusMessageSent: (sender, message) =>
-                {
-                    if (message is ConsensusProposalMsg { Height: 2 })
-                    {
-                        heightTwoProposeSent.Set();
-                    }
-                });
-
-            consensusContext.StateChanged += (sender, state) =>
+                TestUtils.Peer2Priv);
+            consensusContext.StateChanged += (_, eventArgs) =>
             {
-                if (state.Height == 1 && state.Step == Step.EndCommit)
+                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
                 {
                     heightOneEndCommit.Set();
                 }
             };
+            consensusContext.MessageBroadcasted += (_, eventArgs) =>
+            {
+                if (eventArgs.Height == 2 && eventArgs.Message is ConsensusProposalMsg)
+                {
+                    heightTwoProposalSent.Set();
+                }
+            };
+
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
@@ -345,7 +335,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await heightOneEndCommit.WaitAsync();
             var endCommitTime = DateTimeOffset.UtcNow;
 
-            await heightTwoProposeSent.WaitAsync();
+            await heightTwoProposalSent.WaitAsync();
             var proposeTime = DateTimeOffset.UtcNow;
             var difference = proposeTime - endCommitTime;
 
