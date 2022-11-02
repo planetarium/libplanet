@@ -65,6 +65,7 @@ namespace Libplanet.Tests.Tx
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,
+                ImmutableList<ImmutableList<string>>.Empty,
                 _updatedStates,
                 _fungibleAssetsDelta,
                 _updatedFungibleAssets

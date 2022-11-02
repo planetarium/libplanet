@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Bencodex;
@@ -19,14 +20,23 @@ namespace Libplanet.Tx
         protected static readonly Codec Codec = new Codec();
 
         protected TxExecution(SerializationInfo info, StreamingContext context)
-            : this(info.GetValue<BlockHash>(nameof(BlockHash)), info.GetValue<TxId>(nameof(TxId)))
+            : this(
+                info.GetValue<BlockHash>(nameof(BlockHash)),
+                info.GetValue<TxId>(nameof(TxId)),
+                info.GetValue<IReadOnlyList<IReadOnlyList<string>>>(nameof(ActionsLogsList))
+            )
         {
         }
 
-        private protected TxExecution(BlockHash blockHash, TxId txId)
+        private protected TxExecution(
+            BlockHash blockHash,
+            TxId txId,
+            IReadOnlyList<IReadOnlyList<string>> actionsLogsList
+        )
         {
             BlockHash = blockHash;
             TxId = txId;
+            ActionsLogsList = actionsLogsList;
         }
 
         /// <summary>
@@ -42,11 +52,18 @@ namespace Libplanet.Tx
         [Pure]
         public TxId TxId { get; }
 
+        /// <summary>
+        /// The logs recorded while executing <see cref="Transaction{T}"/>'s actions.
+        /// </summary>
+        [Pure]
+        public IReadOnlyList<IReadOnlyList<string>> ActionsLogsList { get; }
+
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(BlockHash), BlockHash);
             info.AddValue(nameof(TxId), TxId);
+            info.AddValue(nameof(ActionsLogsList), ActionsLogsList);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Bencodex.Types;
@@ -22,16 +23,18 @@ namespace Libplanet.Tx
         /// that the <see cref="Transaction{T}"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
         /// cref="Transaction{T}.Id"/>.</param>
+        /// <param name="actionsLogsList">The logs recorded while executing actions.</param>
         /// <param name="exceptionName">The name of the exception type,
         /// e.g., <c>System.ArgumentException</c>.</param>
         /// <param name="exceptionMetadata">Optional metadata about the exception.</param>
         public TxFailure(
             BlockHash blockHash,
             TxId txId,
+            IReadOnlyList<IReadOnlyList<string>> actionsLogsList,
             string exceptionName,
             IValue? exceptionMetadata
         )
-            : base(blockHash, txId)
+            : base(blockHash, txId, actionsLogsList)
         {
             ExceptionName = exceptionName;
             ExceptionMetadata = exceptionMetadata;
@@ -44,12 +47,18 @@ namespace Libplanet.Tx
         /// that the <see cref="Transaction{T}"/> is executed within.</param>
         /// <param name="txId">The executed <see cref="Transaction{T}"/>'s <see
         /// cref="Transaction{T}.Id"/>.</param>
+        /// <param name="actionsLogsList">The logs recorded while executing actions.</param>
         /// <param name="exception">The uncaught exception thrown by an action in the transaction.
         /// </param>
-        public TxFailure(BlockHash blockHash, TxId txId, Exception exception)
+        public TxFailure(
+            BlockHash blockHash,
+            TxId txId,
+            IReadOnlyList<IReadOnlyList<string>> actionsLogsList,
+            Exception exception)
             : this(
                 blockHash,
                 txId,
+                actionsLogsList,
                 exception.GetType().FullName ?? string.Empty,
                 exception.ExtractMetadata()
             )

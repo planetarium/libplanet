@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -25,7 +26,11 @@ namespace Libplanet.Tests.Tx
             var random = new Random();
             _blockHash = random.NextBlockHash();
             _txid = random.NextTxId();
-            _fx = new TxFailure(_blockHash, _txid, new ArgumentNullException("foo"));
+            _fx = new TxFailure(
+                _blockHash,
+                _txid,
+                ImmutableList<ImmutableList<string>>.Empty,
+                new ArgumentNullException("foo"));
         }
 
         [Fact]
@@ -40,7 +45,13 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Constructor()
         {
-            var f = new TxFailure(_blockHash, _txid, nameof(ArgumentNullException), (Text)"foo");
+            var f = new TxFailure(
+                _blockHash,
+                _txid,
+                ImmutableList<ImmutableList<string>>.Empty,
+                nameof(ArgumentNullException),
+                (Text)"foo"
+            );
             Assert.Equal(_blockHash, f.BlockHash);
             Assert.Equal(_txid, f.TxId);
             Assert.Equal(nameof(ArgumentNullException), f.ExceptionName);
