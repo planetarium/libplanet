@@ -335,7 +335,11 @@ namespace Libplanet.Action
             bool blockAction = false,
             ILogger? logger = null)
         {
-            ActionContext CreateActionContext(IAccountStateDelta prevStates, int randomSeed)
+            ActionContext CreateActionContext(
+                IAccountStateDelta prevStates,
+                int randomSeed,
+                System.Action<string>? putLog = null
+            )
             {
                 return new ActionContext(
                     genesisHash: genesisHash,
@@ -348,7 +352,8 @@ namespace Libplanet.Action
                     rehearsal: rehearsal,
                     previousBlockStatesTrie: previousBlockStatesTrie,
                     blockAction: blockAction,
-                    nativeTokenPredicate: nativeTokenPredicate);
+                    nativeTokenPredicate: nativeTokenPredicate,
+                    putLog: putLog ?? (_ => { }));
             }
 
             byte[] hashedSignature;
@@ -364,7 +369,8 @@ namespace Libplanet.Action
             foreach (IAction action in actions)
             {
                 Exception? exc = null;
-                ActionContext context = CreateActionContext(states, seed);
+                List<string> logs = new List<string>();
+                ActionContext context = CreateActionContext(states, seed, logs.Add);
                 IAccountStateDelta nextStates = context.PreviousStates;
                 try
                 {
@@ -449,7 +455,8 @@ namespace Libplanet.Action
                     action: action,
                     inputContext: equivalentContext,
                     outputStates: nextStates,
-                    exception: exc);
+                    exception: exc,
+                    logs: logs);
 
                 if (exc is { })
                 {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Libplanet.Action
 {
@@ -17,17 +18,20 @@ namespace Libplanet.Action
         /// evaluate <paramref name="action"/>.</param>
         /// <param name="outputStates">The result states that
         /// <paramref name="action"/> makes.</param>
+        /// <param name="logs">The logs recorded while executing action.</param>
         /// <param name="exception">An exception that has risen during evaluating a given
         /// <paramref name="action"/>.</param>
         public ActionEvaluation(
             IAction action,
             IActionContext inputContext,
             IAccountStateDelta outputStates,
-            Exception? exception = null)
+            Exception? exception = null,
+            IReadOnlyList<string>? logs = null)
         {
             Action = action;
             InputContext = inputContext;
             OutputStates = outputStates;
+            Logs = logs ?? new List<string>();
             Exception = exception;
         }
 
@@ -53,5 +57,7 @@ namespace Libplanet.Action
         /// An exception that had risen during evaluation.
         /// </summary>
         public Exception? Exception { get; }
+
+        public IReadOnlyList<string> Logs { get; }
     }
 }

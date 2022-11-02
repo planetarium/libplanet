@@ -93,6 +93,11 @@ namespace Libplanet.Action
         bool BlockAction { get; }
 
         /// <summary>
+        /// A delegator to record logs in <see cref="TxExecution"/>.
+        /// </summary>
+        System.Action<string> PutLog { get; }
+
+        /// <summary>
         /// Checks whether the specified <paramref name="currency"/> is a native token defined by
         /// chain's <see cref="Libplanet.Blockchain.Policies.IBlockPolicy{T}.NativeTokens"/>.
         /// </summary>

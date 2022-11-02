@@ -26,7 +26,8 @@ namespace Libplanet.Action
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null,
             bool blockAction = false,
-            Predicate<Currency>? nativeTokenPredicate = null)
+            Predicate<Currency>? nativeTokenPredicate = null,
+            System.Action<string>? putLog = null)
         {
             GenesisHash = genesisHash;
             Signer = signer;
@@ -40,6 +41,7 @@ namespace Libplanet.Action
             _previousBlockStatesTrie = previousBlockStatesTrie;
             BlockAction = blockAction;
             _nativeTokenPredicate = nativeTokenPredicate;
+            PutLog = putLog ?? (_ => { });
         }
 
         public BlockHash? GenesisHash { get; }
@@ -57,6 +59,8 @@ namespace Libplanet.Action
         public IAccountStateDelta PreviousStates { get; }
 
         public IRandom Random { get; }
+
+        public Action<string> PutLog { get; }
 
         public HashDigest<SHA256>? PreviousStateRootHash
         {
