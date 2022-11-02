@@ -275,6 +275,14 @@ namespace Libplanet.Net
                 }
                 else if (lastUpdated + tipLifespan < DateTimeOffset.UtcNow)
                 {
+                    if (ConsensusRunning)
+                    {
+                        _logger.Debug(
+                            "{FName}: Consensus is running, discard polling...",
+                            nameof(PollBlocksAsync));
+                        return;
+                    }
+
                     _logger.Debug(
                         "Tip #{TipIndex} {TipHash} has expired (last updated: {LastUpdated}); " +
                         "pulling blocks from neighbor peers...",

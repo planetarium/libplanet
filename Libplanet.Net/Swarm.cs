@@ -92,6 +92,7 @@ namespace Libplanet.Net
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
+            ConsensusStaled = new AsyncAutoResetEvent();
 
             _runningMutex = new AsyncLock();
 
@@ -174,6 +175,7 @@ namespace Libplanet.Net
             BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
+            ConsensusStaled = new AsyncAutoResetEvent();
 
             _runningMutex = new AsyncLock();
             _appProtocolVersion = appProtocolVersion;
@@ -259,6 +261,8 @@ namespace Libplanet.Net
 
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
+
+        internal AsyncAutoResetEvent ConsensusStaled { get; }
 
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
@@ -419,7 +423,11 @@ namespace Libplanet.Net
                 );
                 if (_consensusReactor is { })
                 {
-                    tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                    tasks.Add(ConsensusWatchAsync(
+                        dialTimeout,
+                        Options.TipLifespan,
+                        2,
+                        _cancellationToken));
                 }
 
                 _logger.Debug("Swarm started.");
