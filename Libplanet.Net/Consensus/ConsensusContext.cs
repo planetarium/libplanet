@@ -142,6 +142,8 @@ namespace Libplanet.Net.Consensus
                     context.Dispose();
                 }
             }
+
+            _blockChain.TipChanged -= OnBlockChainTipChanged;
         }
 
         /// <summary>
