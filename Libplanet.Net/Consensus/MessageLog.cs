@@ -6,16 +6,20 @@ using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Serilog;
 
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
     /// <para>
-    /// A concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper to be used
-    /// for <see cref="Context{T}"/> with well-defined default behaviors.
+    /// An <see cref="Exception"/> free concurrent <see cref="Dictionary{TKey, TValue}"/> wrapper
+    /// to be used for <see cref="Context{T}"/> with well-defined default behaviors.
     /// </para>
     /// <para>
-    /// Note that <see cref="MessageLog"/> prevents adding multiple
+    /// This is <see cref="Context{T}"/> aware in the sense that it knows the height, the list of
+    /// validators for the given height, and the valid proposer selection mechanism.
+    /// Using this info, <see cref="MessageLog"/> prevents adding an invalid
+    /// <see cref="ConsensusMsg"/> to an internal collection, such as adding multiple
     /// <see cref="ConsensusMsg"/>s for the same <see cref="Context{T}.Round"/> and
     /// the same validator.  See <see cref="MessageLog.Add"/> for more detail.
     /// </para>
@@ -24,29 +28,52 @@ namespace Libplanet.Net.Consensus
     internal class MessageLog
     {
         private object _lock;
+        private ILogger _logger;
 
         private long _height;
         private List<PublicKey> _validators;
-        private Dictionary<int, ConsensusProposalMsg> _proposes;
+        private Dictionary<int, ConsensusProposalMsg> _proposals;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>> _preVotes;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>> _preCommits;
 
         internal MessageLog(long height, List<PublicKey> validators)
         {
+            _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "Context")
+                .ForContext<MessageLog>()
+                .ForContext("Source", nameof(MessageLog));
+
             _height = height;
             _validators = validators;
-            _proposes = new Dictionary<int, ConsensusProposalMsg>();
+            _proposals = new Dictionary<int, ConsensusProposalMsg>();
             _preVotes = new Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>>();
             _preCommits = new Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>>();
             _lock = new object();
         }
 
         /// <summary>
-        /// Adds given <paramref name="message"/> to the collection.
-        /// </summary>
-        /// <param name="message">The <see cref="ConsensusMsg"/> to add.</param>
-        /// <exception cref="ArgumentException">Throw for any of the following reasons:
+        /// <para>
+        /// Tries to add given <paramref name="message"/> to the collection.
+        /// </para>
+        /// <para>
+        /// Given <paramref name="message"/> will be ignored, i.e. not be added, for
+        /// any of the following reasons:
         /// <list type="bullet">
+        /// <item><description>
+        ///     If <paramref name="message"/>'s height does not match the height of
+        ///     this <see cref="MessageLog"/>.
+        /// </description></item>
+        /// <item><description>
+        ///     If <paramref name="message"/>'s validator is not one of the validators
+        ///     for the height of this <see cref="MessageLog"/>.
+        /// </description></item>
+        /// <item><description>
+        ///     If <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/> and
+        ///     <pararef name="message"/>'s validator does not match the expected
+        ///     validator for the <see cref="ConsensusMsg.Height"/>
+        ///     and <see cref="ConsensusMsg.Round"/>.
+        /// </description></item>
         /// <item><description>
         ///     If <paramref name="message"/> is a <see cref="ConsensusProposalMsg"/> and
         ///     there is already a <see cref="ConsensusProposalMsg"/> with the same
@@ -63,36 +90,65 @@ namespace Libplanet.Net.Consensus
         ///     <see cref="ConsensusMsg.Round"/> and <see cref="ConsensusMsg.Validator"/>.
         /// </description></item>
         /// </list>
-        /// </exception>
-        internal void Add(ConsensusMsg message)
+        /// </para>
+        /// </summary>
+        /// <param name="message">The <see cref="ConsensusMsg"/> to add.</param>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="message"/> was successfully added,
+        /// <see langword="false"/> otherwise.
+        /// </returns>
+        internal bool Add(ConsensusMsg message)
         {
             lock (_lock)
             {
+                var expectedProposer = ProposerSelector.GetProposer(
+                    _validators, message.Height, message.Round);
+
                 if (message.Height != _height)
                 {
-                    throw new ArgumentException(
-                        $"Given {nameof(message)}'s height {message.Height} must be the same " +
-                        $"as {nameof(MessageLog)}'s height {_height}.",
-                        nameof(message));
+                    _logger.Debug(
+                        "Given message's height {MessageHeight} does not match the expected " +
+                        "height {ExpectedHeight}",
+                        message.Height,
+                        _height);
+                    return false;
                 }
                 else if (!_validators.Contains(message.Validator))
                 {
-                    throw new ArgumentException(
-                        $"Given {nameof(message)}'s validator is not one of the validators for " +
-                        $"height {_height}.",
-                        nameof(message));
+                    _logger.Debug(
+                        "Given message's validator {MessageValidator} is not one of " +
+                        "the validators for height {Height}",
+                        message.Validator,
+                        message.Height);
+                    return false;
                 }
-                else if (message is ConsensusProposalMsg propose)
+                else if (message is ConsensusProposalMsg proposal1 &&
+                    !proposal1.Validator.Equals(expectedProposer))
                 {
-                    if (_proposes.ContainsKey(propose.Round))
+                    _logger.Debug(
+                        "Given proposal message's validator {MessageValidator} does not match " +
+                        "the expected proposer {ExpectedValidator} for height {Height} " +
+                        "and round {Round}",
+                        proposal1.Validator,
+                        expectedProposer,
+                        proposal1.Height,
+                        proposal1.Round);
+                    return false;
+                }
+                else if (message is ConsensusProposalMsg proposal2)
+                {
+                    if (_proposals.ContainsKey(proposal2.Round))
                     {
-                        throw new ArgumentException(
-                            $"Given {nameof(message)}'s round {propose.Round} already has " +
-                            $"a proposal message.", nameof(message));
+                        _logger.Debug(
+                            "There is already a proposal for given proposal message's " +
+                            "round {Round}",
+                            proposal2.Round);
+                        return false;
                     }
                     else
                     {
-                        _proposes[propose.Round] = propose;
+                        _proposals[proposal2.Round] = proposal2;
+                        return true;
                     }
                 }
                 else if (message is ConsensusPreVoteMsg preVote)
@@ -105,14 +161,17 @@ namespace Libplanet.Net.Consensus
 
                     if (_preVotes[preVote.Round].ContainsKey(preVote.Validator))
                     {
-                        throw new ArgumentException(
-                            $"Given {nameof(message)}'s round {preVote.Round} already has " +
-                            $"a prevote message from the validator {preVote.Validator}.",
-                            nameof(message));
+                        _logger.Debug(
+                            "There is already a prevote message for given prevote message's " +
+                            "round {Round} and validator {Validator}",
+                            preVote.Round,
+                            preVote.Validator);
+                        return false;
                     }
                     else
                     {
                         _preVotes[preVote.Round][preVote.Validator] = preVote;
+                        return true;
                     }
                 }
                 else if (message is ConsensusPreCommitMsg preCommit)
@@ -125,21 +184,25 @@ namespace Libplanet.Net.Consensus
 
                     if (_preCommits[preCommit.Round].ContainsKey(preCommit.Validator))
                     {
-                        throw new ArgumentException(
-                            $"Given {nameof(message)}'s round {preCommit.Round} already has " +
-                            $"a precommit message from the validator {preCommit.Validator}.",
-                            nameof(message));
+                        _logger.Debug(
+                            "There is already a precommit message for given precommit message's " +
+                            "round {Round} and validator {Validator}",
+                            preCommit.Round,
+                            preCommit.Validator);
+                        return false;
                     }
                     else
                     {
                         _preCommits[preCommit.Round][preCommit.Validator] = preCommit;
+                        return true;
                     }
                 }
                 else
                 {
-                    throw new ArgumentException(
-                        $"Given {nameof(message)} is of unsupported type: {message.GetType()}",
-                        nameof(message));
+                    _logger.Debug(
+                        "Unknown message type {MessageType} received",
+                        message.GetType());
+                    return false;
                 }
             }
         }
@@ -155,8 +218,8 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                return _proposes.ContainsKey(round)
-                    ? _proposes[round]
+                return _proposals.ContainsKey(round)
+                    ? _proposals[round]
                     : null;
             }
         }
@@ -207,9 +270,9 @@ namespace Libplanet.Net.Consensus
             {
                 HashSet<PublicKey> validators = new HashSet<PublicKey>();
 
-                if (_proposes.ContainsKey(round))
+                if (_proposals.ContainsKey(round))
                 {
-                    validators.Add(_proposes[round].Validator);
+                    validators.Add(_proposals[round].Validator);
                 }
 
                 return validators
@@ -231,7 +294,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                return _proposes.Count +
+                return _proposals.Count +
                     _preVotes.Sum(pair => pair.Value.Count) +
                     _preCommits.Sum(pair => pair.Value.Count);
             }
@@ -268,8 +331,18 @@ namespace Libplanet.Net.Consensus
                 {
                     return new BlockCommit(_height, round, hash, votes);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ae)
                 {
+                    const string errorMessage =
+                        "{FName} failed to create a BlockCommit for height {Height}, " +
+                        "round {Round} and hash {Hash}";
+                    _logger.Error(
+                        ae,
+                        errorMessage,
+                        nameof(GetBlockCommit),
+                        _height,
+                        round,
+                        hash);
                     return null;
                 }
             }

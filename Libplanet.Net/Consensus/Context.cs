@@ -260,9 +260,9 @@ namespace Libplanet.Net.Consensus
                 { "height", Height },
                 { "round", Round },
                 { "step", Step.ToString() },
-                { "locked_value", _lockedValue?.Hash.ToString() ?? string.Empty },
+                { "locked_value", _lockedValue?.Hash.ToString() ?? "null" },
                 { "locked_round", _lockedRound },
-                { "valid_value", _validValue?.Hash.ToString() ?? string.Empty },
+                { "valid_value", _validValue?.Hash.ToString() ?? "null" },
                 { "valid_round", _validRound },
             };
             return JsonSerializer.Serialize(dict);
@@ -324,19 +324,6 @@ namespace Libplanet.Net.Consensus
             {
                 return null;
             }
-        }
-
-        /// <summary>
-        /// Gets the proposer of the given round.
-        /// </summary>
-        /// <param name="round">A round to get proposer.</param>
-        /// <returns>Returns designated proposer's <see cref="PublicKey"/> for the
-        /// <paramref name="round"/>.
-        /// </returns>
-        private PublicKey Proposer(int round)
-        {
-            // return designated proposer for the height round pair.
-            return _validators[(int)((Height + round) % TotalValidators)];
         }
 
         /// <summary>
@@ -449,6 +436,19 @@ namespace Libplanet.Net.Consensus
         {
             int count = _messageLog.GetPreCommits(round).Count(preCommit => predicate(preCommit));
             return count > TotalValidators * 2 / 3;
+        }
+
+        /// <summary>
+        /// Checks whether given <paramref name="round"/> has +1/3 distinct validators
+        /// already participating in it, i.e. has a <see cref="ConsensusMsg"/> in the
+        /// <see cref="MessageLog"/>.
+        /// </summary>
+        /// <param name="round">The round to check.</param>
+        /// <returns><see langword="true"/> if the count is +1/3,
+        /// otherwise <see langword="false"/>.</returns>
+        private bool HasOneThirdValidators(int round)
+        {
+            return _messageLog.GetValidatorsCount(round) > TotalValidators / 3;
         }
     }
 }
