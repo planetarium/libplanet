@@ -79,6 +79,7 @@ namespace Libplanet.Net.Tests
             AppProtocolVersion? appProtocolVersion = null,
             string host = null,
             int? listenPort = null,
+            int? consensusPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
@@ -102,9 +103,9 @@ namespace Libplanet.Net.Tests
             {
                 SeedPeers = ImmutableList<BoundPeer>.Empty,
                 ConsensusPeers = ImmutableList<BoundPeer>.Empty,
-                ConsensusPort = 0,
-                ConsensusPrivateKey = new PrivateKey(),
-                ConsensusWorkers = 100,
+                ConsensusPort = consensusPort ?? 0,
+                ConsensusPrivateKey = privateKey,
+                ConsensusWorkers = 4,
                 TargetBlockInterval = TimeSpan.FromSeconds(10),
             });
         }
