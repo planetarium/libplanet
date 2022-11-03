@@ -1520,31 +1520,44 @@ namespace Libplanet.Blockchain
                     $"the block #{index - 1}'s ({prevTimestamp}).");
             }
 
-            // Since the version cannot be downgraded,
-            // the target block is PBFT based block if the last block is PBFT based block.
-            if (lastBlock?.ProtocolVersion > BlockMetadata.PoWProtocolVersion)
+            if (block.Index <= 1)
             {
-                if (block.Index <= 1 && block.LastCommit is { })
+                if (block.LastCommit is { })
                 {
                     return new InvalidBlockLastCommitException(
-                        "The genesis block and the next block should not have lastCommit");
+                        "The genesis block and the next block should not have lastCommit.");
                 }
+            }
+            else
+            {
+                // Any block after a PoW block should not have a last commit regardless of
+                // the protocol version.  As we have the target block index > 2, if it is a PoW
+                // block, the previous block would be a PoW block and is covered by this case.
+                if (lastBlock?.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+                {
+                    if (block.LastCommit is { })
+                    {
+                        return new InvalidBlockLastCommitException(
+                            "A block after a PoW block should not have lastCommit.");
+                    }
+                }
+                else
+                {
+                    if (block.LastCommit is null)
+                    {
+                        return new InvalidBlockLastCommitException(
+                            "A PBFT block that does not have zero or one index or " +
+                            "is not a block after a PoW block should have lastCommit.");
+                    }
+                }
+            }
 
-                if (block.Index > 1 && !(block.LastCommit is { }))
-                {
-                    return new InvalidBlockLastCommitException(
-                        $"Except the genesis block and the right after block, any block should " +
-                        $"have lastCommit.");
-                }
-
-                if (block.Index > 1 &&
-                    block.LastCommit is { } commit &&
-                    !commit.HasSameValidators(Policy.GetValidators(commit.Height)))
-                {
-                    return new InvalidBlockLastCommitException(
-                        "The validator set of block lastCommit is not matching " +
-                        "with known validator set in policy.");
-                }
+            if (block.LastCommit is { } commit &&
+                !commit.HasSameValidators(Policy.GetValidators(commit.Height)))
+            {
+                return new InvalidBlockLastCommitException(
+                    "The validator set of block lastCommit is not matching " +
+                    "with known validator set in policy.");
             }
 
             return null;
