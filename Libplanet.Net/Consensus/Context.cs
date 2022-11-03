@@ -220,9 +220,7 @@ namespace Libplanet.Net.Consensus
             // that prevents the lost LastCommit while in termination of program. This is the
             // attempt of saving LastCommit as much as possible.
             // https://github.com/planetarium/libplanet/pull/2472
-            var currentLastCommit = GetBlockCommit();
-
-            if (currentLastCommit is { })
+            if (GetBlockCommit() is BlockCommit currentLastCommit)
             {
                 _blockChain.Store.PutLastCommit(currentLastCommit);
                 _logger.Debug(
