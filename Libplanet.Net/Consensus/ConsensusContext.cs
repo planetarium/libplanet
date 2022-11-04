@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -21,7 +22,6 @@ namespace Libplanet.Net.Consensus
     public partial class ConsensusContext<T> : IDisposable
         where T : IAction, new()
     {
-        private readonly object _contextLock;
         private readonly object _newHeightLock;
         private readonly ContextTimeoutOption _contextTimeoutOption;
 
@@ -30,7 +30,7 @@ namespace Libplanet.Net.Consensus
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
         private readonly Func<long, IEnumerable<PublicKey>> _getValidators;
-        private readonly Dictionary<long, Context<T>> _contexts;
+        private readonly ConcurrentDictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
 
@@ -74,7 +74,7 @@ namespace Libplanet.Net.Consensus
 
             _contextTimeoutOption = contextTimeoutOption;
 
-            _contexts = new Dictionary<long, Context<T>>();
+            _contexts = new ConcurrentDictionary<long, Context<T>>();
             _blockChain.TipChanged += OnBlockChainTipChanged;
 
             _logger = Log
@@ -83,7 +83,6 @@ namespace Libplanet.Net.Consensus
                 .ForContext<ConsensusContext<T>>()
                 .ForContext("Source", nameof(ConsensusContext<T>));
 
-            _contextLock = new object();
             _newHeightLock = new object();
         }
 
@@ -111,16 +110,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>If there is <see cref="Context{T}"/> for <see cref="Height"/> returns the round
         /// of current <see cref="Context{T}"/>, or otherwise returns -1.
         /// </returns>
-        public long Round
-        {
-            get
-            {
-                lock (_contextLock)
-                {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
-                }
-            }
-        }
+        public long Round => _contexts.ContainsKey(Height) ? _contexts[Height].Round : -1;
 
         /// <summary>
         /// The current step of <see cref="Context{T}"/> in current <see cref="Height"/>.
@@ -129,22 +119,14 @@ namespace Libplanet.Net.Consensus
         /// of current <see cref="Context{T}"/>, or otherwise returns
         /// <see cref="Libplanet.Net.Consensus.Step.Null"/>.
         /// </returns>
-        public Step Step
-        {
-            get
-            {
-                lock (_contextLock)
-                {
-                    return _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
-                }
-            }
-        }
+        public Step Step => _contexts.ContainsKey(Height) ? _contexts[Height].Step : Step.Null;
 
         /// <summary>
         /// A dictionary of <see cref="Context{T}"/> for each heights. Each key represents the
         /// height of value, and value is the <see cref="Context{T}"/>.
         /// </summary>
-        internal Dictionary<long, Context<T>> Contexts => _contexts;
+        internal Dictionary<long, Context<T>> Contexts =>
+            _contexts.ToDictionary(c => c.Key, c => c.Value);
 
         /// <inheritdoc cref="ConsensusReactorOption.LastCommitClearThreshold"/>
         private long LastCommitClearThreshold { get; }
@@ -153,12 +135,9 @@ namespace Libplanet.Net.Consensus
         public void Dispose()
         {
             _newHeightCts?.Cancel();
-            lock (_contextLock)
+            foreach (Context<T> context in _contexts.Values)
             {
-                foreach (Context<T> context in _contexts.Values)
-                {
-                    context.Dispose();
-                }
+                context.Dispose();
             }
 
             _blockChain.TipChanged -= OnBlockChainTipChanged;
@@ -204,56 +183,63 @@ namespace Libplanet.Net.Consensus
 
                 BlockCommit? lastCommit = null;
 
-                lock (_contextLock)
-                {
-                    lastCommit = _contexts.ContainsKey(height - 1)
-                        ? _contexts[height - 1].GetBlockCommit()
-                        : null;
-                    _logger.Debug(
-                        "LastCommit of height #{Height} is: {@LastCommit}",
-                        Height,
-                        lastCommit);
+                lastCommit = _contexts.ContainsKey(height - 1)
+                    ? _contexts[height - 1].GetBlockCommit()
+                    : null;
+                _logger.Debug(
+                    "LastCommit of height #{Height} is: {@LastCommit}",
+                    Height,
+                    lastCommit);
 
-                    if (lastCommit == null)
+                if (lastCommit == null)
+                {
+                    // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
+                    BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
+                    if (storedCommit != null)
                     {
-                        // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
-                        BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
-                        if (storedCommit != null)
-                        {
-                            lastCommit = storedCommit;
-                            _logger.Debug(
-                                "Found cached LastCommit of Height #{Height} " +
-                                "and Round #{Round}",
-                                lastCommit.Height,
-                                lastCommit.Round);
-                        }
+                        lastCommit = storedCommit;
+                        _logger.Debug(
+                            "Found cached LastCommit of Height #{Height} " +
+                            "and Round #{Round}",
+                            lastCommit.Height,
+                            lastCommit.Round);
                     }
                 }
 
-                RemoveOldContexts(height);
+                try
+                {
+                    RemoveOldContexts(height);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Unexpected exception occurred during {FName}.",
+                        nameof(RemoveOldContexts));
+                }
+
                 ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
 
                 Height = height;
 
                 _logger.Debug("Start consensus for height #{Height}.", Height);
 
-                lock (_contextLock)
+                if (!_contexts.ContainsKey(height))
                 {
-                    if (!_contexts.ContainsKey(height))
-                    {
-                        _contexts[height] = new Context<T>(
+                    _contexts.TryAdd(
+                        height,
+                        new Context<T>(
                             this,
                             _blockChain,
                             height,
                             _privateKey,
                             _getValidators(height).ToList(),
-                            contextTimeoutOptions: _contextTimeoutOption);
+                            contextTimeoutOptions: _contextTimeoutOption));
 
-                        AttachEventHandlers(_contexts[height]);
-                    }
-
-                    _contexts[height].Start(lastCommit);
+                    AttachEventHandlers(_contexts[height]);
                 }
+
+                _contexts[height].Start(lastCommit);
             }
         }
 
@@ -292,23 +278,22 @@ namespace Libplanet.Net.Consensus
                     consensusMessage);
             }
 
-            lock (_contextLock)
+            if (!_contexts.ContainsKey(height))
             {
-                if (!_contexts.ContainsKey(height))
-                {
-                    _contexts[height] = new Context<T>(
+                _contexts.TryAdd(
+                    height,
+                    new Context<T>(
                         this,
                         _blockChain,
                         height,
                         _privateKey,
                         _getValidators(height).ToList(),
-                        _contextTimeoutOption);
+                        _contextTimeoutOption));
 
-                    AttachEventHandlers(_contexts[height]);
-                }
-
-                _contexts[height].ProduceMessage(consensusMessage);
+                AttachEventHandlers(_contexts[height]);
             }
+
+            _contexts[height].ProduceMessage(consensusMessage);
         }
 
         /// <summary>
@@ -317,15 +302,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns the current height <see cref="Context{T}"/>. if there's no instance of
         /// <see cref="Context{T}"/> for current height, returns "No context".
         /// </returns>
-        public override string ToString()
-        {
-            lock (_contextLock)
-            {
-                return _contexts.ContainsKey(Height)
-                    ? _contexts[Height].ToString()
-                    : "No context";
-            }
-        }
+        public override string ToString() => _contexts.ContainsKey(Height)
+            ? _contexts[Height].ToString()
+            : "No context";
 
         /// <summary>
         /// A handler for <see cref="BlockChain{T}.TipChanged"/> event that calls the
@@ -406,17 +385,22 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The upper bound of height of the contexts to be discarded.</param>
         private void RemoveOldContexts(long height)
         {
-            lock (_contextLock)
+            foreach (var ctx in _contexts.Values)
             {
-                foreach (var ctx in _contexts.Values)
+                if (ctx.Height < height)
                 {
-                    if (ctx.Height < height)
-                    {
-                        _logger.Debug("Removing context for height {Height}", ctx.Height);
+                    _logger.Debug("Removing context for height {Height}", ctx.Height);
 
+                    try
+                    {
                         ctx.Dispose();
-                        _contexts.Remove(ctx.Height);
                     }
+                    catch (ObjectDisposedException)
+                    {
+                        // Ignore object already disposed exception.
+                    }
+
+                    _contexts.TryRemove(ctx.Height, out _);
                 }
             }
         }
