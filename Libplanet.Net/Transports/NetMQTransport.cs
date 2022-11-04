@@ -706,6 +706,13 @@ namespace Libplanet.Net.Transports
                         "Failed to process {Message} {RequestId}; discarding it.",
                         req.Message,
                         req.Id);
+                    req.TaskCompletionSource.TrySetException(
+                        new SendMessageFailException(
+                            "Unexpected Error",
+                            req.Peer,
+                            e
+                        )
+                    );
                 }
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
