@@ -16,7 +16,7 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     public class Gossip : IDisposable
     {
-        private const int MinimumPeerCount = 4;
+        private const int MinimumPeerCount = 3;
         private const int DLazy = 6;
         private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
