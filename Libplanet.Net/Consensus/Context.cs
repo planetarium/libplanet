@@ -185,12 +185,6 @@ namespace Libplanet.Net.Consensus
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
 
-            _logger = Log
-                .ForContext("Tag", "Consensus")
-                .ForContext("SubTag", "Context")
-                .ForContext<Context<T>>()
-                .ForContext("Source", nameof(Context<T>));
-
             _logger.Debug("Created Context for height #{Height}, round #{Round}", Height, Round);
         }
 
