@@ -27,17 +27,17 @@ namespace Libplanet.Net.Tests
         public static readonly PrivateKey Peer0Priv =
             new PrivateKey(
                 ByteUtil.ParseHex(
-                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
+                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
 
         public static readonly PrivateKey Peer1Priv =
             new PrivateKey(
                 ByteUtil.ParseHex(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
+                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93"));
 
         public static readonly PrivateKey Peer2Priv =
             new PrivateKey(
                 ByteUtil.ParseHex(
-                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93"));
+                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
 
         public static readonly PrivateKey Peer3Priv =
             new PrivateKey(
@@ -359,7 +359,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                validators,
+                new ValidatorSet(validators),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, context);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -246,7 +247,7 @@ namespace Libplanet.Net.Consensus
                             _blockChain,
                             height,
                             _privateKey,
-                            _getValidators(height).ToList(),
+                            new ValidatorSet(_getValidators(height).ToList()),
                             contextTimeoutOptions: _contextTimeoutOption);
 
                         AttachEventHandlers(_contexts[height]);
@@ -301,7 +302,7 @@ namespace Libplanet.Net.Consensus
                         _blockChain,
                         height,
                         _privateKey,
-                        _getValidators(height).ToList(),
+                        new ValidatorSet(_getValidators(height).ToList()),
                         _contextTimeoutOption);
 
                     AttachEventHandlers(_contexts[height]);
