@@ -184,6 +184,8 @@ namespace Libplanet.Net.Consensus
             _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
             _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
+
+            _logger.Debug("Created Context for height #{Height}, round #{Round}", Height, Round);
         }
 
         /// <summary>
@@ -241,9 +243,19 @@ namespace Libplanet.Net.Consensus
         /// otherwise returns <see langword="null"/>.
         /// </returns>
         public BlockCommit? GetBlockCommit()
-            => _decision is null
+        {
+            var blockCommit = _decision is null
                 ? (BlockCommit?)null
                 : _messageLog.GetBlockCommit(_committedRound, _decision.Hash);
+            _logger.Debug(
+                "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
+                "BlockCommit: {@BlockCommit}",
+                nameof(GetBlockCommit),
+                _committedRound,
+                _decision,
+                blockCommit);
+            return blockCommit;
+        }
 
         /// <summary>
         /// Returns the summary of context in JSON-formatted string.
@@ -352,6 +364,14 @@ namespace Libplanet.Net.Consensus
             {
                 var exception = _blockChain.ValidateNextBlock(block);
                 bool isValid = exception is null;
+                _logger.Debug(
+                    exception,
+                    "Block #{Index} {Block} is valid? {Bool}. {@E}",
+                    block.Index,
+                    block,
+                    isValid,
+                    exception);
+
                 _blockHashCache.AddReplace(block.Hash, isValid);
                 return isValid;
             }

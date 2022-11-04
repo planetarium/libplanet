@@ -170,10 +170,10 @@ namespace Libplanet.Net.Consensus
         /// <param name="height">The height of new consensus process. this should be increasing
         /// monotonically by 1.
         /// </param>
-        /// <exception cref="InvalidHeightIncreasingException">Thrown if the given height is not
-        /// the same as the index of <see cref="BlockChain{T}.Tip"/> + 1,
-        /// or context corresponds to the height is already running.
-        /// </exception>
+        /// <exception cref="InvalidHeightIncreasingException">Thrown if given
+        /// <paramref name="height"/> is not the same as the index of
+        /// <see cref="BlockChain{T}.Tip"/> + 1, or a context corresponding to
+        /// <paramref name="height"/> is already running.</exception>
         /// <remarks>The method is also called when the tip of the <see cref="BlockChain{T}"/> is
         /// changed (i.e., committed, synchronized).
         /// </remarks>
@@ -183,18 +183,23 @@ namespace Libplanet.Net.Consensus
             {
                 _newHeightCts?.Cancel();
 
+                _logger.Debug(
+                    "Invoked {FName}() for new height #{NewHeight} from old height #{OldHeight}",
+                    nameof(NewHeight),
+                    height,
+                    Height);
+
                 if (height == Height)
                 {
                     throw new InvalidHeightIncreasingException(
-                        $"{nameof(NewHeight)}: Context of height {height} is already running.");
+                        $"Context of height #{height} is already running.");
                 }
 
                 if (height != _blockChain.Tip.Index + 1)
                 {
                     throw new InvalidHeightIncreasingException(
-                        $"{nameof(NewHeight)}: Given new height is not increasing " +
-                        $"monotonically by 1. " +
-                        $"(expected: {_blockChain.Tip.Index + 1}, actual: {height})");
+                        $"Given height #{height} must be equal to " +
+                        $"the tip's index #{_blockChain.Tip.Index} + 1.");
                 }
 
                 BlockCommit? lastCommit = null;
@@ -204,6 +209,10 @@ namespace Libplanet.Net.Consensus
                     lastCommit = _contexts.ContainsKey(height - 1)
                         ? _contexts[height - 1].GetBlockCommit()
                         : null;
+                    _logger.Debug(
+                        "LastCommit of height #{Height} is: {@LastCommit}",
+                        Height,
+                        lastCommit);
 
                     if (lastCommit == null)
                     {
@@ -226,7 +235,7 @@ namespace Libplanet.Net.Consensus
 
                 Height = height;
 
-                _logger.Debug("Start consensus for height {Height}.", Height);
+                _logger.Debug("Start consensus for height #{Height}.", Height);
 
                 lock (_contextLock)
                 {
@@ -341,7 +350,25 @@ namespace Libplanet.Net.Consensus
                     await Task.Delay(_newHeightDelay, _newHeightCts.Token);
                     if (!_newHeightCts.IsCancellationRequested)
                     {
-                        NewHeight(e.NewTip.Index + 1);
+                        try
+                        {
+                            NewHeight(e.NewTip.Index + 1);
+                        }
+                        catch (Exception exc)
+                        {
+                            _logger.Error(
+                                exc,
+                                "Unexpected exception occurred during {FName}()",
+                                nameof(NewHeight));
+                        }
+                    }
+                    else
+                    {
+                        _logger.Error(
+                            "Did not invoke {FName}() for height " +
+                            "#{Height} because cancellation is requested",
+                            nameof(NewHeight),
+                            e.NewTip.Index + 1);
                     }
                 },
                 _newHeightCts.Token);

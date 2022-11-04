@@ -305,6 +305,7 @@ namespace Libplanet.Net.Consensus
         {
             while (!ctx.IsCancellationRequested)
             {
+                _logger.Debug("{FName}() has invoked.", nameof(HeartbeatTask));
                 MessageId[] ids = _cache.GetGossipIds();
                 if (ids.Any())
                 {
