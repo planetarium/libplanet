@@ -63,10 +63,16 @@ namespace Libplanet.Tests.Consensus
                         .Sign(key))
                 .ToImmutableArray();
 
-            var invalidBlockCommit = new BlockCommit(height, round, hash, unorderedVotes);
+            var blockCommitWithUnorderedVotes =
+                new BlockCommit(height, round, hash, unorderedVotes);
+            var blockCommitWithInsufficientVotes =
+                new BlockCommit(height, round, hash, orderedVotes.Take(5).ToImmutableArray());
             var validBlockCommit = new BlockCommit(height, round, hash, orderedVotes);
 
-            Assert.False(validatorSet.ValidateBlockCommitValidators(invalidBlockCommit));
+            Assert.False(
+                validatorSet.ValidateBlockCommitValidators(blockCommitWithUnorderedVotes));
+            Assert.False(
+                validatorSet.ValidateBlockCommitValidators(blockCommitWithInsufficientVotes));
             Assert.True(validatorSet.ValidateBlockCommitValidators(validBlockCommit));
         }
     }
