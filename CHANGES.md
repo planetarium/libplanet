@@ -20,9 +20,15 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Net) Fixed a bug where `AppProtocolVersion.GetHashCode()`
+    did not work as intended.  [[#2518], [#2520]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#2518]: https://github.com/planetarium/libplanet/issues/2518
+[#2520]: https://github.com/planetarium/libplanet/pull/2520
 
 
 Version 0.44.0
