@@ -109,6 +109,13 @@ namespace Libplanet.Consensus
                 : Validators[(int)((height + round) % Validators.Count)];
         }
 
+        /// <summary>
+        /// Checks whether <see cref="BlockCommit.Votes"/> is ordered
+        /// by <see cref="Address"/> of each <see cref="Vote.Validator"/>.
+        /// </summary>
+        /// <param name="blockCommit">The <see cref="BlockCommit"/> to check.</param>
+        /// <returns><see langword="true"/> if the <see cref="BlockCommit.Votes"/> is
+        /// ordered, <see langword="false"/> otherwise.</returns>
         public bool ValidateBlockCommitValidators(BlockCommit blockCommit)
         {
             return Validators.SequenceEqual(

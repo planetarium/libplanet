@@ -300,6 +300,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
+        public static void AssertSorted<T>(IEnumerable<T> list)
+            where T : IComparable<T>
+        {
+            Assert.True(list
+                .Zip(list.Skip(1))
+                .All(pair => pair.First.CompareTo(pair.Second) <= 0));
+        }
+
         public static void AssertBlockMetadataEqual(IBlockMetadata expected, IBlockMetadata actual)
         {
             Assert.NotNull(expected);
