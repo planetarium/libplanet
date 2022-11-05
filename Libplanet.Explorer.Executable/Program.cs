@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
@@ -427,7 +428,8 @@ If omitted (default) explorer only the local blockchain store.")]
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
 
-            public IEnumerable<PublicKey> GetValidators(long index) => new List<PublicKey>();
+            public ValidatorSet GetValidatorSet(long index) =>
+                new ValidatorSet(new List<PublicKey>());
         }
 
         internal class Startup : IBlockChainContext<NullAction>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 
 namespace Libplanet.Consensus
@@ -39,11 +40,20 @@ namespace Libplanet.Consensus
         /// </summary>
         public ImmutableList<PublicKey> Validators { get; }
 
-        public int TotalPower => Validators.Count;
+        /// <summary>
+        /// The total number of validators.
+        /// </summary>
+        public int TotalCount => Validators.Count;
 
-        public int TwoThirdsPower => Validators.Count * 2 / 3;
+        /// <summary>
+        /// The two thirds of validator count, rounded down.
+        /// </summary>
+        public int TwoThirdsCount => Validators.Count * 2 / 3;
 
-        public int OneThirdPower => Validators.Count / 3;
+        /// <summary>
+        /// The one third of validator count, rounded down.
+        /// </summary>
+        public int OneThirdCount => Validators.Count / 3;
 
         public Bencodex.Types.List Encoded => new Bencodex.Types.List(
             Validators.Select(validator => validator.Format(false)));
@@ -97,6 +107,12 @@ namespace Libplanet.Consensus
                 ? throw new InvalidOperationException(
                     "Cannot select a proposer from an empty list of validators.")
                 : Validators[(int)((height + round) % Validators.Count)];
+        }
+
+        public bool ValidateBlockCommitValidators(BlockCommit blockCommit)
+        {
+            return Validators.SequenceEqual(
+                blockCommit.Votes.Select(vote => vote.Validator).ToList());
         }
     }
 }

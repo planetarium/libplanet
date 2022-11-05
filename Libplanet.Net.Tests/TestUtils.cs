@@ -76,18 +76,19 @@ namespace Libplanet.Net.Tests
             Peer3,
         };
 
-        public static readonly List<PublicKey> Validators = new List<PublicKey>()
-        {
-            Peer0.PublicKey,
-            Peer1.PublicKey,
-            Peer2.PublicKey,
-            Peer3.PublicKey,
-        };
+        public static readonly ValidatorSet ValidatorSet = new ValidatorSet(
+            new List<PublicKey>()
+            {
+                Peer0.PublicKey,
+                Peer1.PublicKey,
+                Peer2.PublicKey,
+                Peer3.PublicKey,
+            });
 
         public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
             getMaxTransactionsBytes: _ => 50 * 1024,
-            getValidators: _ => Validators);
+            getValidatorSet: _ => ValidatorSet);
 
         public static AppProtocolVersion AppProtocolVersion = AppProtocolVersion.FromToken(
             "1/54684Ac4ee5B933e72144C4968BEa26056880d71/MEQCICGonYW" +
@@ -284,7 +285,7 @@ namespace Libplanet.Net.Tests
                 TimeSpan newHeightDelay,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                List<PublicKey>? validators = null,
+                ValidatorSet? validators = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 long lastCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
@@ -295,7 +296,7 @@ namespace Libplanet.Net.Tests
             ConsensusContext<DumbAction>? consensusContext = null;
 
             privateKey ??= Peer1Priv;
-            validators ??= Validators;
+            validators ??= ValidatorSet;
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -330,13 +331,13 @@ namespace Libplanet.Net.Tests
                 long height = 1,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                List<PublicKey>? validators = null,
+                ValidatorSet? validators = null,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= Peer1Priv;
             policy ??= Policy;
-            validators ??= Validators;
+            validators ??= ValidatorSet;
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -359,7 +360,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                new ValidatorSet(validators),
+                validators,
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (fx, blockChain, context);

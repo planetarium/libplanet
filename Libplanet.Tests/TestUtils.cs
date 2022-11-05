@@ -51,13 +51,14 @@ namespace Libplanet.Tests
         public static readonly PrivateKey ConsensusPeer3PrivateKey = PrivateKey.FromString(
             "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a");
 
-        public static readonly List<PublicKey> ConsensusValidators = new List<PublicKey>()
-        {
-            ConsensusPeer0PrivateKey.PublicKey,
-            ConsensusPeer1PrivateKey.PublicKey,
-            ConsensusPeer2PrivateKey.PublicKey,
-            ConsensusPeer3PrivateKey.PublicKey,
-        };
+        public static readonly ValidatorSet ConsensusValidatorSet = new ValidatorSet(
+            new List<PublicKey>
+            {
+                ConsensusPeer0PrivateKey.PublicKey,
+                ConsensusPeer1PrivateKey.PublicKey,
+                ConsensusPeer2PrivateKey.PublicKey,
+                ConsensusPeer3PrivateKey.PublicKey,
+            });
 
         public static readonly List<PrivateKey> ConsensusPrivateKeys = new List<PrivateKey>()
         {

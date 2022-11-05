@@ -26,7 +26,7 @@ Version PBFT
 ### Backward-incompatible API changes
 
  -  Added `LastCommit` property to `IBlockMetadata`.  [[#PBFT]]
- -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
+ -  Added `IBlockPolicy.GetValidatorSet()` method.  [[#PBFT]]
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
@@ -46,11 +46,11 @@ Version PBFT
  -  Added `IVoteMetadata` interface.  [[#PBFT]]
  -  Added `VoteMetadata` class.  [[#PBFT]]
  -  Added `Vote` class.  [[#PBFT]]
+ -  Added `ValidatorSet` class.  [[#PBFT]]
  -  Added `BlockContent.Propose()` method.  [[#PBFT]]
  -  Added `BlockCommit` class.  [[#PBFT]]
  -  Added `BlockChain.ProposeGenesisBlock()` static method.  [[#PBFT]]
  -  Added `BlockChain.ProposeBlock()` method.  [[#PBFT]]
- -  Added `IBlockPolicy.GetValidators()` method.  [[#PBFT]]
  -  Added `BlockCommitExtensions` class.  [[#PBFT]]
  -  Added `ContextTimeoutOption` class.  [[#PBFT]]
  -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]

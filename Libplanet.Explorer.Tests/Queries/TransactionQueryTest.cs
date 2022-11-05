@@ -175,7 +175,8 @@ public class TransactionQueryTest
                 _ => true,
                 stateStore);
             BlockChain = new BlockChain<T>(
-                new BlockPolicy<T>(getValidators: index => new[] { Validator.PublicKey }),
+                new BlockPolicy<T>(getValidatorSet: index => new ValidatorSet(
+                    new List<PublicKey> { Validator.PublicKey })),
                 new VolatileStagePolicy<T>(),
                 Store,
                 stateStore,

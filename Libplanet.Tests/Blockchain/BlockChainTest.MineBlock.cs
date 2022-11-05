@@ -403,8 +403,8 @@ namespace Libplanet.Tests.Blockchain
             var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
-            BlockPolicy<DumbAction> policy =
-                new BlockPolicy<DumbAction>(blockAction, getValidators: _ => ConsensusValidators);
+            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(
+                blockAction, getValidatorSet: _ => ConsensusValidatorSet);
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

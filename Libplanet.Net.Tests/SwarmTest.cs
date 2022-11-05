@@ -313,7 +313,7 @@ namespace Libplanet.Net.Tests
             var keyA = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
 
@@ -387,7 +387,7 @@ namespace Libplanet.Net.Tests
 
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
@@ -719,7 +719,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = MakeBlockChain(
                 policy,
@@ -1098,9 +1098,12 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
-            var policyA = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
-            var policyB = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => ConsensusValidatorSet);
+            var policyA = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => ConsensusValidatorSet);
+            var policyB = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => ConsensusValidatorSet);
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);

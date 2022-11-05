@@ -33,7 +33,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 0,
                 0);
             _lastCommit = TestUtils.CreateLastCommit(block.Hash, 1, 0);
-            _messageLog = new MessageLog(2, new ValidatorSet(TestUtils.Validators));
+            _messageLog = new MessageLog(2, TestUtils.ValidatorSet);
             _blockChain.Append(block);
         }
 

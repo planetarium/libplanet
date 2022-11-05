@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Blockchain
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             _policyMinTx = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
@@ -224,7 +224,7 @@ namespace Libplanet.Tests.Blockchain
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
                 new BlockPolicy<PolymorphicAction<BaseAction>>(
-                    getValidators: _ => ConsensusValidators),
+                    getValidatorSet: _ => ConsensusValidatorSet),
                 new VolatileStagePolicy<PolymorphicAction<BaseAction>>(),
                 store,
                 stateStore,
@@ -1185,7 +1185,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateOnlyDrillsDownUntilRequestedAddressesAreFound()
         {
-            var policy = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => ConsensusValidatorSet);
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -1239,7 +1240,7 @@ namespace Libplanet.Tests.Blockchain
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
             var blockPolicy = new NullBlockPolicy<DumbAction>(
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
@@ -1374,7 +1375,7 @@ namespace Libplanet.Tests.Blockchain
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var chain = new BlockChain<DumbAction>(
-                new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators),
+                new NullBlockPolicy<DumbAction>(getValidatorSet: _ => ConsensusValidatorSet),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,

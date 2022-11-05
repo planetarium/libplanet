@@ -20,16 +20,19 @@ namespace Libplanet.Tests.Blocks
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(32));
             BlockCommit allCommits = TestUtils.CreateLastCommit(hash, 2, 0);
-            Assert.True(allCommits.HasSameValidators(TestUtils.ConsensusValidators));
+            Assert.True(allCommits.HasSameValidators(TestUtils.ConsensusValidatorSet.Validators));
             Assert.False(
-                allCommits.HasSameValidators(TestUtils.ConsensusValidators.Skip(1).Take(3)));
+                allCommits.HasSameValidators(
+                    TestUtils.ConsensusValidatorSet.Validators.Skip(1).Take(3)));
             Assert.False(allCommits.HasSameValidators(
-                TestUtils.ConsensusValidators.Concat(TestUtils.ConsensusValidators.Take(1))
+                TestUtils.ConsensusValidatorSet.Validators
+                    .Concat(TestUtils.ConsensusValidatorSet.Validators.Take(1))
                     .ToArray()));
             Assert.False(allCommits.HasSameValidators(
-                TestUtils.ConsensusValidators.Concat(new[] { new PrivateKey().PublicKey })));
+                TestUtils.ConsensusValidatorSet.Validators
+                    .Concat(new[] { new PrivateKey().PublicKey })));
             Assert.False(allCommits.HasSameValidators(
-                Enumerable.Range(0, TestUtils.ConsensusValidators.Count)
+                Enumerable.Range(0, TestUtils.ConsensusValidatorSet.Validators.Count)
                     .Select(x => new PrivateKey().PublicKey)
                     .ToArray()));
         }
