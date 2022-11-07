@@ -31,12 +31,12 @@ namespace Libplanet.Net.Consensus
         private ILogger _logger;
 
         private long _height;
-        private List<PublicKey> _validators;
+        private ValidatorSet _validators;
         private Dictionary<int, ConsensusProposalMsg> _proposals;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreVoteMsg>> _preVotes;
         private Dictionary<int, Dictionary<PublicKey, ConsensusPreCommitMsg>> _preCommits;
 
-        internal MessageLog(long height, List<PublicKey> validators)
+        internal MessageLog(long height, ValidatorSet validators)
         {
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -101,8 +101,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                var expectedProposer = ProposerSelector.GetProposer(
-                    _validators, message.Height, message.Round);
+                var expectedProposer = _validators.GetProposer(message.Height, message.Round);
 
                 if (message.Height != _height)
                 {
@@ -314,7 +313,7 @@ namespace Libplanet.Net.Consensus
         {
             lock (_lock)
             {
-                ImmutableArray<Vote> votes = _validators.Select(validator =>
+                ImmutableArray<Vote> votes = _validators.Validators.Select(validator =>
                     _preCommits.ContainsKey(round) &&
                     _preCommits[round].ContainsKey(validator) &&
                     hash.Equals(_preCommits[round][validator].BlockHash)

@@ -35,10 +35,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightIncreasing()
         {
-            var validators = new List<PublicKey>
+            var validators = new ValidatorSet(new List<PublicKey>
             {
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
-            };
+            });
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
@@ -94,10 +94,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void Ctor()
         {
-            var validators = new List<PublicKey>()
+            var validators = new ValidatorSet(new List<PublicKey>()
             {
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
-            };
+            });
 
             var (_, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
@@ -113,10 +113,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void NewHeightWhenTipChanged()
         {
             var newHeightDelay = TimeSpan.FromSeconds(1);
-            var validators = new List<PublicKey>()
+            var validators = new ValidatorSet(new List<PublicKey>()
             {
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
-            };
+            });
 
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
@@ -134,10 +134,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void IgnoreMessagesFromLowerHeight()
         {
-            var validators = new List<PublicKey>()
+            var validators = new ValidatorSet(new List<PublicKey>()
             {
                 TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
-            };
+            });
 
             var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
@@ -278,7 +278,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.Peer1Priv,
-                TestUtils.Validators,
+                TestUtils.ValidatorSet,
                 lastCommitClearThreshold: 1);
 
             // Create context of index 1.

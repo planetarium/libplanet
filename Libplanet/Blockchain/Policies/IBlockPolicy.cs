@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Crypto;
+using Libplanet.Consensus;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -127,12 +126,12 @@ namespace Libplanet.Blockchain.Policies
         int GetMaxTransactionsPerSignerPerBlock(long index);
 
         /// <summary>
-        /// Gets <see cref="IEnumerable{T}"/> of validator.
+        /// Gets the <see cref="ValidatorSet"/> for given <paramref name="index"/>.
         /// </summary>
         /// <param name="index">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// for which this constraint should apply.</param>
-        /// <returns><see cref="IEnumerable{T}"/> of validator.</returns>
+        /// <returns>The <see cref="ValidatorSet"/> for given <paramref name="index"/>.</returns>
         [Pure]
-        IEnumerable<PublicKey> GetValidators(long index);
+        ValidatorSet GetValidatorSet(long index);
     }
 }

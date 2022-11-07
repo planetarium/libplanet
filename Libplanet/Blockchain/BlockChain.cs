@@ -1553,11 +1553,11 @@ namespace Libplanet.Blockchain
             }
 
             if (block.LastCommit is { } commit &&
-                !commit.HasSameValidators(Policy.GetValidators(commit.Height)))
+                !Policy.GetValidatorSet(commit.Height).ValidateBlockCommitValidators(commit))
             {
                 return new InvalidBlockLastCommitException(
-                    "The validator set of block lastCommit is not matching " +
-                    "with known validator set in policy.");
+                    "The validator set of the block's lastCommit does not match " +
+                    "the validator set given by the policy.");
             }
 
             return null;

@@ -33,7 +33,7 @@ namespace Libplanet.Net.Tests
             {
                 var policy = new BlockPolicy<DumbAction>(
                     new MinerReward(1),
-                    getValidators: _ => ConsensusValidators);
+                    getValidatorSet: _ => ConsensusValidatorSet);
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain = MakeBlockChain(policy, storeFx.Store, storeFx.StateStore);
@@ -89,7 +89,7 @@ namespace Libplanet.Net.Tests
         {
             policy = policy ?? new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockchain = MakeBlockChain(
                 policy,

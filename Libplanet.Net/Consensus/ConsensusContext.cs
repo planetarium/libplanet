@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -29,7 +30,7 @@ namespace Libplanet.Net.Consensus
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
-        private readonly Func<long, IEnumerable<PublicKey>> _getValidators;
+        private readonly Func<long, ValidatorSet> _getValidatorSet;
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
@@ -48,7 +49,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="OnBlockChainTipChanged"/>
         /// </param>
-        /// <param name="getValidators">The function determining the set of validators
+        /// <param name="getValidatorSet">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
         /// <param name="lastCommitClearThreshold">A maximum size of cached
         /// <see cref="BlockCommit"/>. See <see cref="LastCommitClearThreshold"/>.
@@ -60,7 +61,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
-            Func<long, IEnumerable<PublicKey>> getValidators,
+            Func<long, ValidatorSet> getValidatorSet,
             long lastCommitClearThreshold,
             ContextTimeoutOption contextTimeoutOption)
         {
@@ -69,7 +70,7 @@ namespace Libplanet.Net.Consensus
             _privateKey = privateKey;
             Height = -1;
             _newHeightDelay = newHeightDelay;
-            _getValidators = getValidators;
+            _getValidatorSet = getValidatorSet;
             LastCommitClearThreshold = lastCommitClearThreshold;
 
             _contextTimeoutOption = contextTimeoutOption;
@@ -246,7 +247,7 @@ namespace Libplanet.Net.Consensus
                             _blockChain,
                             height,
                             _privateKey,
-                            _getValidators(height).ToList(),
+                            _getValidatorSet(height),
                             contextTimeoutOptions: _contextTimeoutOption);
 
                         AttachEventHandlers(_contexts[height]);
@@ -301,7 +302,7 @@ namespace Libplanet.Net.Consensus
                         _blockChain,
                         height,
                         _privateKey,
-                        _getValidators(height).ToList(),
+                        _getValidatorSet(height),
                         _contextTimeoutOption);
 
                     AttachEventHandlers(_contexts[height]);

@@ -77,7 +77,7 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                blockChain.Policy.GetValidators,
+                blockChain.Policy.GetValidatorSet,
                 lastCommitClearThreshold,
                 contextTimeoutOption);
 

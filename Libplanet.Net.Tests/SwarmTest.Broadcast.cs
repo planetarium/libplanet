@@ -34,7 +34,8 @@ namespace Libplanet.Net.Tests
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();
-            var policy = new NullBlockPolicy<DumbAction>(getValidators: _ => ConsensusValidators);
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => ConsensusValidatorSet);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var minerChain = MakeBlockChain(policy, fx.Store, fx.StateStore);
             foreach (int i in Enumerable.Range(0, 10))
@@ -645,7 +646,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidators: _ => ConsensusValidators);
+                getValidatorSet: _ => ConsensusValidatorSet);
             var fx1 = new MemoryStoreFixture();
             var blockChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
             var privateKey = new PrivateKey();

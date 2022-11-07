@@ -82,7 +82,7 @@ namespace Libplanet.Net.Consensus
 
         private readonly BlockChain<T> _blockChain;
         private readonly Codec _codec;
-        private readonly List<PublicKey> _validators;
+        private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
         private readonly MessageLog _messageLog;
@@ -120,7 +120,8 @@ namespace Libplanet.Net.Consensus
         /// <seealso cref="ProcessGenericUponRules"/>
         /// <seealso cref="MakeVote"/>
         /// </param>
-        /// <param name="validators">A list of <see cref="PublicKey"/> of validators.</param>
+        /// <param name="validators">The <see cref="ValidatorSet"/> for
+        /// given <paramref name="height"/>.</param>
         /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public Context(
@@ -128,7 +129,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            ValidatorSet validators,
             ContextTimeoutOption contextTimeoutOptions)
             : this(
                 consensusContext,
@@ -148,7 +149,7 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             long height,
             PrivateKey privateKey,
-            List<PublicKey> validators,
+            ValidatorSet validators,
             Step step,
             int round = -1,
             int cacheSize = 128,
@@ -178,7 +179,7 @@ namespace Libplanet.Net.Consensus
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
-            _validators = validators;
+            _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             ConsensusContext = consensusContext;
             _blockHashCache = new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
@@ -208,11 +209,6 @@ namespace Libplanet.Net.Consensus
         /// validators.
         /// </summary>
         private ConsensusContext<T> ConsensusContext { get; }
-
-        /// <summary>
-        /// The total count of validators.
-        /// </summary>
-        private int TotalValidators => _validators.Count;
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -266,7 +262,7 @@ namespace Libplanet.Net.Consensus
             var dict = new Dictionary<string, object>
             {
                 { "node_id", _privateKey.ToAddress().ToString() },
-                { "number_of_validator", _validators.Count },
+                { "number_of_validators", _validatorSet.TotalCount },
                 { "height", Height },
                 { "round", Round },
                 { "step", Step.ToString() },
@@ -439,7 +435,7 @@ namespace Libplanet.Net.Consensus
         private bool HasTwoThirdsPreVote(int round, Func<ConsensusPreVoteMsg, bool> predicate)
         {
             int count = _messageLog.GetPreVotes(round).Count(preVote => predicate(preVote));
-            return count > TotalValidators * 2 / 3;
+            return count > _validatorSet.TwoThirdsCount;
         }
 
         /// <summary>
@@ -453,7 +449,7 @@ namespace Libplanet.Net.Consensus
         private bool HasTwoThirdsPreCommit(int round, Func<ConsensusPreCommitMsg, bool> predicate)
         {
             int count = _messageLog.GetPreCommits(round).Count(preCommit => predicate(preCommit));
-            return count > TotalValidators * 2 / 3;
+            return count > _validatorSet.TwoThirdsCount;
         }
 
         /// <summary>
@@ -466,7 +462,7 @@ namespace Libplanet.Net.Consensus
         /// otherwise <see langword="false"/>.</returns>
         private bool HasOneThirdValidators(int round)
         {
-            return _messageLog.GetValidatorsCount(round) > TotalValidators / 3;
+            return _messageLog.GetValidatorsCount(round) > _validatorSet.OneThirdCount;
         }
     }
 }

@@ -40,24 +40,25 @@ namespace Libplanet.Tests
             "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76");
 
         public static readonly PrivateKey ConsensusPeer0PrivateKey = PrivateKey.FromString(
-            "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550");
-
-        public static readonly PrivateKey ConsensusPeer1PrivateKey = PrivateKey.FromString(
             "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef");
 
-        public static readonly PrivateKey ConsensusPeer2PrivateKey = PrivateKey.FromString(
+        public static readonly PrivateKey ConsensusPeer1PrivateKey = PrivateKey.FromString(
             "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93");
+
+        public static readonly PrivateKey ConsensusPeer2PrivateKey = PrivateKey.FromString(
+            "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550");
 
         public static readonly PrivateKey ConsensusPeer3PrivateKey = PrivateKey.FromString(
             "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a");
 
-        public static readonly List<PublicKey> ConsensusValidators = new List<PublicKey>()
-        {
-            ConsensusPeer0PrivateKey.PublicKey,
-            ConsensusPeer1PrivateKey.PublicKey,
-            ConsensusPeer2PrivateKey.PublicKey,
-            ConsensusPeer3PrivateKey.PublicKey,
-        };
+        public static readonly ValidatorSet ConsensusValidatorSet = new ValidatorSet(
+            new List<PublicKey>
+            {
+                ConsensusPeer0PrivateKey.PublicKey,
+                ConsensusPeer1PrivateKey.PublicKey,
+                ConsensusPeer2PrivateKey.PublicKey,
+                ConsensusPeer3PrivateKey.PublicKey,
+            });
 
         public static readonly List<PrivateKey> ConsensusPrivateKeys = new List<PrivateKey>()
         {
@@ -297,6 +298,14 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             throw new XunitException(
                 "Two Bencodex values are not equal.\n--- Expected\n+++ Actual\n\n" + diff
             );
+        }
+
+        public static void AssertSorted<T>(IEnumerable<T> list)
+            where T : IComparable<T>
+        {
+            Assert.True(list
+                .Zip(list.Skip(1))
+                .All(pair => pair.First.CompareTo(pair.Second) <= 0));
         }
 
         public static void AssertBlockMetadataEqual(IBlockMetadata expected, IBlockMetadata actual)
