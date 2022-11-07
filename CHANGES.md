@@ -55,6 +55,18 @@ Released on November 2, 2022.
 [#2457]: https://github.com/planetarium/libplanet/pull/2457
 
 
+Version 0.43.3
+--------------
+
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+[#2424]: https://github.com/planetarium/libplanet/issues/2424
+[#2521]: https://github.com/planetarium/libplanet/pulls/2521
+
+
 Version 0.43.2
 --------------
 
