@@ -6,6 +6,12 @@ Version 0.43.3
 
 To be released.
 
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+[#2424]: https://github.com/planetarium/libplanet/issues/2424
+[#2521]: https://github.com/planetarium/libplanet/pulls/2521
+
 
 Version 0.43.2
 --------------
