@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Bencodex;
 using Libplanet.Crypto;
 using Xunit;
@@ -114,60 +115,66 @@ namespace Libplanet.Net.Tests
         [Fact]
         public void Equality()
         {
+            Codec codec = new Codec();
             var signer = new PrivateKey();
             AppProtocolVersion claim =
                 AppProtocolVersion.Sign(signer, 123, (Bencodex.Types.Text)"foo");
 
-            var claim2 = new AppProtocolVersion(124, claim.Extra, claim.Signature, claim.Signer);
+            // Copy to make sure not to use the same reference
+            var address = new Address(claim.Signer.ByteArray);
+            var version = claim.Version;
+            var extra = codec.Decode(codec.Encode(claim.Extra));
+            var signature = claim.Signature.ToArray().ToImmutableArray();
+
+            // Different version
+            var claim2 = new AppProtocolVersion(version + 1, extra, signature, address);
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim2));
             Assert.False(((object)claim).Equals(claim2));
             Assert.NotEqual(claim.GetHashCode(), claim2.GetHashCode());
             Assert.False(claim == claim2);
             Assert.True(claim != claim2);
 
+            // Different extra
             var claim3 = new AppProtocolVersion(
-                claim.Version,
+                version,
                 Bencodex.Types.Null.Value,
-                claim.Signature,
-                claim.Signer
-            );
+                signature,
+                address);
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim3));
             Assert.False(((object)claim).Equals(claim3));
             Assert.NotEqual(claim.GetHashCode(), claim3.GetHashCode());
             Assert.False(claim == claim3);
             Assert.True(claim != claim3);
 
+            // Empty signature
             var claim4 = new AppProtocolVersion(
-                claim.Version,
-                claim.Extra,
+                version,
+                extra,
                 ImmutableArray<byte>.Empty,
-                claim.Signer
-            );
+                address);
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim4));
             Assert.False(((object)claim).Equals(claim4));
             Assert.NotEqual(claim.GetHashCode(), claim4.GetHashCode());
             Assert.False(claim == claim4);
             Assert.True(claim != claim4);
 
+            // Different address
             var claim5 = new AppProtocolVersion(
-                claim.Version,
-                claim.Extra,
-                claim.Signature,
-                new PrivateKey().ToAddress()
-            );
+                version,
+                extra,
+                signature,
+                new PrivateKey().ToAddress());
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim5));
             Assert.False(((object)claim).Equals(claim5));
             Assert.NotEqual(claim.GetHashCode(), claim5.GetHashCode());
             Assert.False(claim == claim5);
             Assert.True(claim != claim5);
 
-            var codec = new Codec();
             var sameClaim = new AppProtocolVersion(
-                claim.Version,
-                codec.Decode(codec.Encode(claim.Extra)),
-                ImmutableArray.Create(claim.Signature, 0, claim.Signature.Length),
-                new Address(claim.Signer.ByteArray)
-            );
+                version,
+                extra,
+                signature,
+                address);
             Assert.True(((IEquatable<AppProtocolVersion>)claim).Equals(sameClaim));
             Assert.True(((object)claim).Equals(sameClaim));
             Assert.Equal(claim.GetHashCode(), sameClaim.GetHashCode());
