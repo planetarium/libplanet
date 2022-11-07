@@ -757,7 +757,6 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
-            using var dealer = GetRequestDealerSocket(req);
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             CancellationTokenSource timerCts =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -772,17 +771,19 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 req.Peer,
                 req.Timeout);
-            var message = _messageCodec.Encode(
-                req.Message,
-                _privateKey,
-                _appProtocolVersion,
-                AsPeer,
-                DateTimeOffset.UtcNow);
             var result = new List<Message>();
 
             // Normal OperationCanceledException initiated from outside should bubble up.
             try
             {
+                using var dealer = GetRequestDealerSocket(req);
+                NetMQMessage message = _messageCodec.Encode(
+                    req.Message,
+                    _privateKey,
+                    _appProtocolVersion,
+                    AsPeer,
+                    DateTimeOffset.UtcNow);
+
                 if (dealer.TrySendMultipartMessage(message))
                 {
                     _logger.Debug(
@@ -868,17 +869,13 @@ namespace Libplanet.Net.Transports
                             {
                                 break;
                             }
-                            else
-                            {
-                                throw new TimeoutException(
-                                    $"The operation was canceled due to timeout {req.Timeout}.",
-                                    oce);
-                            }
+
+                            throw new TimeoutException(
+                                $"The operation was canceled due to timeout {req.Timeout}.",
+                                oce);
                         }
-                        else
-                        {
-                            throw;
-                        }
+
+                        throw;
                     }
                 }
 
@@ -892,6 +889,15 @@ namespace Libplanet.Net.Transports
                 e is TimeoutException)
             {
                 tcs.TrySetException(e);
+            }
+            catch (Exception ae)
+            {
+                var se = new SendMessageFailException(
+                    $"Unexpected exception occurred during {nameof(ProcessRequest)}().",
+                    req.Peer,
+                    ae
+                );
+                tcs.TrySetException(se);
             }
             finally
             {
