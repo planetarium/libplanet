@@ -26,7 +26,7 @@ namespace Libplanet.Action
             IActionContext inputContext,
             IAccountStateDelta outputStates,
             Exception? exception = null,
-            IReadOnlyList<string>? logs = null)
+            List<string>? logs = null)
         {
             Action = action;
             InputContext = inputContext;
@@ -58,6 +58,6 @@ namespace Libplanet.Action
         /// </summary>
         public Exception? Exception { get; }
 
-        public IReadOnlyList<string> Logs { get; }
+        public List<string> Logs { get; }
     }
 }

@@ -222,7 +222,7 @@ namespace Libplanet.Store
             try
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
-                IReadOnlyList<IReadOnlyList<string>> actionLogsList =
+                List<List<string>> actionLogsList =
                     DeserializeLogs(d.GetValue<List>("actionLogsList"));
                 if (fail)
                 {
@@ -280,11 +280,11 @@ namespace Libplanet.Store
             );
 
         private static Bencodex.Types.List SerializeLogs(
-            IReadOnlyList<IReadOnlyList<string>> logs
+            List<List<string>> logs
         ) =>
             new List(logs.Select(l => new List(l.Select(x => (Text)x))));
 
-        private static IReadOnlyList<IReadOnlyList<string>> DeserializeLogs(
+        private static List<List<string>> DeserializeLogs(
             Bencodex.Types.List serialized) =>
             serialized.Cast<List>().Select(l => l.Cast<string>().ToList()).ToList();
 

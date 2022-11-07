@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Tx
             _fx = new TxFailure(
                 _blockHash,
                 _txid,
-                ImmutableList<ImmutableList<string>>.Empty,
+                new List<List<string>>(),
                 new ArgumentNullException("foo"));
         }
 
@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Tx
             var f = new TxFailure(
                 _blockHash,
                 _txid,
-                ImmutableList<ImmutableList<string>>.Empty,
+                new List<List<string>>(),
                 nameof(ArgumentNullException),
                 (Text)"foo"
             );

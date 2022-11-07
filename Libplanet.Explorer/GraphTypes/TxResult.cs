@@ -20,7 +20,7 @@ namespace Libplanet.Explorer.GraphTypes
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>? fungibleAssetsDelta,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>?
                 updatedFungibleAssets,
-            IReadOnlyList<IReadOnlyList<string>> actionLogsList
+            List<List<string>> actionLogsList
         )
         {
             TxStatus = status;
@@ -52,6 +52,6 @@ namespace Libplanet.Explorer.GraphTypes
         public IImmutableDictionary<Address, IImmutableDictionary<Currency, FungibleAssetValue>>?
             UpdatedFungibleAssets { get; }
 
-        public IReadOnlyList<IReadOnlyList<string>>? ActionLogsList { get; }
+        public List<List<string>>? ActionLogsList { get; }
     }
 }

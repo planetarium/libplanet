@@ -455,7 +455,7 @@ namespace Libplanet.Tests.Store
             var inputA = new TxSuccess(
                 Fx.Hash1,
                 Fx.TxId1,
-                ImmutableList<ImmutableList<string>>.Empty,
+                new List<List<string>>(),
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"
@@ -487,7 +487,7 @@ namespace Libplanet.Tests.Store
             var inputB = new TxFailure(
                 Fx.Hash1,
                 Fx.TxId2,
-                ImmutableList<ImmutableList<string>>.Empty,
+                new List<List<string>>(),
                 "AnExceptionName",
                 Dictionary.Empty.Add("foo", 1).Add("bar", "baz")
             );
@@ -501,7 +501,7 @@ namespace Libplanet.Tests.Store
             var inputC = new TxFailure(
                 Fx.Hash2,
                 Fx.TxId1,
-                ImmutableList<ImmutableList<string>>.Empty,
+                new List<List<string>>(),
                 "AnotherExceptionName",
                 null
             );

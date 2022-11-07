@@ -40,7 +40,7 @@ namespace Libplanet.Tx
         public TxSuccess(
             BlockHash blockHash,
             TxId txId,
-            IReadOnlyList<IReadOnlyList<string>> actionsLogsList,
+            List<List<string>> actionsLogsList,
             IImmutableDictionary<Address, IValue?> updatedStates,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>> fungibleAssetsDelta,
             IImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
