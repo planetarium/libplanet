@@ -94,7 +94,7 @@ Version PBFT
 Version 0.44.0
 --------------
 
-To be released.
+Released on November 2, 2022.
 
 ### Deprecated APIs
 
@@ -110,10 +110,6 @@ To be released.
  -  (Libplanet.Node) Renamed `UntypedTransaction.ActionValues` to
     `UntypedTransaction.CustomActionsValue` and changed its type from
     `IReadOnlyList<IValue>` to `IValue?`.  [[#2456], [#2457]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
@@ -150,6 +146,19 @@ To be released.
 [#2459]: https://github.com/planetarium/libplanet/pull/2459
 [#2456]: https://github.com/planetarium/libplanet/issues/2456
 [#2457]: https://github.com/planetarium/libplanet/pull/2457
+
+
+Version 0.43.2
+--------------
+
+Released on November 1, 2022.
+
+ -  (Libplanet.RocksDBStore) `RocksDBStore` no more crashes with stack overflow
+    during iterating block indices even if a chain is deeply nested (due to
+    forks).  [[#2338], [#2379]]
+
+[#2338]: https://github.com/planetarium/libplanet/issues/2338
+[#2379]: https://github.com/planetarium/libplanet/pull/2379
 
 
 Version 0.43.1
