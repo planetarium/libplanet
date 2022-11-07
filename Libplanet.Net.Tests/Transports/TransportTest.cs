@@ -1,5 +1,6 @@
 #nullable disable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -282,26 +283,17 @@ namespace Libplanet.Net.Tests.Transports
             }
         }
 
-        [SkippableFact(Timeout = Timeout)]
-        public async Task SendMessageToInvalidPeerAsync()
+        [SkippableTheory(Timeout = Timeout)]
+        [ClassData(typeof(TransportTestInvalidPeers))]
+        public async Task SendMessageToInvalidPeerAsync(BoundPeer invalidPeer)
         {
             ITransport transport = CreateTransport();
 
             try
             {
                 await InitializeAsync(transport);
-                // Make sure the tcp port is invalid.
-                var l = new TcpListener(IPAddress.Loopback, 0);
-                l.Start();
-                int port = ((IPEndPoint)l.LocalEndpoint).Port;
-                l.Stop();
-                var peer = new BoundPeer(
-                    new PrivateKey().PublicKey,
-                    new DnsEndPoint(
-                        "0.0.0.0",
-                        port));
                 Task task = transport.SendMessageAsync(
-                    peer,
+                    invalidPeer,
                     new PingMsg(),
                     TimeSpan.FromSeconds(5),
                     default);
@@ -452,6 +444,43 @@ namespace Libplanet.Net.Tests.Transports
                 iceServers ?? Enumerable.Empty<IceServer>(),
                 differentAppProtocolVersionEncountered,
                 messageTimestampBuffer);
+        }
+
+        private class TransportTestInvalidPeers : IEnumerable<object[]>
+        {
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                // Make sure the tcp port is invalid.
+                var l = new TcpListener(IPAddress.Loopback, 0);
+                l.Start();
+                int port = ((IPEndPoint)l.LocalEndpoint).Port;
+                l.Stop();
+
+                yield return new[]
+                {
+                    new BoundPeer(
+                        new PrivateKey().PublicKey,
+                        new DnsEndPoint(
+                            "0.0.0.0",
+                            port
+                        )
+                    ),
+                };
+
+                // e.g., "127.0.0.1":0
+                yield return new[]
+                {
+                    new BoundPeer(
+                        new PrivateKey().PublicKey,
+                        new DnsEndPoint(
+                            $"\"{IPAddress.Loopback}\"",
+                            0
+                        )
+                    ),
+                };
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }
