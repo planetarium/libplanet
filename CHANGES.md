@@ -4,7 +4,10 @@ Libplanet changelog
 Version 0.44.1
 --------------
 
-To be released.
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
 
 
 Version 0.44.0
