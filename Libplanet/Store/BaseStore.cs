@@ -231,10 +231,10 @@ namespace Libplanet.Store
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
 
-                List<List<string>> actionLogsList = null;
+                List<List<string>> actionsLogsList = null;
                 if (d.ContainsKey("actionsLogsList"))
                 {
-                    actionLogsList =
+                    actionsLogsList =
                         DeserializeLogs(d.GetValue<List>("actionsLogsList"));
                 }
 
@@ -242,7 +242,7 @@ namespace Libplanet.Store
                 {
                     string excName = d.GetValue<Text>("exc");
                     IValue excMetadata = d.ContainsKey("excMeta") ? d["excMeta"] : null;
-                    return new TxFailure(blockHash, txid, actionLogsList, excName, excMetadata);
+                    return new TxFailure(blockHash, txid, actionsLogsList, excName, excMetadata);
                 }
 
                 ImmutableDictionary<Address, IValue> sDelta = d.GetValue<Dictionary>("sDelta")
@@ -258,7 +258,7 @@ namespace Libplanet.Store
                 return new TxSuccess(
                     blockHash,
                     txid,
-                    actionLogsList,
+                    actionsLogsList,
                     sDelta,
                     favDelta,
                     updatedFAVs

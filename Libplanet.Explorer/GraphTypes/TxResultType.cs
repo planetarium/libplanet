@@ -62,8 +62,8 @@ namespace Libplanet.Explorer.GraphTypes
                     NonNullGraphType<StringGraphType>
                 >>
             >>(
-                nameof(TxResult.ActionLogsList),
-                resolve: context => context.Source.ActionLogsList
+                nameof(TxResult.ActionsLogsList),
+                resolve: context => context.Source.ActionsLogsList
             );
         }
 
