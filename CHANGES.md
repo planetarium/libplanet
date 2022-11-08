@@ -8,7 +8,17 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Removed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, bool, long,
+    int, int, IComparer<Transaction<T>>, CancellationToken?)` by making
+    it `internal`.  [[#2529]]
+
 ### Backward-incompatible API changes
+
+ -  Changed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?, long?,
+    int?, int?, IComparer<Transaction<T>>, CancellationToken?)` to
+    `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?,
+    IComparer<Transaction<T>>, CancellationToken?)` by removing policy
+    controlled parameters.  [[#2529]]
 
 ### Backward-incompatible network protocol changes
 
@@ -35,6 +45,7 @@ To be released.
 
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
+[#2529]: https://github.com/planetarium/libplanet/pull/2529
 
 
 Version 0.44.1
