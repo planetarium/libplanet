@@ -207,6 +207,8 @@ namespace Libplanet.Net
 
         public bool Running => Transport?.Running ?? false;
 
+        public bool ConsensusRunning => _consensusReactor?.Running ?? false;
+
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
         public Address Address => _privateKey.ToAddress();
@@ -415,7 +417,11 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
-                tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                if (_consensusReactor is { })
+                {
+                    tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                }
+
                 _logger.Debug("Swarm started.");
 
                 await await Task.WhenAny(tasks);

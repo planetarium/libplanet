@@ -93,6 +93,9 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public bool Running => _gossip.Running;
 
+        /// <inheritdoc cref="ConsensusContext{T}.Height"/>
+        public long Height => _consensusContext.Height;
+
         /// <summary>
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         /// </summary>
