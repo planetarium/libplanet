@@ -307,14 +307,27 @@ namespace Libplanet.Net.Consensus
         private Block<T>? GetValue()
         {
             Block<T> block = _blockChain.ProposeBlock(_privateKey, lastCommit: _lastCommit);
-            if (block.Index == Height)
+            if (_blockChain.ValidateNextBlock(block) is InvalidBlockException e)
             {
-                _blockChain.Store.PutBlock(block);
-                return block;
+                _logger.Error(
+                    e, "Could not propose a valid block");
+                ExceptionOccurred?.Invoke(this, e);
+                return null;
+            }
+            else if (block.Index != Height)
+            {
+                InvalidBlockIndexException ibie = new InvalidBlockIndexException(
+                    $"Proposed block's index {block.Index} must be the same " +
+                    $"as context's height {Height}.");
+                _logger.Error(
+                    ibie, "Could not propose a valid block");
+                ExceptionOccurred?.Invoke(this, ibie);
+                return null;
             }
             else
             {
-                return null;
+                _blockChain.Store.PutBlock(block);
+                return block;
             }
         }
 
