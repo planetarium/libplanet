@@ -142,7 +142,7 @@ namespace Libplanet.Blockchain
 
 #pragma warning disable MEN002
 #pragma warning disable CS1573
-        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})" />
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}}, IBlockChainStates{T})" />
         /// <param name="actionEvaluator">The <see cref="ActionEvaluator{T}" /> implementation to calculate next states when append new blocks.</param>
         public BlockChain(
             IBlockPolicy<T> policy,
