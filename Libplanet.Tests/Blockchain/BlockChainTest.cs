@@ -355,8 +355,10 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     Guid.NewGuid(),
                     fx.GenesisBlock,
-                    renderers: new[] { renderer }
-                );
+                    renderers: new[] { renderer },
+                    blockChainStates: new BlockChainStates<DumbAction>(fx.Store, fx.StateStore),
+                    actionEvaluator: chain.ActionEvaluator
+                 );
                 chain.Swap(newChain, true)();
                 Assert.Empty(renderer.ActionRecords);
                 Assert.Empty(NonRehearsalExecutions());
@@ -1741,6 +1743,7 @@ namespace Libplanet.Tests.Blockchain
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 stateStore: stateStore
             );
+            var chainStates = new BlockChainStates<DumbAction>(store, stateStore);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1748,7 +1751,17 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 chainId,
                 genesisBlock,
-                renderers: renderer is null ? null : new[] { renderer }
+                renderers: renderer is null ? null : new[] { renderer },
+                blockChainStates: chainStates,
+                actionEvaluator: new ActionEvaluator<DumbAction>(
+                    blockPolicy.BlockAction,
+                    chainStates,
+                    trieGetter: hash => stateStore.GetStateRoot(
+                        store.GetBlockDigest(hash)?.StateRootHash
+                    ),
+                    genesisHash: genesisBlock.Hash,
+                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains
+                )
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();

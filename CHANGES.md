@@ -16,6 +16,12 @@ To be released.
 
 ### Added APIs
 
+- Added `BlockChainStates<T>` class.  [[#2507]]
+- Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
+  and `ActionEvaluator<T>` directly.  [[#2507]]
+
+[#2507]: https://github.com/planetarium/libplanet/pull/2507
+
 ### Behavioral changes
 
 ### Bug fixes
