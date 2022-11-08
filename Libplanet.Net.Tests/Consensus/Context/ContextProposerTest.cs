@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Nito.AsyncEx;
@@ -282,6 +285,30 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Assert.Equal(1, context.Height);
             Assert.Equal(0, context.Round);
             Assert.Equal(Step.PreVote, context.Step);
+        }
+
+        [Fact]
+        public async void CannotProposeWithoutLastCommitWhenRequired()
+        {
+            var privateKey = new PrivateKey();
+            var exceptionOccurred = new AsyncAutoResetEvent();
+            Exception? exception = null;
+            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+                privateKey: TestUtils.Peer2Priv,
+                height: 2);
+            context.ExceptionOccurred += (sender, e) =>
+            {
+                exception = e;
+                exceptionOccurred.Set();
+            };
+
+            var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
+            blockChain.Append(block);
+            Assert.Equal(TestUtils.Peer2Priv.PublicKey, TestUtils.ValidatorSet.GetProposer(2, 0));
+
+            context.Start();
+            await exceptionOccurred.WaitAsync();
+            Assert.IsType<InvalidBlockLastCommitException>(exception);
         }
     }
 }
