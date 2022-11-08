@@ -31,14 +31,6 @@ namespace Libplanet.Blockchain
         /// <param name="miner">The miner's <see cref="PublicKey"/> that mines the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
         /// <param name="append">Whether to append the mined block immediately after mining.</param>
-        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
-        /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
-        /// </param>
-        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
-        /// that a block can accept per signer.  See also
-        /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
@@ -50,25 +42,17 @@ namespace Libplanet.Blockchain
             PrivateKey miner,
             DateTimeOffset? timestamp = null,
             bool? append = null,
-            long? maxTransactionsBytes = null,
-            int? maxTransactions = null,
-            int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
             CancellationToken? cancellationToken = null) =>
-#pragma warning disable SA1118
                 await MineBlock(
                     miner: miner,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     append: append ?? true,
-                    maxTransactionsBytes: maxTransactionsBytes
-                        ?? Policy.GetMaxTransactionsBytes(Count),
-                    maxTransactions: maxTransactions
-                        ?? Policy.GetMaxTransactionsPerBlock(Count),
-                    maxTransactionsPerSigner: maxTransactionsPerSigner
-                        ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
+                    maxTransactionsBytes: Policy.GetMaxTransactionsBytes(Count),
+                    maxTransactions: Policy.GetMaxTransactionsPerBlock(Count),
+                    maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                     txPriority: txPriority,
                     cancellationToken: cancellationToken ?? default);
-#pragma warning restore SA1118
 
         /// <summary>
         /// Mines a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
@@ -91,7 +75,7 @@ namespace Libplanet.Blockchain
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
         /// <exception cref="OperationCanceledException">Thrown when
         /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
-        public async Task<Block<T>> MineBlock(
+        internal async Task<Block<T>> MineBlock(
             PrivateKey miner,
             DateTimeOffset timestamp,
             bool append,

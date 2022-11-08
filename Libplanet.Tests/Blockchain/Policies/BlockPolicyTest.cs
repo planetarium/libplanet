@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -250,6 +251,81 @@ namespace Libplanet.Tests.Blockchain.Policies
                 1048,
                 _policy.GetNextBlockDifficulty(chain)
             );
+        }
+
+        [Fact]
+        public async Task GetMinTransactionsPerBlock()
+        {
+            const int policyLimit = 2;
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var policy = new BlockPolicy<DumbAction>(
+                blockAction: new MinerReward(1),
+                getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
+            var privateKey = new PrivateKey();
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+
+            _ = chain.MakeTransaction(privateKey, new DumbAction[] { });
+            Assert.Single(chain.ListStagedTransactions());
+
+            // Tests if MineBlock() method will throw an exception if less than the minimum
+            // transactions are present
+            await Assert.ThrowsAsync<OperationCanceledException>(
+                async () => await chain.MineBlock(new PrivateKey()));
+        }
+
+        [Fact]
+        public async Task GetMaxTransactionsPerBlock()
+        {
+            const int generatedTxCount = 10;
+            const int policyLimit = 2;
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var policy = new BlockPolicy<DumbAction>(
+                getMaxTransactionsPerBlock: _ => policyLimit);
+            var privateKey = new PrivateKey();
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+
+            _ = Enumerable
+                    .Range(0, generatedTxCount)
+                    .Select(_ => chain.MakeTransaction(privateKey, new DumbAction[] { }))
+                    .ToList();
+            Assert.Equal(generatedTxCount, chain.ListStagedTransactions().Count);
+
+            var block = await chain.MineBlock(privateKey);
+            Assert.Equal(policyLimit, block.Transactions.Count);
+        }
+
+        [Fact]
+        public async Task GetMaxTransactionsPerSignerPerBlock()
+        {
+            const int keyCount = 2;
+            const int generatedTxCount = 10;
+            const int policyLimit = 2;
+
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var policy = new BlockPolicy<DumbAction>(
+                getMaxTransactionsPerSignerPerBlock: _ => policyLimit);
+            var privateKeys = Enumerable.Range(0, keyCount).Select(_ => new PrivateKey()).ToList();
+            var minerKey = privateKeys.First();
+            var chain = TestUtils.MakeBlockChain(policy, store, stateStore);
+
+            privateKeys.ForEach(
+                key => _ = Enumerable
+                    .Range(0, generatedTxCount)
+                    .Select(_ => chain.MakeTransaction(key, new DumbAction[] { }))
+                    .ToList());
+            Assert.Equal(generatedTxCount * keyCount, chain.ListStagedTransactions().Count);
+
+            var block = await chain.MineBlock(minerKey);
+            Assert.Equal(policyLimit * keyCount, block.Transactions.Count);
+            privateKeys.ForEach(
+                key => Assert.Equal(
+                    policyLimit,
+                    block.Transactions.Count(tx => tx.Signer.Equals(key.ToAddress()))));
         }
     }
 }
