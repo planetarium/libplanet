@@ -125,6 +125,24 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task RunConsensusReactorIfOptionGiven()
+        {
+            Swarm<DumbAction> swarmA = CreateSwarm();
+            Swarm<DumbAction> swarmB = CreateConsensusSwarm();
+
+            await StartAsync(swarmA);
+            await StartAsync(swarmB);
+
+            Assert.True(swarmA.Running);
+            Assert.True(swarmB.Running);
+            Assert.False(swarmA.ConsensusRunning);
+            Assert.True(swarmB.ConsensusRunning);
+
+            await StopAsync(swarmA);
+            await StopAsync(swarmB);
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task StopAsyncTest()
         {
             Swarm<DumbAction> swarm = CreateSwarm();
