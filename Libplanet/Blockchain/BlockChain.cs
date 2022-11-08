@@ -215,9 +215,9 @@ namespace Libplanet.Blockchain
             Store = store;
             _blockChainStates = blockChainStates;
 
-            if (_blockChainStates is BlockChainStates<T> biddableImpl)
+            if (_blockChainStates is BlockChainStates<T> bindableImpl)
             {
-                biddableImpl.Bind(this);
+                bindableImpl.Bind(this);
             }
 
             // It expects store is DefaultStore or RocksDBStore.
