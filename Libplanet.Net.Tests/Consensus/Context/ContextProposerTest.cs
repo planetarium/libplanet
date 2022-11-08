@@ -161,12 +161,18 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EndCommitBlock()
         {
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
 
             var (_, _, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
+                if (eventArgs.Step == Step.PreCommit)
+                {
+                    stepChangedToPreCommit.Set();
+                }
+
                 if (eventArgs.Step == Step.EndCommit)
                 {
                     stepChangedToEndCommit.Set();
@@ -187,15 +193,17 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await proposalSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
-            context.ProduceMessage(new ConsensusPreCommitMsg(
-                TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
-            context.ProduceMessage(new ConsensusPreCommitMsg(
-                TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
-            context.ProduceMessage(new ConsensusPreCommitMsg(
-                TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, 0, proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            TestUtils.HandleFourPeersPreVoteMessages(
+                context,
+                TestUtils.Peer1Priv,
+                proposal!.Proposal.BlockHash);
+
+            await stepChangedToPreCommit.WaitAsync();
+
+            TestUtils.HandleFourPeersPreCommitMessages(
+                context,
+                TestUtils.Peer1Priv,
+                proposal!.Proposal.BlockHash);
 
             await stepChangedToEndCommit.WaitAsync();
             Assert.Equal(proposal?.BlockHash, context.GetBlockCommit()?.BlockHash);

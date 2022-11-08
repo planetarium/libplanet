@@ -259,18 +259,31 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Committing the block to the <see cref="BlockChain{T}"/>.
+        /// Committing the block to the <see cref="BlockChain{T}"/> and saves
+        /// <see cref="BlockCommit"/> of currently committed height.
         /// </summary>
+        /// <param name="lastCommit">A <see cref="BlockCommit"/> created from committed height.
+        /// </param>
         /// <param name="block">A <see cref="Block{T}"/> to committing to the
         /// <see cref="BlockChain{T}"/>.
         /// </param>
         /// <remarks>the method is called when a block is voted by <see cref="Context{T}"/>
         /// in <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>.
         /// </remarks>
-        public void Commit(Block<T> block)
+        public void Commit(BlockCommit? lastCommit, Block<T> block)
         {
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block);
+            if (lastCommit is null)
+            {
+                return;
+            }
+
+            _logger.Debug(
+                "Saving LastCommit of height #{Height} and round #{Round}.",
+                lastCommit.Height,
+                lastCommit.Round);
+            _blockChain.Store.PutLastCommit(lastCommit);
         }
 
         /// <summary>

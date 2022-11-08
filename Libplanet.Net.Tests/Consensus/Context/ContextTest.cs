@@ -162,58 +162,5 @@ namespace Libplanet.Net.Tests.Consensus.Context
             await exceptionOccurred.WaitAsync();
             Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
         }
-
-        [Fact(Timeout = Timeout)]
-        public async void PutLastCommitWhenDispose()
-        {
-            var codec = new Codec();
-            var stepChangedToPreCommit = new AsyncAutoResetEvent();
-            var stepChangedToEndCommit = new AsyncAutoResetEvent();
-            ConsensusProposalMsg? proposal = null;
-            var proposalSent = new AsyncAutoResetEvent();
-
-            var (_, blockChain, context) = TestUtils.CreateDummyContext();
-            context.StateChanged += (_, eventArgs) =>
-            {
-                if (eventArgs.Step == Step.PreCommit)
-                {
-                    stepChangedToPreCommit.Set();
-                }
-
-                if (eventArgs.Step == Step.EndCommit)
-                {
-                    stepChangedToEndCommit.Set();
-                }
-            };
-            context.MessageBroadcasted += (_, message) =>
-            {
-                if (message is ConsensusProposalMsg proposalMsg)
-                {
-                    proposal = proposalMsg;
-                    proposalSent.Set();
-                }
-            };
-
-            context.Start();
-            await proposalSent.WaitAsync();
-            Assert.NotNull(proposal);
-            Block<DumbAction> proposedBlock = BlockMarshaler.UnmarshalBlock<DumbAction>(
-                (Dictionary)codec.Decode(proposal!.Proposal.MarshaledBlock));
-
-            TestUtils.HandleFourPeersPreVoteMessages(
-                context,
-                TestUtils.Peer1Priv,
-                proposedBlock!.Hash);
-            await stepChangedToPreCommit.WaitAsync();
-
-            TestUtils.HandleFourPeersPreCommitMessages(
-                context,
-                TestUtils.Peer1Priv,
-                proposedBlock!.Hash);
-            await stepChangedToEndCommit.WaitAsync();
-
-            context.Dispose();
-            Assert.NotNull(blockChain.Store.GetLastCommit(1));
-        }
     }
 }

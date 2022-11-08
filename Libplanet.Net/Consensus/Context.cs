@@ -213,20 +213,6 @@ namespace Libplanet.Net.Consensus
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
         {
-            // Save the current height LastCommit before disposing.
-            // XXX: The reasons why it is seperated from ConsensusContext.NewHeight() is
-            // that prevents the lost LastCommit while in termination of program. This is the
-            // attempt of saving LastCommit as much as possible.
-            // https://github.com/planetarium/libplanet/pull/2472
-            if (GetBlockCommit() is BlockCommit currentLastCommit)
-            {
-                _blockChain.Store.PutLastCommit(currentLastCommit);
-                _logger.Debug(
-                    "Saving current height #{Height} and round {Round} LastCommit...",
-                    currentLastCommit.Height,
-                    currentLastCommit.Round);
-            }
-
             _cancellationTokenSource.Cancel();
             _messageRequests.Writer.TryComplete();
             _mutationRequests.Writer.TryComplete();
