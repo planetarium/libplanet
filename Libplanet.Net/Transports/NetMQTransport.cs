@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -391,13 +392,13 @@ namespace Libplanet.Net.Transports
                 timerCts.CancelAfter(timeoutNotNull);
             }
 
-            using CancellationTokenSource cts =
+            using CancellationTokenSource linkedCts =
                 CancellationTokenSource.CreateLinkedTokenSource(
                     _runtimeCancellationTokenSource.Token,
                     cancellationToken,
                     timerCts.Token
                 );
-            CancellationToken linkedToken = cts.Token;
+            CancellationToken linkedCt = linkedCts.Token;
 
             Guid reqId = Guid.NewGuid();
             try
@@ -410,8 +411,6 @@ namespace Libplanet.Net.Transports
                     message
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
-                using CancellationTokenRegistration cancelRegistration =
-                    linkedToken.Register(() => tcs.TrySetCanceled());
                 Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
@@ -419,11 +418,12 @@ namespace Libplanet.Net.Transports
                     peer,
                     now,
                     expectedResponses,
-                    tcs
+                    tcs,
+                    linkedCt
                 );
                 await _requests.Writer.WriteAsync(
                     req,
-                    linkedToken
+                    linkedCt
                 );
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
@@ -480,7 +480,8 @@ namespace Libplanet.Net.Transports
                 e is InvalidMessageSignatureException ||
                 e is InvalidMessageTimestampException ||
                 e is DifferentAppProtocolVersionException ||
-                e is TimeoutException)
+                e is TimeoutException ||
+                e is SocketException)
             {
                 throw WrapCommunicationFailException(e, peer, message, reqId);
             }
@@ -710,13 +711,6 @@ namespace Libplanet.Net.Transports
                 {
                     await ProcessRequest(req, cancellationToken);
                 }
-                catch (OperationCanceledException)
-                {
-                    _logger.Information(
-                        "Cancellation requested; shutting down {FName}()...",
-                        nameof(ProcessRuntime));
-                    throw;
-                }
                 catch (Exception e)
                 {
                     _logger.Error(
@@ -776,6 +770,11 @@ namespace Libplanet.Net.Transports
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+            CancellationToken reqCt = req.CancellationToken;
+            using CancellationTokenSource linkedCts =
+                CancellationTokenSource.CreateLinkedTokenSource(reqCt, cancellationToken);
+            CancellationToken linkedCt = linkedCts.Token;
+
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}",
                 req.Message,
@@ -818,7 +817,7 @@ namespace Libplanet.Net.Transports
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
                     NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken
+                        cancellationToken: linkedCt
                     );
                     _logger.Verbose(
                         "Received a raw message with {FrameCount} frames as a reply to " +
@@ -874,23 +873,16 @@ namespace Libplanet.Net.Transports
 
                 tcs.TrySetResult(result);
             }
-            catch (Exception e) when (
-                e is SendMessageFailException ||
-                e is InvalidMessageSignatureException ||
-                e is InvalidMessageTimestampException ||
-                e is DifferentAppProtocolVersionException ||
-                e is TimeoutException)
+            catch when (result.Count > 0)
+            {
+                // it means that `SendMessageAsync()` will return the remaining result even has
+                // faced an exception or cancellation. it seems a little bit of weird behavior.
+                // but we already have `CanFillWithInvalidTransaction()` test. so fit there.
+                tcs.SetResult(result);
+            }
+            catch (Exception e)
             {
                 tcs.TrySetException(e);
-            }
-            catch (Exception ae)
-            {
-                var se = new SendMessageFailException(
-                    $"Unexpected exception occurred during {nameof(ProcessRequest)}().",
-                    req.Peer,
-                    ae
-                );
-                tcs.TrySetException(se);
             }
             finally
             {
@@ -974,7 +966,8 @@ namespace Libplanet.Net.Transports
                 BoundPeer peer,
                 DateTimeOffset requestedTime,
                 in int expectedResponses,
-                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
+                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource,
+                CancellationToken cancellationToken)
             {
                 Id = id;
                 Message = message;
@@ -982,6 +975,7 @@ namespace Libplanet.Net.Transports
                 RequestedTime = requestedTime;
                 ExpectedResponses = expectedResponses;
                 TaskCompletionSource = taskCompletionSource;
+                CancellationToken = cancellationToken;
             }
 
             public Guid Id { get; }
@@ -995,6 +989,8 @@ namespace Libplanet.Net.Transports
             public int ExpectedResponses { get; }
 
             public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
+
+            public CancellationToken CancellationToken { get; }
         }
     }
 }
