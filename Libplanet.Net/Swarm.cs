@@ -207,6 +207,8 @@ namespace Libplanet.Net
 
         public bool Running => Transport?.Running ?? false;
 
+        public bool ConsensusRunning => _consensusReactor?.Running ?? false;
+
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
         public Address Address => _privateKey.ToAddress();
