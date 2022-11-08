@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
+using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
@@ -157,13 +158,76 @@ namespace Libplanet.Net.Tests.Consensus
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async void AddPeerWithHaveMessage()
+        {
+            var key1 = new PrivateKey();
+            var key2 = new PrivateKey();
+            var received = false;
+            var receivedEvent = new AsyncAutoResetEvent();
+            var transport1 = CreateTransport(key1, 6001);
+
+            async Task HandleMessage(Message message)
+            {
+                received = true;
+                receivedEvent.Set();
+                await Task.Yield();
+            }
+
+            transport1.ProcessMessageHandler.Register(HandleMessage);
+            var gossip = new Gossip(
+                transport1,
+                ImmutableArray<BoundPeer>.Empty,
+                ImmutableArray<BoundPeer>.Empty,
+                _ => { },
+                TimeSpan.FromMinutes(2));
+            var transport2 = CreateTransport(key2, 6002);
+            try
+            {
+                _ = gossip.StartAsync(default);
+                _ = transport2.StartAsync(default);
+                await gossip.WaitForRunningAsync();
+                await transport2.WaitForRunningAsync();
+
+                await transport2.SendMessageAsync(
+                    gossip.AsPeer,
+                    new HaveMessage(Array.Empty<MessageId>()),
+                    TimeSpan.FromSeconds(1),
+                    default);
+
+                await receivedEvent.WaitAsync();
+                Assert.True(received);
+                Assert.Contains(transport2.AsPeer, gossip.Peers);
+            }
+            finally
+            {
+                await gossip.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                await transport2.StopAsync(TimeSpan.FromMilliseconds(100), default);
+                gossip.Dispose();
+                transport2.Dispose();
+            }
+        }
+
         private Gossip CreateGossip(
             Action<Message> processMessage,
             PrivateKey? privateKey = null,
             int? port = null,
             IEnumerable<BoundPeer>? peers = null)
         {
-            var transport = NetMQTransport.Create(
+            var transport = CreateTransport(privateKey, port);
+            return new Gossip(
+                transport,
+                peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
+                ImmutableArray<BoundPeer>.Empty,
+                processMessage,
+                TimeSpan.FromMinutes(2));
+        }
+
+        private NetMQTransport CreateTransport(
+            PrivateKey? privateKey = null,
+            int? port = null)
+        {
+            return NetMQTransport.Create(
                 privateKey ?? new PrivateKey(),
                 TestUtils.AppProtocolVersion,
                 null,
@@ -172,12 +236,6 @@ namespace Libplanet.Net.Tests.Consensus
                 port,
                 null,
                 null).ConfigureAwait(false).GetAwaiter().GetResult();
-            return new Gossip(
-                transport,
-                peers?.ToImmutableArray() ?? ImmutableArray<BoundPeer>.Empty,
-                ImmutableArray<BoundPeer>.Empty,
-                processMessage,
-                TimeSpan.FromMinutes(2));
         }
     }
 }
