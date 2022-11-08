@@ -74,6 +74,41 @@ namespace Libplanet.Net.Tests
             return (blocks[1].Transactions.First().CustomActions.First().TargetAddress, blocks);
         }
 
+        private Swarm<DumbAction> CreateConsensusSwarm(
+            PrivateKey privateKey = null,
+            AppProtocolVersion? appProtocolVersion = null,
+            string host = null,
+            int? listenPort = null,
+            IEnumerable<IceServer> iceServers = null,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions options = null,
+            IBlockPolicy<DumbAction> policy = null,
+            Block<DumbAction> genesis = null,
+            ConsensusReactorOption? consensusReactorOption = null)
+        {
+            return CreateSwarm(
+                privateKey,
+                appProtocolVersion,
+                host,
+                listenPort,
+                iceServers,
+                differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners,
+                options,
+                policy,
+                genesis,
+                consensusReactorOption ?? new ConsensusReactorOption
+            {
+                SeedPeers = ImmutableList<BoundPeer>.Empty,
+                ConsensusPeers = ImmutableList<BoundPeer>.Empty,
+                ConsensusPort = 0,
+                ConsensusPrivateKey = new PrivateKey(),
+                ConsensusWorkers = 100,
+                TargetBlockInterval = TimeSpan.FromSeconds(10),
+            });
+        }
+
         private Swarm<DumbAction> CreateSwarm(
             PrivateKey privateKey = null,
             AppProtocolVersion? appProtocolVersion = null,
@@ -143,15 +178,7 @@ namespace Libplanet.Net.Tests
                 differentAppProtocolVersionEncountered: differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners: trustedAppProtocolVersionSigners,
                 options: options,
-                consensusOption: consensusReactorOption ?? new ConsensusReactorOption
-                {
-                    SeedPeers = ImmutableList<BoundPeer>.Empty,
-                    ConsensusPeers = ImmutableList<BoundPeer>.Empty,
-                    ConsensusPort = 0,
-                    ConsensusPrivateKey = new PrivateKey(),
-                    ConsensusWorkers = 100,
-                    TargetBlockInterval = TimeSpan.FromSeconds(10),
-                });
+                consensusOption: consensusReactorOption);
             _finalizers.Add(async () =>
             {
                 try
