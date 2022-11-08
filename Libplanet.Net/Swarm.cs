@@ -415,7 +415,11 @@ namespace Libplanet.Net
                         _cancellationToken
                     )
                 );
-                tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                if (_consensusReactor is { })
+                {
+                    tasks.Add(_consensusReactor.StartAsync(_cancellationToken));
+                }
+
                 _logger.Debug("Swarm started.");
 
                 await await Task.WhenAny(tasks);
