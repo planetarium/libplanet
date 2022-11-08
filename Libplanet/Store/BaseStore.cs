@@ -184,22 +184,30 @@ namespace Libplanet.Store
             );
             var favDelta = SerializeGroupedFAVs(txSuccess.FungibleAssetsDelta);
             var updatedFAVs = SerializeGroupedFAVs(txSuccess.UpdatedFungibleAssets);
-            var actionLogsList = SerializeLogs(txSuccess.ActionsLogsList);
-            return Dictionary.Empty
+            var serialized = Dictionary.Empty
                 .Add("fail", false)
                 .Add("sDelta", sDelta)
                 .Add("favDelta", new Dictionary(favDelta))
-                .Add("updatedFAVs", new Dictionary(updatedFAVs))
-                .Add("actionLogsList", actionLogsList);
+                .Add("updatedFAVs", new Dictionary(updatedFAVs));
+
+            if (txSuccess.ActionsLogsList is { } actionsLogsList)
+            {
+                serialized = serialized.Add("actionsLogsList", SerializeLogs(actionsLogsList));
+            }
+
+            return serialized;
         }
 
         protected static IValue SerializeTxExecution(TxFailure txFailure)
         {
-            var actionLogsList = SerializeLogs(txFailure.ActionsLogsList);
             Dictionary d = Dictionary.Empty
                 .Add("fail", true)
-                .Add("exc", txFailure.ExceptionName)
-                .Add("actionLogsList", actionLogsList);
+                .Add("exc", txFailure.ExceptionName);
+
+            if (txFailure.ActionsLogsList is { } actionsLogsList)
+            {
+                d = d.Add("actionsLogsList", SerializeLogs(txFailure.ActionsLogsList));
+            }
 
             return txFailure.ExceptionMetadata is { } v ? d.Add("excMeta", v) : d;
         }
@@ -222,8 +230,14 @@ namespace Libplanet.Store
             try
             {
                 bool fail = d.GetValue<Bencodex.Types.Boolean>("fail");
-                List<List<string>> actionLogsList =
-                    DeserializeLogs(d.GetValue<List>("actionLogsList"));
+
+                List<List<string>> actionLogsList = null;
+                if (d.ContainsKey("actionsLogsList"))
+                {
+                    actionLogsList =
+                        DeserializeLogs(d.GetValue<List>("actionsLogsList"));
+                }
+
                 if (fail)
                 {
                     string excName = d.GetValue<Text>("exc");
@@ -286,7 +300,7 @@ namespace Libplanet.Store
 
         private static List<List<string>> DeserializeLogs(
             Bencodex.Types.List serialized) =>
-            serialized.Cast<List>().Select(l => l.Cast<string>().ToList()).ToList();
+            serialized.Cast<List>().Select(l => l.Select(x => (string)(Text)x).ToList()).ToList();
 
         private static Bencodex.Types.List SerializeFAVs(
             IImmutableDictionary<Currency, FungibleAssetValue> favs

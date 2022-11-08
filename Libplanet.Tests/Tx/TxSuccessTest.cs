@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -66,7 +65,7 @@ namespace Libplanet.Tests.Tx
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,
-                new List<List<string>>(),
+                null,
                 _updatedStates,
                 _fungibleAssetsDelta,
                 _updatedFungibleAssets

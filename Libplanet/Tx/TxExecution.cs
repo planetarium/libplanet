@@ -31,7 +31,7 @@ namespace Libplanet.Tx
         private protected TxExecution(
             BlockHash blockHash,
             TxId txId,
-            List<List<string>> actionsLogsList
+            List<List<string>>? actionsLogsList
         )
         {
             BlockHash = blockHash;
@@ -56,7 +56,7 @@ namespace Libplanet.Tx
         /// The logs recorded while executing <see cref="Transaction{T}"/>'s actions.
         /// </summary>
         [Pure]
-        public List<List<string>> ActionsLogsList { get; }
+        public List<List<string>>? ActionsLogsList { get; }
 
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
