@@ -91,6 +91,62 @@ Version PBFT
 ### CLI tools
 
 
+Version 0.45.0
+--------------
+
+To be released.
+
+### Deprecated APIs
+
+ -  Removed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, bool, long,
+    int, int, IComparer<Transaction<T>>, CancellationToken?)` by making
+    it `internal`.  [[#2529]]
+
+### Backward-incompatible API changes
+
+ -  Changed `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?, long?,
+    int?, int?, IComparer<Transaction<T>>, CancellationToken?)` to
+    `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?,
+    IComparer<Transaction<T>>, CancellationToken?)` by removing policy
+    controlled parameters.  [[#2529]]
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+- Added `BlockChainStates<T>` class.  [[#2507]]
+- Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
+  and `ActionEvaluator<T>` directly.  [[#2507]]
+
+[#2507]: https://github.com/planetarium/libplanet/pull/2507
+
+### Behavioral changes
+
+### Bug fixes
+
+ -  (Libplanet.Net) Fixed a bug where `AppProtocolVersion.GetHashCode()`
+    did not work as intended.  [[#2518], [#2520]]
+
+### Dependencies
+
+### CLI tools
+
+[#2518]: https://github.com/planetarium/libplanet/issues/2518
+[#2520]: https://github.com/planetarium/libplanet/pull/2520
+[#2529]: https://github.com/planetarium/libplanet/pull/2529
+
+
+Version 0.44.1
+--------------
+
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+
 Version 0.44.0
 --------------
 
@@ -146,6 +202,18 @@ Released on November 2, 2022.
 [#2459]: https://github.com/planetarium/libplanet/pull/2459
 [#2456]: https://github.com/planetarium/libplanet/issues/2456
 [#2457]: https://github.com/planetarium/libplanet/pull/2457
+
+
+Version 0.43.3
+--------------
+
+Released on November 7, 2022.
+
+ - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+
+[#2424]: https://github.com/planetarium/libplanet/issues/2424
+[#2521]: https://github.com/planetarium/libplanet/pulls/2521
 
 
 Version 0.43.2

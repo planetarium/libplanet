@@ -259,7 +259,7 @@ namespace Libplanet.Net
             {
                 hash *= 31 + Version.GetHashCode();
                 hash *= 31 + (Extra is null ? 0 : Extra.GetHashCode());
-                hash *= 31 + Signature.GetHashCode();
+                hash *= 31 + ByteUtil.CalculateHashCode(Signature.ToArray());
                 hash *= 31 + Signer.GetHashCode();
             }
 

@@ -29,14 +29,6 @@ namespace Libplanet.Blockchain
         /// <param name="proposer">
         /// The proposer's <see cref="PublicKey"/> that proposes the block.</param>
         /// <param name="timestamp">The <see cref="DateTimeOffset"/> when proposing started.</param>
-        /// <param name="maxTransactionsBytes">The maximum number of bytes a block can have.
-        /// See also <see cref="IBlockPolicy{T}.GetMaxTransactionsBytes(long)"/>.</param>
-        /// <param name="maxTransactions">The maximum number of transactions that a block can
-        /// accept.  See also <see cref="IBlockPolicy{T}.GetMaxTransactionsPerBlock(long)"/>.
-        /// </param>
-        /// <param name="maxTransactionsPerSigner">The maximum number of transactions
-        /// that a block can accept per signer.  See also
-        /// <see cref="IBlockPolicy{T}.GetMaxTransactionsPerSignerPerBlock(long)"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
         /// priority to belong to the block.  No certain priority by default.</param>
         /// <param name="lastCommit"><see cref="BlockCommit"/> of previous <see cref="Block{T}"/>.
@@ -47,24 +39,16 @@ namespace Libplanet.Blockchain
         public Block<T> ProposeBlock(
             PrivateKey proposer,
             DateTimeOffset? timestamp = null,
-            long? maxTransactionsBytes = null,
-            int? maxTransactions = null,
-            int? maxTransactionsPerSigner = null,
             IComparer<Transaction<T>> txPriority = null,
             BlockCommit lastCommit = null) =>
-#pragma warning disable SA1118
             ProposeBlock(
                 proposer: proposer,
                 timestamp: timestamp ?? DateTimeOffset.UtcNow,
-                maxTransactionsBytes: maxTransactionsBytes
-                    ?? Policy.GetMaxTransactionsBytes(Count),
-                maxTransactions: maxTransactions
-                    ?? Policy.GetMaxTransactionsPerBlock(Count),
-                maxTransactionsPerSigner: maxTransactionsPerSigner
-                    ?? Policy.GetMaxTransactionsPerSignerPerBlock(Count),
+                maxTransactionsBytes: Policy.GetMaxTransactionsBytes(Count),
+                maxTransactions: Policy.GetMaxTransactionsPerBlock(Count),
+                maxTransactionsPerSigner: Policy.GetMaxTransactionsPerSignerPerBlock(Count),
                 txPriority: txPriority,
                 lastCommit: lastCommit);
-#pragma warning restore SA1118
 
         /// <summary>
         /// Proposes a next <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.

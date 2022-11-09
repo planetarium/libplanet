@@ -23,16 +23,6 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ProposeBlock()
         {
-            DumbAction[] fewActions =
-                Enumerable.Repeat(new DumbAction(default, "_"), 2).ToArray();
-
-            var signingKey = new PrivateKey();
-            Transaction<DumbAction> lightTx = _fx.MakeTransaction(
-                    fewActions,
-                    nonce: 10, // Nonce too high - won't add to block
-                    privateKey: signingKey);
-            _blockChainMinTx.StageTransaction(lightTx);
-
             Func<long, long> getMaxTransactionsBytes = _blockChain.Policy.GetMaxTransactionsBytes;
             Assert.Equal(1, _blockChain.Count);
             AssertBencodexEqual((Text)$"{GenesisMiner.ToAddress()}", _blockChain.GetState(default));
@@ -116,53 +106,6 @@ namespace Libplanet.Tests.Blockchain
                 (Text)$"{GenesisMiner.ToAddress()},{minerA.ToAddress()},{minerB.ToAddress()}",
                 _blockChain.GetState(default)
             );
-        }
-
-        [Fact]
-        public void ProposeBlockWithTxBatchSize()
-        {
-            List<PrivateKey> privateKeys = Enumerable.Range(0, 3)
-                .Select(_ => new PrivateKey()).ToList();
-            Assert.Equal(1, _blockChain.Count);
-            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
-            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
-            _blockChain.MakeTransaction(privateKeys[0], new DumbAction[0]);
-            _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
-            _blockChain.MakeTransaction(privateKeys[1], new DumbAction[0]);
-            _blockChain.MakeTransaction(privateKeys[2], new DumbAction[0]);
-
-            Block<DumbAction> block = _blockChain.ProposeBlock(
-                privateKeys[0], maxTransactions: 1);
-            _blockChain.Append(block);
-            Assert.Single(block.Transactions);
-            Assert.Equal(5, _blockChain.GetStagedTransactionIds().Count);
-
-            Block<DumbAction> block2 = _blockChain.ProposeBlock(
-                privateKeys[1],
-                DateTimeOffset.UtcNow,
-                maxTransactions: 2,
-                lastCommit: CreateLastCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
-            _blockChain.Append(block2);
-            Assert.Equal(2, block2.Transactions.Count());
-            Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
-
-            Block<DumbAction> block3 = _blockChain.ProposeBlock(
-                privateKeys[2],
-                maxTransactions: 4,
-                lastCommit: CreateLastCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
-            Assert.Equal(3, block3.Transactions.Count());
-            Assert.Equal(3, _blockChain.GetStagedTransactionIds().Count);
-            _blockChain.Append(block3);
-            Assert.Equal(0, _blockChain.GetStagedTransactionIds().Count);
-        }
-
-        [Fact]
-        public void ProposeBlockWithInsufficientTxs()
-        {
-            // Tests if ProposeBlock() method will throw an exception if less than the minimum
-            // transactions are present
-            Assert.Throws<OperationCanceledException>(
-                () => _blockChainMinTx.ProposeBlock(new PrivateKey()));
         }
 
         [Fact]
@@ -318,11 +261,8 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Theory]
-        [InlineData(3)]
-        [InlineData(2)]
-        [InlineData(1)]
-        public void ProposeBlockWithReverseNonces(int maxTxs)
+        [Fact]
+        public void ProposeBlockWithReverseNonces()
         {
             var key = new PrivateKey();
             var txs = new[]
@@ -348,9 +288,8 @@ namespace Libplanet.Tests.Blockchain
             };
             StageTransactions(txs);
             Block<DumbAction> block = _blockChain.ProposeBlock(
-                new PrivateKey(),
-                maxTransactions: maxTxs);
-            Assert.Equal(maxTxs, block.Transactions.Count());
+                new PrivateKey());
+            Assert.Equal(txs.Length, block.Transactions.Count());
         }
 
         [Fact]
@@ -441,130 +380,41 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ProposeBlockWithMaxTransactions()
-        {
-            Assert.Equal(1, _blockChain.Count);
-
-            const int numKeys = 3;
-            const int redundancy = 16;
-            const int maxTransactions = 16;
-
-            Random random = new Random();
-            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
-                .Select(_ => new PrivateKey()).ToList();
-            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
-                .Select(_ => redundancy)
-                .SelectMany(
-                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
-                .OrderBy(_ => random.Next())
-                .Select(index => privateKeys[index]).ToList();
-
-            foreach (var key in shuffledKeysWithRedundancy)
-            {
-                _blockChain.MakeTransaction(key, new DumbAction[0]);
-            }
-
-            Assert.True(
-                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
-            );
-
-            // These assume there will be enough time to propose as many transactions as
-            // possible.
-            Block<DumbAction> block;
-            block = _blockChain.ProposeBlock(new PrivateKey());
-            Assert.True(block.Transactions.Count > maxTransactions);
-            block = _blockChain.ProposeBlock(new PrivateKey(), maxTransactions: maxTransactions);
-            Assert.Equal(block.Transactions.Count, maxTransactions);
-        }
-
-        [Fact]
-        public void ProposeBlockWithMaxTransactionsPerSigner()
-        {
-            Assert.Equal(1, _blockChain.Count);
-
-            const int numKeys = 3;
-            const int redundancy = 16;
-            const int maxTransactions = 16;
-            const int maxTransactionsPerSigner = 4;
-
-            Random random = new Random();
-            List<PrivateKey> privateKeys = Enumerable.Range(0, numKeys)
-                .Select(_ => new PrivateKey()).ToList();
-            List<PrivateKey> shuffledKeysWithRedundancy = Enumerable.Range(0, numKeys)
-                .Select(_ => redundancy)
-                .SelectMany(
-                    (int count, int index) => Enumerable.Range(0, count).Select(_ => index))
-                .OrderBy(_ => random.Next())
-                .Select(index => privateKeys[index]).ToList();
-
-            foreach (var key in shuffledKeysWithRedundancy)
-            {
-                _blockChain.MakeTransaction(key, new DumbAction[0]);
-            }
-
-            Assert.True(
-                _blockChain.Policy.GetMaxTransactionsPerBlock(_blockChain.Count) > maxTransactions
-            );
-
-            // These assume there will be enough time to propose as many transactions as
-            // possible.
-            Block<DumbAction> block = _blockChain.ProposeBlock(
-                new PrivateKey(),
-                maxTransactions: maxTransactions,
-                maxTransactionsPerSigner: maxTransactionsPerSigner);
-            foreach (var group in block.Transactions.GroupBy(tx => tx.Signer))
-            {
-                Assert.Equal(group.Count(), maxTransactionsPerSigner);
-            }
-        }
-
-        [Fact]
         public void ProposeBlockWithTxPriority()
         {
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
             var keyC = new PrivateKey();
-            Address a = keyA.ToAddress();
-            Address b = keyB.ToAddress();
-            Address c = keyC.ToAddress();
-            _logger.Verbose("Address {Name}: {Address}", nameof(a), a);
-            _logger.Verbose("Address {Name}: {Address}", nameof(b), b);
-            _logger.Verbose("Address {Name}: {Address}", nameof(c), c);
-
-            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 3)
+            Address a = keyA.ToAddress(); // Rank 0
+            Address b = keyB.ToAddress(); // Rank 1
+            Address c = keyC.ToAddress(); // Rank 2
+            int Rank(Address address) => address.Equals(a) ? 0 : address.Equals(b) ? 1 : 2;
+            Transaction<DumbAction>[] txsA = Enumerable.Range(0, 50)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyA))
                 .ToArray();
-            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 4)
+            Transaction<DumbAction>[] txsB = Enumerable.Range(0, 60)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyB))
                 .ToArray();
-            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 2)
+            Transaction<DumbAction>[] txsC = Enumerable.Range(0, 40)
                 .Select(nonce => _fx.MakeTransaction(nonce: nonce, privateKey: keyC))
                 .ToArray();
+
             var random = new Random();
             Transaction<DumbAction>[] txs =
                 txsA.Concat(txsB).Concat(txsC).Shuffle(random).ToArray();
-            Assert.Empty(_blockChain.ListStagedTransactions());
             StageTransactions(txs);
+            Assert.Equal(txs.Length, _blockChain.ListStagedTransactions().Count);
 
             IComparer<Transaction<DumbAction>> txPriority =
                 Comparer<Transaction<DumbAction>>.Create((tx1, tx2) =>
-                {
-                    int rank1 = tx1.Signer.Equals(a) ? 0 : (tx1.Signer.Equals(b) ? 1 : 2);
-                    int rank2 = tx2.Signer.Equals(a) ? 0 : (tx2.Signer.Equals(b) ? 1 : 2);
-                    return rank1.CompareTo(rank2);
-                });
-
+                    Rank(tx1.Signer).CompareTo(Rank(tx2.Signer)));
             Block<DumbAction> block = _blockChain.ProposeBlock(
                 new PrivateKey(),
-                maxTransactions: 5,
-                maxTransactionsPerSigner: 3,
                 txPriority: txPriority);
-            _blockChain.Append(block);
-            Assert.Equal(5, block.Transactions.Count);
+            Assert.Equal(100, block.Transactions.Count);
             Assert.Equal(
-                txsA.Concat(txsB.Take(2)).Select(tx => tx.Id).ToHashSet(),
-                block.Transactions.Select(tx => tx.Id).ToHashSet()
-            );
+                txsA.Concat(txsB.Take(50)).Select(tx => tx.Id).ToHashSet(),
+                block.Transactions.Select(tx => tx.Id).ToHashSet());
         }
 
         [Fact]
