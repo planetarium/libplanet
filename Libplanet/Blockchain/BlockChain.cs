@@ -22,17 +22,19 @@ using static Libplanet.Blockchain.KeyConverters;
 
 namespace Libplanet.Blockchain
 {
+#pragma warning disable MEN002
     /// <summary>
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
     /// <para>In order to watch its state changes, implement <see cref="IRenderer{T}"/>
-    /// interface and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T},
-    /// IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})"/> constructor.</para>
+    /// interface and pass it to the <see cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})"/> constructor.</para>
     /// </summary>
     /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
     /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    ///
+#pragma warning restore MEN002
     public partial class BlockChain<T> : IBlockChainStates<T>
         where T : IAction, new()
     {
@@ -44,6 +46,7 @@ namespace Libplanet.Blockchain
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
         private readonly ILogger _logger;
+        private readonly IBlockChainStates<T> _blockChainStates;
 
         /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
@@ -93,9 +96,76 @@ namespace Libplanet.Blockchain
                 stagePolicy,
                 store,
                 stateStore,
+                genesisBlock,
+                renderers,
+                new BlockChainStates<T>(store, stateStore)
+            )
+        {
+        }
+
+#pragma warning disable MEN002
+#pragma warning disable CS1573
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}})" />
+        /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> implementation to state lookup.</param>
+        public BlockChain(
+            IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
+            IStore store,
+            IStateStore stateStore,
+            Block<T> genesisBlock,
+            IEnumerable<IRenderer<T>> renderers,
+            IBlockChainStates<T> blockChainStates
+        )
+#pragma warning restore MEN002
+#pragma warning restore CS1573
+            : this(
+                policy,
+                stagePolicy,
+                store,
+                stateStore,
+                genesisBlock,
+                renderers,
+                blockChainStates,
+                new ActionEvaluator<T>(
+                    policy.BlockAction,
+                    blockChainStates: blockChainStates,
+                    trieGetter: hash => stateStore.GetStateRoot(
+                        store.GetBlockDigest(hash)?.StateRootHash
+                    ),
+                    genesisHash: genesisBlock.Hash,
+                    nativeTokenPredicate: policy.NativeTokens.Contains
+                )
+            )
+        {
+        }
+
+#pragma warning disable MEN002
+#pragma warning disable CS1573
+        /// <inheritdoc cref="BlockChain{T}(IBlockPolicy{T}, IStagePolicy{T}, IStore, IStateStore, Block{T}, IEnumerable{IRenderer{T}}, IBlockChainStates{T})" />
+        /// <param name="actionEvaluator">The <see cref="ActionEvaluator{T}" /> implementation to calculate next states when append new blocks.</param>
+        public BlockChain(
+            IBlockPolicy<T> policy,
+            IStagePolicy<T> stagePolicy,
+            IStore store,
+            IStateStore stateStore,
+            Block<T> genesisBlock,
+            IEnumerable<IRenderer<T>> renderers,
+            IBlockChainStates<T> blockChainStates,
+            ActionEvaluator<T> actionEvaluator
+        )
+#pragma warning restore MEN002
+#pragma warning restore CS1573
+            : this(
+                policy,
+                stagePolicy,
+                store,
+                stateStore,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                renderers
+                false,
+                renderers,
+                blockChainStates,
+                actionEvaluator
             )
         {
         }
@@ -107,7 +177,9 @@ namespace Libplanet.Blockchain
             IStateStore stateStore,
             Guid id,
             Block<T> genesisBlock,
-            IEnumerable<IRenderer<T>> renderers
+            IEnumerable<IRenderer<T>> renderers,
+            IBlockChainStates<T> blockChainStates,
+            ActionEvaluator<T> actionEvaluator
         )
             : this(
                 policy,
@@ -117,7 +189,9 @@ namespace Libplanet.Blockchain
                 id,
                 genesisBlock,
                 false,
-                renderers
+                renderers,
+                blockChainStates,
+                actionEvaluator
             )
         {
         }
@@ -130,13 +204,20 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            IEnumerable<IRenderer<T>> renderers
-        )
+            IEnumerable<IRenderer<T>> renderers,
+            IBlockChainStates<T> blockChainStates,
+            ActionEvaluator<T> actionEvaluator)
         {
             Id = id;
             Policy = policy;
             StagePolicy = stagePolicy;
             Store = store;
+            _blockChainStates = blockChainStates;
+
+            if (_blockChainStates is BlockChainStates<T> bindableImpl)
+            {
+                bindableImpl.Bind(this);
+            }
 
             // It expects store is DefaultStore or RocksDBStore.
             StateStore = stateStore ?? store as IStateStore;
@@ -162,13 +243,7 @@ namespace Libplanet.Blockchain
                 .ForContext<BlockChain<T>>()
                 .ForContext("Source", nameof(BlockChain<T>))
                 .ForContext("CanonicalChainId", Id);
-            ActionEvaluator = new ActionEvaluator<T>(
-                Policy.BlockAction,
-                blockChainStates: this,
-                trieGetter: hash => StateStore.GetStateRoot(_blocks[hash].StateRootHash),
-                genesisHash: genesisBlock.Hash,
-                nativeTokenPredicate: Policy.NativeTokens.Contains
-            );
+            ActionEvaluator = actionEvaluator;
 
             if (Count == 0)
             {
@@ -522,22 +597,7 @@ namespace Libplanet.Blockchain
             IReadOnlyList<Address> addresses,
             BlockHash offset,
             StateCompleter<T> stateCompleter
-        )
-        {
-            if (Count < 1)
-            {
-                return new IValue[addresses.Count];
-            }
-
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
-            {
-                string[] rawKeys = addresses.Select(ToStateKey).ToArray();
-                return StateStore.GetStates(stateRootHash, rawKeys);
-            }
-
-            return stateCompleter(this, offset, addresses);
-        }
+        ) => _blockChainStates.GetStates(addresses, offset, stateCompleter);
 
         /// <summary>
         /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
@@ -578,26 +638,7 @@ namespace Libplanet.Blockchain
             Currency currency,
             BlockHash offset,
             FungibleAssetStateCompleter<T> stateCompleter
-        )
-        {
-            if (Count < 1)
-            {
-                return currency * 0;
-            }
-
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
-            {
-                string rawKey = ToFungibleAssetKey(address, currency);
-                IReadOnlyList<IValue> values =
-                    StateStore.GetStates(stateRootHash, new[] { rawKey });
-                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-            }
-
-            return stateCompleter(this, offset, address, currency);
-        }
+        ) => _blockChainStates.GetBalance(address, currency, offset, stateCompleter);
 
         /// <summary>
         /// Gets the total supply of a <paramref name="currency"/> in the
@@ -633,31 +674,7 @@ namespace Libplanet.Blockchain
             Currency currency,
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
-        )
-        {
-            if (!currency.TotalSupplyTrackable)
-            {
-                throw TotalSupplyNotTrackableException.WithDefaultMessage(currency);
-            }
-
-            if (Count < 1)
-            {
-                return currency * 0;
-            }
-
-            HashDigest<SHA256>? stateRootHash = Store.GetStateRootHash(offset);
-            if (stateRootHash is { } h && StateStore.ContainsStateRoot(h))
-            {
-                string rawKey = ToTotalSupplyKey(currency);
-                IReadOnlyList<IValue> values =
-                    StateStore.GetStates(stateRootHash, new[] { rawKey });
-                return values.Count > 0 && values[0] is Bencodex.Types.Integer i
-                    ? FungibleAssetValue.FromRawValue(currency, i)
-                    : currency * 0;
-            }
-
-            return stateCompleter(this, offset, currency);
-        }
+        ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
@@ -1047,7 +1064,16 @@ namespace Libplanet.Blockchain
                 ? Renderers
                 : Enumerable.Empty<IRenderer<T>>();
             var forked = new BlockChain<T>(
-                Policy, StagePolicy, Store, StateStore, Guid.NewGuid(), Genesis, true, renderers);
+                Policy,
+                StagePolicy,
+                Store,
+                StateStore,
+                Guid.NewGuid(),
+                Genesis,
+                true,
+                renderers,
+                _blockChainStates,
+                ActionEvaluator);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +

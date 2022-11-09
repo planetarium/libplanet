@@ -35,9 +35,7 @@ namespace Libplanet.Tests.Blockchain
         private readonly ILogger _logger;
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
-        private BlockPolicy<DumbAction> _policyMinTx;
         private BlockChain<DumbAction> _blockChain;
-        private BlockChain<DumbAction> _blockChainMinTx;
         private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
         private IStagePolicy<DumbAction> _stagePolicy;
@@ -62,23 +60,11 @@ namespace Libplanet.Tests.Blockchain
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
                 getValidatorSet: _ => ValidatorSet);
-            _policyMinTx = new BlockPolicy<DumbAction>(
-                blockAction: new MinerReward(1),
-                getMaxTransactionsBytes: _ => 50 * 1024,
-                getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = getStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
-                _stagePolicy,
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock,
-                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
-            );
-            _blockChainMinTx = new BlockChain<DumbAction>(
-                _policyMinTx,
                 _stagePolicy,
                 _fx.Store,
                 _fx.StateStore,
@@ -365,8 +351,10 @@ namespace Libplanet.Tests.Blockchain
                     fx.StateStore,
                     Guid.NewGuid(),
                     fx.GenesisBlock,
-                    renderers: new[] { renderer }
-                );
+                    renderers: new[] { renderer },
+                    blockChainStates: new BlockChainStates<DumbAction>(fx.Store, fx.StateStore),
+                    actionEvaluator: chain.ActionEvaluator
+                 );
                 chain.Swap(newChain, true)();
                 Assert.Empty(renderer.ActionRecords);
                 Assert.Empty(NonRehearsalExecutions());
@@ -1799,6 +1787,7 @@ namespace Libplanet.Tests.Blockchain
                 nativeTokenPredicate: blockPolicy.NativeTokens.Contains,
                 stateStore: stateStore
             );
+            var chainStates = new BlockChainStates<DumbAction>(store, stateStore);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
                 new VolatileStagePolicy<DumbAction>(),
@@ -1806,7 +1795,17 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 chainId,
                 genesisBlock,
-                renderers: renderer is null ? null : new[] { renderer }
+                renderers: renderer is null ? null : new[] { renderer },
+                blockChainStates: chainStates,
+                actionEvaluator: new ActionEvaluator<DumbAction>(
+                    blockPolicy.BlockAction,
+                    chainStates,
+                    trieGetter: hash => stateStore.GetStateRoot(
+                        store.GetBlockDigest(hash)?.StateRootHash
+                    ),
+                    genesisHash: genesisBlock.Hash,
+                    nativeTokenPredicate: blockPolicy.NativeTokens.Contains
+                )
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
