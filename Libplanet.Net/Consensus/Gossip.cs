@@ -28,6 +28,7 @@ namespace Libplanet.Net.Consensus
         private readonly IEnumerable<BoundPeer> _seeds;
         private readonly ILogger _logger;
 
+        private Func<Message, Task>? _messageHandler;
         private TaskCompletionSource<object?> _runningEvent;
         private CancellationTokenSource? _cancellationTokenSource;
         private IEnumerable<BoundPeer> _table;
@@ -109,9 +110,10 @@ namespace Libplanet.Net.Consensus
         {
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(ctx);
             Task transportTask = _transport.StartAsync(ctx);
+            _messageHandler = HandleMessageAsync(_cancellationTokenSource.Token);
+
             await _transport.WaitForRunningAsync();
-            _transport.ProcessMessageHandler.Register(
-                HandleMessageAsync(_cancellationTokenSource.Token));
+            _transport.ProcessMessageHandler.Register(_messageHandler);
             _logger.Debug("All peers are alive. Starting gossip...");
             Running = true;
             await Task.WhenAny(
@@ -130,9 +132,17 @@ namespace Libplanet.Net.Consensus
         /// <returns>An awaitable task without value.</returns>
         public async Task StopAsync(TimeSpan waitFor, CancellationToken ctx)
         {
-            _cancellationTokenSource?.Cancel();
-            await _transport.StopAsync(waitFor, ctx);
-            Running = false;
+            if (Running)
+            {
+                _cancellationTokenSource?.Cancel();
+                if (_messageHandler != null)
+                {
+                    _transport.ProcessMessageHandler.Unregister(_messageHandler);
+                }
+
+                await _transport.StopAsync(waitFor, ctx);
+                Running = false;
+            }
         }
 
         /// <inheritdoc/>
