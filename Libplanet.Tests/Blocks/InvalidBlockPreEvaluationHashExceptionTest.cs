@@ -11,8 +11,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void Serialize()
         {
-            var actual = TestUtils.GetRandomBytes(32).ToImmutableArray();
-            var expected = TestUtils.GetRandomBytes(32).ToImmutableArray();
+            var actual = TestUtils.GetRandomBytes(BlockHash.Size).ToImmutableArray();
+            var expected = TestUtils.GetRandomBytes(BlockHash.Size).ToImmutableArray();
             var exc = new InvalidBlockPreEvaluationHashException(
                 "TESTING",
                 actual,

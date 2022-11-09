@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void MarshalVote()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var vote = new VoteMetadata(
                 1,
@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void Sign()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var privateKey = new PrivateKey();
             var voteMetadata = new VoteMetadata(
                 1,
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void CannotSignWithWrongPrivateKey()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var validator = new PrivateKey().PublicKey;
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void EmptySignatureNotAllowedForPreVoteAndPreCommit()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var preVoteMetadata = new VoteMetadata(
                 height: 2,
@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void NonEmptySignatureNotAllowedForNullAndUnknown()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var nullMetadata = new VoteMetadata(
                 height: 2,
