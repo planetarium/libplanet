@@ -255,8 +255,8 @@ namespace Libplanet.Tests.Blocks
             var validatorA = new PrivateKey();
             var validatorB = new PrivateKey();
             var validatorC = new PrivateKey();
-            BlockHash blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
-            BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            BlockHash blockHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            BlockHash invalidBlockHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             DateTimeOffset timestamp = DateTimeOffset.UtcNow;
 
             // Height of the last commit is invalid.

@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ToByteArray()
         {
-            var bytes = GetRandomBytes(32);
+            var bytes = GetRandomBytes(TxId.Size);
             var txId = new TxId(bytes);
 
             Assert.Equal(bytes, txId.ToByteArray());

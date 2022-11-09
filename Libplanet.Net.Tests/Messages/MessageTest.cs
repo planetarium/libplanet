@@ -126,7 +126,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void InvalidVoteFlagConsensus()
         {
-            var blockHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var blockHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
 
             var preVote = TestUtils.CreateVote(
                 TestUtils.Peer0Priv,

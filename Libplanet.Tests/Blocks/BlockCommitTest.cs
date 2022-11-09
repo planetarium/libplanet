@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void HeightAndRoundMustNotBeNegative()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var votes = ImmutableArray<Vote>.Empty
                 .Add(new VoteMetadata(
@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void VotesCannotBeEmpty()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             Assert.Throws<ArgumentException>(() =>
                 new BlockCommit(0, 0, hash, default));
             Assert.Throws<ArgumentException>(() =>
@@ -75,7 +75,7 @@ namespace Libplanet.Tests.Blocks
         {
             var height = 2;
             var round = 3;
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
 
             // Vote with different height is not allowed.
@@ -108,8 +108,8 @@ namespace Libplanet.Tests.Blocks
         {
             var height = 2;
             var round = 3;
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
-            var badHash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
+            var badHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
 
             var votes = ImmutableArray<Vote>.Empty
@@ -128,7 +128,7 @@ namespace Libplanet.Tests.Blocks
         {
             var height = 2;
             var round = 3;
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
             var preCommitVotes = keys.Select(key => new VoteMetadata(
                 height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)
@@ -184,7 +184,7 @@ namespace Libplanet.Tests.Blocks
         {
             var height = 2;
             var round = 3;
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var keys = Enumerable.Range(0, 4).Select(_ => new PrivateKey()).ToList();
             var preCommitVotes = keys.Select(key => new VoteMetadata(
                 height, round, hash, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreCommit)

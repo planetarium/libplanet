@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void MarshalVoteMetadata()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
                 1,
@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Consensus
         [Fact]
         public void NullBlockHashNotAllowedForNullAndUnknown()
         {
-            var hash = new BlockHash(TestUtils.GetRandomBytes(32));
+            var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
 
             // Works with some hash value.
             _ = new VoteMetadata(

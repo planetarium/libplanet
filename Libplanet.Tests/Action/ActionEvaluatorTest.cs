@@ -715,7 +715,7 @@ namespace Libplanet.Tests.Action
                 ImmutableHashSet<Address>.Empty,
                 DateTimeOffset.UtcNow);
             var txs = new Transaction<ThrowException>[] { tx };
-            var hash = new BlockHash(GetRandomBytes(32));
+            var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             var actionEvaluator = new ActionEvaluator<ThrowException>(
                 policyBlockAction: null,
                 blockChainStates: NullChainStates<ThrowException>.Instance,

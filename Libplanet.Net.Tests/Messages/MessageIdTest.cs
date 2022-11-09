@@ -67,7 +67,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void ToByteArray()
         {
-            var bytes = GetRandomBytes(32);
+            var bytes = GetRandomBytes(MessageId.Size);
             var messageId = new MessageId(bytes);
 
             Assert.Equal(bytes, messageId.ToByteArray());
