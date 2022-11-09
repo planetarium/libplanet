@@ -14,12 +14,23 @@ To be released.
     arguments to be not `null`.  [[#2609]]
  -  `BlockChain<T>.Swap()` now throws an `InvalidOperationException` if called
     on a non-canonical chain.  [[#2619]]
+ -  Added `actionsLogsList` parameter to `TxSuccess` constructor.
+    [[#2474], [#2505]]
+ -  Added `actionsLogsList` parameter to `TxFailure` constructor.
+    [[#2474], [#2505]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+
+ -  Added `TxExecution.ActionsLogsList` property.  [[#2474], [#2505]]
+ -  Added `ActionEvaluation.Logs` property.  [[#2474], [#2505]]
+ -  (Libplanet.Explorer) Added `TxResult.ActionsLogsList` property.
+    [[#2474], [#2505]]
+ -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
+    [[#2474], [#2505]]
 
 ### Behavioral changes
 
@@ -29,6 +40,8 @@ To be released.
 
 ### CLI tools
 
+[#2474]: https://github.com/planetarium/libplanet/discussions/2474
+[#2505]: https://github.com/planetarium/libplanet/pull/2505
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
 
