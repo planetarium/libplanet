@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -35,17 +36,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void NewHeightIncreasing()
         {
-            var validators = new ValidatorSet(new List<PublicKey>
-            {
-                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
-            });
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                validators);
+                TestUtils.PrivateKeys[1]);
 
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
             consensusContext.StateChanged += (_, eventArgs) =>
@@ -75,10 +71,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await proposalMessageSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
-            consensusContext.HandleMessage(new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                TestUtils.PrivateKeys[0], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
             consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
                 TestUtils.PrivateKeys[0], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[2], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[3], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await stepChangedToEndCommit.WaitAsync();
@@ -92,16 +90,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void Ctor()
         {
-            var validators = new ValidatorSet(new List<PublicKey>()
-            {
-                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
-            });
-
-            var (_, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (_, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                validators);
+                TestUtils.PrivateKeys[1]);
 
             Assert.Equal(Step.Null, consensusContext.Step);
             Assert.Equal("No context", consensusContext.ToString());
@@ -111,16 +103,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         public async void NewHeightWhenTipChanged()
         {
             var newHeightDelay = TimeSpan.FromSeconds(1);
-            var validators = new ValidatorSet(new List<PublicKey>()
-            {
-                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
-            });
-
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                validators);
+                TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
             blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
@@ -132,16 +118,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void IgnoreMessagesFromLowerHeight()
         {
-            var validators = new ValidatorSet(new List<PublicKey>()
-            {
-                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
-            });
-
-            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                validators);
+                TestUtils.PrivateKeys[1]);
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             Assert.True(consensusContext.Height == 1);
@@ -166,7 +146,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoEnded = new AsyncAutoResetEvent();
             var heightThreePropose = new AsyncAutoResetEvent();
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -272,11 +252,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void RemoveOldContexts()
         {
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
-                TestUtils.ValidatorSet,
                 lastCommitClearThreshold: 1);
 
             // Create context of index 1.
@@ -319,7 +298,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightOneEndCommit = new AsyncAutoResetEvent();
             var votes = new List<Vote>();
 
-            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
@@ -349,7 +328,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[0],
                 1,
                 0,
-                fx.Block1.Hash,
+                new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 VoteFlag.PreCommit));
             votes.AddRange(Enumerable.Range(1, 3).Select(x => TestUtils.CreateVote(
                 TestUtils.PrivateKeys[x],
@@ -387,7 +366,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);

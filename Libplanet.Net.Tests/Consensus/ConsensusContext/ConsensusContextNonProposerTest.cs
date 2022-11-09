@@ -43,7 +43,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var tipChanged = new AsyncAutoResetEvent();
             ConsensusProposalMsg? proposal = null;
             var heightTwoProposalSent = new AsyncAutoResetEvent();
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
@@ -126,7 +126,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var proposalSent = new AsyncAutoResetEvent();
             var newHeightDelay = TimeSpan.FromSeconds(1);
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
@@ -262,7 +262,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoProposalSent = new AsyncAutoResetEvent();
             Block<DumbAction>? proposedBlock = null;
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
@@ -304,7 +304,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var timeError = 500;
             var heightOneEndCommit = new AsyncAutoResetEvent();
             var heightTwoProposalSent = new AsyncAutoResetEvent();
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[2]);
