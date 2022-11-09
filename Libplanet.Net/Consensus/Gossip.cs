@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
@@ -16,9 +17,10 @@ namespace Libplanet.Net.Consensus
     /// </summary>
     public class Gossip : IDisposable
     {
-        private const int MinimumPeerCount = 4;
         private const int DLazy = 6;
-        private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(1);
+        private readonly TimeSpan _rebuildTableInterval = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _refreshTableInterval = TimeSpan.FromSeconds(10);
+        private readonly TimeSpan _refreshLifespan = TimeSpan.FromSeconds(60);
         private readonly TimeSpan _heartbeatInterval = TimeSpan.FromSeconds(1);
         private readonly TimeSpan _seenTtl;
         private readonly ITransport _transport;
@@ -30,7 +32,8 @@ namespace Libplanet.Net.Consensus
 
         private TaskCompletionSource<object?> _runningEvent;
         private CancellationTokenSource? _cancellationTokenSource;
-        private IEnumerable<BoundPeer> _table;
+        private RoutingTable _table;
+        private IProtocol _protocol;
 
         /// <summary>
         /// Creates a <see cref="Gossip"/> instance.
@@ -60,7 +63,15 @@ namespace Libplanet.Net.Consensus
                     SizeLimit = seenCacheLimit,
                 });
             _processMessage = processMessage;
-            _table = peers;
+            _table = new RoutingTable(transport.AsPeer.Address);
+
+            // FIXME: Dumb way to add peer.
+            foreach (BoundPeer peer in peers.Where(p => p.Address != transport.AsPeer.Address))
+            {
+                _table.AddPeer(peer);
+            }
+
+            _protocol = new KademliaProtocol(_table, _transport, transport.AsPeer.Address);
             _seeds = seeds;
 
             _runningEvent = new TaskCompletionSource<object?>();
@@ -100,6 +111,11 @@ namespace Libplanet.Net.Consensus
         public BoundPeer AsPeer => _transport.AsPeer;
 
         /// <summary>
+        /// The list of <see cref="BoundPeer"/>s in the <see cref="Gossip"/>'s table.
+        /// </summary>
+        public IEnumerable<BoundPeer> Peers => _table.Peers;
+
+        /// <summary>
         /// Start the <see cref="Gossip"/> instance.
         /// </summary>
         /// <param name="ctx">A cancellation token used to propagate notification
@@ -110,6 +126,18 @@ namespace Libplanet.Net.Consensus
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(ctx);
             Task transportTask = _transport.StartAsync(ctx);
             await _transport.WaitForRunningAsync();
+            try
+            {
+                await _protocol.BootstrapAsync(_seeds, TimeSpan.FromSeconds(1), 3, ctx);
+            }
+            catch (PeerDiscoveryException pde)
+            {
+                _logger.Error(
+                    pde,
+                    "Peer discovery exception occurred during {FName}.",
+                    nameof(StartAsync));
+            }
+
             _transport.ProcessMessageHandler.Register(
                 HandleMessageAsync(_cancellationTokenSource.Token));
             _logger.Debug("All peers are alive. Starting gossip...");
@@ -117,6 +145,7 @@ namespace Libplanet.Net.Consensus
             await Task.WhenAny(
                 transportTask,
                 RefreshTableAsync(_cancellationTokenSource.Token),
+                RebuildTableAsync(_cancellationTokenSource.Token),
                 HeartbeatTask(_cancellationTokenSource.Token));
         }
 
@@ -197,61 +226,6 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A task for checking how many validators are alive.
-        /// </summary>
-        /// <param name="ctx">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        internal async Task CheckValidatorsLiveness(CancellationToken ctx)
-        {
-            while (!ctx.IsCancellationRequested)
-            {
-                var sendMessage = new Func<BoundPeer, Task<bool>>(async peer =>
-                {
-                    try
-                    {
-                        Message? pong = await _transport.SendMessageAsync(
-                            peer,
-                            new PingMsg(),
-                            TimeSpan.FromSeconds(1),
-                            ctx);
-                        return pong is PongMsg;
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Debug(
-                            "{FName}: Failed. Exception => {Exception}",
-                            nameof(_transport.SendMessageAsync),
-                            e.Message);
-                        return false;
-                    }
-                });
-
-                List<Task<bool>> tasks = _table
-                    .Select(peer => sendMessage(peer))
-                    .ToList();
-                int countOfPong = (await Task.WhenAll(tasks)).Count(x => x);
-
-                _logger.Debug(
-                    "{FName}: count of pong => {Pong}, minimum count of pong => {Minimum}",
-                    nameof(CheckValidatorsLiveness),
-                    countOfPong,
-                    MinimumPeerCount);
-
-                if (countOfPong >= MinimumPeerCount)
-                {
-                    break;
-                }
-
-                _logger.Debug(
-                    "{FName}: Not enough peers in the table. Updating the table...",
-                    nameof(CheckValidatorsLiveness));
-                await UpdateTable(ctx);
-                await Task.Delay(TimeSpan.FromSeconds(1), ctx);
-            }
-        }
-
-        /// <summary>
         /// Selects <paramref name="count"/> <see cref="BoundPeer"/>s from <paramref name="peers"/>.
         /// </summary>
         /// <param name="peers">A <see cref="BoundPeer"/> pool.</param>
@@ -278,16 +252,15 @@ namespace Libplanet.Net.Consensus
             _logger.Verbose("HandleMessage: {Message}", msg);
             switch (msg)
             {
-                case PingMsg p:
-                    await ReplyMessagePongAsync(p, ctx);
+                case PingMsg _:
+                case FindNeighborsMsg _:
+                    // Ignore protocol related messages, Kadmelia Protocol will handle it.
                     break;
                 case HaveMessage h:
                     await HandleHaveAsync(h, ctx);
                     break;
                 case WantMessage w:
                     await HandleWantAsync(w, ctx);
-                    break;
-                case FindNeighborsMsg _:
                     break;
                 default:
                     AddMessage(msg);
@@ -310,7 +283,7 @@ namespace Libplanet.Net.Consensus
                 if (ids.Any())
                 {
                     _transport.BroadcastMessage(
-                        PeersToBroadcast(_table, DLazy),
+                        PeersToBroadcast(_table.Peers, DLazy),
                         new HaveMessage(ids));
                 }
 
@@ -333,6 +306,11 @@ namespace Libplanet.Net.Consensus
             if (!(msg.Remote is BoundPeer peer))
             {
                 return;
+            }
+
+            if (!_table.Contains(peer))
+            {
+                await _protocol.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(1), ctx);
             }
 
             await ReplyMessagePongAsync(msg, ctx);
@@ -397,80 +375,57 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// A lifecycle task which will run in every <see cref="_refreshTableInterval"/> for
+        /// A lifecycle task which will run in every <see cref="_rebuildTableInterval"/> for
         /// refreshing peer table from seed peer.
         /// </summary>
         /// <param name="ctx">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        private async Task RefreshTableAsync(CancellationToken ctx)
+        private async Task RebuildTableAsync(CancellationToken ctx)
         {
             _logger.Debug(
                 "{FName}: Updating the peer table from seed for every {Time} milliseconds...",
-                nameof(RefreshTableAsync),
-                _refreshTableInterval.TotalMilliseconds);
+                nameof(RebuildTableAsync),
+                _rebuildTableInterval.TotalMilliseconds);
 
             while (!ctx.IsCancellationRequested)
             {
+                await Task.Delay(_rebuildTableInterval, ctx);
                 _logger.Debug(
                     "{FName}: Updating peer table from seed(s) {Seeds}...",
-                    nameof(RefreshTableAsync),
+                    nameof(RebuildTableAsync),
                     _seeds.Select(s => s.Address.ToHex()));
-                await UpdateTable(ctx);
-                await Task.Delay(_refreshTableInterval, ctx);
+                await _protocol.RebuildConnectionAsync(Kademlia.MaxDepth, ctx);
             }
         }
 
-        private async Task UpdateTable(CancellationToken ctx)
+        /// <summary>
+        /// Periodically checks whether peers in table is alive.
+        /// </summary>
+        /// <param name="ctx">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        private async Task RefreshTableAsync(CancellationToken ctx)
         {
-            if (!_seeds.Any())
+            while (!ctx.IsCancellationRequested)
             {
-                return;
-            }
-
-            var updateTable = new Func<BoundPeer, Task<(IEnumerable<BoundPeer>, bool)>>(
-                async peer =>
+                try
                 {
-                    try
-                    {
-                        Message? neighbor = await _transport.SendMessageAsync(
-                            peer,
-                            new FindNeighborsMsg(_transport.AsPeer.Address),
-                            TimeSpan.FromSeconds(1),
-                            ctx);
-                        if (neighbor is NeighborsMsg neighborsMsg)
-                        {
-                            return (neighborsMsg.Found, true);
-                        }
-                        else
-                        {
-                            return (new List<BoundPeer>(), false);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Debug(
-                            "{FName}: Failed. Exception => {Exception}",
-                            nameof(UpdateTable),
-                            e.Message);
-                        return (new List<BoundPeer>(), false);
-                    }
-                });
-            List<Task<(IEnumerable<BoundPeer>, bool)>> tasks = _seeds
-                .Select(peer => updateTable(peer))
-                .ToList();
-            var table = (await Task.WhenAll(tasks))
-                .Where(x => x.Item2)
-                .Select(x => x.Item1)
-                .Aggregate((x, y) =>
+                    await _protocol.RefreshTableAsync(_refreshLifespan, ctx);
+                    await _protocol.CheckReplacementCacheAsync(ctx);
+                    await Task.Delay(_refreshTableInterval, ctx);
+                }
+                catch (OperationCanceledException e)
                 {
-                    var lh = x.ToList();
-                    var rh = y.ToList();
-                    return lh.Count > rh.Count ? lh : rh;
-                });
-            if (!(table is null))
-            {
-                _table = table;
+                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    var msg = "Unexpected exception occurred during " +
+                              $"{nameof(RefreshTableAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
+                }
             }
         }
 

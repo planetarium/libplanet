@@ -311,6 +311,7 @@ namespace Libplanet.Net.Tests
                 cancellationToken: cts.Token
             );
 
+            await Task.Delay(100);
             cts.Cancel();
             bool canceled = false;
             try
