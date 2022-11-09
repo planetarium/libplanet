@@ -37,7 +37,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="policyBlockAction">The <see cref="IAction"/> provided by
         /// <see cref="IBlockPolicy{T}.BlockAction"/> to evaluate at the end for each
-        /// <see cref="Block{T}"/> that gets evaluated.</param>
+        /// <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
         /// <param name="blockChainStates">The <see cref="IBlockChainStates{T}"/> to use to retrieve
         /// the states for a provided <see cref="Address"/>.</param>
         /// <param name="trieGetter">The function to retrieve a trie for
@@ -85,7 +85,7 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// The main entry point for evaluating a <see cref="Block{T}"/>.
+        /// The main entry point for evaluating a <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
         /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
@@ -94,13 +94,14 @@ namespace Libplanet.Action
         /// <see cref="ActionEvaluation"/>s.</returns>
         /// <remarks>
         /// <para>Publicly exposed for benchmarking.</para>
-        /// <para>First evaluates all <see cref="IAction"/>s in <see cref="Block{T}.Transactions"/>
-        /// of <paramref name="block"/> and appends the evaluation of
-        /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance at the end.</para>
+        /// <para>First evaluates all <see cref="IAction"/>s in
+        /// <see cref="IBlockContent.Transactions"/> of <paramref name="block"/> and appends the
+        /// evaluation of the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance at
+        /// the end.</para>
         /// </remarks>
         [Pure]
         public IReadOnlyList<ActionEvaluation> Evaluate(
-            IPreEvaluationBlock<T> block,
+            IPreEvaluationBlock block,
             StateCompleterSet<T> stateCompleterSet)
         {
             _logger.Debug(
@@ -236,19 +237,20 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="genesisHash"> A <see cref="BlockHash"/> value of the genesis block.
         /// </param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> of
-        /// the <see cref="Block{T}"/> that <paramref name="actions"/> belong to.</param>
+        /// <param name="preEvaluationHash">The
+        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> of
+        /// the <see cref="IPreEvaluationBlock"/> that <paramref name="actions"/> belong to.</param>
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/>
         /// that <paramref name="actions"/> belong to.</param>
-        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of the
-        /// <see cref="Transaction{T}"/> that <paramref name="actions"/> belong to.
+        /// <param name="txid">The <see cref="ITxExcerpt.Id"/> of the
+        /// <see cref="ITransaction"/> that <paramref name="actions"/> belong to.
         /// This can be <see langword="null"/> on rehearsal mode or if an <see cref="IAction"/> is a
         /// <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.</param>
         /// <param name="miner">An address of block miner.</param>
         /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
-        /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
+        /// <param name="signature"><see cref="ITransaction"/> signature used to generate random
         /// seeds.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="nativeTokenPredicate">A predicate function to determine whether
@@ -432,18 +434,19 @@ namespace Libplanet.Action
         /// Deterministically shuffles <paramref name="txs"/> for evaluation using
         /// <paramref name="preEvaluationHash"/> as a random seed.
         /// </summary>
-        /// <param name="protocolVersion">The <see cref="Block{T}.ProtocolVersion"/> that
-        /// <paramref name="txs"/> belong to.</param>
-        /// <param name="txs">The list of <see cref="Transaction{T}"/>s to shuffle.</param>
-        /// <param name="preEvaluationHash">The <see cref="Block{T}.PreEvaluationHash"/> to use
-        /// as a random seed when shuffling.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Transaction{T}"/>s in evaluation
+        /// <param name="protocolVersion">The <see cref="IBlockMetadata.ProtocolVersion"/>
+        /// that <paramref name="txs"/> belong to.</param>
+        /// <param name="txs">The list of <see cref="ITransaction"/>s to shuffle.</param>
+        /// <param name="preEvaluationHash">The
+        /// <see cref="IPreEvaluationBlockHeader.PreEvaluationHash"/> to use as a random seed when
+        /// shuffling.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ITransaction"/>s in evaluation
         /// order with the following properties:
         /// <list type="bullet">
-        /// <item><see cref="Transaction{T}"/>s with the same <see cref="Transaction{T}.Signer"/>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxMetadata.Signer"/>
         /// value appear consecutive in the list.</item>
-        /// <item><see cref="Transaction{T}"/>s with the same <see cref="Transaction{T}.Signer"/>
-        /// value are ordered by <see cref="Transaction{T}.Nonce"/> value in ascending order.</item>
+        /// <item><see cref="ITransaction"/>s with the same <see cref="ITxMetadata.Signer"/>
+        /// value are ordered by <see cref="ITxMetadata.Nonce"/> value in ascending order.</item>
         /// </list>
         /// </returns>
         /// <remarks>
@@ -461,8 +464,8 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates <see cref="IAction"/>s in <see cref="IBlockContent{T}.Transactions"/>
-        /// of a given <see cref="Block{T}"/>.
+        /// Evaluates <see cref="IAction"/>s in <see cref="IBlockContent.Transactions"/>
+        /// of a given <see cref="IPreEvaluationBlock"/>.
         /// </summary>
         /// <param name="block">The block to evaluate.</param>
         /// <param name="previousStates">The states immediately before an execution of any
@@ -474,7 +477,7 @@ namespace Libplanet.Action
         /// </returns>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
-            IPreEvaluationBlock<T> block,
+            IPreEvaluationBlock block,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
         {
@@ -566,7 +569,7 @@ namespace Libplanet.Action
         /// <summary>
         /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
         /// this <see cref="ActionEvaluator{T}"/> was instantiated for a given
-        /// <see cref="Block{T}"/>.
+        /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
@@ -671,23 +674,24 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Retrieves the last previous states for the previous block of <paramref name="block"/>.
+        /// Retrieves the last previous states for the previous block of
+        /// <paramref name="blockHeader"/>.
         /// </summary>
-        /// <param name="block">The block to reference.</param>
+        /// <param name="blockHeader">The header of block to reference.</param>
         /// <param name="stateCompleterSet">The <see cref="StateCompleterSet{T}"/> to use.</param>
         /// <returns>The last previous <see cref="IAccountStateDelta"/> for the previous
         /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlockHeader block,
+            IPreEvaluationBlockHeader blockHeader,
             StateCompleterSet<T> stateCompleterSet)
         {
             var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
-                InitializeAccountGettersPair(block, stateCompleterSet);
-            Address miner = block.Miner;
+                InitializeAccountGettersPair(blockHeader, stateCompleterSet);
+            Address miner = blockHeader.Miner;
 
             return AccountStateDeltaImpl.ChooseVersion(
-                block.ProtocolVersion,
+                blockHeader.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,

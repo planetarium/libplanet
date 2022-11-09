@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Tx;
 
@@ -19,5 +20,13 @@ namespace Libplanet.Blocks
         /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
         // FIXME: Need to change the type to IImmutableSet<Transaction<T>>.
         IReadOnlyList<Transaction<T>> Transactions { get; }
+    }
+
+    public interface IBlockContent : IBlockMetadata
+    {
+        /// <summary>
+        /// Transactions belonging to the block.
+        /// </summary>
+        IImmutableSet<ITransaction> Transactions { get; }
     }
 }

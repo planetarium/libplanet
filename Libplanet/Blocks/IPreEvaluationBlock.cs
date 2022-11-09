@@ -15,4 +15,8 @@ namespace Libplanet.Blocks
         where T : IAction, new()
     {
     }
+
+    public interface IPreEvaluationBlock : IBlockContent, IPreEvaluationBlockHeader
+    {
+    }
 }

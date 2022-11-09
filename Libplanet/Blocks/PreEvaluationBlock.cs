@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -26,7 +27,7 @@ namespace Libplanet.Blocks
     /// <remarks>It guarantees that every instance of this type has a valid proof-of-work
     /// <see cref="Nonce"/> which satisfies its <see cref="PreEvaluationBlockHeader.Difficulty"/>.
     /// </remarks>
-    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>
+    public sealed class PreEvaluationBlock<T> : IPreEvaluationBlock<T>, IPreEvaluationBlock
         where T : IAction, new()
     {
         private BlockContent<T> _content;
@@ -71,6 +72,10 @@ namespace Libplanet.Blocks
 
         /// <inheritdoc cref="IBlockContent{T}.Transactions"/>
         public IReadOnlyList<Transaction<T>> Transactions => _content.Transactions;
+
+        /// <inheritdoc cref="IBlockContent.Transactions" />
+        IImmutableSet<ITransaction> IBlockContent.Transactions =>
+            _content.Transactions.Cast<ITransaction>().ToImmutableHashSet();
 
         /// <inheritdoc cref="IBlockMetadata.ProtocolVersion"/>
         public int ProtocolVersion => _header.ProtocolVersion;
