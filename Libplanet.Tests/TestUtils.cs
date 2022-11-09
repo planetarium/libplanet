@@ -286,12 +286,21 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
-        public static void AssertSorted<T>(IEnumerable<T> list)
+        public static void AssertSorted<T>(IEnumerable<T> expected)
             where T : IComparable<T>
         {
-            Assert.True(list
-                .Zip(list.Skip(1))
-                .All(pair => pair.First.CompareTo(pair.Second) <= 0));
+            // Was implemented by `.Zip()`, but the method has different
+            // overloads in .NET Framework, so cannot be used.
+            T[] arr = expected.ToArray();
+            foreach ((int i, (T first, T second)) in Enumerable
+                         .Range(0, arr.Length - 1)
+                         .Select(i => (i, (arr[i], arr[i + 1]))))
+            {
+                string errorMessage =
+                    $"Given list is not sorted since item {first} at {i} " +
+                    $"is greater than item {second} at {i + 1}";
+                Assert.True(first.CompareTo(second) <= 0, errorMessage);
+            }
         }
 
         public static void AssertBlockMetadataEqual(IBlockMetadata expected, IBlockMetadata actual)
