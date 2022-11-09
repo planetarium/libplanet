@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -401,6 +400,7 @@ namespace Libplanet.Net.Transports
             CancellationToken linkedCt = linkedCts.Token;
 
             Guid reqId = Guid.NewGuid();
+            var replies = new List<Message>();
             try
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -410,7 +410,7 @@ namespace Libplanet.Net.Transports
                     peer,
                     message
                 );
-                var tcs = new TaskCompletionSource<IEnumerable<Message>>();
+                var channel = Channel.CreateUnbounded<Message>();
                 Interlocked.Increment(ref _requestCount);
                 var req = new MessageRequest(
                     reqId,
@@ -418,8 +418,7 @@ namespace Libplanet.Net.Transports
                     peer,
                     now,
                     expectedResponses,
-                    tcs,
-                    linkedCt
+                    channel
                 );
                 await _requests.Writer.WriteAsync(
                     req,
@@ -434,56 +433,49 @@ namespace Libplanet.Net.Transports
                     Interlocked.Read(ref _requestCount)
                 );
 
-                if (expectedResponses > 0)
+                foreach (var i in Enumerable.Range(0, expectedResponses))
                 {
-                    var replies = (await tcs.Task).ToList();
-                    const string dbgMsg =
-                        "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                        "from {Peer}: {ReplyMessages}.";
-                    _logger.Debug(dbgMsg, replies.Count, reqId, peer, replies);
+                    replies.Add(await channel.Reader.ReadAsync(linkedCt));
+                }
 
-                    return replies;
-                }
-                else
-                {
-                    return Array.Empty<Message>();
-                }
+                const string dbgMsg =
+                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                    "from {Peer}: {ReplyMessages}.";
+                _logger.Debug(dbgMsg, replies.Count, reqId, peer, replies);
+
+                return replies;
             }
-            catch (TaskCanceledException toe) when (timerCts.IsCancellationRequested)
+            catch (OperationCanceledException oce) when (timerCts.IsCancellationRequested)
             {
                 if (returnWhenTimeout)
                 {
-                    return Array.Empty<Message>();
+                    return replies;
                 }
 
                 throw WrapCommunicationFailException(
                     new TimeoutException(
                         $"The operation was canceled due to timeout {timeout!.ToString()}.",
-                        toe
+                        oce
                     ),
                     peer,
                     message,
                     reqId
                 );
             }
-            catch (TaskCanceledException tce)
+            catch (OperationCanceledException oce2)
             {
                 const string dbgMsg =
                     "{FName}() was cancelled while waiting for a reply to " +
                     "{Message} {RequestId} from {Peer}.";
                 _logger.Debug(
-                    tce, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
-                throw;
+                    oce2, dbgMsg, nameof(SendMessageAsync), message, reqId, peer);
+
+                // Wrapping to match the previous behavior of `SendMessageAsync()`.
+                throw new TaskCanceledException(dbgMsg, oce2);
             }
-            catch (Exception e) when (
-                e is SendMessageFailException ||
-                e is InvalidMessageSignatureException ||
-                e is InvalidMessageTimestampException ||
-                e is DifferentAppProtocolVersionException ||
-                e is TimeoutException ||
-                e is SocketException)
+            catch (ChannelClosedException ce)
             {
-                throw WrapCommunicationFailException(e, peer, message, reqId);
+                throw WrapCommunicationFailException(ce.InnerException, peer, message, reqId);
             }
             catch (Exception e)
             {
@@ -769,11 +761,7 @@ namespace Libplanet.Net.Transports
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
-            TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
-            CancellationToken reqCt = req.CancellationToken;
-            using CancellationTokenSource linkedCts =
-                CancellationTokenSource.CreateLinkedTokenSource(reqCt, cancellationToken);
-            CancellationToken linkedCt = linkedCts.Token;
+            Channel<Message> channel = req.Channel;
 
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}",
@@ -817,7 +805,7 @@ namespace Libplanet.Net.Transports
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
                     NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: linkedCt
+                        cancellationToken: cancellationToken
                     );
                     _logger.Verbose(
                         "Received a raw message with {FrameCount} frames as a reply to " +
@@ -868,21 +856,12 @@ namespace Libplanet.Net.Transports
                         throw;
                     }
 
-                    result.Add(reply);
+                    await channel.Writer.WriteAsync(reply, cancellationToken);
                 }
-
-                tcs.TrySetResult(result);
-            }
-            catch when (result.Count > 0)
-            {
-                // it means that `SendMessageAsync()` will return the remaining result even has
-                // faced an exception or cancellation. it seems a little bit of weird behavior.
-                // but we already have `CanFillWithInvalidTransaction()` test. so fit there.
-                tcs.SetResult(result);
             }
             catch (Exception e)
             {
-                tcs.TrySetException(e);
+                channel.Writer.Complete(e);
             }
             finally
             {
@@ -966,16 +945,14 @@ namespace Libplanet.Net.Transports
                 BoundPeer peer,
                 DateTimeOffset requestedTime,
                 in int expectedResponses,
-                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource,
-                CancellationToken cancellationToken)
+                Channel<Message> channel)
             {
                 Id = id;
                 Message = message;
                 Peer = peer;
                 RequestedTime = requestedTime;
                 ExpectedResponses = expectedResponses;
-                TaskCompletionSource = taskCompletionSource;
-                CancellationToken = cancellationToken;
+                Channel = channel;
             }
 
             public Guid Id { get; }
@@ -988,9 +965,7 @@ namespace Libplanet.Net.Transports
 
             public int ExpectedResponses { get; }
 
-            public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
-
-            public CancellationToken CancellationToken { get; }
+            public Channel<Message> Channel { get; }
         }
     }
 }
