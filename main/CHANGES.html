@@ -65,10 +65,24 @@
 <h2 id="version-0450">Version 0.45.0</h2>
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>Removed <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset, bool, long, int, int, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> by making
+it <code>internal</code>.  [<a href="https://github.com/planetarium/libplanet/pull/2529">#2529</a>]</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Changed <code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset?, bool?, long?, int?, int?, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> to
+<code>BlockChain&lt;T&gt;.MineBlock(PrivateKey, DateTimeOffset?, bool?, IComparer&lt;Transaction&lt;T&gt;&gt;, CancellationToken?)</code> by removing policy
+controlled parameters.  [<a href="https://github.com/planetarium/libplanet/pull/2529">#2529</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockChainStates&lt;T&gt;</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/2507">#2507</a>]</li>
+<li>Added new constructors of <code>BlockChain&lt;T&gt;</code> takes <code>IBlockChainStates&lt;T&gt;</code>
+and <code>ActionEvaluator&lt;T&gt;</code> directly.  [<a href="https://github.com/planetarium/libplanet/pull/2507">#2507</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

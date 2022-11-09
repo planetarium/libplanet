@@ -2505,6 +2505,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)))
   nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>)
   nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0})
+  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0})
+  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates(Of T))
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0},Libplanet.Action.ActionEvaluator{`0})
+  name: BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>, ActionEvaluator<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Blockchain_Policies_IStagePolicy__0__Libplanet_Store_IStore_Libplanet_Store_IStateStore_Libplanet_Blocks_Block__0__IEnumerable_Libplanet_Blockchain_Renderers_IRenderer__0___Libplanet_Blockchain_IBlockChainStates__0__Libplanet_Action_ActionEvaluator__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Blockchain.Policies.IStagePolicy{`0},Libplanet.Store.IStore,Libplanet.Store.IStateStore,Libplanet.Blocks.Block{`0},IEnumerable{Libplanet.Blockchain.Renderers.IRenderer{`0}},Libplanet.Blockchain.IBlockChainStates{`0},Libplanet.Action.ActionEvaluator{`0})
+  name.vb: BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T), ActionEvaluator(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Blockchain.Policies.IStagePolicy<T>, Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block<T>, IEnumerable<Libplanet.Blockchain.Renderers.IRenderer<T>>, Libplanet.Blockchain.IBlockChainStates<T>, Libplanet.Action.ActionEvaluator<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Blockchain.Policies.IStagePolicy(Of T), Libplanet.Store.IStore, Libplanet.Store.IStateStore, Libplanet.Blocks.Block(Of T), IEnumerable(Of Libplanet.Blockchain.Renderers.IRenderer(Of T)), Libplanet.Blockchain.IBlockChainStates(Of T), Libplanet.Action.ActionEvaluator(Of T))
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStagePolicy<T>, IStore, IStateStore, Block<T>, IEnumerable<IRenderer<T>>, IBlockChainStates<T>, ActionEvaluator<T>)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStagePolicy(Of T), IStore, IStateStore, Block(Of T), IEnumerable(Of IRenderer(Of T)), IBlockChainStates(Of T), ActionEvaluator(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.#ctor*
   name: BlockChain
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_
@@ -2969,24 +2987,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction
   nameWithType: BlockChain<T>.MakeTransaction
   nameWithType.vb: BlockChain(Of T).MakeTransaction
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int64,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
-  name: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int64, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_DateTimeOffset_System_Boolean_System_Int64_System_Int32_System_Int32_IComparer_Libplanet_Tx_Transaction__0___CancellationToken_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,DateTimeOffset,System.Boolean,System.Int64,System.Int32,System.Int32,IComparer{Libplanet.Tx.Transaction{`0}},CancellationToken)
-  name.vb: MineBlock(PrivateKey, DateTimeOffset, Boolean, Int64, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int64, System.Int32, System.Int32, IComparer<Libplanet.Tx.Transaction<T>>, CancellationToken)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, DateTimeOffset, System.Boolean, System.Int64, System.Int32, System.Int32, IComparer(Of Libplanet.Tx.Transaction(Of T)), CancellationToken)
-  nameWithType: BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset, Boolean, Int64, Int32, Int32, IComparer<Transaction<T>>, CancellationToken)
-  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, DateTimeOffset, Boolean, Int64, Int32, Int32, IComparer(Of Transaction(Of T)), CancellationToken)
-- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
-  name: MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int64>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__System_Nullable_System_Boolean__System_Nullable_System_Int64__System_Nullable_System_Int32__System_Nullable_System_Int32__IComparer_Libplanet_Tx_Transaction__0___System_Nullable_CancellationToken__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int32},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
-  name.vb: MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int64), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, System.Nullable<System.Boolean>, System.Nullable<System.Int64>, System.Nullable<System.Int32>, System.Nullable<System.Int32>, IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<CancellationToken>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), System.Nullable(Of System.Boolean), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32), System.Nullable(Of System.Int32), IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of CancellationToken))
-  nameWithType: BlockChain<T>.MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, Nullable<Int64>, Nullable<Int32>, Nullable<Int32>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
-  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), Nullable(Of Int64), Nullable(Of Int32), Nullable(Of Int32), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+- uid: Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
+  name: MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__System_Nullable_System_Boolean__IComparer_Libplanet_Tx_Transaction__0___System_Nullable_CancellationToken__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset},System.Nullable{System.Boolean},IComparer{Libplanet.Tx.Transaction{`0}},System.Nullable{CancellationToken})
+  name.vb: MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>, System.Nullable<System.Boolean>, IComparer<Libplanet.Tx.Transaction<T>>, System.Nullable<CancellationToken>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MineBlock(Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset), System.Nullable(Of System.Boolean), IComparer(Of Libplanet.Tx.Transaction(Of T)), System.Nullable(Of CancellationToken))
+  nameWithType: BlockChain<T>.MineBlock(PrivateKey, Nullable<DateTimeOffset>, Nullable<Boolean>, IComparer<Transaction<T>>, Nullable<CancellationToken>)
+  nameWithType.vb: BlockChain(Of T).MineBlock(PrivateKey, Nullable(Of DateTimeOffset), Nullable(Of Boolean), IComparer(Of Transaction(Of T)), Nullable(Of CancellationToken))
 - uid: Libplanet.Blockchain.BlockChain`1.MineBlock*
   name: MineBlock
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MineBlock_
@@ -3118,6 +3127,86 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction
   nameWithType: BlockChain<T>.UnstageTransaction
   nameWithType.vb: BlockChain(Of T).UnstageTransaction
+- uid: Libplanet.Blockchain.BlockChainStates`1
+  name: BlockChainStates<T>
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html
+  commentId: T:Libplanet.Blockchain.BlockChainStates`1
+  name.vb: BlockChainStates(Of T)
+  fullName: Libplanet.Blockchain.BlockChainStates<T>
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T)
+  nameWithType: BlockChainStates<T>
+  nameWithType.vb: BlockChainStates(Of T)
+- uid: Libplanet.Blockchain.BlockChainStates`1.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
+  name: BlockChainStates(IStore, IStateStore)
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1__ctor_Libplanet_Store_IStore_Libplanet_Store_IStateStore_
+  commentId: M:Libplanet.Blockchain.BlockChainStates`1.#ctor(Libplanet.Store.IStore,Libplanet.Store.IStateStore)
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.BlockChainStates(Libplanet.Store.IStore, Libplanet.Store.IStateStore)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).BlockChainStates(Libplanet.Store.IStore, Libplanet.Store.IStateStore)
+  nameWithType: BlockChainStates<T>.BlockChainStates(IStore, IStateStore)
+  nameWithType.vb: BlockChainStates(Of T).BlockChainStates(IStore, IStateStore)
+- uid: Libplanet.Blockchain.BlockChainStates`1.#ctor*
+  name: BlockChainStates
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1__ctor_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.BlockChainStates
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).BlockChainStates
+  nameWithType: BlockChainStates<T>.BlockChainStates
+  nameWithType.vb: BlockChainStates(Of T).BlockChainStates
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetBalance_Libplanet_Address_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_FungibleAssetStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetBalance(Libplanet.Address,Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.FungibleAssetStateCompleter{`0})
+  name.vb: GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetBalance(Libplanet.Address, Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.FungibleAssetStateCompleter(Of T))
+  nameWithType: BlockChainStates<T>.GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter<T>)
+  nameWithType.vb: BlockChainStates(Of T).GetBalance(Address, Currency, BlockHash, FungibleAssetStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetBalance*
+  name: GetBalance
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetBalance_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetBalance
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetBalance
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetBalance
+  nameWithType: BlockChainStates<T>.GetBalance
+  nameWithType.vb: BlockChainStates(Of T).GetBalance
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name: GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetStates_IReadOnlyList_Libplanet_Address__Libplanet_Blocks_BlockHash_Libplanet_Blockchain_StateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetStates(IReadOnlyList{Libplanet.Address},Libplanet.Blocks.BlockHash,Libplanet.Blockchain.StateCompleter{`0})
+  name.vb: GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetStates(IReadOnlyList<Libplanet.Address>, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetStates(IReadOnlyList(Of Libplanet.Address), Libplanet.Blocks.BlockHash, Libplanet.Blockchain.StateCompleter(Of T))
+  nameWithType: BlockChainStates<T>.GetStates(IReadOnlyList<Address>, BlockHash, StateCompleter<T>)
+  nameWithType.vb: BlockChainStates(Of T).GetStates(IReadOnlyList(Of Address), BlockHash, StateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetStates*
+  name: GetStates
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetStates_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetStates
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetStates
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetStates
+  nameWithType: BlockChainStates<T>.GetStates
+  nameWithType.vb: BlockChainStates(Of T).GetStates
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetTotalSupply_Libplanet_Assets_Currency_Libplanet_Blocks_BlockHash_Libplanet_Blockchain_TotalSupplyStateCompleter__0__
+  commentId: M:Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply(Libplanet.Assets.Currency,Libplanet.Blocks.BlockHash,Libplanet.Blockchain.TotalSupplyStateCompleter{`0})
+  name.vb: GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetTotalSupply(Libplanet.Assets.Currency, Libplanet.Blocks.BlockHash, Libplanet.Blockchain.TotalSupplyStateCompleter(Of T))
+  nameWithType: BlockChainStates<T>.GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter<T>)
+  nameWithType.vb: BlockChainStates(Of T).GetTotalSupply(Currency, BlockHash, TotalSupplyStateCompleter(Of T))
+- uid: Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply*
+  name: GetTotalSupply
+  href: api/Libplanet.Blockchain.BlockChainStates-1.html#Libplanet_Blockchain_BlockChainStates_1_GetTotalSupply_
+  commentId: Overload:Libplanet.Blockchain.BlockChainStates`1.GetTotalSupply
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChainStates<T>.GetTotalSupply
+  fullName.vb: Libplanet.Blockchain.BlockChainStates(Of T).GetTotalSupply
+  nameWithType: BlockChainStates<T>.GetTotalSupply
+  nameWithType.vb: BlockChainStates(Of T).GetTotalSupply
 - uid: Libplanet.Blockchain.BlockLocator
   name: BlockLocator
   href: api/Libplanet.Blockchain.BlockLocator.html
