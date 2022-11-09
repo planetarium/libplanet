@@ -29,5 +29,7 @@ namespace Libplanet.Action
         }
 
         public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader) => _types;
+
+        internal IDictionary<string, Type> Load() => _types;
     }
 }
