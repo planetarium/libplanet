@@ -35,9 +35,7 @@ namespace Libplanet.Tests.Blockchain
         private readonly ILogger _logger;
         private StoreFixture _fx;
         private BlockPolicy<DumbAction> _policy;
-        private BlockPolicy<DumbAction> _policyMinTx;
         private BlockChain<DumbAction> _blockChain;
-        private BlockChain<DumbAction> _blockChainMinTx;
         private ValidatingActionRenderer<DumbAction> _renderer;
         private Block<DumbAction> _validNext;
         private List<Transaction<DumbAction>> _emptyTransactions;
@@ -62,23 +60,11 @@ namespace Libplanet.Tests.Blockchain
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            _policyMinTx = new BlockPolicy<DumbAction>(
-                blockAction: new MinerReward(1),
-                getMaxTransactionsBytes: _ => 50 * 1024,
-                getMinTransactionsPerBlock: _ => 1);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = getStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
             _blockChain = new BlockChain<DumbAction>(
                 _policy,
-                _stagePolicy,
-                _fx.Store,
-                _fx.StateStore,
-                _fx.GenesisBlock,
-                renderers: new[] { new LoggedActionRenderer<DumbAction>(_renderer, Log.Logger) }
-            );
-            _blockChainMinTx = new BlockChain<DumbAction>(
-                _policyMinTx,
                 _stagePolicy,
                 _fx.Store,
                 _fx.StateStore,
@@ -153,7 +139,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void CanFindBlockByIndex()
+        public async Task CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
             Assert.Equal(genesis, _blockChain[0]);
@@ -163,7 +149,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void CanonicalId()
+        public async Task CanonicalId()
         {
             var x = _blockChain;
             var key = new PrivateKey();
@@ -186,7 +172,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void BlockHashes()
+        public async Task BlockHashes()
         {
             var key = new PrivateKey();
             var genesis = _blockChain.Genesis;
@@ -210,7 +196,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void ProcessActions()
+        public async Task ProcessActions()
         {
             Block<PolymorphicAction<BaseAction>> genesisBlock =
                 BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
@@ -469,7 +455,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void FindNextHashes()
+        public async Task FindNextHashes()
         {
             var key = new PrivateKey();
             long? offsetIndex;
@@ -505,7 +491,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void FindNextHashesAfterFork()
+        public async Task FindNextHashesAfterFork()
         {
             var key = new PrivateKey();
 
@@ -525,7 +511,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void Fork()
+        public async Task Fork()
         {
             var key = new PrivateKey();
 
@@ -785,7 +771,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetBlockLocator()
+        public async Task GetBlockLocator()
         {
             var key = new PrivateKey();
             List<Block<DumbAction>> blocks = new List<Block<DumbAction>>();
@@ -1240,7 +1226,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetStateReturnsValidStateAfterFork()
+        public async Task GetStateReturnsValidStateAfterFork()
         {
             Block<DumbAction> genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
@@ -1334,7 +1320,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetStateReturnsLatestStatesWhenMultipleAddresses()
+        public async Task GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
@@ -1375,7 +1361,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void FindBranchPoint()
+        public async Task FindBranchPoint()
         {
             var key = new PrivateKey();
             Block<DumbAction> b1 = await _blockChain.MineBlock(key);
@@ -1663,7 +1649,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void BlockActionWithMultipleAddress()
+        public async Task BlockActionWithMultipleAddress()
         {
             var miner0 = _blockChain.Genesis.Miner;
             var miner1 = new PrivateKey();
@@ -1922,7 +1908,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void TipChanged()
+        private async Task TipChanged()
         {
             var genesis = _blockChain.Genesis;
 
@@ -1948,7 +1934,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        private async void Reorged()
+        private async Task Reorged()
         {
             _renderer.ResetRecords();
             var branchpoint = _blockChain.Tip;
