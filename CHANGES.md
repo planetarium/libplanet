@@ -47,6 +47,10 @@ To be released.
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
 
+### Others
+
+ - (Libplanet.RocksDBStore) Add some arguments to `RocksDBUtils.OpenRocksDb()` to be possible to open it read-only mode. [#2535]
+
 
 Version 0.44.1
 --------------
