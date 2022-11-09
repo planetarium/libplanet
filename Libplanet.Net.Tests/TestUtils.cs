@@ -240,7 +240,6 @@ namespace Libplanet.Net.Tests
                 TimeSpan newHeightDelay,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                ValidatorSet? validators = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
                 long lastCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
@@ -251,7 +250,6 @@ namespace Libplanet.Net.Tests
             ConsensusContext<DumbAction>? consensusContext = null;
 
             privateKey ??= PrivateKeys[1];
-            validators ??= ValidatorSet;
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -271,7 +269,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                _ => validators,
+                policy.GetValidatorSet,
                 lastCommitClearThreshold,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
@@ -285,13 +283,11 @@ namespace Libplanet.Net.Tests
                 long height = 1,
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
-                ValidatorSet? validators = null,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
             privateKey ??= PrivateKeys[1];
             policy ??= Policy;
-            validators ??= ValidatorSet;
 
             void BroadcastMessage(ConsensusMsg message) =>
                 Task.Run(() =>
@@ -306,7 +302,6 @@ namespace Libplanet.Net.Tests
                 TimeSpan.FromSeconds(1),
                 policy,
                 PrivateKeys[1],
-                validators,
                 broadcastMessage: BroadcastMessage);
 
             context = new Context<DumbAction>(
@@ -314,7 +309,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 height,
                 privateKey,
-                validators,
+                policy.GetValidatorSet(height),
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, context);
