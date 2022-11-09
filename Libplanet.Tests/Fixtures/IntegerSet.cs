@@ -60,7 +60,7 @@ namespace Libplanet.Tests.Fixtures
                 .ToImmutableArray();
             Miner = new PrivateKey();
             policy = policy ?? new NullBlockPolicy<Arithmetic>(
-                getValidatorSet: _ => TestUtils.ConsensusValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);

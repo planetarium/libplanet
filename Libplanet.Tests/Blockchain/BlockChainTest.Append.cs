@@ -436,7 +436,7 @@ namespace Libplanet.Tests.Blockchain
 
             var policy = new BlockPolicy<DumbAction>(
                 validateNextBlockTx: IsSignerValid,
-                getValidatorSet: _ => TestUtils.ConsensusValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(

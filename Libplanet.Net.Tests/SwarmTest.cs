@@ -332,7 +332,7 @@ namespace Libplanet.Net.Tests
             var keyA = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
 
@@ -406,7 +406,7 @@ namespace Libplanet.Net.Tests
 
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
@@ -738,7 +738,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = MakeBlockChain(
                 policy,
@@ -1118,11 +1118,11 @@ namespace Libplanet.Net.Tests
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
             var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var policyA = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var policyB = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);

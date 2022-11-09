@@ -73,10 +73,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Force round change.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                proposedBlock, TestUtils.Peer3Priv, round: 2, validRound: 1));
+                proposedBlock, TestUtils.PrivateKeys[3], round: 2, validRound: 1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv,
+                    TestUtils.PrivateKeys[0],
                     height: 1,
                     round: 2,
                     hash: proposedBlock.Hash,
@@ -86,21 +86,21 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv,
+                    TestUtils.PrivateKeys[0],
                     1,
                     round: 1,
                     hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(new
                 ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv,
+                    TestUtils.PrivateKeys[2],
                     1,
                     round: 1,
                     hash: proposedBlock.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv,
+                    TestUtils.PrivateKeys[3],
                     1,
                     round: 1,
                     hash: proposedBlock.Hash,
@@ -178,10 +178,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Force round change to 2.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                proposedBlock!, TestUtils.Peer3Priv, round: 2, validRound: -1));
+                proposedBlock!, TestUtils.PrivateKeys[3], round: 2, validRound: -1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv,
+                    TestUtils.PrivateKeys[0],
                     height: 1,
                     round: 2,
                     hash: proposedBlock!.Hash,
@@ -193,14 +193,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Updated locked round and valid round to 2.
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv,
+                    TestUtils.PrivateKeys[2],
                     height: 1,
                     round: 2,
                     hash: proposedBlock!.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv,
+                    TestUtils.PrivateKeys[3],
                     height: 1,
                     round: 2,
                     hash: proposedBlock!.Hash,
@@ -209,10 +209,10 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             // Force round change to 3.
             context.ProduceMessage(TestUtils.CreateConsensusPropose(
-                differentBlock, TestUtils.Peer0Priv, round: 3, validRound: 0));
+                differentBlock, TestUtils.PrivateKeys[0], round: 3, validRound: 0));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv,
+                    TestUtils.PrivateKeys[3],
                     height: 1,
                     round: 3,
                     hash: differentBlock.Hash,
@@ -222,21 +222,21 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv,
+                    TestUtils.PrivateKeys[0],
                     height: 1,
                     round: 0,
                     hash: differentBlock.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv,
+                    TestUtils.PrivateKeys[2],
                     height: 1,
                     round: 0,
                     hash: differentBlock.Hash,
                     flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv,
+                    TestUtils.PrivateKeys[3],
                     height: 1,
                     round: 0,
                     hash: differentBlock.Hash,

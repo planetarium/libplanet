@@ -129,14 +129,14 @@ namespace Libplanet.Net.Tests.Messages
             var blockHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
 
             var preVote = TestUtils.CreateVote(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 1,
                 0,
                 blockHash,
                 VoteFlag.PreVote);
 
             var preCommit = TestUtils.CreateVote(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 1,
                 0,
                 blockHash,

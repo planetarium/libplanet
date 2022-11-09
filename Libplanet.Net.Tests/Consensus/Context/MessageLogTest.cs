@@ -27,7 +27,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             _blockChain = TestUtils.CreateDummyBlockChain(
                 new MemoryStoreFixture(TestUtils.Policy.BlockAction));
             var block = _blockChain.ProposeBlock(
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 DateTimeOffset.UtcNow,
                 int.MaxValue,
                 0,
@@ -41,8 +41,12 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void CannotAddDifferentHeight()
         {
             var preVote = new ConsensusPreVoteMsg(new VoteMetadata(
-                3, 0, null, DateTimeOffset.UtcNow, TestUtils.Peer0Priv.PublicKey, VoteFlag.PreVote)
-                    .Sign(TestUtils.Peer0Priv));
+                3,
+                0,
+                null,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[0].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]));
 
             Assert.False(_messageLog.Add(preVote));
         }
@@ -51,7 +55,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void CannotAddInvalidProposer()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
                 int.MaxValue,
                 0,
@@ -61,16 +65,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer0Priv));
+                -1).Sign(TestUtils.PrivateKeys[0]));
             var proposal2 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer2Priv.PublicKey,
+                TestUtils.PrivateKeys[2].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer2Priv));
+                -1).Sign(TestUtils.PrivateKeys[2]));
 
             Assert.False(_messageLog.Add(proposal0));
             Assert.True(_messageLog.Add(proposal2));
@@ -90,7 +94,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void CannotAddMultipleProposalsPerRound()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
                 int.MaxValue,
                 0,
@@ -100,16 +104,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer2Priv.PublicKey,
+                TestUtils.PrivateKeys[2].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer2Priv));
+                -1).Sign(TestUtils.PrivateKeys[2]));
             var proposal1 = new ConsensusProposalMsg(new ProposalMetadata(
                 2,
                 0,
                 DateTimeOffset.UtcNow + TimeSpan.FromSeconds(1),
-                TestUtils.Peer2Priv.PublicKey,
+                TestUtils.PrivateKeys[2].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer2Priv));
+                -1).Sign(TestUtils.PrivateKeys[2]));
 
             Assert.True(_messageLog.Add(proposal0));
             Assert.False(_messageLog.Add(proposal1));
@@ -120,29 +124,33 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             Random random = new Random();
             var preVote0 = new ConsensusPreVoteMsg(new VoteMetadata(
-                2, 0, null, DateTimeOffset.UtcNow, TestUtils.Peer0Priv.PublicKey, VoteFlag.PreVote)
-                    .Sign(TestUtils.Peer0Priv));
+                2,
+                0,
+                null,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[0].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]));
             var preVote1 = new ConsensusPreVoteMsg(new VoteMetadata(
                 2,
                 0,
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
-                VoteFlag.PreVote).Sign(TestUtils.Peer0Priv));
+                TestUtils.PrivateKeys[0].PublicKey,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]));
             var preCommit0 = new ConsensusPreCommitMsg(new VoteMetadata(
                 2,
                 0,
                 null,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
-                VoteFlag.PreCommit).Sign(TestUtils.Peer0Priv));
+                TestUtils.PrivateKeys[0].PublicKey,
+                VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]));
             var preCommit1 = new ConsensusPreCommitMsg(new VoteMetadata(
                 2,
                 0,
                 new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
-                VoteFlag.PreCommit).Sign(TestUtils.Peer0Priv));
+                TestUtils.PrivateKeys[0].PublicKey,
+                VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0]));
 
             Assert.True(_messageLog.Add(preVote0));
             Assert.False(_messageLog.Add(preVote1));
@@ -154,7 +162,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void GetValidatorsCount()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
                 int.MaxValue,
                 0,
@@ -164,9 +172,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer2Priv.PublicKey,
+                TestUtils.PrivateKeys[2].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer2Priv));
+                -1).Sign(TestUtils.PrivateKeys[2]));
             var preVotes = TestUtils.PrivateKeys.Select(key => new ConsensusPreVoteMsg(
                 new VoteMetadata(
                     2, 0, null, DateTimeOffset.UtcNow, key.PublicKey, VoteFlag.PreVote)
@@ -187,7 +195,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public void GetBlockCommit()
         {
             var block = _blockChain.ProposeBlock(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 DateTimeOffset.UtcNow,
                 int.MaxValue,
                 0,
@@ -197,9 +205,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 2,
                 0,
                 DateTimeOffset.UtcNow,
-                TestUtils.Peer0Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey,
                 _codec.Encode(block.MarshalBlock()),
-                -1).Sign(TestUtils.Peer0Priv));
+                -1).Sign(TestUtils.PrivateKeys[0]));
 
             // Last vote has a different hash.
             var invalidHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));

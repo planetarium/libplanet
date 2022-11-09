@@ -57,13 +57,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Null(preCommit?.BlockHash);
@@ -111,13 +111,22 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[0],
+                    1,
+                    hash: proposal?.BlockHash,
+                    flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer2Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[2],
+                    1,
+                    hash: proposal?.BlockHash,
+                    flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(TestUtils.CreateVote(
-                    TestUtils.Peer3Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
+                    TestUtils.PrivateKeys[3],
+                    1,
+                    hash: proposal?.BlockHash,
+                    flag: VoteFlag.PreVote)));
 
             await Task.WhenAll(preCommitSent.WaitAsync(), stepChangedToPreCommit.WaitAsync());
             Assert.Equal(proposal?.BlockHash, preCommit?.BlockHash);
@@ -144,15 +153,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer0Priv, 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[0], 1, hash: null, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[2], 1, hash: null, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[3], 1, hash: null, flag: VoteFlag.PreCommit)));
 
             await roundChangedToOne.WaitAsync();
             Assert.Equal(1, context.Height);
@@ -198,14 +207,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 context,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 proposal!.Proposal.BlockHash);
 
             await stepChangedToPreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 context,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 proposal!.Proposal.BlockHash);
 
             await stepChangedToEndCommit.WaitAsync();
@@ -294,7 +303,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var exceptionOccurred = new AsyncAutoResetEvent();
             Exception? exception = null;
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer2Priv,
+                privateKey: TestUtils.PrivateKeys[2],
                 height: 2);
             context.ExceptionOccurred += (sender, e) =>
             {
@@ -304,7 +313,8 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
             blockChain.Append(block);
-            Assert.Equal(TestUtils.Peer2Priv.PublicKey, TestUtils.ValidatorSet.GetProposer(2, 0));
+            Assert.Equal(
+                TestUtils.PrivateKeys[2].PublicKey, TestUtils.ValidatorSet.GetProposer(2, 0));
 
             context.Start();
             await exceptionOccurred.WaitAsync();

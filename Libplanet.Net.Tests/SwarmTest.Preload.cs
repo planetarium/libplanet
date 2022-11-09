@@ -258,7 +258,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var renderer1 = new RecordingActionRenderer<DumbAction>();
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain1 = MakeBlockChain(
@@ -330,7 +330,7 @@ namespace Libplanet.Net.Tests
         public async Task PreloadWithFailedActions()
         {
             var policy = new BlockPolicy<ThrowException>(
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
             var minerChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -399,7 +399,7 @@ namespace Libplanet.Net.Tests
             var fxForNominers = new StoreFixture[2];
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
             fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
@@ -906,7 +906,7 @@ namespace Libplanet.Net.Tests
         {
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(getValidatorSet: _ => ConsensusValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(getValidatorSet: _ => ValidatorSet);
             var genesisContent1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
@@ -1005,7 +1005,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -1066,7 +1066,7 @@ namespace Libplanet.Net.Tests
             PrivateKey seedKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);

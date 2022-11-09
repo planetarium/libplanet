@@ -37,14 +37,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var validators = new ValidatorSet(new List<PublicKey>
             {
-                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 validators);
 
             AsyncAutoResetEvent stepChangedToEndCommit = new AsyncAutoResetEvent();
@@ -75,12 +75,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             await proposalMessageSent.WaitAsync();
             Assert.NotNull(proposal?.BlockHash);
 
-            consensusContext.HandleMessage(new ConsensusPreVoteMsg(
-                TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
-            consensusContext.HandleMessage(new ConsensusPreCommitMsg(
-                TestUtils.CreateVote(
-                    TestUtils.Peer0Priv, 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
+            consensusContext.HandleMessage(new ConsensusPreVoteMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[0], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreVote)));
+            consensusContext.HandleMessage(new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                TestUtils.PrivateKeys[0], 1, hash: proposal?.BlockHash, flag: VoteFlag.PreCommit)));
 
             // Waiting for commit.
             await stepChangedToEndCommit.WaitAsync();
@@ -96,13 +94,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var validators = new ValidatorSet(new List<PublicKey>()
             {
-                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
             var (_, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 validators);
 
             Assert.Equal(Step.Null, consensusContext.Step);
@@ -115,13 +113,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var newHeightDelay = TimeSpan.FromSeconds(1);
             var validators = new ValidatorSet(new List<PublicKey>()
             {
-                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 validators);
 
             Assert.Equal(-1, consensusContext.Height);
@@ -136,13 +134,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         {
             var validators = new ValidatorSet(new List<PublicKey>()
             {
-                TestUtils.Peer0Priv.PublicKey, TestUtils.Peer1Priv.PublicKey,
+                TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
             var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 validators);
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
@@ -150,8 +148,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.Throws<InvalidConsensusMessageException>(
                 () => consensusContext.HandleMessage(
                     TestUtils.CreateConsensusPropose(
-                        blockChain.ProposeBlock(TestUtils.Peer0Priv),
-                        TestUtils.Peer0Priv,
+                        blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
+                        TestUtils.PrivateKeys[0],
                         0)));
         }
 
@@ -171,7 +169,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 lastCommitClearThreshold: 1);
 
             consensusContext.StateChanged += (_, eventArgs) =>
@@ -227,13 +225,13 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 consensusContext,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 proposal!.Proposal.BlockHash);
             await heightOnePreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 consensusContext,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 proposal!.Proposal.BlockHash);
             await heightOneEnded.WaitAsync();
 
@@ -241,24 +239,24 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
             var block = blockChain.ProposeBlock(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 lastCommit:
                 TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, height: 2));
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], height: 2));
 
             await Task.WhenAll(heightTwoPreVote.WaitAsync(), proposalMessageConsumed.WaitAsync());
             Assert.Equal(2, proposal?.Height);
 
             TestUtils.HandleFourPeersPreVoteMessages(
                 consensusContext,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 proposal!.Proposal.BlockHash);
             await heightTwoPreCommit.WaitAsync();
 
             TestUtils.HandleFourPeersPreCommitMessages(
                 consensusContext,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 block.Hash);
             await heightTwoEnded.WaitAsync();
 
@@ -277,7 +275,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv,
+                TestUtils.PrivateKeys[1],
                 TestUtils.ValidatorSet,
                 lastCommitClearThreshold: 1);
 
@@ -286,8 +284,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Create context of index 2.
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(
-                    blockChain.ProposeBlock(TestUtils.Peer2Priv),
-                    TestUtils.Peer2Priv,
+                    blockChain.ProposeBlock(TestUtils.PrivateKeys[2]),
+                    TestUtils.PrivateKeys[2],
                     2,
                     1));
 
@@ -324,7 +322,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv);
+                TestUtils.PrivateKeys[1]);
 
             consensusContext.StateChanged += (sender, tuple) =>
             {
@@ -348,7 +346,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             Assert.NotNull(proposal?.BlockHash);
 
             votes.Add(TestUtils.CreateVote(
-                TestUtils.Peer0Priv,
+                TestUtils.PrivateKeys[0],
                 1,
                 0,
                 fx.Block1.Hash,
@@ -370,14 +368,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var blockCommit = consensusContext.Contexts[1].GetBlockCommit();
             Assert.NotNull(blockCommit);
             Assert.NotEqual(votes[0], blockCommit!.Votes.First(x =>
-                x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+                x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var actualVotesWithoutInvalid =
                 HashSetExtensions.ToHashSet(blockCommit.Votes.Where(x =>
-                    !x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+                    !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             var expectedVotes = HashSetExtensions.ToHashSet(votes.Where(x =>
-                !x.Validator.Equals(TestUtils.Peer0Priv.PublicKey)));
+                !x.Validator.Equals(TestUtils.PrivateKeys[0].PublicKey)));
 
             Assert.Equal(expectedVotes, actualVotesWithoutInvalid);
         }
@@ -392,7 +390,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv);
+                TestUtils.PrivateKeys[1]);
 
             consensusContext.StateChanged += (sender, eventArgs) =>
             {
@@ -413,11 +411,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             };
 
             // Height 1 does not have lastCommit, so skipping height 1.
-            var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv, lastCommit: null);
+            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1], lastCommit: null);
             blockChain.Append(block1);
 
             var block2 = blockChain.ProposeBlock(
-                TestUtils.Peer2Priv,
+                TestUtils.PrivateKeys[2],
                 lastCommit:
                 TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.Commit(

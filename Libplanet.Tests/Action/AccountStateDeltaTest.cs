@@ -218,7 +218,7 @@ namespace Libplanet.Tests.Action
             var privateKey = new PrivateKey();
             BlockChain<DumbAction> chain = TestUtils.MakeBlockChain(
                 new NullBlockPolicy<DumbAction>(
-                    getValidatorSet: _ => TestUtils.ConsensusValidatorSet),
+                    getValidatorSet: _ => TestUtils.ValidatorSet),
                 store,
                 stateStore,
                 protocolVersion: ProtocolVersion,

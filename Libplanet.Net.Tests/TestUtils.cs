@@ -24,66 +24,22 @@ namespace Libplanet.Net.Tests
 {
     public static class TestUtils
     {
-        public static readonly PrivateKey Peer0Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "e5792a1518d9c7f7ecc35cd352899211a05164c9dde059c9811e0654860549ef"));
-
-        public static readonly PrivateKey Peer1Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91d61834be824c952754510fcf545180eca38e036d3d9b66564f0667b30d5b93"));
-
-        public static readonly PrivateKey Peer2Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "b17c919b07320edfb3e6da2f1cfed75910322de2e49377d6d4d226505afca550"));
-
-        public static readonly PrivateKey Peer3Priv =
-            new PrivateKey(
-                ByteUtil.ParseHex(
-                    "91602d7091c5c7837ac8e71a8d6b1ed1355cfe311914d9a76107899add0ad56a"));
-
-        public static readonly BoundPeer Peer0 = new BoundPeer(
-            Peer0Priv.PublicKey, new DnsEndPoint("1.0.0.0", 1000));
-
-        public static readonly BoundPeer Peer1 = new BoundPeer(
-            Peer1Priv.PublicKey, new DnsEndPoint("1.0.0.1", 1001));
-
-        public static readonly BoundPeer Peer2 = new BoundPeer(
-            Peer2Priv.PublicKey, new DnsEndPoint("1.0.0.2", 1002));
-
-        public static readonly BoundPeer Peer3 = new BoundPeer(
-            Peer3Priv.PublicKey, new DnsEndPoint("1.0.0.3", 1003));
-
         public static readonly BlockHash BlockHash0 =
             BlockHash.FromString(
                 "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
 
-        public static readonly List<PrivateKey> PrivateKeys = new List<PrivateKey>()
-        {
-            Peer0Priv,
-            Peer1Priv,
-            Peer2Priv,
-            Peer3Priv,
-        };
+        public static readonly List<PrivateKey> PrivateKeys =
+            Libplanet.Tests.TestUtils.ValidatorPrivateKeys;
 
         public static readonly List<BoundPeer> Peers = new List<BoundPeer>()
         {
-            Peer0,
-            Peer1,
-            Peer2,
-            Peer3,
+            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.0", 1000)),
+            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.1", 1001)),
+            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.2", 1002)),
+            new BoundPeer(PrivateKeys[0].PublicKey, new DnsEndPoint("1.0.0.3", 1003)),
         };
 
-        public static readonly ValidatorSet ValidatorSet = new ValidatorSet(
-            new List<PublicKey>()
-            {
-                Peer0.PublicKey,
-                Peer1.PublicKey,
-                Peer2.PublicKey,
-                Peer3.PublicKey,
-            });
+        public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
         public static readonly IBlockPolicy<DumbAction> Policy = new BlockPolicy<DumbAction>(
             blockAction: new MinerReward(1),
@@ -295,7 +251,7 @@ namespace Libplanet.Net.Tests
             var blockChain = CreateDummyBlockChain(fx);
             ConsensusContext<DumbAction>? consensusContext = null;
 
-            privateKey ??= Peer1Priv;
+            privateKey ??= PrivateKeys[1];
             validators ??= ValidatorSet;
 
             void BroadcastMessage(ConsensusMsg message) =>
@@ -335,7 +291,7 @@ namespace Libplanet.Net.Tests
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             Context<DumbAction>? context = null;
-            privateKey ??= Peer1Priv;
+            privateKey ??= PrivateKeys[1];
             policy ??= Policy;
             validators ??= ValidatorSet;
 
@@ -351,7 +307,7 @@ namespace Libplanet.Net.Tests
             var (fx, blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 policy,
-                Peer1Priv,
+                PrivateKeys[1],
                 validators,
                 broadcastMessage: BroadcastMessage);
 
@@ -375,7 +331,7 @@ namespace Libplanet.Net.Tests
             int newHeightDelayMilliseconds = 10_000,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
-            key ??= Peer1Priv;
+            key ??= PrivateKeys[1];
             validatorPeers ??= Peers;
 
             var consensusTransport = NetMQTransport.Create(

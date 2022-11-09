@@ -36,9 +36,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EnterPreVoteBlockOneThird()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.PrivateKeys[0]);
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var stateChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
@@ -51,11 +51,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.Start();
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.Peer2Priv, round: 1));
+                    block, TestUtils.PrivateKeys[2], round: 1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, 1, hash: block.Hash, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 1, hash: block.Hash, flag: VoteFlag.PreVote)));
 
             // Wait for round 1 prevote step.
             await stateChangedToRoundOnePreVote.WaitAsync();
@@ -71,9 +71,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             ConsensusPreCommitMsg? preCommit = null;
             var preCommitSent = new AsyncAutoResetEvent();
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.PrivateKeys[0]);
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -93,16 +93,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer1Priv, 1, 0, hash: block.Hash, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: block.Hash, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: block.Hash, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -131,7 +131,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var preCommitSent = new AsyncAutoResetEvent();
 
             var (fx, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.PrivateKeys[0]);
 
             var invalidBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
@@ -159,15 +159,15 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(invalidBlock, TestUtils.Peer1Priv));
+                TestUtils.CreateConsensusPropose(invalidBlock, TestUtils.PrivateKeys[1]));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer1Priv, 1, 0, hash: null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[1], 1, 0, hash: null, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -187,7 +187,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var nilPreVoteSent = new AsyncAutoResetEvent();
 
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
                 if (evnetArgs.Step == Step.PreVote)
@@ -206,23 +206,23 @@ namespace Libplanet.Net.Tests.Consensus.Context
                     nilPreVoteSent.Set();
                 }
             };
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var invalidBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: blockChain.Tip.Index + 1,
                     timestamp: blockChain.Tip.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
-                    miner: TestUtils.Peer1Priv.PublicKey.ToAddress(),
-                    publicKey: TestUtils.Peer1Priv.PublicKey,
+                    miner: TestUtils.PrivateKeys[1].PublicKey.ToAddress(),
+                    publicKey: TestUtils.PrivateKeys[1].PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose().Evaluate(TestUtils.Peer1Priv, blockChain);
+                .Propose().Evaluate(TestUtils.PrivateKeys[1], blockChain);
 
             context.Start();
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    invalidBlock, TestUtils.Peer1Priv));
+                    invalidBlock, TestUtils.PrivateKeys[1]));
 
             await Task.WhenAll(nilPreVoteSent.WaitAsync(), stepChangedToPreVote.WaitAsync());
             Assert.False(timeoutProcessed); // Check step transition isn't by timeout.
@@ -235,9 +235,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task EnterPreVoteNilOneThird()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv);
+                privateKey: TestUtils.PrivateKeys[0]);
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var stepChangedToRoundOnePreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
@@ -250,14 +250,14 @@ namespace Libplanet.Net.Tests.Consensus.Context
 
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.Peer1Priv, round: 0));
+                    block, TestUtils.PrivateKeys[1], round: 0));
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.Peer2Priv, round: 1));
+                    block, TestUtils.PrivateKeys[2], round: 1));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer3Priv, 1, 1, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[3], 1, 1, hash: null, flag: VoteFlag.PreVote)));
 
             await stepChangedToRoundOnePreVote.WaitAsync();
             Assert.Equal(Step.PreVote, context.Step);
@@ -272,7 +272,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var preVoteSent = new AsyncAutoResetEvent();
 
             var (_, _, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv,
+                privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(proposeSecondBase: 1));
 
             context.StateChanged += (_, eventArgs) =>
@@ -301,13 +301,13 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task UponRulesCheckAfterTimeout()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv,
+                privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(
                     preVoteSecondBase: 1,
                     preCommitSecondBase: 1));
 
-            var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
-            var block2 = blockChain.ProposeBlock(TestUtils.Peer2Priv);
+            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var block2 = blockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
             var roundOneStepChangedToPreVote = new AsyncAutoResetEvent();
             context.StateChanged += (_, eventArgs) =>
             {
@@ -320,16 +320,16 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Push round 0 and round 1 proposes.
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block1, TestUtils.Peer1Priv, round: 0));
+                    block1, TestUtils.PrivateKeys[1], round: 0));
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block2, TestUtils.Peer2Priv, round: 1));
+                    block2, TestUtils.PrivateKeys[2], round: 1));
 
             // Two additional votes should be enough to trigger prevote timeout timer.
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -339,7 +339,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
@@ -363,26 +363,26 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task TimeoutPreVote()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv,
+                privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
             context.TimeoutProcessed += (_, __) => timeoutProcessed.Set();
             context.Start();
 
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.Peer1Priv, round: 0));
+                    block, TestUtils.PrivateKeys[1], round: 0));
 
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer1Priv, 1, 0, hash: block.Hash, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreVote)));
+                        TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreVote)));
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
@@ -399,30 +399,27 @@ namespace Libplanet.Net.Tests.Consensus.Context
         public async Task TimeoutPreCommit()
         {
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
-                privateKey: TestUtils.Peer0Priv,
+                privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(preCommitSecondBase: 1));
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
             context.TimeoutProcessed += (_, __) => timeoutProcessed.Set();
             context.Start();
 
             context.ProduceMessage(
                 TestUtils.CreateConsensusPropose(
-                    block, TestUtils.Peer1Priv, round: 0));
+                    block, TestUtils.PrivateKeys[1], round: 0));
 
             context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer1Priv, 1, 0, hash: block.Hash, flag: VoteFlag.PreCommit)));
+                new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                    TestUtils.PrivateKeys[1], 1, 0, hash: block.Hash, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.Peer2Priv, 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                    TestUtils.PrivateKeys[2], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
             context.ProduceMessage(
-                new ConsensusPreCommitMsg(
-                    TestUtils.CreateVote(
-                        TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
+                new ConsensusPreCommitMsg(TestUtils.CreateVote(
+                    TestUtils.PrivateKeys[3], 1, 0, hash: null, flag: VoteFlag.PreCommit)));
 
             // Wait for timeout.
             await timeoutProcessed.WaitAsync();

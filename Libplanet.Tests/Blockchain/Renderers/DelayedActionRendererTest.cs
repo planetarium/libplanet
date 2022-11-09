@@ -510,7 +510,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ConsensusValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
@@ -639,7 +639,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ConsensusValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(

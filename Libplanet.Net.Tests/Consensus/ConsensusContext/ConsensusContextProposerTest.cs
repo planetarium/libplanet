@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer1Priv);
+                TestUtils.PrivateKeys[1]);
 
             var timeoutProcessed = new AsyncAutoResetEvent();
 
@@ -54,48 +54,36 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.HandleMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv,
+                        TestUtils.PrivateKeys[2],
                         1,
                         hash: null,
-                        flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer2,
-                });
+                        flag: VoteFlag.PreVote)));
 
             consensusContext.HandleMessage(
                 new ConsensusPreVoteMsg(
                     vote: TestUtils.CreateVote(
-                        TestUtils.Peer3Priv,
+                        TestUtils.PrivateKeys[3],
                         1,
                         hash: null,
-                        flag: VoteFlag.PreVote))
-                {
-                    Remote = TestUtils.Peer3,
-                });
+                        flag: VoteFlag.PreVote)));
 
             await timeoutProcessed.WaitAsync();
 
             consensusContext.HandleMessage(
                 new ConsensusPreCommitMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv,
+                        TestUtils.PrivateKeys[2],
                         1,
                         hash: null,
-                        flag: VoteFlag.PreCommit))
-                {
-                    Remote = TestUtils.Peer2,
-                });
+                        flag: VoteFlag.PreCommit)));
 
             consensusContext.HandleMessage(
                 new ConsensusPreCommitMsg(
                     vote: TestUtils.CreateVote(
-                        TestUtils.Peer3Priv,
+                        TestUtils.PrivateKeys[3],
                         1,
                         hash: null,
-                        flag: VoteFlag.PreCommit))
-                {
-                    Remote = TestUtils.Peer3,
-                });
+                        flag: VoteFlag.PreCommit)));
 
             await timeoutProcessed.WaitAsync();
             Assert.Equal(1, consensusContext.Height);
