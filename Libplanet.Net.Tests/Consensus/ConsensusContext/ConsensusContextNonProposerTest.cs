@@ -46,7 +46,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer2Priv);
+                TestUtils.PrivateKeys[2]);
             blockChain.TipChanged += (_, __) => tipChanged.Set();
             consensusContext.MessageBroadcasted += (_, eventArgs) =>
             {
@@ -58,9 +58,9 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             };
 
             consensusContext.NewHeight(1);
-            var block1 = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block1, TestUtils.Peer1Priv));
+                TestUtils.CreateConsensusPropose(block1, TestUtils.PrivateKeys[1]));
             var expectedVotes = new Vote[4];
 
             // Peer2 sends a ConsensusVote via background process.
@@ -129,7 +129,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.Peer2Priv);
+                TestUtils.PrivateKeys[2]);
 
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -169,7 +169,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            blockChain.Append(blockChain.ProposeBlock(TestUtils.Peer1Priv));
+            blockChain.Append(blockChain.ProposeBlock(TestUtils.PrivateKeys[1]));
 
             blockChain.Store.PutLastCommit(TestUtils.CreateLastCommit(
                 blockChain[1].Hash,
@@ -189,7 +189,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                          TestUtils.Peers,
                          (first, second) => (first, second)))
             {
-                if (privateKey == TestUtils.Peer2Priv)
+                if (privateKey == TestUtils.PrivateKeys[2])
                 {
                     // Peer2 will send a ConsensusVote by handling the ConsensusPropose message.
                     continue;
@@ -214,7 +214,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                          TestUtils.Peers,
                          (first, second) => (first, second)))
             {
-                if (privateKey == TestUtils.Peer2Priv)
+                if (privateKey == TestUtils.PrivateKeys[2])
                 {
                     // Peer2 will send a ConsensusCommit by handling the ConsensusVote message.
                     continue;
@@ -240,12 +240,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 BlockMarshaler.UnmarshalBlock<DumbAction>(
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
-                TestUtils.Peer3Priv,
+                TestUtils.PrivateKeys[3],
                 lastCommit: TestUtils.CreateLastCommit(blockHeightTwo.Hash, 2, 0));
 
             // Message from higher height
             consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(blockHeightThree, TestUtils.Peer3Priv, 3));
+                TestUtils.CreateConsensusPropose(blockHeightThree, TestUtils.PrivateKeys[3], 3));
 
             // New height started.
             await heightThreeStepChangedToPropose.WaitAsync();
@@ -265,7 +265,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
-                TestUtils.Peer2Priv);
+                TestUtils.PrivateKeys[2]);
 
             consensusContext.MessageConsumed += (_, eventArgs) =>
             {
@@ -281,7 +281,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(block);
 
             // Creates a lastCommit of height 1 and put it to the store.
@@ -307,7 +307,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
-                TestUtils.Peer2Priv);
+                TestUtils.PrivateKeys[2]);
             consensusContext.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
@@ -325,12 +325,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer1Priv));
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[1]));
 
             TestUtils.HandleFourPeersPreCommitMessages(
-                 consensusContext, TestUtils.Peer2Priv, block.Hash);
+                 consensusContext, TestUtils.PrivateKeys[2], block.Hash);
 
             await heightOneEndCommit.WaitAsync();
             var endCommitTime = DateTimeOffset.UtcNow;

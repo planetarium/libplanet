@@ -404,7 +404,7 @@ namespace Libplanet.Tests.Blockchain
 
             var blockAction = new DumbAction(address1, "foo");
             BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(
-                blockAction, getValidatorSet: _ => ConsensusValidatorSet);
+                blockAction, getValidatorSet: _ => TestUtils.ValidatorSet);
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

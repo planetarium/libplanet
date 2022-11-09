@@ -253,7 +253,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(block1);
 
             var invalidValidator = new PrivateKey();
-            var validators = TestUtils.ConsensusPrivateKeys.Append(invalidValidator).ToList();
+            var validators = TestUtils.ValidatorPrivateKeys.Append(invalidValidator).ToList();
             var votes = validators.Select(key => new VoteMetadata(
                 1,
                 0,
@@ -287,8 +287,8 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1);
 
-            var keysExceptPeer0 = TestUtils.ConsensusPrivateKeys.Where(
-                key => key != TestUtils.ConsensusPeer0PrivateKey).ToList();
+            var keysExceptPeer0 = TestUtils.ValidatorPrivateKeys.Where(
+                key => key != TestUtils.ValidatorPrivateKeys[0]).ToList();
             var votes = keysExceptPeer0.Select(key => new VoteMetadata(
                 1,
                 0,

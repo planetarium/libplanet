@@ -1084,7 +1084,7 @@ namespace Libplanet.Tests.Store
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var policy = new NullBlockPolicy<DumbAction>(
-                    getValidatorSet: _ => ConsensusValidatorSet);
+                    getValidatorSet: _ => TestUtils.ValidatorSet);
                 var blocks = new BlockChain<DumbAction>(
                     policy,
                     new VolatileStagePolicy<DumbAction>(),

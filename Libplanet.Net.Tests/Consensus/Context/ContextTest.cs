@@ -73,7 +73,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // is the proposer for height 2.
             var (_, blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
-                privateKey: TestUtils.Peer2Priv);
+                privateKey: TestUtils.PrivateKeys[2]);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -92,7 +92,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             // It needs a lastCommit to use, so we assume that index #1 block is already committed.
-            var heightOneBlock = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(heightOneBlock);
             var lastCommit =
                 TestUtils.CreateLastCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
@@ -120,11 +120,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
-            var block = blockChain.ProposeBlock(TestUtils.Peer1Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer0Priv));
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[0]));
             await exceptionOccurred.WaitAsync();
             Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
         }
@@ -141,11 +141,11 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 exceptionThrown = e;
                 exceptionOccurred.Set();
             };
-            var block = blockChain.ProposeBlock(TestUtils.Peer2Priv);
+            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
 
             context.Start();
             context.ProduceMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.Peer2Priv, 2, 2));
+                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], 2, 2));
             await exceptionOccurred.WaitAsync();
             Assert.IsType<InvalidConsensusMessageException>(exceptionThrown);
 
@@ -154,7 +154,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             context.ProduceMessage(
                 new ConsensusPreVoteMsg(
                     TestUtils.CreateVote(
-                        TestUtils.Peer2Priv,
+                        TestUtils.PrivateKeys[2],
                         2,
                         0,
                         block.Hash,

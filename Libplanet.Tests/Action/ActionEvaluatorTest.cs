@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Action
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
                 getMaxTransactionsBytes: _ => 50 * 1024,
-                getValidatorSet: _ => ConsensusValidatorSet);
+                getValidatorSet: _ => ValidatorSet);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
             _txFx = new TxFixture(null);
         }
