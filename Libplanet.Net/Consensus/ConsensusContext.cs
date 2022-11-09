@@ -217,7 +217,7 @@ namespace Libplanet.Net.Consensus
 
                     if (lastCommit == null)
                     {
-                        // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
+                        // Note: Attempting to save a BlockCommit is in Commit() method.
                         BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
                         if (storedCommit != null)
                         {
@@ -354,7 +354,6 @@ namespace Libplanet.Net.Consensus
         /// </param>
         private void OnBlockChainTipChanged(object? sender, (Block<T> OldTip, Block<T> NewTip) e)
         {
-            // TODO: Should set delay by using GST.
             _newHeightCts?.Cancel();
             _newHeightCts?.Dispose();
             _newHeightCts = new CancellationTokenSource();
