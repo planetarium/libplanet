@@ -37,7 +37,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             ConsensusPreCommitMsg? preCommit = null;
             var preCommitSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
@@ -81,7 +81,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             ConsensusPreCommitMsg? preCommit = null;
             var preCommitSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
@@ -140,7 +140,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var roundChangedToOne = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Round == 1)
@@ -177,7 +177,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             ConsensusProposalMsg? proposal = null;
             var proposalSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreCommit)
@@ -229,7 +229,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var nilPreVoteSent = new AsyncAutoResetEvent();
-            var (_, _, context) = TestUtils.CreateDummyContext(
+            var (_, context) = TestUtils.CreateDummyContext(
                 height: 5); // Peer1 should be a proposer
 
             context.StateChanged += (_, eventArgs) =>
@@ -262,7 +262,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             ConsensusPreVoteMsg? preVote = null;
             var preVoteSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -302,7 +302,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var privateKey = new PrivateKey();
             var exceptionOccurred = new AsyncAutoResetEvent();
             Exception? exception = null;
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[2],
                 height: 2);
             context.ExceptionOccurred += (sender, e) =>

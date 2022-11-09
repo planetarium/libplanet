@@ -29,7 +29,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public async void IncreaseRoundWhenTimeout()
         {
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);

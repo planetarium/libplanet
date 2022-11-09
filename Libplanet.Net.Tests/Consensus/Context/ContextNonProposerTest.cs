@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
@@ -35,7 +36,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreVoteBlockOneThird()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
@@ -70,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             ConsensusPreCommitMsg? preCommit = null;
             var preCommitSent = new AsyncAutoResetEvent();
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
@@ -130,17 +131,18 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var preCommitSent = new AsyncAutoResetEvent();
 
-            var (fx, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
 
+            var key = new PrivateKey();
             var invalidBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: blockChain.Tip.Index + 1,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: fx.Miner.PublicKey,
+                    publicKey: key.PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
-                    lastCommit: null)).Propose().Evaluate(fx.Miner, blockChain);
+                    lastCommit: null)).Propose().Evaluate(key, blockChain);
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -186,7 +188,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var timeoutProcessed = false;
             var nilPreVoteSent = new AsyncAutoResetEvent();
 
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
             context.StateChanged += (_, evnetArgs) =>
             {
@@ -234,7 +236,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task EnterPreVoteNilOneThird()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0]);
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
@@ -271,7 +273,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stepChangedToPreVote = new AsyncAutoResetEvent();
             var preVoteSent = new AsyncAutoResetEvent();
 
-            var (_, _, context) = TestUtils.CreateDummyContext(
+            var (_, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(proposeSecondBase: 1));
 
@@ -300,7 +302,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task UponRulesCheckAfterTimeout()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(
                     preVoteSecondBase: 1,
@@ -362,7 +364,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task TimeoutPreVote()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
 
@@ -398,7 +400,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         [Fact(Timeout = Timeout)]
         public async Task TimeoutPreCommit()
         {
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
                 contextTimeoutOptions: new ContextTimeoutOption(preCommitSecondBase: 1));
 

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
@@ -40,7 +41,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stateChangedToRoundTwoPropose = new AsyncAutoResetEvent();
             bool timeoutProcessed = false;
 
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
@@ -122,7 +123,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var stateChangedToRoundThreePropose = new AsyncAutoResetEvent();
             var roundThreeNilPreVoteSent = new AsyncAutoResetEvent();
             bool timeoutProcessed = false;
-            var (fx, blockChain, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Round == 2 && eventArgs.Step == Step.Propose)
@@ -158,17 +159,18 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 }
             };
 
+            var key = new PrivateKey();
             var differentBlock = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     protocolVersion: BlockMetadata.CurrentProtocolVersion,
                     index: blockChain.Tip.Index + 1,
                     timestamp: blockChain.Tip.Timestamp.Add(TimeSpan.FromSeconds(1)),
-                    miner: fx.Miner.PublicKey.ToAddress(),
-                    publicKey: fx.Miner.PublicKey,
+                    miner: key.PublicKey.ToAddress(),
+                    publicKey: key.PublicKey,
                     previousHash: blockChain.Tip.Hash,
                     txHash: null,
                     lastCommit: null))
-                .Propose().Evaluate(fx.Miner, blockChain);
+                .Propose().Evaluate(key, blockChain);
 
             context.Start();
             await proposalSent.WaitAsync();

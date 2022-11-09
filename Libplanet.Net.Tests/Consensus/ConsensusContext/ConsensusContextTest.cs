@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Libplanet.Blocks;
 using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -41,7 +42,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             });
             ConsensusProposalMsg? proposal = null;
             var proposalMessageSent = new AsyncAutoResetEvent();
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -97,7 +98,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
-            var (_, _, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (_, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -116,7 +117,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 newHeightDelay,
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -137,7 +138,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[0].PublicKey, TestUtils.PrivateKeys[1].PublicKey,
             });
 
-            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -166,7 +167,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightTwoEnded = new AsyncAutoResetEvent();
             var heightThreePropose = new AsyncAutoResetEvent();
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -272,7 +273,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         [Fact(Timeout = Timeout)]
         public void RemoveOldContexts()
         {
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
@@ -319,7 +320,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var heightOneEndCommit = new AsyncAutoResetEvent();
             var votes = new List<Vote>();
 
-            var (fx, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);
@@ -349,7 +350,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[0],
                 1,
                 0,
-                fx.Block1.Hash,
+                new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
                 VoteFlag.PreCommit));
             votes.AddRange(Enumerable.Range(1, 3).Select(x => TestUtils.CreateVote(
                 TestUtils.PrivateKeys[x],
@@ -387,7 +388,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var stepChangedToPreCommit = new AsyncAutoResetEvent();
             var stepChangedToEndCommit = new AsyncAutoResetEvent();
 
-            var (_, blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1]);

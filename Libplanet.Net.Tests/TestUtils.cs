@@ -234,7 +234,6 @@ namespace Libplanet.Net.Tests
         }
 
         public static (
-            StoreFixture Fx,
             BlockChain<DumbAction> BlockChain,
             ConsensusContext<DumbAction> ConsensusContext)
             CreateDummyConsensusContext(
@@ -276,11 +275,10 @@ namespace Libplanet.Net.Tests
                 lastCommitClearThreshold,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
-            return (fx, blockChain, consensusContext);
+            return (blockChain, consensusContext);
         }
 
         public static (
-            StoreFixture Fx,
             BlockChain<DumbAction> BlockChain,
             Context<DumbAction> Context)
             CreateDummyContext(
@@ -304,7 +302,7 @@ namespace Libplanet.Net.Tests
                     context!.ProduceMessage(message);
                 });
 
-            var (fx, blockChain, consensusContext) = CreateDummyConsensusContext(
+            var (blockChain, consensusContext) = CreateDummyConsensusContext(
                 TimeSpan.FromSeconds(1),
                 policy,
                 PrivateKeys[1],
@@ -319,7 +317,7 @@ namespace Libplanet.Net.Tests
                 validators,
                 contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
 
-            return (fx, blockChain, context);
+            return (blockChain, context);
         }
 
         public static ConsensusReactor<DumbAction> CreateDummyConsensusReactor(

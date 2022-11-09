@@ -37,7 +37,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
         {
             var proposalSent = new AsyncAutoResetEvent();
             var stepChangedToPreVote = new AsyncAutoResetEvent();
-            var (_, _, context) = TestUtils.CreateDummyContext();
+            var (_, context) = TestUtils.CreateDummyContext();
             context.StateChanged += (_, eventArgs) =>
             {
                 if (eventArgs.Step == Step.PreVote)
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             // Assumed that height 1 is already committed.  It will catch a propose to check
             // whether the lastCommit of height 1 is used for propose.  Note that Peer2
             // is the proposer for height 2.
-            var (_, blockChain, context) = TestUtils.CreateDummyContext(
+            var (blockChain, context) = TestUtils.CreateDummyContext(
                 height: 2,
                 privateKey: TestUtils.PrivateKeys[2]);
 
@@ -114,7 +114,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
 
-            var (_, blockChain, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext();
             context.ExceptionOccurred += (_, e) =>
             {
                 exceptionThrown = e;
@@ -135,7 +135,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             Exception? exceptionThrown = null;
             var exceptionOccurred = new AsyncAutoResetEvent();
 
-            var (_, blockChain, context) = TestUtils.CreateDummyContext();
+            var (blockChain, context) = TestUtils.CreateDummyContext();
             context.ExceptionOccurred += (_, e) =>
             {
                 exceptionThrown = e;
