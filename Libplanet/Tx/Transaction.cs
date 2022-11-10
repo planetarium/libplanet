@@ -26,7 +26,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITxExcerpt
+    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITransaction
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -263,6 +263,14 @@ namespace Libplanet.Tx
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(ActionListJsonConverter))]
         public IImmutableList<T>? CustomActions { get; }
+
+        Dictionary? ITransaction.SystemAction => (SystemAction is { } sa)
+            ? (Dictionary)sa.PlainValue
+            : null;
+
+        IImmutableList<IValue>? ITransaction.CustomActions => (CustomActions is { } cs)
+            ? cs.Select(ca => ca.PlainValue).ToImmutableList()
+            : null;
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;

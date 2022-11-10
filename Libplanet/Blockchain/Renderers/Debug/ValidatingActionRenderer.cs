@@ -159,7 +159,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     header.ProtocolVersion,
                     transactions,
                     header.PreEvaluationHash
-                );
+                ).Cast<Transaction<T>>();
 
                 expectedUnrenderedActions.AddRange(
                     transactions.SelectMany(t =>
@@ -184,7 +184,7 @@ namespace Libplanet.Blockchain.Renderers.Debug
                     header.ProtocolVersion,
                     transactions,
                     header.PreEvaluationHash
-                );
+                ).Cast<Transaction<T>>();
                 IEnumerable<IAction> actions = transactions.SelectMany(t =>
                     t.SystemAction is { } sa ? new[] { sa } : t.CustomActions!.Cast<IAction>()
                 );

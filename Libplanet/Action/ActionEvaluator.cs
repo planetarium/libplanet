@@ -135,7 +135,7 @@ namespace Libplanet.Action
                         : previousStates;
                     return evaluations.Add(
                         EvaluatePolicyBlockAction(
-                            block: block,
+                            blockHeader: block,
                             previousStates: previousStates,
                             previousBlockStatesTrie: previousBlockStatesTrie
                         )
@@ -450,9 +450,9 @@ namespace Libplanet.Action
         /// This is to prevent an attempt to gain a first move advantage by participants.
         /// </remarks>
         [Pure]
-        internal static IEnumerable<Transaction<T>> OrderTxsForEvaluation(
+        internal static IEnumerable<ITransaction> OrderTxsForEvaluation(
             int protocolVersion,
-            IEnumerable<Transaction<T>> txs,
+            IEnumerable<ITransaction> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
             return protocolVersion >= 3
@@ -472,39 +472,14 @@ namespace Libplanet.Action
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s
         /// where each <see cref="ActionEvaluation"/> is the evaluation of an <see cref="IAction"/>.
         /// </returns>
-        /// <seealso cref="EvaluateTxs"/>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateBlock(
             IPreEvaluationBlock<T> block,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie = null)
-        =>
-            EvaluateTxs(
-                block: block,
-                previousStates: previousStates,
-                previousBlockStatesTrie: previousBlockStatesTrie);
-
-        /// <summary>
-        /// Evaluates every <see cref="IAction"/> in <see cref="IBlockContent{T}.Transactions"
-        /// /> of a given <see cref="IPreEvaluationBlock{T}"/>.
-        /// </summary>
-        /// <param name="block">The block to evaluate.</param>
-        /// <param name="previousStates">The states immediately before any <see cref="IAction"/>s
-        /// being evaluated.</param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
-        /// <returns>Enumerates an <see cref="ActionEvaluation"/> for each action where
-        /// the order is determined by <see cref="IBlockContent{T}.Transactions"/> of
-        /// <paramref name="block"/> and each respective <see cref="Transaction{T}.Actions"/>.
-        /// </returns>
-        [Pure]
-        internal IEnumerable<ActionEvaluation> EvaluateTxs(
-            IPreEvaluationBlock<T> block,
-            IAccountStateDelta previousStates,
-            ITrie? previousBlockStatesTrie = null)
         {
             IAccountStateDelta delta = previousStates;
-            IEnumerable<Transaction<T>> orderedTxs = OrderTxsForEvaluation(
+            IEnumerable<ITransaction> orderedTxs = OrderTxsForEvaluation(
                 block.ProtocolVersion,
                 block.Transactions,
                 block.PreEvaluationHash
@@ -514,7 +489,8 @@ namespace Libplanet.Action
                     sw.ElapsedMilliseconds
                 )
             );
-            foreach (Transaction<T> tx in orderedTxs)
+
+            foreach (ITransaction tx in orderedTxs)
             {
                 delta = AccountStateDeltaImpl.ChooseVersion(
                     block.ProtocolVersion,
@@ -525,15 +501,18 @@ namespace Libplanet.Action
 
                 DateTimeOffset startTime = DateTimeOffset.Now;
                 IEnumerable<ActionEvaluation> evaluations = EvaluateTx(
-                    block: block,
+                    blockHeader: block,
                     tx: tx,
                     previousStates: delta,
-                    rehearsal: false,
-                    previousBlockStatesTrie: previousBlockStatesTrie);
-                foreach (var evaluation in evaluations)
+                    previousBlockStatesTrie: previousBlockStatesTrie
+                );
+
+                var actions = new List<IAction>();
+                foreach (ActionEvaluation evaluation in evaluations)
                 {
                     yield return evaluation;
                     delta = evaluation.OutputStates;
+                    actions.Add(evaluation.Action);
                 }
 
                 // FIXME: This is dependant on when the returned value is enumerated.
@@ -542,75 +521,40 @@ namespace Libplanet.Action
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
-                if (tx.SystemAction is { } sa)
-                {
-                    logger.Debug(
-                        "A system action {SystemActionType} in transaction {TxId} by {Signer} " +
-                        "with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
-                        sa,
-                        tx.Id,
-                        tx.Signer,
-                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                        evalDuration.TotalMilliseconds);
-                }
-                else
-                {
-                    logger.Debug(
-                        "{ActionCount} custom actions {CustomActionTypes} in transaction {TxId} " +
-                        "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
-                        tx.CustomActions!.Count,
-                        tx.CustomActions.Select(action => action.ToString()!.Split('.')
-                            .LastOrDefault()?.Replace(">", string.Empty)),
-                        tx.Id,
-                        tx.Signer,
-                        tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                        evalDuration.TotalMilliseconds);
-                }
+                logger.Debug(
+                    "{ActionCount} actions {ActionTypes} in transaction {TxId} " +
+                    "by {Signer} with timestamp {TxTimestamp} evaluated in {DurationMs:F0}ms.",
+                    actions.Count,
+                    actions.Select(action => action.ToString()!.Split('.')
+                        .LastOrDefault()?.Replace(">", string.Empty)),
+                    tx.Id,
+                    tx.Signer,
+                    tx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
+                    evalDuration.TotalMilliseconds);
             }
         }
 
-        /// <summary>
-        /// Evaluates <see cref="Transaction{T}.Actions"/> of a given <see cref="Transaction{T}"/>.
-        /// </summary>
-        /// <param name="block">The block that <paramref name="tx"/> belongs to.</param>
-        /// <param name="tx">A <see cref="Transaction{T}"/> instance to evaluate.</param>
-        /// <param name="previousStates">The states immediately before
-        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> being executed.</param>
-        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
-        /// to be dry-run (i.e., the returned result will be never used).
-        /// The default value is <see langword="false"/>.</param>
-        /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
-        /// </param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ActionEvaluation"/>s for each
-        /// <see cref="IAction"/> in <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>
-        /// where the order of <see cref="ActionEvaluation"/>s is the same as the corresponding
-        /// <see cref="Transaction{T}.Actions"/>.</returns>
-        /// <remarks>
-        /// <para>If only the final states are needed, use <see cref="EvaluateTxResult"/> instead.
-        /// </para>
-        /// <para>If a <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/> has more than
-        /// one <see cref="IAction"/>s, each <see cref="ActionEvaluation"/> includes all previous
-        /// <see cref="ActionEvaluation"/>s' delta besides its own delta.</para>
-        /// </remarks>
-        /// <seealso cref="EvaluateTxResult"/>
         [Pure]
         internal IEnumerable<ActionEvaluation> EvaluateTx(
-            IPreEvaluationBlock<T> block,
-            Transaction<T> tx,
+            IPreEvaluationBlockHeader blockHeader,
+            ITransaction tx,
             IAccountStateDelta previousStates,
             bool rehearsal = false,
             ITrie? previousBlockStatesTrie = null)
         {
-            ImmutableList<IAction> actions = tx.SystemAction is { } sa
-                ? ImmutableList.Create(sa)
-                : ImmutableList.CreateRange(tx.CustomActions!.Cast<IAction>());
+            IAction? systemAction = CreateSystemAction(tx);
+            IEnumerable<IAction> customActions = CreateCustomActions(blockHeader, tx);
+
+            ImmutableList<IAction> actions = systemAction is { }
+                ? ImmutableList.Create(systemAction)
+                : ImmutableList.CreateRange(customActions);
             return EvaluateActions(
                 genesisHash: _genesisHash,
-                preEvaluationHash: block.PreEvaluationHash,
-                blockIndex: block.Index,
+                preEvaluationHash: blockHeader.PreEvaluationHash,
+                blockIndex: blockHeader.Index,
                 txid: tx.Id,
                 previousStates: previousStates,
-                miner: block.Miner,
+                miner: blockHeader.Miner,
                 signer: tx.Signer,
                 signature: tx.Signature,
                 actions: actions,
@@ -620,60 +564,21 @@ namespace Libplanet.Action
         }
 
         /// <summary>
-        /// Evaluates <see cref="Transaction{T}.Actions"/> of a given
-        /// <see cref="Transaction{T}"/> and gets the resulting states.
-        /// </summary>
-        /// <param name="block">The <see cref="IPreEvaluationBlock{T}"/> that <paramref name="tx"/>
-        /// belongs to.</param>
-        /// <param name="tx">The <see cref="Transaction{T}"/> to evaluate.</param>
-        /// <param name="previousStates">The states immediately before evaluating
-        /// <paramref name="tx"/>.</param>
-        /// <param name="rehearsal">Pass <see langword="true"/> if it is intended
-        /// to be a dry-run (i.e., the returned result will be never used).
-        /// The default value is <see langword="false"/>.</param>
-        /// <returns>The resulting states of evaluating the <see cref="IAction"/>s in
-        /// <see cref="Transaction{T}.Actions"/> of <paramref name="tx"/>.  Note that it maintains
-        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
-        /// <paramref name="previousStates"/> as well.</returns>
-        [Pure]
-        internal IAccountStateDelta EvaluateTxResult(
-            IPreEvaluationBlock<T> block,
-            Transaction<T> tx,
-            IAccountStateDelta previousStates,
-            bool rehearsal = false)
-        {
-            ImmutableList<ActionEvaluation> evaluations = EvaluateTx(
-                block: block,
-                tx: tx,
-                previousStates: previousStates,
-                rehearsal: rehearsal).ToImmutableList();
-
-            if (evaluations.Count > 0)
-            {
-                return evaluations.Last().OutputStates;
-            }
-            else
-            {
-                return previousStates;
-            }
-        }
-
-        /// <summary>
         /// Evaluates the <see cref="IBlockPolicy{T}.BlockAction"/> set by the policy when
         /// this <see cref="ActionEvaluator{T}"/> was instantiated for a given
         /// <see cref="Block{T}"/>.
         /// </summary>
-        /// <param name="block">The block to evaluate.</param>
+        /// <param name="blockHeader">The header of the block to evaluate.</param>
         /// <param name="previousStates">The states immediately before the evaluation of
         /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance.</param>
         /// <param name="previousBlockStatesTrie">The trie to contain states at previous block.
         /// </param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
         /// the <see cref="IBlockPolicy{T}.BlockAction"/> held by the instance
-        /// for the <paramref name="block"/>.</returns>
+        /// for the <paramref name="blockHeader"/>.</returns>
         [Pure]
         internal ActionEvaluation EvaluatePolicyBlockAction(
-            IPreEvaluationBlock<T> block,
+            IPreEvaluationBlockHeader blockHeader,
             IAccountStateDelta previousStates,
             ITrie? previousBlockStatesTrie)
         {
@@ -686,17 +591,17 @@ namespace Libplanet.Action
             }
 
             _logger.Debug(
-                $"Evaluating policy block action for block #{block.Index} " +
-                $"{block.PreEvaluationHash}");
+                $"Evaluating policy block action for block #{blockHeader.Index} " +
+                $"{blockHeader.PreEvaluationHash}");
 
             return EvaluateActions(
                 genesisHash: _genesisHash,
-                preEvaluationHash: block.PreEvaluationHash,
-                blockIndex: block.Index,
+                preEvaluationHash: blockHeader.PreEvaluationHash,
+                blockIndex: blockHeader.Index,
                 txid: null,
                 previousStates: previousStates,
-                miner: block.Miner,
-                signer: block.Miner,
+                miner: blockHeader.Miner,
+                signer: blockHeader.Miner,
                 signature: Array.Empty<byte>(),
                 actions: new[] { _policyBlockAction }.ToImmutableList(),
                 rehearsal: false,
@@ -707,8 +612,8 @@ namespace Libplanet.Action
         }
 
         [Pure]
-        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV0(
-            IEnumerable<Transaction<T>> txs,
+        private static IEnumerable<ITransaction> OrderTxsForEvaluationV0(
+            IEnumerable<ITransaction> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
             // As the order of transactions should be unpredictable until a block is mined,
@@ -729,8 +634,8 @@ namespace Libplanet.Action
         }
 
         [Pure]
-        private static IEnumerable<Transaction<T>> OrderTxsForEvaluationV3(
-            IEnumerable<Transaction<T>> txs,
+        private static IEnumerable<ITransaction> OrderTxsForEvaluationV3(
+            IEnumerable<ITransaction> txs,
             ImmutableArray<byte> preEvaluationHash)
         {
             using SHA256 sha256 = SHA256.Create();
@@ -774,7 +679,7 @@ namespace Libplanet.Action
         /// <see cref="Block{T}"/>.
         /// </returns>
         private IAccountStateDelta GetPreviousBlockOutputStates(
-            IPreEvaluationBlock<T> block,
+            IPreEvaluationBlockHeader block,
             StateCompleterSet<T> stateCompleterSet)
         {
             var (accountStateGetter, accountBalanceGetter, totalSupplyGetter) =
@@ -791,14 +696,14 @@ namespace Libplanet.Action
 
         private (AccountStateGetter, AccountBalanceGetter, TotalSupplyGetter)
             InitializeAccountGettersPair(
-            IPreEvaluationBlock<T> block,
+            IPreEvaluationBlockHeader blockHeader,
             StateCompleterSet<T> stateCompleterSet)
         {
             AccountStateGetter accountStateGetter;
             AccountBalanceGetter accountBalanceGetter;
             TotalSupplyGetter totalSupplyGetter;
 
-            if (block.PreviousHash is { } previousHash)
+            if (blockHeader.PreviousHash is { } previousHash)
             {
                 accountStateGetter = addresses => _blockChainStates.GetStates(
                     addresses,
@@ -822,6 +727,22 @@ namespace Libplanet.Action
             }
 
             return (accountStateGetter, accountBalanceGetter, totalSupplyGetter);
+        }
+
+        private IEnumerable<IAction> CreateCustomActions(
+            IPreEvaluationBlockHeader blockHeader,
+            ITransaction tx
+        )
+        {
+            // FIXME
+            return ((Transaction<T>)tx).CustomActions?.Cast<IAction>() ??
+                ImmutableList<IAction>.Empty;
+        }
+
+        private IAction? CreateSystemAction(ITransaction tx)
+        {
+            // FIXME
+            return ((Transaction<T>)tx).SystemAction;
         }
     }
 }
