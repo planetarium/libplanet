@@ -33,6 +33,7 @@ namespace Libplanet.Action
         private readonly IBlockChainStates<T> _blockChainStates;
         private readonly Func<BlockHash, ITrie>? _trieGetter;
         private readonly Predicate<Currency> _nativeTokenPredicate;
+        private readonly IActionTypeLoader _actionTypeLoader;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator{T}"/>.
@@ -55,6 +56,35 @@ namespace Libplanet.Action
             Func<BlockHash, ITrie>? trieGetter,
             BlockHash? genesisHash,
             Predicate<Currency> nativeTokenPredicate)
+        : this(
+            policyBlockAction,
+            blockChainStates,
+            trieGetter,
+            genesisHash,
+            nativeTokenPredicate,
+            new StaticActionTypeLoader(
+                Assembly.GetEntryAssembly() is Assembly entryAssembly
+                    ? new[] { typeof(T).Assembly, entryAssembly }
+                    : new[] { typeof(T).Assembly }
+            )
+        )
+        {
+        }
+
+#pragma warning disable MEN002
+#pragma warning disable CS1573
+        /// <inheritdoc cref="ActionEvaluator{T}(IAction?, IBlockChainStates{T}, Func{BlockHash,ITrie}?, BlockHash?, Predicate{Currency})" />
+        /// <param name="actionTypeLoader"> A <see cref="IActionTypeLoader"/> implementation using action type lookup.</param>
+        public ActionEvaluator(
+            IAction? policyBlockAction,
+            IBlockChainStates<T> blockChainStates,
+            Func<BlockHash, ITrie>? trieGetter,
+            BlockHash? genesisHash,
+            Predicate<Currency> nativeTokenPredicate,
+            IActionTypeLoader actionTypeLoader
+        )
+#pragma warning restore MEN002
+#pragma warning restore CS1573
         {
             _logger = Log.ForContext<ActionEvaluator<T>>();
             _policyBlockAction = policyBlockAction;
@@ -62,14 +92,8 @@ namespace Libplanet.Action
             _trieGetter = trieGetter;
             _genesisHash = genesisHash;
             _nativeTokenPredicate = nativeTokenPredicate;
+            _actionTypeLoader = actionTypeLoader;
         }
-
-        public IActionTypeLoader ActionTypeLoader { get; set; } =
-            new StaticActionTypeLoader(
-                (Assembly.GetEntryAssembly() is Assembly entryAssembly)
-                ? new[] { typeof(T).Assembly, entryAssembly }
-                : new[] { typeof(T).Assembly }
-            );
 
         /// <summary>
         /// Creates a random seed.
@@ -749,7 +773,7 @@ namespace Libplanet.Action
         {
             if (tx.CustomActions is { } customActions)
             {
-                IDictionary<string, Type> types = ActionTypeLoader.Load(blockHeader);
+                IDictionary<string, Type> types = _actionTypeLoader.Load(blockHeader);
 
                 foreach (IValue rawAction in customActions)
                 {
