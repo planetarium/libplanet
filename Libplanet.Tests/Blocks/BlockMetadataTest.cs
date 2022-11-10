@@ -383,11 +383,6 @@ namespace Libplanet.Tests.Blocks
                 source.Cancel();
                 bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
                 Assert.True(taskEnded);
-                if (!(hash is null))
-                {
-                    Assert.True(ByteUtil.Satisfies(hash, long.MaxValue));
-                }
-
                 Assert.Null(nonce);
                 Assert.Null(hash);
                 Assert.NotNull(exception);
