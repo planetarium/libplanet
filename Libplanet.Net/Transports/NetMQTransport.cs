@@ -858,6 +858,8 @@ namespace Libplanet.Net.Transports
 
                     await channel.Writer.WriteAsync(reply, cancellationToken);
                 }
+
+                channel.Writer.Complete();
             }
             catch (Exception e)
             {
