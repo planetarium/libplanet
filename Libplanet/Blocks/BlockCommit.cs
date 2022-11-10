@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Consensus;
@@ -181,6 +185,29 @@ namespace Libplanet.Blocks
         public override int GetHashCode()
         {
             return HashCode.Combine(Height, Round, BlockHash, Votes);
+        }
+
+        /// <inheritdoc/>
+        [Pure]
+        public override string ToString()
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "block_hash", BlockHash.ToString() },
+                { "height", Height },
+                { "round", Round },
+                {
+                    "votes",
+                    Votes.Select(
+                        v => new Dictionary<string, object>
+                        {
+                            { "validator", v.Validator.ToString() },
+                            { "flag", v.Flag },
+                            { "timestamp", v.Timestamp.ToString(CultureInfo.InvariantCulture) },
+                        })
+                },
+            };
+            return JsonSerializer.Serialize(dict);
         }
     }
 }

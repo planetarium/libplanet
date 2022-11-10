@@ -211,7 +211,7 @@ namespace Libplanet.Net.Consensus
                         ? _contexts[height - 1].GetBlockCommit()
                         : null;
                     _logger.Debug(
-                        "LastCommit of height #{Height} is: {@LastCommit}",
+                        "LastCommit of height #{Height} is: {LastCommit}",
                         Height,
                         lastCommit);
 

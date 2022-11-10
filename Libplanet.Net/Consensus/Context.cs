@@ -231,7 +231,7 @@ namespace Libplanet.Net.Consensus
                 : _messageLog.GetBlockCommit(_committedRound, _decision.Hash);
             _logger.Debug(
                 "{FName}: CommittedRound: {CommittedRound}, Decision: {Decision}, " +
-                "BlockCommit: {@BlockCommit}",
+                "BlockCommit: {BlockCommit}",
                 nameof(GetBlockCommit),
                 _committedRound,
                 _decision,
