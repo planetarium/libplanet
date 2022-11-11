@@ -150,7 +150,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
-                lastCommitClearThreshold: 1);
+                blockCommitClearThreshold: 1);
 
             consensusContext.StateChanged += (_, eventArgs) =>
             {
@@ -221,7 +221,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var block = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
                 lastCommit:
-                TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
+                TestUtils.CreateBlockCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], height: 2));
 
@@ -245,8 +245,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
             await heightThreePropose.WaitAsync();
 
-            Assert.NotNull(blockChain.Store.GetLastCommit(blockChain.Tip.Index));
-            Assert.Null(blockChain.Store.GetLastCommit(blockChain.Tip.Index - 1));
+            Assert.NotNull(blockChain.Store.GetBlockCommit(blockChain.Tip.Index));
+            Assert.Null(blockChain.Store.GetBlockCommit(blockChain.Tip.Index - 1));
         }
 
         [Fact(Timeout = Timeout)]
@@ -256,7 +256,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TimeSpan.FromSeconds(1),
                 TestUtils.Policy,
                 TestUtils.PrivateKeys[1],
-                lastCommitClearThreshold: 1);
+                blockCommitClearThreshold: 1);
 
             // Create context of index 1.
             consensusContext.NewHeight(1);
@@ -272,14 +272,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             blockChain.Append(
                 blockChain.ProposeBlock(
                     new PrivateKey(),
-                    lastCommit: TestUtils.CreateLastCommit(
+                    lastCommit: TestUtils.CreateBlockCommit(
                         blockChain.Tip.Hash,
                         blockChain.Tip.Index,
                         0)));
             blockChain.Append(
                 blockChain.ProposeBlock(
                     new PrivateKey(),
-                    lastCommit: TestUtils.CreateLastCommit(
+                    lastCommit: TestUtils.CreateBlockCommit(
                         blockChain.Tip.Hash,
                         blockChain.Tip.Index,
                         0)));
@@ -396,12 +396,12 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             var block2 = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[2],
                 lastCommit:
-                TestUtils.CreateLastCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
+                TestUtils.CreateBlockCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.Commit(
-                TestUtils.CreateLastCommit(block2.Hash, block2.Index, 0), block2);
+                TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0), block2);
 
             Assert.Equal(blockChain.Tip, block2);
-            Assert.NotNull(blockChain.Store.GetLastCommit(2));
+            Assert.NotNull(blockChain.Store.GetBlockCommit(2));
         }
     }
 }

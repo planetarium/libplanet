@@ -46,8 +46,8 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
         /// </param>
-        /// <param name="lastCommitClearThreshold">A cache of <see cref="BlockCommit"/> cleanup
-        /// threshold. See <see cref="ConsensusContext{T}.LastCommitClearThreshold"/>.
+        /// <param name="blockCommitClearThreshold">A cache of <see cref="BlockCommit"/> cleanup
+        /// threshold. See <see cref="ConsensusContext{T}.BlockCommitClearThreshold"/>.
         /// The value must bigger than <c>0</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
@@ -58,7 +58,7 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay,
-            long lastCommitClearThreshold,
+            long blockCommitClearThreshold,
             ContextTimeoutOption contextTimeoutOption)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -78,7 +78,7 @@ namespace Libplanet.Net.Consensus
                 privateKey,
                 newHeightDelay,
                 blockChain.Policy.GetValidatorSet,
-                lastCommitClearThreshold,
+                blockCommitClearThreshold,
                 contextTimeoutOption);
 
             _logger = Log

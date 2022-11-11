@@ -171,7 +171,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             blockChain.Append(blockChain.ProposeBlock(TestUtils.PrivateKeys[1]));
 
-            blockChain.Store.PutLastCommit(TestUtils.CreateLastCommit(
+            blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(
                 blockChain[1].Hash,
                 1,
                 0));
@@ -241,7 +241,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[3],
-                lastCommit: TestUtils.CreateLastCommit(blockHeightTwo.Hash, 2, 0));
+                lastCommit: TestUtils.CreateBlockCommit(blockHeightTwo.Hash, 2, 0));
 
             // Message from higher height
             consensusContext.HandleMessage(
@@ -285,8 +285,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             blockChain.Append(block);
 
             // Creates a lastCommit of height 1 and put it to the store.
-            var createdLastCommit = TestUtils.CreateLastCommit(block.Hash, 1, 0);
-            blockChain.Store.PutLastCommit(createdLastCommit);
+            var createdLastCommit = TestUtils.CreateBlockCommit(block.Hash, 1, 0);
+            blockChain.Store.PutBlockCommit(createdLastCommit);
 
             // Starts height 2. Node 2 is the proposer.
             consensusContext.NewHeight(blockChain.Tip.Index + 1);

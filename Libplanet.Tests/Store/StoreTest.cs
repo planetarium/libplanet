@@ -1149,7 +1149,7 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void GetLastCommit()
+        public void GetBlockCommit()
         {
             using (StoreFixture fx = FxConstructor())
             {
@@ -1168,17 +1168,17 @@ namespace Libplanet.Tests.Store
                     validator.PublicKey,
                     VoteFlag.PreCommit).Sign(validator)).ToImmutableArray();
 
-                BlockCommit blockCommit = new BlockCommit(height, round, hash, votes);
-                fx.Store.PutLastCommit(blockCommit);
+                BlockCommit commit = new BlockCommit(height, round, hash, votes);
+                fx.Store.PutBlockCommit(commit);
                 BlockCommit storedCommitVotes =
-                    fx.Store.GetLastCommit(blockCommit.Height);
+                    fx.Store.GetBlockCommit(commit.Height);
 
-                Assert.Equal(blockCommit, storedCommitVotes);
+                Assert.Equal(commit, storedCommitVotes);
             }
         }
 
         [SkippableFact]
-        public void GetLastCommitIndices()
+        public void GetBlockCommitIndices()
         {
             using (StoreFixture fx = FxConstructor())
             {
@@ -1207,10 +1207,10 @@ namespace Libplanet.Tests.Store
 
                 foreach (var blockCommit in blockCommits)
                 {
-                    fx.Store.PutLastCommit(blockCommit);
+                    fx.Store.PutBlockCommit(blockCommit);
                 }
 
-                IEnumerable<long> indices = fx.Store.GetLastCommitIndices();
+                IEnumerable<long> indices = fx.Store.GetBlockCommitIndices();
 
                 HashSet<long> indicesFromOperation = indices.ToHashSet();
                 HashSet<long> expectedIndices = new HashSet<long>() { 1, 2 };
@@ -1239,11 +1239,11 @@ namespace Libplanet.Tests.Store
                                 validatorPrivateKey.PublicKey,
                                 VoteFlag.PreCommit).Sign(validatorPrivateKey)));
 
-                fx.Store.PutLastCommit(blockCommit);
-                Assert.NotNull(fx.Store.GetLastCommit(blockCommit.Height));
+                fx.Store.PutBlockCommit(blockCommit);
+                Assert.NotNull(fx.Store.GetBlockCommit(blockCommit.Height));
 
-                fx.Store.DeleteLastCommit(blockCommit.Height);
-                Assert.Null(fx.Store.GetLastCommit(blockCommit.Height));
+                fx.Store.DeleteBlockCommit(blockCommit.Height);
+                Assert.Null(fx.Store.GetBlockCommit(blockCommit.Height));
             }
         }
 

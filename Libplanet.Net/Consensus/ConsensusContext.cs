@@ -51,8 +51,8 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="getValidatorSet">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
-        /// <param name="lastCommitClearThreshold">A maximum size of cached
-        /// <see cref="BlockCommit"/>. See <see cref="LastCommitClearThreshold"/>.
+        /// <param name="blockCommitClearThreshold">A maximum size of cached
+        /// <see cref="BlockCommit"/>. See <see cref="BlockCommitClearThreshold"/>.
         /// The value must bigger than <c>0</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
@@ -62,7 +62,7 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             Func<long, ValidatorSet> getValidatorSet,
-            long lastCommitClearThreshold,
+            long blockCommitClearThreshold,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Consensus
             Height = -1;
             _newHeightDelay = newHeightDelay;
             _getValidatorSet = getValidatorSet;
-            LastCommitClearThreshold = lastCommitClearThreshold;
+            BlockCommitClearThreshold = blockCommitClearThreshold;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -147,8 +147,8 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
 
-        /// <inheritdoc cref="ConsensusReactorOption.LastCommitClearThreshold"/>
-        private long LastCommitClearThreshold { get; }
+        /// <inheritdoc cref="ConsensusReactorOption.BlockCommitClearThreshold"/>
+        private long BlockCommitClearThreshold { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -218,7 +218,7 @@ namespace Libplanet.Net.Consensus
                     if (lastCommit == null)
                     {
                         // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
-                        BlockCommit? storedCommit = _blockChain.Store.GetLastCommit(height - 1);
+                        BlockCommit? storedCommit = _blockChain.Store.GetBlockCommit(height - 1);
                         if (storedCommit != null)
                         {
                             lastCommit = storedCommit;
@@ -232,7 +232,7 @@ namespace Libplanet.Net.Consensus
                 }
 
                 RemoveOldContexts(height);
-                ClearOldLastCommitCache(maxSize: LastCommitClearThreshold);
+                ClearOldBlockCommitCache(maxSize: BlockCommitClearThreshold);
 
                 Height = height;
 
@@ -262,7 +262,7 @@ namespace Libplanet.Net.Consensus
         /// Committing the block to the <see cref="BlockChain{T}"/> and saves
         /// <see cref="BlockCommit"/> of currently committed height.
         /// </summary>
-        /// <param name="lastCommit">A <see cref="BlockCommit"/> created from committed height.
+        /// <param name="commit">A <see cref="BlockCommit"/> created from committed height.
         /// </param>
         /// <param name="block">A <see cref="Block{T}"/> to committing to the
         /// <see cref="BlockChain{T}"/>.
@@ -270,20 +270,20 @@ namespace Libplanet.Net.Consensus
         /// <remarks>the method is called when a block is voted by <see cref="Context{T}"/>
         /// in <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>.
         /// </remarks>
-        public void Commit(BlockCommit? lastCommit, Block<T> block)
+        public void Commit(BlockCommit? commit, Block<T> block)
         {
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
             _blockChain.Append(block);
-            if (lastCommit is null)
+            if (commit is null)
             {
                 return;
             }
 
             _logger.Debug(
                 "Saving LastCommit of height #{Height} and round #{Round}.",
-                lastCommit.Height,
-                lastCommit.Round);
-            _blockChain.Store.PutLastCommit(lastCommit);
+                commit.Height,
+                commit.Round);
+            _blockChain.Store.PutBlockCommit(commit);
         }
 
         /// <summary>
@@ -394,9 +394,9 @@ namespace Libplanet.Net.Consensus
         /// keep the last commit cache count in <paramref name="maxSize"/>.
         /// </summary>
         /// <param name="maxSize">A maximum count value of <see cref="BlockCommit"/> cache.</param>
-        private void ClearOldLastCommitCache(long maxSize = 30)
+        private void ClearOldBlockCommitCache(long maxSize = 30)
         {
-            IEnumerable<long> indices = _blockChain.Store.GetLastCommitIndices().ToArray();
+            IEnumerable<long> indices = _blockChain.Store.GetBlockCommitIndices().ToArray();
 
             if (indices.Count() < maxSize)
             {
@@ -409,7 +409,7 @@ namespace Libplanet.Net.Consensus
 
             foreach (var height in indices.OrderBy(x => x).Take((int)(indices.Count() - maxSize)))
             {
-                _blockChain.Store.DeleteLastCommit(height);
+                _blockChain.Store.DeleteBlockCommit(height);
             }
         }
 

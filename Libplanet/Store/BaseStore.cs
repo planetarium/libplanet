@@ -182,16 +182,16 @@ namespace Libplanet.Store
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <inheritdoc/>
-        public abstract BlockCommit GetLastCommit(long height);
+        public abstract BlockCommit GetBlockCommit(long height);
 
         /// <inheritdoc/>
-        public abstract void PutLastCommit(BlockCommit lastCommit);
+        public abstract void PutBlockCommit(BlockCommit blockCommit);
 
         /// <inheritdoc/>
-        public abstract void DeleteLastCommit(long height);
+        public abstract void DeleteBlockCommit(long height);
 
         /// <inheritdoc/>
-        public abstract IEnumerable<long> GetLastCommitIndices();
+        public abstract IEnumerable<long> GetBlockCommitIndices();
 
         protected static IValue SerializeTxExecution(TxSuccess txSuccess)
         {

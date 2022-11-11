@@ -49,7 +49,7 @@ namespace Libplanet.Net.Consensus
         /// for a case when the height of <see cref="Context{T}"/> does not exists in the memory
         /// (e.g., node restarted, joining consensus.)
         /// </summary>
-        public long? LastCommitClearThreshold { get; set; }
+        public long? BlockCommitClearThreshold { get; set; }
 
         /// <summary>
         /// A timeout second and multiplier value for used in <see cref="Context{T}"/>.

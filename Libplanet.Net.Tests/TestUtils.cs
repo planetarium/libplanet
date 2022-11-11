@@ -111,7 +111,7 @@ namespace Libplanet.Net.Tests
                     validRound).Sign(privateKey));
         }
 
-        public static BlockCommit CreateLastCommit(BlockHash blockHash, long height, int round)
+        public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round)
         {
             var votes = PrivateKeys.Select(key => new VoteMetadata(
                 height,
@@ -241,7 +241,7 @@ namespace Libplanet.Net.Tests
                 IBlockPolicy<DumbAction>? policy = null,
                 PrivateKey? privateKey = null,
                 ConsensusContext<DumbAction>.DelegateBroadcastMessage? broadcastMessage = null,
-                long lastCommitClearThreshold = 30,
+                long blockCommitClearThreshold = 30,
                 ContextTimeoutOption? contextTimeoutOptions = null)
         {
             policy ??= Policy;
@@ -270,7 +270,7 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 newHeightDelay,
                 policy.GetValidatorSet,
-                lastCommitClearThreshold,
+                blockCommitClearThreshold,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, consensusContext);

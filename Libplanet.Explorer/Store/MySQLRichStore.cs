@@ -159,27 +159,27 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc />
-        public BlockCommit GetLastCommit(long height)
+        public BlockCommit GetBlockCommit(long height)
         {
-            return _store.GetLastCommit(height);
+            return _store.GetBlockCommit(height);
         }
 
         /// <inheritdoc />
-        public void PutLastCommit(BlockCommit lastCommit)
+        public void PutBlockCommit(BlockCommit blockCommit)
         {
-            _store.PutLastCommit(lastCommit);
+            _store.PutBlockCommit(blockCommit);
         }
 
         /// <inheritdoc />
-        public void DeleteLastCommit(long height)
+        public void DeleteBlockCommit(long height)
         {
-            _store.DeleteLastCommit(height);
+            _store.DeleteBlockCommit(height);
         }
 
         /// <inheritdoc />
-        public IEnumerable<long> GetLastCommitIndices()
+        public IEnumerable<long> GetBlockCommitIndices()
         {
-            return _store.GetLastCommitIndices();
+            return _store.GetBlockCommitIndices();
         }
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>
