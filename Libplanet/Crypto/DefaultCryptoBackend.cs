@@ -39,28 +39,17 @@ namespace Libplanet.Crypto
             byte[] signature,
             PublicKey publicKey)
         {
-            try
-            {
-                Asn1Sequence asn1Sequence = (Asn1Sequence)Asn1Object.FromByteArray(signature);
+            Asn1Sequence asn1Sequence = (Asn1Sequence)Asn1Object.FromByteArray(signature);
 
-                var rs = new[]
-                {
-                    ((DerInteger)asn1Sequence[0]).Value,
-                    ((DerInteger)asn1Sequence[1]).Value,
-                };
-                var verifier = new ECDsaSigner();
-                verifier.Init(false, publicKey.KeyParam);
+            var rs = new[]
+            {
+                ((DerInteger)asn1Sequence[0]).Value,
+                ((DerInteger)asn1Sequence[1]).Value,
+            };
+            var verifier = new ECDsaSigner();
+            verifier.Init(false, publicKey.KeyParam);
 
-                return verifier.VerifySignature(messageHash.ToByteArray(), rs[0], rs[1]);
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-            catch (Asn1ParsingException)
-            {
-                return false;
-            }
+            return verifier.VerifySignature(messageHash.ToByteArray(), rs[0], rs[1]);
         }
     }
 }

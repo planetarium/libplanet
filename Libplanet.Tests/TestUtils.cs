@@ -421,11 +421,6 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         )
             where T : IAction, new()
         {
-            Skip.IfNot(
-                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
-                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
-            );
-
             PreEvaluationBlock<T> preEval = MineNext(
                 previousBlock,
                 txs,

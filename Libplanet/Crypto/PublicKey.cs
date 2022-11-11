@@ -169,24 +169,17 @@ namespace Libplanet.Crypto
                 return false;
             }
 
-            try
+            HashDigest<SHA256> hashed = message switch
             {
-                HashDigest<SHA256> hashed = message switch
-                {
-                    byte[] ma => HashDigest<SHA256>.DeriveFrom(ma),
-                    ImmutableArray<byte> im => HashDigest<SHA256>.DeriveFrom(im),
-                    _ => HashDigest<SHA256>.DeriveFrom(message.ToArray()),
-                };
-                return CryptoConfig.CryptoBackend.Verify(
-                    hashed,
-                    signature is byte[] ba ? ba : signature.ToArray(),
-                    publicKey: this
-                );
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+                byte[] ma => HashDigest<SHA256>.DeriveFrom(ma),
+                ImmutableArray<byte> im => HashDigest<SHA256>.DeriveFrom(im),
+                _ => HashDigest<SHA256>.DeriveFrom(message.ToArray()),
+            };
+            return CryptoConfig.CryptoBackend.Verify(
+                hashed,
+                signature is byte[] ba ? ba : signature.ToArray(),
+                publicKey: this
+            );
         }
 
         /// <summary>

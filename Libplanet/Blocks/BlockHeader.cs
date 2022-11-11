@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
+using Bencodex;
 using Libplanet.Crypto;
 
 namespace Libplanet.Blocks
@@ -75,9 +76,13 @@ namespace Libplanet.Blocks
                 preEvaluationBlockHeader.DeriveBlockHash(proof.StateRootHash, proof.Signature);
             if (!preEvaluationBlockHeader.VerifySignature(proof.Signature, proof.StateRootHash))
             {
+                byte[] m = new Codec().Encode(
+                    preEvaluationBlockHeader.MakeCandidateData(proof.StateRootHash));
                 long idx = preEvaluationBlockHeader.Index;
                 string msg = preEvaluationBlockHeader.ProtocolVersion >= 2
-                    ? $"The block #{idx} #{proof.Hash}'s signature is invalid."
+                    ? $"The block #{idx} #{proof.Hash}'s signature is invalid, " +
+                    $"srh: {proof.StateRootHash}, " +
+                    $"msg: {BitConverter.ToString(m).Replace("-", string.Empty)}"
                     : $"The block #{idx} #{proof.Hash} cannot be signed as its protocol version " +
                         $"is less than 2: {preEvaluationBlockHeader.ProtocolVersion}.";
                 throw new InvalidBlockSignatureException(

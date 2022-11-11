@@ -214,7 +214,17 @@ namespace Libplanet.Blocks
             if (PublicKey is { } pubKey && signature is { } sig)
             {
                 byte[] msg = Codec.Encode(MakeCandidateData(stateRootHash));
-                return pubKey.Verify(msg, sig);
+                var verified = pubKey.Verify(msg, sig);
+                string message = BitConverter.ToString(msg).Replace("-", string.Empty);
+                if (!verified)
+                {
+                    throw new InvalidBlockSignatureException(
+                        message,
+                        pubKey,
+                        sig);
+                }
+
+                return verified;
             }
             else if (PublicKey is null)
             {

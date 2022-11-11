@@ -308,5 +308,45 @@ namespace Libplanet.Tests.Crypto
                 key1.ToString()
             );
         }
+
+        [Fact]
+        public void SigTest()
+        {
+            const string pubKey =
+                "03" +
+                "8ec8ef28ce8c9c16305aee6a8198da37" +
+                "93116bac755ff54a6103c08ad7f5de7e";
+            const string msg =
+                "647531303A646966666963756C747969" +
+                "316575353A696E64657869336575353A" +
+                "6E6F6E636531303A24D372E47FEEFF1B" +
+                "F5A67531333A70726576696F75735F68" +
+                "61736833323AD657CD14245B0BC40B28" +
+                "DC3BC564BAA8871549F5720C67BCBDDF" +
+                "C869AC5F43EA7531363A70726F746F63" +
+                "6F6C5F76657273696F6E693365753130" +
+                "3A7075626C69635F6B657933333A038E" +
+                "C8EF28CE8C9C16305AEE6A8198DA3793" +
+                "116BAC755FF54A6103C08AD7F5DE7E75" +
+                "31353A73746174655F726F6F745F6861" +
+                "736833323A1B16B1DF538BA12DC3F97E" +
+                "DBB85CAA7050D46C148134290FEBA80F" +
+                "8236C83DB975393A74696D657374616D" +
+                "707532373A323032322D31312D313154" +
+                "30353A34313A35332E3137383936335A" +
+                "7531363A746F74616C5F646966666963" +
+                "756C747969336565";
+            const string sig =
+                "304402206b8e2a9fdc7adbf121893e5c" +
+                "53390a3c43f8cd7329c9cad8315ad2da" +
+                "bd37f23102206bbdef6a81138ba915e1" +
+                "32369e86c29a604177436ee2ef5995c4" +
+                "7318a57fd72b";
+            PublicKey pKey = new PublicKey(ByteUtil.ParseHex(pubKey));
+            byte[] m = ByteUtil.ParseHex(msg);
+            byte[] s = ByteUtil.ParseHex(sig);
+            bool v = pKey.Verify(m, s);
+            Assert.True(v);
+        }
     }
 }
