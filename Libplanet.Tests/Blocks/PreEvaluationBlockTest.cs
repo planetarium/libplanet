@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Blocks
                     _contents.Block1ContentPv1, _validBlock1Proof));
         }
 
-        [Fact]
+        [SkippableFact]
         public void Evaluate()
         {
             Address address = _contents.Block1Tx0.Signer;

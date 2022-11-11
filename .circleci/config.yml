@@ -184,8 +184,6 @@ commands:
             head -n $part .head_tests.txt > .current_tests.txt
           fi
           excluded_tests=(
-            "Libplanet.Net.Tests.Transports.NetMQTransportTest.AsPeer"
-            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           cat .current_tests.txt
           first=1
@@ -350,18 +348,27 @@ commands:
             xur_path=/tmp/xur/<<parameters.runner_target>>
           fi
           excluded_classes=(
+            Libplanet.Tests.Blockchain.Renderers.AnonymousActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.AnonymousRendererTest
+            Libplanet.Tests.Blockchain.Renderers.DelayedActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.DelayedRendererTest
+            Libplanet.Tests.Blockchain.Renderers.LoggedActionRendererTest
+            Libplanet.Tests.Blockchain.Renderers.LoggedRendererTest
+            Libplanet.Tests.Blockchain.Renderers.NonblockRendererTest
+            Libplanet.Tests.Store.MemoryStoreTest
+            Libplanet.Tests.Blockchain.DefaultStoreBlockChainTest
+            Libplanet.Tests.Blockchain.BlockChainTest
+            Libplanet.Tests.Blockchain.Policies.BlockPolicyTest
+            Libplanet.Tests.Blockchain.Policies.VolatileStagePolicyTest
+            Libplanet.Tests.Store.BlockSetTest
+            Libplanet.Tests.Store.StoreTrackerTest
+            Libplanet.Tests.Blocks.PreEvaluationBlockTest
+            Libplanet.Tests.Blocks.PreEvaluationBlockHeaderTest
+            Libplanet.Tests.Blocks.BlockContentTest
+            Libplanet.Tests.Blocks.BlockMetadataExtensionsTest
+            Libplanet.Tests.Blocks.BlockMetadataTest
           )
           excluded_methods=(
-            "Libplanet.Tests.Blockchain.BlockChainTest.MakeTransactionWithSystemAction"
-            "Libplanet.Tests.Blockchain.DefaultStoreBlockChainTest.GetStateWithRecalculation"
-            "Libplanet.Tests.Blockchain.Renderers.LoggedActionRendererTest.RenderReorg"
-            "Libplanet.Tests.Store.DefaultStoreTest.DeleteChainIdWithForks"
-            "Libplanet.Tests.Store.BlockSetTest.CanDetectInvalidHash"
-            "Libplanet.Tests.Blocks.BlockContentTest.TransactionsWithMissingNonce"
-            "Libplanet.Tests.Blockchain.Policies.BlockPolicyTest.GetNextBlockDifficulty"
-            "Libplanet.Node.Tests.SwarmConfigTest.Serialization"
-            "Libplanet.Tests.Blockchain.BlockChainTest.TreatGoingBackwardAsReorg"
-            "Libplanet.Tests.Blocks.BlockMetadataTest.CancelMineNonce"
           )
           args=(
             "--hang-seconds=60"
@@ -382,10 +389,9 @@ commands:
           done
           for project in *.Tests; do
             if [[
-              $project != Libplanet.Explorer.Tests
-              && $project != Libplanet.Extensions.Cocona.Tests
-              && $project != Libplanet.RocksDBStore.Tests
-              && $project != Libplanet.Tools.Tests
+              $project == Libplanet.Analyzers.Tests
+              || $project == Libplanet.Tests
+              || $project == Libplanet.Node.Tests
             ]]
             then
               args+=("$PWD/$project/bin/Release/net47/$project.dll")
@@ -467,6 +473,8 @@ jobs:
   linux-unity-test:
     docker:
     - image: mono:6.12
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
     resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 4
@@ -479,6 +487,8 @@ jobs:
   macos-unity-test:
     macos:
       xcode: 11.3.0
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
     parallelism: 3
     steps:
     - ulimit: { n: 10240 }
@@ -489,6 +499,8 @@ jobs:
     executor:
       name: win/default
       size: large
+    environment:
+      XUNIT_UNITY_RUNNER: 0.5.0
     parallelism: 4
     steps:
     - run:

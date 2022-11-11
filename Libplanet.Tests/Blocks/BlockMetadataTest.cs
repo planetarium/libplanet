@@ -360,17 +360,19 @@ namespace Libplanet.Tests.Blocks
                     txHash: Block1Metadata.TxHash);
 
                 Exception exception = null;
+                Nonce? nonce = null;
+                ImmutableArray<byte>? hash = null;
                 Task task = Task.Run(() =>
                 {
                     try
                     {
                         if (workers is int w)
                         {
-                            Block1Metadata.MineNonce(w, source.Token);
+                            (nonce, hash) = metadata.MineNonce(w, source.Token);
                         }
                         else
                         {
-                            Block1Metadata.MineNonce(source.Token);
+                            (nonce, hash) = metadata.MineNonce(source.Token);
                         }
                     }
                     catch (OperationCanceledException ce)
@@ -378,10 +380,11 @@ namespace Libplanet.Tests.Blocks
                         exception = ce;
                     }
                 });
-
                 source.Cancel();
                 bool taskEnded = task.Wait(TimeSpan.FromSeconds(10));
                 Assert.True(taskEnded);
+                Assert.Null(nonce);
+                Assert.Null(hash);
                 Assert.NotNull(exception);
                 Assert.IsAssignableFrom<OperationCanceledException>(exception);
             }

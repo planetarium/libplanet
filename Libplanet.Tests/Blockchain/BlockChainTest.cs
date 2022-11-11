@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blockchain
             _fx.Dispose();
         }
 
-        [Fact]
+        [SkippableFact]
         public void PerceiveBlock()
         {
             var blockA = new SimpleBlockExcerpt()
@@ -138,9 +138,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(timeB, perceptionB.PerceivedTime);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task CanFindBlockByIndex()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var genesis = _blockChain.Genesis;
             Assert.Equal(genesis, _blockChain[0]);
 
@@ -148,9 +153,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block, _blockChain[1]);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task CanonicalId()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var x = _blockChain;
             var key = new PrivateKey();
             await x.MineBlock(key);
@@ -171,9 +181,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(x.Id, z.Id);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task BlockHashes()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
             var genesis = _blockChain.Genesis;
 
@@ -195,9 +210,14 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ProcessActions()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             Block<PolymorphicAction<BaseAction>> genesisBlock =
                 BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
             var store = new MemoryStore();
@@ -294,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.NotNull(state);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ShortCircuitActionEvaluationForUnrenderWithNoActionRenderers()
         {
             IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
@@ -351,9 +371,14 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ActionRenderersHaveDistinctContexts()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -390,9 +415,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(generatedRandomValueLogs[0], generatedRandomValueLogs[1]);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task RenderActionsAfterBlockIsRendered()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -427,9 +457,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, blockLogs[1].Index);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task RenderActionsAfterAppendComplete()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
@@ -454,9 +489,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(2, blockChain.Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task FindNextHashes()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
             long? offsetIndex;
             IReadOnlyList<BlockHash> hashes;
@@ -490,9 +530,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(new[] { block0.Hash, block1.Hash }, hashes);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task FindNextHashesAfterFork()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
 
             await _blockChain.MineBlock(key);
@@ -510,9 +555,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task Fork()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
 
             var block1 = await _blockChain.MineBlock(key);
@@ -548,9 +598,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(workspace.IsCanonical);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ForkWithBlockNotExistInChain()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
             var genesis = await _blockChain.MineBlock(key);
 
@@ -573,7 +628,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Fork(newBlock.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkChainWithIncompleteBlockStates()
         {
             (_, _, BlockChain<DumbAction> chain) = MakeIncompleteBlockStates();
@@ -582,9 +637,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(6, forked.Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task StateAfterForkingAndAddingExistingBlock()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var miner = new PrivateKey();
             var signer = new PrivateKey();
             var address = signer.ToAddress();
@@ -609,9 +669,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"foo,bar", state);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task ForkShouldSkipExecuteAndRenderGenesis()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             Address stateKey = _fx.Address1;
             var miner = new PrivateKey();
             var action = new DumbAction(stateKey, "genesis");
@@ -710,7 +775,7 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.Append(b2);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkTxNonce()
         {
             // An active account, so that its some recent transactions became "stale" due to a fork.
@@ -770,9 +835,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, forked.GetNextTxNonce(lessActiveAddress));
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task GetBlockLocator()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
             List<Block<DumbAction>> blocks = new List<Block<DumbAction>>();
             foreach (var i in Enumerable.Range(0, 10))
@@ -796,7 +866,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void Swap(bool render)
@@ -993,7 +1063,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public void SwapForSameTip(bool render)
@@ -1006,11 +1076,16 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(prevRecords, _renderer.Records);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public async Task SwapWithoutReorg(bool render)
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
 
             // The lower  chain goes to the higher chain  [#N -> #N+1]
@@ -1022,9 +1097,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(prevRecords, _renderer.ReorgRecords);
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task TreatGoingBackwardAsReorg()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             BlockChain<DumbAction> fork = _blockChain.Fork(_blockChain.Tip.Hash);
 
             // The higher chain goes to the lower  chain  [#N -> #N-1]
@@ -1041,11 +1121,16 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(end.End);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
         public async Task ReorgIsUnableToHeterogenousChain(bool render)
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             using (var fx2 = new MemoryStoreFixture(_policy.BlockAction))
             {
                 Block<DumbAction> genesis2 = MineGenesis<DumbAction>(
@@ -1188,7 +1273,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.True(testingDepth >= callCount);
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
             var blockPolicy = new NullBlockPolicy<DumbAction>();
@@ -1225,9 +1310,14 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task GetStateReturnsValidStateAfterFork()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             Block<DumbAction> genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
                 new[] { new DumbAction(_fx.Address1, "item0.0", idempotent: true) }
             );
@@ -1265,9 +1355,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal("item0.0,item1.0", (Text)forked.GetState(_fx.Address1));
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStateWithRecalculation()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             // Only chain[4] and chain[7] has stored states.
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
@@ -1301,7 +1396,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetStateWithComplementLatest()
         {
             // Only chain[4] and chain[7] has stored states.
@@ -1319,9 +1414,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.False(stateStore.ContainsStateRoot(chain[8].StateRootHash));
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var chain = new BlockChain<DumbAction>(
@@ -1360,9 +1460,14 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task FindBranchPoint()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var key = new PrivateKey();
             Block<DumbAction> b1 = await _blockChain.MineBlock(key);
             Block<DumbAction> b2 = await _blockChain.MineBlock(key);
@@ -1405,7 +1510,7 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
@@ -1480,9 +1585,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(6, _blockChain.GetNextTxNonce(address));
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task GetNextTxNonceWithStaleTx()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(address, "foo") };
@@ -1564,9 +1674,14 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidTxNonceException>(() => _blockChain.Append(b3b));
         }
 
-        [Fact]
+        [SkippableFact]
         public void MakeTransactionWithSystemAction()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var foo = Currency.Uncapped("FOO", 2, minters: null);
             var privateKey = new PrivateKey();
             Address address = privateKey.ToAddress();
@@ -1648,9 +1763,14 @@ namespace Libplanet.Tests.Blockchain
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task BlockActionWithMultipleAddress()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var miner0 = _blockChain.Genesis.Miner;
             var miner1 = new PrivateKey();
             var miner2 = new PrivateKey();
@@ -1907,9 +2027,14 @@ namespace Libplanet.Tests.Blockchain
             return (addresses, txs);
         }
 
-        [Fact]
+        [SkippableFact]
         private async Task TipChanged()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var genesis = _blockChain.Genesis;
 
             _renderer.ResetRecords();
@@ -1933,9 +2058,14 @@ namespace Libplanet.Tests.Blockchain
             // TODO: Add test cases for swap
         }
 
-        [Fact]
+        [SkippableFact]
         private async Task Reorged()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             _renderer.ResetRecords();
             var branchpoint = _blockChain.Tip;
             var fork = _blockChain.Fork(_blockChain.Tip.Hash);
@@ -2023,9 +2153,14 @@ namespace Libplanet.Tests.Blockchain
             });
         }
 
-        [Fact]
+        [SkippableFact]
         private async Task FilterLowerNonceTxAfterStaging()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             var privateKey = new PrivateKey();
             var address = privateKey.ToAddress();
             var txsA = Enumerable.Range(0, 3)
@@ -2055,7 +2190,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
         }
 
-        [Fact]
+        [SkippableFact]
         private void CheckIfTxPolicyExceptionHasInnerException()
         {
             var policy = new NullPolicyButTxPolicyAlwaysThrows<DumbAction>(

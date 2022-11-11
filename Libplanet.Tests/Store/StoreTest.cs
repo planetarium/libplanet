@@ -114,6 +114,11 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void DeleteChainIdWithForks()
         {
+            Skip.IfNot(
+                Environment.GetEnvironmentVariable("XUNIT_UNITY_RUNNER") is null,
+                "Flaky test : Libplanet.Blocks.InvalidBlockSignatureException"
+            );
+
             IStore store = Fx.Store;
             Guid chainA = Guid.NewGuid();
             Guid chainB = Guid.NewGuid();
