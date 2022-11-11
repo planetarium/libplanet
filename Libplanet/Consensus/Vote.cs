@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
@@ -152,6 +155,22 @@ namespace Libplanet.Consensus
             return HashCode.Combine(
                 _metadata.GetHashCode(),
                 ByteUtil.CalculateHashCode(Signature.ToArray()));
+        }
+
+        /// <inheritdoc/>
+        [Pure]
+        public override string ToString()
+        {
+            var dict = new Dictionary<string, object>
+            {
+                { "validator", Validator.ToString() },
+                { "vote_flag", Flag.ToString() },
+                { "block_hash", BlockHash?.ToString() ?? string.Empty },
+                { "height", Height },
+                { "round", Round },
+                { "timestamp", Timestamp.ToString(CultureInfo.InvariantCulture) },
+            };
+            return JsonSerializer.Serialize(dict);
         }
     }
 }
