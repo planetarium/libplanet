@@ -196,19 +196,19 @@ namespace Libplanet.Tests.Store
             Store.PruneOutdatedChains(noopWithoutCanon);
 
         /// <inheritdoc />
-        public BlockCommit GetLastCommit(long height) =>
-            Store.GetLastCommit(height);
+        public BlockCommit GetBlockCommit(long height) =>
+            Store.GetBlockCommit(height);
 
         /// <inheritdoc />
-        public void PutLastCommit(BlockCommit lastCommit) =>
-            Store.PutLastCommit(lastCommit);
+        public void PutBlockCommit(BlockCommit lastCommit) =>
+            Store.PutBlockCommit(lastCommit);
 
         /// <inheritdoc />
-        public void DeleteLastCommit(long height) =>
-            Store.DeleteLastCommit(height);
+        public void DeleteBlockCommit(long height) =>
+            Store.DeleteBlockCommit(height);
 
         /// <inheritdoc />
-        public IEnumerable<long> GetLastCommitIndices() =>
-            Store.GetLastCommitIndices();
+        public IEnumerable<long> GetBlockCommitIndices() =>
+            Store.GetBlockCommitIndices();
     }
 }

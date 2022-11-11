@@ -108,7 +108,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _txExecutions;
         private readonly SubFileSystem _txIdBlockHashIndex;
         private readonly SubFileSystem _blockPerceptions;
-        private readonly SubFileSystem _lastCommits;
+        private readonly SubFileSystem _blockCommits;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<BlockHash, BlockDigest> _blockCache;
 
@@ -215,7 +215,7 @@ namespace Libplanet.Store
             _root.CreateDirectory(BlockPerceptionRootPath);
             _blockPerceptions = new SubFileSystem(_root, BlockPerceptionRootPath, owned: false);
             _root.CreateDirectory(LastCommitRootPath);
-            _lastCommits = new SubFileSystem(_root, LastCommitRootPath, owned: false);
+            _blockCommits = new SubFileSystem(_root, LastCommitRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
@@ -665,10 +665,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override BlockCommit GetLastCommit(long height)
+        public override BlockCommit GetBlockCommit(long height)
         {
             UPath path = LastCommitPath(height);
-            if (!_lastCommits.FileExists(path))
+            if (!_blockCommits.FileExists(path))
             {
                 return null;
             }
@@ -676,7 +676,7 @@ namespace Libplanet.Store
             byte[] bytes;
             try
             {
-                bytes = _lastCommits.ReadAllBytes(path);
+                bytes = _blockCommits.ReadAllBytes(path);
             }
             catch (FileNotFoundException)
             {
@@ -688,35 +688,35 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override void PutLastCommit(BlockCommit lastCommit)
+        public override void PutBlockCommit(BlockCommit blockCommit)
         {
-            UPath path = LastCommitPath(lastCommit.Height);
-            if (_lastCommits.FileExists(path))
+            UPath path = LastCommitPath(blockCommit.Height);
+            if (_blockCommits.FileExists(path))
             {
                 return;
             }
 
-            WriteContentAddressableFile(_lastCommits, path, lastCommit.ByteArray);
+            WriteContentAddressableFile(_blockCommits, path, blockCommit.ByteArray);
         }
 
         /// <inheritdoc />
-        public override void DeleteLastCommit(long height)
+        public override void DeleteBlockCommit(long height)
         {
             UPath path = LastCommitPath(height);
-            if (!_lastCommits.FileExists(path))
+            if (!_blockCommits.FileExists(path))
             {
                 return;
             }
 
-            _lastCommits.DeleteFile(path);
+            _blockCommits.DeleteFile(path);
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<long> GetLastCommitIndices()
+        public override IEnumerable<long> GetBlockCommitIndices()
         {
             var listHeights = new List<long>();
 
-            foreach (UPath path in _lastCommits.EnumerateFiles(UPath.Root))
+            foreach (UPath path in _blockCommits.EnumerateFiles(UPath.Root))
             {
                 string name = path.FullName.Split('/').LastOrDefault();
 

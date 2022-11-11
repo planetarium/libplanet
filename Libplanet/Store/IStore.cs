@@ -356,24 +356,24 @@ namespace Libplanet.Store
         /// <param name="height">A height to get.</param>
         /// <returns>Returns <see cref="BlockCommit"/> if given height is stored and available,
         /// otherwise returns <see langword="null"/>.</returns>
-        BlockCommit GetLastCommit(long height);
+        BlockCommit GetBlockCommit(long height);
 
         /// <summary>
         /// Puts a <see cref="BlockCommit"/> to the store.
         /// </summary>
-        /// <param name="lastCommit">A <see cref="BlockCommit"/> to store.</param>
-        void PutLastCommit(BlockCommit lastCommit);
+        /// <param name="blockCommit">A <see cref="BlockCommit"/> to store.</param>
+        void PutBlockCommit(BlockCommit blockCommit);
 
         /// <summary>
         /// Deletes a <see cref="BlockCommit"/> of given height from store.
         /// </summary>
         /// <param name="height">A height to delete from store.</param>
-        void DeleteLastCommit(long height);
+        void DeleteBlockCommit(long height);
 
         /// <summary>
         /// Gets every indices (height) of <see cref="BlockCommit"/> from store.
         /// </summary>
         /// <returns>Returns a long <see cref="IEnumerable{T}"/>.</returns>
-        IEnumerable<long> GetLastCommitIndices();
+        IEnumerable<long> GetBlockCommitIndices();
     }
 }

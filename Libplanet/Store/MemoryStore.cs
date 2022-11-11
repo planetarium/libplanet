@@ -49,7 +49,7 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>> _txBlockIndices =
             new ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>>();
 
-        private readonly ConcurrentDictionary<long, BlockCommit> _lastCommits =
+        private readonly ConcurrentDictionary<long, BlockCommit> _blockCommits =
             new ConcurrentDictionary<long, BlockCommit>();
 
         private Guid? _canonicalChainId;
@@ -284,31 +284,31 @@ namespace Libplanet.Store
             }
         }
 
-        public BlockCommit GetLastCommit(long height)
+        public BlockCommit GetBlockCommit(long height)
         {
-            if (!_lastCommits.ContainsKey(height))
+            if (!_blockCommits.ContainsKey(height))
             {
                 return null;
             }
 
-            return _lastCommits[height];
+            return _blockCommits[height];
         }
 
-        public void PutLastCommit(BlockCommit lastCommit) =>
-            _lastCommits[lastCommit.Height] = lastCommit;
+        public void PutBlockCommit(BlockCommit blockCommit) =>
+            _blockCommits[blockCommit.Height] = blockCommit;
 
-        public void DeleteLastCommit(long height)
+        public void DeleteBlockCommit(long height)
         {
-            if (!_lastCommits.ContainsKey(height))
+            if (!_blockCommits.ContainsKey(height))
             {
                 return;
             }
 
-            _lastCommits.TryRemove(height, out _);
+            _blockCommits.TryRemove(height, out _);
         }
 
-        public IEnumerable<long> GetLastCommitIndices()
-            => _lastCommits.Keys;
+        public IEnumerable<long> GetBlockCommitIndices()
+            => _blockCommits.Keys;
 
         [StoreLoader("memory")]
         private static (IStore Store, IStateStore StateStore) Loader(Uri storeUri)

@@ -95,7 +95,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             var heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             blockChain.Append(heightOneBlock);
             var lastCommit =
-                TestUtils.CreateLastCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
+                TestUtils.CreateBlockCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
 
             context.Start(lastCommit);
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());
