@@ -6,6 +6,10 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Action
 {
+    /// <summary>
+    /// An <see cref="IActionTypeLoader"/> implementation to load action types
+    /// without branching by block index.
+    /// </summary>
     public class StaticActionTypeLoader : IActionTypeLoader
     {
         private readonly Type? _baseType;
@@ -13,6 +17,11 @@ namespace Libplanet.Action
 
         private IDictionary<string, Type>? _types;
 
+        /// <summary>
+        /// Creates a new <see cref="StaticActionTypeLoader"/> instance.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to load actions from.</param>
+        /// <param name="baseType">The base type of actions to load.</param>
         public StaticActionTypeLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
         {
             _baseType = baseType;
@@ -20,6 +29,12 @@ namespace Libplanet.Action
             _types = null;
         }
 
+        /// <summary>
+        /// Load action types from assemblies.
+        /// </summary>
+        /// <param name="blockHeader">A <see cref="BlockHeader"/> to determine what action types to
+        /// use. But it isn't used in this implementation.</param>
+        /// <returns>A dictionary made of action id to action type pairs.</returns>
         public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader) => Load();
 
         internal IDictionary<string, Type> Load() =>

@@ -16,6 +16,15 @@ namespace Libplanet.Blocks
     {
     }
 
+    /// <summary>
+    /// A common interface for blocks that have their proof-of-work
+    /// <see cref="IPreEvaluationBlockHeader.Nonce"/>s and
+    /// <see cref="IBlockContent.Transactions"/>, but are not evaluated yet (i.e., their state
+    /// root hashes are not yet determined).
+    /// </summary>
+    /// <remarks>It is similar with <see cref="IPreEvaluationBlock{T}"/> but
+    /// it is non-generic interface. It means that it doesn't check the action types
+    /// in serialization.</remarks>
     public interface IPreEvaluationBlock : IBlockContent, IPreEvaluationBlockHeader
     {
     }

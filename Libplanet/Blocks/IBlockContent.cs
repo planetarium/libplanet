@@ -22,6 +22,14 @@ namespace Libplanet.Blocks
         IReadOnlyList<Transaction<T>> Transactions { get; }
     }
 
+    /// <summary>
+    /// A common interface for blocks that do not have any proofs, but have their metadata and
+    /// containing <see cref="Transactions"/>.
+    /// </summary>
+    /// <remarks>This is always ordered by <see cref="Transaction{T}.Id"/>.</remarks>
+    /// <remarks>It is similar with <see cref="IBlockContent{T}"/> but
+    /// it is non-generic interface. It means that it doesn't check the action types
+    /// in serialization.</remarks>
     public interface IBlockContent : IBlockMetadata
     {
         /// <summary>
