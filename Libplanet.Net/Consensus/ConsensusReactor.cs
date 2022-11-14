@@ -27,6 +27,11 @@ namespace Libplanet.Net.Consensus
         private readonly ConsensusContext<T> _consensusContext;
         private readonly BlockChain<T> _blockChain;
         private readonly ILogger _logger;
+        private readonly TimeSpan _repeatLastMessageInterval = TimeSpan.FromSeconds(5);
+        private readonly object _lastMessageLock;
+
+        private ConsensusMsg? _lastMessage;
+        private DateTimeOffset _lastSent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusReactor{T}"/> class.
@@ -80,6 +85,8 @@ namespace Libplanet.Net.Consensus
                 blockChain.Policy.GetValidatorSet,
                 blockCommitClearThreshold,
                 contextTimeoutOption);
+            _lastMessageLock = new object();
+            _lastSent = DateTimeOffset.UtcNow;
 
             _logger = Log
                 .ForContext("Tag", "Consensus")
@@ -113,10 +120,11 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns the <see cref="ITransport.StartAsync"/>.</returns>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            Task task = _gossip.StartAsync(cancellationToken);
+            var tasks = new List<Task>
+                { _gossip.StartAsync(cancellationToken), RepeatLastMessage(cancellationToken) };
             await _gossip.WaitForRunningAsync();
             _consensusContext.NewHeight(_blockChain.Tip.Index + 1);
-            await task;
+            await await Task.WhenAny(tasks);
         }
 
         /// <summary>
@@ -149,7 +157,16 @@ namespace Libplanet.Net.Consensus
         /// Adds <see cref="ConsensusMsg"/> to gossip.
         /// </summary>
         /// <param name="message">A <see cref="ConsensusMsg"/> to add.</param>
-        private void AddMessage(ConsensusMsg message) => _gossip.AddMessage(message);
+        private void AddMessage(ConsensusMsg message)
+        {
+            lock (_lastMessageLock)
+            {
+                _lastMessage = message;
+                _lastSent = DateTimeOffset.UtcNow;
+            }
+
+            _gossip.AddMessage(message);
+        }
 
         /// <summary>
         /// A handler for received <see cref="Message"/>s.
@@ -162,6 +179,32 @@ namespace Libplanet.Net.Consensus
                 case ConsensusMsg consensusMessage:
                     _consensusContext.HandleMessage(consensusMessage);
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Retry broadcasting message that sent recently if no any other new message is sent.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        private async Task RepeatLastMessage(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                lock (_lastMessageLock)
+                {
+                    if (_lastMessage is { } msg &&
+                        DateTimeOffset.UtcNow - _lastSent > _repeatLastMessageInterval)
+                    {
+                        _logger.Debug(
+                            "Repeating last message {Message} " +
+                            "since no any activities were made recently.", msg);
+                        msg.Timestamp = DateTimeOffset.UtcNow;
+                        AddMessage(msg);
+                    }
+                }
+
+                await Task.Delay(_repeatLastMessageInterval, cancellationToken);
             }
         }
     }
