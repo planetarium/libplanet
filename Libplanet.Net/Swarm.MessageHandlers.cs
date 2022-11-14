@@ -261,7 +261,7 @@ namespace Libplanet.Net
                 identityHex
             );
 
-            var blocks = new List<byte[]>();
+            var payloads = new List<byte[]>();
 
             List<BlockHash> hashes = getData.BlockHashes.ToList();
             int i = 1;
@@ -274,13 +274,17 @@ namespace Libplanet.Net
                 _logger.Verbose(logMsg, i, total, hash, identityHex);
                 if (_store.GetBlock<T>(hash) is { } block)
                 {
-                    byte[] payload = Codec.Encode(block.MarshalBlock());
-                    blocks.Add(payload);
+                    byte[] blockPayload = Codec.Encode(block.MarshalBlock());
+                    payloads.Add(blockPayload);
+
+                    // FIXME: Placeholder for encoded BlockCommit.
+                    byte[] commitPayload = new byte[0];
+                    payloads.Add(commitPayload);
                 }
 
-                if (blocks.Count == getData.ChunkSize)
+                if (payloads.Count / 2 == getData.ChunkSize)
                 {
-                    var response = new Messages.BlocksMsg(blocks)
+                    var response = new Messages.BlocksMsg(payloads)
                     {
                         Identity = getData.Identity,
                     };
@@ -290,15 +294,15 @@ namespace Libplanet.Net
                         total
                     );
                     await Transport.ReplyMessageAsync(response, default);
-                    blocks.Clear();
+                    payloads.Clear();
                 }
 
                 i++;
             }
 
-            if (blocks.Any())
+            if (payloads.Any())
             {
-                var response = new Messages.BlocksMsg(blocks)
+                var response = new Messages.BlocksMsg(payloads)
                 {
                     Identity = getData.Identity,
                 };

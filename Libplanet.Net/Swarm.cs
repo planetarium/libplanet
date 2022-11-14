@@ -893,17 +893,18 @@ namespace Libplanet.Net
 
                 if (message is Messages.BlocksMsg blockMessage)
                 {
-                    IList<byte[]> payloads = blockMessage.Payloads;
+                    List<byte[]> payloads = blockMessage.Payloads;
                     _logger.Debug(
                         "Received {Number} blocks from {Peer}.",
                         payloads.Count,
                         message.Remote);
-                    foreach (byte[] payload in payloads)
+                    for (int i = 0; i < payloads.Count / 2; i++)
                     {
+                        byte[] blockPayload = payloads[2 * i];
+                        byte[] commitPayload = payloads[2 * i + 1];
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
-                            (Bencodex.Types.Dictionary)Codec.Decode(payload)
-                        );
+                            (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
 
                         yield return block;
                         count++;
