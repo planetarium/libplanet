@@ -65,7 +65,8 @@ namespace Libplanet.Action
             new StaticActionTypeLoader(
                 Assembly.GetEntryAssembly() is Assembly entryAssembly
                     ? new[] { typeof(T).Assembly, entryAssembly }
-                    : new[] { typeof(T).Assembly }
+                    : new[] { typeof(T).Assembly },
+                typeof(T)
             )
         )
         {

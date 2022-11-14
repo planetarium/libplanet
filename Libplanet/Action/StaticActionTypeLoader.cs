@@ -10,7 +10,7 @@ namespace Libplanet.Action
     {
         private readonly Dictionary<string, Type> _types;
 
-        public StaticActionTypeLoader(IEnumerable<Assembly> assemblies)
+        public StaticActionTypeLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
         {
             var assembliesSet = assemblies.ToImmutableHashSet();
             var actionType = typeof(IAction);
@@ -19,6 +19,11 @@ namespace Libplanet.Action
             {
                 foreach (Type t in asm.GetTypes())
                 {
+                    if (baseType is { } bt && !bt.IsAssignableFrom(t))
+                    {
+                        continue;
+                    }
+
                     if (actionType.IsAssignableFrom(t) &&
                         ActionTypeAttribute.ValueOf(t) is string actionId)
                     {
