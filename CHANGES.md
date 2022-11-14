@@ -38,6 +38,9 @@ Version PBFT
 
 ### Backward-incompatible network protocol changes
 
+ -  (Libplanet.Net) Values for `Message.MessageType` are updated to
+    use entirely different values.  [[#PBFT]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -63,11 +66,11 @@ Version PBFT
  -  (Libplanet.Net) Added `ConsensusMessage` abstract class which inherits
     `Message` abstract class.  And added classes which implements
     `ConsensusMessage` abstract class.  [[#PBFT]]
-     -  Added `ConsensusPropose` class.
+     -  Added `ConsensusProposal` class.
      -  Added `ConsensusVote` class.
      -  Added `ConsensusCommit` class.
  -  (Libplanet.Net) Added enumeration items to `MessageType` enum.  [[#PBFT]]
-     -  Added `ConsensusPropose` of value `0x40`.
+     -  Added `ConsensusProposal` of value `0x40`.
      -  Added `ConsensusVote` of value `0x41`.
      -  Added `ConsensusCommit` of value `0x42`.
  -  (Libplanet.Net) Added `ConsensusReactorOption` struct.  [[#PBFT]]

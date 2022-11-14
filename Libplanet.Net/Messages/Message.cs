@@ -17,7 +17,13 @@ namespace Libplanet.Net.Messages
             Enum.GetValues(typeof(MessageFrame)).Length;
 
         /// <summary>
-        /// <c>Enum</c> represents the type of the <see cref="Message"/>.
+        /// <para>
+        /// An <see langword="enum"/> for representing <see cref="Message"/> types.
+        /// </para>
+        /// <para>
+        /// Whenever the internal structure of a concrete <see cref="Message"/> type is changed,
+        /// the value associated with the type must be updated to the current largest value + 1.
+        /// </para>
         /// </summary>
         public enum MessageType : byte
         {
@@ -54,7 +60,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Message containing serialized blocks.
             /// </summary>
-            Blocks = 0x0a,
+            Blocks = 0x45,
 
             /// <summary>
             /// Message containing serialized transaction.
@@ -102,7 +108,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Consensus proposal message.
             /// </summary>
-            ConsensusPropose = 0x40,
+            ConsensusProposal = 0x40,
 
             /// <summary>
             /// Consensus vote message.
@@ -117,12 +123,12 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// List of message IDs that the peer seen recently.
             /// </summary>
-            HaveMessage = 0x50,
+            HaveMessage = 0x43,
 
             /// <summary>
             /// List of message IDs that the peer want to have.
             /// </summary>
-            WantMessage = 0x51,
+            WantMessage = 0x44,
         }
 
         public enum MessageFrame
