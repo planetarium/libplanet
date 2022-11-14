@@ -27,6 +27,20 @@ namespace Libplanet.Action
                     if (actionType.IsAssignableFrom(t) &&
                         ActionTypeAttribute.ValueOf(t) is string actionId)
                     {
+                        if (_types.TryGetValue(actionId, out Type? existing))
+                        {
+                            if (existing != t)
+                            {
+                                throw new DuplicateActionTypeIdentifierException(
+                                    "Multiple action types are associated with the same type ID.",
+                                    actionId,
+                                    ImmutableHashSet.Create(existing, t)
+                                );
+                            }
+
+                            continue;
+                        }
+
                         _types[actionId] = t;
                     }
                 }
