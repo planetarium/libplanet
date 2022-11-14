@@ -158,14 +158,9 @@ namespace Libplanet.Action
                 typeof(T)
             );
 
-        private static readonly IDictionary<string, Type> _types;
+        private static IDictionary<string, Type> _types;
 
         private T _innerAction;
-
-        static PolymorphicAction()
-        {
-            _types = _actionTypeLoader.Load();
-        }
 
         /// <summary>
         /// Do not use this constructor.
@@ -241,7 +236,7 @@ namespace Libplanet.Action
         public void LoadPlainValue(Dictionary plainValue)
         {
             var typeStr = (Text)plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(_types[typeStr]);
+            var innerAction = (T)Activator.CreateInstance(GetType(typeStr));
             innerAction.LoadPlainValue(plainValue["values"]);
             InnerAction = innerAction;
         }
@@ -261,6 +256,12 @@ namespace Libplanet.Action
             const string polymorphicActionFullName = nameof(Libplanet) + "." + nameof(Action) +
                                                      "." + nameof(PolymorphicAction<T>);
             return $"{polymorphicActionFullName}<{_innerAction}>";
+        }
+
+        private static Type GetType(string typeId)
+        {
+            _types ??= _actionTypeLoader.Load();
+            return _types[typeId];
         }
     }
 }

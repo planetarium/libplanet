@@ -8,13 +8,28 @@ namespace Libplanet.Action
 {
     public class StaticActionTypeLoader : IActionTypeLoader
     {
-        private readonly Dictionary<string, Type> _types;
+        private readonly Type? _baseType;
+        private readonly ImmutableHashSet<Assembly> _assembliesSet;
+
+        private IDictionary<string, Type>? _types;
 
         public StaticActionTypeLoader(IEnumerable<Assembly> assemblies, Type? baseType = null)
         {
-            var assembliesSet = assemblies.ToImmutableHashSet();
+            _baseType = baseType;
+            _assembliesSet = assemblies.ToImmutableHashSet();
+            _types = null;
+        }
+
+        public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader) => Load();
+
+        internal IDictionary<string, Type> Load() =>
+            _types ??= LoadImpl(_assembliesSet, _baseType);
+
+        private static IDictionary<string, Type> LoadImpl(
+            IEnumerable<Assembly> assembliesSet, Type? baseType = null)
+        {
+            var types = new Dictionary<string, Type>();
             var actionType = typeof(IAction);
-            _types = new Dictionary<string, Type>();
             foreach (Assembly asm in assembliesSet)
             {
                 foreach (Type t in asm.GetTypes())
@@ -27,7 +42,7 @@ namespace Libplanet.Action
                     if (actionType.IsAssignableFrom(t) &&
                         ActionTypeAttribute.ValueOf(t) is string actionId)
                     {
-                        if (_types.TryGetValue(actionId, out Type? existing))
+                        if (types.TryGetValue(actionId, out Type? existing))
                         {
                             if (existing != t)
                             {
@@ -41,14 +56,12 @@ namespace Libplanet.Action
                             continue;
                         }
 
-                        _types[actionId] = t;
+                        types[actionId] = t;
                     }
                 }
             }
+
+            return types;
         }
-
-        public IDictionary<string, Type> Load(IPreEvaluationBlockHeader blockHeader) => _types;
-
-        internal IDictionary<string, Type> Load() => _types;
     }
 }
