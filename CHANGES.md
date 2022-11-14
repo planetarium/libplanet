@@ -29,8 +29,15 @@ To be released.
 - Added `BlockChainStates<T>` class.  [[#2507]]
 - Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
   and `ActionEvaluator<T>` directly.  [[#2507]]
+ -  Added non-generic interfaces.  [[#2539]]
+     -  Added `IPreEvaluationBlock` interface.
+     -  Added `IBlockContent` interface.
+     -  Added `ITransaction` interface.
+ -  Added `IActionTypeLoader` interface.  [[#2539]]
+ -  Added `StaticActionTypeLoader` class.  [[#2539]]
 
 [#2507]: https://github.com/planetarium/libplanet/pull/2507
+[#2539]: https://github.com/planetarium/libplanet/pull/2539
 
 ### Behavioral changes
 
