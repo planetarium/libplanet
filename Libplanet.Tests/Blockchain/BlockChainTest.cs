@@ -1022,15 +1022,25 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetBlockCommit()
         {
+            // Note: Getting BlockCommit from PoW block test is not present.
             // Requesting blockCommit of genesis block returns null.
             Assert.Null(_blockChain.GetBlockCommit(0));
             Assert.Null(_blockChain.GetBlockCommit(_blockChain.Genesis.Hash));
             // BlockCommit is put to store when block is appended.
-            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
-            BlockCommit blockCommit = CreateBlockCommit(block);
-            _blockChain.Append(block, blockCommit);
-            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Index));
-            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Hash));
+            Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
+            BlockCommit blockCommit1 = CreateBlockCommit(block1);
+            _blockChain.Append(block1, blockCommit1);
+            Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
+            Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Hash));
+            // BlockCommit is retrieved from lastCommit.
+            Block<DumbAction> block2 = _blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: CreateBlockCommit(_blockChain.Tip));
+            BlockCommit blockCommit2 = CreateBlockCommit(block2);
+            _blockChain.Append(block2, blockCommit2);
+            _blockChain.Store.DeleteBlockCommit(1);
+            Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Index));
+            Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
         }
 
         [Theory]
