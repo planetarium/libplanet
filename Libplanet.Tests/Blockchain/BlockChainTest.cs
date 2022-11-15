@@ -1034,6 +1034,20 @@ namespace Libplanet.Tests.Blockchain
             }
         }
 
+        [Fact]
+        public void GetBlockCommit()
+        {
+            // Requesting blockCommit of genesis block returns null.
+            Assert.Null(_blockChain.GetBlockCommit(0));
+            Assert.Null(_blockChain.GetBlockCommit(_blockChain.Genesis.Hash));
+            // BlockCommit is put to store when block is appended.
+            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
+            BlockCommit blockCommit = CreateBlockCommit(block);
+            _blockChain.Append(block, blockCommit);
+            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Index));
+            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Hash));
+        }
+
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
