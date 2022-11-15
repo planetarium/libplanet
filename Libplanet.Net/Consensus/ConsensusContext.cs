@@ -217,8 +217,7 @@ namespace Libplanet.Net.Consensus
 
                     if (lastCommit == null)
                     {
-                        // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
-                        BlockCommit? storedCommit = _blockChain.Store.GetBlockCommit(height - 1);
+                        BlockCommit? storedCommit = _blockChain.GetBlockCommit(height - 1);
                         if (storedCommit != null)
                         {
                             lastCommit = storedCommit;
