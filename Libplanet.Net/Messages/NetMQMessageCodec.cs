@@ -169,7 +169,7 @@ namespace Libplanet.Net.Messages
                     return new ChainStatusMsg(dataframes);
                 case Message.MessageType.DifferentVersion:
                     return new DifferentVersionMsg();
-                case Message.MessageType.ConsensusPropose:
+                case Message.MessageType.ConsensusProposal:
                     return new ConsensusProposalMsg(dataframes);
                 case Message.MessageType.ConsensusVote:
                     return new ConsensusPreVoteMsg(dataframes);

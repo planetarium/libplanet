@@ -43,7 +43,7 @@ namespace Libplanet.Net.Messages
         public override IEnumerable<byte[]> DataFrames => new List<byte[]> { Proposal.ByteArray };
 
         /// <inheritdoc cref="Message.MessageType"/>
-        public override MessageType Type => MessageType.ConsensusPropose;
+        public override MessageType Type => MessageType.ConsensusProposal;
 
         public override bool Equals(ConsensusMsg? other)
         {
