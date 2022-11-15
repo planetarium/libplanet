@@ -9,11 +9,13 @@ namespace Libplanet.Net.Messages
     {
         /// <summary>
         /// Creates an instance of <see cref="BlocksMsg"/> with given <paramref name="payloads"/>.
-        /// The length of <paramref name="payloads"/> is twice the length of
-        /// <see cref="Block{T}"/>s to send.  Even indices are encoded <see cref="Block{T}"/>s
-        /// and odd indices are encoded <see cref="BlockCommit"/>s.
         /// </summary>
-        /// <param name="payloads">The payload for this <see cref="Message"/>.</param>
+        /// <param name="payloads">The payload for this <see cref="Message"/>.  The length
+        /// should be twice the length of <see cref="Block{T}"/>s to send where even indices are
+        /// encoded <see cref="Block{T}"/>s and odd indices are encoded <see cref="BlockCommit"/>s.
+        /// </param>
+        /// <exception cref="ArgumentException">Thrown when the length of
+        /// <paramref name="payloads"/> is not even.</exception>
         public BlocksMsg(IEnumerable<byte[]> payloads)
         {
             var count = payloads.Count();
