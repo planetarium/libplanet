@@ -120,12 +120,12 @@ namespace Libplanet.Tests.Store
             Block2 = TestUtils.ProposeNextBlock(
                 Block1,
                 miner: Miner,
-                lastCommit: TestUtils.CreateLastCommit(Block1.Hash, Block1.Index, 0));
+                lastCommit: TestUtils.CreateBlockCommit(Block1.Hash, Block1.Index, 0));
             stateRootHashes[Block2.Hash] = Block2.StateRootHash;
             Block3 = TestUtils.ProposeNextBlock(
                 Block2,
                 miner: Miner,
-                lastCommit: TestUtils.CreateLastCommit(Block2.Hash, Block2.Index, 0));
+                lastCommit: TestUtils.CreateBlockCommit(Block2.Hash, Block2.Index, 0));
             stateRootHashes[Block3.Hash] = Block3.StateRootHash;
             Block4 = TestUtils.ProposeNextBlock(Block3, miner: Miner);
             stateRootHashes[Block4.Hash] = Block4.StateRootHash;

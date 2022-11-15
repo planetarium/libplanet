@@ -8,6 +8,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Tests;
+using Libplanet.Tests.Common.Action;
 using Nito.AsyncEx;
 using Serilog;
 using Xunit;
@@ -109,7 +110,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 TestUtils.PrivateKeys[1]);
 
             Assert.Equal(-1, consensusContext.Height);
-            blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
+            Block<DumbAction> block = blockChain.ProposeBlock(new PrivateKey());
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(-1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
             Assert.Equal(2, consensusContext.Height);
@@ -268,21 +270,22 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     2,
                     1));
 
-            blockChain.Append(blockChain.ProposeBlock(new PrivateKey()));
-            blockChain.Append(
-                blockChain.ProposeBlock(
-                    new PrivateKey(),
-                    lastCommit: TestUtils.CreateBlockCommit(
-                        blockChain.Tip.Hash,
-                        blockChain.Tip.Index,
-                        0)));
-            blockChain.Append(
-                blockChain.ProposeBlock(
-                    new PrivateKey(),
-                    lastCommit: TestUtils.CreateBlockCommit(
-                        blockChain.Tip.Hash,
-                        blockChain.Tip.Index,
-                        0)));
+            Block<DumbAction> block1 = blockChain.ProposeBlock(new PrivateKey());
+            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            Block<DumbAction> block2 = blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: TestUtils.CreateBlockCommit(
+                    blockChain.Tip.Hash,
+                    blockChain.Tip.Index,
+                    0));
+            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
+            Block<DumbAction> block3 = blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: TestUtils.CreateBlockCommit(
+                    blockChain.Tip.Hash,
+                    blockChain.Tip.Index,
+                    0));
+            blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
 
             // Create context of index 4, check if the context of 1 and 2 are removed correctly.
             consensusContext.NewHeight(4);
@@ -391,15 +394,15 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             // Height 1 does not have lastCommit, so skipping height 1.
             var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1], lastCommit: null);
-            blockChain.Append(block1);
+            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
             var block2 = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[2],
                 lastCommit:
                 TestUtils.CreateBlockCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
             consensusContext.Commit(
-                TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0), block2);
-
+                block2,
+                TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0));
             Assert.Equal(blockChain.Tip, block2);
             Assert.NotNull(blockChain.Store.GetBlockCommit(2));
         }

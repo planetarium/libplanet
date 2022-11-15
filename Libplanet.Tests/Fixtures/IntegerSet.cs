@@ -153,9 +153,10 @@ namespace Libplanet.Tests.Fixtures
 
         public Block<Arithmetic> Propose() => Chain.ProposeBlock(
             Miner,
-            lastCommit: TestUtils.CreateLastCommit(Chain.Tip.Hash, Chain.Tip.Index, 0));
+            lastCommit: TestUtils.CreateBlockCommit(Chain.Tip.Hash, Chain.Tip.Index, 0));
 
-        public void Append(Block<Arithmetic> block) => Chain.Append(block);
+        public void Append(Block<Arithmetic> block) =>
+            Chain.Append(block, TestUtils.CreateBlockCommit(block));
 
         public IAccountStateDelta CreateAccountStateDelta(Address signer, BlockHash? offset = null)
         {

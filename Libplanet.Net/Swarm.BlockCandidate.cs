@@ -172,8 +172,10 @@ namespace Libplanet.Net
              {
                  foreach (var block in blocks)
                  {
+                     // TODO: Block should be appended with commits.
                      workspace.Append(
                          block,
+                         null,
                          evaluateActions: evaluateActions,
                          renderBlocks: renderBlocks,
                          renderActions: renderActions);

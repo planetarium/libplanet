@@ -312,7 +312,7 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             var block = blockChain.ProposeBlock(new PrivateKey(), DateTimeOffset.UtcNow);
-            blockChain.Append(block);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(
                 TestUtils.PrivateKeys[2].PublicKey, TestUtils.ValidatorSet.GetProposer(2, 0));
 

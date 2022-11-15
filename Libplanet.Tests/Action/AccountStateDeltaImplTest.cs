@@ -59,17 +59,20 @@ namespace Libplanet.Tests.Action
                 chain.Genesis.Hash,
                 new[] { action }
             );
-            chain.Append(
-                TestUtils.ProposeNext(
+            Block<DumbAction> block = TestUtils.ProposeNext(
                     chain.Tip,
                     new[] { tx },
                     miner: _keys[1].PublicKey,
                     protocolVersion: ProtocolVersion,
-                    lastCommit: TestUtils.CreateLastCommit(
+                    lastCommit: TestUtils.CreateBlockCommit(
                         chain.Tip.Hash,
                         chain.Tip.Index,
                         0)
-                ).Evaluate(_keys[1], chain)
+                )
+                .Evaluate(_keys[1], chain);
+            chain.Append(
+                block,
+                TestUtils.CreateBlockCommit(block)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,
