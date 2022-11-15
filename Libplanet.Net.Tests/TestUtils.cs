@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -110,6 +111,10 @@ namespace Libplanet.Net.Tests
                     codec.Encode(block.MarshalBlock()),
                     validRound).Sign(privateKey));
         }
+
+        public static BlockCommit CreateBlockCommit<T>(Block<T> block)
+            where T : IAction, new() =>
+            CreateBlockCommit(block.Hash, block.Index, 0);
 
         public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round)
         {
