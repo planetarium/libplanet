@@ -169,7 +169,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            blockChain.Append(blockChain.ProposeBlock(TestUtils.PrivateKeys[1]));
+            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(
                 blockChain[1].Hash,
@@ -281,8 +282,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(block);
+            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             // Creates a lastCommit of height 1 and put it to the store.
             var createdLastCommit = TestUtils.CreateBlockCommit(block.Hash, 1, 0);

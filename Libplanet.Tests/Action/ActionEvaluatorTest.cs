@@ -137,7 +137,8 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            chain.Append(chain.ProposeBlock(miner));
+            Block<EvaluateTestAction> block = chain.ProposeBlock(miner);
+            chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
@@ -173,7 +174,8 @@ namespace Libplanet.Tests.Action
                 customActions: new[] { action });
 
             chain.StageTransaction(tx);
-            chain.Append(chain.ProposeBlock(new PrivateKey()));
+            Block<ThrowException> block = chain.ProposeBlock(new PrivateKey());
+            chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<ThrowException>.Recalculate);
@@ -461,7 +463,7 @@ namespace Libplanet.Tests.Action
                 block1,
                 GenesisMiner,
                 block2Txs,
-                lastCommit: CreateLastCommit(block1.Hash, block1.Index, 0));
+                lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0));
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)
@@ -729,7 +731,7 @@ namespace Libplanet.Tests.Action
                     publicKey: GenesisMiner.PublicKey,
                     previousHash: hash,
                     txHash: BlockContent<ThrowException>.DeriveTxHash(txs),
-                    lastCommit: CreateLastCommit(hash, 122, 0)),
+                    lastCommit: CreateBlockCommit(hash, 122, 0)),
                 transactions: txs).Propose();
             var nextStates = actionEvaluator.EvaluateTxResult(
                 block: block,
@@ -940,6 +942,7 @@ namespace Libplanet.Tests.Action
             chain.ExecuteActions(block);
             chain.Append(
                 block,
+                CreateBlockCommit(block),
                 evaluateActions: false,
                 renderBlocks: true,
                 renderActions: false);
@@ -1114,7 +1117,8 @@ namespace Libplanet.Tests.Action
                 customActions: new[] { action });
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            chain.Append(chain.ProposeBlock(miner));
+            Block<EvaluateTestAction> block = chain.ProposeBlock(miner);
+            chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip,
                 StateCompleterSet<EvaluateTestAction>.Recalculate);

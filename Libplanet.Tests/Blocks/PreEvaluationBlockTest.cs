@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Blocks
                     preEval1.DetermineStateRootHash(blockChain);
                 AssertBytesEqual(block1.StateRootHash, identicalBlock1StateRootHash);
 
-                blockChain.Append(block1);
+                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
                 AssertBencodexEqual((Bencodex.Types.Integer)158, blockChain.GetState(address));
             }
         }
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Blocks
                 Block<Arithmetic> block1 = preEval1.Sign(_contents.Block1Key, b1StateRootHash);
                 _output.WriteLine("#1: {0}", block1);
 
-                blockChain.Append(block1);
+                blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
                 AssertBencodexEqual((Bencodex.Types.Integer)158, blockChain.GetState(address));
             }
         }

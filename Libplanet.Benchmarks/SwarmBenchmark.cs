@@ -10,6 +10,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Tests;
@@ -84,10 +85,10 @@ namespace Libplanet.Benchmarks
                     .Wait(WaitTimeout);
             }
 
-            _blockChains[0].Append(_blocks[1]);
-            _blockChains[0].Append(_blocks[2]);
-            _blockChains[0].Append(_blocks[3]);
-            _blockChains[0].Append(_blocks[4]);
+            _blockChains[0].Append(_blocks[1], TestUtils.CreateBlockCommit(_blocks[1]));
+            _blockChains[0].Append(_blocks[2], TestUtils.CreateBlockCommit(_blocks[2]));
+            _blockChains[0].Append(_blocks[3], TestUtils.CreateBlockCommit(_blocks[3]));
+            _blockChains[0].Append(_blocks[4], TestUtils.CreateBlockCommit(_blocks[4]));
         }
 
         [IterationCleanup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]

@@ -272,7 +272,7 @@ namespace Libplanet.Net.Consensus
                     Round,
                     ToString());
 
-                ConsensusContext.Commit(GetBlockCommit(), block4);
+                ConsensusContext.Commit(block4, GetBlockCommit());
                 return;
             }
 
