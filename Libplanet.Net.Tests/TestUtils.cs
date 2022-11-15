@@ -113,22 +113,10 @@ namespace Libplanet.Net.Tests
         }
 
         public static BlockCommit CreateBlockCommit<T>(Block<T> block)
-            where T : IAction, new() =>
-            CreateBlockCommit(block.Hash, block.Index, 0);
+            where T : IAction, new() => Libplanet.Tests.TestUtils.CreateBlockCommit(block);
 
-        public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round)
-        {
-            var votes = PrivateKeys.Select(key => new VoteMetadata(
-                height,
-                round,
-                blockHash,
-                DateTimeOffset.UtcNow,
-                key.PublicKey,
-                VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
-
-            return new BlockCommit(
-                height, round, blockHash, votes);
-        }
+        public static BlockCommit CreateBlockCommit(BlockHash blockHash, long height, int round) =>
+            Libplanet.Tests.TestUtils.CreateBlockCommit(blockHash, height, round);
 
         public static void HandleFourPeersPreCommitMessages(
             ConsensusContext<DumbAction> consensusContext,

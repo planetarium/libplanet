@@ -354,13 +354,15 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static BlockCommit CreateBlockCommit<T>(Block<T> block)
             where T : IAction, new() =>
-            CreateBlockCommit(block.Hash, block.Index, 0);
+                block.Index > 0 &&
+                block.ProtocolVersion > BlockMetadata.PoWProtocolVersion
+                    ? CreateBlockCommit(block.Hash, block.Index, 0)
+                    : null;
 
         public static BlockCommit CreateBlockCommit(
             BlockHash blockHash,
             long height,
-            int round,
-            VoteFlag voteFlag = VoteFlag.PreCommit)
+            int round)
         {
             // Index #1 block cannot have lastCommit: There was no consensus of genesis block.
             if (height == 0)

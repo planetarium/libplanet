@@ -222,8 +222,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var block = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[0],
-                lastCommit:
-                TestUtils.CreateBlockCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
+                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], height: 2));
 
@@ -274,17 +273,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
             Block<DumbAction> block2 = blockChain.ProposeBlock(
                 new PrivateKey(),
-                lastCommit: TestUtils.CreateBlockCommit(
-                    blockChain.Tip.Hash,
-                    blockChain.Tip.Index,
-                    0));
+                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Block<DumbAction> block3 = blockChain.ProposeBlock(
                 new PrivateKey(),
-                lastCommit: TestUtils.CreateBlockCommit(
-                    blockChain.Tip.Hash,
-                    blockChain.Tip.Index,
-                    0));
+                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
 
             // Create context of index 4, check if the context of 1 and 2 are removed correctly.
@@ -398,11 +391,8 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
 
             var block2 = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[2],
-                lastCommit:
-                TestUtils.CreateBlockCommit(blockChain.Tip.Hash, blockChain.Tip.Index, 0));
-            consensusContext.Commit(
-                block2,
-                TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0));
+                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
+            consensusContext.Commit(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(blockChain.Tip, block2);
             Assert.NotNull(blockChain.Store.GetBlockCommit(2));
         }
