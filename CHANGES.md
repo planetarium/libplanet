@@ -57,6 +57,7 @@ Version PBFT
  -  Added `BlockCommitExtensions` class.  [[#PBFT]]
  -  Added `ContextTimeoutOption` class.  [[#PBFT]]
  -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]
+ -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
