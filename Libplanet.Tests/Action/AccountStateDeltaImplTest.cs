@@ -64,10 +64,7 @@ namespace Libplanet.Tests.Action
                     new[] { tx },
                     miner: _keys[1].PublicKey,
                     protocolVersion: ProtocolVersion,
-                    lastCommit: TestUtils.CreateBlockCommit(
-                        chain.Tip.Hash,
-                        chain.Tip.Index,
-                        0)
+                    lastCommit: TestUtils.CreateBlockCommit(chain.Tip)
                 )
                 .Evaluate(_keys[1], chain);
             chain.Append(

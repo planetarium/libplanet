@@ -463,7 +463,7 @@ namespace Libplanet.Tests.Action
                 block1,
                 GenesisMiner,
                 block2Txs,
-                lastCommit: CreateBlockCommit(block1.Hash, block1.Index, 0));
+                lastCommit: CreateBlockCommit(block1));
             AccountStateGetter accountStateGetter = addrs =>
                 addrs.Select(dirty1.GetValueOrDefault).ToArray();
             AccountBalanceGetter accountBalanceGetter = (address, currency)

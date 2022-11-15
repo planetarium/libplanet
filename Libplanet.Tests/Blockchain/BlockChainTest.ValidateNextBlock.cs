@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
 
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
-                _blockChain.Append(block2, null));
+                _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
             Assert.Throws<InvalidBlockProtocolVersionException>(() =>
             {
                 Block<DumbAction> block3 = new BlockContent<DumbAction>(
@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Blockchain
                         previousHash: block1.Hash,
                         txHash: null,
                         lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
-                _blockChain.Append(block3, null);
+                _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             });
         }
 
@@ -106,7 +106,9 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: TestUtils.CreateBlockCommit(prev.Hash, prev.Index + 1, 0)))
                     .Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockIndexException>(
-                () => _blockChain.Append(blockWithIndexAfterNonexistentIndex, null)
+                () => _blockChain.Append(
+                    blockWithIndexAfterNonexistentIndex,
+                    TestUtils.CreateBlockCommit(blockWithIndexAfterNonexistentIndex))
             );
         }
 
@@ -127,7 +129,9 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: TestUtils.CreateBlockCommit(_validNext.PreviousHash.Value, 1, 0)))
                 .Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
-                    _blockChain.Append(invalidPreviousHashBlock, null));
+                    _blockChain.Append(
+                        invalidPreviousHashBlock,
+                        TestUtils.CreateBlockCommit(invalidPreviousHashBlock)));
         }
 
         [Fact]
@@ -142,10 +146,12 @@ namespace Libplanet.Tests.Blockchain
                     publicKey: _fx.Miner.PublicKey,
                     previousHash: _validNext.Hash,
                     txHash: null,
-                    lastCommit: TestUtils.CreateBlockCommit(_validNext.Hash, _validNext.Index, 0)))
+                    lastCommit: TestUtils.CreateBlockCommit(_validNext)))
                 .Propose().Evaluate(_fx.Miner, _blockChain);
             Assert.Throws<InvalidBlockTimestampException>(() =>
-                    _blockChain.Append(invalidPreviousTimestamp, null));
+                    _blockChain.Append(
+                        invalidPreviousTimestamp,
+                        TestUtils.CreateBlockCommit(invalidPreviousTimestamp)));
         }
 
         [Fact]
@@ -230,7 +236,7 @@ namespace Libplanet.Tests.Blockchain
                     lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
 
-            var blockCommit = TestUtils.CreateBlockCommit(block1.Hash, 1, 0);
+            var blockCommit = TestUtils.CreateBlockCommit(block1);
             Block<DumbAction> block2 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 2L,

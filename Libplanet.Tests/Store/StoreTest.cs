@@ -1100,16 +1100,14 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                Block<DumbAction> block = blocks.ProposeBlock(key);
+                var block = blocks.ProposeBlock(key);
                 blocks.Append(block, CreateBlockCommit(block));
-                Block<DumbAction> block2 = blocks.ProposeBlock(
-                    key,
-                    lastCommit: CreateBlockCommit(blocks.Tip.Hash, blocks.Tip.Index, 0));
-                blocks.Append(block2, CreateBlockCommit(block2));
-                Block<DumbAction> block3 = blocks.ProposeBlock(
-                    key,
-                    lastCommit: CreateBlockCommit(blocks.Tip.Hash, blocks.Tip.Index, 0));
-                blocks.Append(block3, CreateBlockCommit(block3));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);

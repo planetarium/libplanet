@@ -269,16 +269,14 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     2,
                     1));
 
-            Block<DumbAction> block1 = blockChain.ProposeBlock(new PrivateKey());
-            blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Block<DumbAction> block2 = blockChain.ProposeBlock(
-                new PrivateKey(),
-                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
-            Block<DumbAction> block3 = blockChain.ProposeBlock(
-                new PrivateKey(),
-                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
-            blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
+            var block = blockChain.ProposeBlock(new PrivateKey());
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            block = blockChain.ProposeBlock(
+                new PrivateKey(), lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            block = blockChain.ProposeBlock(
+                new PrivateKey(), lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             // Create context of index 4, check if the context of 1 and 2 are removed correctly.
             consensusContext.NewHeight(4);

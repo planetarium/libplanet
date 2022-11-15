@@ -407,7 +407,7 @@ namespace Libplanet.Net.Tests
                     block = ProposeNextBlock(
                         block,
                         GenesisMiner,
-                        lastCommit: CreateBlockCommit(block.Hash, block.Index, 0));
+                        lastCommit: CreateBlockCommit(block));
                     yield return block;
                 }
             }

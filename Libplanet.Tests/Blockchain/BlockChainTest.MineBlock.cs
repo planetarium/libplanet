@@ -354,10 +354,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock);
 
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });
-            Block<DumbAction> block1 = blockChain.ProposeBlock(
-                privateKey1,
-                lastCommit: CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
-            blockChain.Append(block1, CreateBlockCommit(block1));
+            var block = blockChain.ProposeBlock(
+                privateKey1, lastCommit: CreateBlockCommit(_blockChain.Tip));
+            blockChain.Append(block, CreateBlockCommit(block));
 
             var state1 = blockChain.GetState(address1);
             var state2 = blockChain.GetState(address2);
@@ -368,10 +367,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal((Text)"baz", state2);
 
             blockChain.MakeTransaction(privateKey1, new[] { new DumbAction(address1, "bar") });
-            Block<DumbAction> block2 = blockChain.ProposeBlock(
-                privateKey1,
-                lastCommit: CreateBlockCommit(_blockChain.Tip.Hash, _blockChain.Tip.Index, 0));
-            blockChain.Append(block2, CreateBlockCommit(block2));
+            block = blockChain.ProposeBlock(
+                privateKey1, lastCommit: CreateBlockCommit(_blockChain.Tip));
+            blockChain.Append(block, CreateBlockCommit(block));
 
             state1 = blockChain.GetState(address1);
             state2 = blockChain.GetState(address2);
@@ -471,7 +469,7 @@ namespace Libplanet.Tests.Blockchain
             // Propose only txs having higher or equal with nonce than expected nonce.
             Block<DumbAction> b2 = _blockChain.ProposeBlock(
                 new PrivateKey(),
-                lastCommit: CreateBlockCommit(b1.Hash, b1.Index, 0));
+                lastCommit: CreateBlockCommit(b1));
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
         }

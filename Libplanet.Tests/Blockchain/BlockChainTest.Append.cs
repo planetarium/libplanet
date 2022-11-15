@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blockchain
                 txs,
                 miner: keys[4].PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10),
-                lastCommit: TestUtils.CreateBlockCommit(block1.Hash, block1.Index, 0)
+                lastCommit: TestUtils.CreateBlockCommit(block1)
             ).Evaluate(keys[4], _blockChain);
             foreach (Transaction<DumbAction> tx in txs)
             {
@@ -204,7 +204,7 @@ namespace Libplanet.Tests.Blockchain
                 block2,
                 new[] { tx1Transfer, tx2Error, tx3Transfer },
                 miner: keys[4].PublicKey,
-                lastCommit: TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0)
+                lastCommit: TestUtils.CreateBlockCommit(block2)
             ).Evaluate(keys[4], _blockChain);
             _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             var txExecution1 = getTxExecution(block3.Hash, tx1Transfer.Id);
@@ -469,7 +469,7 @@ namespace Libplanet.Tests.Blockchain
                     new[] { invalidTx },
                     miner: miner.PublicKey,
                     blockInterval: TimeSpan.FromSeconds(10),
-                    lastCommit: TestUtils.CreateBlockCommit(block1.Hash, block1.Index, 0)
+                    lastCommit: TestUtils.CreateBlockCommit(block1)
                 ).Evaluate(miner, blockChain);
 
                 Assert.Throws<TxPolicyViolationException>(() => blockChain.Append(
@@ -504,7 +504,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[0]),
                 miner: privateKey.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10),
-                lastCommit: TestUtils.CreateBlockCommit(block1.Hash, block1.Index, 0)
+                lastCommit: TestUtils.CreateBlockCommit(block1)
             ).Evaluate(privateKey, _blockChain);
             _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
@@ -524,7 +524,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
                 miner: privateKey.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10),
-                lastCommit: TestUtils.CreateBlockCommit(block2.Hash, block2.Index, 0)
+                lastCommit: TestUtils.CreateBlockCommit(block2)
             ).Evaluate(privateKey, _blockChain);
             _blockChain.Append(block3, TestUtils.CreateBlockCommit(block3));
             Assert.Empty(_blockChain.GetStagedTransactionIds());
@@ -574,7 +574,7 @@ namespace Libplanet.Tests.Blockchain
                 miner: privateKey.PublicKey,
                 blockInterval: TimeSpan.FromSeconds(10),
                 transactions: ImmutableArray<Transaction<DumbAction>>.Empty.Add(txs[1]),
-                lastCommit: TestUtils.CreateBlockCommit(block1.Hash, block1.Index, 0)
+                lastCommit: TestUtils.CreateBlockCommit(block1)
             ).Evaluate(privateKey, _blockChain);
 
             // Actually gets unstaged.

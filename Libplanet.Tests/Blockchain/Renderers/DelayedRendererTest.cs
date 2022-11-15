@@ -44,17 +44,11 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 chainA[i] = TestUtils.ProposeNextBlock(
                     chainA[i - 1],
                     TestUtils.GenesisMiner,
-                    lastCommit: TestUtils.CreateBlockCommit(
-                        chainA[i - 1].Hash,
-                        chainA[i - 1].Index,
-                        0));
+                    lastCommit: TestUtils.CreateBlockCommit(chainA[i - 1]));
                 chainB[i] = TestUtils.ProposeNextBlock(
                     chainB[i - 1],
                     TestUtils.GenesisMiner,
-                    lastCommit: TestUtils.CreateBlockCommit(
-                        chainB[i - 1].Hash,
-                        chainB[i - 1].Index,
-                        0));
+                    lastCommit: TestUtils.CreateBlockCommit(chainB[i - 1]));
             }
 
             _chainA = chainA;

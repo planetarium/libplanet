@@ -41,8 +41,7 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block<DumbAction> block = minerChain.ProposeBlock(
-                    miner,
-                    lastCommit: CreateBlockCommit(minerChain.Tip.Hash, minerChain.Tip.Index, 0));
+                    miner, lastCommit: CreateBlockCommit(minerChain.Tip));
                 minerChain.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -198,8 +197,7 @@ namespace Libplanet.Net.Tests
                         try
                         {
                             var block = chain.ProposeBlock(
-                                miner,
-                                lastCommit: CreateBlockCommit(chain.Tip.Hash, chain.Tip.Index, 0));
+                                miner, lastCommit: CreateBlockCommit(chain.Tip));
                             chain.Append(block, TestUtils.CreateBlockCommit(block));
 
                             Log.Debug(
@@ -335,7 +333,7 @@ namespace Libplanet.Net.Tests
                     {
                         Block<DumbAction> block = chainC.ProposeBlock(
                             minerC,
-                            lastCommit: CreateBlockCommit(chainC.Tip.Hash, chainC.Tip.Index, 0));
+                            lastCommit: CreateBlockCommit(chainC.Tip));
                         chainC.Append(block, TestUtils.CreateBlockCommit(block));
                     }
                 });
@@ -596,16 +594,14 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block<DumbAction> block = chainA.ProposeBlock(
-                    keyA,
-                    lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
+                    keyA, lastCommit: CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
                 Block<DumbAction> block = chainB.ProposeBlock(
-                    keyB,
-                    lastCommit: CreateBlockCommit(chainB.Tip.Hash, chainB.Tip.Index, 0));
+                    keyB, lastCommit: CreateBlockCommit(chainB.Tip));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -757,21 +753,18 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmB);
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
-                Block<DumbAction> block1 = chainA.ProposeBlock(
-                    keyA,
-                    lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
-
-                chainA.Append(block1, TestUtils.CreateBlockCommit(block1));
+                var block = chainA.ProposeBlock(
+                    keyA, lastCommit: CreateBlockCommit(chainA.Tip));
+                chainA.Append(block, TestUtils.CreateBlockCommit(block));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
 
                 Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
-                Block<DumbAction> block2 = chainA.ProposeBlock(
-                    keyB,
-                    lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
-                chainA.Append(block2, TestUtils.CreateBlockCommit(block2));
+                block = chainA.ProposeBlock(
+                    keyB, lastCommit: CreateBlockCommit(chainA.Tip));
+                chainA.Append(block, TestUtils.CreateBlockCommit(block));
                 swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
@@ -797,9 +790,8 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> chainA = swarmA.BlockChain;
             BlockChain<DumbAction> chainB = swarmB.BlockChain;
 
-            Block<DumbAction> block = chainA.ProposeBlock(
-                keyA,
-                lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
+            var block = chainA.ProposeBlock(
+                keyA, lastCommit: CreateBlockCommit(chainA.Tip));
             BlockCommit blockCommit = TestUtils.CreateBlockCommit(block);
             chainA.Append(block, blockCommit);
             chainB.Append(block, blockCommit);
@@ -807,8 +799,7 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 3))
             {
                 block = chainA.ProposeBlock(
-                    keyA,
-                    lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
+                    keyA, lastCommit: CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -859,8 +850,7 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block<DumbAction> block = chainA.ProposeBlock(
-                    keyA,
-                    lastCommit: CreateBlockCommit(chainA.Tip.Hash, chainA.Tip.Index, 0));
+                    keyA, lastCommit: CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -869,16 +859,14 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 5))
             {
                 Block<DumbAction> block = chainB.ProposeBlock(
-                    keyB,
-                    lastCommit: CreateBlockCommit(chainB.Tip.Hash, chainB.Tip.Index, 0));
+                    keyB, lastCommit: CreateBlockCommit(chainB.Tip));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
                 Block<DumbAction> block = chainC.ProposeBlock(
-                    keyB,
-                    lastCommit: CreateBlockCommit(chainC.Tip.Hash, chainC.Tip.Index, 0));
+                    keyB, lastCommit: CreateBlockCommit(chainC.Tip));
                 chainC.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
