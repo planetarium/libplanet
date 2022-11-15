@@ -1238,7 +1238,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(GetTxNonce), e);
+                LogUnexpectedException(nameof(GetBlockCommit), e);
             }
             finally
             {
@@ -1266,7 +1266,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(PutBlock), e);
+                LogUnexpectedException(nameof(PutBlockCommit), e);
                 throw;
             }
             finally
@@ -1292,7 +1292,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(DeleteBlock), e);
+                LogUnexpectedException(nameof(DeleteBlockCommit), e);
                 throw;
             }
             finally
