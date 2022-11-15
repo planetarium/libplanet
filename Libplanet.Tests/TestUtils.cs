@@ -352,7 +352,11 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static BlockCommit CreateLastCommit(
+        public static BlockCommit CreateBlockCommit<T>(Block<T> block)
+            where T : IAction, new() =>
+            CreateBlockCommit(block.Hash, block.Index, 0);
+
+        public static BlockCommit CreateBlockCommit(
             BlockHash blockHash,
             long height,
             int round,
