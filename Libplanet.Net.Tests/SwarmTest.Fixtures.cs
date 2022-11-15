@@ -52,10 +52,9 @@ namespace Libplanet.Net.Tests
                         }
 
                         Block<DumbAction> block = chain.ProposeBlock(
-                            miner,
-                            lastCommit: CreateLastCommit(chain.Tip.Hash, chain.Tip.Index, 0));
+                            miner, lastCommit: CreateBlockCommit(chain.Tip));
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
-                        chain.Append(block);
+                        chain.Append(block, CreateBlockCommit(block));
                     }
 
                     var blockList = new List<Block<DumbAction>>();

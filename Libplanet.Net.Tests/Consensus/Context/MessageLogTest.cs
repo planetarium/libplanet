@@ -32,9 +32,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
                 int.MaxValue,
                 0,
                 0);
-            _lastCommit = TestUtils.CreateBlockCommit(block.Hash, 1, 0);
+            _lastCommit = TestUtils.CreateBlockCommit(block);
             _messageLog = new MessageLog(2, TestUtils.ValidatorSet);
-            _blockChain.Append(block);
+            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
         }
 
         [Fact]

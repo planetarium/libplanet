@@ -535,8 +535,11 @@ namespace Libplanet.Net
                                     "Appending block #{Index} {Hash}",
                                     deltaBlock.Index,
                                     deltaBlock.Hash);
+
+                                // TODO : Block should be appended with commits.
                                 workspace.Append(
                                     deltaBlock,
+                                    null,
                                     evaluateActions: false,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions

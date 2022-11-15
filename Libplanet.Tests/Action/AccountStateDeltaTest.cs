@@ -239,10 +239,12 @@ namespace Libplanet.Tests.Action
                 protocolVersion: ProtocolVersion);
             var stateRootHash = preEvalBlock.DetermineStateRootHash(chain);
             var hash = preEvalBlock.Header.DeriveBlockHash(stateRootHash, null);
-            chain.Append(
-                ProtocolVersion < 2
+            Block<DumbAction> block = ProtocolVersion < 2
                 ? new Block<DumbAction>(preEvalBlock, (stateRootHash, null, hash))
-                : preEvalBlock.Evaluate(privateKey, chain)
+                : preEvalBlock.Evaluate(privateKey, chain);
+            chain.Append(
+                block,
+                TestUtils.CreateBlockCommit(block)
             );
             Assert.Equal(
                 DumbAction.DumbCurrency * 5,

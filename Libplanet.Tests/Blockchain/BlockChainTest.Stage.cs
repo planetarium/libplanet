@@ -84,7 +84,8 @@ namespace Libplanet.Tests.Blockchain
 
             // stage tx_0_0 -> mine tx_0_0 -> stage tx_0_1
             Assert.True(_blockChain.StageTransaction(tx_0_0));
-            _blockChain.Append(_blockChain.ProposeBlock(key));
+            var block = _blockChain.ProposeBlock(key);
+            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Empty(_blockChain.GetStagedTransactionIds());
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: false));
@@ -104,12 +105,9 @@ namespace Libplanet.Tests.Blockchain
                 txIds.OrderBy(id => id),
                 _blockChain.GetStagedTransactionIds().OrderBy(id => id)
             );
-            _blockChain.Append(_blockChain.ProposeBlock(
-                key,
-                lastCommit: TestUtils.CreateLastCommit(
-                    _blockChain.Tip.Hash,
-                    _blockChain.Tip.Index,
-                    0)));
+            block = _blockChain.ProposeBlock(
+                key, lastCommit: TestUtils.CreateBlockCommit(_blockChain.Tip));
+            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             // tx_0_1 and tx_1_x should be still staged, just filtered
             Assert.Empty(_blockChain.GetStagedTransactionIds());
             Assert.Empty(_blockChain.StagePolicy.Iterate(_blockChain, filtered: true));

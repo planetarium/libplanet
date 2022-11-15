@@ -92,10 +92,9 @@ namespace Libplanet.Net.Tests.Consensus.Context
             };
 
             // It needs a lastCommit to use, so we assume that index #1 block is already committed.
-            var heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(heightOneBlock);
-            var lastCommit =
-                TestUtils.CreateBlockCommit(heightOneBlock.Hash, heightOneBlock.Index, 0);
+            Block<DumbAction> heightOneBlock = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(heightOneBlock, TestUtils.CreateBlockCommit(heightOneBlock));
+            var lastCommit = TestUtils.CreateBlockCommit(heightOneBlock);
 
             context.Start(lastCommit);
             await Task.WhenAll(stepChangedToPreVote.WaitAsync(), proposalSent.WaitAsync());

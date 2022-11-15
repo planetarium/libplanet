@@ -1238,7 +1238,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(GetTxNonce), e);
+                LogUnexpectedException(nameof(GetBlockCommit), e);
             }
             finally
             {
@@ -1266,7 +1266,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(PutBlock), e);
+                LogUnexpectedException(nameof(PutBlockCommit), e);
                 throw;
             }
             finally
@@ -1292,7 +1292,7 @@ namespace Libplanet.RocksDBStore
             }
             catch (Exception e)
             {
-                LogUnexpectedException(nameof(DeleteBlock), e);
+                LogUnexpectedException(nameof(DeleteBlockCommit), e);
                 throw;
             }
             finally
@@ -1304,15 +1304,24 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override IEnumerable<long> GetBlockCommitIndices()
         {
-            IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, new byte[] { });
+            try
+            {
+                IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, new byte[] { });
 
-            // FIXME: Somehow key value comes with 0x76 prefix at the first index of
-            // byte array.
-            IEnumerable<long> indices =
-                iterators.Select(
-                        x => RocksDBStoreBitConverter.ToInt64(x.Key().Skip(1).ToArray())).ToArray();
+                // FIXME: Somehow key value comes with 0x76 prefix at the first index of
+                // byte array.
+                IEnumerable<long> indices =
+                    iterators.Select(
+                            x => RocksDBStoreBitConverter.ToInt64(x.Key().Skip(1).ToArray()))
+                        .ToArray();
 
-            return indices;
+                return indices;
+            }
+            catch (Exception e)
+            {
+                LogUnexpectedException(nameof(PutBlockCommit), e);
+                throw;
+            }
         }
 
         [StoreLoader("rocksdb+file")]

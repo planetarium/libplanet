@@ -255,6 +255,7 @@ namespace Libplanet.Blockchain
                 {
                     Append(
                         genesisBlock,
+                        null,
                         renderBlocks: !inFork,
                         renderActions: !inFork,
                         evaluateActions: !inFork
@@ -700,6 +701,8 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
+        /// <param name="blockCommit">A <see cref="BlockCommit"/> that has +2/3 commits for the
+        /// given block.</param>
         /// <param name="stateCompleters">The strategy to complement incomplete block states which
         /// are required for action execution and rendering.
         /// <see cref="StateCompleterSet{T}.Recalculate"/> by default.
@@ -716,10 +719,12 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(
             Block<T> block,
+            BlockCommit blockCommit,
             StateCompleterSet<T>? stateCompleters = null
         ) =>
             Append(
                 block,
+                blockCommit,
                 evaluateActions: true,
                 renderBlocks: true,
                 renderActions: true,
@@ -1135,9 +1140,40 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index, if
+        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
+        /// which is <c>0</c>, then returns <see langword="null"/>.</returns>
+        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
+        /// </remarks>
+        public BlockCommit GetBlockCommit(long index) =>
+            index == 0 ? null : Store.GetBlockCommit(index);
+
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="blockHash">A hash value of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> hash, if
+        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
+        /// then returns <see langword="null"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if given hash does not exist in the
+        /// blockchain.</exception>
+        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
+        /// </remarks>
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            GetBlockCommit(this[blockHash].Index);
+
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
+            BlockCommit blockCommit,
             bool evaluateActions,
             bool renderBlocks,
             bool renderActions,
@@ -1292,6 +1328,15 @@ namespace Libplanet.Blockchain
                     "Appended the block #{BlockIndex} {BlockHash}.",
                     block.Index,
                     block.Hash);
+
+                // FIXME: Checks given BlockCommit is belong to block. Also BlockCommit is not
+                // stored if value is null in temporary measure.
+                // Note: Genesis block is not committed by PBFT consensus, so it has no its
+                // blockCommit.
+                if (block.Index != 0 && blockCommit is { })
+                {
+                    Store.PutBlockCommit(blockCommit);
+                }
 
                 if (renderBlocks)
                 {

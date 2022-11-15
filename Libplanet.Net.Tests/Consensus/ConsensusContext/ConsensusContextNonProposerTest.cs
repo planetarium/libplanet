@@ -169,12 +169,10 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 }
             };
 
-            blockChain.Append(blockChain.ProposeBlock(TestUtils.PrivateKeys[1]));
+            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
-            blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(
-                blockChain[1].Hash,
-                1,
-                0));
+            blockChain.Store.PutBlockCommit(TestUtils.CreateBlockCommit(blockChain[1]));
             await proposalSent.WaitAsync();
 
             Assert.Equal(2, consensusContext.Height);
@@ -241,7 +239,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     (Dictionary)codec.Decode(proposal.Proposal.MarshaledBlock));
             var blockHeightThree = blockChain.ProposeBlock(
                 TestUtils.PrivateKeys[3],
-                lastCommit: TestUtils.CreateBlockCommit(blockHeightTwo.Hash, 2, 0));
+                lastCommit: TestUtils.CreateBlockCommit(blockHeightTwo));
 
             // Message from higher height
             consensusContext.HandleMessage(
@@ -281,11 +279,11 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
             // Do a consensus for height #1. (Genesis doesn't have last commit.)
             consensusContext.NewHeight(blockChain.Tip.Index + 1);
 
-            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
-            blockChain.Append(block);
+            Block<DumbAction> block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            blockChain.Append(block, TestUtils.CreateBlockCommit(block));
 
             // Creates a lastCommit of height 1 and put it to the store.
-            var createdLastCommit = TestUtils.CreateBlockCommit(block.Hash, 1, 0);
+            var createdLastCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Store.PutBlockCommit(createdLastCommit);
 
             // Starts height 2. Node 2 is the proposer.

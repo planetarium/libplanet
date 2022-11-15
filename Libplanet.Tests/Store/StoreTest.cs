@@ -1027,7 +1027,7 @@ namespace Libplanet.Tests.Store
             Block<DumbAction> anotherBlock3 = ProposeNextBlock(
                 Fx.Block2,
                 Fx.Miner,
-                lastCommit: CreateLastCommit(Fx.Block2.Hash, 2, 0));
+                lastCommit: CreateBlockCommit(Fx.Block2.Hash, 2, 0));
             store.PutBlock(Fx.GenesisBlock);
             store.PutBlock(Fx.Block1);
             store.PutBlock(Fx.Block2);
@@ -1100,13 +1100,14 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                blocks.Append(blocks.ProposeBlock(key));
-                blocks.Append(blocks.ProposeBlock(
-                    key,
-                    lastCommit: CreateLastCommit(blocks.Tip.Hash, blocks.Tip.Index, 0)));
-                blocks.Append(blocks.ProposeBlock(
-                    key,
-                    lastCommit: CreateLastCommit(blocks.Tip.Hash, blocks.Tip.Index, 0)));
+                var block = blocks.ProposeBlock(key);
+                blocks.Append(block, CreateBlockCommit(block));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
+                block = blocks.ProposeBlock(
+                    key, lastCommit: CreateBlockCommit(blocks.Tip));
+                blocks.Append(block, CreateBlockCommit(block));
 
                 s1.Copy(to: Fx.Store);
                 Fx.Store.Copy(to: s2);

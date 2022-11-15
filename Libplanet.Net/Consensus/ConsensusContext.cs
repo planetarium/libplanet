@@ -217,8 +217,7 @@ namespace Libplanet.Net.Consensus
 
                     if (lastCommit == null)
                     {
-                        // Note: Attempting to save a BlockCommit is in Context.Dispose() method.
-                        BlockCommit? storedCommit = _blockChain.Store.GetBlockCommit(height - 1);
+                        BlockCommit? storedCommit = _blockChain.GetBlockCommit(height - 1);
                         if (storedCommit != null)
                         {
                             lastCommit = storedCommit;
@@ -262,28 +261,18 @@ namespace Libplanet.Net.Consensus
         /// Committing the block to the <see cref="BlockChain{T}"/> and saves
         /// <see cref="BlockCommit"/> of currently committed height.
         /// </summary>
-        /// <param name="commit">A <see cref="BlockCommit"/> created from committed height.
-        /// </param>
         /// <param name="block">A <see cref="Block{T}"/> to committing to the
         /// <see cref="BlockChain{T}"/>.
+        /// </param>
+        /// <param name="commit">A <see cref="BlockCommit"/> created from committed height.
         /// </param>
         /// <remarks>the method is called when a block is voted by <see cref="Context{T}"/>
         /// in <see cref="Libplanet.Net.Consensus.Step.EndCommit"/>.
         /// </remarks>
-        public void Commit(BlockCommit? commit, Block<T> block)
+        public void Commit(Block<T> block, BlockCommit? commit)
         {
             _logger.Debug("Committing block #{Index} {Block}.", block.Index, block.Hash);
-            _blockChain.Append(block);
-            if (commit is null)
-            {
-                return;
-            }
-
-            _logger.Debug(
-                "Saving LastCommit of height #{Height} and round #{Round}.",
-                commit.Height,
-                commit.Round);
-            _blockChain.Store.PutBlockCommit(commit);
+            _blockChain.Append(block, commit);
         }
 
         /// <summary>
