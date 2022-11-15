@@ -1140,6 +1140,53 @@ namespace Libplanet.Blockchain
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index, if
+        /// the <see cref="BlockCommit"/> of genesis block is requested, which is <c>0</c>, then
+        /// returns <see langword="null"/>.</returns>
+        /// <exception cref="InvalidBlockCommitException">Thrown if the given index value is lower
+        /// than -1, where the block index cannot have a value below 0. Also throws when designated
+        /// <see cref="BlockCommit"/> does not exist in the store.</exception>
+        /// <remarks>The genesis block does not have <see cref="BlockCommit"/> because the genesis
+        /// block is not committed by a consensus.</remarks>
+        public BlockCommit GetBlockCommit(long index)
+        {
+            if (index < -1)
+            {
+                throw new InvalidBlockCommitException(
+                    "A block cannot have index less than -1.");
+            }
+
+            if (index == 0)
+            {
+                return null;
+            }
+
+            return Store.GetBlockCommit(index) ??
+                   throw new InvalidBlockCommitException(
+                       "No block commit exists for the given index.");
+        }
+
+        /// <summary>
+        /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// </summary>
+        /// <param name="blockHash">A hash value of <see cref="Block{T}"/> to retrieve.
+        /// </param>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> hash, if
+        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
+        /// then returns <see langword="null"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown if given hash does not exist in the
+        /// blockchain.</exception>
+        /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
+        /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
+        /// </remarks>
+        public BlockCommit GetBlockCommit(BlockHash blockHash) =>
+            GetBlockCommit(this[blockHash].Index);
+
 #pragma warning disable MEN003
         internal void Append(
             Block<T> block,
