@@ -91,8 +91,12 @@ namespace Libplanet.Net.Tests.Messages
                 case Message.MessageType.GetTxs:
                     return new GetTxsMsg(new[] { transaction.Id });
                 case Message.MessageType.Blocks:
-                    return new Libplanet.Net.Messages.BlocksMsg(
-                        new[] { codec.Encode(genesis.MarshalBlock()) });
+                    return new Libplanet.Net.Messages.BlocksMsg(new[]
+                    {
+                        BitConverter.GetBytes(2),
+                        codec.Encode(genesis.MarshalBlock()),
+                        new byte[0],
+                    });
                 case Message.MessageType.Tx:
                     return new Libplanet.Net.Messages.TxMsg(transaction.Serialize(true));
                 case Message.MessageType.FindNeighbors:

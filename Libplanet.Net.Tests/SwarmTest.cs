@@ -450,11 +450,11 @@ namespace Libplanet.Net.Tests
                 var blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[0];
 
                 Assert.Equal(2, responses.Length);
-                Assert.Equal(2, blockMessage.Payloads.Count);
+                Assert.Equal(4, blockMessage.Payloads.Count);
 
                 blockMessage = (Libplanet.Net.Messages.BlocksMsg)responses[1];
 
-                Assert.Single(blockMessage.Payloads);
+                Assert.Equal(2, blockMessage.Payloads.Count);
             }
             finally
             {
