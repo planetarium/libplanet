@@ -46,6 +46,7 @@ namespace Libplanet.Tests.Blockchain
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(keys[4], _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
+            Assert.NotNull(_blockChain.Store.GetBlockCommit(block1.Index));
             Block<DumbAction> block2 = TestUtils.ProposeNext(
                 block1,
                 txs,
