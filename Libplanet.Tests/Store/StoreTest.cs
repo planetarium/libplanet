@@ -459,7 +459,15 @@ namespace Libplanet.Tests.Store
             var inputA = new TxSuccess(
                 Fx.Hash1,
                 Fx.TxId1,
-                actionsLogsList ? new List<List<string>>() : null,
+                actionsLogsList
+                    ? new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "LOG",
+                        },
+                    }
+                    : null,
                 ImmutableDictionary<Address, IValue>.Empty.Add(
                     random.NextAddress(),
                     (Text)"state value"

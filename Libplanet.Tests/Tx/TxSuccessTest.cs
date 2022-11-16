@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,11 @@ namespace Libplanet.Tests.Tx
         private readonly ImmutableDictionary<Address, IImmutableDictionary<Currency, FAV>>
             _updatedFungibleAssets;
 
+        private readonly List<List<string>> _actionsLogsList;
+
         private readonly TxSuccess _fx;
+
+        private readonly TxSuccess _fxWithLogs;
 
         public TxSuccessTest()
         {
@@ -62,10 +67,25 @@ namespace Libplanet.Tests.Tx
                     fav => fav.Currency * random.Next(1, int.MaxValue)
                 ).ToImmutableDictionary()
             ).ToImmutableDictionary();
+            _actionsLogsList = new List<List<string>>
+            {
+                new List<string>
+                {
+                    "LOG",
+                },
+            };
             _fx = new TxSuccess(
                 _blockHash,
                 _txid,
                 null,
+                _updatedStates,
+                _fungibleAssetsDelta,
+                _updatedFungibleAssets
+            );
+            _fxWithLogs = new TxSuccess(
+                _blockHash,
+                _txid,
+                _actionsLogsList,
                 _updatedStates,
                 _fungibleAssetsDelta,
                 _updatedFungibleAssets
@@ -80,23 +100,41 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(_updatedStates, _fx.UpdatedStates);
             Assert.Equal(_fungibleAssetsDelta, _fx.FungibleAssetsDelta);
             Assert.Equal(_updatedFungibleAssets, _fx.UpdatedFungibleAssets);
+            Assert.Null(_fx.ActionsLogsList);
+
+            Assert.Equal(_blockHash, _fxWithLogs.BlockHash);
+            Assert.Equal(_txid, _fxWithLogs.TxId);
+            Assert.Equal(_updatedStates, _fxWithLogs.UpdatedStates);
+            Assert.Equal(_fungibleAssetsDelta, _fxWithLogs.FungibleAssetsDelta);
+            Assert.Equal(_updatedFungibleAssets, _fxWithLogs.UpdatedFungibleAssets);
+            Assert.Equal(_actionsLogsList, _fxWithLogs.ActionsLogsList);
         }
 
         [Fact]
         public void Serialization()
         {
-            var formatter = new BinaryFormatter();
-            var stream = new MemoryStream();
-            formatter.Serialize(stream, _fx);
-            stream.Seek(0, SeekOrigin.Begin);
-            object deserialized = formatter.Deserialize(stream);
-            Assert.IsType<TxSuccess>(deserialized);
-            var s = (TxSuccess)deserialized;
-            Assert.Equal(_blockHash, s.BlockHash);
-            Assert.Equal(_txid, s.TxId);
-            Assert.Equal(_fx.UpdatedStates, s.UpdatedStates);
-            Assert.Equal(_fx.FungibleAssetsDelta, s.FungibleAssetsDelta);
-            Assert.Equal(_fx.UpdatedFungibleAssets, s.UpdatedFungibleAssets);
+            var fxs = new[]
+            {
+                _fx,
+                _fxWithLogs,
+            };
+
+            foreach (var fx in fxs)
+            {
+                var formatter = new BinaryFormatter();
+                var stream = new MemoryStream();
+                formatter.Serialize(stream, fx);
+                stream.Seek(0, SeekOrigin.Begin);
+                object deserialized = formatter.Deserialize(stream);
+                Assert.IsType<TxSuccess>(deserialized);
+                var s = (TxSuccess)deserialized;
+                Assert.Equal(_blockHash, s.BlockHash);
+                Assert.Equal(_txid, s.TxId);
+                Assert.Equal(fx.UpdatedStates, s.UpdatedStates);
+                Assert.Equal(fx.FungibleAssetsDelta, s.FungibleAssetsDelta);
+                Assert.Equal(fx.UpdatedFungibleAssets, s.UpdatedFungibleAssets);
+                Assert.Equal(fx.ActionsLogsList, s.ActionsLogsList);
+            }
         }
     }
 }

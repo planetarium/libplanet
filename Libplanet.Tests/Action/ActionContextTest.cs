@@ -132,7 +132,8 @@ namespace Libplanet.Tests.Action
                 miner: _address,
                 blockIndex: 1,
                 previousStates: new DumbAccountStateDelta(),
-                randomSeed: _random.Next()
+                randomSeed: _random.Next(),
+                logs: new List<string>()
             );
 
             // Consume original's random state...
