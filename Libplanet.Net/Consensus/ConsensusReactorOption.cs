@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
@@ -42,14 +41,6 @@ namespace Libplanet.Net.Consensus
         /// <seealso cref="ConsensusContext{T}.OnBlockChainTipChanged"/>
         /// </summary>
         public TimeSpan TargetBlockInterval { get; set; }
-
-        /// <summary>
-        /// The cache of LastCommit (<see cref="BlockCommit"/>) cleanup threshold.
-        /// In proposing, the previous consensus commit messages are needed and the cache is used
-        /// for a case when the height of <see cref="Context{T}"/> does not exists in the memory
-        /// (e.g., node restarted, joining consensus.)
-        /// </summary>
-        public long? BlockCommitClearThreshold { get; set; }
 
         /// <summary>
         /// A timeout second and multiplier value for used in <see cref="Context{T}"/>.

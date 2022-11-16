@@ -1043,6 +1043,35 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
         }
 
+        [Fact]
+        public void CleanupBlockCommitStore()
+        {
+            BlockCommit blockCommit1 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 1, 0);
+            BlockCommit blockCommit2 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 2, 0);
+            BlockCommit blockCommit3 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 3, 0);
+
+            _blockChain.Store.PutBlockCommit(blockCommit1);
+            _blockChain.Store.PutBlockCommit(blockCommit2);
+            _blockChain.Store.PutBlockCommit(blockCommit3);
+            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 3);
+
+            Assert.Null(_blockChain.Store.GetBlockCommit(1));
+            Assert.Null(_blockChain.Store.GetBlockCommit(2));
+            Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(3));
+
+            _blockChain.Store.PutBlockCommit(blockCommit1);
+            _blockChain.Store.PutBlockCommit(blockCommit2);
+            _blockChain.Store.PutBlockCommit(blockCommit3);
+            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 4);
+
+            Assert.Equal(blockCommit1, _blockChain.Store.GetBlockCommit(1));
+            Assert.Equal(blockCommit2, _blockChain.Store.GetBlockCommit(2));
+            Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(3));
+        }
+
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
