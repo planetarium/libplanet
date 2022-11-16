@@ -93,9 +93,10 @@ namespace Libplanet.Action
         bool BlockAction { get; }
 
         /// <summary>
-        /// A delegator to record logs in <see cref="TxExecution"/>.
+        /// Record a log in <see cref="TxExecution"/>.
         /// </summary>
-        System.Action<string> PutLog { get; }
+        /// <param name="log">A log to record in <see cref="TxExecution"/>.</param>
+        void PutLog(string log);
 
         /// <summary>
         /// Checks whether the specified <paramref name="currency"/> is a native token defined by
