@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
@@ -51,9 +50,6 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="getValidatorSet">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
-        /// <param name="blockCommitClearThreshold">A maximum size of cached
-        /// <see cref="BlockCommit"/>. See <see cref="BlockCommitClearThreshold"/>.
-        /// The value must bigger than <c>0</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
@@ -62,7 +58,6 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             Func<long, ValidatorSet> getValidatorSet,
-            long blockCommitClearThreshold,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
@@ -71,7 +66,6 @@ namespace Libplanet.Net.Consensus
             Height = -1;
             _newHeightDelay = newHeightDelay;
             _getValidatorSet = getValidatorSet;
-            BlockCommitClearThreshold = blockCommitClearThreshold;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -146,9 +140,6 @@ namespace Libplanet.Net.Consensus
         /// height of value, and value is the <see cref="Context{T}"/>.
         /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
-
-        /// <inheritdoc cref="ConsensusReactorOption.BlockCommitClearThreshold"/>
-        private long BlockCommitClearThreshold { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -231,8 +222,6 @@ namespace Libplanet.Net.Consensus
                 }
 
                 RemoveOldContexts(height);
-                ClearOldBlockCommitCache(maxSize: BlockCommitClearThreshold);
-
                 Height = height;
 
                 _logger.Debug("Start consensus for height #{Height}.", Height);
