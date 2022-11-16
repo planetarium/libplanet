@@ -1309,6 +1309,16 @@ namespace Libplanet.Blockchain
                     {
                         Store.PutTxIdBlockHashIndex(tx.Id, block.Hash);
                     }
+
+                    // FIXME: Checks given BlockCommit is belong to block. Also BlockCommit is not
+                    // stored if value is null in temporary measure.
+                    // Note: Genesis block is not committed by PBFT consensus, so it has no its
+                    // blockCommit.
+                    if (block.Index != 0 && blockCommit is { })
+                    {
+                        Store.PutBlockCommit(blockCommit);
+                        CleanupBlockCommitStore(blockCommit.Height);
+                    }
                 }
                 finally
                 {
@@ -1348,16 +1358,6 @@ namespace Libplanet.Blockchain
                     "Appended the block #{BlockIndex} {BlockHash}.",
                     block.Index,
                     block.Hash);
-
-                // FIXME: Checks given BlockCommit is belong to block. Also BlockCommit is not
-                // stored if value is null in temporary measure.
-                // Note: Genesis block is not committed by PBFT consensus, so it has no its
-                // blockCommit.
-                if (block.Index != 0 && blockCommit is { })
-                {
-                    Store.PutBlockCommit(blockCommit);
-                    CleanupBlockCommitStore(blockCommit.Height);
-                }
 
                 if (renderBlocks)
                 {
