@@ -1145,14 +1145,34 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="index">A index value (height) of <see cref="Block{T}"/> to retrieve.
         /// </param>
-        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index, if
-        /// the <see cref="BlockCommit"/> of <see cref="BlockChain{T}.Genesis"/> block is requested,
-        /// which is <c>0</c>, then returns <see langword="null"/>.</returns>
+        /// <returns>Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
+        /// Following conditions will returns <see langword="null"/>:
+        /// <list type="bullet">
+        ///     <item>
+        ///         Given <see cref="Block{T}"/> <see cref="Block{T}.ProtocolVersion"/> is
+        ///         Proof-of-Work.
+        ///     </item>
+        ///     <item>
+        ///         Given <see cref="Block{T}"/> is <see cref="BlockChain{T}.Genesis"/> block.
+        ///     </item>
+        /// </list>
+        /// </returns>
+        /// <exception cref="KeyNotFoundException">Thrown if given index does not exist in the
+        /// blockchain.</exception>
         /// <remarks>The <see cref="BlockChain{T}.Genesis"/> block does not have
         /// <see cref="BlockCommit"/> because the genesis block is not committed by a consensus.
         /// </remarks>
-        public BlockCommit GetBlockCommit(long index) =>
-            index == 0 ? null : Store.GetBlockCommit(index);
+        public BlockCommit GetBlockCommit(long index)
+        {
+            Block<T> block = this[index];
+
+            if (block.ProtocolVersion <= BlockMetadata.PoWProtocolVersion)
+            {
+                return null;
+            }
+
+            return index == Tip.Index ? Store.GetBlockCommit(index) : this[index + 1].LastCommit;
+        }
 
         /// <summary>
         /// Returns a <see cref="BlockCommit"/> of given <see cref="Block{T}"/> index.
