@@ -11,6 +11,7 @@ namespace Libplanet.Blocks
     /// </summary>
     /// <typeparam name="T">A class implementing <see cref="IAction"/> to include.  This type
     /// parameter is aligned with <see cref="Transaction{T}"/>'s type parameter.</typeparam>
+    // This interface will be replaced with `IBlockContent`, non-generic, in the future.
     public interface IBlockContent<T> : IBlockMetadata
         where T : IAction, new()
     {
