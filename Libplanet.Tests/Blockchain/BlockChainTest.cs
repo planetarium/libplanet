@@ -1026,19 +1026,23 @@ namespace Libplanet.Tests.Blockchain
             // Requesting blockCommit of genesis block returns null.
             Assert.Null(_blockChain.GetBlockCommit(0));
             Assert.Null(_blockChain.GetBlockCommit(_blockChain.Genesis.Hash));
+
             // BlockCommit is put to store when block is appended.
             Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
             BlockCommit blockCommit1 = CreateBlockCommit(block1);
             _blockChain.Append(block1, blockCommit1);
             Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
             Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Hash));
+
             // BlockCommit is retrieved from lastCommit.
             Block<DumbAction> block2 = _blockChain.ProposeBlock(
                 new PrivateKey(),
                 lastCommit: CreateBlockCommit(_blockChain.Tip));
             BlockCommit blockCommit2 = CreateBlockCommit(block2);
             _blockChain.Append(block2, blockCommit2);
-            _blockChain.Store.DeleteBlockCommit(1);
+
+            // These are different due to timestamps on votes.
+            Assert.NotEqual(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Index));
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
         }
