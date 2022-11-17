@@ -19,6 +19,9 @@ To be released.
     `BlockChain<T>.MineBlock(PrivateKey, DateTimeOffset?, bool?,
     IComparer<Transaction<T>>, CancellationToken?)` by removing policy
     controlled parameters.  [[#2529]]
+ -  (Libplanet.Extensions.Cocona) Removed
+    `ICoconaLiteServiceCollectionExtensions` static class.
+    Use `ServiceCollectionExtensions` instead.  [[#2559]]
 
 ### Backward-incompatible network protocol changes
 
@@ -35,6 +38,9 @@ To be released.
      -  Added `ITransaction` interface.
  -  Added `IActionTypeLoader` interface.  [[#2539]]
  -  Added `StaticActionTypeLoader` class.  [[#2539]]
+ -  (Libplanet.Extensions.Cocona) Added `ValueConverter` class.  [[#2559]]
+ -  (Libplanet.Extensions.Cocona) Added `ServiceCollectionExtensions` static
+    class instead.  [[#2559]]
 
 ### Behavioral changes
 
@@ -44,6 +50,9 @@ To be released.
     did not work as intended.  [[#2518], [#2520]]
 
 ### Dependencies
+
+ -  (Libplanet.Extensions.Cocona) No longer depends on *Cocona.Lite*.  [[#2559]]
+ -  (Libplanet.Extensions.Cocona) Now depends on *Cocona* 0.2.\*.  [[#2559]]
 
 ### CLI tools
 
@@ -56,6 +65,7 @@ To be released.
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
 [#2539]: https://github.com/planetarium/libplanet/pull/2539
 [#2555]: https://github.com/planetarium/libplanet/pull/2555
+[#2559]: https://github.com/planetarium/libplanet/pull/2559
 
 
 Version 0.44.1

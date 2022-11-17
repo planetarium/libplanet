@@ -1,15 +1,15 @@
 using System.IO;
-using global::Cocona.Lite;
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Zio.FileSystems;
 
 namespace Libplanet.Extensions.Cocona.Extensions
 {
-    public static class ICoconaLiteServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static void AddJsonConfigurationService(
-            this ICoconaLiteServiceCollection services,
+            this IServiceCollection services,
             string jsonConfigurationPath)
         {
             string jsonConfigurationDirectory = Directory.GetParent(jsonConfigurationPath).FullName;

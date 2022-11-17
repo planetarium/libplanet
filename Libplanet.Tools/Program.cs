@@ -2,8 +2,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Cocona;
+using Cocona.Command.Binder;
+using Libplanet.Extensions.Cocona;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Libplanet.Tools
 {
@@ -21,9 +24,10 @@ namespace Libplanet.Tools
             "cli.json");
 
         public static Task Main(string[] args) =>
-            CoconaLiteApp.CreateHostBuilder()
+            CoconaApp.CreateHostBuilder()
                 .ConfigureServices(services =>
                 {
+                    services.AddSingleton<ICoconaValueConverter, ValueConverter>();
                     services.AddJsonConfigurationService(FileConfigurationServiceRoot);
                 })
                 .RunAsync<Program>(args, options =>
