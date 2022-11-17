@@ -189,6 +189,10 @@ Used for keeping track of when the local node has percieved <a class="xref" href
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Libplanet.Blocks.IBlockContent.html">IBlockContent</a></h4>
+      <section><p>A common interface for blocks that do not have any proofs, but have their metadata and
+containing <a class="xref" href="Libplanet.Blocks.IBlockContent.html#Libplanet_Blocks_IBlockContent_Transactions">Transactions</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Blocks.IBlockContent-1.html">IBlockContent&lt;T&gt;</a></h4>
       <section><p>A common interface for blocks that do not have any proofs, but have their metadata and
 containing <a class="xref" href="Libplanet.Blocks.IBlockContent-1.html#Libplanet_Blocks_IBlockContent_1_Transactions">Transactions</a>.</p>
@@ -204,6 +208,12 @@ the canonical chain.</p>
       <h4><a class="xref" href="Libplanet.Blocks.IBlockMetadata.html">IBlockMetadata</a></h4>
       <section><p>A common interface for blocks that do not have any proofs nor transactions (but only
 <a class="xref" href="Libplanet.Blocks.IBlockMetadata.html#Libplanet_Blocks_IBlockMetadata_TxHash">TxHash</a>).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></h4>
+      <section><p>A common interface for blocks that have their proof-of-work
+<a class="xref" href="Libplanet.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Blocks_IPreEvaluationBlockHeader_Nonce">Nonce</a>s and
+<a class="xref" href="Libplanet.Blocks.IBlockContent.html#Libplanet_Blocks_IBlockContent_Transactions">Transactions</a>, but are not evaluated yet (i.e., their state
+root hashes are not yet determined).</p>
 </section>
       <h4><a class="xref" href="Libplanet.Blocks.IPreEvaluationBlock-1.html">IPreEvaluationBlock&lt;T&gt;</a></h4>
       <section><p>A common interface for blocks that have their proof-of-work

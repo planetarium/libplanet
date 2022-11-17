@@ -128,6 +128,10 @@ compatibility issues on certain platforms, and is slightly slower.
       <section><p>This extension class provides some convenient methods
 to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.StaticActionTypeLoader.html">StaticActionTypeLoader</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Action.IActionTypeLoader.html">IActionTypeLoader</a> implementation to load action types
+without branching by block index.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.SupplyOverflowException.html">SupplyOverflowException</a></h4>
       <section><p>The exception thrown when a minter tries to mint a currency such that the resulting total
 supply exceed the maximum amount.</p>
@@ -206,6 +210,9 @@ not code of an action.</p>
       <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
       <section><p>Contextual data determined by a transaction and a block.
 Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IActionTypeLoader.html">IActionTypeLoader</a></h4>
+      <section><p>An interface to load action types branched by block index.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IExtractableException.html">IExtractableException</a></h4>
       <section><p>Marks an exception type as able to extract its metadata, so that these metadata can be

@@ -117,6 +117,15 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency))
   nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>)
   nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency))
+- uid: Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name: ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_Libplanet_Action_IAction_Libplanet_Blockchain_IBlockChainStates__0__System_Nullable_Func_Libplanet_Blocks_BlockHash_Libplanet_Store_Trie_ITrie___System_Nullable_Libplanet_Blocks_BlockHash__Predicate_Libplanet_Assets_Currency__Libplanet_Action_IActionTypeLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator`1.#ctor(Libplanet.Action.IAction,Libplanet.Blockchain.IBlockChainStates{`0},System.Nullable{Func{Libplanet.Blocks.BlockHash,Libplanet.Store.Trie.ITrie}},System.Nullable{Libplanet.Blocks.BlockHash},Predicate{Libplanet.Assets.Currency},Libplanet.Action.IActionTypeLoader)
+  name.vb: ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
+  fullName: Libplanet.Action.ActionEvaluator<T>.ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates<T>, System.Nullable<Func<Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie>>, System.Nullable<Libplanet.Blocks.BlockHash>, Predicate<Libplanet.Assets.Currency>, Libplanet.Action.IActionTypeLoader)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator(Libplanet.Action.IAction, Libplanet.Blockchain.IBlockChainStates(Of T), System.Nullable(Of Func(Of Libplanet.Blocks.BlockHash, Libplanet.Store.Trie.ITrie)), System.Nullable(Of Libplanet.Blocks.BlockHash), Predicate(Of Libplanet.Assets.Currency), Libplanet.Action.IActionTypeLoader)
+  nameWithType: ActionEvaluator<T>.ActionEvaluator(IAction, IBlockChainStates<T>, Nullable<Func<BlockHash, ITrie>>, Nullable<BlockHash>, Predicate<Currency>, IActionTypeLoader)
+  nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator(IAction, IBlockChainStates(Of T), Nullable(Of Func(Of BlockHash, ITrie)), Nullable(Of BlockHash), Predicate(Of Currency), IActionTypeLoader)
 - uid: Libplanet.Action.ActionEvaluator`1.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1__ctor_
@@ -126,15 +135,15 @@ references:
   fullName.vb: Libplanet.Action.ActionEvaluator(Of T).ActionEvaluator
   nameWithType: ActionEvaluator<T>.ActionEvaluator
   nameWithType.vb: ActionEvaluator(Of T).ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock{`0},Libplanet.Blockchain.StateCompleterSet{`0})
-  name: Evaluate(IPreEvaluationBlock<T>, StateCompleterSet<T>)
-  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock__0__Libplanet_Blockchain_StateCompleterSet__0__
-  commentId: M:Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock{`0},Libplanet.Blockchain.StateCompleterSet{`0})
-  name.vb: Evaluate(IPreEvaluationBlock(Of T), StateCompleterSet(Of T))
-  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate(Libplanet.Blocks.IPreEvaluationBlock<T>, Libplanet.Blockchain.StateCompleterSet<T>)
-  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate(Libplanet.Blocks.IPreEvaluationBlock(Of T), Libplanet.Blockchain.StateCompleterSet(Of T))
-  nameWithType: ActionEvaluator<T>.Evaluate(IPreEvaluationBlock<T>, StateCompleterSet<T>)
-  nameWithType.vb: ActionEvaluator(Of T).Evaluate(IPreEvaluationBlock(Of T), StateCompleterSet(Of T))
+- uid: Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Blockchain.StateCompleterSet{`0})
+  name: Evaluate(IPreEvaluationBlock, StateCompleterSet<T>)
+  href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_Libplanet_Blocks_IPreEvaluationBlock_Libplanet_Blockchain_StateCompleterSet__0__
+  commentId: M:Libplanet.Action.ActionEvaluator`1.Evaluate(Libplanet.Blocks.IPreEvaluationBlock,Libplanet.Blockchain.StateCompleterSet{`0})
+  name.vb: Evaluate(IPreEvaluationBlock, StateCompleterSet(Of T))
+  fullName: Libplanet.Action.ActionEvaluator<T>.Evaluate(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Blockchain.StateCompleterSet<T>)
+  fullName.vb: Libplanet.Action.ActionEvaluator(Of T).Evaluate(Libplanet.Blocks.IPreEvaluationBlock, Libplanet.Blockchain.StateCompleterSet(Of T))
+  nameWithType: ActionEvaluator<T>.Evaluate(IPreEvaluationBlock, StateCompleterSet<T>)
+  nameWithType.vb: ActionEvaluator(Of T).Evaluate(IPreEvaluationBlock, StateCompleterSet(Of T))
 - uid: Libplanet.Action.ActionEvaluator`1.Evaluate*
   name: Evaluate
   href: api/Libplanet.Action.ActionEvaluator-1.html#Libplanet_Action_ActionEvaluator_1_Evaluate_
@@ -700,6 +709,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.TxId
   nameWithType: IActionContext.TxId
+- uid: Libplanet.Action.IActionTypeLoader
+  name: IActionTypeLoader
+  href: api/Libplanet.Action.IActionTypeLoader.html
+  commentId: T:Libplanet.Action.IActionTypeLoader
+  fullName: Libplanet.Action.IActionTypeLoader
+  nameWithType: IActionTypeLoader
+- uid: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  name: Load(IPreEvaluationBlockHeader)
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_
+  commentId: M:Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  fullName: Libplanet.Action.IActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  nameWithType: IActionTypeLoader.Load(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.IActionTypeLoader.Load*
+  name: Load
+  href: api/Libplanet.Action.IActionTypeLoader.html#Libplanet_Action_IActionTypeLoader_Load_
+  commentId: Overload:Libplanet.Action.IActionTypeLoader.Load
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionTypeLoader.Load
+  nameWithType: IActionTypeLoader.Load
 - uid: Libplanet.Action.IExtractableException
   name: IExtractableException
   href: api/Libplanet.Action.IExtractableException.html
@@ -1112,6 +1140,41 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
   nameWithType: RandomExtensions.GenerateRandomGuid
+- uid: Libplanet.Action.StaticActionTypeLoader
+  name: StaticActionTypeLoader
+  href: api/Libplanet.Action.StaticActionTypeLoader.html
+  commentId: T:Libplanet.Action.StaticActionTypeLoader
+  fullName: Libplanet.Action.StaticActionTypeLoader
+  nameWithType: StaticActionTypeLoader
+- uid: Libplanet.Action.StaticActionTypeLoader.#ctor(IEnumerable{Assembly},System.Nullable{Type})
+  name: StaticActionTypeLoader(IEnumerable<Assembly>, Nullable<Type>)
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader__ctor_IEnumerable_Assembly__System_Nullable_Type__
+  commentId: M:Libplanet.Action.StaticActionTypeLoader.#ctor(IEnumerable{Assembly},System.Nullable{Type})
+  name.vb: StaticActionTypeLoader(IEnumerable(Of Assembly), Nullable(Of Type))
+  fullName: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable<Assembly>, System.Nullable<Type>)
+  fullName.vb: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable(Of Assembly), System.Nullable(Of Type))
+  nameWithType: StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable<Assembly>, Nullable<Type>)
+  nameWithType.vb: StaticActionTypeLoader.StaticActionTypeLoader(IEnumerable(Of Assembly), Nullable(Of Type))
+- uid: Libplanet.Action.StaticActionTypeLoader.#ctor*
+  name: StaticActionTypeLoader
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader__ctor_
+  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.StaticActionTypeLoader.StaticActionTypeLoader
+  nameWithType: StaticActionTypeLoader.StaticActionTypeLoader
+- uid: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  name: Load(IPreEvaluationBlockHeader)
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_Libplanet_Blocks_IPreEvaluationBlockHeader_
+  commentId: M:Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  fullName: Libplanet.Action.StaticActionTypeLoader.Load(Libplanet.Blocks.IPreEvaluationBlockHeader)
+  nameWithType: StaticActionTypeLoader.Load(IPreEvaluationBlockHeader)
+- uid: Libplanet.Action.StaticActionTypeLoader.Load*
+  name: Load
+  href: api/Libplanet.Action.StaticActionTypeLoader.html#Libplanet_Action_StaticActionTypeLoader_Load_
+  commentId: Overload:Libplanet.Action.StaticActionTypeLoader.Load
+  isSpec: "True"
+  fullName: Libplanet.Action.StaticActionTypeLoader.Load
+  nameWithType: StaticActionTypeLoader.Load
 - uid: Libplanet.Action.SupplyOverflowException
   name: SupplyOverflowException
   href: api/Libplanet.Action.SupplyOverflowException.html
@@ -7514,6 +7577,25 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Index
   nameWithType: Block<T>.Index
   nameWithType.vb: Block(Of T).Index
+- uid: Libplanet.Blocks.Block`1.Libplanet#Blocks#IBlockContent#Transactions
+  name: IBlockContent.Transactions
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Libplanet_Blocks_IBlockContent_Transactions
+  commentId: P:Libplanet.Blocks.Block`1.Libplanet#Blocks#IBlockContent#Transactions
+  name.vb: Libplanet.Blocks.IBlockContent.Transactions
+  fullName: Libplanet.Blocks.Block<T>.Libplanet.Blocks.IBlockContent.Transactions
+  fullName.vb: Libplanet.Blocks.Block(Of T).Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: Block<T>.IBlockContent.Transactions
+  nameWithType.vb: Block(Of T).Libplanet.Blocks.IBlockContent.Transactions
+- uid: Libplanet.Blocks.Block`1.Libplanet#Blocks#IBlockContent#Transactions*
+  name: IBlockContent.Transactions
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Libplanet_Blocks_IBlockContent_Transactions_
+  commentId: Overload:Libplanet.Blocks.Block`1.Libplanet#Blocks#IBlockContent#Transactions
+  isSpec: "True"
+  name.vb: Libplanet.Blocks.IBlockContent.Transactions
+  fullName: Libplanet.Blocks.Block<T>.Libplanet.Blocks.IBlockContent.Transactions
+  fullName.vb: Libplanet.Blocks.Block(Of T).Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: Block<T>.IBlockContent.Transactions
+  nameWithType.vb: Block(Of T).Libplanet.Blocks.IBlockContent.Transactions
 - uid: Libplanet.Blocks.Block`1.Miner
   name: Miner
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Miner
@@ -9096,6 +9178,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.BlockPolicyViolationException.BlockPolicyViolationException
   nameWithType: BlockPolicyViolationException.BlockPolicyViolationException
+- uid: Libplanet.Blocks.IBlockContent
+  name: IBlockContent
+  href: api/Libplanet.Blocks.IBlockContent.html
+  commentId: T:Libplanet.Blocks.IBlockContent
+  fullName: Libplanet.Blocks.IBlockContent
+  nameWithType: IBlockContent
+- uid: Libplanet.Blocks.IBlockContent.Transactions
+  name: Transactions
+  href: api/Libplanet.Blocks.IBlockContent.html#Libplanet_Blocks_IBlockContent_Transactions
+  commentId: P:Libplanet.Blocks.IBlockContent.Transactions
+  fullName: Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: IBlockContent.Transactions
+- uid: Libplanet.Blocks.IBlockContent.Transactions*
+  name: Transactions
+  href: api/Libplanet.Blocks.IBlockContent.html#Libplanet_Blocks_IBlockContent_Transactions_
+  commentId: Overload:Libplanet.Blocks.IBlockContent.Transactions
+  isSpec: "True"
+  fullName: Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: IBlockContent.Transactions
 - uid: Libplanet.Blocks.IBlockContent`1
   name: IBlockContent<T>
   href: api/Libplanet.Blocks.IBlockContent-1.html
@@ -10211,6 +10312,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidGenesisBlockException.Stored
   nameWithType: InvalidGenesisBlockException.Stored
+- uid: Libplanet.Blocks.IPreEvaluationBlock
+  name: IPreEvaluationBlock
+  href: api/Libplanet.Blocks.IPreEvaluationBlock.html
+  commentId: T:Libplanet.Blocks.IPreEvaluationBlock
+  fullName: Libplanet.Blocks.IPreEvaluationBlock
+  nameWithType: IPreEvaluationBlock
 - uid: Libplanet.Blocks.IPreEvaluationBlock`1
   name: IPreEvaluationBlock<T>
   href: api/Libplanet.Blocks.IPreEvaluationBlock-1.html
@@ -10402,6 +10509,25 @@ references:
   fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Index
   nameWithType: PreEvaluationBlock<T>.Index
   nameWithType.vb: PreEvaluationBlock(Of T).Index
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Libplanet#Blocks#IBlockContent#Transactions
+  name: IBlockContent.Transactions
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Libplanet_Blocks_IBlockContent_Transactions
+  commentId: P:Libplanet.Blocks.PreEvaluationBlock`1.Libplanet#Blocks#IBlockContent#Transactions
+  name.vb: Libplanet.Blocks.IBlockContent.Transactions
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Libplanet.Blocks.IBlockContent.Transactions
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: PreEvaluationBlock<T>.IBlockContent.Transactions
+  nameWithType.vb: PreEvaluationBlock(Of T).Libplanet.Blocks.IBlockContent.Transactions
+- uid: Libplanet.Blocks.PreEvaluationBlock`1.Libplanet#Blocks#IBlockContent#Transactions*
+  name: IBlockContent.Transactions
+  href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Libplanet_Blocks_IBlockContent_Transactions_
+  commentId: Overload:Libplanet.Blocks.PreEvaluationBlock`1.Libplanet#Blocks#IBlockContent#Transactions
+  isSpec: "True"
+  name.vb: Libplanet.Blocks.IBlockContent.Transactions
+  fullName: Libplanet.Blocks.PreEvaluationBlock<T>.Libplanet.Blocks.IBlockContent.Transactions
+  fullName.vb: Libplanet.Blocks.PreEvaluationBlock(Of T).Libplanet.Blocks.IBlockContent.Transactions
+  nameWithType: PreEvaluationBlock<T>.IBlockContent.Transactions
+  nameWithType.vb: PreEvaluationBlock(Of T).Libplanet.Blocks.IBlockContent.Transactions
 - uid: Libplanet.Blocks.PreEvaluationBlock`1.Miner
   name: Miner
   href: api/Libplanet.Blocks.PreEvaluationBlock-1.html#Libplanet_Blocks_PreEvaluationBlock_1_Miner
@@ -27785,6 +27911,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.InvalidTxSignatureException.InvalidTxSignatureException
   nameWithType: InvalidTxSignatureException.InvalidTxSignatureException
+- uid: Libplanet.Tx.ITransaction
+  name: ITransaction
+  href: api/Libplanet.Tx.ITransaction.html
+  commentId: T:Libplanet.Tx.ITransaction
+  fullName: Libplanet.Tx.ITransaction
+  nameWithType: ITransaction
+- uid: Libplanet.Tx.ITransaction.CustomActions
+  name: CustomActions
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_CustomActions
+  commentId: P:Libplanet.Tx.ITransaction.CustomActions
+  fullName: Libplanet.Tx.ITransaction.CustomActions
+  nameWithType: ITransaction.CustomActions
+- uid: Libplanet.Tx.ITransaction.CustomActions*
+  name: CustomActions
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_CustomActions_
+  commentId: Overload:Libplanet.Tx.ITransaction.CustomActions
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.CustomActions
+  nameWithType: ITransaction.CustomActions
+- uid: Libplanet.Tx.ITransaction.Signature
+  name: Signature
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signature
+  commentId: P:Libplanet.Tx.ITransaction.Signature
+  fullName: Libplanet.Tx.ITransaction.Signature
+  nameWithType: ITransaction.Signature
+- uid: Libplanet.Tx.ITransaction.Signature*
+  name: Signature
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_Signature_
+  commentId: Overload:Libplanet.Tx.ITransaction.Signature
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.Signature
+  nameWithType: ITransaction.Signature
+- uid: Libplanet.Tx.ITransaction.SystemAction
+  name: SystemAction
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction
+  commentId: P:Libplanet.Tx.ITransaction.SystemAction
+  fullName: Libplanet.Tx.ITransaction.SystemAction
+  nameWithType: ITransaction.SystemAction
+- uid: Libplanet.Tx.ITransaction.SystemAction*
+  name: SystemAction
+  href: api/Libplanet.Tx.ITransaction.html#Libplanet_Tx_ITransaction_SystemAction_
+  commentId: Overload:Libplanet.Tx.ITransaction.SystemAction
+  isSpec: "True"
+  fullName: Libplanet.Tx.ITransaction.SystemAction
+  nameWithType: ITransaction.SystemAction
 - uid: Libplanet.Tx.ITxExcerpt
   name: ITxExcerpt
   href: api/Libplanet.Tx.ITxExcerpt.html
@@ -28125,6 +28296,44 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Id
   nameWithType: Transaction<T>.Id
   nameWithType.vb: Transaction(Of T).Id
+- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
+  name: ITransaction.CustomActions
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_CustomActions
+  commentId: P:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
+  name.vb: Libplanet.Tx.ITransaction.CustomActions
+  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.CustomActions
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
+  nameWithType: Transaction<T>.ITransaction.CustomActions
+  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
+- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions*
+  name: ITransaction.CustomActions
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_CustomActions_
+  commentId: Overload:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#CustomActions
+  isSpec: "True"
+  name.vb: Libplanet.Tx.ITransaction.CustomActions
+  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.CustomActions
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
+  nameWithType: Transaction<T>.ITransaction.CustomActions
+  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.CustomActions
+- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
+  name: ITransaction.SystemAction
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_SystemAction
+  commentId: P:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
+  name.vb: Libplanet.Tx.ITransaction.SystemAction
+  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.SystemAction
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
+  nameWithType: Transaction<T>.ITransaction.SystemAction
+  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
+- uid: Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction*
+  name: ITransaction.SystemAction
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Libplanet_Tx_ITransaction_SystemAction_
+  commentId: Overload:Libplanet.Tx.Transaction`1.Libplanet#Tx#ITransaction#SystemAction
+  isSpec: "True"
+  name.vb: Libplanet.Tx.ITransaction.SystemAction
+  fullName: Libplanet.Tx.Transaction<T>.Libplanet.Tx.ITransaction.SystemAction
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
+  nameWithType: Transaction<T>.ITransaction.SystemAction
+  nameWithType.vb: Transaction(Of T).Libplanet.Tx.ITransaction.SystemAction
 - uid: Libplanet.Tx.Transaction`1.Nonce
   name: Nonce
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce
