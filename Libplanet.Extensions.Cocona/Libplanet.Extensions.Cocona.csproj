@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cocona" Version="2.0.*" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0"/>
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>

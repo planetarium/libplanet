@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Bencodex;
 using Cocona;
 using Cocona.Help;
@@ -163,18 +167,20 @@ namespace Libplanet.Extensions.Cocona.Commands
         }
 
         [Command(Description = "Create a signed transaction.")]
-        public int Create(
+        public async Task<int> Create(
             [Option('k', Description = "A key UUID to sign.")]
             Guid keyId,
             PassphraseParameters passphrase,
+            [Option('G', Description = "Libplanet Explorer GraphQL endpoint URL.")]
+            Uri? graphqlEndpoint = null,
             [Option('n', Description = "The nonce of the transaction, which is " +
                 "the number of previous transactions made by the same account.")]
             [Range(
                 typeof(long),
-                "0",
+                "-1",
                 "9223372036854775807",
                 ConvertValueInInvariantCulture = true)]
-            long nonce = 0L,
+            long nonce = -1L,
             [Option('g', Description = "The hash of the genesis block.")]
             BlockHash? genesisHash = null,
             [Option('t', Description = "The timestamp of the transaction.  If not given, " +
@@ -190,8 +196,36 @@ namespace Libplanet.Extensions.Cocona.Commands
                     "You probably don't intend it unless you are actually creating " +
                     "a transaction for the genesis block.");
             }
+            else if (nonce < 0L && graphqlEndpoint is null)
+            {
+                throw new CommandExitedException(
+                    "The -n/--nonce option is required when -G/--graphql-endpoint is not given.",
+                    -1
+                );
+            }
 
             PrivateKey privKey = new KeyCommand().UnprotectKey(keyId, passphrase);
+
+            if (graphqlEndpoint is { } url && nonce < 0L)
+            {
+                var client = new HttpClient { BaseAddress = url };
+                var resp = await client.PostAsJsonAsync(url, new Dictionary<string, object>
+                {
+                    ["query"] = @"query($address: Address!) {
+                            transaction { nextTxNonce(address: $address) } }",
+                    ["variables"] = new Dictionary<string, object>
+                    {
+                        ["address"] = privKey.ToAddress().ToString(),
+                    },
+                });
+                var data = await resp.Content.ReadFromJsonAsync<JsonElement>();
+                nonce = data
+                    .GetProperty("data")
+                    .GetProperty("transaction")
+                    .GetProperty("nextTxNonce")
+                    .GetInt64();
+            }
+
             System.Collections.Generic.IEnumerable<NullAction> customActions =
                 Enumerable.Empty<NullAction>();
             Transaction<NullAction> tx = Transaction<NullAction>.Create(
