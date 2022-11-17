@@ -696,7 +696,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_blockCommits, path, blockCommit.ByteArray);
+            WriteContentAddressableFile(_blockCommits, path, blockCommit.ToByteArray());
         }
 
         /// <inheritdoc />

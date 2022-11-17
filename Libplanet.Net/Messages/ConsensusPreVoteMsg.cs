@@ -46,7 +46,8 @@ namespace Libplanet.Net.Messages
         public Vote PreVote { get; }
 
         /// <inheritdoc cref="Message.DataFrames"/>
-        public override IEnumerable<byte[]> DataFrames => new List<byte[]> { PreVote.ByteArray };
+        public override IEnumerable<byte[]> DataFrames =>
+            new List<byte[]> { PreVote.ToByteArray() };
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusVote;

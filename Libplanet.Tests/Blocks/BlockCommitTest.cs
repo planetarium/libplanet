@@ -35,7 +35,7 @@ namespace Libplanet.Tests.Blocks
                 .ToImmutableArray();
             var blockCommit = new BlockCommit(1, 0, fx.Hash1, votes);
 
-            byte[] marshaled = blockCommit.ByteArray;
+            byte[] marshaled = blockCommit.ToByteArray();
             var unMarshaled = new BlockCommit(marshaled);
 
             Assert.Equal(blockCommit, unMarshaled);

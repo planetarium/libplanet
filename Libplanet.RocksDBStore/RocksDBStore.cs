@@ -1261,7 +1261,7 @@ namespace Libplanet.RocksDBStore
             _rwBlockCommitLock.EnterWriteLock();
             try
             {
-                byte[] value = blockCommit.ByteArray;
+                byte[] value = blockCommit.ToByteArray();
                 _blockCommitDb.Put(key, value);
             }
             catch (Exception e)

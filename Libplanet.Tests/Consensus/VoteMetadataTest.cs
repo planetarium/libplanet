@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Consensus
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
                 VoteFlag.PreCommit);
-            byte[] marshaled = voteMetadata.ByteArray;
+            byte[] marshaled = voteMetadata.ToByteArray();
             var unMarshaled = new VoteMetadata(
                 (Bencodex.Types.Dictionary)_codec.Decode(marshaled));
             Assert.Equal(voteMetadata, unMarshaled);

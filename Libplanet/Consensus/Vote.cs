@@ -114,11 +114,9 @@ namespace Libplanet.Consensus
                 ? _metadata.Encoded.Add(SignatureKey, Signature)
                 : _metadata.Encoded;
 
-        /// <summary>
-        /// <see cref="byte"/> encoded <see cref="Vote"/> data.
-        /// </summary>
-        [JsonIgnore]
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        public byte[] ToByteArray() => _codec.Encode(Encoded);
 
         /// <summary>
         /// Verifies whether the <see cref="Vote"/>'s payload is properly signed by
