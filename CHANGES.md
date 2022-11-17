@@ -43,9 +43,13 @@ To be released.
 
 ### CLI tools
 
+ -  Now `planet` can be installed using Homebrew on macOS: `brew install
+    planetarium/brew/planet`.  [[#2555]]
+
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
+[#2555]: https://github.com/planetarium/libplanet/pull/2555
 
 
 Version 0.44.1
