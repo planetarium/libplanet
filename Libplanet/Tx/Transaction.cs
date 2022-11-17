@@ -26,7 +26,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITxExcerpt
+    public sealed class Transaction<T> : IEquatable<Transaction<T>>, ITransaction
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -35,6 +35,10 @@ namespace Libplanet.Tx
         private const int BytesCacheThreshold = 50 * 1024;
 
         private static readonly Codec Codec = new Codec();
+
+        private readonly IImmutableList<IValue>? _customActions;
+
+        private readonly Dictionary? _systemAction;
 
         private TxId? _id;
         private TxMetadata _metadata;
@@ -55,7 +59,7 @@ namespace Libplanet.Tx
         public Transaction(ITxMetadata metadata, IAction systemAction, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            SystemAction = systemAction;
+            _systemAction = Registry.Serialize(systemAction);
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
@@ -75,7 +79,7 @@ namespace Libplanet.Tx
         public Transaction(ITxMetadata metadata, IEnumerable<T> customActions, byte[] signature)
         {
             _metadata = new TxMetadata(metadata);
-            CustomActions = customActions.ToImmutableList();
+            _customActions = customActions.Select(ca => ca.PlainValue).ToImmutableList();
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
         }
@@ -144,7 +148,8 @@ namespace Libplanet.Tx
 
             _signature = new byte[signature.Length];
             signature.CopyTo(_signature, 0);
-            CustomActions = customActions.ToImmutableList();
+            _customActions = customActions.Select(ca => ca.PlainValue)
+                .ToImmutableList();
         }
 
         /// <summary>
@@ -158,12 +163,11 @@ namespace Libplanet.Tx
             _metadata = new TxMetadata(dict);
             if (dict.TryGetValue(new Binary(TxMetadata.SystemActionKey), out IValue sa))
             {
-                SystemAction = Registry.Deserialize((Dictionary)sa);
+                _systemAction = (Dictionary)sa;
             }
             else
             {
-                CustomActions = dict.GetValue<List>(TxMetadata.CustomActionsKey)
-                    .Select(ToAction)
+                _customActions = dict.GetValue<List>(TxMetadata.CustomActionsKey)
                     .ToImmutableList();
             }
 
@@ -251,7 +255,9 @@ namespace Libplanet.Tx
         /// <see langword="null"/>.</remarks>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(SysActionJsonConverter))]
-        public IAction? SystemAction { get; }
+        public IAction? SystemAction => (_systemAction is { } sa)
+            ? Registry.Deserialize(sa)
+            : null;
 
         /// <summary>
         /// Zero or more user-defined custom actions that this <see cref="Transaction{T}"/>
@@ -262,7 +268,15 @@ namespace Libplanet.Tx
         /// <see langword="null"/>.</remarks>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(ActionListJsonConverter))]
-        public IImmutableList<T>? CustomActions { get; }
+        public IImmutableList<T>? CustomActions => _customActions?
+            .Select(ToAction)
+            .ToImmutableList();
+
+        Dictionary? ITransaction.SystemAction => _systemAction is Dictionary dictionary
+            ? dictionary
+            : null;
+
+        IImmutableList<IValue>? ITransaction.CustomActions => _customActions;
 
         /// <inheritdoc cref="ITxMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _metadata.Timestamp;
@@ -672,13 +686,17 @@ namespace Libplanet.Tx
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex(bool sign)
         {
-            Dictionary metadataDict = SystemAction is { } sa
+            Dictionary metadataDict = _systemAction is { } sa
                 ? _metadata.ToBencodex().Add(
                     TxMetadata.SystemActionKey,
-                    Registry.Serialize(sa))
+                    sa)
                 : _metadata.ToBencodex().Add(
                     TxMetadata.CustomActionsKey,
-                    new List(CustomActions!.Select(a => a.PlainValue)));
+                    new List(
+                        _customActions
+                        ?? throw new InvalidOperationException(
+                            $"Unexpected Transaction<T> state. " +
+                            $"{nameof(_systemAction)} or {nameof(_customActions)} should exist.")));
             return sign
                 ? metadataDict.Add(TxMetadata.SignatureKey, ImmutableArray.Create(_signature))
                 : metadataDict;

@@ -244,13 +244,13 @@ namespace Libplanet.Tests.Action
 
             // ToList() is required for realization.
             chain.ActionEvaluator.EvaluateTx(
-                block: block,
+                blockHeader: block,
                 tx: tx,
                 previousStates: previousStates,
                 rehearsal: true).ToList();
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.EvaluateTx(
-                    block: block,
+                    blockHeader: block,
                     tx: tx,
                     previousStates: previousStates,
                     rehearsal: false).ToList());
@@ -315,7 +315,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 genesis.Miner);
             Assert.Empty(
-                actionEvaluator.EvaluateTxs(
+                actionEvaluator.EvaluateBlock(
                     block: genesis,
                     previousStates: previousStates));
 
@@ -362,7 +362,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 block1.Miner);
-            var evals = actionEvaluator.EvaluateTxs(
+            var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousStates).ToImmutableArray();
             int randomValue = 0;
@@ -489,7 +489,7 @@ namespace Libplanet.Tests.Action
                 accountBalanceGetter,
                 totalSupplyGetter,
                 block2.Miner);
-            evals = actionEvaluator.EvaluateTxs(
+            evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousStates).ToImmutableArray();
 
@@ -606,7 +606,7 @@ namespace Libplanet.Tests.Action
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
                 var evaluations = actionEvaluator.EvaluateTx(
-                    block: block,
+                    blockHeader: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
@@ -685,15 +685,16 @@ namespace Libplanet.Tests.Action
 
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                IAccountStateDelta delta = actionEvaluator.EvaluateTxResult(
-                    block: block,
+                IAccountStateDelta delta = actionEvaluator.EvaluateTx(
+                    blockHeader: block,
                     tx: tx,
                     previousStates: new AccountStateDeltaImpl(
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                         tx.Signer),
-                    rehearsal: rehearsal);
+                    rehearsal: rehearsal
+                ).Last().OutputStates;
                 Assert.Equal(
                     evaluations[3].OutputStates.GetUpdatedStates(),
                     delta.GetUpdatedStates());
@@ -742,15 +743,16 @@ namespace Libplanet.Tests.Action
                     previousHash: default(BlockHash),
                     txHash: BlockContent<ThrowException>.DeriveTxHash(txs)),
                 transactions: txs).Mine();
-            var nextStates = actionEvaluator.EvaluateTxResult(
-                block: block,
+            var nextStates = actionEvaluator.EvaluateTx(
+                blockHeader: block,
                 tx: tx,
                 previousStates: new AccountStateDeltaImpl(
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                     tx.Signer),
-                rehearsal: false);
+                rehearsal: false
+            ).Last().OutputStates;
 
             Assert.Empty(nextStates.GetUpdatedStates());
         }
@@ -959,7 +961,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
                 block.Miner);
-            var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
+            var txEvaluations = chain.ActionEvaluator.EvaluateBlock(
                 block,
                 previousStates).ToList();
             previousStates = txEvaluations.Last().OutputStates;
