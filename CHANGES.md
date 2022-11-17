@@ -58,6 +58,7 @@ To be released.
 
  -  Now `planet` can be installed using Homebrew on macOS: `brew install
     planetarium/brew/planet`.  [[#2555]]
+ -  Added `planet tx create` subcommand.  [[#2559]]
 
 [#2507]: https://github.com/planetarium/libplanet/pull/2507
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
