@@ -398,7 +398,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void AppendWhenActionEvaluationFailed()
         {
-            var policy = new NullBlockPolicy<ThrowException>();
+            var policy = new NullBlockPolicy<ThrowException>(
+                getValidatorSet: idx => TestUtils.ValidatorSet);
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());

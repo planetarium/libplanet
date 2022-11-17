@@ -29,7 +29,8 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
+                getValidatorSet: idx => ValidatorSet);
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
@@ -91,7 +92,8 @@ namespace Libplanet.Tests.Blocks
             var blockAction = new SetStatesAtBlock(address, (Bencodex.Types.Integer)123, 0);
             var policy = new BlockPolicy<Arithmetic>(
                 blockAction: blockAction,
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
+                getValidatorSet: idx => ValidatorSet);
             var stagePolicy = new VolatileStagePolicy<Arithmetic>();
 
             PreEvaluationBlock<Arithmetic> preEvalGenesis =
