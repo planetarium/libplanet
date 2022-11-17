@@ -840,7 +840,7 @@ namespace Libplanet.Net
             throw new InvalidMessageException(errorMessage, parsedMessage);
         }
 
-        internal async IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        internal async IAsyncEnumerable<(Block<T>, BlockCommit)> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<BlockHash> blockHashes,
             [EnumeratorCancellation] CancellationToken cancellationToken
@@ -891,15 +891,18 @@ namespace Libplanet.Net
                         "Received {Number} blocks from {Peer}.",
                         payloads.Count,
                         message.Remote);
-                    for (int i = 0; i < payloads.Count / 2; i++)
+                    for (int i = 0; i < payloads.Count; i += 2)
                     {
-                        byte[] blockPayload = payloads[2 * i];
-                        byte[] commitPayload = payloads[2 * i + 1];
+                        byte[] blockPayload = payloads[i];
+                        byte[] commitPayload = payloads[i + 1];
                         cancellationToken.ThrowIfCancellationRequested();
                         Block<T> block = BlockMarshaler.UnmarshalBlock<T>(
                             (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
+                        BlockCommit commit = commitPayload.Length == 0
+                            ? null
+                            : new BlockCommit(commitPayload);
 
-                        yield return block;
+                        yield return (block, commit);
                         count++;
                     }
                 }
