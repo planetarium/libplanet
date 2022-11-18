@@ -441,7 +441,10 @@ namespace Libplanet.Net
                         block.Hash
                     );
                     block.ValidateTimestamp();
+
+                    // FIXME: Using store as temporary storage is not recommended.
                     workspace.Store.PutBlock(block);
+                    workspace.Store.PutBlockCommit(commit);
                     if (tempTip.Block is null ||
                         BlockChain.PerceiveBlock(block).Index >
                             BlockChain.PerceiveBlock(tempTip.Block).Index)
@@ -489,8 +492,9 @@ namespace Libplanet.Net
                         (Block<T> b, BlockCommit c) = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
+                            Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
                             blockToAdd =
-                                (workspace.Store.GetBlock<T>(p), workspace.GetBlockCommit(p));
+                                (prevBlock, workspace.Store.GetBlockCommit(prevBlock.Index));
                         }
                         else
                         {
