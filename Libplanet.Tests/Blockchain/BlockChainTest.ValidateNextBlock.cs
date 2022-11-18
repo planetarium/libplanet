@@ -321,5 +321,118 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<InvalidBlockLastCommitException>(() =>
                 _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2)));
         }
+
+        [Fact]
+        public void ValidateBlockCommitGenesis()
+        {
+            InvalidBlockCommitException ibcm =
+                _blockChain.ValidateBlockCommit(_fx.GenesisBlock, null);
+
+            Assert.Null(ibcm);
+
+            ibcm = _blockChain.ValidateBlockCommit(
+                _fx.GenesisBlock,
+                new BlockCommit(
+                    0,
+                    0,
+                    _fx.GenesisBlock.Hash,
+                    TestUtils.ValidatorPrivateKeys.Select(x => new VoteMetadata(
+                        0,
+                        0,
+                        _fx.GenesisBlock.Hash,
+                        DateTimeOffset.UtcNow,
+                        x.PublicKey,
+                        VoteFlag.PreCommit).Sign(x)).ToImmutableArray()));
+
+            Assert.NotNull(ibcm);
+        }
+
+        [Fact]
+        public void ValidateBlockCommitFailsDifferentBlockHash()
+        {
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    publicKey: _fx.Miner.PublicKey,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+
+            Assert.Throws<InvalidBlockCommitException>(() =>
+                _blockChain.Append(
+                    validNextBlock,
+                    TestUtils.CreateBlockCommit(
+                        new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)),
+                        1,
+                        0)));
+        }
+
+        [Fact]
+        public void ValidateBlockCommitFailsDifferentHeight()
+        {
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    publicKey: _fx.Miner.PublicKey,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+
+            Assert.Throws<InvalidBlockCommitException>(() =>
+                _blockChain.Append(
+                    validNextBlock,
+                    TestUtils.CreateBlockCommit(
+                        validNextBlock.Hash,
+                        2,
+                        0)));
+        }
+
+        [Fact]
+        public void ValidateBlockCommitFailsDifferentValidatorSet()
+        {
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    publicKey: _fx.Miner.PublicKey,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+
+            Assert.Throws<InvalidBlockCommitException>(() =>
+                _blockChain.Append(
+                    validNextBlock,
+                    new BlockCommit(
+                        1,
+                        0,
+                        validNextBlock.Hash,
+                        Enumerable.Range(0, TestUtils.ValidatorSet.TotalCount)
+                            .Select(x => new PrivateKey())
+                            .Select(x => new VoteMetadata(
+                            1,
+                            0,
+                            validNextBlock.Hash,
+                            DateTimeOffset.UtcNow,
+                            x.PublicKey,
+                            VoteFlag.PreCommit).Sign(x)).ToImmutableArray())));
+        }
+
+        [Fact]
+        public void ValidateBlockCommitFailsNullBlockCommit()
+        {
+            Block<DumbAction> validNextBlock = new BlockContent<DumbAction>(
+                new BlockMetadata(
+                    index: 1L,
+                    timestamp: _fx.GenesisBlock.Timestamp.AddDays(1),
+                    publicKey: _fx.Miner.PublicKey,
+                    previousHash: _fx.GenesisBlock.Hash,
+                    txHash: null,
+                    lastCommit: null)).Propose().Evaluate(_fx.Miner, _blockChain);
+
+            Assert.Throws<InvalidBlockCommitException>(() =>
+                _blockChain.Append(validNextBlock, null));
+        }
     }
 }
