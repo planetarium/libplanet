@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Consensus
                 -1);
             Proposal proposal = metadata.Sign(key);
 
-            Assert.Equal(proposal.Signature, key.Sign(metadata.ByteArray));
+            TestUtils.AssertBytesEqual(proposal.Signature, key.Sign(metadata.ByteArray));
             Assert.True(key.PublicKey.Verify(metadata.ByteArray, proposal.Signature));
         }
     }

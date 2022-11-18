@@ -18,11 +18,13 @@ namespace Libplanet.Net
     public class BlockCandidateTable<T>
         where T : IAction, new()
     {
-        private readonly ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>> _blocks;
+        private readonly ConcurrentDictionary
+            <BlockHeader, SortedList<long, (Block<T>, BlockCommit)>> _blocks;
 
         public BlockCandidateTable()
         {
-            _blocks = new ConcurrentDictionary<BlockHeader, SortedList<long, Block<T>>>();
+            _blocks = new ConcurrentDictionary
+                <BlockHeader, SortedList<long, (Block<T>, BlockCommit)>>();
         }
 
         public long Count
@@ -35,10 +37,11 @@ namespace Libplanet.Net
         /// <summary>
         /// Adds a <see cref="Block{T}"/>s to the table.
         /// </summary>
-        /// <param name="blockHeader">This is the header of the <see cref="BlockChain{T}"/>
+        /// <param name="blockHeader">The header of the <see cref="BlockChain{T}"/>'s
         /// tip at the time of downloading the blocks.</param>
-        /// <param name="blocks">List of downloaded <see cref="Block{T}"/>.</param>
-        public void Add(BlockHeader blockHeader, IEnumerable<Block<T>> blocks)
+        /// <param name="blocks">The list of downloaded tuples of a <see cref="Block{T}"/>
+        /// and its <see cref="BlockCommit"/>.</param>
+        public void Add(BlockHeader blockHeader, IEnumerable<(Block<T>, BlockCommit)> blocks)
         {
             if (_blocks.ContainsKey(blockHeader))
             {
@@ -47,8 +50,8 @@ namespace Libplanet.Net
 
             try
             {
-                var sortedBlocks =
-                    new SortedList<long, Block<T>>(blocks.ToDictionary(i => i.Index));
+                var sortedBlocks = new SortedList<long, (Block<T>, BlockCommit)>(
+                    blocks.ToDictionary(pair => pair.Item1.Index));
                 _blocks.TryAdd(blockHeader, sortedBlocks);
             }
             catch (ArgumentException e)
@@ -64,12 +67,13 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Get the <see cref="Block{T}"/>s which are in the table.
+        /// Gets the <see cref="Block{T}"/>s which are in the table.
         /// </summary>
         /// <param name="thisRoundTip">Canonical <see cref="BlockChain{T}"/>'s
         /// tip of this round.</param>
-        /// <returns><see cref="Block{T}"/>s by <paramref name="thisRoundTip"/>.</returns>
-        public SortedList<long, Block<T>>? GetCurrentRoundCandidate(
+        /// <returns><see cref="Block{T}"/>s with associated <see cref="BlockCommit"/>s by
+        /// <paramref name="thisRoundTip"/>.</returns>
+        public SortedList<long, (Block<T>, BlockCommit)>? GetCurrentRoundCandidate(
             BlockHeader thisRoundTip)
         {
             return _blocks.TryGetValue(thisRoundTip, out var blocks)

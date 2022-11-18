@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Consensus
                 DateTimeOffset.UtcNow,
                 key.PublicKey,
                 VoteFlag.PreCommit).Sign(key);
-            byte[] marshaled = vote.ByteArray;
+            byte[] marshaled = vote.ToByteArray();
             var unMarshaled = new Vote(marshaled);
             Assert.Equal(vote, unMarshaled);
         }

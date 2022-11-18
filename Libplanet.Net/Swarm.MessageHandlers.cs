@@ -276,9 +276,9 @@ namespace Libplanet.Net
                 {
                     byte[] blockPayload = Codec.Encode(block.MarshalBlock());
                     payloads.Add(blockPayload);
-
-                    // FIXME: Placeholder for encoded BlockCommit.
-                    byte[] commitPayload = new byte[0];
+                    byte[] commitPayload = BlockChain.GetBlockCommit(block.Hash) is { } commit
+                        ? commit.ToByteArray()
+                        : new byte[0];
                     payloads.Add(commitPayload);
                 }
 

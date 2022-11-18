@@ -382,13 +382,14 @@ namespace Libplanet.Net.Tests
                     new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
                     inventories2);
 
-                Block<DumbAction>[] receivedBlocks =
+                (Block<DumbAction>, BlockCommit)[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer,
                         inventories1.Select(pair => pair.Item2),
                         cancellationToken: default
                     ).ToArrayAsync();
-                Assert.Equal(new[] { genesis, block1, block2 }, receivedBlocks);
+                Assert.Equal(
+                    new[] { genesis, block1, block2 }, receivedBlocks.Select(pair => pair.Item1));
             }
             finally
             {
