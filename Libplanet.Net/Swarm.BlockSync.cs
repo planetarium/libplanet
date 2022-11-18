@@ -327,12 +327,13 @@ namespace Libplanet.Net
                     window: InitialBlockDownloadWindow
                 );
 
-                Block<T> initialTip = BlockChain.Tip;
+                (Block<T> Block, BlockCommit Commit) initialTip =
+                    (BlockChain.Tip, BlockChain.GetBlockCommit(BlockChain.Tip.Hash));
                 long totalBlocksToDownload = 0L;
                 long receivedBlockCount = 0L;
-                Block<T> tipCandidate = initialTip;
+                (Block<T> Block, BlockCommit Commit) tipCandidate = initialTip;
 
-                Block<T> tempTip = tipCandidate;
+                (Block<T> Block, BlockCommit Commit) tempTip = tipCandidate;
                 Block<T> branchpoint = null;
 
                 var demandBlockHashes = GetDemandBlockHashes(
@@ -441,11 +442,11 @@ namespace Libplanet.Net
                     );
                     block.ValidateTimestamp();
                     workspace.Store.PutBlock(block);
-                    if (tempTip is null ||
+                    if (tempTip.Block is null ||
                         BlockChain.PerceiveBlock(block).Index >
-                            BlockChain.PerceiveBlock(tempTip).Index)
+                            BlockChain.PerceiveBlock(tempTip.Block).Index)
                     {
-                        tempTip = block;
+                        tempTip = (block, commit);
                     }
 
                     receivedBlockCount++;
@@ -469,34 +470,35 @@ namespace Libplanet.Net
                 tipCandidate = tempTip;
                 _logger.Debug(
                     "TipCandidate: #{Index} {Hash}",
-                    tipCandidate?.Index,
-                    tipCandidate?.Hash);
+                    tipCandidate.Block?.Index,
+                    tipCandidate.Block?.Hash);
 
-                if (tipCandidate is null)
+                if (tipCandidate.Block is null)
                 {
                     // If there is no blocks in the network (or no consensus at least)
                     // it doesn't need to receive states from other peers at all.
                     return renderSwap;
                 }
 
-                var deltaBlocks = new LinkedList<Block<T>>();
+                var deltaBlocks = new LinkedList<(Block<T> Block, BlockCommit Commit)>();
                 while (true)
                 {
-                    Block<T> blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<Block<T>> node)
+                    (Block<T> Block, BlockCommit Commit) blockToAdd;
+                    if (deltaBlocks.First is LinkedListNode<(Block<T>, BlockCommit)> node)
                     {
-                        Block<T> b = node.Value;
+                        (Block<T> b, BlockCommit c) = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
+                            blockToAdd =
+                                (workspace.Store.GetBlock<T>(p), workspace.GetBlockCommit(p));
                         }
                         else
                         {
                             break;
                         }
                     }
-                    else if (BlockChain.PerceiveBlock(tipCandidate).Index <=
-                        BlockChain.PerceiveBlock(tempTip).Index)
+                    else if (BlockChain.PerceiveBlock(tipCandidate.Block).Index <=
+                        BlockChain.PerceiveBlock(tempTip.Block).Index)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -514,7 +516,7 @@ namespace Libplanet.Net
 
                 if (deltaBlocks.First is { } deltaBottom)
                 {
-                    Block<T> bottomBlock = deltaBottom.Value;
+                    Block<T> bottomBlock = deltaBottom.Value.Block;
                     if (bottomBlock.PreviousHash is { } bp)
                     {
                         branchpoint = workspace[bp];
@@ -530,7 +532,7 @@ namespace Libplanet.Net
                         try
                         {
                             long verifiedBlockCount = 0;
-                            foreach (Block<T> deltaBlock in deltaBlocks)
+                            foreach ((Block<T> deltaBlock, BlockCommit deltaCommit) in deltaBlocks)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -539,10 +541,9 @@ namespace Libplanet.Net
                                     deltaBlock.Index,
                                     deltaBlock.Hash);
 
-                                // TODO : Block should be appended with commits.
                                 workspace.Append(
                                     deltaBlock,
-                                    null,
+                                    deltaCommit,
                                     evaluateActions: false,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
@@ -568,12 +569,14 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
+                        Block<T> first = deltaBlocks.First.Value.Block;
+                        Block<T> last = deltaBlocks.Last.Value.Block;
                         BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
                         throw new SwarmException(
                             $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
                             $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
+                            $"chain (#0 {g}\u2013#{initialTip.Block.Index} " +
+                            $"{initialTip.Block.Hash})."
                         );
                     }
                 }
