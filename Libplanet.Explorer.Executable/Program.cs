@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Cocona;
+using GraphQL.Server;
+using GraphQL.Utilities;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -16,6 +18,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Schemas;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
@@ -24,6 +27,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using NetMQ;
 using Serilog;
 using Serilog.Events;
@@ -40,12 +44,19 @@ namespace Libplanet.Explorer.Executable
             await CoconaLiteApp.RunAsync<Program>(args);
         }
 
+        // This command is deprecated now. It should use `serve` command instead.
+        // FIXME: Obsolete this command in 0.47.0 release.
+        [CommandMethodForwardedTo(typeof(Program), nameof(Serve))]
+        [PrimaryCommand]
+        public void Run()
+            => throw new NotSupportedException();
+
         [Command(Description = "Run libplanet-explorer with options.")]
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "MEN003",
             Justification = "Many lines are required for running the method.")]
-        public async Task Run(
+        public async Task Serve(
             [Option(
                 "store-path",
                 new[] { 'P' },
