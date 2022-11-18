@@ -1578,7 +1578,7 @@ namespace Libplanet.Blockchain
         }
 
 #pragma warning disable SA1202
-        public InvalidBlockCommitException ValidateBlockCommit(
+        internal InvalidBlockCommitException ValidateBlockCommit(
             Block<T> block,
             BlockCommit blockCommit)
 #pragma warning restore SA1202
