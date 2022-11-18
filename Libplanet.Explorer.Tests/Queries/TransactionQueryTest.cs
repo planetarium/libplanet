@@ -123,14 +123,9 @@ public class TransactionQueryTest
 
         // staging txs of key2 does not increase nonce of key1
         _source.BlockChain.MakeTransaction(key2, ImmutableList<NullAction>.Empty.Add(new NullAction()));
-        var lastCommit = new BlockCommit(
-                height: 1,
-                round: 0,
-                blockHash: block.Hash,
-                votes: ImmutableArray<Vote>.Empty
-                    .Add(new VoteMetadata(1, 0, block.Hash, DateTimeOffset.UtcNow,
-                    _source.Validator.PublicKey, VoteFlag.PreCommit).Sign(_source.Validator)));
-        block = _source.BlockChain.ProposeBlock(new PrivateKey(), lastCommit: lastCommit);
+        block = _source.BlockChain.ProposeBlock(
+            new PrivateKey(),
+            lastCommit: Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         _source.BlockChain.Append(block, Libplanet.Tests.TestUtils.CreateBlockCommit(block));
         await AssertNextNonce(1, key2.ToAddress());
         await AssertNextNonce(2, key1.ToAddress());
@@ -157,7 +152,7 @@ public class TransactionQueryTest
 
         public MockBlockChainContext()
         {
-            Validator = new PrivateKey();
+            Validator = Libplanet.Tests.TestUtils.ValidatorPrivateKeys[1];
             Store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var minerKey = new PrivateKey();
@@ -175,8 +170,8 @@ public class TransactionQueryTest
                 _ => true,
                 stateStore);
             BlockChain = new BlockChain<T>(
-                new BlockPolicy<T>(getValidatorSet: index => new ValidatorSet(
-                    new List<PublicKey> { Validator.PublicKey })),
+                new BlockPolicy<T>(
+                    getValidatorSet: index => Libplanet.Tests.TestUtils.ValidatorSet),
                 new VolatileStagePolicy<T>(),
                 Store,
                 stateStore,
