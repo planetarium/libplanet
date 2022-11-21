@@ -41,6 +41,18 @@ namespace Libplanet.Explorer.Executable
     {
         public static async Task Main(string[] args)
         {
+            if (args.Length > 0 && !new string[]
+            {
+                "serve",
+                "schema",
+            }.Contains(args[0]))
+            {
+                Console.Error.WriteLine(
+                    "NOTICE: root primary command was deprecated and moved " +
+                    "to the `serve` command. Currently the root primary command forwards " +
+                    "to the `serve` command but it'll be obsoleted in the 0.47.0 release.");
+            }
+
             await CoconaLiteApp.RunAsync<Program>(args);
         }
 
