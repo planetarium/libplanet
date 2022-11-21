@@ -44,6 +44,23 @@ namespace Libplanet.Explorer.Executable
             await CoconaLiteApp.RunAsync<Program>(args);
         }
 
+        [Command(Description = "Show GraphQL schema")]
+        public void Schema()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddGraphQL()
+                .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
+
+            serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
+            serviceCollection.AddSingleton<IStore, MemoryStore>();
+
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var schema = new LibplanetExplorerSchema<NullAction>(serviceProvider);
+            var printer = new SchemaPrinter(schema);
+
+            Console.WriteLine(printer.Print());
+        }
+
         // This command is deprecated now. It should use `serve` command instead.
         // FIXME: Obsolete this command in 0.47.0 release.
         [CommandMethodForwardedTo(typeof(Program), nameof(Serve))]
