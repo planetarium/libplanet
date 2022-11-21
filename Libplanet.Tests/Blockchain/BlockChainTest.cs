@@ -310,7 +310,8 @@ namespace Libplanet.Tests.Blockchain
             IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
                 DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
 
-            var policy = new BlockPolicy<DumbAction>();
+            var policy = new BlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var key = new PrivateKey();
             Address miner = key.ToAddress();
 
@@ -363,7 +364,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ActionRenderersHaveDistinctContexts()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
@@ -401,7 +403,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterBlockIsRendered()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer<DumbAction>();
@@ -439,7 +442,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterAppendComplete()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
@@ -1332,7 +1336,8 @@ namespace Libplanet.Tests.Blockchain
 
             var chain =
                 new BlockChain<DumbAction>(
-                    new NullBlockPolicy<DumbAction>(),
+                    new NullBlockPolicy<DumbAction>(
+                        getValidatorSet: idx => ValidatorSet),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,

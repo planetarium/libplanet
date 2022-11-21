@@ -235,7 +235,9 @@ namespace Libplanet.Tests.Blockchain
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
+            var policy = new BlockPolicy<DumbAction>(
+                validateNextBlockTx: IsSignerValid,
+                getValidatorSet: idx => TestUtils.ValidatorSet);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(

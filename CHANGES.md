@@ -59,6 +59,8 @@ Version PBFT
  -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
  -  Added `BlockChain<T>.CleanupBlockCommitStore()` method.  [[#PBFT]]
+ -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
+ -  Added `BlockChain<T>.ValidateBlockCommit()` method  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -88,6 +90,12 @@ Version PBFT
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
+ -  `BlockChain<T>.Append()` has new parameter `BlockCommit blockCommit`, which
+    is a set of commits for given block. `BlockCommit` is used for checks
+    whether a block is committed in consensus.  [[#PBFT]]
+ -  `BlockChain<T>.Append()` method became to throw
+    `InvalidBlockCommitException` when the given `BlockCommit` is invalid with
+    given block.  [[#PBFT]]
 
 ### Bug fixes
 

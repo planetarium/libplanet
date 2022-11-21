@@ -126,7 +126,8 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
-                policy: new BlockPolicy<EvaluateTestAction>(),
+                policy: new BlockPolicy<EvaluateTestAction>(
+                    getValidatorSet: idx => ValidatorSet),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction<EvaluateTestAction>.Create(
@@ -164,7 +165,8 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
-                policy: new BlockPolicy<ThrowException>(),
+                policy: new BlockPolicy<ThrowException>(
+                    getValidatorSet: idx => ValidatorSet),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction<ThrowException>.Create(
@@ -1099,7 +1101,8 @@ namespace Libplanet.Tests.Action
         private void CheckGenesisHashInAction()
         {
             var chain = MakeBlockChain<EvaluateTestAction>(
-                    policy: new BlockPolicy<EvaluateTestAction>(),
+                    policy: new BlockPolicy<EvaluateTestAction>(
+                        getValidatorSet: idx => ValidatorSet),
                     store: _storeFx.Store,
                     stateStore: _storeFx.StateStore);
             var privateKey = new PrivateKey();

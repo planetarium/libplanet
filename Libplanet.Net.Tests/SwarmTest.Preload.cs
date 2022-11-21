@@ -703,7 +703,7 @@ namespace Libplanet.Net.Tests
             Assert.Equal(expectedBlocks, demands);
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(Timeout = Timeout, Skip = "No Reorganization in PBFT")]
         public async Task PreloadAfterReorg()
         {
             var minerKey = new PrivateKey();
