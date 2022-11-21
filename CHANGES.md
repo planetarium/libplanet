@@ -55,11 +55,17 @@ To be released.
 
  -  Now `planet` can be installed using Homebrew on macOS: `brew install
     planetarium/brew/planet`.  [[#2555]]
+ -  (Libplanet.Explorer) Added `serve` subcommand.  [[#2563]]
+     -  (Libplanet.Explorer) Deprecated primary command.
+        It will be obsoleted in 0.47.0 release.
+        You should use `serve` command instead.  [[#2563]]
+ -  (Libplanet.Explorer) Added `schema` subcommand.  [[#2563]]
 
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
 [#2555]: https://github.com/planetarium/libplanet/pull/2555
+[#2563]: https://github.com/planetarium/libplanet/pull/2563
 
 
 Version 0.44.1

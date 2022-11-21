@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
 using Cocona;
+using GraphQL.Server;
+using GraphQL.Utilities;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blockchain;
@@ -16,6 +18,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Executable.Exceptions;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Schemas;
 using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
@@ -24,6 +27,7 @@ using Libplanet.Store.Trie;
 using Libplanet.Tx;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using NetMQ;
 using Serilog;
 using Serilog.Events;
@@ -37,15 +41,51 @@ namespace Libplanet.Explorer.Executable
     {
         public static async Task Main(string[] args)
         {
+            if (args.Length > 0 && !new string[]
+            {
+                "serve",
+                "schema",
+            }.Contains(args[0]))
+            {
+                Console.Error.WriteLine(
+                    "NOTICE: the root primary command has been deprecated and moved " +
+                    "to the `serve` command. Currently the root primary command forwards " +
+                    "to the `serve` command but it'll be obsoleted in the 0.47.0 release.");
+            }
+
             await CoconaLiteApp.RunAsync<Program>(args);
         }
+
+        [Command(Description = "Show GraphQL schema")]
+        public void Schema()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddGraphQL()
+                .AddGraphTypes(typeof(LibplanetExplorerSchema<NullAction>));
+
+            serviceCollection.AddSingleton<IBlockChainContext<NullAction>, Startup>();
+            serviceCollection.AddSingleton<IStore, MemoryStore>();
+
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var schema = new LibplanetExplorerSchema<NullAction>(serviceProvider);
+            var printer = new SchemaPrinter(schema);
+
+            Console.WriteLine(printer.Print());
+        }
+
+        // This command has been deprecated. The `serve` command should be used instead.
+        // FIXME: Obsolete this command in 0.47.0 release.
+        [CommandMethodForwardedTo(typeof(Program), nameof(Serve))]
+        [PrimaryCommand]
+        public void Run()
+            => throw new NotSupportedException();
 
         [Command(Description = "Run libplanet-explorer with options.")]
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "MEN003",
             Justification = "Many lines are required for running the method.")]
-        public async Task Run(
+        public async Task Serve(
             [Option(
                 "store-path",
                 new[] { 'P' },
