@@ -57,7 +57,7 @@ To be released.
     planetarium/brew/planet`.  [[#2555]]
  -  (Libplanet.Explorer) Added `serve` subcommand.  [[#2563]]
      -  (Libplanet.Explorer) Deprecated primary command.
-        It will obsoleted in 0.47.0 release.
+        It will be obsoleted in 0.47.0 release.
         You should use `serve` command instead.  [[#2563]]
  -  (Libplanet.Explorer) Added `schema` subcommand.  [[#2563]]
 

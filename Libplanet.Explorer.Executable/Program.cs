@@ -48,7 +48,7 @@ namespace Libplanet.Explorer.Executable
             }.Contains(args[0]))
             {
                 Console.Error.WriteLine(
-                    "NOTICE: root primary command was deprecated and moved " +
+                    "NOTICE: the root primary command has been deprecated and moved " +
                     "to the `serve` command. Currently the root primary command forwards " +
                     "to the `serve` command but it'll be obsoleted in the 0.47.0 release.");
             }
@@ -73,7 +73,7 @@ namespace Libplanet.Explorer.Executable
             Console.WriteLine(printer.Print());
         }
 
-        // This command is deprecated now. It should use `serve` command instead.
+        // This command has been deprecated. The `serve` command should be used instead.
         // FIXME: Obsolete this command in 0.47.0 release.
         [CommandMethodForwardedTo(typeof(Program), nameof(Serve))]
         [PrimaryCommand]
