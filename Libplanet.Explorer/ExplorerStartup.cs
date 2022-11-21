@@ -75,7 +75,10 @@ namespace Libplanet.Explorer
                 endpoints.MapControllers();
             });
 
+            // FIXME: '/graphql' endpoint will be deprecated after
+            //        libplanet-explorer-frontend migration.
             app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql");
+            app.UseGraphQL<LibplanetExplorerSchema<T>>("/graphql/explorer");
             app.UseGraphQLPlayground();
         }
     }

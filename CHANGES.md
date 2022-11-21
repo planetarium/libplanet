@@ -35,9 +35,12 @@ To be released.
      -  Added `ITransaction` interface.
  -  Added `IActionTypeLoader` interface.  [[#2539]]
  -  Added `StaticActionTypeLoader` class.  [[#2539]]
+ -  (Libplanet.Explorer) Added a new GraphQL endpoint on `/graphql/explorer`.
+    [[#2562]]
 
 [#2507]: https://github.com/planetarium/libplanet/pull/2507
 [#2539]: https://github.com/planetarium/libplanet/pull/2539
+[#2562]: https://github.com/planetarium/libplanet/pull/2562
 
 ### Behavioral changes
 
