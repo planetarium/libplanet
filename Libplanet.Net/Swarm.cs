@@ -774,12 +774,20 @@ namespace Libplanet.Net
                 nameof(Messages.GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
-            Message parsedMessage = await Transport.SendMessageAsync(
-                peer,
-                request,
-                timeout: transportTimeout,
-                cancellationToken: cancellationToken
-            );
+            Message parsedMessage;
+            try
+            {
+                parsedMessage = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    timeout: transportTimeout,
+                    cancellationToken: cancellationToken
+                );
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             if (parsedMessage is BlockHashesMsg blockHashes)
             {
@@ -843,14 +851,22 @@ namespace Libplanet.Net
                 blockRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageAsync(
-                peer,
-                request,
-                blockRecvTimeout,
-                ((hashCount - 1) / request.ChunkSize) + 1,
-                false,
-                cancellationToken
-            );
+            IEnumerable<Message> replies;
+            try
+            {
+                replies = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    blockRecvTimeout,
+                    ((hashCount - 1) / request.ChunkSize) + 1,
+                    false,
+                    cancellationToken
+                );
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             _logger.Debug("Received replies from {Peer}.", peer);
             int count = 0;
@@ -908,14 +924,22 @@ namespace Libplanet.Net
                 txRecvTimeout = Options.TimeoutOptions.MaxTimeout;
             }
 
-            IEnumerable<Message> replies = await Transport.SendMessageAsync(
-                peer,
-                request,
-                txRecvTimeout,
-                txCount,
-                true,
-                cancellationToken
-            );
+            IEnumerable<Message> replies;
+            try
+            {
+                replies = await Transport.SendMessageAsync(
+                    peer,
+                    request,
+                    txRecvTimeout,
+                    txCount,
+                    true,
+                    cancellationToken
+                );
+            }
+            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            {
+                yield break;
+            }
 
             foreach (Message message in replies)
             {

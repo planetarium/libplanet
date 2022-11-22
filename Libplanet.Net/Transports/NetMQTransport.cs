@@ -503,11 +503,21 @@ namespace Libplanet.Net.Transports
                 AsPeer,
                 peersList.Count);
             peersList.AsParallel().ForAll(
-                peer => Task.Run(() => SendMessageAsync(
-                    peer,
-                    message,
-                    TimeSpan.FromSeconds(1),
-                    _runtimeCancellationTokenSource.Token)));
+                peer => Task.Run(() =>
+                {
+                    try
+                    {
+                        return SendMessageAsync(
+                            peer,
+                            message,
+                            TimeSpan.FromSeconds(1),
+                            _runtimeCancellationTokenSource.Token);
+                    }
+                    catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+                    {
+                        return Task.CompletedTask;
+                    }
+                }));
         }
 
         /// <inheritdoc/>
