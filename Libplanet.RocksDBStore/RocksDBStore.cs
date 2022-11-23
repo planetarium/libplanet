@@ -1221,13 +1221,13 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
-        public override BlockCommit GetBlockCommit(long height)
+        public override BlockCommit GetBlockCommit(BlockHash blockHash)
         {
             _rwBlockCommitLock.EnterReadLock();
 
             try
             {
-                byte[] key = BlockCommitKey(height);
+                byte[] key = BlockCommitKey(blockHash);
                 byte[] bytes = _blockCommitDb.Get(key);
                 if (bytes is null)
                 {
@@ -1251,7 +1251,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override void PutBlockCommit(BlockCommit blockCommit)
         {
-            byte[] key = BlockCommitKey(blockCommit.Height);
+            byte[] key = BlockCommitKey(blockCommit.BlockHash);
 
             if (_blockCommitDb.Get(key) is { })
             {
@@ -1276,9 +1276,9 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
-        public override void DeleteBlockCommit(long height)
+        public override void DeleteBlockCommit(BlockHash blockHash)
         {
-            byte[] key = BlockCommitKey(height);
+            byte[] key = BlockCommitKey(blockHash);
 
             if (!(_blockCommitDb.Get(key) is { }))
             {
@@ -1302,7 +1302,7 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc />
-        public override IEnumerable<long> GetBlockCommitIndices()
+        public override IEnumerable<BlockHash> GetBlockCommitHashes()
         {
             try
             {
@@ -1310,12 +1310,10 @@ namespace Libplanet.RocksDBStore
 
                 // FIXME: Somehow key value comes with 0x76 prefix at the first index of
                 // byte array.
-                IEnumerable<long> indices =
-                    iterators.Select(
-                            x => RocksDBStoreBitConverter.ToInt64(x.Key().Skip(1).ToArray()))
-                        .ToArray();
-
-                return indices;
+                IEnumerable<BlockHash> hashes = iterators
+                    .Select(x => new BlockHash(x.Key().Skip(1).ToArray()))
+                    .ToArray();
+                return hashes;
             }
             catch (Exception e)
             {
@@ -1409,8 +1407,8 @@ namespace Libplanet.RocksDBStore
             .Concat(chainId.ToByteArray())
             .Concat(forkedChainId.ToByteArray()).ToArray();
 
-        private static byte[] BlockCommitKey(in long height) =>
-            BlockCommitKeyPrefix.Concat(RocksDBStoreBitConverter.GetBytes(height)).ToArray();
+        private static byte[] BlockCommitKey(in BlockHash blockHash) =>
+            BlockCommitKeyPrefix.Concat(blockHash.ByteArray).ToArray();
 
         private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
         {

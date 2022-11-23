@@ -494,7 +494,7 @@ namespace Libplanet.Net
                         {
                             Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
                             blockToAdd =
-                                (prevBlock, workspace.Store.GetBlockCommit(prevBlock.Index));
+                                (prevBlock, workspace.Store.GetBlockCommit(prevBlock.Hash));
                         }
                         else
                         {
