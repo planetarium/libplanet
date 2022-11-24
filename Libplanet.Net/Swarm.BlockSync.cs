@@ -390,9 +390,7 @@ namespace Libplanet.Net
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
-
+                        cancellationToken: cancellationToken);
                 BlockDownloadStarted.Set();
 
                 await foreach (
@@ -436,7 +434,7 @@ namespace Libplanet.Net
                     }
 
                     _logger.Verbose(
-                        "Add a block #{BlockIndex} {BlockHash}...",
+                        "Trying to store downloaded block #{BlockIndex} {BlockHash}...",
                         block.Index,
                         block.Hash
                     );
@@ -445,6 +443,9 @@ namespace Libplanet.Net
                     // FIXME: Using store as temporary storage is not recommended.
                     workspace.Store.PutBlock(block);
                     workspace.Store.PutBlockCommit(commit);
+
+                    // FIXME: This simply sets tempTip to the highest indexed block downloaded.
+                    // There is no guarantee such block is usable.
                     if (tempTip.Block is null ||
                         BlockChain.PerceiveBlock(block).Index >
                             BlockChain.PerceiveBlock(tempTip.Block).Index)
@@ -463,11 +464,9 @@ namespace Libplanet.Net
                         SourcePeer = sourcePeer,
                     });
                     _logger.Debug(
-                        "Appended block #{BlockIndex} {BlockHash} " +
-                        "to the workspace chain.",
+                        "Stored downloaded block #{BlockIndex} {BlockHash}",
                         block.Index,
-                        block.Hash
-                    );
+                        block.Hash);
                 }
 
                 tipCandidate = tempTip;
@@ -483,6 +482,11 @@ namespace Libplanet.Net
                     return renderSwap;
                 }
 
+                // FIXME: This simply tries to line up downloaded blocks starting with
+                // a highest indexed block all the way down to presumably a block
+                // after workspace's tip.  However, there is no guarantee that there is
+                // a connected path using downloaded blocks, in which case,
+                // deltaBlocks will result in being unusable.
                 var deltaBlocks = new LinkedList<(Block<T> Block, BlockCommit Commit)>();
                 while (true)
                 {
@@ -518,6 +522,9 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
 
+                // FIXME: If any of the blocks in deltaBlocks is invalid, the whole process
+                // is aborted, even when an actually valid potential tip block and
+                // all the blocks in the path has been downloaded.
                 if (deltaBlocks.First is { } deltaBottom)
                 {
                     Block<T> bottomBlock = deltaBottom.Value.Block;
