@@ -26,11 +26,13 @@ namespace Libplanet.Crypto
                 s = otherS;
             }
 
-            var bos = new MemoryStream(72);
-            var seq = new DerSequenceGenerator(bos);
-            seq.AddObject(new DerInteger(r));
-            seq.AddObject(new DerInteger(s));
-            seq.Close();
+            using var bos = new MemoryStream(72);
+            using (var seq = new DerSequenceGenerator(bos))
+            {
+                seq.AddObject(new DerInteger(r));
+                seq.AddObject(new DerInteger(s));
+            }
+
             return bos.ToArray();
         }
 

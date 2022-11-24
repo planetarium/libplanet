@@ -50,6 +50,8 @@ To be released.
     did not work as intended.  [[#2518], [#2520]]
 
 ### Dependencies
+ -  Replaced *[BouncyCastle.NetCore 1.8.6]* with
+   *[BouncyCastle.Cryptography 2.0.0]*.  [[#2571]]
 
 ### CLI tools
 
@@ -61,11 +63,14 @@ To be released.
         You should use `serve` command instead.  [[#2563]]
  -  (Libplanet.Explorer) Added `schema` subcommand.  [[#2563]]
 
+[BouncyCastle.NetCore 1.8.6]: https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6
+[BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
 [#2555]: https://github.com/planetarium/libplanet/pull/2555
 [#2563]: https://github.com/planetarium/libplanet/pull/2563
+[#2571]: https://github.com/planetarium/libplanet/pull/2571
 
 
 Version 0.44.1
