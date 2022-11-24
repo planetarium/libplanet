@@ -20,23 +20,15 @@ public class StateQuery<T>
     public StateQuery()
     {
         Name = "StateQuery";
-        Field<NonNullGraphType<FungibleAssetValueType>>(
-            "balance",
-            arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<AddressType>> { Name = "owner" },
-                new QueryArgument<NonNullGraphType<ByteStringType>> { Name = "currencyHash" },
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
-            ),
-            resolve: ResolveBalance
-        );
-        Field<FungibleAssetValueType>(
-            "totalSupply",
-            arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<ByteStringType>> { Name = "currencyHash" },
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "offsetBlockHash" }
-            ),
-            resolve: ResolveTotalSupply
-        );
+        Field<NonNullGraphType<FungibleAssetValueType>>("balance")
+            .Argument<Address>("owner")
+            .Argument<NonNullGraphType<ByteStringType>>("currencyHash")
+            .Argument<NonNullGraphType<IdGraphType>>("offsetBlockHash")
+            .Resolve(ResolveBalance);
+        Field<FungibleAssetValueType>("totalSupply")
+            .Argument<NonNullGraphType<ByteStringType>>("currencyHash")
+            .Argument<NonNullGraphType<IdGraphType>>("offsetBlockHash")
+            .Resolve(ResolveTotalSupply);
     }
 
     private static Currency GetNativeTokenFromHash(

@@ -37,6 +37,8 @@ To be released.
  -  Added `StaticActionTypeLoader` class.  [[#2539]]
  -  (Libplanet.Explorer) Added a new GraphQL endpoint on `/graphql/explorer`.
     [[#2562]]
+ -  (Libplanet.Explorer) Added `ConfigureLibplanetExplorerSchema` class.
+    [[#2572]]
 
 [#2507]: https://github.com/planetarium/libplanet/pull/2507
 [#2539]: https://github.com/planetarium/libplanet/pull/2539
@@ -50,8 +52,16 @@ To be released.
     did not work as intended.  [[#2518], [#2520]]
 
 ### Dependencies
+
  -  Replaced *[BouncyCastle.NetCore 1.8.6]* with
    *[BouncyCastle.Cryptography 2.0.0]*.  [[#2571]]
+ -  (Libplanet.Explorer) Upgraded GraphQL-related dependencies.  [[#2572]]
+     -  *GraphQL*: 4.7.1 → 7.1.1
+     -  *GraphQL.Server.Authorization.AspNetCore*: 5.1.1 → 7.1.1
+     -  *GraphQL.Server.Transports.AspNetCore*: 5.1.1 → 7.1.1
+     -  *GraphQL.Server.Ui.Playground*: 5.1.1 → 7.1.1
+     -  *GraphQL.SystemTextJson*: 4.7.1 → 7.1.1
+     -  *GraphQL.Server.Transports.AspNetCore.SystemTextJson*: 5.1.1 → removed
 
 ### CLI tools
 
@@ -71,6 +81,7 @@ To be released.
 [#2555]: https://github.com/planetarium/libplanet/pull/2555
 [#2563]: https://github.com/planetarium/libplanet/pull/2563
 [#2571]: https://github.com/planetarium/libplanet/pull/2571
+[#2572]: https://github.com/planetarium/libplanet/pull/2572
 
 
 Version 0.44.1

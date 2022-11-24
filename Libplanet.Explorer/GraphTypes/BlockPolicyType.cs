@@ -13,12 +13,14 @@ public class BlockPolicyType<T> : ObjectGraphType<IBlockPolicy<T>>
     {
         Name = "BlockPolicy";
         Field<NonNullGraphType<ListGraphType<NonNullGraphType<CurrencyType>>>>(
-            "nativeTokens",
-            "A fixed set of native tokens, which are supported by the blockchain as " +
-                "first-class assets.",
-            resolve: context => context.Source.NativeTokens
-                .OrderBy(c => c.Ticker, StringComparer.InvariantCultureIgnoreCase)
-                .ToList()
-        );
+            "nativeTokens")
+            .Description(
+                "A fixed set of native tokens, which are supported by the blockchain as " +
+                    "first-class assets."
+            )
+            .Resolve(context =>
+                context.Source.NativeTokens
+                    .OrderBy(c => c.Ticker, StringComparer.InvariantCultureIgnoreCase)
+                    .ToList());
     }
 }
