@@ -497,8 +497,7 @@ namespace Libplanet.Net
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
                             Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
-                            blockToAdd =
-                                (prevBlock, workspace.Store.GetBlockCommit(prevBlock.Hash));
+                            blockToAdd = (prevBlock, b.LastCommit);
                         }
                         else
                         {
