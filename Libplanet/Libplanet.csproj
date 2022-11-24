@@ -64,7 +64,7 @@ https://docs.libplanet.io/</Description>
   <ItemGroup>
     <PackageReference Include="Bencodex" Version="0.7.0-dev.20220923062845" />
     <PackageReference Include="Bencodex.Json" Version="0.7.0-dev.20220923062845" />
-    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
     <PackageReference Include="Caching.dll" Version="1.4.0.1" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="ImmutableTrie" Version="1.0.0-alpha" />
