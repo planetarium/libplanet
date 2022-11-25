@@ -100,12 +100,7 @@ namespace Libplanet.Net.Tests
                     break;
             }
 
-            Assert.True(
-                canonComparer.Compare(
-                    new BlockPerception(bestBlock),
-                    chain1.PerceiveBlock(chain1.Tip)
-                ) > 0
-            );
+            Assert.True(canonComparer.Compare(bestBlock, chain1.Tip) > 0);
             chain2.Append(bestBlock);
 
             try
