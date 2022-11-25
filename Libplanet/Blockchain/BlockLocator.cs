@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
@@ -10,71 +11,99 @@ namespace Libplanet.Blockchain
     /// </summary>
     public class BlockLocator : IEnumerable<BlockHash>
     {
-        private readonly IEnumerable<BlockHash> _impl;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="BlockLocator"/> with a set of indexer
-        /// functions, sampling after <paramref name="sampleAfter"/> number of blocks.
-        /// </summary>
-        /// <param name="indexBlockHash">A function that converts an index to a
-        /// <see cref="BlockHash"/>.</param>
-        /// <param name="indexByBlockHash">A function that converts a <see cref="BlockHash"/> to its
-        /// index.</param>
-        /// <param name="sampleAfter">The number of consequent blocks to include before sampling.
-        /// </param>
-        public BlockLocator(
-            Func<long, BlockHash?> indexBlockHash,
-            Func<BlockHash, long> indexByBlockHash,
-            int sampleAfter = 10
-        )
-            : this(
-                indexBlockHash(-1),
-                indexBlockHash,
-                indexByBlockHash,
-                sampleAfter
-            )
-        {
-        }
+        private readonly List<BlockHash> _impl;
 
         /// <summary>
         /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
         /// </summary>
         /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="hashes"/> is empty.
+        /// </exception>
         public BlockLocator(IEnumerable<BlockHash> hashes)
         {
-            _impl = hashes;
+            _impl = hashes.Any()
+                ? hashes.ToList()
+                : throw new ArgumentException($"Given {nameof(hashes)} cannot be empty.");
         }
 
-        internal BlockLocator(
-            BlockHash? tipHash,
-            Func<long, BlockHash?> indexBlockHash,
-            Func<BlockHash, long> indexByBlockHash,
-            int sampleAfter
-        )
+        /// <summary>
+        /// <para>
+        /// Creates a new instance of <see cref="BlockLocator"/> with an indexer
+        /// function, sampling after <paramref name="sampleAfter"/> number of
+        /// <see cref="Block{T}"/>s.
+        /// </para>
+        /// <para>
+        /// This collects all <see cref="BlockHash"/>es corresponding to indices inductively
+        /// defined by:
+        /// <list type="bullet">
+        ///   <item><description>
+        ///     <c>i_0 = startIndex</c>
+        ///   </description></item>
+        ///   <item><description>
+        ///     <c>i_(n + 1) = max(i_n - 1, 0)</c> if <c>n &lt; sampleAfter</c> and
+        ///     <c>i_n &gt; 0</c>
+        ///   </description></item>
+        ///   <item><description>
+        ///     <c>i_(n + 1) = max(i_n - 2 * (i_(n - 1) - i_n), 0)</c> if
+        ///     <c>sampleAfter &lt;= n</c> and <c>i_n &gt; 0</c>
+        ///   </description></item>
+        /// </list>
+        /// where the sequence terminates after index <c>i_n</c> reaches zero or
+        /// the <see cref="BlockHash"/> returned by <paramref name="indexToBlockHash"/>
+        /// for <c>i_n</c> is <see langword="null"/>, in which case the <see cref="BlockHash"/>
+        /// corresponding to index <c>0</c> (presumably a <see cref="BlockHash"/> of the
+        /// genesis <see cref="Block{T}"/>) is added at the end.
+        /// </para>
+        /// </summary>
+        /// <param name="startIndex">The starting index.</param>
+        /// <param name="indexToBlockHash">The function that converts an index to a
+        /// <see cref="BlockHash"/>.  This can be <see langword="null"/> which indicates
+        /// a missing <see cref="Block{T}"/> at the index.  Any value from <c>0</c> to
+        /// <paramref name="startIndex"/> may be used as an argument to call this function.</param>
+        /// <param name="sampleAfter">The number of consecutive blocks to include before sampling.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="startIndex"/>
+        /// is negative.</exception>
+        /// <exception cref="ArgumentException">Thrown when either <see cref="BlockHash"/> returned
+        /// by <paramref name="indexToBlockHash"/> for index <c>0</c> is <see langword="null"/>.
+        /// </exception>
+        /// <returns>
+        /// An instance of <see cref="BlockLocator"/> created with given arguments.
+        /// </returns>
+        /// <remarks>
+        /// Returned <see cref="BlockLocator"/> created this factory method is guaranteed to have
+        /// the <see cref="BlockHash"/> corresponding <c>0</c>.
+        /// </remarks>
+        public static BlockLocator Create(
+            long startIndex,
+            Func<long, BlockHash?> indexToBlockHash,
+            long sampleAfter = 10)
         {
-            BlockHash? current = tipHash;
-            long step = 1;
-            var hashes = new List<BlockHash>();
-            while (current is { } hash)
+            if (startIndex < 0)
             {
-                hashes.Add(hash);
-                long currentBlockIndex = indexByBlockHash(hash);
+                throw new ArgumentOutOfRangeException(
+                    $"Given {nameof(startIndex)} cannot be negative: {startIndex}");
+            }
 
-                if (currentBlockIndex == 0)
+            BlockHash genesisHash = indexToBlockHash(0) ??
+                throw new ArgumentException(
+                    $"Given {nameof(indexToBlockHash)} should not be null at zero index.");
+            var hashes = new List<BlockHash>();
+
+            foreach (long index in GetEnumeratedIndices(startIndex, sampleAfter))
+            {
+                if (indexToBlockHash(index) is { } hash)
                 {
-                    break;
+                    hashes.Add(hash);
                 }
-
-                long nextIndex = Math.Max(currentBlockIndex - step, 0);
-                current = indexBlockHash(nextIndex);
-
-                if (hashes.Count >= sampleAfter)
+                else
                 {
-                    step *= 2;
+                    hashes.Add(genesisHash);
+                    break;
                 }
             }
 
-            _impl = hashes;
+            return new BlockLocator(hashes);
         }
 
         /// <summary>
@@ -89,6 +118,20 @@ namespace Libplanet.Blockchain
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _impl.GetEnumerator();
+        }
+
+        private static IEnumerable<long> GetEnumeratedIndices(long startIndex, long sampleAfter)
+        {
+            long currentIndex = startIndex;
+            long step = 1;
+            while (currentIndex > 0)
+            {
+                yield return currentIndex;
+                currentIndex = Math.Max(currentIndex - step, 0);
+                step = startIndex - currentIndex < sampleAfter ? step : step * 2;
+            }
+
+            yield return currentIndex;
         }
     }
 }

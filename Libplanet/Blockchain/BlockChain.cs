@@ -1121,8 +1121,12 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                chainId = Id;
-                tipHash = Tip.Hash;
+                _rwlock.EnterReadLock();
+
+                return BlockLocator.Create(
+                    startIndex: Tip.Index,
+                    indexToBlockHash: idx => Store.IndexBlockHash(Id, idx),
+                    sampleAfter: threshold);
             }
             finally
             {
