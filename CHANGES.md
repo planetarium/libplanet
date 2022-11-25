@@ -30,10 +30,10 @@ Version PBFT
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
- -  Added `IStore.GetBlockCommit(long)` method.  [[#PBFT]]
+ -  Added `IStore.GetBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
- -  Added `IStore.DeleteBlockCommit(long)` method.  [[#PBFT]]
- -  Added `IStore.GetBlockCommitCommitIndices()` method.  [[#PBFT]]
+ -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
+ -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
