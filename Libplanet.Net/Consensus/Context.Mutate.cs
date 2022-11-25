@@ -25,7 +25,7 @@ namespace Libplanet.Net.Consensus
                 ToString());
             Round = round;
             Step = Step.Propose;
-            if (_validatorSet.GetProposer(Height, Round) == _privateKey.PublicKey)
+            if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
                 _logger.Debug(
                     "Starting round {NewRound} and is a proposer.",
@@ -88,7 +88,7 @@ namespace Libplanet.Net.Consensus
                         message,
                         message.Height,
                         message.Round,
-                        message.Validator.ToAddress(),
+                        message.PublicKey.ToAddress(),
                         message.Remote?.Address,
                         message.BlockHash,
                         _messageLog.GetTotalCount(),

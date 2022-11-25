@@ -15,18 +15,18 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsensusMsg"/> class.
         /// </summary>
-        /// <param name="validator">
+        /// <param name="publicKey">
         /// A <see cref="PublicKey"/> of the validator who made this message.</param>
         /// <param name="height">A <see cref="Context{T}.Height"/> the message is for.</param>
         /// <param name="round">A <see cref="Context{T}.Round"/> the message is written for.</param>
         /// <param name="blockHash">A <see cref="BlockHash"/> the message is written for.</param>
         protected ConsensusMsg(
-            PublicKey validator,
+            PublicKey publicKey,
             long height,
             int round,
             BlockHash? blockHash)
         {
-            Validator = validator;
+            PublicKey = publicKey;
             Round = round;
             Height = height;
             BlockHash = blockHash;
@@ -35,7 +35,7 @@ namespace Libplanet.Net.Messages
         /// <summary>
         /// A <see cref="PublicKey"/> of the validator who made this message.
         /// </summary>
-        public PublicKey Validator { get; }
+        public PublicKey PublicKey { get; }
 
         /// <summary>
         /// A <see cref="Context{T}.Height"/> the message is written for.

@@ -72,7 +72,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.ValidatorSet[i],
+                    TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusPreVoteMsg(expectedVotes[i])
@@ -90,7 +90,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                     0,
                     block1.Hash,
                     DateTimeOffset.UtcNow,
-                    TestUtils.ValidatorSet[i],
+                    TestUtils.ValidatorSet[i].PublicKey,
                     VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i]);
                 consensusContext.HandleMessage(
                     new ConsensusPreCommitMsg(expectedVotes[i])
