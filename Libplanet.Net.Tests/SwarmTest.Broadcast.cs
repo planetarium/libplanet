@@ -31,6 +31,62 @@ namespace Libplanet.Net.Tests
     public partial class SwarmTest
     {
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastBlock()
+        {
+            const int numBlocks = 5;
+            var policy = new NullBlockPolicy<DumbAction>(getValidatorSet: _ => ValidatorSet);
+            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+
+            var swarmA = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var swarmB = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var chainA = swarmA.BlockChain;
+            var chainB = swarmB.BlockChain;
+
+            foreach (int i in Enumerable.Range(0, numBlocks))
+            {
+                var block = chainA.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateBlockCommit(chainA.Tip));
+                chainA.Append(block, TestUtils.CreateBlockCommit(block));
+            }
+
+            Assert.Equal(numBlocks, chainA.Tip.Index);
+            Assert.NotEqual(chainA.Tip, chainB.Tip);
+            Assert.NotNull(chainA.GetBlockCommit(chainA.Tip.Hash));
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                swarmA.BroadcastBlock(chainA.Tip);
+                await swarmB.BlockAppended.WaitAsync();
+
+                Assert.Equal(chainA.Tip, chainB.Tip);
+                Assert.Equal(
+                    chainA.GetBlockCommit(chainA.Tip.Hash),
+                    chainB.GetBlockCommit(chainB.Tip.Hash));
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockToReconnectedPeer()
         {
             var miner = new PrivateKey();

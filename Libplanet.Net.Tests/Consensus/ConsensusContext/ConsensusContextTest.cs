@@ -136,121 +136,6 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
         }
 
         [Fact(Timeout = Timeout)]
-        public async void ClearOldLastCommitCache()
-        {
-            ConsensusProposalMsg? proposal = null;
-            var proposalMessageConsumed = new AsyncAutoResetEvent();
-            var heightOnePreVote = new AsyncAutoResetEvent();
-            var heightOnePreCommit = new AsyncAutoResetEvent();
-            var heightOneEnded = new AsyncAutoResetEvent();
-            var heightTwoPreVote = new AsyncAutoResetEvent();
-            var heightTwoPreCommit = new AsyncAutoResetEvent();
-            var heightTwoEnded = new AsyncAutoResetEvent();
-            var heightThreePropose = new AsyncAutoResetEvent();
-
-            var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
-                TimeSpan.FromSeconds(1),
-                TestUtils.Policy,
-                TestUtils.PrivateKeys[1],
-                blockCommitClearThreshold: 1);
-
-            consensusContext.StateChanged += (_, eventArgs) =>
-            {
-                if (eventArgs.Height == 1 && eventArgs.Step == Step.PreVote)
-                {
-                    heightOnePreVote.Set();
-                }
-
-                if (eventArgs.Height == 1 && eventArgs.Step == Step.PreCommit)
-                {
-                    heightOnePreCommit.Set();
-                }
-
-                if (eventArgs.Height == 1 && eventArgs.Step == Step.EndCommit)
-                {
-                    heightOneEnded.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreVote)
-                {
-                    heightTwoPreVote.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.PreCommit)
-                {
-                    heightTwoPreCommit.Set();
-                }
-
-                if (eventArgs.Height == 2 && eventArgs.Step == Step.EndCommit)
-                {
-                    heightTwoEnded.Set();
-                }
-
-                if (eventArgs.Height == 3 && eventArgs.Step == Step.Propose)
-                {
-                    heightThreePropose.Set();
-                }
-            };
-            consensusContext.MessageConsumed += (_, eventArgs) =>
-            {
-                if (eventArgs.Message is ConsensusProposalMsg proposalMsg)
-                {
-                    proposal = proposalMsg;
-                    proposalMessageConsumed.Set();
-                }
-            };
-
-            // Start height 1.
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            await Task.WhenAll(heightOnePreVote.WaitAsync(), proposalMessageConsumed.WaitAsync());
-            Assert.Equal(1, proposal?.Height);
-
-            TestUtils.HandleFourPeersPreVoteMessages(
-                consensusContext,
-                TestUtils.PrivateKeys[1],
-                proposal!.Proposal.BlockHash);
-            await heightOnePreCommit.WaitAsync();
-
-            TestUtils.HandleFourPeersPreCommitMessages(
-                consensusContext,
-                TestUtils.PrivateKeys[1],
-                proposal!.Proposal.BlockHash);
-            await heightOneEnded.WaitAsync();
-
-            // Start height 2.
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-
-            var block = blockChain.ProposeBlock(
-                TestUtils.PrivateKeys[0],
-                lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
-            consensusContext.HandleMessage(
-                TestUtils.CreateConsensusPropose(block, TestUtils.PrivateKeys[2], height: 2));
-
-            await Task.WhenAll(heightTwoPreVote.WaitAsync(), proposalMessageConsumed.WaitAsync());
-            Assert.Equal(2, proposal?.Height);
-
-            TestUtils.HandleFourPeersPreVoteMessages(
-                consensusContext,
-                TestUtils.PrivateKeys[1],
-                proposal!.Proposal.BlockHash);
-            await heightTwoPreCommit.WaitAsync();
-
-            TestUtils.HandleFourPeersPreCommitMessages(
-                consensusContext,
-                TestUtils.PrivateKeys[1],
-                block.Hash);
-            await heightTwoEnded.WaitAsync();
-
-            // Starts height 3, Waits PreVote timeout
-            // Checks previous LastCommit and see if it's available.
-            consensusContext.NewHeight(blockChain.Tip.Index + 1);
-            await heightThreePropose.WaitAsync();
-
-            Assert.NotNull(blockChain.Store.GetBlockCommit(blockChain.Tip.Index));
-            Assert.Null(blockChain.Store.GetBlockCommit(blockChain.Tip.Index - 1));
-        }
-
-        [Fact(Timeout = Timeout)]
         public void RemoveOldContexts()
         {
             var (blockChain, consensusContext) = TestUtils.CreateDummyConsensusContext(
@@ -392,7 +277,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             consensusContext.Commit(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(blockChain.Tip, block2);
-            Assert.NotNull(blockChain.Store.GetBlockCommit(2));
+            Assert.NotNull(blockChain.Store.GetBlockCommit(block2.Hash));
         }
     }
 }

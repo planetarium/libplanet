@@ -310,7 +310,8 @@ namespace Libplanet.Tests.Blockchain
             IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
                 DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
 
-            var policy = new BlockPolicy<DumbAction>();
+            var policy = new BlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var key = new PrivateKey();
             Address miner = key.ToAddress();
 
@@ -363,7 +364,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ActionRenderersHaveDistinctContexts()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
@@ -401,7 +403,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterBlockIsRendered()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer<DumbAction>();
@@ -439,7 +442,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterAppendComplete()
         {
-            var policy = new NullBlockPolicy<DumbAction>();
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: idx => ValidatorSet);
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
@@ -1022,15 +1026,58 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetBlockCommit()
         {
+            // Note: Getting BlockCommit from PoW block test is not present.
             // Requesting blockCommit of genesis block returns null.
             Assert.Null(_blockChain.GetBlockCommit(0));
             Assert.Null(_blockChain.GetBlockCommit(_blockChain.Genesis.Hash));
+
             // BlockCommit is put to store when block is appended.
-            Block<DumbAction> block = _blockChain.ProposeBlock(new PrivateKey());
-            BlockCommit blockCommit = CreateBlockCommit(block);
-            _blockChain.Append(block, blockCommit);
-            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Index));
-            Assert.Equal(blockCommit, _blockChain.GetBlockCommit(block.Hash));
+            Block<DumbAction> block1 = _blockChain.ProposeBlock(new PrivateKey());
+            BlockCommit blockCommit1 = CreateBlockCommit(block1);
+            _blockChain.Append(block1, blockCommit1);
+            Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
+            Assert.Equal(blockCommit1, _blockChain.GetBlockCommit(block1.Hash));
+
+            // BlockCommit is retrieved from lastCommit.
+            Block<DumbAction> block2 = _blockChain.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: CreateBlockCommit(_blockChain.Tip));
+            BlockCommit blockCommit2 = CreateBlockCommit(block2);
+            _blockChain.Append(block2, blockCommit2);
+
+            // These are different due to timestamps on votes.
+            Assert.NotEqual(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
+            Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Index));
+            Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
+        }
+
+        [Fact]
+        public void CleanupBlockCommitStore()
+        {
+            BlockCommit blockCommit1 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 1, 0);
+            BlockCommit blockCommit2 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 2, 0);
+            BlockCommit blockCommit3 = CreateBlockCommit(
+                new BlockHash(GetRandomBytes(BlockHash.Size)), 3, 0);
+
+            _blockChain.Store.PutBlockCommit(blockCommit1);
+            _blockChain.Store.PutBlockCommit(blockCommit2);
+            _blockChain.Store.PutBlockCommit(blockCommit3);
+            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 3);
+
+            Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit1.BlockHash));
+            Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit2.BlockHash));
+            Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
+
+            _blockChain.Store.PutBlockCommit(blockCommit1);
+            _blockChain.Store.PutBlockCommit(blockCommit2);
+            _blockChain.Store.PutBlockCommit(blockCommit3);
+            _blockChain.CleanupBlockCommitStore(blockCommit3.Height, 4);
+
+            Assert.Equal(blockCommit1, _blockChain.Store.GetBlockCommit(blockCommit1.BlockHash));
+            Assert.Equal(blockCommit2, _blockChain.Store.GetBlockCommit(blockCommit2.BlockHash));
+            Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
         }
 
         [Theory]
@@ -1289,7 +1336,8 @@ namespace Libplanet.Tests.Blockchain
 
             var chain =
                 new BlockChain<DumbAction>(
-                    new NullBlockPolicy<DumbAction>(),
+                    new NullBlockPolicy<DumbAction>(
+                        getValidatorSet: idx => ValidatorSet),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,

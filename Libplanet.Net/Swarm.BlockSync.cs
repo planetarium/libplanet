@@ -76,7 +76,7 @@ namespace Libplanet.Net
 
             var totalBlocksToDownload = 0L;
             Block<T> tempTip = BlockChain.Tip;
-            var blocks = new List<Block<T>>();
+            var blocks = new List<(Block<T>, BlockCommit)>();
 
             try
             {
@@ -133,7 +133,7 @@ namespace Libplanet.Net
                     return;
                 }
 
-                IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
+                IAsyncEnumerable<Tuple<Block<T>, BlockCommit, BoundPeer>> completedBlocks =
                     blockCompletion.Complete(
                         peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
@@ -141,7 +141,7 @@ namespace Libplanet.Net
                     );
 
                 await foreach (
-                    (Block<T> block, BoundPeer sourcePeer)
+                    (Block<T> block, BlockCommit commit, BoundPeer sourcePeer)
                     in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
@@ -181,7 +181,7 @@ namespace Libplanet.Net
                     }
 
                     block.ValidateTimestamp();
-                    blocks.Add(block);
+                    blocks.Add((block, commit));
                     if (tempTip is null ||
                         BlockChain.PerceiveBlock(block).Index >
                             BlockChain.PerceiveBlock(tempTip).Index)
@@ -190,19 +190,22 @@ namespace Libplanet.Net
                     }
                 }
 
-                BlockHash? previousHash = blocks.First().PreviousHash;
+                BlockHash? previousHash = blocks.First().Item1.PreviousHash;
                 Block<T> branchpoint;
+                BlockCommit branchpointCommit;
                 if (previousHash != null)
                 {
                     branchpoint = BlockChain.Store.GetBlock<T>(
                         (BlockHash)previousHash);
+                    branchpointCommit = BlockChain.GetBlockCommit(branchpoint.Hash);
                 }
                 else
                 {
                     branchpoint = BlockChain.Genesis;
+                    branchpointCommit = null;
                 }
 
-                blocks.Insert(0, branchpoint);
+                blocks.Insert(0, (branchpoint, branchpointCommit));
             }
             catch (Exception e)
             {
@@ -213,6 +216,7 @@ namespace Libplanet.Net
             }
             finally
             {
+                // FIXME: This somewhat assumes returned blocks are consecutive and sequential.
                 if (blocks.Count != 0)
                 {
                     BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
@@ -324,12 +328,13 @@ namespace Libplanet.Net
                     window: InitialBlockDownloadWindow
                 );
 
-                Block<T> initialTip = BlockChain.Tip;
+                (Block<T> Block, BlockCommit Commit) initialTip =
+                    (BlockChain.Tip, BlockChain.GetBlockCommit(BlockChain.Tip.Hash));
                 long totalBlocksToDownload = 0L;
                 long receivedBlockCount = 0L;
-                Block<T> tipCandidate = initialTip;
+                (Block<T> Block, BlockCommit Commit) tipCandidate = initialTip;
 
-                Block<T> tempTip = tipCandidate;
+                (Block<T> Block, BlockCommit Commit) tempTip = tipCandidate;
                 Block<T> branchpoint = null;
 
                 var demandBlockHashes = GetDemandBlockHashes(
@@ -382,17 +387,15 @@ namespace Libplanet.Net
                     return renderSwap;
                 }
 
-                IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
+                IAsyncEnumerable<Tuple<Block<T>, BlockCommit, BoundPeer>> completedBlocks =
                     blockCompletion.Complete(
                         peers: peersWithExcerpt.Select(pair => pair.Item1).ToList(),
                         blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
-
+                        cancellationToken: cancellationToken);
                 BlockDownloadStarted.Set();
 
                 await foreach (
-                    (Block<T> block, BoundPeer sourcePeer)
+                    (Block<T> block, BlockCommit commit, BoundPeer sourcePeer)
                         in completedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
@@ -432,17 +435,23 @@ namespace Libplanet.Net
                     }
 
                     _logger.Verbose(
-                        "Add a block #{BlockIndex} {BlockHash}...",
+                        "Trying to store downloaded block #{BlockIndex} {BlockHash}...",
                         block.Index,
                         block.Hash
                     );
                     block.ValidateTimestamp();
+
+                    // FIXME: Using store as temporary storage is not recommended.
                     workspace.Store.PutBlock(block);
-                    if (tempTip is null ||
+                    workspace.Store.PutBlockCommit(commit);
+
+                    // FIXME: This simply sets tempTip to the highest indexed block downloaded.
+                    // There is no guarantee such block is usable.
+                    if (tempTip.Block is null ||
                         BlockChain.PerceiveBlock(block).Index >
-                            BlockChain.PerceiveBlock(tempTip).Index)
+                            BlockChain.PerceiveBlock(tempTip.Block).Index)
                     {
-                        tempTip = block;
+                        tempTip = (block, commit);
                     }
 
                     receivedBlockCount++;
@@ -456,44 +465,48 @@ namespace Libplanet.Net
                         SourcePeer = sourcePeer,
                     });
                     _logger.Debug(
-                        "Appended block #{BlockIndex} {BlockHash} " +
-                        "to the workspace chain.",
+                        "Stored downloaded block #{BlockIndex} {BlockHash}",
                         block.Index,
-                        block.Hash
-                    );
+                        block.Hash);
                 }
 
                 tipCandidate = tempTip;
                 _logger.Debug(
                     "TipCandidate: #{Index} {Hash}",
-                    tipCandidate?.Index,
-                    tipCandidate?.Hash);
+                    tipCandidate.Block?.Index,
+                    tipCandidate.Block?.Hash);
 
-                if (tipCandidate is null)
+                if (tipCandidate.Block is null)
                 {
                     // If there is no blocks in the network (or no consensus at least)
                     // it doesn't need to receive states from other peers at all.
                     return renderSwap;
                 }
 
-                var deltaBlocks = new LinkedList<Block<T>>();
+                // FIXME: This simply tries to line up downloaded blocks starting with
+                // a highest indexed block all the way down to presumably a block
+                // after workspace's tip.  However, there is no guarantee that there is
+                // a connected path using downloaded blocks, in which case,
+                // deltaBlocks will result in being unusable.
+                var deltaBlocks = new LinkedList<(Block<T> Block, BlockCommit Commit)>();
                 while (true)
                 {
-                    Block<T> blockToAdd;
-                    if (deltaBlocks.First is LinkedListNode<Block<T>> node)
+                    (Block<T> Block, BlockCommit Commit) blockToAdd;
+                    if (deltaBlocks.First is LinkedListNode<(Block<T>, BlockCommit)> node)
                     {
-                        Block<T> b = node.Value;
+                        (Block<T> b, BlockCommit c) = node.Value;
                         if (b.PreviousHash is { } p && !workspace.ContainsBlock(p))
                         {
-                            blockToAdd = workspace.Store.GetBlock<T>(p);
+                            Block<T> prevBlock = workspace.Store.GetBlock<T>(p);
+                            blockToAdd = (prevBlock, b.LastCommit);
                         }
                         else
                         {
                             break;
                         }
                     }
-                    else if (BlockChain.PerceiveBlock(tipCandidate).Index <=
-                        BlockChain.PerceiveBlock(tempTip).Index)
+                    else if (BlockChain.PerceiveBlock(tipCandidate.Block).Index <=
+                        BlockChain.PerceiveBlock(tempTip.Block).Index)
                     {
                         blockToAdd = tipCandidate;
                     }
@@ -509,9 +522,12 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
 
+                // FIXME: If any of the blocks in deltaBlocks is invalid, the whole process
+                // is aborted, even when an actually valid potential tip block and
+                // all the blocks in the path has been downloaded.
                 if (deltaBlocks.First is { } deltaBottom)
                 {
-                    Block<T> bottomBlock = deltaBottom.Value;
+                    Block<T> bottomBlock = deltaBottom.Value.Block;
                     if (bottomBlock.PreviousHash is { } bp)
                     {
                         branchpoint = workspace[bp];
@@ -527,7 +543,7 @@ namespace Libplanet.Net
                         try
                         {
                             long verifiedBlockCount = 0;
-                            foreach (Block<T> deltaBlock in deltaBlocks)
+                            foreach ((Block<T> deltaBlock, BlockCommit deltaCommit) in deltaBlocks)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -536,10 +552,9 @@ namespace Libplanet.Net
                                     deltaBlock.Index,
                                     deltaBlock.Hash);
 
-                                // TODO : Block should be appended with commits.
                                 workspace.Append(
                                     deltaBlock,
-                                    null,
+                                    deltaCommit,
                                     evaluateActions: false,
                                     renderBlocks: renderBlocks,
                                     renderActions: renderActions
@@ -565,12 +580,14 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        Block<T> first = deltaBlocks.First.Value, last = deltaBlocks.Last.Value;
+                        Block<T> first = deltaBlocks.First.Value.Block;
+                        Block<T> last = deltaBlocks.Last.Value.Block;
                         BlockHash g = workspace.Store.IndexBlockHash(workspace.Id, 0L).Value;
                         throw new SwarmException(
                             $"Downloaded blocks (#{first.Index} {first.Hash}\u2013" +
                             $"#{last.Index} {last.Hash}) are incompatible with the existing " +
-                            $"chain (#0 {g}\u2013#{initialTip.Index} {initialTip.Hash})."
+                            $"chain (#0 {g}\u2013#{initialTip.Block.Index} " +
+                            $"{initialTip.Block.Hash})."
                         );
                     }
                 }

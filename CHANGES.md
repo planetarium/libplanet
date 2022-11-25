@@ -30,10 +30,10 @@ Version PBFT
  -  Bumped `BlockMetadata.CurrentProtocolVersion` to 4.  [[#PBFT]]
  -  Changed `IPreEvaluationBlockHeader.PreEvaluationHash` type from
     `ImmutableArray<byte>` to `HashDigest<SHA256>`.  [[#PBFT]]
- -  Added `IStore.GetBlockCommit(long)` method.  [[#PBFT]]
+ -  Added `IStore.GetBlockCommit(BlockHash)` method.  [[#PBFT]]
  -  Added `IStore.PutBlockCommit(BlockCommit)` method.  [[#PBFT]]
- -  Added `IStore.DeleteBlockCommit(long)` method.  [[#PBFT]]
- -  Added `IStore.GetBlockCommitCommitIndices()` method.  [[#PBFT]]
+ -  Added `IStore.DeleteBlockCommit(BlockHash)` method.  [[#PBFT]]
+ -  Added `IStore.GetBlockCommitHashes()` method.  [[#PBFT]]
  -  (Libplanet.Net) Removed `SwarmOptions.StaticPeers`.  [[#PBFT]]
 
 ### Backward-incompatible network protocol changes
@@ -58,6 +58,9 @@ Version PBFT
  -  Added `ContextTimeoutOption` class.  [[#PBFT]]
  -  Added `BlockMarshaler.UnmarshalBlockHash()` method. [[#PBFT]]
  -  Added `BlockChain<T>.GetBlockCommit()` method.  [[#PBFT]]
+ -  Added `BlockChain<T>.CleanupBlockCommitStore()` method.  [[#PBFT]]
+ -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
+ -  Added `BlockChain<T>.ValidateBlockCommit()` method  [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]
@@ -87,6 +90,12 @@ Version PBFT
  -  `PreEvaluationBlockHeader()` constructor became to throw
     `InvalidBlockLastCommitException` when its metadata's `LastCommit` is
     invalid.  [[#PBFT]]
+ -  `BlockChain<T>.Append()` has new parameter `BlockCommit blockCommit`, which
+    is a set of commits for given block. `BlockCommit` is used for checks
+    whether a block is committed in consensus.  [[#PBFT]]
+ -  `BlockChain<T>.Append()` method became to throw
+    `InvalidBlockCommitException` when the given `BlockCommit` is invalid with
+    given block.  [[#PBFT]]
 
 ### Bug fixes
 

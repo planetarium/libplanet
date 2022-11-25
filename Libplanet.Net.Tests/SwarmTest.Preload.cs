@@ -11,6 +11,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -253,12 +254,139 @@ namespace Libplanet.Net.Tests
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task PreloadWithMaliciousPeer()
+        {
+            const int initialSharedTipHeight = 3;
+            const int maliciousTipHeight = 5;
+            const int honestTipHeight = 7;
+            var policy = new NullBlockPolicy<DumbAction>(
+                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var fakeValidatorSet = new ValidatorSet(
+                new List<PublicKey> { TestUtils.PrivateKeys[0].PublicKey });
+            var policyB = new NullBlockPolicy<DumbAction>(getValidatorSet: index =>
+                index == maliciousTipHeight ? fakeValidatorSet : TestUtils.ValidatorSet);
+            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+
+            var swarmA = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var swarmB = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policyB,
+                genesis: genesis);
+            var swarmC = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var chainA = swarmA.BlockChain;
+            var chainB = swarmB.BlockChain;
+            var chainC = swarmC.BlockChain;
+
+            // Setup initial state where all chains share the same blockchain state.
+            for (int i = 1; i <= initialSharedTipHeight; i++)
+            {
+                var block = chainA.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateBlockCommit(chainA.Tip));
+                chainA.Append(block, TestUtils.CreateBlockCommit(block));
+                chainB.Append(block, TestUtils.CreateBlockCommit(block));
+                chainC.Append(block, TestUtils.CreateBlockCommit(block));
+            }
+
+            // Setup malicious node to broadcast.
+            for (int i = initialSharedTipHeight + 1; i < maliciousTipHeight; i++)
+            {
+                var block = chainB.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateBlockCommit(chainB.Tip));
+                chainB.Append(block, TestUtils.CreateBlockCommit(block));
+                chainC.Append(block, TestUtils.CreateBlockCommit(block));
+            }
+
+            var specialBlock = chainB.ProposeBlock(
+                new PrivateKey(),
+                lastCommit: TestUtils.CreateBlockCommit(chainB.Tip));
+            var invalidBlockCommit = new BlockCommit(
+                maliciousTipHeight,
+                0,
+                specialBlock.Hash,
+                ImmutableArray<Vote>.Empty
+                    .Add(new VoteMetadata(
+                        maliciousTipHeight,
+                        0,
+                        specialBlock.Hash,
+                        DateTimeOffset.UtcNow,
+                        TestUtils.PrivateKeys[0].PublicKey,
+                        VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[0])));
+            var validBlockCommit = TestUtils.CreateBlockCommit(specialBlock);
+            chainB.Append(specialBlock, invalidBlockCommit);
+            chainC.Append(specialBlock, validBlockCommit);
+
+            // Setup honest node with higher tip
+            for (int i = maliciousTipHeight + 1; i <= honestTipHeight; i++)
+            {
+                var block = chainC.ProposeBlock(
+                    new PrivateKey(),
+                    lastCommit: TestUtils.CreateBlockCommit(chainC.Tip));
+                chainC.Append(block, TestUtils.CreateBlockCommit(block));
+            }
+
+            Assert.Equal(initialSharedTipHeight, chainA.Tip.Index);
+            Assert.Equal(maliciousTipHeight, chainB.Tip.Index);
+            Assert.Equal(honestTipHeight, chainC.Tip.Index);
+
+            try
+            {
+                await StartAsync(swarmA, millisecondsBroadcastBlockInterval: int.MaxValue);
+                await StartAsync(swarmB, millisecondsBroadcastBlockInterval: int.MaxValue);
+                await StartAsync(swarmC, millisecondsBroadcastBlockInterval: int.MaxValue);
+
+                // Checks swarmB cannot make swarmA append a block with invalid block commit.
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                try
+                {
+                    await swarmA.PreloadAsync();
+                }
+                catch (InvalidBlockCommitException)
+                {
+                }
+
+                // Makes sure preload failed.
+                Assert.Equal(initialSharedTipHeight, chainA.Tip.Index);
+
+                // Checks swarmA can sync with an honest node with higher tip afterwards.
+                await swarmA.AddPeersAsync(new[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                await swarmA.PreloadAsync();
+
+                Assert.Equal(chainC.Tip, chainA.Tip);
+                Assert.Equal(
+                    chainC.GetBlockCommit(chainC.Tip.Hash),
+                    chainA.GetBlockCommit(chainA.Tip.Hash));
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmC.Dispose();
+            }
+        }
+
         [RetryFact(Timeout = Timeout)]
         public async Task RenderInPreload()
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var renderer1 = new RecordingActionRenderer<DumbAction>();
             var renderer2 = new RecordingActionRenderer<DumbAction>();
             var chain1 = MakeBlockChain(
@@ -327,7 +455,7 @@ namespace Libplanet.Net.Tests
         public async Task PreloadWithFailedActions()
         {
             var policy = new BlockPolicy<ThrowException>(
-                getValidatorSet: _ => ValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var fx1 = new MemoryStoreFixture();
             var fx2 = new MemoryStoreFixture();
             var minerChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -393,7 +521,7 @@ namespace Libplanet.Net.Tests
             var fxForNominers = new StoreFixture[2];
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             fxForNominers[0] = new MemoryStoreFixture(policy.BlockAction);
             fxForNominers[1] = new MemoryStoreFixture(policy.BlockAction);
             var blockChainsForNominers = new[]
@@ -703,7 +831,7 @@ namespace Libplanet.Net.Tests
             Assert.Equal(expectedBlocks, demands);
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(Timeout = Timeout, Skip = "No Reorganization in PBFT")]
         public async Task PreloadAfterReorg()
         {
             var minerKey = new PrivateKey();
@@ -893,7 +1021,7 @@ namespace Libplanet.Net.Tests
         {
             var key1 = new PrivateKey();
             var key2 = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(getValidatorSet: _ => TestUtils.ValidatorSet);
             var genesisContent1 = new BlockContent<DumbAction>(
                 new BlockMetadata(
                     index: 0,
@@ -986,7 +1114,7 @@ namespace Libplanet.Net.Tests
         {
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);
@@ -1046,7 +1174,7 @@ namespace Libplanet.Net.Tests
             PrivateKey seedKey = new PrivateKey();
             var policy = new BlockPolicy<DumbAction>(
                 new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+                getValidatorSet: _ => TestUtils.ValidatorSet);
             var fx1 = new MemoryStoreFixture(policy.BlockAction);
             var fx2 = new MemoryStoreFixture(policy.BlockAction);
             var seedChain = MakeBlockChain(policy, fx1.Store, fx1.StateStore);

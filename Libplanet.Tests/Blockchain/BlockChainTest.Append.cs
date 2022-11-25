@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Blockchain
                 blockInterval: TimeSpan.FromSeconds(10)
             ).Evaluate(keys[4], _blockChain);
             _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Assert.NotNull(_blockChain.Store.GetBlockCommit(block1.Index));
+            Assert.NotNull(_blockChain.Store.GetBlockCommit(block1.Hash));
             Block<DumbAction> block2 = TestUtils.ProposeNext(
                 block1,
                 txs,
@@ -398,7 +398,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void AppendWhenActionEvaluationFailed()
         {
-            var policy = new NullBlockPolicy<ThrowException>();
+            var policy = new NullBlockPolicy<ThrowException>(
+                getValidatorSet: idx => TestUtils.ValidatorSet);
             var store = new MemoryStore();
             var stateStore =
                 new TrieStateStore(new MemoryKeyValueStore());

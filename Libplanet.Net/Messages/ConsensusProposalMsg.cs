@@ -40,7 +40,8 @@ namespace Libplanet.Net.Messages
         public Proposal Proposal { get; }
 
         /// <inheritdoc cref="Message.DataFrames"/>
-        public override IEnumerable<byte[]> DataFrames => new List<byte[]> { Proposal.ByteArray };
+        public override IEnumerable<byte[]> DataFrames =>
+            new List<byte[]> { Proposal.ToByteArray() };
 
         /// <inheritdoc cref="Message.MessageType"/>
         public override MessageType Type => MessageType.ConsensusProposal;
@@ -58,7 +59,7 @@ namespace Libplanet.Net.Messages
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, ByteUtil.CalculateHashCode(Proposal.ByteArray));
+            return HashCode.Combine(Type, Proposal);
         }
     }
 }

@@ -263,7 +263,6 @@ namespace Libplanet.Net.Tests
                 privateKey,
                 newHeightDelay,
                 policy.GetValidatorSet,
-                blockCommitClearThreshold,
                 contextTimeoutOptions ?? new ContextTimeoutOption());
 
             return (blockChain, consensusContext);
@@ -337,7 +336,6 @@ namespace Libplanet.Net.Tests
                 validatorPeers.ToImmutableList(),
                 new List<BoundPeer>().ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
-                30,
                 contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
         }
 

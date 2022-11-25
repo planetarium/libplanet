@@ -161,8 +161,9 @@ namespace Libplanet.Consensus
             }
         }
 
-        [JsonIgnore]
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        public byte[] ToByteArray() => _codec.Encode(Encoded);
 
         /// <summary>
         /// Signs given <see cref="ProposalMetadata"/> with given <paramref name="signer"/>.
