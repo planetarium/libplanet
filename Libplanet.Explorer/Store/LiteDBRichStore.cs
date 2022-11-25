@@ -191,9 +191,9 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc />
-        public BlockCommit GetBlockCommit(long height)
+        public BlockCommit GetBlockCommit(BlockHash blockHash)
         {
-            return _store.GetBlockCommit(height);
+            return _store.GetBlockCommit(blockHash);
         }
 
         /// <inheritdoc />
@@ -203,15 +203,15 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc />
-        public void DeleteBlockCommit(long height)
+        public void DeleteBlockCommit(BlockHash blockHash)
         {
-            _store.DeleteBlockCommit(height);
+            _store.DeleteBlockCommit(blockHash);
         }
 
         /// <inheritdoc />
-        public IEnumerable<long> GetBlockCommitIndices()
+        public IEnumerable<BlockHash> GetBlockCommitHashes()
         {
-            return _store.GetBlockCommitIndices();
+            return _store.GetBlockCommitHashes();
         }
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>

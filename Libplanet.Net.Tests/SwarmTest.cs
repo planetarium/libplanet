@@ -382,13 +382,14 @@ namespace Libplanet.Net.Tests
                     new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
                     inventories2);
 
-                Block<DumbAction>[] receivedBlocks =
+                (Block<DumbAction>, BlockCommit)[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer,
                         inventories1.Select(pair => pair.Item2),
                         cancellationToken: default
                     ).ToArrayAsync();
-                Assert.Equal(new[] { genesis, block1, block2 }, receivedBlocks);
+                Assert.Equal(
+                    new[] { genesis, block1, block2 }, receivedBlocks.Select(pair => pair.Item1));
             }
             finally
             {
@@ -469,7 +470,9 @@ namespace Libplanet.Net.Tests
         {
             var keyB = new PrivateKey();
 
-            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var policy = new BlockPolicy<DumbAction>(
+                new MinerReward(1),
+                getValidatorSet: idx => ValidatorSet);
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
             Swarm<DumbAction> swarmA = CreateSwarm(genesis: genesis, policy: policy);
@@ -1221,7 +1224,8 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
                 new BlockChain<DumbAction>(
-                    new BlockPolicy<DumbAction>(),
+                    new BlockPolicy<DumbAction>(
+                        getValidatorSet: idx => ValidatorSet),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,

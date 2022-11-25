@@ -105,8 +105,9 @@ namespace Libplanet.Consensus
         /// <summary>
         /// <see cref="byte"/> encoded <see cref="Proposal"/> data.
         /// </summary>
-        [JsonIgnore]
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        public byte[] ToByteArray() => _codec.Encode(Encoded);
 
         /// <summary>
         /// Verifies whether the <see cref="ProposalMetadata"/> is properly signed by

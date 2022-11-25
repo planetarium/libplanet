@@ -143,8 +143,9 @@ namespace Libplanet.Consensus
         /// Marshaled <see cref="VoteMetadata"/> data.  This is used as a payload for
         /// signing.
         /// </summary>
-        [JsonIgnore]
-        public byte[] ByteArray => _codec.Encode(Encoded);
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        public byte[] ToByteArray() => _codec.Encode(Encoded);
 
         /// <summary>
         /// Signs a <see cref="VoteMetadata"/> to create a <see cref="Vote"/>

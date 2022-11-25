@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -665,9 +664,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override BlockCommit GetBlockCommit(long height)
+        public override BlockCommit GetBlockCommit(BlockHash blockHash)
         {
-            UPath path = LastCommitPath(height);
+            UPath path = LastCommitPath(blockHash);
             if (!_blockCommits.FileExists(path))
             {
                 return null;
@@ -690,19 +689,19 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void PutBlockCommit(BlockCommit blockCommit)
         {
-            UPath path = LastCommitPath(blockCommit.Height);
+            UPath path = LastCommitPath(blockCommit.BlockHash);
             if (_blockCommits.FileExists(path))
             {
                 return;
             }
 
-            WriteContentAddressableFile(_blockCommits, path, blockCommit.ByteArray);
+            WriteContentAddressableFile(_blockCommits, path, blockCommit.ToByteArray());
         }
 
         /// <inheritdoc />
-        public override void DeleteBlockCommit(long height)
+        public override void DeleteBlockCommit(BlockHash blockHash)
         {
-            UPath path = LastCommitPath(height);
+            UPath path = LastCommitPath(blockHash);
             if (!_blockCommits.FileExists(path))
             {
                 return;
@@ -712,25 +711,17 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<long> GetBlockCommitIndices()
+        public override IEnumerable<BlockHash> GetBlockCommitHashes()
         {
-            var listHeights = new List<long>();
+            var hashes = new List<BlockHash>();
 
             foreach (UPath path in _blockCommits.EnumerateFiles(UPath.Root))
             {
                 string name = path.FullName.Split('/').LastOrDefault();
-
-                if (long.TryParse(
-                        name,
-                        NumberStyles.Integer,
-                        CultureInfo.InvariantCulture,
-                        out var parsed))
-                {
-                    listHeights.Add(parsed);
-                }
+                hashes.Add(new BlockHash(ByteUtil.ParseHex(name)));
             }
 
-            return listHeights.AsEnumerable();
+            return hashes.AsEnumerable();
         }
 
         /// <inheritdoc/>
@@ -858,10 +849,9 @@ namespace Libplanet.Store
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private UPath LastCommitPath(in long height)
+        private UPath LastCommitPath(in BlockHash blockHash)
         {
-            string heightString = height.ToString(CultureInfo.InvariantCulture);
-            return UPath.Root / heightString;
+            return UPath.Combine(UPath.Root, blockHash.ToString());
         }
 
         private UPath TxExecutionPath(in BlockHash blockHash, in TxId txid) =>

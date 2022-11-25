@@ -49,8 +49,8 @@ namespace Libplanet.Store
         private readonly ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>> _txBlockIndices =
             new ConcurrentDictionary<TxId, ImmutableHashSet<BlockHash>>();
 
-        private readonly ConcurrentDictionary<long, BlockCommit> _blockCommits =
-            new ConcurrentDictionary<long, BlockCommit>();
+        private readonly ConcurrentDictionary<BlockHash, BlockCommit> _blockCommits =
+            new ConcurrentDictionary<BlockHash, BlockCommit>();
 
         private Guid? _canonicalChainId;
 
@@ -284,30 +284,30 @@ namespace Libplanet.Store
             }
         }
 
-        public BlockCommit GetBlockCommit(long height)
+        public BlockCommit GetBlockCommit(BlockHash blockHash)
         {
-            if (!_blockCommits.ContainsKey(height))
+            if (!_blockCommits.ContainsKey(blockHash))
             {
                 return null;
             }
 
-            return _blockCommits[height];
+            return _blockCommits[blockHash];
         }
 
         public void PutBlockCommit(BlockCommit blockCommit) =>
-            _blockCommits[blockCommit.Height] = blockCommit;
+            _blockCommits[blockCommit.BlockHash] = blockCommit;
 
-        public void DeleteBlockCommit(long height)
+        public void DeleteBlockCommit(BlockHash blockHash)
         {
-            if (!_blockCommits.ContainsKey(height))
+            if (!_blockCommits.ContainsKey(blockHash))
             {
                 return;
             }
 
-            _blockCommits.TryRemove(height, out _);
+            _blockCommits.TryRemove(blockHash, out _);
         }
 
-        public IEnumerable<long> GetBlockCommitIndices()
+        public IEnumerable<BlockHash> GetBlockCommitHashes()
             => _blockCommits.Keys;
 
         [StoreLoader("memory")]

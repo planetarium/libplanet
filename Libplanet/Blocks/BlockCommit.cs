@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Consensus;
@@ -147,11 +148,11 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<Vote> Votes { get; }
 
-        public byte[] ByteArray
+        [JsonIgnore]
+        public Dictionary Encoded
         {
             get
             {
-                var codec = new Codec();
                 var dict = Bencodex.Types.Dictionary.Empty
                     .Add(HeightKey, Height)
                     .Add(RoundKey, Round)
@@ -163,9 +164,13 @@ namespace Libplanet.Blocks
                     dict = dict.Add(VotesKey, new List(bencodexVotes));
                 }
 
-                return codec.Encode(dict);
+                return dict;
             }
         }
+
+        public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
+
+        public byte[] ToByteArray() => _codec.Encode(Encoded);
 
         public bool Equals(BlockCommit? other)
         {

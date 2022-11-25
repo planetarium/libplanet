@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
@@ -51,9 +50,6 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="getValidatorSet">The function determining the set of validators
         /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
-        /// <param name="blockCommitClearThreshold">A maximum size of cached
-        /// <see cref="BlockCommit"/>. See <see cref="BlockCommitClearThreshold"/>.
-        /// The value must bigger than <c>0</c>.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
@@ -62,7 +58,6 @@ namespace Libplanet.Net.Consensus
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
             Func<long, ValidatorSet> getValidatorSet,
-            long blockCommitClearThreshold,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
@@ -71,7 +66,6 @@ namespace Libplanet.Net.Consensus
             Height = -1;
             _newHeightDelay = newHeightDelay;
             _getValidatorSet = getValidatorSet;
-            BlockCommitClearThreshold = blockCommitClearThreshold;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -146,9 +140,6 @@ namespace Libplanet.Net.Consensus
         /// height of value, and value is the <see cref="Context{T}"/>.
         /// </summary>
         internal Dictionary<long, Context<T>> Contexts => _contexts;
-
-        /// <inheritdoc cref="ConsensusReactorOption.BlockCommitClearThreshold"/>
-        private long BlockCommitClearThreshold { get; }
 
         /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
@@ -231,8 +222,6 @@ namespace Libplanet.Net.Consensus
                 }
 
                 RemoveOldContexts(height);
-                ClearOldBlockCommitCache(maxSize: BlockCommitClearThreshold);
-
                 Height = height;
 
                 _logger.Debug("Start consensus for height #{Height}.", Height);
@@ -375,31 +364,6 @@ namespace Libplanet.Net.Consensus
                     }
                 },
                 _newHeightCts.Token);
-        }
-
-        /// <summary>
-        /// Removes old last commit (<see cref="BlockCommit"/>) cache in store, if the cache count
-        /// is over <paramref name="maxSize"/>. The removal starts from lowest height cache and
-        /// keep the last commit cache count in <paramref name="maxSize"/>.
-        /// </summary>
-        /// <param name="maxSize">A maximum count value of <see cref="BlockCommit"/> cache.</param>
-        private void ClearOldBlockCommitCache(long maxSize = 30)
-        {
-            IEnumerable<long> indices = _blockChain.Store.GetBlockCommitIndices().ToArray();
-
-            if (indices.Count() < maxSize)
-            {
-                return;
-            }
-
-            _logger.Debug(
-                "Removing old LastCommit caches at height {PreviousTip}...",
-                _blockChain.Tip.Index);
-
-            foreach (var height in indices.OrderBy(x => x).Take((int)(indices.Count() - maxSize)))
-            {
-                _blockChain.Store.DeleteBlockCommit(height);
-            }
         }
 
         /// <summary>
