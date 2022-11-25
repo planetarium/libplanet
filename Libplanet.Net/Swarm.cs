@@ -964,6 +964,42 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Gets all <see cref="BlockHash"/>es for <see cref="Block{T}"/>s needed to be downloaded
+        /// by querying <see cref="BoundPeer"/>s.
+        /// </summary>
+        /// <param name="blockChain">The <see cref="BlockChain{T}"/> to use as a reference
+        /// for generating a <see cref="BlockLocator"/> when querying.  This may not necessarily
+        /// be <see cref="BlockChain"/>, the canonical <see cref="BlockChain{T}"/> instance held
+        /// by this <see cref="Swarm{T}"/> instance.</param>
+        /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
+        /// to query with their tips known.</param>
+        /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
+        /// <param name="cancellationToken">The cancellation token that should be used to propagate
+        /// a notification that this operation should be canceled.</param>
+        /// <returns>An <see cref="IAsyncEnumerable{T}"/> of <see langword="long"/> and
+        /// <see cref="BlockHash"/> pairs, where the <see langword="long"/> value is the
+        /// <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> associated with the
+        /// <see cref="BlockHash"/> value.</returns>
+        /// <exception cref="AggregateException">Thrown when failed to download
+        /// <see cref="BlockHash"/>es from a <see cref="BoundPeer"/>.</exception>
+        /// <remarks>
+        /// <para>
+        /// This method uses the tip information for each <see cref="BoundPeer"/> provided with
+        /// <paramref name="peersWithExcerpts"/> whether to make a query in the first place.
+        /// </para>
+        /// <para>
+        /// Returned list of tuples are simply concatenation of query results from different
+        /// <see cref="BoundPeer"/>s with possible duplicates.
+        /// </para>
+        /// <para>
+        /// This implicitly assumes returned <see cref="BlockHashesMsg"/> is properly
+        /// indexed with a valid branching <see cref="BlockHash"/> as its first element and
+        /// skips it when constructing the result as it is not necessary to download.
+        /// As such, returned result is simply a "dump" of possible <see cref="BlockHash"/>es
+        /// to download.
+        /// </para>
+        /// </remarks>
         internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
@@ -972,7 +1008,6 @@ namespace Libplanet.Net
         )
         {
             BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
-            int peersCount = peersWithExcerpts.Count;
             var exceptions = new List<Exception>();
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
@@ -1054,6 +1089,9 @@ namespace Libplanet.Net
                                 dlHash
                             );
 
+                            // FIXME: Probably should check if dlIndex and dlHash is
+                            // a valid hash of possible branching block by checking whether
+                            // it is already stored locally.
                             if (downloaded.Contains(dlHash) || dlHash.Equals(branchingBlock))
                             {
                                 continue;

@@ -216,10 +216,10 @@ namespace Libplanet.Tests.Store
             _store.PruneOutdatedChains();
         }
 
-        public BlockCommit GetBlockCommit(long height)
+        public BlockCommit GetBlockCommit(BlockHash blockHash)
         {
-            Log(nameof(GetBlockCommit), height);
-            return _store.GetBlockCommit(height);
+            Log(nameof(GetBlockCommit), blockHash);
+            return _store.GetBlockCommit(blockHash);
         }
 
         public void PutBlockCommit(BlockCommit commit)
@@ -228,16 +228,16 @@ namespace Libplanet.Tests.Store
             _store.PutBlockCommit(commit);
         }
 
-        public void DeleteBlockCommit(long height)
+        public void DeleteBlockCommit(BlockHash blockHash)
         {
-            Log(nameof(DeleteBlockCommit), height);
-            _store.DeleteBlockCommit(height);
+            Log(nameof(DeleteBlockCommit), blockHash);
+            _store.DeleteBlockCommit(blockHash);
         }
 
-        public IEnumerable<long> GetBlockCommitIndices()
+        public IEnumerable<BlockHash> GetBlockCommitHashes()
         {
-            Log(nameof(GetBlockCommitIndices));
-            return _store.GetBlockCommitIndices();
+            Log(nameof(GetBlockCommitHashes));
+            return _store.GetBlockCommitHashes();
         }
 
         public Guid? GetCanonicalChainId()

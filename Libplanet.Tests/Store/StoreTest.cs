@@ -1172,7 +1172,7 @@ namespace Libplanet.Tests.Store
                 BlockCommit commit = new BlockCommit(height, round, hash, votes);
                 fx.Store.PutBlockCommit(commit);
                 BlockCommit storedCommitVotes =
-                    fx.Store.GetBlockCommit(commit.Height);
+                    fx.Store.GetBlockCommit(commit.BlockHash);
 
                 Assert.Equal(commit, storedCommitVotes);
             }
@@ -1211,9 +1211,11 @@ namespace Libplanet.Tests.Store
                     fx.Store.PutBlockCommit(blockCommit);
                 }
 
-                IEnumerable<long> indices = fx.Store.GetBlockCommitIndices();
+                IEnumerable<BlockHash> indices = fx.Store.GetBlockCommitHashes();
 
-                HashSet<long> indicesFromOperation = indices.ToHashSet();
+                HashSet<long> indicesFromOperation = indices
+                    .Select(hash => fx.Store.GetBlockCommit(hash).Height)
+                    .ToHashSet();
                 HashSet<long> expectedIndices = new HashSet<long>() { 1, 2 };
 
                 Assert.Equal(indicesFromOperation, expectedIndices);
@@ -1241,10 +1243,10 @@ namespace Libplanet.Tests.Store
                                 VoteFlag.PreCommit).Sign(validatorPrivateKey)));
 
                 fx.Store.PutBlockCommit(blockCommit);
-                Assert.NotNull(fx.Store.GetBlockCommit(blockCommit.Height));
+                Assert.NotNull(fx.Store.GetBlockCommit(blockCommit.BlockHash));
 
-                fx.Store.DeleteBlockCommit(blockCommit.Height);
-                Assert.Null(fx.Store.GetBlockCommit(blockCommit.Height));
+                fx.Store.DeleteBlockCommit(blockCommit.BlockHash);
+                Assert.Null(fx.Store.GetBlockCommit(blockCommit.BlockHash));
             }
         }
 

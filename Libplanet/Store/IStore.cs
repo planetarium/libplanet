@@ -353,10 +353,11 @@ namespace Libplanet.Store
         /// <summary>
         /// Gets a <see cref="BlockCommit"/> of given height from store.
         /// </summary>
-        /// <param name="height">A height to get.</param>
-        /// <returns>Returns <see cref="BlockCommit"/> if given height is stored and available,
-        /// otherwise returns <see langword="null"/>.</returns>
-        BlockCommit GetBlockCommit(long height);
+        /// <param name="blockHash">The <see cref="BlockHash"/> of a <see cref="BlockCommit"/>
+        /// to get.</param>
+        /// <returns>Returns <see cref="BlockCommit"/> if given <see cref="BlockHash"/> is stored
+        /// and available, otherwise returns <see langword="null"/>.</returns>
+        BlockCommit GetBlockCommit(BlockHash blockHash);
 
         /// <summary>
         /// Puts a <see cref="BlockCommit"/> to the store.
@@ -367,13 +368,15 @@ namespace Libplanet.Store
         /// <summary>
         /// Deletes a <see cref="BlockCommit"/> of given height from store.
         /// </summary>
-        /// <param name="height">A height to delete from store.</param>
-        void DeleteBlockCommit(long height);
+        /// <param name="blockHash">The <see cref="BlockHash"/> of a <see cref="BlockCommit"/>
+        /// to delete.</param>
+        void DeleteBlockCommit(BlockHash blockHash);
 
         /// <summary>
-        /// Gets every indices (height) of <see cref="BlockCommit"/> from store.
+        /// Gets every <see cref="BlockHash"/>es of <see cref="BlockCommit"/>s from store.
         /// </summary>
-        /// <returns>Returns a long <see cref="IEnumerable{T}"/>.</returns>
-        IEnumerable<long> GetBlockCommitIndices();
+        /// <returns>Returns an <see cref="IEnumerable{T}"/> of <see cref="BlockHash"/>es
+        /// of all <see cref="BlockCommit"/>s.</returns>
+        IEnumerable<BlockHash> GetBlockCommitHashes();
     }
 }

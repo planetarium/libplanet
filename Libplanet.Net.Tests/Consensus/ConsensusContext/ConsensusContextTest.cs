@@ -277,7 +277,7 @@ namespace Libplanet.Net.Tests.Consensus.ConsensusContext
                 lastCommit: TestUtils.CreateBlockCommit(blockChain.Tip));
             consensusContext.Commit(block2, TestUtils.CreateBlockCommit(block2));
             Assert.Equal(blockChain.Tip, block2);
-            Assert.NotNull(blockChain.Store.GetBlockCommit(2));
+            Assert.NotNull(blockChain.Store.GetBlockCommit(block2.Hash));
         }
     }
 }
