@@ -70,7 +70,6 @@ namespace Libplanet.Extensions.Cocona.Commands
                     throw Utils.Error($"Failed to load the block {hash}.");
                 BlockHeader blockHeader =
                     blockDigest.GetHeader();
-                var perceivedTime = store.GetBlockPerceivedTime(hash);
 
                 Console.WriteLine(
                     $"{blockHeader.Index}," +
@@ -78,8 +77,7 @@ namespace Libplanet.Extensions.Cocona.Commands
                     $"{blockHeader.Difficulty}," +
                     $"{blockHeader.Miner}," +
                     $"{blockDigest.TxIds.Length}," +
-                    $"{blockHeader.Timestamp.ToUnixTimeMilliseconds()}," +
-                    $"{perceivedTime?.ToUnixTimeMilliseconds()}");
+                    $"{blockHeader.Timestamp.ToUnixTimeMilliseconds()}");
             }
         }
     }

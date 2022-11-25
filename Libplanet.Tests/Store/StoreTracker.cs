@@ -89,18 +89,6 @@ namespace Libplanet.Tests.Store
             _store.DeleteTxIdBlockHashIndex(txId, blockHash);
         }
 
-        public void SetBlockPerceivedTime(BlockHash blockHash, DateTimeOffset perceivedTime)
-        {
-            Log(nameof(SetBlockPerceivedTime), blockHash, perceivedTime);
-            _store.SetBlockPerceivedTime(blockHash, perceivedTime);
-        }
-
-        public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash)
-        {
-            Log(nameof(GetBlockPerceivedTime), blockHash);
-            return _store.GetBlockPerceivedTime(blockHash);
-        }
-
         public void DeleteChainId(Guid chainId)
         {
             Log(nameof(DeleteChainId), chainId);

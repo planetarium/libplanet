@@ -78,9 +78,6 @@ namespace Libplanet.Explorer.Store
         public void DeleteTxIdBlockHashIndex(TxId txId, BlockHash blockHash) =>
             _store.DeleteTxIdBlockHashIndex(txId, blockHash);
 
-        public DateTimeOffset? GetBlockPerceivedTime(BlockHash blockHash) =>
-            _store.GetBlockPerceivedTime(blockHash);
-
         public BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
             if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
@@ -264,12 +261,6 @@ namespace Libplanet.Explorer.Store
                         addr.ToByteArray(), tx.Id.ToByteArray(), tx.Nonce,
                     }));
         }
-
-        public void SetBlockPerceivedTime(
-            BlockHash blockHash,
-            DateTimeOffset perceivedTime
-        ) =>
-            _store.SetBlockPerceivedTime(blockHash, perceivedTime);
 
         public void StoreTxReferences(TxId txId, in BlockHash blockHash,  long txNonce)
         {
