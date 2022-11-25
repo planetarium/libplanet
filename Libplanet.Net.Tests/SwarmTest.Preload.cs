@@ -370,6 +370,96 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task PreloadWithMaliciousPeer()
+        {
+            const int initialSharedTipHeight = 3;
+            const int maliciousTipHeight = 7;
+            var policy = new BlockPolicy<DumbAction>(getMaxTransactionsPerBlock: _ => 0);
+            var policyB = new BlockPolicy<DumbAction>(getMaxTransactionsPerBlock: _ => 1);
+            var genesis = new MemoryStoreFixture(policy.BlockAction).GenesisBlock;
+
+            var swarmA = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var swarmB = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policyB,
+                genesis: genesis);
+            var swarmC = CreateSwarm(
+                privateKey: new PrivateKey(),
+                policy: policy,
+                genesis: genesis);
+            var chainA = swarmA.BlockChain;
+            var chainB = swarmB.BlockChain;
+            var chainC = swarmC.BlockChain;
+
+            // Setup initial state where all chains share the same blockchain state.
+            for (int i = 1; i <= initialSharedTipHeight; i++)
+            {
+                var block = await chainA.MineBlock(new PrivateKey(), append: false);
+                chainA.Append(block);
+                chainB.Append(block);
+                chainC.Append(block);
+            }
+
+            for (int i = initialSharedTipHeight + 1; i < maliciousTipHeight; i++)
+            {
+                var block = await chainB.MineBlock(new PrivateKey(), append: false);
+                chainB.Append(block);
+                chainC.Append(block);
+            }
+
+            // Setup malicious node sync to.
+            chainB.StageTransaction(Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                chainB.Genesis.Hash,
+                new List<DumbAction>()));
+            var invalidBlock = await chainB.MineBlock(new PrivateKey(), append: false);
+            chainB.Append(invalidBlock);
+
+            Assert.Equal(initialSharedTipHeight, chainA.Tip.Index);
+            Assert.Equal(maliciousTipHeight, chainB.Tip.Index);
+            Assert.Equal(maliciousTipHeight - 1, chainC.Tip.Index);
+
+            try
+            {
+                await StartAsync(swarmA, millisecondsBroadcastBlockInterval: int.MaxValue);
+                await StartAsync(swarmB, millisecondsBroadcastBlockInterval: int.MaxValue);
+                await StartAsync(swarmC, millisecondsBroadcastBlockInterval: int.MaxValue);
+
+                // Checks swarmB cannot make swarmA append a block with invalid block commit.
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                await swarmA.AddPeersAsync(new[] { swarmC.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+                await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                // FIXME: This should fail gracefully.
+                try
+                {
+                    await swarmA.PreloadAsync();
+                }
+                catch (Exception)
+                {
+                }
+
+                Assert.True(chainA.Tip.Index > initialSharedTipHeight);
+                Assert.Equal(chainC.Tip.Index, chainA.Tip.Index);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmC.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task PreloadFromNominer()
         {
             var minerKey = new PrivateKey();
