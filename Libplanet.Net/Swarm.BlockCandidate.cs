@@ -380,6 +380,7 @@ namespace Libplanet.Net
                 return false;
             }
 
+            // FIXME: This somewhat assumes returned blocks are consecutive and sequential.
             IAsyncEnumerable<(Block<T>, BlockCommit)> blocksAsync = GetBlocksAsync(
                 peer,
                 hashes.Select(pair => pair.Item2),

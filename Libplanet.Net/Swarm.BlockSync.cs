@@ -216,6 +216,7 @@ namespace Libplanet.Net
             }
             finally
             {
+                // FIXME: This somewhat assumes returned blocks are consecutive and sequential.
                 if (blocks.Count != 0)
                 {
                     BlockCandidateTable.Add(BlockChain.Tip.Header, blocks);
