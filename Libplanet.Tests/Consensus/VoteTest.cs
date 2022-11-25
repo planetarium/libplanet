@@ -47,14 +47,14 @@ namespace Libplanet.Tests.Consensus
         public void CannotSignWithWrongPrivateKey()
         {
             var hash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
-            var validator = new PrivateKey().PublicKey;
+            var validatorPublicKey = new PrivateKey().PublicKey;
             var key = new PrivateKey();
             var voteMetadata = new VoteMetadata(
                 height: 2,
                 round: 3,
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
-                validator: validator,
+                validatorPublicKey: validatorPublicKey,
                 flag: VoteFlag.PreCommit);
 
             // Cannot sign with Sign method
@@ -77,14 +77,14 @@ namespace Libplanet.Tests.Consensus
                 round: 3,
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
-                validator: key.PublicKey,
+                validatorPublicKey: key.PublicKey,
                 flag: VoteFlag.PreVote);
             var preCommitMetadata = new VoteMetadata(
                 height: 2,
                 round: 3,
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
-                validator: key.PublicKey,
+                validatorPublicKey: key.PublicKey,
                 flag: VoteFlag.PreCommit);
 
             // Works fine.
@@ -109,14 +109,14 @@ namespace Libplanet.Tests.Consensus
                 round: 3,
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
-                validator: key.PublicKey,
+                validatorPublicKey: key.PublicKey,
                 flag: VoteFlag.Null);
             var unknownMetadata = new VoteMetadata(
                 height: 2,
                 round: 3,
                 blockHash: hash,
                 timestamp: DateTimeOffset.UtcNow,
-                validator: key.PublicKey,
+                validatorPublicKey: key.PublicKey,
                 flag: VoteFlag.Unknown);
 
             // Works fine.

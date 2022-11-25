@@ -20,7 +20,7 @@ namespace Libplanet.Consensus
         private const string HeightKey = "height";
         private const string RoundKey = "round";
         private const string TimestampKey = "timestamp";
-        private const string ValidatorKey = "validator";
+        private const string ValidatorPublicKeyKey = "validator_public_key";
         private const string BlockKey = "block";
         private const string ValidRoundKey = "valid_round";
 
@@ -32,7 +32,8 @@ namespace Libplanet.Consensus
         /// <param name="height">a height of given proposal values.</param>
         /// <param name="round">a round of given proposal values.</param>
         /// <param name="timestamp">The time at which the proposal took place.</param>
-        /// <param name="validator">a <see cref="PublicKey"/> of proposing validator.</param>
+        /// <param name="validatorPublicKey">a <see cref="PublicKey"/> of proposing validator.
+        /// </param>
         /// <param name="validRound">a latest valid round at the moment of given proposal.</param>
         /// <param name="marshaledBlock">a marshaled bencodex-encoded <see cref="byte"/> array of
         /// block.</param>
@@ -53,7 +54,7 @@ namespace Libplanet.Consensus
             long height,
             int round,
             DateTimeOffset timestamp,
-            PublicKey validator,
+            PublicKey validatorPublicKey,
             byte[] marshaledBlock,
             int validRound)
         {
@@ -81,8 +82,7 @@ namespace Libplanet.Consensus
             BlockHash = BlockMarshaler.UnmarshalBlockHash(
                 (Dictionary)_codec.Decode(marshaledBlock));
             Timestamp = timestamp;
-            Validator = validator;
-
+            ValidatorPublicKey = validatorPublicKey;
             MarshaledBlock = marshaledBlock;
             ValidRound = validRound;
         }
@@ -96,7 +96,8 @@ namespace Libplanet.Consensus
                     encoded.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
-                validator: new PublicKey(encoded.GetValue<Binary>(ValidatorKey).ByteArray),
+                validatorPublicKey: new PublicKey(
+                    encoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
                 marshaledBlock: encoded.GetValue<Binary>(BlockKey),
                 validRound: encoded.GetValue<Integer>(ValidRoundKey))
         {
@@ -127,7 +128,7 @@ namespace Libplanet.Consensus
         /// <summary>
         /// A <see cref="PublicKey"/> of proposing validator.
         /// </summary>
-        public PublicKey Validator { get; }
+        public PublicKey ValidatorPublicKey { get; }
 
         /// <summary>
         /// A marshaled bencodex-encoded <see cref="byte"/> array of block.
@@ -153,7 +154,7 @@ namespace Libplanet.Consensus
                     .Add(
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                    .Add(ValidatorKey, Validator.Format(compress: true))
+                    .Add(ValidatorPublicKeyKey, ValidatorPublicKey.Format(compress: true))
                     .Add(BlockKey, MarshaledBlock)
                     .Add(ValidRoundKey, ValidRound);
 
@@ -185,7 +186,7 @@ namespace Libplanet.Consensus
                         metadata.Timestamp.ToString(
                             TimestampFormat,
                             CultureInfo.InvariantCulture)) &&
-                Validator.Equals(metadata.Validator) &&
+                ValidatorPublicKey.Equals(metadata.ValidatorPublicKey) &&
                 ValidRound == metadata.ValidRound;
         }
 
@@ -201,7 +202,7 @@ namespace Libplanet.Consensus
                 Round,
                 BlockHash,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                Validator,
+                ValidatorPublicKey,
                 ValidRound);
         }
     }
