@@ -61,6 +61,7 @@ Version PBFT
  -  Added `BlockChain<T>.CleanupBlockCommitStore()` method.  [[#PBFT]]
  -  Added `InvalidBlockCommitException` class.  [[#PBFT]]
  -  Added `BlockChain<T>.ValidateBlockCommit()` method  [[#PBFT]]
+ -  Added `Validator` class. [[#PBFT]]
  -  (Libplanet.Net) Added `IReactor` interface.  [[#PBFT]]
  -  (Libplanet.Net) Added `ConsensusReactor` class which inherits
     `IReactor` interface.  [[#PBFT]]

@@ -33,7 +33,7 @@ namespace Libplanet.Consensus
         /// <summary>
         /// The <see cref="PublicKey"/> of the validator that voted.
         /// </summary>
-        PublicKey Validator { get; }
+        PublicKey ValidatorPublicKey { get; }
 
         /// <summary>
         /// The <see cref="VoteFlag"/> indicating the type of a <see cref="Vote"/>.

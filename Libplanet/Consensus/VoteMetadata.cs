@@ -19,10 +19,10 @@ namespace Libplanet.Consensus
         private const string RoundKey = "round";
         private const string BlockHashKey = "block_hash";
         private const string TimestampKey = "timestamp";
-        private const string ValidatorKey = "validator";
+        private const string ValidatorPublicKeyKey = "validator_public_key";
         private const string FlagKey = "vote_flag";
 
-        private static Codec _codec = new Codec();
+        private static readonly Codec _codec = new Codec();
 
         /// <summary>
         /// Creates a <see cref="VoteMetadata"/> instance.
@@ -31,7 +31,7 @@ namespace Libplanet.Consensus
         /// <param name="round">Round of the vote in given height.</param>
         /// <param name="blockHash"><see cref="BlockHash"/> of the block in vote.</param>
         /// <param name="timestamp">The time at which the voting took place.</param>
-        /// <param name="validator">
+        /// <param name="validatorPublicKey">
         /// <see cref="PublicKey"/> of the validator made the vote.
         /// </param>
         /// <param name="flag"><see cref="VoteFlag"/> for the vote's status.</param>
@@ -52,7 +52,7 @@ namespace Libplanet.Consensus
             int round,
             BlockHash? blockHash,
             DateTimeOffset timestamp,
-            PublicKey validator,
+            PublicKey validatorPublicKey,
             VoteFlag flag)
         {
             if (height < 0)
@@ -76,7 +76,7 @@ namespace Libplanet.Consensus
             Round = round;
             BlockHash = blockHash;
             Timestamp = timestamp;
-            Validator = validator;
+            ValidatorPublicKey = validatorPublicKey;
             Flag = flag;
         }
 
@@ -92,7 +92,8 @@ namespace Libplanet.Consensus
                     encoded.GetValue<Text>(TimestampKey),
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
-                validator: new PublicKey(encoded.GetValue<Binary>(ValidatorKey).ByteArray),
+                validatorPublicKey: new PublicKey(
+                    encoded.GetValue<Binary>(ValidatorPublicKeyKey).ByteArray),
                 flag: (VoteFlag)(long)encoded.GetValue<Integer>(FlagKey))
         {
         }
@@ -111,7 +112,7 @@ namespace Libplanet.Consensus
         public DateTimeOffset Timestamp { get; }
 
         /// <inheritdoc/>
-        public PublicKey Validator { get; }
+        public PublicKey ValidatorPublicKey { get; }
 
         /// <inheritdoc/>
         public VoteFlag Flag { get; }
@@ -127,7 +128,7 @@ namespace Libplanet.Consensus
                     .Add(
                         TimestampKey,
                         Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-                    .Add(ValidatorKey, Validator.Format(compress: true))
+                    .Add(ValidatorPublicKeyKey, ValidatorPublicKey.Format(compress: true))
                     .Add(FlagKey, (long)Flag);
 
                 if (BlockHash is { } blockHash)
@@ -174,7 +175,7 @@ namespace Libplanet.Consensus
                         metadata.Timestamp.ToString(
                             TimestampFormat,
                             CultureInfo.InvariantCulture)) &&
-                Validator.Equals(metadata.Validator) &&
+                ValidatorPublicKey.Equals(metadata.ValidatorPublicKey) &&
                 Flag == metadata.Flag;
         }
 
@@ -190,7 +191,7 @@ namespace Libplanet.Consensus
                 Round,
                 BlockHash,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                Validator,
+                ValidatorPublicKey,
                 Flag);
         }
     }
