@@ -116,7 +116,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> receiverChain = receiverSwarm.BlockChain;
 
             var blocks = new List<Block<DumbAction>>();
-            foreach (int i in Enumerable.Range(0, 11))
+            foreach (int i in Enumerable.Range(0, 12))
             {
                 Block<DumbAction> block = MineNext(
                     previousBlock: i == 0 ? minerChain.Genesis : blocks[i - 1],
@@ -124,7 +124,7 @@ namespace Libplanet.Net.Tests
                     difficulty: 1024
                 ).Evaluate(ChainPrivateKey, minerChain);
                 blocks.Add(block);
-                if (i != 10)
+                if (i != 11)
                 {
                     minerChain.Append(blocks[i]);
                 }
@@ -138,9 +138,9 @@ namespace Libplanet.Net.Tests
                 {
                     actualStates.Add(state);
 
-                    if (actualStates.Count == 9)
+                    if (actualStates.Count == 10)
                     {
-                        minerChain.Append(blocks[10]);
+                        minerChain.Append(blocks[11]);
                     }
                 }
             });
@@ -160,7 +160,7 @@ namespace Libplanet.Net.Tests
                     receiverChain
                 );
 
-                minerSwarm.FindNextHashesChunkSize = 2;
+                minerSwarm.FindNextHashesChunkSize = 3;
                 await receiverSwarm.PreloadAsync(progress);
 
                 // Await 1 second to make sure all progresses is reported.
@@ -176,6 +176,7 @@ namespace Libplanet.Net.Tests
                     "Receiver chain",
                     receiverChain
                 );
+
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
                 var expectedStates = new List<PreloadState>();
@@ -198,7 +199,7 @@ namespace Libplanet.Net.Tests
                     var state = new BlockDownloadState
                     {
                         ReceivedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        TotalBlockCount = i == 10 || i == 11 ? 12 : 11,
                         ReceivedBlockCount = i,
                         SourcePeer = minerSwarm.AsPeer,
                     };
@@ -211,7 +212,7 @@ namespace Libplanet.Net.Tests
                     var state = new BlockVerificationState
                     {
                         VerifiedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        TotalBlockCount = i == 10 || i == 11 ? 12 : 11,
                         VerifiedBlockCount = i,
                     };
                     expectedStates.Add(state);
@@ -223,7 +224,7 @@ namespace Libplanet.Net.Tests
                     var state = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
-                        TotalBlockCount = 11,
+                        TotalBlockCount = 12,
                         ExecutedBlockCount = i,
                     };
                     expectedStates.Add(state);
@@ -711,7 +712,7 @@ namespace Libplanet.Net.Tests
                 await minerChain.MineBlock(minerKey);
             }
 
-            minerSwarm.FindNextHashesChunkSize = 1;
+            minerSwarm.FindNextHashesChunkSize = 2;
             try
             {
                 await StartAsync(minerSwarm);
