@@ -8,8 +8,14 @@ To be released.
 
 ### Deprecated APIs
 
+ -  Removed `BlockLocator(Func<long, BlockHash?>, Func<BlockHash, long>, int)`
+    constructor.  Use `BlockLocator.Create()` static method instead.
+    [[#2580], [#2584]]
+
 ### Backward-incompatible API changes
 
+ -  Changed `BlockLocator` to throw an `ArgumentException` if an empty set of
+    `BlockHash`es are given during construction.  [[#2584]]
  -  `BlockChain<T>()` now explicitly requires both `store` and `stateStore`
     arguments to be not `null`.  [[#2609]]
  -  `BlockChain<T>.Swap()` now throws an `InvalidOperationException` if called
@@ -60,6 +66,7 @@ To be released.
     [[#2474], [#2505]]
  -  (Libplanet.Explorer) Added `actionsLogsList` field to `TxResultType`.
     [[#2474], [#2505]]
+ -  Added `BlockLocator.Create()` static method.  [[#2584]]
  -  Added `PolicyBlockActionGetter` delegator type.  [[#2646]]
  -  Added `IActionTypeLoader.LoadAllActionTypes()` method.  [[#2646]]
      -  Added `StaticActionTypeLoader.LoadAllActionTypes()` method.
@@ -77,6 +84,14 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain<T>.FindNextHashes()` to return at most `count`
+    number of `BlockHash`es regardless of the result.
+    `BlockChain<T>`. [[#2581], [#2584]]
+ -  Changed `BlockChain<T>.FindNextHashes()` to return zero `BlockHash`es
+    if no branch point `BlockHash` is found instead of returning
+    `BlockHash`es starting with the genesis `BlockHash`.  [[#2582], [#2584]]
+ -  Chnaged the behavior of `BlockLocator` index selection and sampling when
+    creating an instance.  [[#2583], [#2584]]
  -  Changed the default `VolatileStagePolicy<T>.Lifetime` from 3 hours
     to 10 minutes.  [[#2718]]
 
@@ -100,6 +115,11 @@ To be released.
 
 [#2474]: https://github.com/planetarium/libplanet/discussions/2474
 [#2505]: https://github.com/planetarium/libplanet/pull/2505
+[#2580]: https://github.com/planetarium/libplanet/issues/2580
+[#2581]: https://github.com/planetarium/libplanet/issues/2581
+[#2582]: https://github.com/planetarium/libplanet/issues/2582
+[#2583]: https://github.com/planetarium/libplanet/issues/2583
+[#2584]: https://github.com/planetarium/libplanet/pull/2584
 [#2609]: https://github.com/planetarium/libplanet/pull/2609
 [#2619]: https://github.com/planetarium/libplanet/pull/2619
 [#2646]: https://github.com/planetarium/libplanet/pull/2646
