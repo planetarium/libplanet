@@ -817,8 +817,8 @@ namespace Libplanet.Tests.Blockchain
                 blocks[8].Hash,
                 blocks[7].Hash,
                 blocks[6].Hash,
-                blocks[4].Hash,
-                blocks[0].Hash,
+                blocks[5].Hash,
+                blocks[3].Hash,
                 _blockChain.Genesis.Hash,
             });
 

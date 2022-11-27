@@ -7,7 +7,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// A class that contains the hashes for a series of blocks.
+    /// A class that contains <see cref="BlockHash"/>es for a series of blocks.
     /// </summary>
     public class BlockLocator : IEnumerable<BlockHash>
     {
@@ -40,19 +40,19 @@ namespace Libplanet.Blockchain
         ///     <c>i_0 = startIndex</c>
         ///   </description></item>
         ///   <item><description>
-        ///     <c>i_(n + 1) = max(i_n - 1, 0)</c> if <c>n &lt; sampleAfter</c> and
-        ///     <c>i_n &gt; 0</c>
+        ///     <c>i_k = max(i_(k - 1) - 1, 0)</c> for <c>0 &lt; k</c> and  <c>k &lt;= s</c>
         ///   </description></item>
         ///   <item><description>
-        ///     <c>i_(n + 1) = max(i_n - 2 * (i_(n - 1) - i_n), 0)</c> if
-        ///     <c>sampleAfter &lt;= n</c> and <c>i_n &gt; 0</c>
+        ///     <c>i_k = max(i_(k - 1) - 2^(k - 1 - s), 0)</c> for <c>0 &lt; k</c>
+        ///     and <c>s &lt; k</c>
         ///   </description></item>
         /// </list>
-        /// where the sequence terminates after index <c>i_n</c> reaches zero or
-        /// the <see cref="BlockHash"/> returned by <paramref name="indexToBlockHash"/>
-        /// for <c>i_n</c> is <see langword="null"/>, in which case the <see cref="BlockHash"/>
-        /// corresponding to index <c>0</c> (presumably a <see cref="BlockHash"/> of the
-        /// genesis <see cref="Block{T}"/>) is added at the end.
+        /// where <c>s = max(sampleAfter, 0)</c> and the sequence terminates after index <c>i_k</c>
+        /// reaches zero or the <see cref="BlockHash"/> returned by
+        /// <paramref name="indexToBlockHash"/> for <c>i_k</c> is <see langword="null"/>,
+        /// in which case the <see cref="BlockHash"/> corresponding to index <c>0</c>
+        /// (presumably a <see cref="BlockHash"/> of the genesis <see cref="Block{T}"/>)
+        /// is added at the end.
         /// </para>
         /// </summary>
         /// <param name="startIndex">The starting index.</param>
@@ -128,7 +128,7 @@ namespace Libplanet.Blockchain
             {
                 yield return currentIndex;
                 currentIndex = Math.Max(currentIndex - step, 0);
-                step = startIndex - currentIndex < sampleAfter ? step : step * 2;
+                step = startIndex - currentIndex <= sampleAfter ? step : step * 2;
             }
 
             yield return currentIndex;
