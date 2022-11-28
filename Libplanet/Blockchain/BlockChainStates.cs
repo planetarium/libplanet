@@ -6,7 +6,6 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Store;
 using static Libplanet.Blockchain.KeyConverters;
 
@@ -144,7 +143,7 @@ namespace Libplanet.Blockchain
                     _stateStore.GetStates(stateRootHash, new[] { ValidatorSetKey });
                 return values.Count > 0 && values.All(v => v is Binary)
                     ? new ValidatorSet(new List(values.OfType<IValue>()))
-                    : new ValidatorSet(new List<PublicKey>());
+                    : new ValidatorSet();
             }
 
             if (!(_blockChain is null))

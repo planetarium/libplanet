@@ -422,5 +422,20 @@ namespace Libplanet.Action
                 UpdatedTotalSupply = UpdatedTotalSupply,
                 UpdatedValidatorSet = updatedValidatorSet,
             };
+
+        [Pure]
+        protected virtual AccountStateDeltaImpl UpdateValidatorSet(
+            ValidatorSet updatedValidatorSet
+        ) =>
+            new AccountStateDeltaImpl(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
+            {
+                // FIXME: Should copy updated fungibles, total supplies and states?
+                UpdatedValidatorSet = updatedValidatorSet,
+            };
     }
 }
