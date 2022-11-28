@@ -47,8 +47,7 @@ namespace Libplanet.Tests.Action
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxTransactionsBytes: _ => 50 * 1024,
-                getValidatorSet: _ => ValidatorSet);
+                getMaxTransactionsBytes: _ => 50 * 1024);
             _storeFx = new MemoryStoreFixture(_policy.BlockAction);
             _txFx = new TxFixture(null);
         }
@@ -126,8 +125,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<EvaluateTestAction>(
-                policy: new BlockPolicy<EvaluateTestAction>(
-                    getValidatorSet: idx => ValidatorSet),
+                policy: new BlockPolicy<EvaluateTestAction>(),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction<EvaluateTestAction>.Create(
@@ -165,8 +163,7 @@ namespace Libplanet.Tests.Action
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = TestUtils.MakeBlockChain<ThrowException>(
-                policy: new BlockPolicy<ThrowException>(
-                    getValidatorSet: idx => ValidatorSet),
+                policy: new BlockPolicy<ThrowException>(),
                 store: store,
                 stateStore: stateStore);
             var tx = Transaction<ThrowException>.Create(
@@ -233,6 +230,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 genesis.Miner);
 
             // ToList() is required for realization.
@@ -306,6 +304,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 genesis.Miner);
             Assert.Empty(
                 actionEvaluator.EvaluateTxs(
@@ -352,6 +351,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block1.Miner);
             var evals = actionEvaluator.EvaluateTxs(
                 block1,
@@ -390,6 +390,7 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountStateGetter,
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block1.Miner);
             ActionEvaluation[] evals1 =
                 actionEvaluator.EvaluateBlock(block1, previousStates).ToArray();
@@ -478,6 +479,7 @@ namespace Libplanet.Tests.Action
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block2.Miner);
             evals = actionEvaluator.EvaluateTxs(
                 block2,
@@ -530,6 +532,7 @@ namespace Libplanet.Tests.Action
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block2.Miner);
             var evals2 = actionEvaluator.EvaluateBlock(block2, previousStates).ToArray();
             IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
@@ -606,6 +609,7 @@ namespace Libplanet.Tests.Action
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                        ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                         tx.Signer),
                     rehearsal: rehearsal).ToImmutableArray();
 
@@ -686,6 +690,7 @@ namespace Libplanet.Tests.Action
                         ActionEvaluator<DumbAction>.NullAccountStateGetter,
                         ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                         ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                        ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                         tx.Signer),
                     rehearsal: rehearsal);
                 Assert.Equal(
@@ -742,6 +747,7 @@ namespace Libplanet.Tests.Action
                     ActionEvaluator<DumbAction>.NullAccountStateGetter,
                     ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                     ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                    ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                     tx.Signer),
                 rehearsal: false);
 
@@ -895,11 +901,14 @@ namespace Libplanet.Tests.Action
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter;
             TotalSupplyGetter totalSupplyGetter =
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter;
+            ValidatorSetGetter validatorSetGetter =
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter;
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 block.ProtocolVersion,
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 genesis.Miner);
             var evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 genesis,
@@ -929,6 +938,7 @@ namespace Libplanet.Tests.Action
                 accountStateGetter,
                 accountBalanceGetter,
                 totalSupplyGetter,
+                validatorSetGetter,
                 block.Miner);
             evaluation = chain.ActionEvaluator.EvaluatePolicyBlockAction(
                 block,
@@ -953,6 +963,7 @@ namespace Libplanet.Tests.Action
                 addresses => chain.GetStates(addresses, block.PreviousHash),
                 ActionEvaluator<DumbAction>.NullAccountBalanceGetter,
                 ActionEvaluator<DumbAction>.NullTotalSupplyGetter,
+                ActionEvaluator<DumbAction>.NullValidatorSetGetter,
                 block.Miner);
             var txEvaluations = chain.ActionEvaluator.EvaluateTxs(
                 block,
@@ -1101,8 +1112,7 @@ namespace Libplanet.Tests.Action
         private void CheckGenesisHashInAction()
         {
             var chain = MakeBlockChain<EvaluateTestAction>(
-                    policy: new BlockPolicy<EvaluateTestAction>(
-                        getValidatorSet: idx => ValidatorSet),
+                    policy: new BlockPolicy<EvaluateTestAction>(),
                     store: _storeFx.Store,
                     stateStore: _storeFx.StateStore);
             var privateKey = new PrivateKey();

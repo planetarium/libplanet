@@ -179,7 +179,7 @@ public class StateQueryTest
         // TODO: Add test case for this
         public ValidatorSet GetValidatorSet(BlockHash offset, ValidatorSetStateCompleter<T> stateCompleter)
         {
-            return new ValidatorSet(new List<PublicKey>());
+            return new ValidatorSet();
         }
     }
 }

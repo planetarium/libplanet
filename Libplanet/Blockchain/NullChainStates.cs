@@ -4,7 +4,6 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
-using Libplanet.Crypto;
 
 namespace Libplanet.Blockchain
 {
@@ -50,7 +49,7 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             ValidatorSetStateCompleter<T> stateCompleter)
         {
-            return new ValidatorSet(new List<PublicKey>());
+            return new ValidatorSet();
         }
     }
 }

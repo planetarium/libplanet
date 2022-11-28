@@ -6,6 +6,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -19,7 +20,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
     public class DelayedActionRendererTest : DelayedRendererTest
     {
         private static readonly IAccountStateDelta _emptyStates =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
+            new AccountStateDeltaImpl(
+                _ => null,
+                (_, __) => default,
+                _ => default,
+                () => new ValidatorSet(),
+                default);
 
         public DelayedActionRendererTest(ITestOutputHelper output)
             : base(output)
@@ -513,9 +519,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact(Skip = "No reorg in PBFT.")]
         public void DelayedRendererInReorg()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
@@ -643,9 +647,7 @@ namespace Libplanet.Tests.Blockchain.Renderers
         [Fact(Skip = "No reorg in PBFT.")]
         public void DelayedRendererAfterReorg()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var fx = new MemoryStoreFixture(policy.BlockAction);
             var blockLogs = new List<(Block<DumbAction> OldTip, Block<DumbAction> NewTip)>();
             var reorgLogs = new List<(
