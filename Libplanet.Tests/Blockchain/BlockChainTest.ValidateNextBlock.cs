@@ -159,8 +159,7 @@ namespace Libplanet.Tests.Blockchain
         {
             IKeyValueStore stateKeyValueStore = new MemoryKeyValueStore();
             var policy = new BlockPolicy<DumbAction>(
-                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000),
-                getValidatorSet: idx => TestUtils.ValidatorSet
+                blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000)
             );
             var stateStore = new TrieStateStore(stateKeyValueStore);
             IStore store = new MemoryStore();
@@ -196,8 +195,7 @@ namespace Libplanet.Tests.Blockchain
 
             var policyWithBlockAction = new BlockPolicy<DumbAction>(
                 new SetStatesAtBlock(default, (Text)"foo", 1),
-                policy.BlockInterval,
-                getValidatorSet: idx => TestUtils.ValidatorSet
+                policy.BlockInterval
             );
             var chain2 = new BlockChain<DumbAction>(
                 policyWithBlockAction,

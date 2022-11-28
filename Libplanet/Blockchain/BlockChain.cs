@@ -1646,7 +1646,7 @@ namespace Libplanet.Blockchain
 
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
-            if (!Policy.GetValidatorSet(block.Index).ValidateBlockCommitValidators(blockCommit))
+            if (!GetValidatorSet(block.PreviousHash).ValidateBlockCommitValidators(blockCommit))
             {
                 return new InvalidBlockCommitException(
                     "BlockCommit has different validator set with policy's validator set.");
@@ -1760,7 +1760,7 @@ namespace Libplanet.Blockchain
             }
 
             if (block.LastCommit is { } commit &&
-                !Policy.GetValidatorSet(commit.Height).ValidateBlockCommitValidators(commit))
+                !GetValidatorSet(commit.BlockHash).ValidateBlockCommitValidators(commit))
             {
                 return new InvalidBlockLastCommitException(
                     "The validator set of the block's lastCommit does not match " +
