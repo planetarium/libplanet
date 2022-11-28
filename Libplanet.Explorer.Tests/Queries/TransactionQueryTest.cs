@@ -176,8 +176,7 @@ public class TransactionQueryTest
                 _ => true,
                 stateStore);
             BlockChain = new BlockChain<T>(
-                new BlockPolicy<T>(
-                    getValidatorSet: index => Libplanet.Tests.TestUtils.ValidatorSet),
+                new BlockPolicy<T>(),
                 new VolatileStagePolicy<T>(),
                 Store,
                 stateStore,

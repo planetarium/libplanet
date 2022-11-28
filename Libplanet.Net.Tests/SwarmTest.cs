@@ -445,9 +445,7 @@ namespace Libplanet.Net.Tests
         public async Task GetBlocks()
         {
             var keyA = new PrivateKey();
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
 
@@ -519,9 +517,7 @@ namespace Libplanet.Net.Tests
             var keyA = new PrivateKey();
             var keyB = new PrivateKey();
 
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
             Swarm<DumbAction> swarmA = CreateSwarm(keyA, genesis: genesis, policy: policy);
@@ -585,9 +581,7 @@ namespace Libplanet.Net.Tests
         {
             var keyB = new PrivateKey();
 
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: idx => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             Block<DumbAction> genesis = BlockChain<DumbAction>.ProposeGenesisBlock(
                 privateKey: new PrivateKey(), blockAction: policy.BlockAction);
             Swarm<DumbAction> swarmA = CreateSwarm(genesis: genesis, policy: policy);
@@ -854,9 +848,7 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var policy = new BlockPolicy<DumbAction>(
-                new MinerReward(1),
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             var renderer = new RecordingActionRenderer<DumbAction>();
             var chain = MakeBlockChain(
                 policy,
@@ -1212,12 +1204,9 @@ namespace Libplanet.Net.Tests
             PrivateKey keyC = PrivateKey.FromString(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
-            var policyA = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
-            var policyB = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
+            var policyA = new NullBlockPolicy<DumbAction>();
+            var policyB = new NullBlockPolicy<DumbAction>();
             Block<DumbAction> genesis = ProposeGenesisBlock<DumbAction>(
                 keyC,
                 stateRootHash: MerkleTrie.EmptyRootHash);
@@ -1339,8 +1328,7 @@ namespace Libplanet.Net.Tests
             BlockChain<DumbAction> MakeGenesisChain(
                 IStore store, IStateStore stateStore, Block<DumbAction> genesisBlock) =>
                 new BlockChain<DumbAction>(
-                    new BlockPolicy<DumbAction>(
-                        getValidatorSet: idx => ValidatorSet),
+                    new BlockPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,

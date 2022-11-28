@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Store
                     : (HashDigest<SHA256>?)null;
             Miner = TestUtils.GenesisMiner;
             GenesisBlock = TestUtils.ProposeGenesis<DumbAction>(
-                Miner.PublicKey
+                miner: Miner.PublicKey
             ).Evaluate(
                 privateKey: Miner,
                 blockAction: blockAction,

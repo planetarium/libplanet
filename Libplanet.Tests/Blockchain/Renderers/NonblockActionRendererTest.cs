@@ -4,6 +4,7 @@ using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Tests.Common.Action;
 using xRetry;
 using Xunit;
@@ -15,7 +16,12 @@ namespace Libplanet.Tests.Blockchain.Renderers
         private static IAction _action = new DumbAction();
 
         private static IAccountStateDelta _stateDelta =
-            new AccountStateDeltaImpl(_ => null, (_, __) => default, _ => default, default);
+            new AccountStateDeltaImpl(
+                _ => null,
+                (_, __) => default,
+                _ => default,
+                () => new ValidatorSet(),
+                default);
 
         private static IActionContext _actionContext =
             new ActionContext(default, default, default, default, 1, _stateDelta, default);

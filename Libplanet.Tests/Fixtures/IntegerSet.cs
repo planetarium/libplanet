@@ -59,8 +59,7 @@ namespace Libplanet.Tests.Fixtures
                 .OrderBy(tx => tx.Id)
                 .ToImmutableArray();
             Miner = new PrivateKey();
-            policy = policy ?? new NullBlockPolicy<Arithmetic>(
-                getValidatorSet: _ => TestUtils.ValidatorSet);
+            policy = policy ?? new NullBlockPolicy<Arithmetic>();
             Store = new MemoryStore();
             KVStore = new MemoryKeyValueStore();
             StateStore = new TrieStateStore(KVStore);
@@ -164,6 +163,7 @@ namespace Libplanet.Tests.Fixtures
                 a => Chain.GetStates(a, offset),
                 (a, c) => Chain.GetBalance(a, c, offset),
                 c => Chain.GetTotalSupply(c),
+                () => Chain.GetValidatorSet(),
                 signer
             );
         }

@@ -18,9 +18,15 @@ namespace Libplanet.Action
             AccountStateGetter accountStateGetter,
             AccountBalanceGetter accountBalanceGetter,
             TotalSupplyGetter totalSupplyGetter,
+            ValidatorSetGetter validatorSetGetter,
             Address signer
         )
-            : base(accountStateGetter, accountBalanceGetter, totalSupplyGetter, signer)
+            : base(
+                accountStateGetter,
+                accountBalanceGetter,
+                totalSupplyGetter,
+                validatorSetGetter,
+                signer)
         {
         }
 
@@ -69,7 +75,12 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateStates(
             IImmutableDictionary<Address, IValue> updatedStates
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
+            new AccountStateDeltaImplV0(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
             {
                 UpdatedStates = updatedStates,
                 UpdatedFungibles = UpdatedFungibles,
@@ -79,7 +90,12 @@ namespace Libplanet.Action
         protected override AccountStateDeltaImpl UpdateFungibleAssets(
             IImmutableDictionary<(Address, Currency), BigInteger> updatedFungibleAssets
         ) =>
-            new AccountStateDeltaImplV0(StateGetter, BalanceGetter, TotalSupplyGetter, Signer)
+            new AccountStateDeltaImplV0(
+                StateGetter,
+                BalanceGetter,
+                TotalSupplyGetter,
+                ValidatorSetGetter,
+                Signer)
             {
                 UpdatedStates = UpdatedStates,
                 UpdatedFungibles = updatedFungibleAssets,

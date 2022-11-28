@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
-using Libplanet.Crypto;
 using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
@@ -32,7 +29,6 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerSignerPerBlock;
-        private readonly Func<long, ValidatorSet> _getValidatorSet;
 
         /// <summary>
         /// <para>
@@ -74,8 +70,6 @@ namespace Libplanet.Blockchain.Policies
         /// a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.
         /// Goes to <see cref="GetMaxTransactionsPerSignerPerBlock"/>.  Set to
         /// <see cref="GetMaxTransactionsPerBlock"/> by default.</param>
-        /// <param name="getValidatorSet">The function determining the set of validators
-        /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
         /// <param name="nativeTokens">A fixed set of <see cref="Currency"/> objects that are
         /// supported by the blockchain as first-class citizens.  Empty by default.</param>
         public BlockPolicy(
@@ -89,7 +83,6 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMinTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerBlock = null,
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
-            Func<long, ValidatorSet>? getValidatorSet = null,
             IImmutableSet<Currency>? nativeTokens = null)
         {
             BlockAction = blockAction;
@@ -100,7 +93,6 @@ namespace Libplanet.Blockchain.Policies
             _getMaxTransactionsPerBlock = getMaxTransactionsPerBlock ?? (_ => 100);
             _getMaxTransactionsPerSignerPerBlock = getMaxTransactionsPerSignerPerBlock
                 ?? GetMaxTransactionsPerBlock;
-            _getValidatorSet = getValidatorSet ?? (_ => new ValidatorSet(new List<PublicKey>()));
 
             _validateNextBlockTx = validateNextBlockTx ?? ((_, __) => null);
             if (validateNextBlock is { } vnb)
@@ -211,9 +203,5 @@ namespace Libplanet.Blockchain.Policies
         [Pure]
         public int GetMaxTransactionsPerSignerPerBlock(long index)
             => _getMaxTransactionsPerSignerPerBlock(index);
-
-        /// <inheritdoc/>
-        [Pure]
-        public ValidatorSet GetValidatorSet(long index) => _getValidatorSet(index);
     }
 }

@@ -409,29 +409,20 @@ If omitted (default) explorer only the local blockchain store.")]
             public long GetMaxTransactionsBytes(long index) =>
                 _impl.GetMaxTransactionsBytes(index);
 
-            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks)
-            {
-                return 0;
-            }
+            public long GetNextBlockDifficulty(BlockChain<NullAction> blocks) => 0;
 
             public TxPolicyViolationException ValidateNextBlockTx(
-                BlockChain<NullAction> blockChain, Transaction<NullAction> transaction)
-            {
-                return _impl.ValidateNextBlockTx(blockChain, transaction);
-            }
+                BlockChain<NullAction> blockChain,
+                Transaction<NullAction> transaction) =>
+                _impl.ValidateNextBlockTx(blockChain, transaction);
 
             public BlockPolicyViolationException ValidateNextBlock(
-                BlockChain<NullAction> blockChain, Block<NullAction> nextBlock
-            )
-            {
-                return _impl.ValidateNextBlock(blockChain, nextBlock);
-            }
+                BlockChain<NullAction> blockChain,
+                Block<NullAction> nextBlock
+            ) => _impl.ValidateNextBlock(blockChain, nextBlock);
 
             public int GetMaxTransactionsPerSignerPerBlock(long index) =>
                 _impl.GetMaxTransactionsPerSignerPerBlock(index);
-
-            public ValidatorSet GetValidatorSet(long index) =>
-                new ValidatorSet(new List<PublicKey>());
         }
 
         internal class Startup : IBlockChainContext<NullAction>
