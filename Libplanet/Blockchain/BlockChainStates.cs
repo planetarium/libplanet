@@ -6,6 +6,7 @@ using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
 using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using static Libplanet.Blockchain.KeyConverters;
 
@@ -130,6 +131,33 @@ namespace Libplanet.Blockchain
             }
 
             throw new IncompleteBlockStatesException(offset);
+        }
+
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter)
+        {
+            HashDigest<SHA256>? stateRootHash = _store.GetStateRootHash(offset);
+            if (stateRootHash is { } h && _stateStore.ContainsStateRoot(h))
+            {
+                IReadOnlyList<IValue?> values =
+                    _stateStore.GetStates(stateRootHash, new[] { ValidatorSetKey });
+                return values.Count > 0 && values.All(v => v is Binary)
+                    ? new ValidatorSet(new List(values.OfType<IValue>()))
+                    : new ValidatorSet(new List<PublicKey>());
+            }
+
+            if (!(_blockChain is null))
+            {
+                return stateCompleter(_blockChain, offset);
+            }
+
+            throw new IncompleteBlockStatesException(offset);
+        }
+
+        public ValidatorSet GetValidatorSet(TotalSupplyStateCompleter<T> stateCompleter)
+        {
+            throw new System.NotSupportedException();
         }
 
         internal void Bind(BlockChain<T> blockChain)
