@@ -39,7 +39,7 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         private readonly ConcurrentDictionary<TxId, Transaction<T>> _staged;
-        private readonly ConcurrentBag<TxId> _ignored;
+        private readonly HashSet<TxId> _ignored;
         private readonly ReaderWriterLockSlim _lock;
         private readonly ILogger _logger;
 
@@ -62,7 +62,7 @@ namespace Libplanet.Blockchain.Policies
             _logger = Log.ForContext<VolatileStagePolicy<T>>();
             Lifetime = lifetime;
             _staged = new ConcurrentDictionary<TxId, Transaction<T>>();
-            _ignored = new ConcurrentBag<TxId>();
+            _ignored = new HashSet<TxId>();
             _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
