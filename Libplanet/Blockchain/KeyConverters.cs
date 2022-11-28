@@ -4,6 +4,8 @@ namespace Libplanet.Blockchain
 {
     internal static class KeyConverters
     {
+        internal const string ValidatorSetKey = "___";
+
         internal static string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
 
         internal static string ToFungibleAssetKey(Address address, Currency currency) =>
