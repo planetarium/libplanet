@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using GraphQL;
 using GraphQL.Types;
@@ -15,60 +16,44 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType()
         {
-            Field<NonNullGraphType<IdGraphType>>(
-                name: "Id",
-                description: "A unique identifier derived from this transaction content.",
-                resolve: ctx => ctx.Source.Id.ToString());
-            Field<NonNullGraphType<LongGraphType>>(
-                name: "Nonce",
-                description: "The number of previous transactions committed by the signer of " +
-                    "this tx.",
-                resolve: x => x.Source.Nonce
-            );
-            Field(
-                type: typeof(NonNullGraphType<AddressType>),
-                name: "Signer",
-                description: "An address of the account who signed this transaction.",
-                resolve: x => x.Source.Signer
-            );
-            Field<NonNullGraphType<ByteStringType>>(
-                name: "PublicKey",
-                description: "A PublicKey of the account who signed this transaction.",
-                resolve: ctx => ctx.Source.PublicKey.Format(true)
-            );
+            Field<NonNullGraphType<IdGraphType>>("Id")
+                .Description("A unique identifier derived from this transaction content.")
+                .Resolve(ctx => ctx.Source.Id.ToString());
+            Field<NonNullGraphType<LongGraphType>>("Nonce")
+                .Description("The number of previous transactions committed by the signer of " +
+                    "this tx.")
+                .Resolve(ctx => ctx.Source.Nonce);
+            Field<NonNullGraphType<AddressType>>("Signer")
+                .Description("An address of the account who signed this transaction.")
+                .Resolve(ctx => ctx.Source.Signer);
+            Field<NonNullGraphType<ByteStringType>>("PublicKey")
+                .Description("A PublicKey of the account who signed this transaction.")
+                .Resolve(ctx => ctx.Source.PublicKey.Format(true));
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>(
-                name: "UpdatedAddresses",
-                description: "Addresses whose states were affected by Actions.",
-                resolve: x => x.Source.UpdatedAddresses
-            );
-            Field<NonNullGraphType<ByteStringType>>(
-                name: "Signature",
-                description: "A digital signature of the content of this transaction.",
-                resolve: x => x.Source.Signature
-            );
-            Field<NonNullGraphType<DateTimeOffsetGraphType>>(
-                name: "Timestamp",
-                description: "The time this transaction was created and signed.",
-                resolve: x => x.Source.Timestamp
-            );
-            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType<T>>>>>(
-                name: "Actions",
-                description: "A list of actions in this transaction."
-            );
-            Field<NonNullGraphType<StringGraphType>>(
-                name: "SerializedPayload",
-                description: "A serialized tx payload in base64 string.",
-                resolve: x =>
+                "UpdatedAddresses")
+                .Description("Addresses whose states were affected by Actions.")
+                .Resolve(ctx => ctx.Source.UpdatedAddresses);
+            Field<NonNullGraphType<ByteStringType>>("Signature")
+                .Description("A digital signature of the content of this transaction.")
+                .Resolve(ctx => ctx.Source.Signature);
+            Field<NonNullGraphType<DateTimeOffsetGraphType>>("Timestamp")
+                .Description("The time this transaction was created and signed.")
+                .Resolve(ctx => ctx.Source.Timestamp);
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType<T>>>>>("Actions")
+                .Description("A list of actions in this transaction.")
+                .Resolve(ctx => (IEnumerable<T>?)ctx.Source.CustomActions ?? Enumerable.Empty<T>());
+            Field<NonNullGraphType<StringGraphType>>("SerializedPayload")
+                .Description("A serialized tx payload in base64 string.")
+                .Resolve(ctx =>
                 {
-                    byte[] bytes = x.Source.Serialize(true);
+                    byte[] bytes = ctx.Source.Serialize(true);
                     return Convert.ToBase64String(bytes);
                 });
 
             // The block including the transaction. - Only RichStore supports.
-            Field<ListGraphType<NonNullGraphType<BlockType<T>>>>(
-                name: "BlockRef",
-                description: "The block including the transaction.",
-                resolve: ctx =>
+            Field<ListGraphType<NonNullGraphType<BlockType<T>>>>("BlockRef")
+                .Description("The block including the transaction.")
+                .Resolve(ctx =>
                 {
                     // FIXME: use context with DI.
                     const string storeKey = nameof(IBlockChainContext<T>.Store);

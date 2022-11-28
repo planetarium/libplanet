@@ -22,17 +22,16 @@ namespace Libplanet.Explorer.Queries
         public ExplorerQuery(IBlockChainContext<T> chainContext)
         {
             ChainContext = chainContext;
-            Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
-            Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
-            Field<StateQuery<T>>("stateQuery", resolve: context => new { });
-            Field<NonNullGraphType<NodeStateType<T>>>(
-                "nodeState",
-                resolve: context => chainContext
-            );
-            Field<NonNullGraphType<BlockPolicyType<T>>>(
-                "blockPolicy",
-                resolve: context => chainContext.BlockChain.Policy
-            );
+            Field<BlockQuery<T>>("blockQuery")
+                .Resolve(context => new { });
+            Field<TransactionQuery<T>>("transactionQuery")
+                .Resolve(context => new { });
+            Field<StateQuery<T>>("stateQuery")
+                .Resolve(context => new { });
+            Field<NonNullGraphType<NodeStateType<T>>>("nodeState")
+                .Resolve(context => chainContext);
+            Field<NonNullGraphType<BlockPolicyType<T>>>("blockPolicy")
+                .Resolve(context => chainContext.BlockChain.Policy);
 
             Name = "ExplorerQuery";
         }

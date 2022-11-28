@@ -1,7 +1,7 @@
 using System;
 using Bencodex;
-using GraphQL.Language.AST;
 using GraphQL.Types;
+using GraphQLParser.AST;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -37,14 +37,7 @@ namespace Libplanet.Explorer.GraphTypes
             };
         }
 
-        public override object? ParseLiteral(IValue? value)
-        {
-            if (value is StringValue)
-            {
-                return ParseValue(value.Value);
-            }
-
-            return null;
-        }
+        public override object? ParseLiteral(GraphQLValue? value) =>
+            value is GraphQLStringValue v ? ParseValue((string)v.Value) : null;
     }
 }

@@ -10,7 +10,7 @@ namespace Libplanet.Explorer.Schemas
         where T : IAction, new()
     {
         public LibplanetExplorerSchema(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+            : base(serviceProvider, new[] { ConfigureLibplanetExplorerSchema.Instance })
         {
             Query = serviceProvider.GetRequiredService<ExplorerQuery<T>>();
         }
