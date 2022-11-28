@@ -3,6 +3,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 
 namespace Libplanet.Blockchain
 {
@@ -85,5 +86,9 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         );
+
+        ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter);
     }
 }
