@@ -67,6 +67,9 @@ To be released.
 
  -  Now `planet` can be installed using Homebrew on macOS: `brew install
     planetarium/brew/planet`.  [[#2555]]
+ -  Now `planet` supports command-line completion for bash and zsh.
+    See also [Cocona's manual on configuring command-line
+    completion][Cocona command-line completion].  [[#2586]]
  -  (Libplanet.Explorer) Added `serve` subcommand.  [[#2563]]
      -  (Libplanet.Explorer) Deprecated primary command.
         It will be obsoleted in 0.47.0 release.
@@ -75,6 +78,7 @@ To be released.
 
 [BouncyCastle.NetCore 1.8.6]: https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6
 [BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
+[Cocona command-line completion]: https://github.com/mayuki/Cocona#shell-command-line-completion
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
@@ -82,6 +86,7 @@ To be released.
 [#2563]: https://github.com/planetarium/libplanet/pull/2563
 [#2571]: https://github.com/planetarium/libplanet/pull/2571
 [#2572]: https://github.com/planetarium/libplanet/pull/2572
+[#2586]: https://github.com/planetarium/libplanet/pull/2586
 
 
 Version 0.44.1

@@ -80,3 +80,22 @@ use `dotnet planet` command instead:
 dotnet planet --help
 ~~~~
 
+### Command-line completion
+
+All subcommands and options can be completed in bash and zsh.  You can
+configure command-line completion through `--completion` option.
+
+For bash:
+
+~~~~ bash
+source <(planet --completion bash)
+~~~~
+
+For zsh:
+
+~~~~ zsh
+planet --completion zsh > ~/.zsh/functions
+~~~~
+
+Note you don't configure it by yourself when you installed `planet` using
+Homebrew Cask.
