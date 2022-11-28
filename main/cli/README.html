@@ -98,6 +98,17 @@ use <code>npx planet</code> command instead:</p>
 use <code>dotnet planet</code> command instead:</p>
 <pre><code class="lang-bash">dotnet planet --help
 </code></pre>
+<h3 id="command-line-completion">Command-line completion</h3>
+<p>All subcommands and options can be completed in bash and zsh.  You can
+configure command-line completion through <code>--completion</code> option.</p>
+<p>For bash:</p>
+<pre><code class="lang-bash">source &lt;(planet --completion bash)
+</code></pre>
+<p>For zsh:</p>
+<pre><code class="lang-zsh">planet --completion zsh &gt; ~/.zsh/functions
+</code></pre>
+<p>Note you don't configure it by yourself when you installed <code>planet</code> using
+Homebrew Cask.</p>
 </article>
           </div>
           
