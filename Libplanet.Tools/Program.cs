@@ -29,6 +29,7 @@ namespace Libplanet.Tools
                 .RunAsync<Program>(args, options =>
                 {
                     options.TreatPublicMethodsAsCommands = false;
+                    options.EnableShellCompletionSupport = true;
                 });
 
         [PrimaryCommand]
