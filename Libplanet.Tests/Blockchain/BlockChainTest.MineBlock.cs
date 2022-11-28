@@ -235,9 +235,7 @@ namespace Libplanet.Tests.Blockchain
                     : new TxPolicyViolationException("invalid signer", tx.Id);
             }
 
-            var policy = new BlockPolicy<DumbAction>(
-                validateNextBlockTx: IsSignerValid,
-                getValidatorSet: idx => TestUtils.ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>(validateNextBlockTx: IsSignerValid);
             using (var fx = new MemoryStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(
@@ -345,8 +343,7 @@ namespace Libplanet.Tests.Blockchain
             var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
-            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(
-                blockAction, getValidatorSet: _ => TestUtils.ValidatorSet);
+            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(blockAction);
 
             var blockChain = new BlockChain<DumbAction>(
                 policy,

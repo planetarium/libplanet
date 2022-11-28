@@ -13,6 +13,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -58,8 +59,7 @@ namespace Libplanet.Tests.Blockchain
 
             _policy = new BlockPolicy<DumbAction>(
                 blockAction: new MinerReward(1),
-                getMaxTransactionsBytes: _ => 50 * 1024,
-                getValidatorSet: _ => ValidatorSet);
+                getMaxTransactionsBytes: _ => 50 * 1024);
             _stagePolicy = new VolatileStagePolicy<DumbAction>();
             _fx = getStoreFixture(_policy.BlockAction);
             _renderer = new ValidatingActionRenderer<DumbAction>();
@@ -208,8 +208,7 @@ namespace Libplanet.Tests.Blockchain
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
-                new BlockPolicy<PolymorphicAction<BaseAction>>(
-                    getValidatorSet: _ => ValidatorSet),
+                new BlockPolicy<PolymorphicAction<BaseAction>>(),
                 new VolatileStagePolicy<PolymorphicAction<BaseAction>>(),
                 store,
                 stateStore,
@@ -310,8 +309,7 @@ namespace Libplanet.Tests.Blockchain
             IEnumerable<ExecuteRecord> NonRehearsalExecutions() =>
                 DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal);
 
-            var policy = new BlockPolicy<DumbAction>(
-                getValidatorSet: idx => ValidatorSet);
+            var policy = new BlockPolicy<DumbAction>();
             var key = new PrivateKey();
             Address miner = key.ToAddress();
 
@@ -364,8 +362,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ActionRenderersHaveDistinctContexts()
         {
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: idx => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var generatedRandomValueLogs = new List<int>();
@@ -403,8 +400,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterBlockIsRendered()
         {
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: idx => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var recordingRenderer = new RecordingActionRenderer<DumbAction>();
@@ -442,8 +438,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void RenderActionsAfterAppendComplete()
         {
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: idx => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var store = new MemoryStore();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             IActionRenderer<DumbAction> renderer = new AnonymousActionRenderer<DumbAction>
@@ -1233,8 +1228,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateOnlyDrillsDownUntilRequestedAddressesAreFound()
         {
-            var policy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
+            var policy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 policy,
@@ -1287,8 +1281,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStateReturnsEarlyForNonexistentAccount()
         {
-            var blockPolicy = new NullBlockPolicy<DumbAction>(
-                getValidatorSet: _ => ValidatorSet);
+            var blockPolicy = new NullBlockPolicy<DumbAction>();
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
                 blockPolicy,
@@ -1336,8 +1329,7 @@ namespace Libplanet.Tests.Blockchain
 
             var chain =
                 new BlockChain<DumbAction>(
-                    new NullBlockPolicy<DumbAction>(
-                        getValidatorSet: idx => ValidatorSet),
+                    new NullBlockPolicy<DumbAction>(),
                     new VolatileStagePolicy<DumbAction>(),
                     store,
                     stateStore,
@@ -1426,7 +1418,7 @@ namespace Libplanet.Tests.Blockchain
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var chain = new BlockChain<DumbAction>(
-                new NullBlockPolicy<DumbAction>(getValidatorSet: _ => ValidatorSet),
+                new NullBlockPolicy<DumbAction>(),
                 new VolatileStagePolicy<DumbAction>(),
                 _fx.Store,
                 _fx.StateStore,
@@ -1898,11 +1890,13 @@ namespace Libplanet.Tests.Blockchain
 
                 return currency * 0;
             };
+            ValidatorSetGetter nullValidatorSetGetter = () => new ValidatorSet();
             IAccountStateDelta previousStates = AccountStateDeltaImpl.ChooseVersion(
                 b.ProtocolVersion,
                 nullAccountStateGetter,
                 nullAccountBalanceGetter,
                 nullTotalSupplyGetter,
+                nullValidatorSetGetter,
                 b.Miner);
             ActionEvaluation[] evals =
                 chain.ActionEvaluator.EvaluateBlock(b, previousStates).ToArray();
@@ -1948,6 +1942,7 @@ namespace Libplanet.Tests.Blockchain
                                 ? totalSupply
                                 : currency * 0;
                         },
+                        () => new ValidatorSet(),
                         b.Miner);
 
                     dirty = chain.ActionEvaluator.EvaluateBlock(b, previousStates).GetDirtyStates();

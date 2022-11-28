@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Assets;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Serilog;
@@ -41,6 +43,7 @@ namespace Libplanet.Tests.Action
                         addrs => new IValue[addrs.Count],
                         (_, c) => new FungibleAssetValue(c),
                         c => c * 0,
+                        () => new ValidatorSet(),
                         address
                     ),
                     123,
@@ -52,6 +55,7 @@ namespace Libplanet.Tests.Action
                         .ToArray(),
                     (_, c) => new FungibleAssetValue(c),
                     c => c * 0,
+                    () => new ValidatorSet(),
                     address
                 )
             );

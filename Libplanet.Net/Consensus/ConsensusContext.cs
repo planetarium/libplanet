@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
-using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
@@ -29,7 +28,6 @@ namespace Libplanet.Net.Consensus
         private readonly PrivateKey _privateKey;
         private readonly TimeSpan _newHeightDelay;
         private readonly ILogger _logger;
-        private readonly Func<long, ValidatorSet> _getValidatorSet;
         private readonly Dictionary<long, Context<T>> _contexts;
 
         private CancellationTokenSource? _newHeightCts;
@@ -48,8 +46,6 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="OnBlockChainTipChanged"/>
         /// </param>
-        /// <param name="getValidatorSet">The function determining the set of validators
-        /// for a <see cref="Block{T}"/> given the <see cref="Block{T}"/>'s index.</param>
         /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
         /// configuring a timeout for each <see cref="Step"/>.</param>
         public ConsensusContext(
@@ -57,7 +53,6 @@ namespace Libplanet.Net.Consensus
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
-            Func<long, ValidatorSet> getValidatorSet,
             ContextTimeoutOption contextTimeoutOption)
         {
             BroadcastMessage = broadcastMessage;
@@ -65,7 +60,6 @@ namespace Libplanet.Net.Consensus
             _privateKey = privateKey;
             Height = -1;
             _newHeightDelay = newHeightDelay;
-            _getValidatorSet = getValidatorSet;
 
             _contextTimeoutOption = contextTimeoutOption;
 
@@ -230,15 +224,7 @@ namespace Libplanet.Net.Consensus
                 {
                     if (!_contexts.ContainsKey(height))
                     {
-                        _contexts[height] = new Context<T>(
-                            this,
-                            _blockChain,
-                            height,
-                            _privateKey,
-                            _getValidatorSet(height),
-                            contextTimeoutOptions: _contextTimeoutOption);
-
-                        AttachEventHandlers(_contexts[height]);
+                        _contexts[height] = CreateContext(height);
                     }
 
                     _contexts[height].Start(lastCommit);
@@ -288,15 +274,7 @@ namespace Libplanet.Net.Consensus
             {
                 if (!_contexts.ContainsKey(height))
                 {
-                    _contexts[height] = new Context<T>(
-                        this,
-                        _blockChain,
-                        height,
-                        _privateKey,
-                        _getValidatorSet(height),
-                        _contextTimeoutOption);
-
-                    AttachEventHandlers(_contexts[height]);
+                    _contexts[height] = CreateContext(height);
                 }
 
                 _contexts[height].ProduceMessage(consensusMessage);
@@ -364,6 +342,25 @@ namespace Libplanet.Net.Consensus
                     }
                 },
                 _newHeightCts.Token);
+        }
+
+        /// <summary>
+        /// Create new context of height of the given <paramref name="height"/>
+        /// and attach event handlers to it, and return the created context.
+        /// </summary>
+        /// <param name="height">The height of the context to create.</param>
+        private Context<T> CreateContext(long height)
+        {
+            // blockchain may not contain block of Height - 1?
+            var context = new Context<T>(
+                this,
+                _blockChain,
+                height,
+                _privateKey,
+                _blockChain.GetValidatorSet(_blockChain[Height - 1].Hash),
+                contextTimeoutOptions: _contextTimeoutOption);
+            AttachEventHandlers(context);
+            return context;
         }
 
         /// <summary>

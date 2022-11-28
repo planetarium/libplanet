@@ -14,6 +14,15 @@ namespace Libplanet.Consensus
     public class ValidatorSet : IEquatable<ValidatorSet>
     {
         /// <summary>
+        /// Creates an instance of an empty <see cref="ValidatorSet"/>.
+        /// to <see cref="Validators"/>.
+        /// </summary>
+        public ValidatorSet()
+            : this(new List<PublicKey>())
+        {
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="ValidatorSet"/>.  Given <paramref name="validators"/>
         /// is ordered internally by <see cref="Address"/> before getting assigned
         /// to <see cref="Validators"/>.
