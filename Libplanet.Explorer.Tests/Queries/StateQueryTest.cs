@@ -10,6 +10,8 @@ using Libplanet.Assets;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Explorer.Queries;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
@@ -173,5 +175,11 @@ public class StateQueryTest
             TotalSupplyStateCompleter<T> stateCompleter
         ) =>
             currency * 10000;
+
+        // TODO: Add test case for this
+        public ValidatorSet GetValidatorSet(BlockHash offset, ValidatorSetStateCompleter<T> stateCompleter)
+        {
+            return new ValidatorSet(new List<PublicKey>());
+        }
     }
 }

@@ -13,6 +13,7 @@ using Libplanet.Assets;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blocks;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -676,6 +677,21 @@ namespace Libplanet.Blockchain
             BlockHash offset,
             TotalSupplyStateCompleter<T> stateCompleter
         ) => _blockChainStates.GetTotalSupply(currency, offset, stateCompleter);
+
+        public ValidatorSet GetValidatorSet(
+            BlockHash? offset = null,
+            ValidatorSetStateCompleter<T> stateCompleter = null
+        ) =>
+            GetValidatorSet(
+                offset ?? Tip.Hash,
+                stateCompleter ?? ValidatorSetStateCompleters<T>.Reject
+            );
+
+        /// <inheritdoc cref="IBlockChainStates{T}.GetValidatorSet"/>
+        public ValidatorSet GetValidatorSet(
+            BlockHash offset,
+            ValidatorSetStateCompleter<T> stateCompleter
+        ) => _blockChainStates.GetValidatorSet(offset, stateCompleter);
 
         /// <summary>
         /// Queries the recorded <see cref="TxExecution"/> for a successful or failed
