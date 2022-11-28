@@ -189,39 +189,14 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc/>
         public Transaction<T>? Get(BlockChain<T> blockChain, TxId id, bool filtered = true)
         {
-            Transaction<T>? transaction = null;
-
-            _lock.EnterWriteLock();
+            _lock.EnterReadLock();
             try
             {
-                _staged.TryGetValue(id, out transaction);
-
-                if (transaction is Transaction<T> tx)
-                {
-                    if (Expired(tx) || _ignored.Contains(tx.Id))
-                    {
-                        _staged.TryRemove(id, out _);
-                        return null;
-                    }
-                    else if (filtered)
-                    {
-                        return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
-                            ? tx
-                            : null;
-                    }
-                    else
-                    {
-                        return tx;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
+                return GetInner(blockChain, id, filtered);
             }
             finally
             {
-                _lock.ExitWriteLock();
+                _lock.EnterReadLock();
             }
         }
 
@@ -230,13 +205,13 @@ namespace Libplanet.Blockchain.Policies
         {
             List<Transaction<T>> transactions = new List<Transaction<T>>();
 
-            _lock.EnterUpgradeableReadLock();
+            _lock.EnterReadLock();
             try
             {
                 List<TxId> txIds = _staged.Keys.ToList();
                 foreach (TxId txId in txIds)
                 {
-                    if (Get(blockChain, txId, filtered) is Transaction<T> tx)
+                    if (GetInner(blockChain, txId, filtered) is Transaction<T> tx)
                     {
                         transactions.Add(tx);
                     }
@@ -244,7 +219,7 @@ namespace Libplanet.Blockchain.Policies
             }
             finally
             {
-                _lock.ExitUpgradeableReadLock();
+                _lock.ExitReadLock();
             }
 
             return transactions;
@@ -275,5 +250,31 @@ namespace Libplanet.Blockchain.Policies
 
         private bool Expired(Transaction<T> transaction) =>
             transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
+
+        private Transaction<T>? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
+        {
+            if (_staged.TryGetValue(id, out Transaction<T>? tx) && tx is { })
+            {
+                if (Expired(tx) || _ignored.Contains(tx.Id))
+                {
+                    _staged.TryRemove(id, out _);
+                    return null;
+                }
+                else if (filtered)
+                {
+                    return blockChain.Store.GetTxNonce(blockChain.Id, tx.Signer) <= tx.Nonce
+                        ? tx
+                        : null;
+                }
+                else
+                {
+                    return tx;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
