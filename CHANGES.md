@@ -4,8 +4,12 @@ Libplanet changelog
 Version 0.44.2
 --------------
 
-To be released.
+Released on November 29, 2022.
 
+ - Improved performance of `.Iterate()` and `.GetNextTxNonce()` of
+   `VolatileStagePolicy`.  [[#2589]]
+
+[#2589]: https://github.com/planetarium/libplanet/pull/2589
 
 Version 0.44.1
 --------------
