@@ -34,20 +34,22 @@ namespace Libplanet.Consensus
             Power = power;
         }
 
-        public Validator(byte[] marshaled)
-        {
-            var codec = new Codec();
-            Dictionary dict = (Dictionary)codec.Decode(marshaled);
-            PublicKey = new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ToByteArray());
-            Power = new BigInteger(dict.GetValue<Binary>(PowerKey).ToByteArray());
-        }
-
         public Validator(ImmutableArray<byte> marshaled)
         {
             var codec = new Codec();
             Dictionary dict = (Dictionary)codec.Decode(marshaled.ToArray());
-            PublicKey = new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ToByteArray());
+            PublicKey = new PublicKey(dict.GetValue<Binary>(PublicKeyKey).ByteArray);
             Power = new BigInteger(dict.GetValue<Binary>(PowerKey).ToByteArray());
+        }
+
+        public Validator(byte[] marshaled)
+            : this(marshaled.ToImmutableArray())
+        {
+        }
+
+        public Validator(Binary marshaled)
+            : this(marshaled.ByteArray)
+        {
         }
 
         /// <summary>
