@@ -251,6 +251,10 @@ namespace Libplanet.Blockchain.Policies
         private bool Expired(Transaction<T> transaction) =>
             transaction.Timestamp + Lifetime < DateTimeOffset.UtcNow;
 
+        /// <remarks>
+        /// It has been intended to avoid recursive lock, hence doesn't hold any synchronous scope.
+        /// Therefore, we should manage the lock from its caller side.
+        /// </remarks>
         private Transaction<T>? GetInner(BlockChain<T> blockChain, TxId id, bool filtered)
         {
             if (_staged.TryGetValue(id, out Transaction<T>? tx) && tx is { })
