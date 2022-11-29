@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Assets;
 using Libplanet.Crypto;
