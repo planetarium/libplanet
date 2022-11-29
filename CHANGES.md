@@ -26,9 +26,9 @@ To be released.
 
 ### Added APIs
 
-- Added `BlockChainStates<T>` class.  [[#2507]]
-- Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
-  and `ActionEvaluator<T>` directly.  [[#2507]]
+ -  Added `BlockChainStates<T>` class.  [[#2507]]
+ -  Added new constructors of `BlockChain<T>` takes `IBlockChainStates<T>`
+    and `ActionEvaluator<T>` directly.  [[#2507]]
  -  Added non-generic interfaces.  [[#2539]]
      -  Added `IPreEvaluationBlock` interface.
      -  Added `IBlockContent` interface.
@@ -39,10 +39,6 @@ To be released.
     [[#2562]]
  -  (Libplanet.Explorer) Added `ConfigureLibplanetExplorerSchema` class.
     [[#2572]]
-
-[#2507]: https://github.com/planetarium/libplanet/pull/2507
-[#2539]: https://github.com/planetarium/libplanet/pull/2539
-[#2562]: https://github.com/planetarium/libplanet/pull/2562
 
 ### Behavioral changes
 
@@ -79,10 +75,13 @@ To be released.
 [BouncyCastle.NetCore 1.8.6]: https://www.nuget.org/packages/BouncyCastle.NetCore/1.8.6
 [BouncyCastle.Cryptography 2.0.0]: https://www.nuget.org/packages/BouncyCastle.Cryptography/2.0.0
 [Cocona command-line completion]: https://github.com/mayuki/Cocona#shell-command-line-completion
+[#2507]: https://github.com/planetarium/libplanet/pull/2507
 [#2518]: https://github.com/planetarium/libplanet/issues/2518
 [#2520]: https://github.com/planetarium/libplanet/pull/2520
 [#2529]: https://github.com/planetarium/libplanet/pull/2529
+[#2539]: https://github.com/planetarium/libplanet/pull/2539
 [#2555]: https://github.com/planetarium/libplanet/pull/2555
+[#2562]: https://github.com/planetarium/libplanet/pull/2562
 [#2563]: https://github.com/planetarium/libplanet/pull/2563
 [#2571]: https://github.com/planetarium/libplanet/pull/2571
 [#2572]: https://github.com/planetarium/libplanet/pull/2572
@@ -94,8 +93,8 @@ Version 0.44.2
 
 Released on November 29, 2022.
 
- - Improved performance of `.Iterate()` and `.GetNextTxNonce()` of
-   `VolatileStagePolicy`.  [[#2589]]
+ -  Improved performance of `.Iterate()` and `.GetNextTxNonce()` of
+    `VolatileStagePolicy`.  [[#2589]]
 
 [#2589]: https://github.com/planetarium/libplanet/pull/2589
 
@@ -105,8 +104,8 @@ Version 0.44.1
 
 Released on November 7, 2022.
 
- - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
-   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+    hung forever when given peer information isn't valid.  [[#2424], [#2521]]
 
 
 Version 0.44.0
@@ -162,8 +161,8 @@ Version 0.43.3
 
 Released on November 7, 2022.
 
- - (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
-   hung forever when given peer information isn't valid.  [[#2424], [#2521]]
+ -  (Libplanet.Net) Fixed a bug where `NetMQTransport.SendMessageAsnyc()` had
+    hung forever when given peer information isn't valid.  [[#2424], [#2521]]
 
 [#2424]: https://github.com/planetarium/libplanet/issues/2424
 [#2521]: https://github.com/planetarium/libplanet/pulls/2521
