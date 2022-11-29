@@ -40,6 +40,20 @@ namespace Libplanet.Tests.Consensus
         }
 
         [Fact]
+        public void ValidatorTotalPower()
+        {
+            List<PublicKey> publicKeys = Enumerable
+                .Range(0, 10)
+                .Select(_ => new PrivateKey().PublicKey)
+                .ToList();
+            ValidatorSet validatorSet = new ValidatorSet(publicKeys.Select(
+                publicKey => new Validator(publicKey, BigInteger.One)).ToList());
+            Assert.Equal(10, validatorSet.TotalPower);
+            Assert.Equal(6, validatorSet.TwoThirdsPower);
+            Assert.Equal(3, validatorSet.OneThirdPower);
+        }
+
+        [Fact]
         public void ValidateBlockCommitValidators()
         {
             Random random = new Random();
